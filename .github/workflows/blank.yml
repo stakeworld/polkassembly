@@ -129,7 +129,7 @@ jobs:
         # push: # optional, default is true
 
   build-kusama-production-front-end:
-    needs: []
+    needs: [lint-front-end]
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -175,7 +175,7 @@ jobs:
         # push: # optional, default is true
 
   build-polkadot-production-front-end:
-    needs: []
+    needs: [lint-front-end]
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -265,7 +265,9 @@ jobs:
         # add_git_labels: # optional
         # Whether to push the image
         # push: # optional, default is true
+  
   build-chain-db-watcher:
+    needs: [lint-chain-db-watcher]
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
