@@ -23,11 +23,20 @@ const container = (content: string): string => `
                     margin: 0 auto;
                     max-width: 600px;
                 }
+                .footer {
+                    font-size: 10px;
+                    text-align: center;
+                    color: #313638;
+                }
             </style>
         </head>
         <body>
             <div class="polk-container">
                 ${content}
+            </div>
+            <div class="footer">
+                Registered Address: Premiurly, Tornimäe tn 7, Kesklinna linnaosa, Tallinn, 10145, Estonia<br />
+                <a target="_blank" href="https://premiurly.in/policy/privacy-policy/">Privacy Policy</a>
             </div>
         </body>
     </html>
