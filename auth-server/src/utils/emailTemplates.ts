@@ -24,6 +24,7 @@ const container = (content: string): string => `
                     max-width: 600px;
                 }
                 .footer {
+                    margin-top: 20px;
                     font-size: 10px;
                     text-align: center;
                     color: #313638;
@@ -35,7 +36,7 @@ const container = (content: string): string => `
                 ${content}
             </div>
             <div class="footer">
-                Registered Address: Premiurly, Tornimäe tn 7, Kesklinna linnaosa, Tallinn, 10145, Estonia<br />
+                Registered Address: Premiurly, Tornimae tn 7, Kesklinna linnaosa, Tallinn, 10145, Estonia<br />
                 <a target="_blank" href="https://premiurly.in/policy/privacy-policy/">Privacy Policy</a>
             </div>
         </body>
