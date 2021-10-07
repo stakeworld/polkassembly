@@ -29,7 +29,8 @@ const StatusTag = ({ children, className, content, status }: Props) => {
 		bountyStatus.PROPOSED,
 		bountyStatus.AWARDED,
 		bountyStatus.BECAME_ACTIVE,
-		bountyStatus.EXTENDED
+		bountyStatus.EXTENDED,
+		'prime'
 	].includes(status)){
 		icon = 'circle';
 	}
@@ -115,7 +116,8 @@ export default styled(StatusTag).attrs(( { status }: Props) => ({
 		&.${motionStatus.CLOSED},
 		&.${tipStatus.CLOSED},
 		&.${bountyStatus.AWARDED},
-		&.${bountyStatus.CLAIMED} {
+		&.${bountyStatus.CLAIMED},
+		&.prime {
 			border-color: green_primary;
 			color: green_primary;
 		}

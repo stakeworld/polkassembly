@@ -13,6 +13,7 @@ const MotionsContainer = () => {
 	const { api, apiReady } = useContext(ApiContext);
 	const [error, setErr] = useState<Error | null>(null);
 	const [members, setMembers] = useState<string[]>([]);
+	const [prime, setPrime] = useState<string>('');
 
 	useEffect(() => {
 		if (!api) {
@@ -23,6 +24,10 @@ const MotionsContainer = () => {
 			return;
 		}
 
+		api.query.council.prime().then(primeId => {
+			setPrime(primeId.unwrapOr('').toString());
+		}).catch(error => setErr(error));
+
 		api.query.council.members().then((members) => {
 			setMembers(members.map(member => member.toString()));
 		}).catch(error => setErr(error));
@@ -32,7 +37,7 @@ const MotionsContainer = () => {
 	if (error) return <FilteredError text={error.message}/>;
 
 	if (members.length) {
-		return <CouncilListing members={members} />;
+		return <CouncilListing members={members} prime={prime} />;
 	}
 
 	return <Loader/>;
