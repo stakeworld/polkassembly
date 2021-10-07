@@ -26,10 +26,10 @@ const CouncilMembers = ({ className, members, prime }: Props) => {
 			{members.map(
 				(member, i) => (
 					<li key={member} className='proposals__item'>
-						{<Link to={`/address/${member}`}>
+						{<Link to={`/profile/${member}`}>
 							<div className='member_card'>
 								<Segment.Group horizontal>
-									<Segment className='onchain_id'>
+									<Segment className='index'>
 										<h5>#{i + 1}</h5>
 									</Segment>
 									<Segment>
@@ -72,7 +72,7 @@ export default styled(CouncilMembers)`
 		box-shadow: box_shadow_card;
 		transition: box-shadow .1s ease-in-out;
 
-		&.own-proposal {
+		&.self {
 			border-left-width: 4px;
 			border-left-style: solid;
 			border-left-color: pink_primary;
@@ -99,7 +99,7 @@ export default styled(CouncilMembers)`
 			border-left: none;
 		}
 
-		.onchain_id {
+		.index {
 			min-width: 4rem!important;
 			max-width: 6rem;
 		}
@@ -110,9 +110,6 @@ export default styled(CouncilMembers)`
 			right: 0;
 		}
 
-		.title-wrapper {
-			max-width: calc(100% - 10rem);
-		}
 
 		h4, h5 {
 			font-family: font_default;
@@ -127,29 +124,10 @@ export default styled(CouncilMembers)`
 			line-height: 1.2;
 		}
 
-		h4.tipTitle {
-			max-width: 55%;
-
-			& > div {
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
-			}
-		}
 
 		h5 {
 			font-size: md;
 			line-height: 1.4;
-		}
-
-		.originLabel {
-			display: inline-flex;
-			font-size: sm;
-			color: black_text;
-		}
-
-		.address, .topic {
-			margin-left: 0.6rem;
 		}
 
 		ul {
