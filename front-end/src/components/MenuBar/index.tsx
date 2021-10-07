@@ -56,6 +56,7 @@ const MenuBar = ({ className } : Props): JSX.Element => {
 		{ content: 'Tech comm proposals', to: '/tech-comm-proposals' },
 		{ content: 'Tips', to: '/tips' },
 		{ content: 'Bounties', to: '/bounties' },
+		{ content: 'Council', to: '/council' },
 		{ content: 'Search', to: '/search' }
 	];
 
