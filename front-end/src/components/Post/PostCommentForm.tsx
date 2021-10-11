@@ -4,7 +4,7 @@
 
 import styled from '@xstyled/styled-components';
 import { ApolloQueryResult } from 'apollo-client';
-import React, { useContext,useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Controller,useForm } from 'react-hook-form';
 import { GoReply } from 'react-icons/go';
 import { Icon } from 'semantic-ui-react';
@@ -50,12 +50,28 @@ interface Props {
 		Promise<ApolloQueryResult<DiscussionPostAndCommentsQuery>>
 }
 
+const commentKey = () => `comment:${global.window.location.href}`;
+
 const PostCommentForm = ({ className, postId, refetch }: Props) => {
 	const { id, notification, username } = useContext(UserDetailsContext);
 	const [content, setContent] = useState('');
 	const { control, errors, handleSubmit, setValue } = useForm();
 
-	const onContentChange = (data: Array<string>) => {setContent(data[0]); return data[0].length ? data[0] : null;};
+	const onContentChange = (data: Array<string>) => {
+		setContent(data[0]);
+		global.window.localStorage.setItem(commentKey(), data[0]);
+		return data[0].length ? data[0] : null;
+	};
+
+	useEffect(() => {
+		const content = global.window.localStorage.getItem(commentKey());
+
+		if (content && content.length) {
+			setContent(content);
+			setValue('content', content);
+		}
+	}, [setValue]);
+
 	const [addPostCommentMutation, { loading, error }] = useAddPostCommentMutation();
 	const [postSubscribeMutation] = usePostSubscribeMutation();
 
@@ -91,6 +107,7 @@ const PostCommentForm = ({ className, postId, refetch }: Props) => {
 				if (data && data.insert_comments && data.insert_comments.affected_rows > 0) {
 					setContent('');
 					setValue('content', '');
+					global.window.localStorage.removeItem(commentKey());
 					refetch();
 					createSubscription(postId);
 				} else {
