@@ -20,6 +20,7 @@ import { NotificationProvider } from './context/NotificationContext';
 import { UserDetailsProvider } from './context/UserDetailsContext';
 import Bounties from './screens/Bounties';
 import PostBounty from './screens/BountyPost';
+import Council from './screens/Council';
 import CreatePost from './screens/CreatePost';
 import PostDiscussion from './screens/DiscussionPost';
 import Discussions from './screens/Discussions';
@@ -31,6 +32,7 @@ import Motions from './screens/Motions';
 import NotFound from './screens/NotFound';
 import NotificationSettings from './screens/NotificationSettings';
 import OnChain from './screens/OnChain';
+import Profile from './screens/Profile';
 import PostProposal from './screens/ProposalPost';
 import Proposals from './screens/Proposals';
 import Referenda from './screens/Referenda';
@@ -170,6 +172,12 @@ const App = () => {
 														</Route>
 														<Route path="/tracker">
 															<Tracker/>
+														</Route>
+														<Route path="/council">
+															<Council/>
+														</Route>
+														<Route path="/profile/:address">
+															<Profile/>
 														</Route>
 														<Route path="*">
 															<NotFound/>
