@@ -99,7 +99,7 @@ const CreatePoll = function ({ postId }: CreateOptionPollProps) {
 						message: 'Poll Created',
 						status: NotificationStatus.SUCCESS
 					});
-					window.location.reload(false);
+					window.location.reload();
 				}
 			})
 			.catch((e) => {

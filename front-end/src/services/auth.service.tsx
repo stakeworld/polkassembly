@@ -43,7 +43,7 @@ export const deleteLocalStorageToken = (): void => {
 export const handleTokenChange = (token: string, currentUser: UserDetailsContextType) => {
 	token && storeLocalStorageToken(token);
 	try {
-		const tokenPayload = token && jwt.decode(token) as JWTPayploadType;
+		const tokenPayload: any = token && jwt.decode(token);
 
 		if (tokenPayload && tokenPayload.sub) {
 			const {
@@ -54,7 +54,7 @@ export const handleTokenChange = (token: string, currentUser: UserDetailsContext
 				notification,
 				'https://hasura.io/jwt/claims': claims,
 				web3signup
-			} = tokenPayload;
+			} = tokenPayload as JWTPayploadType;
 
 			currentUser.setUserDetailsContextState((prevState) => {
 				let addresses = '';

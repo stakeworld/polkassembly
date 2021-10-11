@@ -186,7 +186,6 @@ export function MarkdownEditor(props: Props): React.ReactElement {
 				minEditorHeight={props.height}
 				minPreviewHeight={props.height}
 				name={props.name}
-				onChange={props.onChange}
 				onTabChange={setSelectedTab}
 				selectedTab={selectedTab}
 				loadSuggestions={loadSuggestions}
