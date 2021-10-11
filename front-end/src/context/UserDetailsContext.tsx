@@ -34,7 +34,7 @@ const initialUserDetailsContext : UserDetailsContextType = {
 
 const accessToken = getLocalStorageToken();
 try {
-	const tokenPayload = accessToken && jwt.decode(accessToken) as JWTPayploadType;
+	const tokenPayload: any = accessToken && jwt.decode(accessToken);
 
 	if (tokenPayload && tokenPayload.sub) {
 		const {
@@ -45,7 +45,7 @@ try {
 			notification,
 			'https://hasura.io/jwt/claims': claims,
 			web3signup
-		} = tokenPayload;
+		} = tokenPayload as JWTPayploadType;
 
 		if (id) {
 			initialUserDetailsContext.id = Number(id);

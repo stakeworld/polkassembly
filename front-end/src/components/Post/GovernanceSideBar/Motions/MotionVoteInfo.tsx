@@ -34,21 +34,21 @@ const MotionVoteInfo = ({ className, motionId }: Props) => {
 
 		const councilVotes: CouncilVote[] = [];
 
-		api.derive.council.proposals((motions) => {
-			const motion = motions.filter(mo => mo.votes?.index.toNumber() === motionId)[0];
+		api.derive.council.proposals((motions: any) => {
+			const motion = motions.filter((mo: any) => mo.votes?.index.toNumber() === motionId)[0];
 
 			if (!motion) {
 				return;
 			}
 
-			motion.votes?.ayes.forEach(vote => {
+			motion.votes?.ayes.forEach((vote: any) => {
 				councilVotes.push({
 					address: vote.toString(),
 					vote: Vote.AYE
 				});
 			});
 
-			motion.votes?.nays.forEach(vote => {
+			motion.votes?.nays.forEach((vote: any) => {
 				councilVotes.push({
 					address: vote.toString(),
 					vote: Vote.NAY
