@@ -58,20 +58,22 @@ const createTip: Task<NomidotTip[]> = {
           {}
         );
 
-        if (!tipRawEvent.Hash) {
+        const hash = tipRawEvent.Hash || tipRawEvent.H256;
+
+        if (!hash) {
           l.error(
-            `Expected Tip hash missing in the event: ${tipRawEvent.Hash}`
+            `Expected Tip hash missing in the event: ${hash}`
           );
           return null;
         }
 
         const tipInfoRaw: Option<OpenTip>  = await api.query.tips.tips.at(
           blockHash,
-          tipRawEvent.Hash
+          hash
         );
 
         if (tipInfoRaw.isNone) {
-          l.error(`No tip data found for Hash: ${tipRawEvent.Hash}`);
+          l.error(`No tip data found for Hash: ${hash}`);
           return null;
         }
 
@@ -95,7 +97,7 @@ const createTip: Task<NomidotTip[]> = {
         }
 
         const result: NomidotTip = {
-          hash: tipRawEvent.Hash,
+          hash,
           reason: reasonText,
           who: tip.who,
           status: tipStatus.OPENED,
