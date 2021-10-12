@@ -148,9 +148,10 @@ const createPreimage: Task<NomidotPreimage[]> = {
           proposal.callIndex
         );
 
-        const params = GenericCall.filterOrigin(proposal.meta).map(({ name }) =>
-          name.toString()
-        );
+        const params = proposal.meta ? proposal.meta.args
+          .filter(({ type }): boolean => type.toString() !== 'Origin')
+          .map(({ name }) => name.toString()) : [];
+
         const values = proposal.args;
 
         const preImageArguments =
