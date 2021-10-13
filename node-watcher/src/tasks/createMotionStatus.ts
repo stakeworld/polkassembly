@@ -47,7 +47,11 @@ const createMotion: Task<NomidotMotionStatusUpdate[]> = {
       motionEvents.map(async ({ event: { data, method, typeDef } }) => {
         const motionRawEvent: NomidotMotionRawEvent = data.reduce(
           (result, curr, index) => {
-            const type = typeDef[index].type;
+            let type = typeDef[index].type;
+
+            if (index === 0) {
+              type = 'Hash';
+            }
 
             return {
               ...result,
