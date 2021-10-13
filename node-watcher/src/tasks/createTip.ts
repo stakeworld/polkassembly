@@ -23,6 +23,10 @@ import {
 
 const l = logger('Task: Tip');
 
+const eventField = [
+  'Hash'
+];
+
 /*
  *  ======= Table (Tip) ======
  */
@@ -48,7 +52,9 @@ const createTip: Task<NomidotTip[]> = {
 
         const tipRawEvent: TipRawEvent = data.reduce(
           (prev, curr, index) => {
-            const type = typeDef[index].type;
+            const type = eventField[index];
+
+            console.log(index, curr.toJSON());
 
             return {
               ...prev,
@@ -58,22 +64,23 @@ const createTip: Task<NomidotTip[]> = {
           {}
         );
 
-        const hash = tipRawEvent.Hash || tipRawEvent.H256;
+        l.log(`tipRawEvent: ${JSON.stringify(tipRawEvent)}`);
 
-        if (!hash) {
+
+        if (!tipRawEvent.Hash) {
           l.error(
-            `Expected Tip hash missing in the event: ${hash}`
+            `Expected Tip hash missing in the event: ${tipRawEvent.Hash}`
           );
           return null;
         }
 
         const tipInfoRaw: Option<OpenTip>  = await api.query.tips.tips.at(
           blockHash,
-          hash
+          tipRawEvent.Hash
         );
 
         if (tipInfoRaw.isNone) {
-          l.error(`No tip data found for Hash: ${hash}`);
+          l.error(`No tip data found for Hash: ${tipRawEvent.Hash}`);
           return null;
         }
 
@@ -97,7 +104,7 @@ const createTip: Task<NomidotTip[]> = {
         }
 
         const result: NomidotTip = {
-          hash,
+          hash: tipRawEvent.Hash,
           reason: reasonText,
           who: tip.who,
           status: tipStatus.OPENED,

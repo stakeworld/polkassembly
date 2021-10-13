@@ -20,6 +20,13 @@ import {
 
 const l = logger('Task: Motions');
 
+const eventField = [
+  'AccountId',
+  'ProposalIndex',
+  'Hash',
+  'MemberCount'
+];
+
 /*
  *  ======= Table (Motion) ======
  */
@@ -40,20 +47,9 @@ const createMotion: Task<NomidotMotion[]> = {
       motionEvents.map(async ({ event: { data, typeDef } }) => {
         const motionRawEvent: NomidotMotionRawEvent = data.reduce(
           (prev, curr, index) => {
-            let type = typeDef[index].type;
+            const type = eventField[index];
 
-            if (index === 0) {
-              type = 'AccountId';
-            }
-            if (index === 1) {
-              type = 'ProposalIndex';
-            }
-            if (index === 2) {
-              type = 'Hash';
-            }
-            if (index === 3) {
-              type = 'MemberCount';
-            }
+            console.log(index, curr.toJSON());
 
             return {
               ...prev,
@@ -63,7 +59,7 @@ const createMotion: Task<NomidotMotion[]> = {
           {}
         );
 
-        console.log(motionRawEvent);
+        l.log(`motionRawEvent: ${JSON.stringify(motionRawEvent)}`);
 
         if (
           !motionRawEvent.ProposalIndex &&

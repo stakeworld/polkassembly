@@ -23,6 +23,10 @@ import {
 
 const l = logger('Task: Treasury');
 
+const eventField = [
+  'ProposalIndex'
+];
+
 /*
  *  ======= Table (Treasury) ======
  */
@@ -47,7 +51,9 @@ const createTreasury: Task<NomidotTreasury[]> = {
       treasuryEvents.map(async ({ event: { data, typeDef } }) => {
         const treasuryRawEvent: NomidotTreasuryRawEvent = data.reduce(
           (prev, curr, index) => {
-            const type = typeDef[index].type;
+            const type = eventField[index];
+
+            console.log(index, curr.toJSON());
 
             return {
               ...prev,
@@ -57,21 +63,21 @@ const createTreasury: Task<NomidotTreasury[]> = {
           {}
         );
 
-        const proposalIndex = treasuryRawEvent.ProposalIndex || treasuryRawEvent.u32
+        l.log(`treasuryRawEvent: ${JSON.stringify(treasuryRawEvent)}`);
 
         if (
-          !proposalIndex &&
-          proposalIndex !== 0
+          !treasuryRawEvent.ProposalIndex &&
+          treasuryRawEvent.ProposalIndex !== 0
         ) {
           l.error(
-            `Expected ProposalIndex missing in the event: ${proposalIndex}`
+            `Expected ProposalIndex missing in the event: ${treasuryRawEvent.ProposalIndex}`
           );
           return null;
         }
 
         const treasuryProposalRaw: Option<TreasuryProposal> = await api.query.treasury.proposals.at(
           blockHash,
-          proposalIndex
+          treasuryRawEvent.ProposalIndex
         );
 
         if (treasuryProposalRaw.isNone) {
@@ -81,7 +87,7 @@ const createTreasury: Task<NomidotTreasury[]> = {
 
         const treasuryProposal = treasuryProposalRaw.unwrap();
         const result: NomidotTreasury = {
-          treasuryProposalId: proposalIndex,
+          treasuryProposalId: treasuryRawEvent.ProposalIndex,
           proposer: treasuryProposal.proposer,
           beneficiary: treasuryProposal.beneficiary,
           value: treasuryProposal.value,

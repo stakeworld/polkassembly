@@ -18,6 +18,10 @@ import {
 
 const l = logger('Task: Referendum Status Update');
 
+const eventField = [
+  'ReferendumIndex'
+];
+
 /*
  *  ======= Table (Referendum Status Update) ======
  */
@@ -50,13 +54,9 @@ const createReferendumStatus: Task<NomidotReferendumStatusUpdate[]> = {
       referendumEvents.map(async ({ event: { data, typeDef, method } }) => {
         const referendumRawEvent: NomidotReferendumRawEvent = data.reduce(
           (prev, curr, index) => {
-            let type = typeDef[index].type;
+            let type = eventField[index];
 
             console.log(index, curr.toJSON());
-
-            if (index === 0) {
-              type = 'ReferendumIndex';
-            }
 
             return {
               ...prev,
@@ -65,6 +65,8 @@ const createReferendumStatus: Task<NomidotReferendumStatusUpdate[]> = {
           },
           {}
         );
+
+        l.log(`referendumRawEvent: ${JSON.stringify(referendumRawEvent)}`);
 
         if (
           !referendumRawEvent.ReferendumIndex &&

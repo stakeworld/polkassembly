@@ -24,6 +24,13 @@ import {
 
 const l = logger('Task: TechCommitteeProposals');
 
+const eventField = [
+  'AccountId',
+  'ProposalIndex',
+  'Hash',
+  'MemberCount'
+];
+
 /*
  *  ======= Table (Proposal) ======
  */
@@ -47,7 +54,9 @@ const createTechCommitteeProposal: Task<NomidotTechCommitteeProposal[]> = {
       proposalEvents.map(async ({ event: { data, typeDef } }) => {
         const proposalRawEvent: NomidotTechCommitteeProposalRawEvent = data.reduce(
           (prev, curr, index) => {
-            const type = typeDef[index].type;
+            const type = eventField[index];
+
+            console.log(index, curr.toJSON());
 
             return {
               ...prev,
@@ -56,6 +65,8 @@ const createTechCommitteeProposal: Task<NomidotTechCommitteeProposal[]> = {
           },
           {}
         );
+
+        l.log(`proposalRawEvent: ${JSON.stringify(proposalRawEvent)}`);
 
         if (!proposalRawEvent.ProposalIndex && proposalRawEvent.ProposalIndex !== 0) {
           l.error(

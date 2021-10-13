@@ -17,6 +17,10 @@ import {
 
 const l = logger('Task: Tech Committee Proposal Status Update');
 
+const eventField = [
+  'Hash'
+];
+
 /*
  *  ======= Table (Tech Committee Proposal Status Update) ======
  */
@@ -48,7 +52,9 @@ const createTechCommitteeProposalStatus: Task<NomidotTechCommitteeProposalStatus
 		techCommitteeProposalEvents.map(async ({ event: { data, method, typeDef } }) => {
         const techCommitteeProposalRawEvent: NomidotTechCommitteeProposalRawEvent = data.reduce(
           (result, curr, index) => {
-            const type = typeDef[index].type;
+            const type = eventField[index];
+
+            console.log(index, curr.toJSON());
 
             return {
               ...result,
@@ -57,6 +63,8 @@ const createTechCommitteeProposalStatus: Task<NomidotTechCommitteeProposalStatus
           },
           {}
         );
+
+        l.log(`techCommitteeProposalRawEvent: ${JSON.stringify(techCommitteeProposalRawEvent)}`);
 
         if (!techCommitteeProposalRawEvent.Hash) {
           l.error(
@@ -78,12 +86,12 @@ const createTechCommitteeProposalStatus: Task<NomidotTechCommitteeProposalStatus
                 status_every: {
                   // eslint-disable-next-line @typescript-eslint/camelcase
                   status_not_in: [
-					techCommitteeStatus.APPROVED,
-					techCommitteeStatus.CLOSED,
-					techCommitteeStatus.DISAPPROVED,
-					techCommitteeStatus.EXECUTED,
-					techCommitteeStatus.MEMBER_EXECUTED,
-					techCommitteeStatus.VOTED,
+                    techCommitteeStatus.APPROVED,
+                    techCommitteeStatus.CLOSED,
+                    techCommitteeStatus.DISAPPROVED,
+                    techCommitteeStatus.EXECUTED,
+                    techCommitteeStatus.MEMBER_EXECUTED,
+                    techCommitteeStatus.VOTED,
                   ],
                 },
               },

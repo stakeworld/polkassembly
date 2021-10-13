@@ -19,6 +19,10 @@ import newProposalStatus from '../util/newProposalStatus';
 
 const l = logger('Task: Proposals Status Update');
 
+const eventField = [
+  'PropIndex'
+];
+
 /*
  *  ======= Table (Proposal Status Update) ======
  */
@@ -47,7 +51,9 @@ const createProposal: Task<NomidotProposalStatusUpdate[]> = {
       proposalEvents.map(async ({ event: { data, typeDef } }) => {
         const proposalRawEvent: NomidotProposalRawEvent = data.reduce(
           (result, curr, index) => {
-            const type = typeDef[index].type;
+            const type = eventField[index];
+
+            console.log(index, curr.toJSON());
 
             return {
               ...result,
