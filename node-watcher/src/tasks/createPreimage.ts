@@ -80,7 +80,21 @@ const createPreimage: Task<NomidotPreimage[]> = {
 
         const preimageArgumentsRaw: NomidotPreimageRawEvent = event.data.reduce(
           (prev, curr, index) => {
-            const type = types[index].type;
+            let type = types[index].type;
+
+            console.log(index, curr.toString());
+
+            if (index === 0) {
+              type = 'Hash';
+            }
+
+            if (index === 1) {
+              type = 'AccountId';
+            }
+
+            if (index === 2) {
+              type = 'Balance';
+            }
 
             return {
               ...prev,

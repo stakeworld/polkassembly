@@ -50,7 +50,14 @@ const createReferendumStatus: Task<NomidotReferendumStatusUpdate[]> = {
       referendumEvents.map(async ({ event: { data, typeDef, method } }) => {
         const referendumRawEvent: NomidotReferendumRawEvent = data.reduce(
           (prev, curr, index) => {
-            const type = typeDef[index].type;
+            let type = typeDef[index].type;
+
+            console.log(index, curr.toJSON());
+
+            if (index === 0) {
+              type = 'ReferendumIndex';
+            }
+
             return {
               ...prev,
               [type]: curr.toJSON(),

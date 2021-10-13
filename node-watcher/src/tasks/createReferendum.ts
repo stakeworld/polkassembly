@@ -43,7 +43,15 @@ const createReferendum: Task<NomidotReferendum[]> = {
       referendumEvents.map(async ({ event: { data, typeDef } }) => {
         const referendumRawEvent: NomidotReferendumRawEvent = data.reduce(
           (prev, curr, index) => {
-            const type = typeDef[index].type;
+            let type = typeDef[index].type;
+
+            if (index === 0) {
+              type = 'ReferendumIndex';
+            }
+
+            if (index === 1) {
+              type = 'VoteThreshold';
+            }
 
             return {
               ...prev,

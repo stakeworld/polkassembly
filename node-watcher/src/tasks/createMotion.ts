@@ -40,7 +40,20 @@ const createMotion: Task<NomidotMotion[]> = {
       motionEvents.map(async ({ event: { data, typeDef } }) => {
         const motionRawEvent: NomidotMotionRawEvent = data.reduce(
           (prev, curr, index) => {
-            const type = typeDef[index].type;
+            let type = typeDef[index].type;
+
+            if (index === 0) {
+              type = 'AccountId';
+            }
+            if (index === 1) {
+              type = 'ProposalIndex';
+            }
+            if (index === 2) {
+              type = 'Hash';
+            }
+            if (index === 3) {
+              type = 'MemberCount';
+            }
 
             return {
               ...prev,
@@ -49,6 +62,8 @@ const createMotion: Task<NomidotMotion[]> = {
           },
           {}
         );
+
+        console.log(motionRawEvent);
 
         if (
           !motionRawEvent.ProposalIndex &&
