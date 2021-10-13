@@ -190,6 +190,7 @@ export interface NomidotTreasury {
 
 export interface NomidotTreasuryRawEvent {
   ProposalIndex?: number;
+  u32?: number;
 }
 
 export interface NomidotRewardEvent extends EventRecord {

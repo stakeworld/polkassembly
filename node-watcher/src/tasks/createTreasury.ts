@@ -57,19 +57,21 @@ const createTreasury: Task<NomidotTreasury[]> = {
           {}
         );
 
+        const proposalIndex = treasuryRawEvent.ProposalIndex || treasuryRawEvent.u32
+
         if (
-          !treasuryRawEvent.ProposalIndex &&
-          treasuryRawEvent.ProposalIndex !== 0
+          !proposalIndex &&
+          proposalIndex !== 0
         ) {
           l.error(
-            `Expected ProposalIndex missing in the event: ${treasuryRawEvent.ProposalIndex}`
+            `Expected ProposalIndex missing in the event: ${proposalIndex}`
           );
           return null;
         }
 
         const treasuryProposalRaw: Option<TreasuryProposal> = await api.query.treasury.proposals.at(
           blockHash,
-          treasuryRawEvent.ProposalIndex
+          proposalIndex
         );
 
         if (treasuryProposalRaw.isNone) {
@@ -79,7 +81,7 @@ const createTreasury: Task<NomidotTreasury[]> = {
 
         const treasuryProposal = treasuryProposalRaw.unwrap();
         const result: NomidotTreasury = {
-          treasuryProposalId: treasuryRawEvent.ProposalIndex,
+          treasuryProposalId: proposalIndex,
           proposer: treasuryProposal.proposer,
           beneficiary: treasuryProposal.beneficiary,
           value: treasuryProposal.value,
