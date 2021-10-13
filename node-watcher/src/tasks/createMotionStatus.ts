@@ -17,6 +17,10 @@ import {
 
 const l = logger('Task: Motions Status Update');
 
+const eventField = [
+  'Hash'
+];
+
 /*
  *  ======= Table (Motion Status Update) ======
  */
@@ -47,11 +51,9 @@ const createMotion: Task<NomidotMotionStatusUpdate[]> = {
       motionEvents.map(async ({ event: { data, method, typeDef } }) => {
         const motionRawEvent: NomidotMotionRawEvent = data.reduce(
           (result, curr, index) => {
-            let type = typeDef[index].type;
+            let type = eventField[index];
 
-            if (index === 0) {
-              type = 'Hash';
-            }
+            console.log(index, curr.toJSON());
 
             return {
               ...result,
@@ -60,6 +62,8 @@ const createMotion: Task<NomidotMotionStatusUpdate[]> = {
           },
           {}
         );
+
+        l.log(`motionRawEvent: ${JSON.stringify(motionRawEvent)}`);
 
         if (!motionRawEvent.Hash) {
           l.error(

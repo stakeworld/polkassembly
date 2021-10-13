@@ -176,7 +176,6 @@ export interface NomidotTip {
 
 export interface TipRawEvent {
   Hash?: string
-  H256?: string
 }
 
 export interface NomidotTreasury {

@@ -24,6 +24,11 @@ import {
 
 const l = logger('Task: Proposals');
 
+const eventField = [
+  'PropIndex',
+  'Balance'
+];
+
 /*
  *  ======= Table (Proposal) ======
  */
@@ -47,7 +52,9 @@ const createProposal: Task<NomidotProposal[]> = {
       proposalEvents.map(async ({ event: { data, typeDef } }) => {
         const proposalRawEvent: NomidotProposalRawEvent = data.reduce(
           (prev, curr, index) => {
-            const type = typeDef[index].type;
+            const type = eventField[index];
+
+            console.log(index, curr.toJSON());
 
             return {
               ...prev,
@@ -56,6 +63,9 @@ const createProposal: Task<NomidotProposal[]> = {
           },
           {}
         );
+
+        l.log(`proposalRawEvent: ${JSON.stringify(proposalRawEvent)}`);
+
         if (!proposalRawEvent.PropIndex && proposalRawEvent.PropIndex !== 0) {
           l.error(
             `Expected PropIndex missing on the event: ${proposalRawEvent.PropIndex}`

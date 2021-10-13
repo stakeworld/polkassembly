@@ -55,6 +55,12 @@ const constructProposal = function(
   return proposal;
 };
 
+const eventField = [
+  'Hash',
+  'AccountId',
+  'Balance'
+];
+
 /*
  *  ======= Table (Preimage) ======
  */
@@ -80,21 +86,9 @@ const createPreimage: Task<NomidotPreimage[]> = {
 
         const preimageArgumentsRaw: NomidotPreimageRawEvent = event.data.reduce(
           (prev, curr, index) => {
-            let type = types[index].type;
+            const type = eventField[index];
 
-            console.log(index, curr.toString());
-
-            if (index === 0) {
-              type = 'Hash';
-            }
-
-            if (index === 1) {
-              type = 'AccountId';
-            }
-
-            if (index === 2) {
-              type = 'Balance';
-            }
+            console.log(index, curr.toJSON());
 
             return {
               ...prev,
@@ -103,6 +97,8 @@ const createPreimage: Task<NomidotPreimage[]> = {
           },
           {}
         );
+
+        l.log(`preimageArgumentsRaw: ${JSON.stringify(preimageArgumentsRaw)}`);
 
         if (
           !preimageArgumentsRaw.Hash ||
