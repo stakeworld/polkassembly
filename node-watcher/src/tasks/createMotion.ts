@@ -125,7 +125,7 @@ const createMotion: Task<NomidotMotion[]> = {
               value: values[index].toString(),
             });
 
-            if (name === 'proposal_hash') {
+            if (['proposal_hash', 'proposalHash'].includes(name)) {
               preimageHash = values[index].toString();
             }
           });
