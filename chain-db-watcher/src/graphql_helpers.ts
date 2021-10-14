@@ -155,11 +155,11 @@ export const techCommitteeProposalDiscussionExists = async (
 		});
 
 		const discussionSdk = getDiscussionSdk(client);
-		const data = await discussionSdk.getDiscussionTechCommitteeProposals({ onchainTechCommitteeProposalId });
+		const data = await discussionSdk.getDiscussionTechCommitteeProposalById({ onchainTechCommitteeProposalId });
 
 		return !!data.onchain_links?.length;
 	} catch (err) {
-		console.error(chalk.red(`techCommitteeProposalDiscussionExists execution error with bountyId: ${onchainTechCommitteeProposalId}`), err);
+		console.error(chalk.red(`techCommitteeProposalDiscussionExists execution error with onchainTechCommitteeProposalId: ${onchainTechCommitteeProposalId}`), err);
 		err.response?.errors &&
 			console.error(chalk.red('GraphQL response errors\n'), err.response.errors);
 		err.response?.data &&
