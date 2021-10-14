@@ -4629,6 +4629,7 @@ export type Mutation = {
   requestResetPassword?: Maybe<Message>;
   resendVerifyEmailToken?: Maybe<Message>;
   resetPassword?: Maybe<Message>;
+  sendTransferNotice?: Maybe<Message>;
   setCredentialsConfirm?: Maybe<ChangeResponse>;
   setCredentialsStart?: Maybe<AddressLoginType>;
   setDefaultAddress?: Maybe<ChangeResponse>;
@@ -4740,6 +4741,12 @@ export type MutationResetPasswordArgs = {
   newPassword: Scalars['String'];
   token: Scalars['String'];
   userId: Scalars['Int'];
+};
+
+
+export type MutationSendTransferNoticeArgs = {
+  mistake?: Maybe<Scalars['Boolean']>;
+  secret: Scalars['String'];
 };
 
 
@@ -4989,6 +4996,7 @@ export type Mutation_Root = {
   requestResetPassword?: Maybe<Message>;
   resendVerifyEmailToken?: Maybe<Message>;
   resetPassword?: Maybe<Message>;
+  sendTransferNotice?: Maybe<Message>;
   setCredentialsConfirm?: Maybe<ChangeResponse>;
   setCredentialsStart?: Maybe<AddressLoginType>;
   setDefaultAddress?: Maybe<ChangeResponse>;
@@ -6147,6 +6155,13 @@ export type Mutation_RootResetPasswordArgs = {
   newPassword: Scalars['String'];
   token: Scalars['String'];
   userId: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootSendTransferNoticeArgs = {
+  mistake?: Maybe<Scalars['Boolean']>;
+  secret: Scalars['String'];
 };
 
 
@@ -20657,6 +20672,19 @@ export type GetDiscussionTipByIdQuery = (
   )> }
 );
 
+export type GetDiscussionTechCommitteeProposalByIdQueryVariables = {
+  onchainTechCommitteeProposalId: Scalars['Int'];
+};
+
+
+export type GetDiscussionTechCommitteeProposalByIdQuery = (
+  { __typename?: 'query_root' }
+  & { onchain_links: Array<(
+    { __typename?: 'onchain_links' }
+    & Pick<Onchain_Links, 'id'>
+  )> }
+);
+
 export type GetDiscussionMotionsQueryVariables = {};
 
 
@@ -20954,6 +20982,13 @@ export const GetDiscussionTipByIdDocument = gql`
   }
 }
     `;
+export const GetDiscussionTechCommitteeProposalByIdDocument = gql`
+    query getDiscussionTechCommitteeProposalById($onchainTechCommitteeProposalId: Int!) {
+  onchain_links(where: {onchain_tech_committee_proposal_id: {_eq: $onchainTechCommitteeProposalId}}) {
+    id
+  }
+}
+    `;
 export const GetDiscussionMotionsDocument = gql`
     query getDiscussionMotions {
   onchain_links(where: {onchain_motion_id: {_is_null: false}}) {
@@ -21060,6 +21095,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getDiscussionTipById(variables: GetDiscussionTipByIdQueryVariables): Promise<GetDiscussionTipByIdQuery> {
       return withWrapper(() => client.request<GetDiscussionTipByIdQuery>(print(GetDiscussionTipByIdDocument), variables));
+    },
+    getDiscussionTechCommitteeProposalById(variables: GetDiscussionTechCommitteeProposalByIdQueryVariables): Promise<GetDiscussionTechCommitteeProposalByIdQuery> {
+      return withWrapper(() => client.request<GetDiscussionTechCommitteeProposalByIdQuery>(print(GetDiscussionTechCommitteeProposalByIdDocument), variables));
     },
     getDiscussionMotions(variables?: GetDiscussionMotionsQueryVariables): Promise<GetDiscussionMotionsQuery> {
       return withWrapper(() => client.request<GetDiscussionMotionsQuery>(print(GetDiscussionMotionsDocument), variables));

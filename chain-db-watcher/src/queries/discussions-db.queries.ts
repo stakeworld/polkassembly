@@ -281,3 +281,11 @@ export const getDiscussionTipById = gql`
     }
 `;
 
+export const getDiscussionTechCommitteeProposalById = gql`
+    query getDiscussionTechCommitteeProposalById($onchainTechCommitteeProposalId: Int!) {
+        onchain_links(where: {onchain_tech_committee_proposal_id: {_eq: $onchainTechCommitteeProposalId}}) {
+            id
+        }
+    }
+`;
+
