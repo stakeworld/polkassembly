@@ -188,7 +188,7 @@ const createMotion: Task<NomidotMotion[]> = {
         const treasurySpendProposals =
           section === 'treasury' &&
           mPA.length > 0 &&
-          mPA[0].name === 'proposal_id'
+          ['proposal_id', 'proposalId'].includes(mPA[0].name)
             ? await prisma.treasurySpendProposals({
                 where: { treasuryProposalId: parseInt(mPA[0].value) },
               })
