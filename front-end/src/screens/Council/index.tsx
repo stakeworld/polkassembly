@@ -21,7 +21,7 @@ const OnchainPostsContainer = ({ className } : {className?: string}) => {
 				<Grid.Column mobile={16} tablet={16} computer={6}>
 					<InfoBox
 						dismissable={true}
-						content='Council is the body of elected members to govern blockchain.'
+						content='Council is the body of elected members that consists of several on-chain accounts. The Council can act as a representative for "passive" (non-voting) stakeholders. Council members have two main tasks: proposing referenda for the overall stakeholder group to vote on and cancelling malicious referenda.'
 						name='onchainInfo'
 						title='About Council'
 					/>

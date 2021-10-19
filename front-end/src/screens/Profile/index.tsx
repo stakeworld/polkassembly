@@ -61,7 +61,7 @@ const Profile = ({ className }: Props): JSX.Element => {
 	const [isEditing, setIsEditing] = useState(false);
 	const { control, errors, handleSubmit, setValue } = useForm();
 
-	const noDescription = `This page belongs to address (${address}). Only this user can edit this description and the title. If you own this address, edit this page and tell us more about youself.`;
+	const noDescription = `This page belongs to address (${address}). Only this user can edit this description and the title. If you own this address, edit this page and tell us more about yourself.`;
 
 	const [changeAboutMutation, { loading, error }] = useChangeAboutMutation();
 
