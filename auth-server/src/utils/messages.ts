@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 export default {
+	ABOUT_INVALID_SIGNATURE: 'Profile update failed. Invalid signature',
 	ACCOUNT_DELETE_SUCCESSFUL: 'Your account has been deleted',
 	ADDRESS_ALREADY_EXISTS: 'This address is already linked with another account. Please choose another address.',
 	ADDRESS_DEFAULT_SUCCESS: 'Address has been successfully set as default',
@@ -63,6 +64,7 @@ export default {
 	PASSWORD_RESET_SUCCESSFUL: 'Password successfully reset.',
 	PASSWORD_RESET_TOKEN_INVALID: 'Password reset token has expired. Please request again.',
 	PASSWORD_RESET_TOKEN_NOT_FOUND: 'Password reset token not found.',
+	PROFILE_CHANGED_SUCCESS: 'Profile changed successfully',
 	REFRESH_TOKEN_EXPIRED: 'Refresh token expired',
 	REFRESH_TOKEN_NOT_PROVIDED: 'Refresh-token not provided.',
 	REPORT_COMMENTS_LENGTH_EXCEDEED: 'Report comments can be max 300 character long.',

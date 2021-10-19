@@ -11,6 +11,7 @@ import addressLoginStart from './mutation/addressLoginStart';
 import addressSignupConfirm from './mutation/addressSignupConfirm';
 import addressSignupStart from './mutation/addressSignupStart';
 import addressUnlink from './mutation/addressUnlink';
+import changeAbout from './mutation/changeAbout';
 import changeEmailMutation from './mutation/changeEmail';
 import changeNotificationPreference from './mutation/changeNotificationPreference';
 import changePasswordMutation from './mutation/changePassword';
@@ -83,6 +84,7 @@ export default gql`
 		${addressSignupConfirm}
 		${addressSignupStart}
 		${addressUnlink}
+		${changeAbout}
 		${changeUsernameMutation}
 		${changeEmailMutation}
 		${changePasswordMutation}

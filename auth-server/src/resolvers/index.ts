@@ -9,6 +9,7 @@ import addressLoginStart from './mutation/addressLoginStart';
 import addressSignupConfirm from './mutation/addressSignupConfirm';
 import addressSignupStart from './mutation/addressSignupStart';
 import addressUnlink from './mutation/addressUnlink';
+import changeAbout from './mutation/changeAbout';
 import changeEmail from './mutation/changeEmail';
 import changeNotificationPreference from './mutation/changeNotificationPreference';
 import changePassword from './mutation/changePassword';
@@ -44,6 +45,7 @@ export default {
 		addressSignupConfirm,
 		addressSignupStart,
 		addressUnlink,
+		changeAbout,
 		changeEmail,
 		changeNotificationPreference,
 		changePassword,

@@ -7,8 +7,8 @@ exports.up = function(knex) {
 		table.increments('id').primary().notNullable();
 		table.string('network').notNullable();
 		table.string('address').notNullable();
-		table.string('title');
-		table.string('description');
+		table.text('title');
+		table.text('description');
 		table.string('image');
 		table.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'));
 	});

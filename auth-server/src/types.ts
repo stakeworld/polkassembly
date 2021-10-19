@@ -318,3 +318,12 @@ export interface TransferNoticeArgs {
     secret: string;
     mistake: boolean;
 }
+
+export interface ChangeAboutArgs {
+    network: string;
+    address: string;
+    title: string;
+    description: string;
+    image: string;
+    signature: string;
+}
