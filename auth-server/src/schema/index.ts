@@ -31,10 +31,12 @@ import setDefaultAddress from './mutation/setDefaultAddress';
 import signupMutation from './mutation/signup';
 import undoEmailChange from './mutation/undoEmailChange';
 import verifyEmail from './mutation/verifyEmail';
+import aboutQuery from './query/about';
 import profileQuery from './query/profile';
 import subscription from './query/subscription';
 import tokenQuery from './query/token';
 import userQuery from './query/user';
+import about from './type/about';
 import address from './type/address';
 import addressLinkType from './type/addressLinkType';
 import addressLoginType from './type/addressLoginType';
@@ -50,6 +52,7 @@ import undoEmailChangeResponse from './type/undoEmailChangeResponse';
 import userType from './type/user';
 
 export default gql`
+	${about}
 	${address}
 	${addressLinkType}
 	${addressLoginType}
@@ -65,6 +68,7 @@ export default gql`
 	${userType}
 
 	type Query {
+		${aboutQuery}
 		${profileQuery}
 		${subscription}
 		${tokenQuery}

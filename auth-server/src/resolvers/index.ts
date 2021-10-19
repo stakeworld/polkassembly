@@ -29,6 +29,7 @@ import setDefaultAddress from './mutation/setDefaultAddress';
 import signup from './mutation/signup';
 import undoEmailChange from './mutation/undoEmailChange';
 import verifyEmail from './mutation/verifyEmail';
+import about from './query/about';
 import profile from './query/profile';
 import subscription from './query/subscription';
 import token from './query/token';
@@ -65,6 +66,7 @@ export default {
 		verifyEmail
 	},
 	Query: {
+		about,
 		profile,
 		subscription,
 		token,
