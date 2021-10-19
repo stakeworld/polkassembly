@@ -5,7 +5,7 @@ const SG_API_KEY = process.env.SG_API_KEY
 
 export function sendmail(text, subject){
 
-    if(!SG_API_KEY){
+    if (!SG_API_KEY) {
         throw error("send grid api key now found")
     }
     console.log("sending mail")
@@ -25,7 +25,6 @@ export function sendmail(text, subject){
     sgMail.send(msg).catch(e =>
       console.error('Email not sent', e)); 
   }
-
 
 export const fetchLatestDiscussionsQuery = gql`query MyQuery {posts (limit:1){id}}`
 export const fetchLastBlockNumber = gql`query MyQuery {blockNumbers(last: 1){number}}`

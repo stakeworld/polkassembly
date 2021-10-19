@@ -5,10 +5,7 @@ import apolloClient from "apollo-client";
 const { ApolloClient } = apolloClient;
 import { sendmail, fetchLatestDiscussionsQuery } from "./utils.js";
 
-const polkadot_network =
-  process.env.POLKADOT_NETWORK || "https://polkadot.polkassembly.io/v1/graphql";
-const kusama_network =
-  process.env.KUSAMA_NETWORK || "https://kusama.polkassembly.io/v1/graphql";
+const networks = [process.env.POLKADOT_NETWORK, process.env.KUSAMA_NETWORK]
 
 let data_subject = "Error while fetching data";
 let data_title =
@@ -29,7 +26,7 @@ function client(endpoint) {
 }
 
 function networkCheck() {
-  if (!kusama_network || !polkadot_network) {
+  if (!networks) {
     text = "Kusama or polkadot environment variable not found";
     subject = "Environment not set";
     sendmail(text, subject);
@@ -56,9 +53,9 @@ async function dataChecker(endpoint, query) {
 
 async function main() {
   networkCheck();
-
-  dataChecker(polkadot_network, fetchLatestDiscussionsQuery);
-  dataChecker(kusama_network, fetchLatestDiscussionsQuery);
+  for(let i = 0; i < networks.length; i++){
+    dataChecker(networks[i], fetchLatestDiscussionsQuery);
+  }
 }
 
 main();

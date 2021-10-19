@@ -2,10 +2,13 @@ import fetch from 'node-fetch'
 import { createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import apolloClient from 'apollo-client';
-const { ApolloClient } = apolloClient
 import { sendmail, fetchLastBlockNumber } from './utils.js';
+import { ApiPromise, WsProvider } from '@polkadot/api'
 
-const url = process.env.KARURA_HASURA_GRAPHQL || 'https://karura-hasura.herokuapp.com/v1/graphql'
+const { ApolloClient } = apolloClient
+const provider = new WsProvider(ARCHIVE_NODE_ENDPOINT);
+const url = process.env.HASURA_GRAPHQL_URL || 'https://kusama.polkassembly.io/v1/graphql'
+const ARCHIVE_NODE_ENDPOINT = process.env.WS_PROVIDER || 'wss://kusama-rpc.polkadot.io'
 
 const httpLink = createHttpLink({
   uri: url,
@@ -28,17 +31,11 @@ function graphqlApiCall(query) {
     console.error('Something wrong with apollo', e));
 }
 
-import { ApiPromise, WsProvider } from '@polkadot/api'
-
-const ARCHIVE_NODE_ENDPOINT = 'wss://kusama-rpc.polkadot.io'
-const provider = new WsProvider(ARCHIVE_NODE_ENDPOINT);
-// const ARCHIVE_NODE_ENDPOINT = 'wss://rpc.polkadot.io';
-
 async function main () {
-
   const blockNumber = await graphqlApiCall(fetchLastBlockNumber);
-  console.log(blockNumber);
 
+  console.log(blockNumber);
+  
   const api = await ApiPromise.create({provider});
 
   const unsubscribe = await api.rpc.chain.subscribeNewHeads((header) => {
