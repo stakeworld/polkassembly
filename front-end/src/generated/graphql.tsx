@@ -25,6 +25,15 @@ export type Scalars = {
   uuid: any;
 };
 
+export type About = {
+  __typename?: 'About';
+  address?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  network?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+};
+
 export type Address = {
   __typename?: 'Address';
   address?: Maybe<Scalars['String']>;
@@ -3919,6 +3928,7 @@ export type Mutation = {
   addressSignupConfirm?: Maybe<LoginResponse>;
   addressSignupStart?: Maybe<AddressLoginType>;
   addressUnlink?: Maybe<ChangeResponse>;
+  changeAbout?: Maybe<Message>;
   changeEmail?: Maybe<ChangeResponse>;
   changeNotificationPreference?: Maybe<ChangeResponse>;
   changePassword?: Maybe<Message>;
@@ -3978,6 +3988,16 @@ export type MutationAddressSignupStartArgs = {
 
 export type MutationAddressUnlinkArgs = {
   address: Scalars['String'];
+};
+
+
+export type MutationChangeAboutArgs = {
+  address: Scalars['String'];
+  description: Scalars['String'];
+  image?: Maybe<Scalars['String']>;
+  network: Scalars['String'];
+  signature: Scalars['String'];
+  title: Scalars['String'];
 };
 
 
@@ -6611,10 +6631,17 @@ export type PublicUser = {
 
 export type Query = {
   __typename?: 'Query';
+  about?: Maybe<About>;
   profile?: Maybe<User>;
   subscription?: Maybe<Subscription>;
   token?: Maybe<Token>;
   user?: Maybe<User>;
+};
+
+
+export type QueryAboutArgs = {
+  address: Scalars['String'];
+  network: Scalars['String'];
 };
 
 
@@ -12219,6 +12246,7 @@ export type Mutation_Root = {
   addressSignupConfirm?: Maybe<LoginResponse>;
   addressSignupStart?: Maybe<AddressLoginType>;
   addressUnlink?: Maybe<ChangeResponse>;
+  changeAbout?: Maybe<Message>;
   changeEmail?: Maybe<ChangeResponse>;
   changeNotificationPreference?: Maybe<ChangeResponse>;
   changePassword?: Maybe<Message>;
@@ -12615,6 +12643,17 @@ export type Mutation_RootAddressSignupStartArgs = {
 /** mutation root */
 export type Mutation_RootAddressUnlinkArgs = {
   address: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootChangeAboutArgs = {
+  address: Scalars['String'];
+  description: Scalars['String'];
+  image?: Maybe<Scalars['String']>;
+  network: Scalars['String'];
+  signature: Scalars['String'];
+  title: Scalars['String'];
 };
 
 
@@ -14519,8 +14558,8 @@ export type Mutation_RootVerifyEmailArgs = {
 
 /**
  * on chain proposal created automatically by chain-db-watcher
- * 
- * 
+ *
+ *
  * columns and relationships of "onchain_links"
  */
 export type Onchain_Links = {
@@ -14557,8 +14596,8 @@ export type Onchain_Links = {
 
 /**
  * on chain proposal created automatically by chain-db-watcher
- * 
- * 
+ *
+ *
  * columns and relationships of "onchain_links"
  */
 export type Onchain_LinksOnchain_BountyArgs = {
@@ -14574,8 +14613,8 @@ export type Onchain_LinksOnchain_BountyArgs = {
 
 /**
  * on chain proposal created automatically by chain-db-watcher
- * 
- * 
+ *
+ *
  * columns and relationships of "onchain_links"
  */
 export type Onchain_LinksOnchain_MotionArgs = {
@@ -14591,8 +14630,8 @@ export type Onchain_LinksOnchain_MotionArgs = {
 
 /**
  * on chain proposal created automatically by chain-db-watcher
- * 
- * 
+ *
+ *
  * columns and relationships of "onchain_links"
  */
 export type Onchain_LinksOnchain_ProposalArgs = {
@@ -14608,8 +14647,8 @@ export type Onchain_LinksOnchain_ProposalArgs = {
 
 /**
  * on chain proposal created automatically by chain-db-watcher
- * 
- * 
+ *
+ *
  * columns and relationships of "onchain_links"
  */
 export type Onchain_LinksOnchain_ReferendumArgs = {
@@ -14625,8 +14664,8 @@ export type Onchain_LinksOnchain_ReferendumArgs = {
 
 /**
  * on chain proposal created automatically by chain-db-watcher
- * 
- * 
+ *
+ *
  * columns and relationships of "onchain_links"
  */
 export type Onchain_LinksOnchain_Tech_Committee_ProposalArgs = {
@@ -14642,8 +14681,8 @@ export type Onchain_LinksOnchain_Tech_Committee_ProposalArgs = {
 
 /**
  * on chain proposal created automatically by chain-db-watcher
- * 
- * 
+ *
+ *
  * columns and relationships of "onchain_links"
  */
 export type Onchain_LinksOnchain_TipArgs = {
@@ -14659,8 +14698,8 @@ export type Onchain_LinksOnchain_TipArgs = {
 
 /**
  * on chain proposal created automatically by chain-db-watcher
- * 
- * 
+ *
+ *
  * columns and relationships of "onchain_links"
  */
 export type Onchain_LinksOnchain_Treasury_Spend_ProposalArgs = {
@@ -18232,6 +18271,7 @@ export type Posts_Variance_Order_By = {
 /** query root */
 export type Query_Root = {
   __typename?: 'query_root';
+  about?: Maybe<About>;
   blockIndex?: Maybe<BlockIndex>;
   blockIndexes: Array<Maybe<BlockIndex>>;
   blockIndexesConnection: BlockIndexConnection;
@@ -18407,6 +18447,13 @@ export type Query_Root = {
   validator?: Maybe<Validator>;
   validators: Array<Maybe<Validator>>;
   validatorsConnection: ValidatorConnection;
+};
+
+
+/** query root */
+export type Query_RootAboutArgs = {
+  address: Scalars['String'];
+  network: Scalars['String'];
 };
 
 
@@ -21012,6 +21059,50 @@ export type BountyPostAndCommentsQuery = (
   )> }
 );
 
+export type AllMotionPostsQueryVariables = Exact<{
+  postType: Scalars['Int'];
+  limit?: Scalars['Int'];
+}>;
+
+
+export type AllMotionPostsQuery = (
+  { __typename?: 'query_root' }
+  & { posts: Array<(
+    { __typename?: 'posts' }
+    & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
+    & { author?: Maybe<(
+      { __typename?: 'User' }
+      & AuthorFieldsFragment
+    )>, comments_aggregate: (
+      { __typename?: 'comments_aggregate' }
+      & { aggregate?: Maybe<(
+        { __typename?: 'comments_aggregate_fields' }
+        & Pick<Comments_Aggregate_Fields, 'count'>
+      )> }
+    ), type: (
+      { __typename?: 'post_types' }
+      & Pick<Post_Types, 'name' | 'id'>
+    ), topic: (
+      { __typename?: 'post_topics' }
+      & Pick<Post_Topics, 'id' | 'name'>
+    ), onchain_link?: Maybe<(
+      { __typename?: 'onchain_links' }
+      & Pick<Onchain_Links, 'id' | 'onchain_motion_id' | 'proposer_address'>
+      & { onchain_motion: Array<Maybe<(
+        { __typename?: 'Motion' }
+        & Pick<Motion, 'id'>
+        & { motionStatus?: Maybe<Array<(
+          { __typename?: 'MotionStatus' }
+          & Pick<MotionStatus, 'id' | 'status'>
+        )>>, preimage?: Maybe<(
+          { __typename?: 'Preimage' }
+          & Pick<Preimage, 'id' | 'method'>
+        )> }
+      )>> }
+    )> }
+  )> }
+);
+
 export type CreatePostMutationVariables = Exact<{
   userId: Scalars['Int'];
   content: Scalars['String'];
@@ -21232,50 +21323,6 @@ export type MotionPostAndCommentsQuery = (
   & { posts: Array<(
     { __typename?: 'posts' }
     & MotionPostFragment
-  )> }
-);
-
-export type AllMotionPostsQueryVariables = Exact<{
-  postType: Scalars['Int'];
-  limit?: Scalars['Int'];
-}>;
-
-
-export type AllMotionPostsQuery = (
-  { __typename?: 'query_root' }
-  & { posts: Array<(
-    { __typename?: 'posts' }
-    & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
-    & { author?: Maybe<(
-      { __typename?: 'User' }
-      & AuthorFieldsFragment
-    )>, comments_aggregate: (
-      { __typename?: 'comments_aggregate' }
-      & { aggregate?: Maybe<(
-        { __typename?: 'comments_aggregate_fields' }
-        & Pick<Comments_Aggregate_Fields, 'count'>
-      )> }
-    ), type: (
-      { __typename?: 'post_types' }
-      & Pick<Post_Types, 'name' | 'id'>
-    ), topic: (
-      { __typename?: 'post_topics' }
-      & Pick<Post_Topics, 'id' | 'name'>
-    ), onchain_link?: Maybe<(
-      { __typename?: 'onchain_links' }
-      & Pick<Onchain_Links, 'id' | 'onchain_motion_id' | 'proposer_address'>
-      & { onchain_motion: Array<Maybe<(
-        { __typename?: 'Motion' }
-        & Pick<Motion, 'id'>
-        & { motionStatus?: Maybe<Array<(
-          { __typename?: 'MotionStatus' }
-          & Pick<MotionStatus, 'id' | 'status'>
-        )>>, preimage?: Maybe<(
-          { __typename?: 'Preimage' }
-          & Pick<Preimage, 'id' | 'method'>
-        )> }
-      )>> }
-    )> }
   )> }
 );
 
@@ -21594,6 +21641,38 @@ export type LatestDemocracyTreasuryProposalPostsQuery = (
         )>> }
       )>> }
     )> }
+  )> }
+);
+
+export type AboutQueryVariables = Exact<{
+  network: Scalars['String'];
+  address: Scalars['String'];
+}>;
+
+
+export type AboutQuery = (
+  { __typename?: 'query_root' }
+  & { about?: Maybe<(
+    { __typename?: 'About' }
+    & Pick<About, 'network' | 'address' | 'title' | 'description' | 'image'>
+  )> }
+);
+
+export type ChangeAboutMutationVariables = Exact<{
+  network: Scalars['String'];
+  address: Scalars['String'];
+  title: Scalars['String'];
+  description: Scalars['String'];
+  image: Scalars['String'];
+  signature: Scalars['String'];
+}>;
+
+
+export type ChangeAboutMutation = (
+  { __typename?: 'mutation_root' }
+  & { changeAbout?: Maybe<(
+    { __typename?: 'Message' }
+    & Pick<Message, 'message'>
   )> }
 );
 
@@ -24524,6 +24603,79 @@ export function useBountyPostAndCommentsLazyQuery(baseOptions?: ApolloReactHooks
 export type BountyPostAndCommentsQueryHookResult = ReturnType<typeof useBountyPostAndCommentsQuery>;
 export type BountyPostAndCommentsLazyQueryHookResult = ReturnType<typeof useBountyPostAndCommentsLazyQuery>;
 export type BountyPostAndCommentsQueryResult = ApolloReactCommon.QueryResult<BountyPostAndCommentsQuery, BountyPostAndCommentsQueryVariables>;
+export const AllMotionPostsDocument = gql`
+    query AllMotionPosts($postType: Int!, $limit: Int! = 5) {
+  posts(
+    limit: $limit
+    where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_motion_id: {_is_null: false}}}
+    order_by: {onchain_link: {onchain_motion_id: desc}}
+  ) {
+    id
+    title
+    author {
+      ...authorFields
+    }
+    created_at
+    updated_at
+    comments_aggregate {
+      aggregate {
+        count
+      }
+    }
+    type {
+      name
+      id
+    }
+    topic {
+      id
+      name
+    }
+    onchain_link {
+      id
+      onchain_motion_id
+      onchain_motion(where: {}) {
+        id
+        motionStatus(last: 1) {
+          id
+          status
+        }
+        preimage {
+          id
+          method
+        }
+      }
+      proposer_address
+    }
+  }
+}
+    ${AuthorFieldsFragmentDoc}`;
+
+/**
+ * __useAllMotionPostsQuery__
+ *
+ * To run a query within a React component, call `useAllMotionPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllMotionPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllMotionPostsQuery({
+ *   variables: {
+ *      postType: // value for 'postType'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useAllMotionPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AllMotionPostsQuery, AllMotionPostsQueryVariables>) {
+        return ApolloReactHooks.useQuery<AllMotionPostsQuery, AllMotionPostsQueryVariables>(AllMotionPostsDocument, baseOptions);
+      }
+export function useAllMotionPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AllMotionPostsQuery, AllMotionPostsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<AllMotionPostsQuery, AllMotionPostsQueryVariables>(AllMotionPostsDocument, baseOptions);
+        }
+export type AllMotionPostsQueryHookResult = ReturnType<typeof useAllMotionPostsQuery>;
+export type AllMotionPostsLazyQueryHookResult = ReturnType<typeof useAllMotionPostsLazyQuery>;
+export type AllMotionPostsQueryResult = ApolloReactCommon.QueryResult<AllMotionPostsQuery, AllMotionPostsQueryVariables>;
 export const CreatePostDocument = gql`
     mutation createPost($userId: Int!, $content: String!, $topicId: Int!, $title: String!) {
   __typename
@@ -24800,79 +24952,6 @@ export function useMotionPostAndCommentsLazyQuery(baseOptions?: ApolloReactHooks
 export type MotionPostAndCommentsQueryHookResult = ReturnType<typeof useMotionPostAndCommentsQuery>;
 export type MotionPostAndCommentsLazyQueryHookResult = ReturnType<typeof useMotionPostAndCommentsLazyQuery>;
 export type MotionPostAndCommentsQueryResult = ApolloReactCommon.QueryResult<MotionPostAndCommentsQuery, MotionPostAndCommentsQueryVariables>;
-export const AllMotionPostsDocument = gql`
-    query AllMotionPosts($postType: Int!, $limit: Int! = 5) {
-  posts(
-    limit: $limit
-    where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_motion_id: {_is_null: false}}}
-    order_by: {onchain_link: {onchain_motion_id: desc}}
-  ) {
-    id
-    title
-    author {
-      ...authorFields
-    }
-    created_at
-    updated_at
-    comments_aggregate {
-      aggregate {
-        count
-      }
-    }
-    type {
-      name
-      id
-    }
-    topic {
-      id
-      name
-    }
-    onchain_link {
-      id
-      onchain_motion_id
-      onchain_motion(where: {}) {
-        id
-        motionStatus(last: 1) {
-          id
-          status
-        }
-        preimage {
-          id
-          method
-        }
-      }
-      proposer_address
-    }
-  }
-}
-    ${AuthorFieldsFragmentDoc}`;
-
-/**
- * __useAllMotionPostsQuery__
- *
- * To run a query within a React component, call `useAllMotionPostsQuery` and pass it any options that fit your needs.
- * When your component renders, `useAllMotionPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useAllMotionPostsQuery({
- *   variables: {
- *      postType: // value for 'postType'
- *      limit: // value for 'limit'
- *   },
- * });
- */
-export function useAllMotionPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AllMotionPostsQuery, AllMotionPostsQueryVariables>) {
-        return ApolloReactHooks.useQuery<AllMotionPostsQuery, AllMotionPostsQueryVariables>(AllMotionPostsDocument, baseOptions);
-      }
-export function useAllMotionPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AllMotionPostsQuery, AllMotionPostsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<AllMotionPostsQuery, AllMotionPostsQueryVariables>(AllMotionPostsDocument, baseOptions);
-        }
-export type AllMotionPostsQueryHookResult = ReturnType<typeof useAllMotionPostsQuery>;
-export type AllMotionPostsLazyQueryHookResult = ReturnType<typeof useAllMotionPostsLazyQuery>;
-export type AllMotionPostsQueryResult = ApolloReactCommon.QueryResult<AllMotionPostsQuery, AllMotionPostsQueryVariables>;
 export const ChangeNotificationPreferenceDocument = gql`
     mutation changeNotificationPreference($postParticipated: Boolean, $postCreated: Boolean, $newProposal: Boolean, $ownProposal: Boolean) {
   changeNotificationPreference(
@@ -25427,6 +25506,88 @@ export function useLatestDemocracyTreasuryProposalPostsLazyQuery(baseOptions?: A
 export type LatestDemocracyTreasuryProposalPostsQueryHookResult = ReturnType<typeof useLatestDemocracyTreasuryProposalPostsQuery>;
 export type LatestDemocracyTreasuryProposalPostsLazyQueryHookResult = ReturnType<typeof useLatestDemocracyTreasuryProposalPostsLazyQuery>;
 export type LatestDemocracyTreasuryProposalPostsQueryResult = ApolloReactCommon.QueryResult<LatestDemocracyTreasuryProposalPostsQuery, LatestDemocracyTreasuryProposalPostsQueryVariables>;
+export const AboutDocument = gql`
+    query ABOUT($network: String!, $address: String!) {
+  about(network: $network, address: $address) {
+    network
+    address
+    title
+    description
+    image
+  }
+}
+    `;
+
+/**
+ * __useAboutQuery__
+ *
+ * To run a query within a React component, call `useAboutQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAboutQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAboutQuery({
+ *   variables: {
+ *      network: // value for 'network'
+ *      address: // value for 'address'
+ *   },
+ * });
+ */
+export function useAboutQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AboutQuery, AboutQueryVariables>) {
+        return ApolloReactHooks.useQuery<AboutQuery, AboutQueryVariables>(AboutDocument, baseOptions);
+      }
+export function useAboutLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AboutQuery, AboutQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<AboutQuery, AboutQueryVariables>(AboutDocument, baseOptions);
+        }
+export type AboutQueryHookResult = ReturnType<typeof useAboutQuery>;
+export type AboutLazyQueryHookResult = ReturnType<typeof useAboutLazyQuery>;
+export type AboutQueryResult = ApolloReactCommon.QueryResult<AboutQuery, AboutQueryVariables>;
+export const ChangeAboutDocument = gql`
+    mutation changeAbout($network: String!, $address: String!, $title: String!, $description: String!, $image: String!, $signature: String!) {
+  changeAbout(
+    network: $network
+    address: $address
+    title: $title
+    description: $description
+    image: $image
+    signature: $signature
+  ) {
+    message
+  }
+}
+    `;
+export type ChangeAboutMutationFn = ApolloReactCommon.MutationFunction<ChangeAboutMutation, ChangeAboutMutationVariables>;
+
+/**
+ * __useChangeAboutMutation__
+ *
+ * To run a mutation, you first call `useChangeAboutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeAboutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeAboutMutation, { data, loading, error }] = useChangeAboutMutation({
+ *   variables: {
+ *      network: // value for 'network'
+ *      address: // value for 'address'
+ *      title: // value for 'title'
+ *      description: // value for 'description'
+ *      image: // value for 'image'
+ *      signature: // value for 'signature'
+ *   },
+ * });
+ */
+export function useChangeAboutMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ChangeAboutMutation, ChangeAboutMutationVariables>) {
+        return ApolloReactHooks.useMutation<ChangeAboutMutation, ChangeAboutMutationVariables>(ChangeAboutDocument, baseOptions);
+      }
+export type ChangeAboutMutationHookResult = ReturnType<typeof useChangeAboutMutation>;
+export type ChangeAboutMutationResult = ApolloReactCommon.MutationResult<ChangeAboutMutation>;
+export type ChangeAboutMutationOptions = ApolloReactCommon.BaseMutationOptions<ChangeAboutMutation, ChangeAboutMutationVariables>;
 export const ProposalPostAndCommentsDocument = gql`
     query ProposalPostAndComments($id: Int!) {
   posts(where: {onchain_link: {onchain_proposal_id: {_eq: $id}}}) {

@@ -3,8 +3,11 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 export default `
-	sendTransferNotice(
-        secret: String!
-        mistake: Boolean
-    ): Message
+    type About {
+        network: String
+        address: String
+        title: String
+        description: String
+        image: String
+    }
 `;

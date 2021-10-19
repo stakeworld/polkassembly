@@ -87,6 +87,14 @@ export interface PublicUser {
     username: string;
 }
 
+export interface AboutType {
+    network: string;
+    address: string;
+    title: string;
+    description: string;
+    image: string;
+}
+
 export interface Subscription {
     subscribed: boolean;
 }
@@ -297,6 +305,11 @@ export interface ProfileArgs {
     username: string;
 }
 
+export interface AboutArgs {
+    network: string;
+    address: string;
+}
+
 export interface DeleteAccountArgs {
     password: string;
 }
@@ -304,4 +317,13 @@ export interface DeleteAccountArgs {
 export interface TransferNoticeArgs {
     secret: string;
     mistake: boolean;
+}
+
+export interface ChangeAboutArgs {
+    network: string;
+    address: string;
+    title: string;
+    description: string;
+    image: string;
+    signature: string;
 }

@@ -11,6 +11,7 @@ import addressLoginStart from './mutation/addressLoginStart';
 import addressSignupConfirm from './mutation/addressSignupConfirm';
 import addressSignupStart from './mutation/addressSignupStart';
 import addressUnlink from './mutation/addressUnlink';
+import changeAbout from './mutation/changeAbout';
 import changeEmailMutation from './mutation/changeEmail';
 import changeNotificationPreference from './mutation/changeNotificationPreference';
 import changePasswordMutation from './mutation/changePassword';
@@ -24,17 +25,18 @@ import reportContent from './mutation/reportContent';
 import requestResetPassword from './mutation/requestResetPassword';
 import resendVerifyEmailToken from './mutation/resendVerifyEmailToken';
 import resetPassword from './mutation/resetPassword';
-import sendTransferNotice from './mutation/sendTransferNotice';
 import setCredentialsConfirm from './mutation/setCredentialsConfirm';
 import setCredentialsStart from './mutation/setCredentialsStart';
 import setDefaultAddress from './mutation/setDefaultAddress';
 import signupMutation from './mutation/signup';
 import undoEmailChange from './mutation/undoEmailChange';
 import verifyEmail from './mutation/verifyEmail';
+import aboutQuery from './query/about';
 import profileQuery from './query/profile';
 import subscription from './query/subscription';
 import tokenQuery from './query/token';
 import userQuery from './query/user';
+import about from './type/about';
 import address from './type/address';
 import addressLinkType from './type/addressLinkType';
 import addressLoginType from './type/addressLoginType';
@@ -50,6 +52,7 @@ import undoEmailChangeResponse from './type/undoEmailChangeResponse';
 import userType from './type/user';
 
 export default gql`
+	${about}
 	${address}
 	${addressLinkType}
 	${addressLoginType}
@@ -65,6 +68,7 @@ export default gql`
 	${userType}
 
 	type Query {
+		${aboutQuery}
 		${profileQuery}
 		${subscription}
 		${tokenQuery}
@@ -79,6 +83,7 @@ export default gql`
 		${addressSignupConfirm}
 		${addressSignupStart}
 		${addressUnlink}
+		${changeAbout}
 		${changeUsernameMutation}
 		${changeEmailMutation}
 		${changePasswordMutation}
@@ -92,7 +97,6 @@ export default gql`
 		${requestResetPassword}
 		${resendVerifyEmailToken}
 		${resetPassword}
-		${sendTransferNotice}
 		${setCredentialsConfirm}
 		${setCredentialsStart}
 		${setDefaultAddress}
