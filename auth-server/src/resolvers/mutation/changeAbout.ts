@@ -19,8 +19,6 @@ export default async (parent: void, {
 }: ChangeAboutArgs): Promise<MessageType> => {
 	const signMessage = `<Bytes>about::network:${network}|address:${address}|title:${title}|description:${description}|image:${image}</Bytes>`;
 
-	console.log(signMessage, address, signature);
-
 	const isValidSr = verifySignature(signMessage, address, signature);
 
 	if (!isValidSr) {
