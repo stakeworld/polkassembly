@@ -1,7 +1,7 @@
 import sgMail from '@sendgrid/mail';
 import gql from 'graphql-tag'
 
-const SG_API_KEY = process.env.SG_API_KEY || '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'
+const SG_API_KEY = process.env.SG_API_KEY
 
 export function sendmail(text, subject){
 
@@ -10,8 +10,8 @@ export function sendmail(text, subject){
     }
     console.log("sending mail")
 
-    const FROM = 'sdrajdeep96@gmail.com';
-    const TO = 'rajdeep.iitp@gmail.com';
+    const FROM = 'noreply@polkassembly.io';
+    const TO = 'contact@premiurly.com';
   
     sgMail.setApiKey(SG_API_KEY)
 
