@@ -17,7 +17,7 @@ export default async (parent: void, {
 	image,
 	signature
 }: ChangeAboutArgs): Promise<MessageType> => {
-	const signMessage = `<Bytes>network:${network}|address:${address}|title:${title}|description:${description}|image:${image}</Bytes>`;
+	const signMessage = `<Bytes>about::network:${network}|address:${address}|title:${title}|description:${description}|image:${image}</Bytes>`;
 
 	console.log(signMessage, address, signature);
 
