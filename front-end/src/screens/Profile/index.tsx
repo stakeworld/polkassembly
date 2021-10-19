@@ -4,6 +4,7 @@
 
 import { DeriveAccountFlags, DeriveAccountInfo, DeriveAccountRegistration } from '@polkadot/api-derive/types';
 import { web3Accounts, web3Enable, web3FromSource } from '@polkadot/extension-dapp';
+import { InjectedExtension } from '@polkadot/extension-inject/types' ;
 import { stringToHex } from '@polkadot/util';
 import styled from '@xstyled/styled-components';
 import React, { useContext, useEffect, useState } from 'react';
@@ -174,7 +175,23 @@ const Profile = ({ className }: Props): JSX.Element => {
 			return;
 		}
 
-		const injected = await web3FromSource(accounts[0].meta.source);
+		let injected: InjectedExtension | undefined = undefined;
+
+		for (let i = 0; i < accounts.length; i++) {
+			if (getEncodedAddress(accounts[i].address) === address) {
+				injected = await web3FromSource(accounts[i].meta.source);
+			}
+		}
+
+		if (!injected) {
+			queueNotification({
+				header: 'Failed',
+				message: 'Address not available.',
+				status: NotificationStatus.ERROR
+			});
+			return;
+		}
+
 		const signRaw = injected && injected.signer && injected.signer.signRaw;
 
 		if (!signRaw) {
