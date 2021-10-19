@@ -11,3 +11,11 @@ export const LOGOUT = gql`
         }
     }
 `;
+
+export const BLOCKNUMBER = gql`
+    query FetchLatestBlockNumber {
+        blockNumbers(last: 1){
+            number
+        }
+    }
+`;
