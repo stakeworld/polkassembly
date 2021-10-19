@@ -14,6 +14,7 @@ import getNetwork from 'src/util/getNetwork';
 import logo from '../../assets/polkassembly-logo.png';
 import { UserDetailsContext } from '../../context/UserDetailsContext';
 import { useLogoutMutation } from '../../generated/graphql';
+import { useFetchLatestBlockNumberQuery } from '../../generated/graphql';
 import { useRouter } from '../../hooks';
 import { logout } from '../../services/auth.service';
 import AddressComponent from '../../ui-components/Address';
@@ -31,6 +32,11 @@ const MenuBar = ({ className } : Props): JSX.Element => {
 	const [logoutMutation] = useLogoutMutation();
 	const { history } = useRouter();
 	const { setUserDetailsContextState, username } = currentUser;
+	const { data } = useFetchLatestBlockNumberQuery();
+
+	const latestBlockNumber = data?.blockNumbers[0]?.number;
+
+	const blockUrl = `https://${NETWORK}.subscan.io/block/${latestBlockNumber}`;
 
 	const handleLogout = async () => {
 		try {
@@ -142,6 +148,10 @@ const MenuBar = ({ className } : Props): JSX.Element => {
 									{loggedOutItems.map((item, index) => <Menu.Item as={NavLink} key={index} onClick={handleClose} {...item} />)}
 								</>
 							}
+							{latestBlockNumber ? <Menu.Item>
+								<Icon name="cube" />
+								<a href={blockUrl} target='_blank' rel='noreferrer'>{` ${latestBlockNumber}`}</a>
+							</Menu.Item> : null}
 						</Accordion>
 					</Sidebar>
 					<SidebarPusher />
@@ -158,6 +168,10 @@ const MenuBar = ({ className } : Props): JSX.Element => {
 							</Dropdown.Menu>
 						</Dropdown>
 					</Menu.Item>
+					{latestBlockNumber ? <Menu.Item>
+						<Icon name="cube" style={{ marginRight: '10px' }}/>
+						<a href={blockUrl} target='_blank' rel='noreferrer'>{` ${latestBlockNumber}`}</a>
+					</Menu.Item> : null}
 					<Menu.Menu position="right">
 						<NetworkDropdown />
 						{username

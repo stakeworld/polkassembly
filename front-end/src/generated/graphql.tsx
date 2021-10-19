@@ -20510,6 +20510,17 @@ export type LogoutMutation = (
   )> }
 );
 
+export type FetchLatestBlockNumberQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FetchLatestBlockNumberQuery = (
+  { __typename?: 'query_root' }
+  & { blockNumbers: Array<Maybe<(
+    { __typename?: 'BlockNumber' }
+    & Pick<BlockNumber, 'number'>
+  )>> }
+);
+
 export type CreateOptionPollMutationVariables = Exact<{
   postId: Scalars['Int'];
   question: Scalars['String'];
@@ -23521,6 +23532,38 @@ export function useLogoutMutation(baseOptions?: ApolloReactHooks.MutationHookOpt
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = ApolloReactCommon.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = ApolloReactCommon.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export const FetchLatestBlockNumberDocument = gql`
+    query FetchLatestBlockNumber {
+  blockNumbers(last: 1) {
+    number
+  }
+}
+    `;
+
+/**
+ * __useFetchLatestBlockNumberQuery__
+ *
+ * To run a query within a React component, call `useFetchLatestBlockNumberQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchLatestBlockNumberQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchLatestBlockNumberQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFetchLatestBlockNumberQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<FetchLatestBlockNumberQuery, FetchLatestBlockNumberQueryVariables>) {
+        return ApolloReactHooks.useQuery<FetchLatestBlockNumberQuery, FetchLatestBlockNumberQueryVariables>(FetchLatestBlockNumberDocument, baseOptions);
+      }
+export function useFetchLatestBlockNumberLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<FetchLatestBlockNumberQuery, FetchLatestBlockNumberQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<FetchLatestBlockNumberQuery, FetchLatestBlockNumberQueryVariables>(FetchLatestBlockNumberDocument, baseOptions);
+        }
+export type FetchLatestBlockNumberQueryHookResult = ReturnType<typeof useFetchLatestBlockNumberQuery>;
+export type FetchLatestBlockNumberLazyQueryHookResult = ReturnType<typeof useFetchLatestBlockNumberLazyQuery>;
+export type FetchLatestBlockNumberQueryResult = ApolloReactCommon.QueryResult<FetchLatestBlockNumberQuery, FetchLatestBlockNumberQueryVariables>;
 export const CreateOptionPollDocument = gql`
     mutation createOptionPoll($postId: Int!, $question: String!, $options: String!, $endAt: Int!) {
   __typename
