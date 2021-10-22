@@ -13,6 +13,7 @@ const MotionsContainer = () => {
 	const { api, apiReady } = useContext(ApiContext);
 	const [error, setErr] = useState<Error | null>(null);
 	const [members, setMembers] = useState<string[]>([]);
+	const [runnersUp, setRunnersup] = useState<string[]>([]);
 	const [prime, setPrime] = useState<string>('');
 
 	useEffect(() => {
@@ -32,12 +33,16 @@ const MotionsContainer = () => {
 			setMembers(members.map(member => member.toString()));
 		}).catch(error => setErr(error));
 
+		api.derive.elections.info().then((runnersUp) => {
+			setRunnersup(runnersUp.runnersUp.map(runner => runner.toString().split(',')[0]));
+		}).catch(error => setErr(error));
+
 	}, [api, apiReady]);
 
 	if (error) return <FilteredError text={error.message}/>;
 
-	if (members.length) {
-		return <CouncilListing members={members} prime={prime} />;
+	if (members.length || runnersUp.length) {
+		return <CouncilListing members={members} prime={prime} runnersUp={runnersUp} />;
 	}
 
 	return <Loader/>;
