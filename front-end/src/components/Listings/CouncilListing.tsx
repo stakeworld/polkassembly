@@ -6,7 +6,7 @@ import styled from '@xstyled/styled-components';
 import React from 'react';
 
 import NothingFoundCard from '../../ui-components/NothingFoundCard';
-import MembersRunnerUps from './MembersRunnerUps';
+import Members from './Members';
 
 interface Props {
   className?: string
@@ -18,19 +18,17 @@ interface Props {
 const CouncilMembers = ({ className, members, prime, runnersUp }: Props) => {
 
 	return (
-		<div>
+		<div className={className}>
 			<div>
-				{members.length ?
-					<MembersRunnerUps className={className} data={members} prime={prime}/>
-					:
-					<NothingFoundCard className={className} text='There are currently no elected council members.'/>}
+				{members.length
+					? <Members  data={members} prime={prime}/>
+					: <NothingFoundCard text='There are currently no elected council members.'/>}
 			</div>
 			<div className='runnersUp'>
 				<h1> Runners Up </h1>
-				{runnersUp && runnersUp?.length ?
-					<MembersRunnerUps className={className} data={runnersUp} prime={prime}/>
-					:
-					<NothingFoundCard className={className} text='There is currently no runner up.'/>}
+				{runnersUp && runnersUp?.length
+					? <Members data={runnersUp} prime={prime}/>
+					: <NothingFoundCard text='There are currently no runner ups.'/>}
 			</div>
 		</div>
 
@@ -42,6 +40,6 @@ export default styled(CouncilMembers)`
 	margin-block-end: 0;
 
 	.runnersUp {
-		margin-top: 4rem
+		margin-top: 4rem;
 	}
 `;

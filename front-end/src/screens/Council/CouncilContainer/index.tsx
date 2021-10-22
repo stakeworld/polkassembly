@@ -33,8 +33,8 @@ const MotionsContainer = () => {
 			setMembers(members.map(member => member.toString()));
 		}).catch(error => setErr(error));
 
-		api.derive.elections.info().then((runnersUp) => {
-			setRunnersup(runnersUp.runnersUp.map(runner => runner.toString().split(',')[0]));
+		api.derive.elections.info().then((electionInfo) => {
+			setRunnersup(electionInfo.runnersUp.map(runner => runner.toString().split(',')[0]));
 		}).catch(error => setErr(error));
 
 	}, [api, apiReady]);
