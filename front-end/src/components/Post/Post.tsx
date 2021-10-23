@@ -52,6 +52,7 @@ import OptionPoll from '../OptionPoll';
 import CreateOptionPoll from '../OptionPoll/CreateOptionPoll';
 import PostReactionBar from '../Reactionbar/PostReactionBar';
 import ReportButton from '../ReportButton';
+import ShareButton from '../ShareButton';
 import SubscriptionButton from '../SubscriptionButton/SubscriptionButton';
 import Timeline from '../Timeline';
 import TrackerButton from '../TrackerButton';
@@ -306,6 +307,7 @@ const Post = ( { className, data, isBounty = false, isMotion = false, isProposal
 								isTechCommitteeProposal={isTechCommitteeProposal}
 							/>)
 						}
+						<ShareButton title={post.title} />
 					</div>
 				</div>
 				{ isTechCommitteeProposal && (
