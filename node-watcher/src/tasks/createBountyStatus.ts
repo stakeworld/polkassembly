@@ -17,6 +17,10 @@ import {
 
 const l = logger('Task: Bounty Status Update');
 
+const eventField = [
+  'BountyIndex'
+];
+
 /*
  *  ======= Table (Bounty Status Update) ======
  */
@@ -50,11 +54,11 @@ const createBountyStatus: Task<NomidotBountyStatusUpdate[]> = {
       filteredEvents.map(async ({ event: { data, typeDef, method } }) => {
         const bountyRawEvent: NomidotBountyRawEvent = data.reduce(
           (result, curr, index) => {
-            const type = typeDef[index].type;
+            const type = eventField[index];
 
             return {
-            ...result,
-            [type]: curr.toJSON(),
+              ...result,
+              [type]: curr.toJSON(),
             };
           },
           {}
