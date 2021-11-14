@@ -41,6 +41,7 @@ const TipInfo = ({ className, onChainId }: Props) => {
 	const { api, apiReady } = useContext(ApiContext);
 	const [tips, setTips] = useState<any>(null);
 	const [isTippersLoading, setIsTippersLoading] = useState(true);
+	const [members, setMembers] = useState<string[]>([]);
 	//const [median, setMedian] = useState<BN>(new BN(0));
 
 	useEffect(() => {
@@ -59,14 +60,21 @@ const TipInfo = ({ className, onChainId }: Props) => {
 			setIsTippersLoading(false);
 			//setMedian(Median(tips[0]?.toJSON()));
 		});
-		return () => unsubscribe && unsubscribe();
-	},[api, apiReady, isTippersLoading, onChainId]);
 
-	return(
+		api.query.council.members().then((members) => {
+			setMembers(members.map(member => member.toString()));
+		});
+
+		return () => unsubscribe && unsubscribe();
+	}, [api, apiReady, isTippersLoading, onChainId]);
+
+	const pendingTippers = members.filter(item => !tips?.tips.includes(item));
+
+	return (
 		<>
 			{tips?.tips.length > 0 ?
 				<Card className={className}>
-					<h3>Tippers <HelperTooltip content='Amount tipped by an individual/organisation'/></h3>
+					<h3>Tippers <HelperTooltip content='Amount tipped by an individual/organisation' /></h3>
 					<Grid className='tippers'>
 						{tips.tips.map((tip: any[]) =>
 							<Grid.Row key={tip[0]}>
@@ -80,13 +88,25 @@ const TipInfo = ({ className, onChainId }: Props) => {
 								</Grid.Column>
 							</Grid.Row>
 						)}
+						{pendingTippers.map((tip: string) =>
+							<Grid.Row key={tip}>
+								<Grid.Column width={12}>
+									<div className='item'>
+										<Address address={tip} />
+									</div>
+								</Grid.Column>
+								<Grid.Column width={4}>
+									Pending
+								</Grid.Column>
+							</Grid.Row>
+						)}
 					</Grid>
 					{/* <Grid className='tippers'>
                 <Grid.Row><Grid.Column width={12}><div className='item'>
-                    Final Tip<HelperTooltip content='Median of all tips'/></div></Grid.Column><Grid.Column width={4}>{formatBnBalance(median, { numberAfterComma: 2, withUnit: true })}</Grid.Column></Grid.Row>
+                    Final Tip<HelperTooltip content='The final value of the tip is decided based on the median of all tips issued by the tippers'/></div></Grid.Column><Grid.Column width={4}>{formatBnBalance(median, { numberAfterComma: 2, withUnit: true })}</Grid.Column></Grid.Row>
                 </Grid> */}
 				</Card>
-				: isTippersLoading ? <Loader text={'Requesting Tippers'}/> : <NothingFoundCard className={className} text='There are currently no tippers.'/>}
+				: isTippersLoading ? <Loader text={'Requesting Tippers'} /> : <NothingFoundCard className={className} text='There are currently no tippers.' />}
 		</>
 	);
 };
