@@ -26,15 +26,15 @@
     "prisma:deploy": "PRISMA_ENDPOINT=http://127.0.0.1:4466 yarn prisma1 deploy",
     "start:local": "PRISMA_ENDPOINT=http://127.0.0.1:4466 ARCHIVE_NODE_ENDPOINT=ws://127.0.0.1:9944 MAX_LAG=1 yarn start",
     "start:polkadot": "PRISMA_ENDPOINT=http://127.0.0.1:4466 ARCHIVE_NODE_ENDPOINT=wss://rpc.polkadot.io MAX_LAG=1 yarn start",
-    "start:kusama": "PRISMA_ENDPOINT=http://127.0.0.1:4466 START_FROM=2872538 ARCHIVE_NODE_ENDPOINT=wss://kusama-rpc.polkadot.io MAX_LAG=1 yarn start",
+    "start:kusama": "BLOCK_IDENTIFIER=10403789 PRISMA_ENDPOINT=http://127.0.0.1:4466 START_FROM=10403789 ARCHIVE_NODE_ENDPOINT=wss://kusama-rpc.polkadot.io MAX_LAG=1 yarn start",
     "local:reset": "yarn reset && yarn start:local",
     "start": "node -r ts-node/register --max-old-space-size=8192 ./src/index.ts",
     "test": "PRISMA_ENDPOINT=http://127.0.0.1:4466 ARCHIVE_NODE_ENDPOINT=ws://127.0.0.1:9944 node -r ts-node/register --max-old-space-size=8192 ./src/test.ts",
     "api:bump": "yarn add @polkadot/api @polkadot/dev"
   },
   "dependencies": {
-    "@polkadot/api": "^6.3.2-10",
-    "@polkadot/dev": "^0.62.70",
+    "@polkadot/api": "^6.12.1",
+    "@polkadot/dev": "^0.63.41",
     "@types/bn.js": "^4.11.6",
     "eslint-config-prettier": "^6.6.0",
     "eslint-plugin-prettier": "^3.1.2",
