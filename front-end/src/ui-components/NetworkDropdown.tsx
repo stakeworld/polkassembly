@@ -6,7 +6,7 @@ import styled from '@xstyled/styled-components';
 import React from 'react';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import kusamaLogo from 'src/assets/kusama-logo.gif';
-import polkadotLogo from 'src/assets/polkadot-logo.svg';
+import polkadotLogo from 'src/assets/polkadot-logo.jpg';
 import { network } from 'src/global/networkConstants';
 import getNetwork from 'src/util/getNetwork';
 
