@@ -11,7 +11,6 @@ import { post_type } from '../../../global/post_types';
 import FilteredError from '../../../ui-components/FilteredError';
 import Loader from '../../../ui-components/Loader';
 import LoadMore from '../../../ui-components/LoadMore';
-import TreasuryOverview from './TreasuryOverview';
 
 interface Props {
 	className?: string
@@ -39,7 +38,6 @@ const TreasuryProposalsContainer = ({ className, limit }:Props) => {
 
 	if (data) return (
 		<>
-			<TreasuryOverview/>
 			<TreasuryListing className={className} data={data}/>
 			{(loading || (data.posts.length === limit * page)) && <LoadMore onClick={loadMore} loading={loading} />}
 		</>
