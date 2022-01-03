@@ -11,7 +11,7 @@ export const getMotionTreasuryProposalId = (section: string, motionProposalArgum
 
 	if (section === 'treasury' && motionProposalArguments?.length) {
 		motionProposalArguments.forEach(({ name, value }) => {
-			if (name === 'proposal_id') {
+			if (['proposal_id', 'proposalId'].includes(name)) {
 				treasuryProposalId = Number(value);
 			}
 		});
