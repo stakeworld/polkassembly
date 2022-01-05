@@ -31,6 +31,7 @@ export const chainProperties: ChainPropType = {
 
 export const chainLinks: ChainLinksType = {
 	[network.POLKADOT]: {
+		blockExplorer: 'https://polkadot.subscan.io/',
 		discord: 'https://discord.gg/wGUDt2p',
 		github: 'https://github.com/paritytech/polkadot',
 		homepage: 'https://polkadot.network/',
@@ -40,6 +41,7 @@ export const chainLinks: ChainLinksType = {
 		youtube: 'https://www.youtube.com/channel/UCB7PbjuZLEba_znc7mEGNgw'
 	},
 	[network.KUSAMA]: {
+		blockExplorer: 'https://kusama.subscan.io/',
 		discord: 'https://discord.gg/9AWjTf8wSk',
 		github: 'https://github.com/paritytech/polkadot',
 		homepage: 'https://kusama.network/',

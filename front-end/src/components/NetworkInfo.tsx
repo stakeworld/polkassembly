@@ -70,6 +70,12 @@ const NetworkInfo = ({ className }: Props) => {
 			>
 				<Icon size='large' bordered={true} name='telegram'/>
 			</a>
+			<a
+				className='social'
+				href={links.blockExplorer}
+			>
+				<Icon size='large' bordered={true} name='cube'/>
+			</a>
 		</InfoBox>
 	);
 };

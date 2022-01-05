@@ -119,6 +119,7 @@ export type ChainLinksType = {
 };
 
 export interface ChainLinks {
+	blockExplorer: string;
 	homepage: string;
 	github: string;
 	discord: string;
