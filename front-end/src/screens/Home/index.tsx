@@ -7,6 +7,7 @@ import React, { useContext } from 'react';
 import { Grid } from 'semantic-ui-react';
 
 import DefaultAddressInfoBox from '../../components/DefaultAddressInfoBox';
+import NetworkInfo from '../../components/NetworkInfo';
 import { UserDetailsContext } from '../../context/UserDetailsContext';
 import { useRouter } from '../../hooks';
 import Button from '../../ui-components/Button';
@@ -32,9 +33,12 @@ const Home = ({ className }: Props) => {
 
 	return (
 		<div className={className}>
-			<h1>Latest activity.</h1>
 			<Grid stackable reversed='mobile tablet'>
 				<Grid.Column mobile={16} tablet={16} computer={10}>
+					<NetworkInfo />
+					<h1>Latest activity.</h1>
+					<h3>Latest discussions</h3>
+					<DiscussionContainer className='discussionContainer'/>
 					<h3>Current referenda</h3>
 					<ReferendaContainer className='referendumContainer' />
 					<h3>Latest proposals</h3>
@@ -49,8 +53,6 @@ const Home = ({ className }: Props) => {
 					<BountyContainer className='bountyContainer' />
 					<h3>Latest Technical committee proposals</h3>
 					<TechCommitteeProposals className='techCommitteeProposalContainer' />
-					<h3>Latest discussions</h3>
-					<DiscussionContainer className='discussionContainer'/>
 				</Grid.Column>
 				<Grid.Column mobile={16} tablet={16} computer={6}>
 					{currentUser.id && <div className='mainButtonContainer'>
