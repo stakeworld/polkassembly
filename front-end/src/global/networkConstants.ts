@@ -46,7 +46,7 @@ export const chainLinks: ChainLinksType = {
 		github: 'https://github.com/paritytech/polkadot',
 		homepage: 'https://kusama.network/',
 		reddit: 'https://www.reddit.com/r/Kusama/',
-		telegram: 'https://t.me/PolkadotOfficial',
+		telegram: 'https://t.me/kusamanetworkofficial',
 		twitter: 'https://twitter.com/kusamanetwork',
 		youtube: 'https://www.youtube.com/channel/UCq4MRrQhdoIR0b44GxcCPxw'
 	}
