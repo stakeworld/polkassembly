@@ -160,6 +160,16 @@ export interface AddressLinkConfirmArgs {
 	signature: string;
 }
 
+export interface MultisigAddressLinkConfirmArgs {
+    network: Network;
+    address: string;
+    addresses: string;
+    ss58Prefix: number;
+    threshold: number;
+    signatory: string;
+    signature: string;
+}
+
 export interface SubscriptionArgs {
 	post_id: number;
 }
