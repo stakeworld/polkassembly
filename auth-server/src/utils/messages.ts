@@ -54,7 +54,7 @@ export default {
 	INVALID_USER_ID_IN_JWT: 'Invalid user id in token.',
 	JWT_REFRESH_TOKEN_USER_MISMATCH: 'User don\'t match between the JWT and the refresh-token.',
 	LOGOUT_SUCCESSFUL: 'Successfully logged out.',
-	MULTISIG_ADDRESS_ALREADY_EXISTS: 'This multisig address already exists',
+	MULTISIG_ADDRESS_ALREADY_EXISTS: 'This multisig address already linked with another account.',
 	MULTISIG_NOT_ALLOWED: 'Given address is not one of the multisig signatories',
 	MULTISIG_NOT_MATCHING: 'Multisig address not valid',
 	MULTISIG_SIGN_MESSAGE_EXPIRED: 'Session expired, please start again',

@@ -42,7 +42,7 @@ export const ADDRESS_LINK_START = gql`
 
 export const ADDRESS_LINK_CONFIRM = gql`
 	mutation addressLinkConfirm($address_id: Int!, $signature: String!) {
-    	addressLinkConfirm(address_id: $address_id, signature: $signature) {
+		addressLinkConfirm(address_id: $address_id, signature: $signature) {
 			message
 			token
 		}
@@ -97,6 +97,24 @@ export const MUTATION_DELETE_ACCOUNT = gql`
 	mutation deleteAccount($password: String!){
 		deleteAccount(password: $password){
 			message
+		}
+	}
+`;
+
+export const MULTISIG_LINK_START = gql`
+	mutation multisigLinkStart($address: String!){
+		multisigLinkStart(address: $address) {
+			message
+			signMessage
+		}
+	}
+`;
+
+export const MULTISIG_LINK_CONFIRM = gql`
+	mutation multisigLinkConfirm($network: String!, $address: String!, $addresses: String!, $ss58Prefix: Int!, $threshold: Int!, $signatory: String!, $signature: String!) {
+		multisigLinkConfirm(network: $network, address: $address, addresses: $addresses, ss58Prefix: $ss58Prefix, threshold: $threshold, signatory: $signatory, signature: $signature) {
+			message
+			token
 		}
 	}
 `;

@@ -3936,6 +3936,8 @@ export type Mutation = {
   deleteAccount?: Maybe<Message>;
   login?: Maybe<LoginResponse>;
   logout?: Maybe<Message>;
+  multisigLinkConfirm?: Maybe<ChangeResponse>;
+  multisigLinkStart?: Maybe<AddressLoginType>;
   postSubscribe?: Maybe<Message>;
   postUnsubscribe?: Maybe<Message>;
   reportContent?: Maybe<Message>;
@@ -4032,6 +4034,22 @@ export type MutationDeleteAccountArgs = {
 export type MutationLoginArgs = {
   password: Scalars['String'];
   username: Scalars['String'];
+};
+
+
+export type MutationMultisigLinkConfirmArgs = {
+  address: Scalars['String'];
+  addresses: Scalars['String'];
+  network: Scalars['String'];
+  signatory: Scalars['String'];
+  signature: Scalars['String'];
+  ss58Prefix: Scalars['Int'];
+  threshold: Scalars['Int'];
+};
+
+
+export type MutationMultisigLinkStartArgs = {
+  address: Scalars['String'];
 };
 
 
@@ -12442,6 +12460,8 @@ export type Mutation_Root = {
   insert_posts_one?: Maybe<Posts>;
   login?: Maybe<LoginResponse>;
   logout?: Maybe<Message>;
+  multisigLinkConfirm?: Maybe<ChangeResponse>;
+  multisigLinkStart?: Maybe<AddressLoginType>;
   postSubscribe?: Maybe<Message>;
   postUnsubscribe?: Maybe<Message>;
   reportContent?: Maybe<Message>;
@@ -13581,6 +13601,24 @@ export type Mutation_RootInsert_Posts_OneArgs = {
 export type Mutation_RootLoginArgs = {
   password: Scalars['String'];
   username: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootMultisigLinkConfirmArgs = {
+  address: Scalars['String'];
+  addresses: Scalars['String'];
+  network: Scalars['String'];
+  signatory: Scalars['String'];
+  signature: Scalars['String'];
+  ss58Prefix: Scalars['Int'];
+  threshold: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootMultisigLinkStartArgs = {
+  address: Scalars['String'];
 };
 
 
@@ -22104,6 +22142,38 @@ export type DeleteAccountMutation = (
   )> }
 );
 
+export type MultisigLinkStartMutationVariables = Exact<{
+  address: Scalars['String'];
+}>;
+
+
+export type MultisigLinkStartMutation = (
+  { __typename?: 'mutation_root' }
+  & { multisigLinkStart?: Maybe<(
+    { __typename?: 'AddressLoginType' }
+    & Pick<AddressLoginType, 'message' | 'signMessage'>
+  )> }
+);
+
+export type MultisigLinkConfirmMutationVariables = Exact<{
+  network: Scalars['String'];
+  address: Scalars['String'];
+  addresses: Scalars['String'];
+  ss58Prefix: Scalars['Int'];
+  threshold: Scalars['Int'];
+  signatory: Scalars['String'];
+  signature: Scalars['String'];
+}>;
+
+
+export type MultisigLinkConfirmMutation = (
+  { __typename?: 'mutation_root' }
+  & { multisigLinkConfirm?: Maybe<(
+    { __typename?: 'ChangeResponse' }
+    & Pick<ChangeResponse, 'message' | 'token'>
+  )> }
+);
+
 export type OnchainLinkTechCommitteeProposalPreimageFragment = (
   { __typename?: 'Preimage' }
   & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
@@ -26323,6 +26393,86 @@ export function useDeleteAccountMutation(baseOptions?: ApolloReactHooks.Mutation
 export type DeleteAccountMutationHookResult = ReturnType<typeof useDeleteAccountMutation>;
 export type DeleteAccountMutationResult = ApolloReactCommon.MutationResult<DeleteAccountMutation>;
 export type DeleteAccountMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteAccountMutation, DeleteAccountMutationVariables>;
+export const MultisigLinkStartDocument = gql`
+    mutation multisigLinkStart($address: String!) {
+  multisigLinkStart(address: $address) {
+    message
+    signMessage
+  }
+}
+    `;
+export type MultisigLinkStartMutationFn = ApolloReactCommon.MutationFunction<MultisigLinkStartMutation, MultisigLinkStartMutationVariables>;
+
+/**
+ * __useMultisigLinkStartMutation__
+ *
+ * To run a mutation, you first call `useMultisigLinkStartMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMultisigLinkStartMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [multisigLinkStartMutation, { data, loading, error }] = useMultisigLinkStartMutation({
+ *   variables: {
+ *      address: // value for 'address'
+ *   },
+ * });
+ */
+export function useMultisigLinkStartMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<MultisigLinkStartMutation, MultisigLinkStartMutationVariables>) {
+        return ApolloReactHooks.useMutation<MultisigLinkStartMutation, MultisigLinkStartMutationVariables>(MultisigLinkStartDocument, baseOptions);
+      }
+export type MultisigLinkStartMutationHookResult = ReturnType<typeof useMultisigLinkStartMutation>;
+export type MultisigLinkStartMutationResult = ApolloReactCommon.MutationResult<MultisigLinkStartMutation>;
+export type MultisigLinkStartMutationOptions = ApolloReactCommon.BaseMutationOptions<MultisigLinkStartMutation, MultisigLinkStartMutationVariables>;
+export const MultisigLinkConfirmDocument = gql`
+    mutation multisigLinkConfirm($network: String!, $address: String!, $addresses: String!, $ss58Prefix: Int!, $threshold: Int!, $signatory: String!, $signature: String!) {
+  multisigLinkConfirm(
+    network: $network
+    address: $address
+    addresses: $addresses
+    ss58Prefix: $ss58Prefix
+    threshold: $threshold
+    signatory: $signatory
+    signature: $signature
+  ) {
+    message
+    token
+  }
+}
+    `;
+export type MultisigLinkConfirmMutationFn = ApolloReactCommon.MutationFunction<MultisigLinkConfirmMutation, MultisigLinkConfirmMutationVariables>;
+
+/**
+ * __useMultisigLinkConfirmMutation__
+ *
+ * To run a mutation, you first call `useMultisigLinkConfirmMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMultisigLinkConfirmMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [multisigLinkConfirmMutation, { data, loading, error }] = useMultisigLinkConfirmMutation({
+ *   variables: {
+ *      network: // value for 'network'
+ *      address: // value for 'address'
+ *      addresses: // value for 'addresses'
+ *      ss58Prefix: // value for 'ss58Prefix'
+ *      threshold: // value for 'threshold'
+ *      signatory: // value for 'signatory'
+ *      signature: // value for 'signature'
+ *   },
+ * });
+ */
+export function useMultisigLinkConfirmMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<MultisigLinkConfirmMutation, MultisigLinkConfirmMutationVariables>) {
+        return ApolloReactHooks.useMutation<MultisigLinkConfirmMutation, MultisigLinkConfirmMutationVariables>(MultisigLinkConfirmDocument, baseOptions);
+      }
+export type MultisigLinkConfirmMutationHookResult = ReturnType<typeof useMultisigLinkConfirmMutation>;
+export type MultisigLinkConfirmMutationResult = ApolloReactCommon.MutationResult<MultisigLinkConfirmMutation>;
+export type MultisigLinkConfirmMutationOptions = ApolloReactCommon.BaseMutationOptions<MultisigLinkConfirmMutation, MultisigLinkConfirmMutationVariables>;
 export const TechCommitteeProposalPostAndCommentsDocument = gql`
     query TechCommitteeProposalPostAndComments($id: Int!) {
   posts(where: {onchain_link: {onchain_tech_committee_proposal_id: {_eq: $id}}}) {

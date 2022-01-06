@@ -10,6 +10,7 @@ import { UserDetailsContext } from '../../context/UserDetailsContext';
 import Address from './address';
 import DeleteAccount from './deleteAccount';
 import Email from './email';
+import Multisig from './multisig';
 import Password from  './password';
 import SetCredentials from './setCredentials';
 import Username from './username';
@@ -31,6 +32,8 @@ const Settings = ({ className }:Props): JSX.Element => {
 				{web3signup ? null : <><Email/><Divider/></>}
 				{web3signup ? null : <><Password/><Divider/></>}
 				<Address/>
+				<Divider/>
+				<Multisig/>
 				<Divider/>
 				<DeleteAccount/>
 			</Grid.Column>
