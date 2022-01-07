@@ -28,6 +28,7 @@ import Loader from '../../ui-components/Loader';
 import Markdown from '../../ui-components/Markdown';
 import getEncodedAddress from '../../util/getEncodedAddress';
 import getNetwork from '../../util/getNetwork';
+import CouncilVotes from './CouncilVotes';
 
 interface Props {
 	className?: string
@@ -40,6 +41,7 @@ const network = getNetwork();
 const Profile = ({ className }: Props): JSX.Element => {
 	const router = useRouter();
 	const address = router.query.address;
+	const council = router.query.council === 'true';
 
 	// { data, loading, error }
 	const aboutQueryResult = useAboutQuery({
@@ -296,6 +298,7 @@ const Profile = ({ className }: Props): JSX.Element => {
 						</div> : null}
 					</>}
 				</div>}
+				{council ? <CouncilVotes address={address} /> : null}
 			</Grid.Column>
 			<Grid.Column mobile={16} tablet={16} computer={6} largeScreen={6} widescreen={6}>
 				<div className='info-box'>

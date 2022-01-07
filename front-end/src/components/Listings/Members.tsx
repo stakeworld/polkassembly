@@ -22,7 +22,7 @@ const Members = ({ className, data, prime }: Props) => {
 			{data.map(
 				(member, i) => (
 					<li key={member} className='proposals__item'>
-						{<Link to={`/profile/${member}`}>
+						{<Link to={`/profile/${member}?council=true`}>
 							<div className='member_card'>
 								<Segment.Group horizontal>
 									<Segment className='index'>
