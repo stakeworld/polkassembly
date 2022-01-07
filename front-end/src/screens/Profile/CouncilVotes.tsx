@@ -23,12 +23,21 @@ interface Props {
 	className?: string
 }
 
-const client = new ApolloClient({
-	cache: new InMemoryCache(),
-	uri: 'https://api.subquery.network/sq/subquery/tutorial---councillor-voting'
-});
+interface SUBQUERY_LINKS_TYPE {
+	[network: string]: string
+}
+
+const SUBQUERY_LINKS: SUBQUERY_LINKS_TYPE = {
+	kusama: 'https://api.subquery.network/sq/Premiurly/kusama-council-proposals',
+	polkadot: 'https://api.subquery.network/sq/subquery/tutorial---councillor-voting'
+};
 
 const NETWORK = getNetwork();
+
+const client = new ApolloClient({
+	cache: new InMemoryCache(),
+	uri: SUBQUERY_LINKS[NETWORK]
+});
 
 const CouncilVotes = ({ className, address } : Props) => {
 
