@@ -11,9 +11,8 @@ import {
 import styled from '@xstyled/styled-components';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Icon, Segment } from 'semantic-ui-react';
+import { Icon, Table } from 'semantic-ui-react';
 
-import Card from '../../ui-components/Card';
 import FilteredError from '../../ui-components/FilteredError';
 import HelperTooltip from '../../ui-components/HelperTooltip';
 import Loader from '../../ui-components/Loader';
@@ -63,36 +62,45 @@ const CouncilVotes = ({ className, address } : Props) => {
 			<div>
 				{loading ? <Loader text={'Loading...'} /> : null}
 				{error ? <FilteredError text={error.message} /> : null}
-				{data?.councillor?.voteHistory?.nodes?.length
-					? data?.councillor?.voteHistory?.nodes.map((node: any) => (
-						<Card key={node.block}>
-							<Segment.Group horizontal>
-								<Segment>
-									<Link to={`/motion/${node?.proposalHash?.index}`}>
-										<h3>Motion #{node?.proposalHash?.index}</h3>
-									</Link>
-								</Segment>
-								<Segment>
-									<a href={`https://${NETWORK}.subscan.io/block/${node?.block}`}>
-										<h6>Block #{node?.block}</h6>
-									</a>
-								</Segment>
-								<Segment>
-									{node?.approvedVote ? <>
-										<div className='thumbs up'>
-											<Icon name='thumbs up' />
-										</div> Aye
-									</> : <>
-										<div className='thumbs down'>
-											<Icon name='thumbs down' />
-										</div> Nay
-									</>}
-								</Segment>
-							</Segment.Group>
-						</Card>
-					))
-					: null
-				}
+				<Table>
+					<Table.Header>
+						<Table.Row>
+							<Table.HeaderCell>Proposal</Table.HeaderCell>
+							<Table.HeaderCell>Block</Table.HeaderCell>
+							<Table.HeaderCell>Vote</Table.HeaderCell>
+						</Table.Row>
+					</Table.Header>
+					<Table.Body>
+						{data?.councillor?.voteHistory?.nodes?.length
+							? data?.councillor?.voteHistory?.nodes.map((node: any) => (
+								<Table.Row key={node.block}>
+									<Table.Cell>
+										<Link to={`/motion/${node?.proposalHash?.index}`}>
+											<h3>Motion #{node?.proposalHash?.index}</h3>
+										</Link>
+									</Table.Cell>
+									<Table.Cell>
+										<a href={`https://${NETWORK}.subscan.io/block/${node?.block}`}>
+											<h6>#{node?.block}</h6>
+										</a>
+									</Table.Cell>
+									<Table.Cell>
+										{node?.approvedVote ? <>
+											<div className='thumbs up'>
+												<Icon name='thumbs up' />
+											</div> Aye
+										</> : <>
+											<div className='thumbs down'>
+												<Icon name='thumbs down' />
+											</div> Nay
+										</>}
+									</Table.Cell>
+								</Table.Row>
+							))
+							: null
+						}
+					</Table.Body>
+				</Table>
 			</div>
 		</div>
 	);
