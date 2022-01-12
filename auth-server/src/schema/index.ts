@@ -19,6 +19,8 @@ import changeUsernameMutation from './mutation/changeUsername';
 import deleteAccount from './mutation/deleteAccount';
 import loginMutation from './mutation/login';
 import logoutMutation from './mutation/logout';
+import multisigLinkConfirm from './mutation/multisigLinkConfirm';
+import multisigLinkStart from './mutation/multisigLinkStart';
 import postSubscribe from './mutation/postSubscribe';
 import postUnsubscribe from './mutation/postUnsubscribe';
 import reportContent from './mutation/reportContent';
@@ -91,6 +93,8 @@ export default gql`
 		${deleteAccount}
 		${loginMutation}
 		${logoutMutation}
+		${multisigLinkConfirm}
+		${multisigLinkStart}
 		${postSubscribe}
 		${postUnsubscribe}
 		${reportContent}

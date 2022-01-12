@@ -114,6 +114,21 @@ export interface ChainProps {
 	'tokenSymbol': TokenSymbol;
 }
 
+export type ChainLinksType = {
+	[index: string]: ChainLinks;
+};
+
+export interface ChainLinks {
+	blockExplorer: string;
+	homepage: string;
+	github: string;
+	discord: string;
+	twitter: string;
+	telegram: string;
+	youtube: string;
+	reddit: string;
+}
+
 export interface LoadingStatusType {
 	isLoading: boolean;
 	message: string;

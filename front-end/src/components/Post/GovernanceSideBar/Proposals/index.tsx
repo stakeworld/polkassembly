@@ -2,10 +2,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { formatBalance } from '@polkadot/util';
 import React, { useContext, useEffect, useState } from 'react';
 import { ApiContext } from 'src/context/ApiContext';
+import { chainProperties } from 'src/global/networkConstants';
 import { LoadingStatusType } from 'src/types';
-import formatBnBalance from 'src/util/formatBnBalance';
+import getNetwork from 'src/util/getNetwork';
 
 import ProposalVoteInfo from './ProposalVoteInfo';
 import SecondProposal, { SecondProposalProps } from './SecondProposal';
@@ -13,6 +15,10 @@ import SecondProposal, { SecondProposalProps } from './SecondProposal';
 type Props = SecondProposalProps & {
 	canVote: boolean
 }
+
+const network = getNetwork();
+const tokenDecimals = chainProperties[network].tokenDecimals;
+const tokenSymbol = chainProperties[network].tokenSymbol;
 
 const ProposalDisplay = ({ proposalId, accounts, address, canVote, getAccounts, onAccountChange }: Props) => {
 	const { api, apiReady } = useContext(ApiContext);
@@ -36,7 +42,12 @@ const ProposalDisplay = ({ proposalId, accounts, address, canVote, getAccounts, 
 				if (proposal.index.toNumber() === proposalId && proposal.balance) {
 					setLoadingStatus({ isLoading: false, message: '' });
 					setSeconds(proposal.seconds.length);
-					setDeposit(formatBnBalance(proposal.balance, { numberAfterComma: 2, withUnit: true }));
+					setDeposit(
+						`${formatBalance(
+							proposal.balance,
+							{ decimals: tokenDecimals, forceUnit: tokenSymbol, withUnit: false }
+						)} ${tokenSymbol}`
+					);
 				}
 			});
 		})

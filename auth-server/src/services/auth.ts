@@ -18,6 +18,7 @@ import UndoEmailChangeToken from '../model/UndoEmailChangeToken';
 import User from '../model/User';
 import { redisDel, redisGet, redisSetex } from '../redis';
 import { AuthObjectType, HashedPassword, JWTPayploadType, Network, NotificationPreferencesType, Role } from '../types';
+import getMultisigAddress from '../utils/getMultisigAddress';
 import getNetworkUserAddressInfoFromUserId from '../utils/getNetworkUserAddressInfoFromUserId';
 import getNotificationPreferencesFromUserId from '../utils/getNotificationPreferencesFromUserId';
 import getPublicKey from '../utils/getPublicKey';
@@ -54,6 +55,7 @@ export const getAddressLoginKey = (address: string): string => `ALN-${address}`;
 export const getAddressSignupKey = (address: string): string => `ASU-${address}`;
 export const getSetCredentialsKey = (address: string): string => `SCR-${address}`;
 export const getEmailVerificationTokenKey = (token: string): string => `EVT-${token}`;
+export const getMultisigAddressKey = (address: string): string => `MLA-${address}`;
 
 export default class AuthService {
 	public async GetUser (token: string): Promise<User> {
@@ -532,6 +534,77 @@ export default class AuthService {
 				verified: true
 			})
 			.findById(address_id);
+
+		return this.getSignedToken(user);
+	}
+
+	public async MultisigAddressSignupStart (address: string): Promise<string> {
+		const addressObj = await Address
+			.query()
+			.where('address', address)
+			.first();
+
+		if (addressObj) {
+			throw new ForbiddenError(messages.MULTISIG_ADDRESS_ALREADY_EXISTS);
+		}
+
+		const signMessage = `<Bytes>${uuid()}</Bytes>`;
+
+		await redisSetex(getMultisigAddressKey(address), ADDRESS_LOGIN_TTL, signMessage);
+
+		return signMessage;
+	}
+
+	public async MultiSigAddressLinkConfirm (
+		token: string,
+		network: Network,
+		address: string,
+		addresses: string,
+		ss58Prefix: number,
+		threshold: number,
+		signatory: string,
+		signature: string
+	): Promise<string> {
+		const userId = getUserIdFromJWT(token, jwtPublicKey);
+		const user = await getUserFromUserId(userId);
+
+		const signMessage = await redisGet(getMultisigAddressKey(address));
+
+		if (!signMessage) {
+			throw new ForbiddenError(messages.MULTISIG_SIGN_MESSAGE_EXPIRED);
+		}
+
+		const signatories = addresses.split(',').map(address => address.trim()).filter(x => !!x);
+
+		const multisigAddress = getMultisigAddress(signatories, ss58Prefix, threshold);
+
+		if (address !== multisigAddress) {
+			throw new ForbiddenError(messages.MULTISIG_NOT_MATCHING);
+		}
+
+		if (!signatories.includes(signatory)) {
+			throw new ForbiddenError(messages.MULTISIG_NOT_ALLOWED);
+		}
+
+		const isValidSr = verifySignature(signMessage, signatory, signature);
+
+		if (!isValidSr) {
+			throw new ForbiddenError(messages.ADDRESS_LINKING_FAILED);
+		}
+
+		// If this linked address is the first address to be linked. Then set it as default.
+		// querying other verified addresses of user to check the same.
+		const otherAddresses = await Address
+			.query()
+			.where({
+				user_id: userId,
+				verified: true
+			});
+
+		const setAsDefault = otherAddresses.length === 0;
+
+		await this.createAddress(network, address, setAsDefault, user.id);
+		await redisDel(getMultisigAddressKey(address));
 
 		return this.getSignedToken(user);
 	}

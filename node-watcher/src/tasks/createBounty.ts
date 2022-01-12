@@ -23,6 +23,10 @@ import {
 
 const l = logger('Task: Bounty');
 
+const eventField = [
+	'BountyIndex'
+];
+
 /*
  *  ======= Table (Bounty) ======
  */
@@ -48,7 +52,7 @@ const createBounty: Task<NomidotBounty[]> = {
 
 		const bountyRawEvent: NomidotBountyRawEvent = data.reduce(
 			(prev, curr, index) => {
-			  const type = typeDef[index].type;
+			  const type = eventField[index];
 
 			  return {
 				...prev,

@@ -15,12 +15,13 @@ import { VoteThreshold } from 'src/types';
 import { Form } from 'src/ui-components/Form';
 
 import ExtensionNotDetected from '../../ExtensionNotDetected';
-import EndorseTip from './EndorseTip';
 import MotionVoteInfo from './Motions/MotionVoteInfo';
 import VoteMotion from './Motions/VoteMotion';
 import ProposalDisplay from './Proposals';
 import ReferendumVoteInfo from './Referenda/ReferendumVoteInfo';
 import VoteReferendum from './Referenda/VoteReferendum';
+import EndorseTip from './Tips/EndorseTip';
+import TipInfo from './Tips/TipInfo';
 
 interface Props {
 	className?: string
@@ -161,6 +162,8 @@ const GovenanceSideBar = ({ className, isMotion, isProposal, isReferendum, isTip
 							</>
 						}
 						{isTipProposal && canVote &&
+						<div>
+							<TipInfo onChainId={onchainId as string}/>
 							<EndorseTip
 								accounts={accounts}
 								address={address}
@@ -168,6 +171,7 @@ const GovenanceSideBar = ({ className, isMotion, isProposal, isReferendum, isTip
 								tipHash={onchainId as string}
 								onAccountChange={onAccountChange}
 							/>
+						</div>
 						}
 					</Form>
 				</div>
