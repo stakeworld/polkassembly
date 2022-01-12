@@ -88,7 +88,7 @@ const TreasuryOverview = () => {
 						<Grid.Row>
 							<Grid.Column>
 								<h6>Available</h6>
-								{result.value ? <div>{(Math.abs(Number(result.value.toString())) / 1.0e+6).toFixed(2) + 'M'}</div> : <div><Loader/></div>}
+								{result.value ? <div>{(Math.abs(Number(result.value.toString())) / 1.0e+6).toLocaleString() + 'M'}</div> : <div><Loader/></div>}
 							</Grid.Column>
 							<Grid.Column>
 								<h6>Spend Period</h6>
@@ -96,7 +96,7 @@ const TreasuryOverview = () => {
 							</Grid.Column>
 							<Grid.Column>
 								<h6>Next Burn</h6>
-								{result.burn ? <div>{(Math.abs(Number(result.value?.toString())) / 1.0e+6).toFixed(2) + 'M'}</div> : <div><Loader/></div>}
+								{result.burn ? <div>{(Math.abs(Number(result.burn?.toString())) / 1.0e+6).toLocaleString() + 'M'}</div> : <div><Loader/></div>}
 							</Grid.Column>
 							<Grid.Column>
 								<h6>Count Down</h6>
