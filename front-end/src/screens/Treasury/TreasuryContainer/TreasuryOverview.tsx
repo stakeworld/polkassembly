@@ -48,6 +48,7 @@ const TreasuryOverview = () => {
 		if (!apiReady) {
 			return;
 		}
+
 		api.derive.chain.bestNumber((number) => {
 			setCurrentBlock(number);
 
@@ -55,6 +56,7 @@ const TreasuryOverview = () => {
 
 		api.derive.balances?.account(u8aToHex(result.treasuryAccount)).then(treasuryBalance => {
 			setTreasuryBalance(treasuryBalance);
+
 		});
 
 		if (treasuryBalance) {
@@ -75,8 +77,8 @@ const TreasuryOverview = () => {
 					? treasuryBalance.freeBalance
 					: undefined
 			}));}
-
-	}, [api, apiReady, treasuryBalance, currentBlock, result.treasuryAccount]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [api, apiReady, treasuryBalance, currentBlock]);
 
 	return(
 		<>
