@@ -51,12 +51,10 @@ const TreasuryOverview = () => {
 
 		api.derive.chain.bestNumber((number) => {
 			setCurrentBlock(number);
-
 		});
 
 		api.derive.balances?.account(u8aToHex(result.treasuryAccount)).then(treasuryBalance => {
 			setTreasuryBalance(treasuryBalance);
-
 		});
 
 		if (treasuryBalance) {
@@ -97,10 +95,6 @@ const TreasuryOverview = () => {
 							<Grid.Column>
 								<h6>Next Burn</h6>
 								{result.burn ? <div>{(Math.abs(Number(result.burn?.toString())) / 1.0e+6).toLocaleString() + 'M'}</div> : <div><Loader/></div>}
-							</Grid.Column>
-							<Grid.Column>
-								<h6>Count Down</h6>
-								{!currentBlock.isZero() ? <div>{blockToTime(currentBlock.toNumber() % (result.spendPeriod.toNumber()), blocktime)}</div> : <Loader/>}
 							</Grid.Column>
 						</Grid.Row>
 					</Grid>
