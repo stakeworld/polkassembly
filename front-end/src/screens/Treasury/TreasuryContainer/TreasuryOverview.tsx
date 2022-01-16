@@ -7,12 +7,12 @@ import type { Balance } from '@polkadot/types/interfaces';
 import { BN_MILLION,BN_ZERO, u8aConcat, u8aToHex } from '@polkadot/util';
 import BN from 'bn.js';
 import React, { useContext,useEffect, useState } from 'react';
-import formatBnBalance from 'src/util/formatBnBalance';
 import { Grid } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
 import { useBlockTime } from 'src/hooks';
 import Card from 'src/ui-components/Card';
 import blockToTime from 'src/util/blockToTime';
+import formatBnBalance from 'src/util/formatBnBalance';
 
 import Loader from '../../../ui-components/Loader';
 
@@ -52,12 +52,10 @@ const TreasuryOverview = () => {
 
 		api.derive.chain.bestNumber((number) => {
 			setCurrentBlock(number);
-
 		});
 
 		api.derive.balances?.account(u8aToHex(result.treasuryAccount)).then(treasuryBalance => {
 			setTreasuryBalance(treasuryBalance);
-
 		});
 
 		if (treasuryBalance) {
