@@ -7,6 +7,7 @@ import type { Balance } from '@polkadot/types/interfaces';
 import { BN_MILLION,BN_ZERO, u8aConcat, u8aToHex } from '@polkadot/util';
 import BN from 'bn.js';
 import React, { useContext,useEffect, useState } from 'react';
+import formatBnBalance from 'src/util/formatBnBalance';
 import { Grid } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
 import { useBlockTime } from 'src/hooks';
@@ -87,16 +88,20 @@ const TreasuryOverview = () => {
 					<Grid columns={4} divided>
 						<Grid.Row>
 							<Grid.Column>
+								{/* <h6>Available</h6>
+								{result.value ? <div>{(Math.abs(Number(result.value.toString())) / 1.0e+6).toLocaleString() + 'M'}</div> : <div><Loader/></div>} */}
 								<h6>Available</h6>
-								{result.value ? <div>{(Math.abs(Number(result.value.toString())) / 1.0e+6).toLocaleString() + 'M'}</div> : <div><Loader/></div>}
+								{result.value ? <div>{formatBnBalance(result.value.toString(), { numberAfterComma: 2, withUnit: true })}</div> : <div><Loader/></div>}
 							</Grid.Column>
 							<Grid.Column>
 								<h6>Spend Period</h6>
 								<div>{blockToTime(result.spendPeriod.toNumber(), blocktime)}</div>
 							</Grid.Column>
 							<Grid.Column>
+								{/* <h6>Next Burn</h6>
+								{result.burn ? <div>{(Math.abs(Number(result.burn?.toString())) / 1.0e+6).toLocaleString() + 'M'}</div> : <div><Loader/></div>} */}
 								<h6>Next Burn</h6>
-								{result.burn ? <div>{(Math.abs(Number(result.burn?.toString())) / 1.0e+6).toLocaleString() + 'M'}</div> : <div><Loader/></div>}
+								{result.burn ? <div>{formatBnBalance(result.burn.toString(), { numberAfterComma: 2, withUnit: true })}</div> : <div><Loader/></div>}
 							</Grid.Column>
 							<Grid.Column>
 								<h6>Count Down</h6>
