@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from '@xstyled/styled-components';
+import BN from 'bn.js';
 import React, { useContext, useEffect, useState } from 'react';
 import { Grid } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
@@ -19,22 +20,32 @@ interface Props {
 	onChainId: string
 }
 
-// const Median = (data: any) => {
-//     let median = new BN(0);
+const Median = (data: any): [BN, BN, string, string] => {
+	let median = new BN(0);
+	let findersFee = new BN(0);
+	let receiver = '';
+	let finder = '';
 
-//     if(data.tips.length > 0){
-//         const values: BN[] = data.tips.map(([, value]: [string, BN]) => value);
-//         console.log('valuess:', values);
-//         const midIndex = Math.floor(values.length / 2);
-//         median = values.length
-//             ? values.length % 2
-//             ? values[midIndex]
-//             : values[midIndex - 1].add(values[midIndex]).divn(2)
-//             : new BN(0);
-//     }
+	if (data?.tips?.length > 0) {
+		const values: BN[] = data.tips.map(([, value]: [string, BN]) => value);
+		const midIndex = Math.floor(values.length / 2);
+		median = values.length
+			? values.length % 2
+				? values[midIndex]
+				: new BN(values[midIndex - 1]).add(new BN(values[midIndex])).divn(2)
+			: new BN(0);
 
-//     return median;
-// }
+		receiver = data.who;
+		finder = data.finder;
+		if (data.finder != data.who && median != new BN(0)) {
+			findersFee = new BN(median).divn(5); // 20% of median value
+			median = new BN(median).sub(findersFee);
+
+		}
+	}
+
+	return [median, findersFee, finder, receiver];
+};
 
 const TipInfo = ({ className, onChainId }: Props) => {
 
@@ -42,7 +53,10 @@ const TipInfo = ({ className, onChainId }: Props) => {
 	const [tips, setTips] = useState<any>(null);
 	const [isTippersLoading, setIsTippersLoading] = useState(true);
 	const [members, setMembers] = useState<string[]>([]);
-	//const [median, setMedian] = useState<BN>(new BN(0));
+	const [median, setMedian] = useState<BN>(new BN(0));
+	const [findersFee, setFindersFee] = useState<BN>(new BN(0));
+	const [finder, setFinder] = useState<string>('');
+	const [receiver, setReceiver] = useState<string>('');
 
 	useEffect(() => {
 		if (!api) {
@@ -55,10 +69,15 @@ const TipInfo = ({ className, onChainId }: Props) => {
 
 		let unsubscribe: () => void;
 
-		api.query.tips.tips.multi([onChainId]).then(tips => {
-			setTips(tips[0]?.toJSON());
+		api.query.tips.tips.multi([onChainId]).then(tip => {
+			setTips(tip[0]?.toJSON());
 			setIsTippersLoading(false);
-			//setMedian(Median(tips[0]?.toJSON()));
+			const [adjustedMedian, findersFee, finder, receiver] = Median(tip[0]?.toJSON());
+			setMedian(adjustedMedian);
+			setFindersFee(findersFee);
+			setReceiver(receiver);
+			setFinder(finder);
+
 		});
 
 		api.query.council.members().then((members) => {
@@ -74,6 +93,32 @@ const TipInfo = ({ className, onChainId }: Props) => {
 		<>
 			{tips?.tips.length > 0 ?
 				<Card className={className}>
+					<h3>Final Tip<HelperTooltip content='The final value of the tip is decided based on the median of all tips issued by the tippers' /></h3>
+					<Grid>
+						{finder != receiver ?
+							<Grid.Row key={finder}>
+								<Grid.Column width={12}>
+									<div className='item'>
+										<h6>Proposer</h6>
+										<Address address={finder} />
+									</div>
+								</Grid.Column>
+								<Grid.Column width={4}>
+									{formatBnBalance(findersFee, { numberAfterComma: 2, withUnit: true })}
+								</Grid.Column>
+							</Grid.Row>
+							: <></>}
+						<Grid.Row key={receiver}>
+							<Grid.Column width={12}>
+								<div className='item'>
+									<h6>Receiver</h6>
+									<Address address={receiver} />
+								</div></Grid.Column>
+							<Grid.Column width={4}>
+								{formatBnBalance(median, { numberAfterComma: 2, withUnit: true })}
+							</Grid.Column>
+						</Grid.Row>
+					</Grid>
 					<h3>Tippers <HelperTooltip content='Amount tipped by an individual/organisation' /></h3>
 					<Grid className='tippers'>
 						{tips.tips.map((tip: any[]) =>
@@ -101,10 +146,6 @@ const TipInfo = ({ className, onChainId }: Props) => {
 							</Grid.Row>
 						)}
 					</Grid>
-					{/* <Grid className='tippers'>
-                <Grid.Row><Grid.Column width={12}><div className='item'>
-                    Final Tip<HelperTooltip content='The final value of the tip is decided based on the median of all tips issued by the tippers'/></div></Grid.Column><Grid.Column width={4}>{formatBnBalance(median, { numberAfterComma: 2, withUnit: true })}</Grid.Column></Grid.Row>
-                </Grid> */}
 				</Card>
 				: isTippersLoading ? <Loader text={'Requesting Tippers'} /> : <NothingFoundCard className={className} text='There are currently no tippers.' />}
 		</>
@@ -114,6 +155,15 @@ const TipInfo = ({ className, onChainId }: Props) => {
 export default styled(TipInfo)`
 .tippers {
     margin-top: 2em;
+}
+
+h3 {
+	margin-top:20px;
+}
+
+h6 {
+	font-family: font_mono;
+	font-size: sm;
 }
 
 @media only screen and (max-width: 768px) {
