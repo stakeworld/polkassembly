@@ -9,6 +9,7 @@ import bifrostLogo from 'src/assets/bifrost-logo.png';
 import kiltLogo from 'src/assets/kilt-logo.png';
 import kusamaLogo from 'src/assets/kusama-logo.gif';
 import moonbeamLogo from 'src/assets/moonbeam-logo.png';
+import moonriverLogo from 'src/assets/moonriver-logo.png';
 import polkadotLogo from 'src/assets/polkadot-logo.jpg';
 import { network } from 'src/global/networkConstants';
 import getNetwork from 'src/util/getNetwork';
@@ -32,6 +33,8 @@ const getNetworkImage = (showNetwork: string) => {
 		return kusamaLogo;
 	case network.MOONBEAM:
 		return moonbeamLogo;
+	case network.MOONRIVER:
+		return moonriverLogo;
 	case network.KILT:
 		return kiltLogo;
 	case network.BIFROST:
@@ -60,6 +63,10 @@ const NetworkOptions: DropdownItemProps[] = [
 		value: network.KUSAMA
 	},
 	{
+		children: <StyledNetworkItem showNetwork={network.MOONRIVER}/>,
+		value: network.MOONRIVER
+	},
+	{
 		children: <StyledNetworkItem showNetwork={network.MOONBEAM}/>,
 		value: network.MOONBEAM
 	},
@@ -84,7 +91,7 @@ const NetworkDropdown = ({ className }: Props) =>  {
 			return null;
 		}
 		let domain = 'network';
-		if(data.value === network.POLKADOT || data.value === network.KUSAMA){
+		if (data.value === network.POLKADOT || data.value === network.KUSAMA){
 			domain = 'io';
 		}
 		window.location.href = `https://${data.value}.polkassembly.${domain}`;

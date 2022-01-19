@@ -9,6 +9,7 @@ export const network = {
 	KILT: 'kilt',
 	KUSAMA: 'kusama',
 	MOONBEAM: 'moonbeam',
+	MOONRIVER: 'moonriver',
 	POLKADOT: 'polkadot'
 };
 
