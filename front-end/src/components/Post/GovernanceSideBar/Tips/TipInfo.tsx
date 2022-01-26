@@ -97,19 +97,6 @@ const TipInfo = ({ className, onChainId }: Props) => {
 				<Card className={className}>
 					<h3>Final Tip<HelperTooltip content='The final value of the tip is decided based on the median of all tips issued by the tippers' /></h3>
 					<Grid>
-						{/* {finder != receiver ?
-							<Grid.Row key={finder}>
-								<Grid.Column width={12}>
-									<div className='item'>
-										<h6>Proposer</h6>
-										<Address address={finder} />
-									</div>
-								</Grid.Column>
-								<Grid.Column width={4}>
-									{formatBnBalance(findersFee, { numberAfterComma: 2, withUnit: true })}
-								</Grid.Column>
-							</Grid.Row>
-							: <></>} */}
 						<Grid.Row key={receiver}>
 							<Grid.Column width={12}>
 								<div className='item'>
