@@ -54,7 +54,9 @@ const TipInfo = ({ className, onChainId }: Props) => {
 	const [isTippersLoading, setIsTippersLoading] = useState(true);
 	const [members, setMembers] = useState<string[]>([]);
 	const [median, setMedian] = useState<BN>(new BN(0));
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [findersFee, setFindersFee] = useState<BN>(new BN(0));
+	//eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [finder, setFinder] = useState<string>('');
 	const [receiver, setReceiver] = useState<string>('');
 
@@ -95,19 +97,6 @@ const TipInfo = ({ className, onChainId }: Props) => {
 				<Card className={className}>
 					<h3>Final Tip<HelperTooltip content='The final value of the tip is decided based on the median of all tips issued by the tippers' /></h3>
 					<Grid>
-						{finder != receiver ?
-							<Grid.Row key={finder}>
-								<Grid.Column width={12}>
-									<div className='item'>
-										<h6>Proposer</h6>
-										<Address address={finder} />
-									</div>
-								</Grid.Column>
-								<Grid.Column width={4}>
-									{formatBnBalance(findersFee, { numberAfterComma: 2, withUnit: true })}
-								</Grid.Column>
-							</Grid.Row>
-							: <></>}
 						<Grid.Row key={receiver}>
 							<Grid.Column width={12}>
 								<div className='item'>
