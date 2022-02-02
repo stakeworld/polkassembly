@@ -6,15 +6,33 @@ import gql from 'graphql-tag';
 
 import { authorFields } from './author';
 
+export const replyFields = gql`
+    fragment replyFields on replies {
+        id
+        author {
+            ...authorFields
+        }
+        comment_id
+        content
+        created_at
+        updated_at
+    }
+    ${authorFields}
+`;
+
 export const commentFields = gql`
     fragment commentFields on comments {
         id
         author {
             ...authorFields
         }
+        replies {
+            ...replyFields
+        }
         content
         created_at
         updated_at
     }
     ${authorFields}
+    ${replyFields}
 `;

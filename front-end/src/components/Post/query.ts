@@ -20,3 +20,28 @@ export const ADD_POST_COMMENT=gql`
         }
     }
 `;
+
+export const ADD_COMMENT_REPLY=gql`
+    mutation AddCommentReply ($authorId: Int!, $content: String!, $commentId: uuid!) {
+        __typename
+        insert_replies(objects: {author_id: $authorId, content:  $content, comment_id: $commentId}) {
+            affected_rows
+        }
+    }
+`;
+
+export const EDIT_COMMENT_REPLY= gql`
+    mutation EditCommentReply ($id: uuid!, $content: String!) {
+        update_replies(where: {id: {_eq: $id}}, _set: {content: $content}) {
+            affected_rows
+        }
+  }
+`;
+
+export const DELETE_COMMENT_REPLY= gql`
+    mutation DeleteCommentReply ($id: uuid!) {
+        delete_replies(where: {id: {_eq: $id}}) {
+            affected_rows
+    }
+}
+`;

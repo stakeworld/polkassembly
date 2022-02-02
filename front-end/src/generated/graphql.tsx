@@ -11914,6 +11914,10 @@ export type Comments = {
   /** An object relationship */
   post: Posts;
   post_id: Scalars['Int'];
+  /** An array relationship */
+  replies: Array<Replies>;
+  /** An aggregated array relationship */
+  replies_aggregate: Replies_Aggregate;
   updated_at: Scalars['timestamptz'];
 };
 
@@ -11935,6 +11939,26 @@ export type CommentsComment_Reactions_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Comment_Reactions_Order_By>>;
   where?: Maybe<Comment_Reactions_Bool_Exp>;
+};
+
+
+/** columns and relationships of "comments" */
+export type CommentsRepliesArgs = {
+  distinct_on?: Maybe<Array<Replies_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Replies_Order_By>>;
+  where?: Maybe<Replies_Bool_Exp>;
+};
+
+
+/** columns and relationships of "comments" */
+export type CommentsReplies_AggregateArgs = {
+  distinct_on?: Maybe<Array<Replies_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Replies_Order_By>>;
+  where?: Maybe<Replies_Bool_Exp>;
 };
 
 /** aggregated selection of "comments" */
@@ -12013,6 +12037,7 @@ export type Comments_Bool_Exp = {
   id?: Maybe<Uuid_Comparison_Exp>;
   post?: Maybe<Posts_Bool_Exp>;
   post_id?: Maybe<Int_Comparison_Exp>;
+  replies?: Maybe<Replies_Bool_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
 };
 
@@ -12037,6 +12062,7 @@ export type Comments_Insert_Input = {
   id?: Maybe<Scalars['uuid']>;
   post?: Maybe<Posts_Obj_Rel_Insert_Input>;
   post_id?: Maybe<Scalars['Int']>;
+  replies?: Maybe<Replies_Arr_Rel_Insert_Input>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -12113,6 +12139,7 @@ export type Comments_Order_By = {
   id?: Maybe<Order_By>;
   post?: Maybe<Posts_Order_By>;
   post_id?: Maybe<Order_By>;
+  replies_aggregate?: Maybe<Replies_Aggregate_Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -12413,6 +12440,10 @@ export type Mutation_Root = {
   delete_posts?: Maybe<Posts_Mutation_Response>;
   /** delete single row from the table: "posts" */
   delete_posts_by_pk?: Maybe<Posts>;
+  /** delete data from the table: "replies" */
+  delete_replies?: Maybe<Replies_Mutation_Response>;
+  /** delete single row from the table: "replies" */
+  delete_replies_by_pk?: Maybe<Replies>;
   executeRaw: Scalars['Json'];
   /** insert data into the table: "comment_reactions" */
   insert_comment_reactions?: Maybe<Comment_Reactions_Mutation_Response>;
@@ -12458,6 +12489,10 @@ export type Mutation_Root = {
   insert_posts?: Maybe<Posts_Mutation_Response>;
   /** insert a single row into the table: "posts" */
   insert_posts_one?: Maybe<Posts>;
+  /** insert data into the table: "replies" */
+  insert_replies?: Maybe<Replies_Mutation_Response>;
+  /** insert a single row into the table: "replies" */
+  insert_replies_one?: Maybe<Replies>;
   login?: Maybe<LoginResponse>;
   logout?: Maybe<Message>;
   multisigLinkConfirm?: Maybe<ChangeResponse>;
@@ -12582,6 +12617,10 @@ export type Mutation_Root = {
   update_posts?: Maybe<Posts_Mutation_Response>;
   /** update single row of the table: "posts" */
   update_posts_by_pk?: Maybe<Posts>;
+  /** update data of the table: "replies" */
+  update_replies?: Maybe<Replies_Mutation_Response>;
+  /** update single row of the table: "replies" */
+  update_replies_by_pk?: Maybe<Replies>;
   upsertBlockIndex: BlockIndex;
   upsertBlockNumber: BlockNumber;
   upsertBounty: Bounty;
@@ -13437,6 +13476,18 @@ export type Mutation_RootDelete_Posts_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_RepliesArgs = {
+  where: Replies_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Replies_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type Mutation_RootExecuteRawArgs = {
   database?: Maybe<PrismaDatabase>;
   query: Scalars['String'];
@@ -13594,6 +13645,20 @@ export type Mutation_RootInsert_PostsArgs = {
 export type Mutation_RootInsert_Posts_OneArgs = {
   object: Posts_Insert_Input;
   on_conflict?: Maybe<Posts_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_RepliesArgs = {
+  objects: Array<Replies_Insert_Input>;
+  on_conflict?: Maybe<Replies_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Replies_OneArgs = {
+  object: Replies_Insert_Input;
+  on_conflict?: Maybe<Replies_On_Conflict>;
 };
 
 
@@ -14322,6 +14387,22 @@ export type Mutation_RootUpdate_Posts_By_PkArgs = {
   _inc?: Maybe<Posts_Inc_Input>;
   _set?: Maybe<Posts_Set_Input>;
   pk_columns: Posts_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_RepliesArgs = {
+  _inc?: Maybe<Replies_Inc_Input>;
+  _set?: Maybe<Replies_Set_Input>;
+  where: Replies_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Replies_By_PkArgs = {
+  _inc?: Maybe<Replies_Inc_Input>;
+  _set?: Maybe<Replies_Set_Input>;
+  pk_columns: Replies_Pk_Columns_Input;
 };
 
 
@@ -18443,6 +18524,12 @@ export type Query_Root = {
   referendumStatusesConnection: ReferendumStatusConnection;
   referendums: Array<Maybe<Referendum>>;
   referendumsConnection: ReferendumConnection;
+  /** fetch data from the table: "replies" */
+  replies: Array<Replies>;
+  /** fetch aggregated fields from the table: "replies" */
+  replies_aggregate: Replies_Aggregate;
+  /** fetch data from the table: "replies" using primary key columns */
+  replies_by_pk?: Maybe<Replies>;
   reward?: Maybe<Reward>;
   rewards: Array<Maybe<Reward>>;
   rewardsConnection: RewardConnection;
@@ -19414,6 +19501,32 @@ export type Query_RootReferendumsConnectionArgs = {
 
 
 /** query root */
+export type Query_RootRepliesArgs = {
+  distinct_on?: Maybe<Array<Replies_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Replies_Order_By>>;
+  where?: Maybe<Replies_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootReplies_AggregateArgs = {
+  distinct_on?: Maybe<Array<Replies_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Replies_Order_By>>;
+  where?: Maybe<Replies_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootReplies_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** query root */
 export type Query_RootRewardArgs = {
   where: RewardWhereUniqueInput;
 };
@@ -19814,6 +19927,318 @@ export type Query_RootValidatorsConnectionArgs = {
   where?: Maybe<ValidatorWhereInput>;
 };
 
+/** columns and relationships of "replies" */
+export type Replies = {
+  __typename?: 'replies';
+  /** Remote relationship field */
+  author?: Maybe<User>;
+  author_id: Scalars['Int'];
+  /** An object relationship */
+  comment: Comments;
+  comment_id: Scalars['uuid'];
+  content: Scalars['String'];
+  created_at: Scalars['timestamp'];
+  id: Scalars['uuid'];
+  updated_at: Scalars['timestamptz'];
+};
+
+/** aggregated selection of "replies" */
+export type Replies_Aggregate = {
+  __typename?: 'replies_aggregate';
+  aggregate?: Maybe<Replies_Aggregate_Fields>;
+  nodes: Array<Replies>;
+};
+
+/** aggregate fields of "replies" */
+export type Replies_Aggregate_Fields = {
+  __typename?: 'replies_aggregate_fields';
+  avg?: Maybe<Replies_Avg_Fields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Replies_Max_Fields>;
+  min?: Maybe<Replies_Min_Fields>;
+  stddev?: Maybe<Replies_Stddev_Fields>;
+  stddev_pop?: Maybe<Replies_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Replies_Stddev_Samp_Fields>;
+  sum?: Maybe<Replies_Sum_Fields>;
+  var_pop?: Maybe<Replies_Var_Pop_Fields>;
+  var_samp?: Maybe<Replies_Var_Samp_Fields>;
+  variance?: Maybe<Replies_Variance_Fields>;
+};
+
+
+/** aggregate fields of "replies" */
+export type Replies_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Replies_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "replies" */
+export type Replies_Aggregate_Order_By = {
+  avg?: Maybe<Replies_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Replies_Max_Order_By>;
+  min?: Maybe<Replies_Min_Order_By>;
+  stddev?: Maybe<Replies_Stddev_Order_By>;
+  stddev_pop?: Maybe<Replies_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Replies_Stddev_Samp_Order_By>;
+  sum?: Maybe<Replies_Sum_Order_By>;
+  var_pop?: Maybe<Replies_Var_Pop_Order_By>;
+  var_samp?: Maybe<Replies_Var_Samp_Order_By>;
+  variance?: Maybe<Replies_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "replies" */
+export type Replies_Arr_Rel_Insert_Input = {
+  data: Array<Replies_Insert_Input>;
+  on_conflict?: Maybe<Replies_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Replies_Avg_Fields = {
+  __typename?: 'replies_avg_fields';
+  author_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "replies" */
+export type Replies_Avg_Order_By = {
+  author_id?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "replies". All fields are combined with a logical 'AND'. */
+export type Replies_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Replies_Bool_Exp>>>;
+  _not?: Maybe<Replies_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Replies_Bool_Exp>>>;
+  author_id?: Maybe<Int_Comparison_Exp>;
+  comment?: Maybe<Comments_Bool_Exp>;
+  comment_id?: Maybe<Uuid_Comparison_Exp>;
+  content?: Maybe<String_Comparison_Exp>;
+  created_at?: Maybe<Timestamp_Comparison_Exp>;
+  id?: Maybe<Uuid_Comparison_Exp>;
+  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "replies" */
+export enum Replies_Constraint {
+  /** unique or primary key constraint */
+  RepliesPkey = 'replies_pkey'
+}
+
+/** input type for incrementing integer column in table "replies" */
+export type Replies_Inc_Input = {
+  author_id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "replies" */
+export type Replies_Insert_Input = {
+  author_id?: Maybe<Scalars['Int']>;
+  comment?: Maybe<Comments_Obj_Rel_Insert_Input>;
+  comment_id?: Maybe<Scalars['uuid']>;
+  content?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamp']>;
+  id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type Replies_Max_Fields = {
+  __typename?: 'replies_max_fields';
+  author_id?: Maybe<Scalars['Int']>;
+  comment_id?: Maybe<Scalars['uuid']>;
+  content?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamp']>;
+  id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by max() on columns of table "replies" */
+export type Replies_Max_Order_By = {
+  author_id?: Maybe<Order_By>;
+  comment_id?: Maybe<Order_By>;
+  content?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Replies_Min_Fields = {
+  __typename?: 'replies_min_fields';
+  author_id?: Maybe<Scalars['Int']>;
+  comment_id?: Maybe<Scalars['uuid']>;
+  content?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamp']>;
+  id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by min() on columns of table "replies" */
+export type Replies_Min_Order_By = {
+  author_id?: Maybe<Order_By>;
+  comment_id?: Maybe<Order_By>;
+  content?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "replies" */
+export type Replies_Mutation_Response = {
+  __typename?: 'replies_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Replies>;
+};
+
+/** input type for inserting object relation for remote table "replies" */
+export type Replies_Obj_Rel_Insert_Input = {
+  data: Replies_Insert_Input;
+  on_conflict?: Maybe<Replies_On_Conflict>;
+};
+
+/** on conflict condition type for table "replies" */
+export type Replies_On_Conflict = {
+  constraint: Replies_Constraint;
+  update_columns: Array<Replies_Update_Column>;
+  where?: Maybe<Replies_Bool_Exp>;
+};
+
+/** ordering options when selecting data from "replies" */
+export type Replies_Order_By = {
+  author_id?: Maybe<Order_By>;
+  comment?: Maybe<Comments_Order_By>;
+  comment_id?: Maybe<Order_By>;
+  content?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: "replies" */
+export type Replies_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** select columns of table "replies" */
+export enum Replies_Select_Column {
+  /** column name */
+  AuthorId = 'author_id',
+  /** column name */
+  CommentId = 'comment_id',
+  /** column name */
+  Content = 'content',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "replies" */
+export type Replies_Set_Input = {
+  author_id?: Maybe<Scalars['Int']>;
+  comment_id?: Maybe<Scalars['uuid']>;
+  content?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamp']>;
+  id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate stddev on columns */
+export type Replies_Stddev_Fields = {
+  __typename?: 'replies_stddev_fields';
+  author_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "replies" */
+export type Replies_Stddev_Order_By = {
+  author_id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Replies_Stddev_Pop_Fields = {
+  __typename?: 'replies_stddev_pop_fields';
+  author_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "replies" */
+export type Replies_Stddev_Pop_Order_By = {
+  author_id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Replies_Stddev_Samp_Fields = {
+  __typename?: 'replies_stddev_samp_fields';
+  author_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "replies" */
+export type Replies_Stddev_Samp_Order_By = {
+  author_id?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Replies_Sum_Fields = {
+  __typename?: 'replies_sum_fields';
+  author_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "replies" */
+export type Replies_Sum_Order_By = {
+  author_id?: Maybe<Order_By>;
+};
+
+/** update columns of table "replies" */
+export enum Replies_Update_Column {
+  /** column name */
+  AuthorId = 'author_id',
+  /** column name */
+  CommentId = 'comment_id',
+  /** column name */
+  Content = 'content',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** aggregate var_pop on columns */
+export type Replies_Var_Pop_Fields = {
+  __typename?: 'replies_var_pop_fields';
+  author_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "replies" */
+export type Replies_Var_Pop_Order_By = {
+  author_id?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Replies_Var_Samp_Fields = {
+  __typename?: 'replies_var_samp_fields';
+  author_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "replies" */
+export type Replies_Var_Samp_Order_By = {
+  author_id?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Replies_Variance_Fields = {
+  __typename?: 'replies_variance_fields';
+  author_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "replies" */
+export type Replies_Variance_Order_By = {
+  author_id?: Maybe<Order_By>;
+};
+
 /** subscription root */
 export type Subscription_Root = {
   __typename?: 'subscription_root';
@@ -19907,6 +20332,12 @@ export type Subscription_Root = {
   proposalStatus?: Maybe<ProposalStatusSubscriptionPayload>;
   referendum?: Maybe<ReferendumSubscriptionPayload>;
   referendumStatus?: Maybe<ReferendumStatusSubscriptionPayload>;
+  /** fetch data from the table: "replies" */
+  replies: Array<Replies>;
+  /** fetch aggregated fields from the table: "replies" */
+  replies_aggregate: Replies_Aggregate;
+  /** fetch data from the table: "replies" using primary key columns */
+  replies_by_pk?: Maybe<Replies>;
   reward?: Maybe<RewardSubscriptionPayload>;
   session?: Maybe<SessionSubscriptionPayload>;
   slashing?: Maybe<SlashingSubscriptionPayload>;
@@ -20351,6 +20782,32 @@ export type Subscription_RootReferendumStatusArgs = {
 
 
 /** subscription root */
+export type Subscription_RootRepliesArgs = {
+  distinct_on?: Maybe<Array<Replies_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Replies_Order_By>>;
+  where?: Maybe<Replies_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootReplies_AggregateArgs = {
+  distinct_on?: Maybe<Array<Replies_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Replies_Order_By>>;
+  where?: Maybe<Replies_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootReplies_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** subscription root */
 export type Subscription_RootRewardArgs = {
   where?: Maybe<RewardSubscriptionWhereInput>;
 };
@@ -20787,6 +21244,48 @@ export type AddPostCommentMutation = (
   )> }
 );
 
+export type AddCommentReplyMutationVariables = Exact<{
+  authorId: Scalars['Int'];
+  content: Scalars['String'];
+  commentId: Scalars['uuid'];
+}>;
+
+
+export type AddCommentReplyMutation = (
+  { __typename: 'mutation_root' }
+  & { insert_replies?: Maybe<(
+    { __typename?: 'replies_mutation_response' }
+    & Pick<Replies_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
+export type EditCommentReplyMutationVariables = Exact<{
+  id: Scalars['uuid'];
+  content: Scalars['String'];
+}>;
+
+
+export type EditCommentReplyMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_replies?: Maybe<(
+    { __typename?: 'replies_mutation_response' }
+    & Pick<Replies_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
+export type DeleteCommentReplyMutationVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type DeleteCommentReplyMutation = (
+  { __typename?: 'mutation_root' }
+  & { delete_replies?: Maybe<(
+    { __typename?: 'replies_mutation_response' }
+    & Pick<Replies_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
 export type PostReactionFieldsFragment = (
   { __typename?: 'post_reactions' }
   & Pick<Post_Reactions, 'id' | 'reaction' | 'created_at' | 'updated_at'>
@@ -21006,12 +21505,24 @@ export type AuthorFieldsFragment = (
   & Pick<User, 'id' | 'kusama_default_address' | 'polkadot_default_address' | 'username'>
 );
 
+export type ReplyFieldsFragment = (
+  { __typename?: 'replies' }
+  & Pick<Replies, 'id' | 'comment_id' | 'content' | 'created_at' | 'updated_at'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )> }
+);
+
 export type CommentFieldsFragment = (
   { __typename?: 'comments' }
   & Pick<Comments, 'id' | 'content' | 'created_at' | 'updated_at'>
   & { author?: Maybe<(
     { __typename?: 'User' }
     & AuthorFieldsFragment
+  )>, replies: Array<(
+    { __typename?: 'replies' }
+    & ReplyFieldsFragment
   )> }
 );
 
@@ -22885,17 +23396,33 @@ export const AuthorFieldsFragmentDoc = gql`
   username
 }
     `;
+export const ReplyFieldsFragmentDoc = gql`
+    fragment replyFields on replies {
+  id
+  author {
+    ...authorFields
+  }
+  comment_id
+  content
+  created_at
+  updated_at
+}
+    ${AuthorFieldsFragmentDoc}`;
 export const CommentFieldsFragmentDoc = gql`
     fragment commentFields on comments {
   id
   author {
     ...authorFields
   }
+  replies {
+    ...replyFields
+  }
   content
   created_at
   updated_at
 }
-    ${AuthorFieldsFragmentDoc}`;
+    ${AuthorFieldsFragmentDoc}
+${ReplyFieldsFragmentDoc}`;
 export const OnchainLinkBountyFragmentDoc = gql`
     fragment onchainLinkBounty on onchain_links {
   id
@@ -24124,6 +24651,108 @@ export function useAddPostCommentMutation(baseOptions?: ApolloReactHooks.Mutatio
 export type AddPostCommentMutationHookResult = ReturnType<typeof useAddPostCommentMutation>;
 export type AddPostCommentMutationResult = ApolloReactCommon.MutationResult<AddPostCommentMutation>;
 export type AddPostCommentMutationOptions = ApolloReactCommon.BaseMutationOptions<AddPostCommentMutation, AddPostCommentMutationVariables>;
+export const AddCommentReplyDocument = gql`
+    mutation AddCommentReply($authorId: Int!, $content: String!, $commentId: uuid!) {
+  __typename
+  insert_replies(
+    objects: {author_id: $authorId, content: $content, comment_id: $commentId}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export type AddCommentReplyMutationFn = ApolloReactCommon.MutationFunction<AddCommentReplyMutation, AddCommentReplyMutationVariables>;
+
+/**
+ * __useAddCommentReplyMutation__
+ *
+ * To run a mutation, you first call `useAddCommentReplyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddCommentReplyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addCommentReplyMutation, { data, loading, error }] = useAddCommentReplyMutation({
+ *   variables: {
+ *      authorId: // value for 'authorId'
+ *      content: // value for 'content'
+ *      commentId: // value for 'commentId'
+ *   },
+ * });
+ */
+export function useAddCommentReplyMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddCommentReplyMutation, AddCommentReplyMutationVariables>) {
+        return ApolloReactHooks.useMutation<AddCommentReplyMutation, AddCommentReplyMutationVariables>(AddCommentReplyDocument, baseOptions);
+      }
+export type AddCommentReplyMutationHookResult = ReturnType<typeof useAddCommentReplyMutation>;
+export type AddCommentReplyMutationResult = ApolloReactCommon.MutationResult<AddCommentReplyMutation>;
+export type AddCommentReplyMutationOptions = ApolloReactCommon.BaseMutationOptions<AddCommentReplyMutation, AddCommentReplyMutationVariables>;
+export const EditCommentReplyDocument = gql`
+    mutation EditCommentReply($id: uuid!, $content: String!) {
+  update_replies(where: {id: {_eq: $id}}, _set: {content: $content}) {
+    affected_rows
+  }
+}
+    `;
+export type EditCommentReplyMutationFn = ApolloReactCommon.MutationFunction<EditCommentReplyMutation, EditCommentReplyMutationVariables>;
+
+/**
+ * __useEditCommentReplyMutation__
+ *
+ * To run a mutation, you first call `useEditCommentReplyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditCommentReplyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editCommentReplyMutation, { data, loading, error }] = useEditCommentReplyMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      content: // value for 'content'
+ *   },
+ * });
+ */
+export function useEditCommentReplyMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EditCommentReplyMutation, EditCommentReplyMutationVariables>) {
+        return ApolloReactHooks.useMutation<EditCommentReplyMutation, EditCommentReplyMutationVariables>(EditCommentReplyDocument, baseOptions);
+      }
+export type EditCommentReplyMutationHookResult = ReturnType<typeof useEditCommentReplyMutation>;
+export type EditCommentReplyMutationResult = ApolloReactCommon.MutationResult<EditCommentReplyMutation>;
+export type EditCommentReplyMutationOptions = ApolloReactCommon.BaseMutationOptions<EditCommentReplyMutation, EditCommentReplyMutationVariables>;
+export const DeleteCommentReplyDocument = gql`
+    mutation DeleteCommentReply($id: uuid!) {
+  delete_replies(where: {id: {_eq: $id}}) {
+    affected_rows
+  }
+}
+    `;
+export type DeleteCommentReplyMutationFn = ApolloReactCommon.MutationFunction<DeleteCommentReplyMutation, DeleteCommentReplyMutationVariables>;
+
+/**
+ * __useDeleteCommentReplyMutation__
+ *
+ * To run a mutation, you first call `useDeleteCommentReplyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCommentReplyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCommentReplyMutation, { data, loading, error }] = useDeleteCommentReplyMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteCommentReplyMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteCommentReplyMutation, DeleteCommentReplyMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteCommentReplyMutation, DeleteCommentReplyMutationVariables>(DeleteCommentReplyDocument, baseOptions);
+      }
+export type DeleteCommentReplyMutationHookResult = ReturnType<typeof useDeleteCommentReplyMutation>;
+export type DeleteCommentReplyMutationResult = ApolloReactCommon.MutationResult<DeleteCommentReplyMutation>;
+export type DeleteCommentReplyMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteCommentReplyMutation, DeleteCommentReplyMutationVariables>;
 export const PostReactionsDocument = gql`
     query PostReactions($postId: Int!) {
   post_reactions(where: {post_id: {_eq: $postId}}) {
