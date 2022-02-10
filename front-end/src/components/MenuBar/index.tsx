@@ -145,7 +145,7 @@ const MenuBar = ({ className } : Props): JSX.Element => {
 								</>
 								:
 								<>
-									{loggedOutItems.map((item, index) => <Menu.Item as={NavLink} key={index} onClick={handleClose} {...item} />)}
+									{loggedOutItems.map((item, index) => <Menu.Item as={NavLink} key={index} activeClassName="pink_primary-text" onClick={handleClose} {...item} />)}
 								</>
 							}
 							{latestBlockNumber ? <Menu.Item>
@@ -183,7 +183,7 @@ const MenuBar = ({ className } : Props): JSX.Element => {
 								</Dropdown>
 							</>
 							: <>
-								{loggedOutItems.map((item, index) => <Menu.Item as={NavLink} activeClassName="`pink_primary`-text" className='user_items' key={index} {...item} />)}
+								{loggedOutItems.map((item, index) => <Menu.Item as={NavLink} activeClassName="pink_primary-text" className='user_items' key={index} {...item} />)}
 							</>
 						}
 					</Menu.Menu>
