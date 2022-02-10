@@ -1241,7 +1241,7 @@ export default class AuthService {
 				query: editPostQuery,
 				variables: {
 					content,
-					post_id: post_id,
+					postId: post_id,
 					title,
 					topicId: 1,
 					userId: user.id
