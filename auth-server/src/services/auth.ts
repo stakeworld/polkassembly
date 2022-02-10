@@ -1180,6 +1180,8 @@ export default class AuthService {
 			treasury_proposal: 'onchain_treasury_proposal_id'
 		};
 
+		const onchain_proposal_type_value = onchain_proposal_type[proposal_type];
+
 		if (!onchain_proposal_type[proposal_type]) {
 			throw new ForbiddenError(messages.INVALID_PROPOSAL_TYPE);
 		}
@@ -1197,6 +1199,7 @@ export default class AuthService {
 				operationName: 'getPost',
 				query: fetchPostQuery,
 				variables: {
+					onchain_proposal_type_value,
 					proposal_id
 				}
 			}),
