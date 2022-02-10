@@ -17,6 +17,8 @@ import changeUsername from './mutation/changeUsername';
 import createPostConfirm from './mutation/createPostConfirm';
 import createPostStart from './mutation/createPostStart';
 import deleteAccount from './mutation/deleteAccount';
+import editPostConfirm from './mutation/editPostConfirm';
+import editPostStart from './mutation/editPostStart';
 import login from './mutation/login';
 import logout from './mutation/logout';
 import multisigLinkConfirm from './mutation/multisigLinkConfirm';
@@ -56,6 +58,8 @@ export default {
 		createPostConfirm,
 		createPostStart,
 		deleteAccount,
+		editPostConfirm,
+		editPostStart,
 		login,
 		logout,
 		multisigLinkConfirm,
