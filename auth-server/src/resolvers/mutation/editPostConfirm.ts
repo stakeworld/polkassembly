@@ -8,26 +8,22 @@ import { EditPostArgs, MessageType } from '../../types';
 export default async (parent: void, {
 	network,
 	address,
-	username,
-	email,
 	title,
 	content,
 	signature,
-	proposal_type,
-	proposal_id
+	proposalType,
+	proposalId
 }: EditPostArgs): Promise<MessageType> => {
 	const authServiceInstance = new AuthService();
 
 	await authServiceInstance.EditPostConfirm(
 		network,
 		address,
-		username,
-		email,
 		title,
 		content,
 		signature,
-		proposal_type,
-		proposal_id
+		proposalType,
+		proposalId
 	);
 
 	return { message: 'Post edited successfully' };

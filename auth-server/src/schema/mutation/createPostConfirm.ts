@@ -6,8 +6,6 @@ export default `
     createPostConfirm(
         network: String!
         address: String!
-        username: String
-        email: String
         title: String!
         content: String!
         signature: String!

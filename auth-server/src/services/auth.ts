@@ -1021,8 +1021,6 @@ export default class AuthService {
 	public async CreatePostConfirm (
 		network: Network,
 		address: string,
-		username: string,
-		email: string,
 		title: string,
 		content: string,
 		signature: string
@@ -1033,7 +1031,7 @@ export default class AuthService {
 			throw new ForbiddenError(messages.POST_CREATE_SIGN_MESSAGE_EXPIRED);
 		}
 
-		const signContent = `<Bytes>network:${network}::address:${address}::username:${username || ''}::email:${email || ''}::title:${title}::content:${content}::challenge:${challenge}</Bytes>`;
+		const signContent = `<Bytes>network:${network}::address:${address}::title:${title}::content:${content}::challenge:${challenge}</Bytes>`;
 
 		const isValidSr = verifySignature(signContent, address, signature);
 
@@ -1053,7 +1051,7 @@ export default class AuthService {
 			const randomUsername = uuid().split('-').join('').substring(0, 25);
 			const password = uuid();
 
-			user = await this.createUser(email || '', password, username || randomUsername, true);
+			user = await this.createUser('', password, randomUsername, true);
 
 			await this.createAddress(network, address, true, user.id);
 		} else {
@@ -1118,13 +1116,11 @@ export default class AuthService {
 	public async EditPostConfirm (
 		network: Network,
 		address: string,
-		username: string,
-		email: string,
 		title: string,
 		content: string,
 		signature: string,
-		proposal_type: string,
-		proposal_id: string
+		proposalType: string,
+		proposalId: string
 	): Promise<void> {
 		const challenge = await redisGet(getEditPostKey(address));
 
@@ -1132,7 +1128,7 @@ export default class AuthService {
 			throw new ForbiddenError(messages.POST_EDIT_SIGN_MESSAGE_EXPIRED);
 		}
 
-		const signContent = `<Bytes>network:${network}::address:${address}::username:${username || ''}::email:${email || ''}::title:${title}::content:${content}::challenge:${challenge}</Bytes>`;
+		const signContent = `<Bytes>network:${network}::address:${address}::title:${title}::content:${content}::challenge:${challenge}</Bytes>`;
 
 		const isValidSr = verifySignature(signContent, address, signature);
 
@@ -1152,7 +1148,7 @@ export default class AuthService {
 			const randomUsername = uuid().split('-').join('').substring(0, 25);
 			const password = uuid();
 
-			user = await this.createUser(email || '', password, username || randomUsername, true);
+			user = await this.createUser('', password, randomUsername, true);
 
 			await this.createAddress(network, address, true, user.id);
 		} else {
@@ -1171,7 +1167,7 @@ export default class AuthService {
 
 		const fetchPostQuery = `
 			query MyQuery($proposal_id: Int!) {
-				onchain_links(where: {onchain_${proposal_type}_id: {_eq: $proposal_id}}) {
+				onchain_links(where: {onchain_${proposalType}_id: {_eq: $proposal_id}}) {
 					post_id
 			}
 		}
@@ -1181,7 +1177,7 @@ export default class AuthService {
 			body: JSON.stringify({
 				query: fetchPostQuery,
 				variables: {
-					proposal_id
+					proposal_id: proposalId
 				}
 			}),
 			headers: {

@@ -8,8 +8,6 @@ import { CreatePostArgs, MessageType } from '../../types';
 export default async (parent: void, {
 	network,
 	address,
-	username,
-	email,
 	title,
 	content,
 	signature
@@ -19,8 +17,6 @@ export default async (parent: void, {
 	await authServiceInstance.CreatePostConfirm(
 		network,
 		address,
-		username,
-		email,
 		title,
 		content,
 		signature

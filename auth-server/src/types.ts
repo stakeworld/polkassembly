@@ -341,8 +341,6 @@ export interface ChangeAboutArgs {
 export interface CreatePostArgs {
     network: Network;
     address: string;
-    username: string;
-    email: string;
     title: string;
     content: string;
     signature: string;
@@ -351,11 +349,9 @@ export interface CreatePostArgs {
 export interface EditPostArgs {
     network: Network;
     address: string;
-    username: string;
-    email: string;
     title: string;
     content: string;
     signature: string;
-    proposal_type: string;
-    proposal_id: string;
+    proposalType: string;
+    proposalId: string;
 }
