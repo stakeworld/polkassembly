@@ -61,9 +61,6 @@ export const getMultisigAddressKey = (address: string): string => `MLA-${address
 export const getCreatePostKey = (address: string): string => `CPT-${address}`;
 export const getEditPostKey = (address: string): string => `EPT-${address}`;
 
-interface Map {
-	[key: string]: string | undefined;
-}
 export default class AuthService {
 	public async GetUser (token: string): Promise<User> {
 		const userId = getUserIdFromJWT(token, jwtPublicKey);
@@ -1172,23 +1169,9 @@ export default class AuthService {
 
 		const token = await this.getSignedToken(user);
 
-		const onchain_proposal_type: Map = {
-			motion: 'onchain_motion_id',
-			proposal: 'onchain_proposal_id',
-			referendum: 'onchain_referendum_id',
-			tech_committee_proposal: 'onchain_tech_committee_proposal_id',
-			treasury_proposal: 'onchain_treasury_proposal_id'
-		};
-
-		const onchain_proposal_type_value = onchain_proposal_type[proposal_type];
-
-		if (!onchain_proposal_type[proposal_type]) {
-			throw new ForbiddenError(messages.INVALID_PROPOSAL_TYPE);
-		}
-
 		const fetchPostQuery = `
-			query MyQuery($proposal_type: String!, $proposal_id: String) {
-				onchain_links(where: {$proposal_type: {_eq: $proposal_id}}) {
+			query MyQuery($proposal_id: Int!) {
+				onchain_links(where: {onchain_${proposal_type}_id: {_eq: $proposal_id}}) {
 					post_id
 			}
 		}
@@ -1196,10 +1179,8 @@ export default class AuthService {
 
 		const getPost = {
 			body: JSON.stringify({
-				operationName: 'getPost',
 				query: fetchPostQuery,
 				variables: {
-					onchain_proposal_type_value,
 					proposal_id
 				}
 			}),
