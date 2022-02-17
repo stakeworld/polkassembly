@@ -59,6 +59,7 @@ export const getSetCredentialsKey = (address: string): string => `SCR-${address}
 export const getEmailVerificationTokenKey = (token: string): string => `EVT-${token}`;
 export const getMultisigAddressKey = (address: string): string => `MLA-${address}`;
 export const getCreatePostKey = (address: string): string => `CPT-${address}`;
+export const getEditPostKey = (address: string): string => `EPT-${address}`;
 
 export default class AuthService {
 	public async GetUser (token: string): Promise<User> {
@@ -1089,6 +1090,139 @@ export default class AuthService {
 				query: createPostQuery,
 				variables: {
 					content,
+					title,
+					topicId: 1,
+					userId: user.id
+				}
+			}),
+			headers: {
+				authorization: `Bearer ${token}`,
+				'content-type': 'application/json'
+			},
+			method: 'POST'
+		};
+
+		const uri = `https://${network}.${process.env.DOMAIN_NAME}/v1/graphql`;
+
+		await fetch(uri, request);
+	}
+
+	public async EditPostStart (address: string): Promise<string> {
+		const signMessage = uuid();
+
+		await redisSetex(getEditPostKey(address), CREATE_POST_TTL, signMessage);
+
+		return signMessage;
+	}
+
+	public async EditPostConfirm (
+		network: Network,
+		address: string,
+		username: string,
+		email: string,
+		title: string,
+		content: string,
+		signature: string,
+		proposal_type: string,
+		proposal_id: string
+	): Promise<void> {
+		const challenge = await redisGet(getEditPostKey(address));
+
+		if (!challenge) {
+			throw new ForbiddenError(messages.POST_EDIT_SIGN_MESSAGE_EXPIRED);
+		}
+
+		const signContent = `<Bytes>network:${network}::address:${address}::username:${username || ''}::email:${email || ''}::title:${title}::content:${content}::challenge:${challenge}</Bytes>`;
+
+		const isValidSr = verifySignature(signContent, address, signature);
+
+		if (!isValidSr) {
+			throw new ForbiddenError(messages.POST_EDIT_INVALID_SIGNATURE);
+		}
+
+		const addressObj = await Address
+			.query()
+			.where('address', address)
+			.first();
+
+		let user;
+
+		if (!addressObj) {
+			// Create new user
+			const randomUsername = uuid().split('-').join('').substring(0, 25);
+			const password = uuid();
+
+			user = await this.createUser(email || '', password, username || randomUsername, true);
+
+			await this.createAddress(network, address, true, user.id);
+		} else {
+			user = await User
+				.query()
+				.findById(addressObj.user_id);
+		}
+
+		await redisDel(getCreatePostKey(address));
+
+		if (!user) {
+			return;
+		}
+
+		const token = await this.getSignedToken(user);
+
+		const fetchPostQuery = `
+			query MyQuery($proposal_id: Int!) {
+				onchain_links(where: {onchain_${proposal_type}_id: {_eq: $proposal_id}}) {
+					post_id
+			}
+		}
+	  `;
+
+		const getPost = {
+			body: JSON.stringify({
+				query: fetchPostQuery,
+				variables: {
+					proposal_id
+				}
+			}),
+			headers: {
+				authorization: `Bearer ${token}`,
+				'content-type': 'application/json'
+			},
+			method: 'POST'
+		};
+
+		const api = `https://${network}.${process.env.DOMAIN_NAME}/v1/graphql`;
+
+		const post = await fetch(api, getPost);
+
+		const { errors, data } = await post.json();
+
+		if (errors) {
+			throw new ForbiddenError(messages.ERROR_IN_POST_EDIT);
+		}
+
+		const post_id = data[0]?.post_id;
+
+		const editPostQuery = `mutation editPost($userId: Int!, $content: String!, $topicId: Int!, $title: String!, $postId: String!) {
+			__typename
+			update_posts(where: {id: {_eq: $postId}}, _set: {author_id: $userId, content: $content, title: $title, topic_id: $topicId}
+			) {
+			  affected_rows
+			  returning {
+				id
+				__typename
+			  }
+			  __typename
+			}
+		}`;
+
+		const request = {
+			body: JSON.stringify({
+				operationName: 'editPost',
+				query: editPostQuery,
+				variables: {
+					content,
+					postId: post_id,
 					title,
 					topicId: 1,
 					userId: user.id
