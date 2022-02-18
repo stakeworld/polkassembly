@@ -8,7 +8,7 @@ nodeSelector: {}
 
 frontend:
   image:
-    repository: docker.io/niklabh/polkassembly-kusama-production-front-end
+    repository: docker.io/niklabh/polkassembly-kusama-test-front-end
     pullPolicy: Always
 
   service:
