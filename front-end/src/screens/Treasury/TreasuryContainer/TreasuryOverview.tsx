@@ -26,11 +26,6 @@ interface Result {
 	treasuryAccount: Uint8Array;
 }
 
-enum USDCallType {
-	Available,
-	NextBurn
-}
-
 const TreasuryOverview = () => {
 	const { api, apiReady } = useContext(ApiContext);
 	const [currentBlock, setCurrentBlock] = useState<BN>(new BN(0));
@@ -133,7 +128,7 @@ const TreasuryOverview = () => {
 	useEffect(() => {
 		const dot_available: number = parseFloat(resultValue.toString());
 
-		async function fetchUSDCPrice(dot: number, callType: USDCallType) {
+		async function fetchAvailableUSDCPrice(dot: number) {
 			const response = await fetch(
 				'https://polkadot.api.subscan.io/api/open/price_converter',
 				{
@@ -153,22 +148,18 @@ const TreasuryOverview = () => {
 			const responseJSON = await response.json();
 			if (responseJSON['message'] == 'Success') {
 				const formattedUSD = formatUSDWithUnits(responseJSON['data']['output']);
-				if (callType == USDCallType.Available) {
-					setAvailableUSD(formattedUSD);
-				} else if (callType == USDCallType.NextBurn) {
-					setNextBurnUSD(formattedUSD);
-				}
+				setAvailableUSD(formattedUSD);
 			}
 		}
 
-		fetchUSDCPrice(dot_available, USDCallType.Available);
+		fetchAvailableUSDCPrice(dot_available);
 	}, [resultValue]);
 
 	// fetch Next Burn DOT to USD price whenever Next Burn DOT changes
 	useEffect(() => {
 		const dot_burn: number = parseFloat(resultBurn.toString());
 
-		async function fetchUSDCPrice(dot: number, callType: USDCallType) {
+		async function fetchNextBurnUSDCPrice(dot: number) {
 			const response = await fetch(
 				'https://polkadot.api.subscan.io/api/open/price_converter',
 				{
@@ -188,15 +179,11 @@ const TreasuryOverview = () => {
 			const responseJSON = await response.json();
 			if (responseJSON['message'] == 'Success') {
 				const formattedUSD = formatUSDWithUnits(responseJSON['data']['output']);
-				if (callType == USDCallType.Available) {
-					setAvailableUSD(formattedUSD);
-				} else if (callType == USDCallType.NextBurn) {
-					setNextBurnUSD(formattedUSD);
-				}
+				setNextBurnUSD(formattedUSD);
 			}
 		}
 
-		fetchUSDCPrice(dot_burn, USDCallType.NextBurn);
+		fetchNextBurnUSDCPrice(dot_burn);
 	}, [resultBurn]);
 
 	return (
