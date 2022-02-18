@@ -17,5 +17,5 @@ nodeWatcher:
 harvester:
   config:
     ARCHIVE_NODE_ENDPOINT: wss://kusama-rpc.polkadot.io
-    START_FROM: '0'
-    BLOCK_IDENTIFIER: chain-tip-0
+    START_FROM: '11457910'
+    BLOCK_IDENTIFIER: chain-tip-11457910
