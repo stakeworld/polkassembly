@@ -14,6 +14,7 @@ import Card from 'src/ui-components/Card';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
 import blockToTime from 'src/util/blockToTime';
 import formatBnBalance from 'src/util/formatBnBalance';
+import getNetwork from 'src/util/getNetwork';
 
 import Loader from '../../../ui-components/Loader';
 
@@ -26,6 +27,8 @@ interface Result {
 	treasuryAccount: Uint8Array;
 }
 
+const NETWORK = getNetwork();
+
 const TreasuryOverview = () => {
 	const { api, apiReady } = useContext(ApiContext);
 	const [currentBlock, setCurrentBlock] = useState<BN>(new BN(0));
@@ -34,6 +37,20 @@ const TreasuryOverview = () => {
 	>(undefined);
 
 	const { blocktime } = useBlockTime();
+
+	function getNetworkTokenSymbol(network:string){
+		let symbol = 'DOT';
+
+		switch (network){
+		case 'kusama':
+			symbol = 'KSM';
+			break;
+		default:
+			symbol = 'DOT';
+		}
+
+		return symbol;
+	}
 
 	const [result, setResult] = useState<Result>(() => ({
 		spendPeriod: BN_ZERO,
@@ -124,18 +141,17 @@ const TreasuryOverview = () => {
 
 	}
 
-	// fetch available DOT to USD price whenever available DOT changes
+	// fetch available token to USD price whenever available token changes
 	useEffect(() => {
-		const dot_available: number = parseFloat(resultValue.toString());
-
-		async function fetchAvailableUSDCPrice(dot: number) {
+		const token_available: number = parseFloat(resultValue.toString());
+		async function fetchAvailableUSDCPrice(token: number) {
 			const response = await fetch(
-				'https://polkadot.api.subscan.io/api/open/price_converter',
+				'https://'+NETWORK+'.api.subscan.io/api/open/price_converter',
 				{
 					body: JSON.stringify({
-						from: 'DOT',
+						from: getNetworkTokenSymbol(NETWORK),
 						quote: 'USD',
-						value: dot
+						value: token
 					}),
 					headers: {
 						Accept: 'application/json',
@@ -152,21 +168,21 @@ const TreasuryOverview = () => {
 			}
 		}
 
-		fetchAvailableUSDCPrice(dot_available);
+		fetchAvailableUSDCPrice(token_available);
 	}, [resultValue]);
 
-	// fetch Next Burn DOT to USD price whenever Next Burn DOT changes
+	// fetch Next Burn token to USD price whenever Next Burn token changes
 	useEffect(() => {
-		const dot_burn: number = parseFloat(resultBurn.toString());
+		const token_burn: number = parseFloat(resultBurn.toString());
 
-		async function fetchNextBurnUSDCPrice(dot: number) {
+		async function fetchNextBurnUSDCPrice(token: number) {
 			const response = await fetch(
-				'https://polkadot.api.subscan.io/api/open/price_converter',
+				'https://'+NETWORK+'.api.subscan.io/api/open/price_converter',
 				{
 					body: JSON.stringify({
-						from: 'DOT',
+						from: getNetworkTokenSymbol(NETWORK),
 						quote: 'USD',
-						value: dot
+						value: token
 					}),
 					headers: {
 						Accept: 'application/json',
@@ -183,7 +199,7 @@ const TreasuryOverview = () => {
 			}
 		}
 
-		fetchNextBurnUSDCPrice(dot_burn);
+		fetchNextBurnUSDCPrice(token_burn);
 	}, [resultBurn]);
 
 	return (
@@ -297,7 +313,6 @@ const TreasuryOverview = () => {
 													blocktime
 												)}
 											</h6>
-											Out of 24 days
 										</Grid.Column>
 									</Grid.Row>
 									<Grid.Row
@@ -315,14 +330,13 @@ const TreasuryOverview = () => {
 
 										<Grid.Column width={12}>
 											Spend Period
-											<HelperTooltip content='Funds held in the treasury can be spent by making a spending proposal that, if approved by the Council, will enter a spend period before distribution, it is subject to governance, with the current default set to 24 days.' />
+											<HelperTooltip content={ 'Funds held in the treasury can be spent by making a spending proposal that, if approved by the Council, will enter a spend period before distribution, it is subject to governance, with the current default set to 24 days.' } />
 											<h6>
 												{blockToTime(
 													result.spendPeriod.toNumber(),
 													blocktime
 												)}
 											</h6>
-											Out of 24 days
 										</Grid.Column>
 									</Grid.Row>
 								</Grid>
