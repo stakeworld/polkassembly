@@ -143,7 +143,15 @@ const TreasuryOverview = () => {
 
 	// fetch available token to USD price whenever available token changes
 	useEffect(() => {
-		const token_available: number = parseFloat(resultValue.toString());
+		// replace spaces returned in string by format function
+		const token_available: number = parseFloat(formatBnBalance(
+			resultValue.toString(),
+			{
+				numberAfterComma: 2,
+				withUnit: false
+			}
+		).replaceAll(/\s/g,''));
+
 		async function fetchAvailableUSDCPrice(token: number) {
 			const response = await fetch(
 				'https://'+NETWORK+'.api.subscan.io/api/open/price_converter',
@@ -173,7 +181,14 @@ const TreasuryOverview = () => {
 
 	// fetch Next Burn token to USD price whenever Next Burn token changes
 	useEffect(() => {
-		const token_burn: number = parseFloat(resultBurn.toString());
+		// replace spaces returned in string by format function
+		const token_burn: number = parseFloat(formatBnBalance(
+			resultBurn.toString(),
+			{
+				numberAfterComma: 2,
+				withUnit: false
+			}
+		).replaceAll(/\s/g,''));
 
 		async function fetchNextBurnUSDCPrice(token: number) {
 			const response = await fetch(
