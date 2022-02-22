@@ -1100,9 +1100,13 @@ export default class AuthService {
 			method: 'POST'
 		};
 
-		const uri = `https://${network}.${process.env.DOMAIN_NAME}/v1/graphql`;
+		let api = `https://${network}.${process.env.DOMAIN_NAME}/v1/graphql`;
 
-		await fetch(uri, request);
+		if (process.env.DOMAIN_NAME === 'test.polkassembly.io') {
+			api = 'https://test.polkassembly.io/v1/graphql';
+		}
+
+		await fetch(api, request);
 	}
 
 	public async EditPostStart (address: string): Promise<string> {
@@ -1187,7 +1191,11 @@ export default class AuthService {
 			method: 'POST'
 		};
 
-		const api = `https://${network}.${process.env.DOMAIN_NAME}/v1/graphql`;
+		let api = `https://${network}.${process.env.DOMAIN_NAME}/v1/graphql`;
+
+		if (process.env.DOMAIN_NAME === 'test.polkassembly.io') {
+			api = 'https://test.polkassembly.io/v1/graphql';
+		}
 
 		const post = await fetch(api, getPost);
 
@@ -1231,8 +1239,6 @@ export default class AuthService {
 			method: 'POST'
 		};
 
-		const uri = `https://${network}.${process.env.DOMAIN_NAME}/v1/graphql`;
-
-		await fetch(uri, request);
+		await fetch(api, request);
 	}
 }

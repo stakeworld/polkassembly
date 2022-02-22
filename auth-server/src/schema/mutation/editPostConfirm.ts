@@ -10,6 +10,6 @@ export default `
         content: String!
         signature: String!
         proposalType: String!
-        proposaId: String!
+        proposalId: String!
     ): Message
 `;
