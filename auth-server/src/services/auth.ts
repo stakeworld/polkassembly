@@ -1205,18 +1205,22 @@ export default class AuthService {
 			throw new ForbiddenError(messages.ERROR_IN_POST_EDIT);
 		}
 
-		const post_id = data[0]?.post_id;
+		if (!data?.onchain_links?.length) {
+			throw new ForbiddenError(messages.ERROR_IN_POST_EDIT);
+		}
 
-		const editPostQuery = `mutation editPost($userId: Int!, $content: String!, $topicId: Int!, $title: String!, $postId: String!) {
-			__typename
-			update_posts(where: {id: {_eq: $postId}}, _set: {author_id: $userId, content: $content, title: $title, topic_id: $topicId}
-			) {
+		const post_id = data?.onchain_links[0]?.post_id;
+
+		if (!post_id) {
+			throw new ForbiddenError(messages.ERROR_IN_POST_EDIT);
+		}
+
+		const editPostQuery = `mutation editPost($content: String!, $title: String!, $postId: Int!) {
+			update_posts(where: {id: {_eq: $postId}}, _set: {content: $content, title: $title}) {
 			  affected_rows
 			  returning {
 				id
-				__typename
 			  }
-			  __typename
 			}
 		}`;
 
@@ -1227,9 +1231,7 @@ export default class AuthService {
 				variables: {
 					content,
 					postId: post_id,
-					title,
-					topicId: 1,
-					userId: user.id
+					title
 				}
 			}),
 			headers: {
@@ -1239,6 +1241,12 @@ export default class AuthService {
 			method: 'POST'
 		};
 
-		await fetch(api, request);
+		const result = await fetch(api, request);
+
+		const json = await result.json();
+
+		if (json.errors) {
+			throw new ForbiddenError(messages.ERROR_IN_POST_EDIT);
+		}
 	}
 }
