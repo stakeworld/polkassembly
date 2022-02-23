@@ -80,6 +80,13 @@
         table:
           schema: public
           name: comment_reactions
+  - name: replies
+    using:
+      foreign_key_constraint_on:
+        column: comment_id
+        table:
+          schema: public
+          name: replies
   remote_relationships:
   - definition:
       remote_field:
@@ -880,3 +887,69 @@
             proposer_address:
               _in: X-Hasura-Polkadot
       check: null
+- table:
+    schema: public
+    name: replies
+  object_relationships:
+  - name: comment
+    using:
+      foreign_key_constraint_on: comment_id
+  remote_relationships:
+  - definition:
+      remote_field:
+        user:
+          arguments:
+            id: $author_id
+      hasura_fields:
+      - author_id
+      remote_schema: auth
+    name: author
+  insert_permissions:
+  - role: user
+    permission:
+      check:
+        author_id:
+          _eq: X-Hasura-User-Id
+      columns:
+      - author_id
+      - comment_id
+      - content
+      backend_only: false
+  select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+      - id
+      - content
+      - comment_id
+      - author_id
+      - created_at
+      - updated_at
+      filter: {}
+      allow_aggregations: true
+  - role: user
+    permission:
+      columns:
+      - author_id
+      - content
+      - created_at
+      - updated_at
+      - comment_id
+      - id
+      filter: {}
+      allow_aggregations: true
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - content
+      filter:
+        author_id:
+          _eq: X-Hasura-User-Id
+      check: null
+  delete_permissions:
+  - role: user
+    permission:
+      filter:
+        author_id:
+          _eq: X-Hasura-User-Id
