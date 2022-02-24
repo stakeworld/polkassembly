@@ -19,3 +19,12 @@ export const DELETE_COMMENT = gql`
         }
     }
 `;
+
+export const ADD_COMMENT_REPLY=gql`
+    mutation AddCommentReply ($authorId: Int!, $content: String!, $commentId: uuid!) {
+        __typename
+        insert_replies(objects: {author_id: $authorId, content:  $content, comment_id: $commentId}) {
+            affected_rows
+        }
+    }
+`;
