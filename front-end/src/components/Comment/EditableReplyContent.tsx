@@ -7,14 +7,11 @@ import { ApolloQueryResult } from 'apollo-client';
 import React, { useContext, useEffect, useState } from 'react';
 import { Controller,useForm } from 'react-hook-form';
 import { GoCheck, GoX } from 'react-icons/go';
-import { useLocation } from 'react-router-dom';
 import { Icon } from 'semantic-ui-react';
-import getNetwork from 'src/util/getNetwork';
 
 import { NotificationContext } from '../../context/NotificationContext';
 import { UserDetailsContext } from '../../context/UserDetailsContext';
 import {
-	CommentFieldsFragment,
 	DiscussionPostAndCommentsQuery,
 	DiscussionPostAndCommentsQueryVariables,
 	MotionPostAndCommentsQuery,
@@ -23,18 +20,18 @@ import {
 	ProposalPostAndCommentsQueryVariables,
 	ReferendumPostAndCommentsQuery,
 	ReferendumPostAndCommentsQueryVariables,
+	ReplyFieldsFragment,
 	TipPostAndCommentsQuery,
 	TipPostAndCommentsQueryVariables,
 	TreasuryProposalPostAndCommentsQuery,
 	TreasuryProposalPostAndCommentsQueryVariables,
-	useAddCommentReplyMutation,
+	// useAddCommentReplyMutation,
 	useDeleteCommentMutation,
 	useEditCommentMutation } from '../../generated/graphql';
 import { NotificationStatus } from '../../types';
 import Button from '../../ui-components/Button';
 import { Form } from '../../ui-components/Form';
 import Markdown from '../../ui-components/Markdown';
-import copyToClipboard from '../../util/copyToClipboard';
 import ContentForm from '../ContentForm';
 import CommentReactionBar from '../Reactionbar/CommentReactionBar';
 import ReportButton from '../ReportButton';
@@ -42,9 +39,10 @@ import ReportButton from '../ReportButton';
 interface Props {
 	authorId: number,
 	className?: string,
-	comment: CommentFieldsFragment,
+	reply: ReplyFieldsFragment,
 	commentId: string,
 	content: string,
+	replyId: string,
 	refetch: (variables?:
 		DiscussionPostAndCommentsQueryVariables |
 		ProposalPostAndCommentsQueryVariables |
@@ -62,50 +60,56 @@ interface Props {
 		Promise<ApolloQueryResult<DiscussionPostAndCommentsQuery>>
 }
 
-const EditableCommentContent = ({ authorId, className, content, commentId, refetch }: Props) => {
+const EditableReplyContent = ({ authorId, className, commentId, content, replyId, refetch }: Props) => {
 	const [isEditing, setIsEditing] = useState(false);
 	const { id } = useContext(UserDetailsContext);
 	const [newContent, setNewContent] = useState(content || '');
 	const toggleEdit = () => setIsEditing(!isEditing);
 	const { queueNotification } = useContext(NotificationContext);
 	const { control, errors, handleSubmit, setValue } = useForm();
-	const { pathname } = useLocation();
 
-	const [replyContent, setReplyContent] = useState('');
+	/*
 	const [isReplying, setIsReplying] = useState(false);
 	const toggleReply = () => setIsReplying(!isReplying);
+	const [replyContent, setReplyContent] = useState('');
+
 	const {
 		control: replyControl,
 		errors: replyErrors,
 		handleSubmit: handleReplySubmit,
 		setValue: setReplyValue
 	} = useForm();
+	*/
 
 	useEffect(() => {
 		isEditing && setValue('content',content);
 	},[content, isEditing, setValue]);
 
 	// For Replies
+	/*
 	useEffect(() => {
 		isReplying && setReplyValue('replyContent',replyContent);
 	},[replyContent, isReplying, setReplyValue]);
+	*/
 
 	const handleCancel = () => {
 		toggleEdit();
 		setNewContent(content || '');
 	};
 
+	/*
 	const handleReplyCancel = () => {
 		toggleReply();
 		setReplyContent('');
 	};
+	*/
 
 	const handleSave = () => {
 		setIsEditing(false);
 		editCommentMutation( {
 			variables: {
 				content: newContent,
-				id: commentId
+				id: replyId
 			} }
 		)
 			.then(({ data }) => {
@@ -113,14 +117,15 @@ const EditableCommentContent = ({ authorId, className, content, commentId, refet
 					refetch();
 					queueNotification({
 						header: 'Success!',
-						message: 'Your comment was edited.',
+						message: 'Your reply was edited.',
 						status: NotificationStatus.SUCCESS
 					});
 				}
 			})
-			.catch((e) => console.error('Error saving comment: ',e));
+			.catch((e) => console.error('Error saving reply: ',e));
 	};
 
+	/*
 	const handleReplySave = () => {
 		setIsReplying(false);
 		addCommentReplyMutation( {
@@ -133,7 +138,6 @@ const EditableCommentContent = ({ authorId, className, content, commentId, refet
 			.then(({ data }) => {
 				if (data?.insert_replies && data?.insert_replies.affected_rows > 0){
 					refetch();
-					setReplyContent('');
 					queueNotification({
 						header: 'Success!',
 						message: 'Your reply was added.',
@@ -141,22 +145,13 @@ const EditableCommentContent = ({ authorId, className, content, commentId, refet
 					});
 				}
 			})
-			.catch((e) => console.error('Error saving comment: ',e));
+			.catch((e) => console.error('Error saving reply: ',e));
 	};
 
-	const copyLink = () => {
-		const url = `https://${getNetwork()}.polkassembly.io${pathname}#${commentId}`;
+	*/
 
-		copyToClipboard(url);
-
-		queueNotification({
-			header: 'Copied!',
-			message: 'Comment link copied to clipboard.',
-			status: NotificationStatus.SUCCESS
-		});
-	};
 	const onContentChange = (data: Array<string>) => {setNewContent(data[0]); return data[0].length ? data[0] : null;};
-	const onReplyContentChange = (data: Array<string>) => {setReplyContent(data[0]); return data[0].length ? data[0] : null;};
+	// const onReplyContentChange = (data: Array<string>) => {setReplyContent(data[0]); return data[0].length ? data[0] : null;};
 
 	const [editCommentMutation, { error, loading }] = useEditCommentMutation({
 		variables: {
@@ -182,13 +177,13 @@ const EditableCommentContent = ({ authorId, className, content, commentId, refet
 					refetch();
 					queueNotification({
 						header: 'Success!',
-						message: 'Your comment was deleted.',
+						message: 'Your reply was deleted.',
 						status: NotificationStatus.SUCCESS
 					});
 				}
 			})
 			.catch((e) => {
-				console.error('Error deleting comment: ', e);
+				console.error('Error deleting reply: ', e);
 
 				queueNotification({
 					header: 'Error!',
@@ -198,6 +193,7 @@ const EditableCommentContent = ({ authorId, className, content, commentId, refet
 			});
 	};
 
+	/*
 	const [addCommentReplyMutation, { error: errorReply, loading: loadingReply }] = useAddCommentReplyMutation({
 		variables: {
 			authorId: authorId,
@@ -205,6 +201,7 @@ const EditableCommentContent = ({ authorId, className, content, commentId, refet
 			content: replyContent
 		}
 	});
+	*/
 
 	return (
 		<>
@@ -232,14 +229,7 @@ const EditableCommentContent = ({ authorId, className, content, commentId, refet
 						<>
 							<Markdown md={content} />
 							<div className='actions-bar'>
-								<CommentReactionBar className='reactions' commentId={commentId} />
-								{id && <div className='vl'/>}
-								{
-									id &&
-									<Button className={ isReplying ? 'social bg-blue-grey' : 'social' } onClick={toggleReply}>
-										<Icon name='reply' className='icon' />Reply
-									</Button>
-								}
+								<CommentReactionBar className='reactions' commentId={commentId} /> {/* TODO: Reply Reaction Bar */}
 								{id && <div className='vl'/>}
 								{id === authorId &&
 									<Button className={'social'} disabled={loading} onClick={toggleEdit}>
@@ -251,28 +241,8 @@ const EditableCommentContent = ({ authorId, className, content, commentId, refet
 									</Button>
 								}
 								{id === authorId && <Button className={'social'} onClick={deleteComment}><Icon name='delete' className='icon'/>Delete</Button>}
-								{id && !isEditing && <ReportButton type='comment' contentId={commentId} />}
-								{<Button className={'social'} onClick={copyLink}><Icon name='chain' className='icon'/>Copy link</Button>}
+								{id && !isEditing && <ReportButton type='reply' contentId={commentId + '#' + replyId} />} {/* TODO: Check with seniors */}
 							</div>
-							{/* Add Reply Form*/}
-							{errorReply?.message && <div>{errorReply.message}</div>}
-							{
-								isReplying && <Form className='replyForm' standalone={false}>
-									<Controller
-										as={<ContentForm
-											errorContent={replyErrors.content}
-										/>}
-										name='replyContent'
-										control={replyControl}
-										onChange={onReplyContentChange}
-										rules={{ required: true }}
-									/>
-									<div className='button-container'>
-										<Button secondary size='small' disabled={ loadingReply } onClick={handleReplyCancel}><GoX className='icon'/>Cancel</Button>
-										<Button primary size='small' disabled={ loadingReply } onClick={handleReplySubmit(handleReplySave)}><Icon name='reply' />Reply</Button>
-									</div>
-								</Form>
-							}
 						</>
 				}
 			</div>
@@ -280,7 +250,7 @@ const EditableCommentContent = ({ authorId, className, content, commentId, refet
 	);
 };
 
-export default styled(EditableCommentContent)`
+export default styled(EditableReplyContent)`
 
 	.button-container {
 		width: 100%;
