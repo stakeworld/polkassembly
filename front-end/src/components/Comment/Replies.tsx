@@ -49,10 +49,12 @@ const Replies = ({ className, repliesArr, refetch }: Props) => {
 
 	return (
 		<div className={className}>
-			{!showReplies ?
-				<div className='repliesButton'><Button onClick={toggleShowReplies}>View all {repliesArr.length} replies </Button></div>
-				:
-				<div className='repliesButton'><Button onClick={toggleShowReplies}>Hide replies</Button></div>
+			{repliesArr.length > 0 ?
+				!showReplies ?
+					<div className='repliesButton'><Button onClick={toggleShowReplies}>View all {repliesArr.length} replies </Button></div>
+					:
+					<div className='repliesButton'><Button onClick={toggleShowReplies}>Hide replies</Button></div>
+				: null
 			}
 			{showReplies && repliesArr.map((reply:ReplyFieldsFragment) =>
 				<div key={reply.id}>

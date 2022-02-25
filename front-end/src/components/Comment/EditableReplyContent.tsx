@@ -25,9 +25,8 @@ import {
 	TipPostAndCommentsQueryVariables,
 	TreasuryProposalPostAndCommentsQuery,
 	TreasuryProposalPostAndCommentsQueryVariables,
-	// useAddCommentReplyMutation,
-	useDeleteCommentMutation,
-	useEditCommentMutation } from '../../generated/graphql';
+	useDeleteCommentReplyMutation,
+	useEditCommentReplyMutation } from '../../generated/graphql';
 import { NotificationStatus } from '../../types';
 import Button from '../../ui-components/Button';
 import { Form } from '../../ui-components/Form';
@@ -68,52 +67,25 @@ const EditableReplyContent = ({ authorId, className, commentId, content, replyId
 	const { queueNotification } = useContext(NotificationContext);
 	const { control, errors, handleSubmit, setValue } = useForm();
 
-	/*
-	const [isReplying, setIsReplying] = useState(false);
-	const toggleReply = () => setIsReplying(!isReplying);
-	const [replyContent, setReplyContent] = useState('');
-
-	const {
-		control: replyControl,
-		errors: replyErrors,
-		handleSubmit: handleReplySubmit,
-		setValue: setReplyValue
-	} = useForm();
-	*/
-
 	useEffect(() => {
 		isEditing && setValue('content',content);
 	},[content, isEditing, setValue]);
-
-	// For Replies
-	/*
-	useEffect(() => {
-		isReplying && setReplyValue('replyContent',replyContent);
-	},[replyContent, isReplying, setReplyValue]);
-	*/
 
 	const handleCancel = () => {
 		toggleEdit();
 		setNewContent(content || '');
 	};
 
-	/*
-	const handleReplyCancel = () => {
-		toggleReply();
-		setReplyContent('');
-	};
-	*/
-
 	const handleSave = () => {
 		setIsEditing(false);
-		editCommentMutation( {
+		editCommentReplyMutation( {
 			variables: {
 				content: newContent,
 				id: replyId
 			} }
 		)
 			.then(({ data }) => {
-				if (data?.update_comments && data.update_comments.affected_rows > 0){
+				if (data?.update_replies && data.update_replies.affected_rows > 0){
 					refetch();
 					queueNotification({
 						header: 'Success!',
@@ -125,55 +97,30 @@ const EditableReplyContent = ({ authorId, className, commentId, content, replyId
 			.catch((e) => console.error('Error saving reply: ',e));
 	};
 
-	/*
-	const handleReplySave = () => {
-		setIsReplying(false);
-		addCommentReplyMutation( {
-			variables: {
-				authorId: authorId,
-				commentId: commentId,
-				content: replyContent
-			} }
-		)
-			.then(({ data }) => {
-				if (data?.insert_replies && data?.insert_replies.affected_rows > 0){
-					refetch();
-					queueNotification({
-						header: 'Success!',
-						message: 'Your reply was added.',
-						status: NotificationStatus.SUCCESS
-					});
-				}
-			})
-			.catch((e) => console.error('Error saving reply: ',e));
-	};
-
-	*/
-
 	const onContentChange = (data: Array<string>) => {setNewContent(data[0]); return data[0].length ? data[0] : null;};
 	// const onReplyContentChange = (data: Array<string>) => {setReplyContent(data[0]); return data[0].length ? data[0] : null;};
 
-	const [editCommentMutation, { error, loading }] = useEditCommentMutation({
+	const [editCommentReplyMutation, { error, loading }] = useEditCommentReplyMutation({
 		variables: {
 			content: newContent,
 			id: commentId
 		}
 	});
 
-	const [deleteCommentMutation] = useDeleteCommentMutation({
+	const [deleteCommentReplyMutation] = useDeleteCommentReplyMutation({
 		variables: {
-			id: commentId
+			id: replyId
 		}
 	});
 
-	const deleteComment = () => {
-		deleteCommentMutation( {
+	const deleteReply = () => {
+		deleteCommentReplyMutation( {
 			variables: {
-				id: commentId
+				id: replyId
 			} }
 		)
 			.then(({ data }) => {
-				if (data?.delete_comments?.affected_rows){
+				if (data?.delete_replies && data.delete_replies.affected_rows > 0){
 					refetch();
 					queueNotification({
 						header: 'Success!',
@@ -192,16 +139,6 @@ const EditableReplyContent = ({ authorId, className, commentId, content, replyId
 				});
 			});
 	};
-
-	/*
-	const [addCommentReplyMutation, { error: errorReply, loading: loadingReply }] = useAddCommentReplyMutation({
-		variables: {
-			authorId: authorId,
-			commentId: commentId,
-			content: replyContent
-		}
-	});
-	*/
 
 	return (
 		<>
@@ -240,7 +177,7 @@ const EditableReplyContent = ({ authorId, className, commentId, content, replyId
 										}
 									</Button>
 								}
-								{id === authorId && <Button className={'social'} onClick={deleteComment}><Icon name='delete' className='icon'/>Delete</Button>}
+								{id === authorId && <Button className={'social'} onClick={deleteReply}><Icon name='delete' className='icon'/>Delete</Button>}
 								{id && !isEditing && <ReportButton type='reply' contentId={commentId + '#' + replyId} />} {/* TODO: Check with seniors */}
 							</div>
 						</>
