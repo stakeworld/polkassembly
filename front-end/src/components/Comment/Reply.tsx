@@ -9,7 +9,6 @@ import { useLocation } from 'react-router-dom';
 import getDefaultAddressField from 'src/util/getDefaultAddressField';
 
 import {
-	CommentFieldsFragment,
 	DiscussionPostAndCommentsQuery,
 	DiscussionPostAndCommentsQueryVariables,
 	MotionPostAndCommentsQuery,
@@ -18,6 +17,7 @@ import {
 	ProposalPostAndCommentsQueryVariables,
 	ReferendumPostAndCommentsQuery,
 	ReferendumPostAndCommentsQueryVariables,
+	ReplyFieldsFragment,
 	TipPostAndCommentsQuery,
 	TipPostAndCommentsQueryVariables,
 	TreasuryProposalPostAndCommentsQuery,
@@ -25,12 +25,11 @@ import {
 import Avatar from '../../ui-components/Avatar';
 import CreationLabel from '../../ui-components/CreationLabel';
 import UpdateLabel from '../../ui-components/UpdateLabel';
-import EditableCommentContent from './EditableCommentContent';
-import Replies from './Replies';
+import EditableReplyContent from './EditableReplyContent';
 
 interface Props{
 	className?: string,
-	comment: CommentFieldsFragment,
+	reply: ReplyFieldsFragment,
 	refetch: (variables?:
 		ReferendumPostAndCommentsQueryVariables |
 		DiscussionPostAndCommentsQueryVariables |
@@ -47,24 +46,24 @@ interface Props{
 		Promise<ApolloQueryResult<DiscussionPostAndCommentsQuery>>
 }
 
-export const Comment = ({ className, comment, refetch } : Props) => {
-	const { author, content, created_at, id, replies, updated_at } = comment;
+export const Reply = ({ className, reply, refetch } : Props) => {
+	const { author, content, comment_id, created_at, id, updated_at } = reply;
 	const { hash } = useLocation();
-	const commentRef = useRef<HTMLDivElement>(null);
+	const replyRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		if (hash === `#${id}`) {
-			window.scrollTo(0, commentRef.current?.offsetTop || 0);
+			window.scrollTo(0, replyRef.current?.offsetTop || 0);
 		}
 	}, [hash, id]);
 
-	if (!author || !author.id || !author.username || !content) return <div>Comment not available</div>;
+	if (!author || !author.id || !author.username || !content) return <div>Reply not available</div>;
 
 	const defaultAddressField = getDefaultAddressField();
 	const defaultAddress = author[defaultAddressField];
 
 	return (
-		<div id={id} ref={commentRef} className={className}>
+		<div id={id} ref={replyRef} className={className}>
 			<Avatar
 				className='avatar'
 				username={author.username}
@@ -75,7 +74,7 @@ export const Comment = ({ className, comment, refetch } : Props) => {
 					className='creation-label'
 					created_at={created_at}
 					defaultAddress={defaultAddress}
-					text={'commented'}
+					text={'replied'}
 					username={author.username}
 				>
 					<UpdateLabel
@@ -83,22 +82,23 @@ export const Comment = ({ className, comment, refetch } : Props) => {
 						updated_at={updated_at}
 					/>
 				</CreationLabel>
-				<EditableCommentContent
+				<EditableReplyContent
 					authorId={author.id}
 					className='comment-content'
-					comment={comment}
-					commentId={id}
+					commentId={comment_id}
+					reply={reply}
+					replyId={id}
 					content={content}
 					refetch={refetch}
 				/>
-				<Replies className='comment-content' repliesArr={replies} refetch={refetch} />
 			</div>
 		</div>
 	);
 };
 
-export default styled(Comment)`
+export default styled(Reply)`
 	display: flex;
+	margin-top: 1rem;
 
 	.avatar {
 		display: inline-block;
