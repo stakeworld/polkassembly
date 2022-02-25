@@ -32,7 +32,6 @@ import Button from '../../ui-components/Button';
 import { Form } from '../../ui-components/Form';
 import Markdown from '../../ui-components/Markdown';
 import ContentForm from '../ContentForm';
-import CommentReactionBar from '../Reactionbar/CommentReactionBar';
 import ReportButton from '../ReportButton';
 
 interface Props {
@@ -166,8 +165,8 @@ const EditableReplyContent = ({ authorId, className, commentId, content, replyId
 						<>
 							<Markdown md={content} />
 							<div className='actions-bar'>
-								<CommentReactionBar className='reactions' commentId={commentId} /> {/* TODO: Reply Reaction Bar */}
-								{id && <div className='vl'/>}
+								{/* TODO: Reply Reaction Bar */}
+								{/* {id && <div className='vl'/>} */}
 								{id === authorId &&
 									<Button className={'social'} disabled={loading} onClick={toggleEdit}>
 										{
