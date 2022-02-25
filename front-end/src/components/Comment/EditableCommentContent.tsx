@@ -122,26 +122,28 @@ const EditableCommentContent = ({ authorId, className, content, commentId, refet
 	};
 
 	const handleReplySave = () => {
-		setIsReplying(false);
-		addCommentReplyMutation( {
-			variables: {
-				authorId: authorId,
-				commentId: commentId,
-				content: replyContent
-			} }
-		)
-			.then(({ data }) => {
-				if (data?.insert_replies && data?.insert_replies.affected_rows > 0){
-					refetch();
-					setReplyContent('');
-					queueNotification({
-						header: 'Success!',
-						message: 'Your reply was added.',
-						status: NotificationStatus.SUCCESS
-					});
-				}
-			})
-			.catch((e) => console.error('Error saving comment: ',e));
+		if(id){
+			setIsReplying(false);
+			addCommentReplyMutation( {
+				variables: {
+					authorId: id,
+					commentId: commentId,
+					content: replyContent
+				} }
+			)
+				.then(({ data }) => {
+					if (data?.insert_replies && data?.insert_replies.affected_rows > 0){
+						refetch();
+						setReplyContent('');
+						queueNotification({
+							header: 'Success!',
+							message: 'Your reply was added.',
+							status: NotificationStatus.SUCCESS
+						});
+					}
+				})
+				.catch((e) => console.error('Error saving comment: ',e));
+		}
 	};
 
 	const copyLink = () => {
