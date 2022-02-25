@@ -202,7 +202,7 @@ const EditableCommentContent = ({ authorId, className, content, commentId, refet
 
 	const [addCommentReplyMutation, { error: errorReply, loading: loadingReply }] = useAddCommentReplyMutation({
 		variables: {
-			authorId: authorId,
+			authorId: Number(id),
 			commentId: commentId,
 			content: replyContent
 		}
