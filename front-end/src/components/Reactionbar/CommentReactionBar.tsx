@@ -46,17 +46,11 @@ const CommentReactionBar = function ({ className, commentId }: Props) {
 	return (
 		<div className={className}>
 			{Object.keys(reactionMap).map((reaction) => {
-				const {
-					count,
-					userNames
-				} = reactionMap[reaction];
-
 				return (
 					<ReactionButton
 						key={reaction}
-						count={count}
-						userNames={userNames}
 						reaction={reaction}
+						reactionMap={reactionMap}
 						commentId={commentId}
 						refetch={refetch}
 					/>

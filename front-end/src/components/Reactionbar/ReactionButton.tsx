@@ -6,6 +6,7 @@ import styled from '@xstyled/styled-components';
 import { ApolloQueryResult } from 'apollo-client';
 import React, { useContext } from 'react';
 import { Popup } from 'semantic-ui-react';
+import { ReactionMapFields } from 'src/types';
 
 import { UserDetailsContext } from '../../context/UserDetailsContext';
 import {
@@ -20,8 +21,7 @@ import Button from '../../ui-components/Button';
 export interface ReactionButtonProps {
 	className?: string
 	reaction: string
-	count: number
-	userNames: string[]
+	reactionMap:  { [ key: string ]: ReactionMapFields; }
 	postId?: number
 	commentId?: string
 	refetch?: (variables?: undefined) => Promise<ApolloQueryResult<PostReactionsQuery>>
@@ -31,8 +31,7 @@ export interface ReactionButtonProps {
 const ReactionButton = function ({
 	className,
 	reaction,
-	count,
-	userNames,
+	reactionMap,
 	postId,
 	commentId,
 	refetch
@@ -42,9 +41,24 @@ const ReactionButton = function ({
 	const [addCommentReactionMutation] = useAddCommentReactionMutation();
 	const [deletePostReactionMutation] = useDeletePostReactionMutation();
 	const [deleteCommentReactionMutation] = useDeleteCommentReactionMutation();
+	const userNames = reactionMap[reaction].userNames;
 	const reacted = username && userNames.includes(username);
 
 	const _refetch = () => { refetch && refetch(); };
+
+	//returns other-reaction string if user has reacted to other-reaction option
+	//else returns false
+	const hasReactedOther = () : boolean | string => {
+		if(!username) return false;
+
+		for (const reactionKey of Object.keys(reactionMap)) {
+			if(reactionMap[reactionKey].userNames.includes(username)){
+				return reactionKey;
+			}
+		}
+
+		return false;
+	};
 
 	const handleReact = () => {
 		if (!id) {
@@ -64,6 +78,22 @@ const ReactionButton = function ({
 					.then(_refetch)
 					.catch((e) => console.error('Error in reacting to content',e));
 			} else {
+				// check if user reacted to other-reaction option
+				const otherReaction = hasReactedOther();
+				if(otherReaction){
+					//if reacted, delete that other-reaction
+					deletePostReactionMutation({
+						variables: {
+							postId,
+							reaction: otherReaction,
+							userId: id
+						}
+					})
+						.then(_refetch)
+						.catch((e) => console.error('Error in reacting to content', e));
+				}
+
+				//add new reaction
 				addPostReactionMutation({
 					variables: {
 						postId,
@@ -88,6 +118,22 @@ const ReactionButton = function ({
 					.then(_refetch)
 					.catch((e) => console.error('Error in reacting to content',e));
 			} else {
+				// check if user reacted to other-reaction option
+				const otherReaction = hasReactedOther();
+				if(otherReaction){
+					//if reacted, delete that other-reaction
+					deleteCommentReactionMutation({
+						variables: {
+							commentId,
+							reaction: otherReaction,
+							userId: id
+						}
+					})
+						.then(_refetch)
+						.catch((e) => console.error('Error in reacting to content',e));
+				}
+
+				//add new reaction
 				addCommentReactionMutation({
 					variables: {
 						commentId,
@@ -115,7 +161,7 @@ const ReactionButton = function ({
 			onClick={handleReact}
 			disabled={!id}
 		>
-			{reaction} {count}
+			{reaction} {reactionMap[reaction].count}
 		</Button>
 	</span>;
 
