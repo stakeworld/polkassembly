@@ -46,18 +46,19 @@ const ReactionButton = function ({
 
 	const _refetch = () => { refetch && refetch(); };
 
-	//returns other-reaction string if user has reacted to other-reaction option
-	//else returns false
-	const hasReactedOther = () : boolean | string => {
-		if(!username) return false;
+	//returns string array of other-reactions by the user
+	const otherReactions = () : string[] => {
+		const otherReactions: string[] = [];
+
+		if(!username) return otherReactions;
 
 		for (const reactionKey of Object.keys(reactionMap)) {
 			if(reactionMap[reactionKey].userNames.includes(username)){
-				return reactionKey;
+				otherReactions.push(reactionKey);
 			}
 		}
 
-		return false;
+		return otherReactions;
 	};
 
 	const handleReact = () => {
@@ -78,17 +79,19 @@ const ReactionButton = function ({
 					.then(_refetch)
 					.catch((e) => console.error('Error in reacting to content',e));
 			} else {
-				// check if user reacted to other-reaction option
-				const otherReaction = hasReactedOther();
-				if(otherReaction){
-					//if reacted, delete that other-reaction
-					deletePostReactionMutation({
+				// check if user reacted to other-reactions
+				const otherReactionsArr = otherReactions();
+				if(otherReactionsArr.length > 0){
+					//if reacted, delete that other-reactions
+					const delReactionPromiseArr = otherReactionsArr.map((reactionToDel) => deletePostReactionMutation({
 						variables: {
 							postId,
-							reaction: otherReaction,
+							reaction: reactionToDel,
 							userId: id
 						}
-					})
+					}));
+
+					Promise.all(delReactionPromiseArr)
 						.then(_refetch)
 						.catch((e) => console.error('Error in reacting to content', e));
 				}
@@ -119,18 +122,21 @@ const ReactionButton = function ({
 					.catch((e) => console.error('Error in reacting to content',e));
 			} else {
 				// check if user reacted to other-reaction option
-				const otherReaction = hasReactedOther();
-				if(otherReaction){
+				const otherReactionsArr = otherReactions();
+				if(otherReactionsArr.length > 0){
 					//if reacted, delete that other-reaction
-					deleteCommentReactionMutation({
+
+					const delReactionPromiseArr = otherReactionsArr.map((reactionToDel) => deleteCommentReactionMutation({
 						variables: {
 							commentId,
-							reaction: otherReaction,
+							reaction: reactionToDel,
 							userId: id
 						}
-					})
+					}));
+
+					Promise.all(delReactionPromiseArr)
 						.then(_refetch)
-						.catch((e) => console.error('Error in reacting to content',e));
+						.catch((e) => console.error('Error in reacting to content', e));
 				}
 
 				//add new reaction
