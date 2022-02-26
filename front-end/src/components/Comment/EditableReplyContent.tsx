@@ -177,7 +177,7 @@ const EditableReplyContent = ({ authorId, className, commentId, content, replyId
 									</Button>
 								}
 								{id === authorId && <Button className={'social'} onClick={deleteReply}><Icon name='delete' className='icon'/>Delete</Button>}
-								{id && !isEditing && <ReportButton type='reply' contentId={commentId + '#' + replyId} />} {/* TODO: Check with seniors */}
+								{id && !isEditing && <ReportButton type='comment' contentId={commentId + '#' + replyId} />} {/* TODO: Check with seniors */}
 							</div>
 						</>
 				}
