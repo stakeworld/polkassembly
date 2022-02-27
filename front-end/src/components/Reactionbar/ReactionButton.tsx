@@ -6,6 +6,7 @@ import styled from '@xstyled/styled-components';
 import { ApolloQueryResult } from 'apollo-client';
 import React, { useContext } from 'react';
 import { Popup } from 'semantic-ui-react';
+import { ReactionMapFields } from 'src/types';
 
 import { UserDetailsContext } from '../../context/UserDetailsContext';
 import {
@@ -20,37 +21,61 @@ import Button from '../../ui-components/Button';
 export interface ReactionButtonProps {
 	className?: string
 	reaction: string
-	count: number
-	userNames: string[]
+	reactionMap:  { [ key: string ]: ReactionMapFields; }
 	postId?: number
 	commentId?: string
 	refetch?: (variables?: undefined) => Promise<ApolloQueryResult<PostReactionsQuery>>
-		| Promise<ApolloQueryResult<CommentReactionsQuery>>
+		| Promise<ApolloQueryResult<CommentReactionsQuery>>,
+	reactionsDisabled: boolean
+	setReactionsDisabled: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const ReactionButton = function ({
 	className,
 	reaction,
-	count,
-	userNames,
+	reactionMap,
 	postId,
 	commentId,
-	refetch
+	refetch,
+	reactionsDisabled,
+	setReactionsDisabled
 }: ReactionButtonProps) {
 	const { id, username } = useContext(UserDetailsContext);
 	const [addPostReactionMutation] = useAddPostReactionMutation();
 	const [addCommentReactionMutation] = useAddCommentReactionMutation();
 	const [deletePostReactionMutation] = useDeletePostReactionMutation();
 	const [deleteCommentReactionMutation] = useDeleteCommentReactionMutation();
+	const userNames = reactionMap[reaction].userNames;
 	const reacted = username && userNames.includes(username);
 
 	const _refetch = () => { refetch && refetch(); };
+
+	//returns string array of other-reactions by the user
+	const otherReactions = () : string[] => {
+		const otherReactions: string[] = [];
+
+		if(!username) return otherReactions;
+
+		for (const reactionKey of Object.keys(reactionMap)) {
+			if(reactionMap[reactionKey].userNames.includes(username)){
+				otherReactions.push(reactionKey);
+			}
+		}
+
+		return otherReactions;
+	};
+
+	const refetchAndEnableReactions = () => {
+		refetch && refetch().then(() => { setReactionsDisabled(false); });
+	};
 
 	const handleReact = () => {
 		if (!id) {
 			console.error('No user id found. Not logged in?');
 			return;
 		}
+
+		setReactionsDisabled(true);
 
 		if (postId) {
 			if (reacted) {
@@ -61,9 +86,27 @@ const ReactionButton = function ({
 						userId: id
 					}
 				})
-					.then(_refetch)
+					.then(refetchAndEnableReactions)
 					.catch((e) => console.error('Error in reacting to content',e));
 			} else {
+				// check if user reacted to other-reactions
+				const otherReactionsArr = otherReactions();
+				if(otherReactionsArr.length > 0){
+					//if reacted, delete that other-reactions
+					const delReactionPromiseArr = otherReactionsArr.map((reactionToDel) => deletePostReactionMutation({
+						variables: {
+							postId,
+							reaction: reactionToDel,
+							userId: id
+						}
+					}));
+
+					Promise.all(delReactionPromiseArr)
+						.then(_refetch)
+						.catch((e) => console.error('Error in reacting to content', e));
+				}
+
+				//add new reaction
 				addPostReactionMutation({
 					variables: {
 						postId,
@@ -71,7 +114,7 @@ const ReactionButton = function ({
 						userId: id
 					}
 				})
-					.then(_refetch)
+					.then(refetchAndEnableReactions)
 					.catch((e) => console.error('Error in reacting to content',e));
 			}
 		}
@@ -85,9 +128,28 @@ const ReactionButton = function ({
 						userId: id
 					}
 				})
-					.then(_refetch)
+					.then(refetchAndEnableReactions)
 					.catch((e) => console.error('Error in reacting to content',e));
 			} else {
+				// check if user reacted to other-reaction option
+				const otherReactionsArr = otherReactions();
+				if(otherReactionsArr.length > 0){
+					//if reacted, delete that other-reaction
+
+					const delReactionPromiseArr = otherReactionsArr.map((reactionToDel) => deleteCommentReactionMutation({
+						variables: {
+							commentId,
+							reaction: reactionToDel,
+							userId: id
+						}
+					}));
+
+					Promise.all(delReactionPromiseArr)
+						.then(_refetch)
+						.catch((e) => console.error('Error in reacting to content', e));
+				}
+
+				//add new reaction
 				addCommentReactionMutation({
 					variables: {
 						commentId,
@@ -95,7 +157,7 @@ const ReactionButton = function ({
 						userId: id
 					}
 				})
-					.then(_refetch)
+					.then(refetchAndEnableReactions)
 					.catch((e) => console.error('Error in reacting to content',e));
 			}
 		}
@@ -113,9 +175,9 @@ const ReactionButton = function ({
 		<Button
 			className={'social' + (reacted ? ' reacted' : '')}
 			onClick={handleReact}
-			disabled={!id}
+			disabled={!id || reactionsDisabled}
 		>
-			{reaction} {count}
+			{reaction} {reactionMap[reaction].count}
 		</Button>
 	</span>;
 

@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useCommentReactionsQuery } from '../../generated/graphql';
 import { ReactionMapFields } from '../../types';
@@ -16,6 +16,7 @@ interface Props {
 
 const CommentReactionBar = function ({ className, commentId }: Props) {
 	const { data, refetch } = useCommentReactionsQuery({ variables: { commentId } });
+	const [reactionsDisabled, setReactionsDisabled] = useState<boolean>(false);
 
 	const reactionMap: { [ key: string ]: ReactionMapFields; } = {};
 
@@ -46,19 +47,15 @@ const CommentReactionBar = function ({ className, commentId }: Props) {
 	return (
 		<div className={className}>
 			{Object.keys(reactionMap).map((reaction) => {
-				const {
-					count,
-					userNames
-				} = reactionMap[reaction];
-
 				return (
 					<ReactionButton
 						key={reaction}
-						count={count}
-						userNames={userNames}
 						reaction={reaction}
+						reactionMap={reactionMap}
 						commentId={commentId}
 						refetch={refetch}
+						reactionsDisabled={reactionsDisabled}
+						setReactionsDisabled={setReactionsDisabled}
 					/>
 				);
 			})}
