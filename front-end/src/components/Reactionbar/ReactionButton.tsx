@@ -25,7 +25,9 @@ export interface ReactionButtonProps {
 	postId?: number
 	commentId?: string
 	refetch?: (variables?: undefined) => Promise<ApolloQueryResult<PostReactionsQuery>>
-		| Promise<ApolloQueryResult<CommentReactionsQuery>>
+		| Promise<ApolloQueryResult<CommentReactionsQuery>>,
+	reactionsDisabled: boolean
+	setReactionsDisabled: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const ReactionButton = function ({
@@ -34,7 +36,9 @@ const ReactionButton = function ({
 	reactionMap,
 	postId,
 	commentId,
-	refetch
+	refetch,
+	reactionsDisabled,
+	setReactionsDisabled
 }: ReactionButtonProps) {
 	const { id, username } = useContext(UserDetailsContext);
 	const [addPostReactionMutation] = useAddPostReactionMutation();
@@ -61,11 +65,17 @@ const ReactionButton = function ({
 		return otherReactions;
 	};
 
+	const refetchAndEnableReactions = () => {
+		refetch && refetch().then(() => { setReactionsDisabled(false); });
+	};
+
 	const handleReact = () => {
 		if (!id) {
 			console.error('No user id found. Not logged in?');
 			return;
 		}
+
+		setReactionsDisabled(true);
 
 		if (postId) {
 			if (reacted) {
@@ -76,7 +86,7 @@ const ReactionButton = function ({
 						userId: id
 					}
 				})
-					.then(_refetch)
+					.then(refetchAndEnableReactions)
 					.catch((e) => console.error('Error in reacting to content',e));
 			} else {
 				// check if user reacted to other-reactions
@@ -104,7 +114,7 @@ const ReactionButton = function ({
 						userId: id
 					}
 				})
-					.then(_refetch)
+					.then(refetchAndEnableReactions)
 					.catch((e) => console.error('Error in reacting to content',e));
 			}
 		}
@@ -118,7 +128,7 @@ const ReactionButton = function ({
 						userId: id
 					}
 				})
-					.then(_refetch)
+					.then(refetchAndEnableReactions)
 					.catch((e) => console.error('Error in reacting to content',e));
 			} else {
 				// check if user reacted to other-reaction option
@@ -147,7 +157,7 @@ const ReactionButton = function ({
 						userId: id
 					}
 				})
-					.then(_refetch)
+					.then(refetchAndEnableReactions)
 					.catch((e) => console.error('Error in reacting to content',e));
 			}
 		}
@@ -165,7 +175,7 @@ const ReactionButton = function ({
 		<Button
 			className={'social' + (reacted ? ' reacted' : '')}
 			onClick={handleReact}
-			disabled={!id}
+			disabled={!id || reactionsDisabled}
 		>
 			{reaction} {reactionMap[reaction].count}
 		</Button>
