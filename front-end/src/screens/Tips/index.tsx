@@ -5,15 +5,23 @@
 import styled from '@xstyled/styled-components';
 import React from 'react';
 import Grid from 'semantic-ui-react/dist/commonjs/collections/Grid';
+import CreateProposalButton from 'src/components/CreateProposal/CreateProposalButton';
 
 import InfoBox from '../../ui-components/InfoBox';
 import TipContainer from './TipContainer';
-
 const OnchainTipContainer = ({ className } : {className?: string}) => {
 
 	return (
 		<div className={className}>
-			<h1>On-chain tip</h1>
+			<Grid stackable verticalAlign='middle'>
+				<Grid.Column floated='left' mobile={16} tablet={11} computer={10}>
+					<h1>On-chain tip</h1>
+				</Grid.Column>
+				<Grid.Column floated='right' mobile={16} tablet={5} computer={4}>
+					<CreateProposalButton proposalType='tip' />
+				</Grid.Column>
+			</Grid>
+
 			<Grid stackable reversed='mobile tablet'>
 				<Grid.Column mobile={16} tablet={16} computer={10}>
 					<TipContainer limit={25} />
