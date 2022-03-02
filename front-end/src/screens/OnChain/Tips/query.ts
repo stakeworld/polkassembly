@@ -65,3 +65,13 @@ export const QUERY_LATEST_TIP_PROPOSALS = gql`
     }
 ${authorFields}
 `;
+
+export const QUERY_COUNT_TIP_PROPOSALS = gql`
+    query TipProposalCount($postType: Int!, $postTopic: Int!) {
+        posts_aggregate(where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_tip_id: {_is_null: false}}}) {
+            aggregate {
+            count
+            }
+        }
+    }
+`;

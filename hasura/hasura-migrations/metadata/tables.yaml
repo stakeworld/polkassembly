@@ -1,5 +1,37 @@
 - table:
     schema: public
+    name: blockchain_socials
+  select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+      - network
+      - discord
+      - reddit
+      - github
+      - twitter
+      - youtube
+      - telegram
+      - homepage
+      - block_explorer
+      - id
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - id
+      - block_explorer
+      - discord
+      - github
+      - homepage
+      - network
+      - reddit
+      - telegram
+      - twitter
+      - youtube
+      filter: {}
+- table:
+    schema: public
     name: comment_reactions
   object_relationships:
   - name: comment
