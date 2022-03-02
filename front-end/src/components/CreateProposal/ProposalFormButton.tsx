@@ -2,15 +2,20 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
+import { web3Accounts, web3Enable, web3FromSource } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import Identicon from '@polkadot/react-identicon';
 import styled from '@xstyled/styled-components';
-import React, { useState } from 'react';
+import React, {  useContext, useState } from 'react';
 import { Controller,useForm } from 'react-hook-form';
 import { Button, Dropdown, Form, Grid, Icon, Input, Message, Modal } from 'semantic-ui-react';
+import { ApiContext } from 'src/context/ApiContext';
+import { NotificationContext } from 'src/context/NotificationContext';
 import { APPNAME } from 'src/global/appName';
+import { LoadingStatusType, NotificationStatus } from 'src/types';
+import Card from 'src/ui-components/Card';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
+import Loader from 'src/ui-components/Loader';
 import getEncodedAddress from 'src/util/getEncodedAddress';
 
 import AddressComponent from '../../ui-components/Address';
@@ -43,6 +48,8 @@ const ProposalFormButton = ({ className, setTipModalOpen, proposalType } : Props
 	const [valueUnit, setValueUnit] = useState<string>('DOT');
 	const [postTitle, setPostTitle] = useState<string>('');
 	const [postDescription, setPostDescription] = useState<string>('');
+	const [loadingStatus, setLoadingStatus] = useState<LoadingStatusType>({ isLoading: false, message:'' });
+	const { queueNotification } = useContext(NotificationContext);
 
 	const { control, errors, handleSubmit } = useForm();
 
@@ -163,7 +170,10 @@ const ProposalFormButton = ({ className, setTipModalOpen, proposalType } : Props
 		return true;
 	};
 
-	const handleSignAndSubmit = () => {
+	const { api, apiReady } = useContext(ApiContext);
+
+	const handleSignAndSubmit = async () => {
+
 		if(!isFormValid()) return;
 
 		console.log('submitWithAccount : ', submitWithAccount);
@@ -172,190 +182,237 @@ const ProposalFormButton = ({ className, setTipModalOpen, proposalType } : Props
 		console.log('valueUnit : ', valueUnit);
 		console.log('postTitle : ', postTitle);
 		console.log('postDescription : ', postDescription);
+
+		if (!api) {
+			return;
+		}
+
+		if (!apiReady) {
+			return;
+		}
+
+		const injected = await web3FromSource(availableAccounts[0].meta.source);
+
+		api.setSigner(injected.signer);
+
+		setLoadingStatus({ isLoading: true, message: 'Waiting for signature' });
+		const proposal = api.tx.treasury.proposeSpend(value, beneficiaryAccount);
+
+		proposal.signAndSend(submitWithAccount, ({ status }) => {
+			if (status.isInBlock) {
+				queueNotification({
+					header: 'Success!',
+					message: `Propsal #${proposal.hash} successful.`,
+					status: NotificationStatus.SUCCESS
+				});
+				setLoadingStatus({ isLoading: false, message: '' });
+				console.log(`Completed at block hash #${status.asInBlock.toString()}`);
+				setModalOpen(false);
+			} else {
+				if (status.isBroadcast){
+					setLoadingStatus({ isLoading: true, message: 'Broadcasting the endorsement' });
+				}
+				console.log(`Current status: ${status.type}`);
+			}
+		}).catch((error) => {
+			setLoadingStatus({ isLoading: false, message: '' });
+			console.log(':( transaction failed');
+			console.error('ERROR:', error);
+			queueNotification({
+				header: 'Failed!',
+				message: error.message,
+				status: NotificationStatus.ERROR
+			});
+		});
 	};
 
 	return (
-		<Modal
-			className={className}
-			closeOnEscape={false}
-			closeOnDimmerClick={false}
-			onClose={() => setModalOpen(false)}
-			onOpen={() => setModalOpen(true)}
-			open={modalOpen}
-			size='small'
-			trigger={<Button size='big' style={ { backgroundColor: 'transparent', color: '#333', textDecoration: 'underline' } }> Or proceed manually</Button>}
-		>
-			<Modal.Header className='text-center modal-header'>
+		loadingStatus.isLoading ?
+			<Card className={'LoaderWrapper'}>
+				<Loader text={loadingStatus.message}/>
+			</Card>
+			:
+			<Modal
+				className={className}
+				closeOnEscape={false}
+				closeOnDimmerClick={false}
+				onClose={() => setModalOpen(false)}
+				onOpen={() => setModalOpen(true)}
+				open={modalOpen}
+				size='small'
+				trigger={<Button size='big' style={ { backgroundColor: 'transparent', color: '#333', textDecoration: 'underline' } }> Or proceed manually</Button>}
+			>
+				<Modal.Header className='text-center modal-header'>
 				Create {proposalType} Proposal
-			</Modal.Header>
-			<Modal.Content scrolling>
-				<Modal.Description className='modal-desc'>
-					<Grid centered stackable verticalAlign='middle' reversed='mobile tablet'>
-						<Grid.Column mobile={13} tablet={13} computer={12}>
-							<Form>
-								<h5>Enter On-chain Data</h5>
+				</Modal.Header>
+				<Modal.Content scrolling>
+					<Modal.Description className='modal-desc'>
+						<Grid centered stackable verticalAlign='middle' reversed='mobile tablet'>
+							<Grid.Column mobile={13} tablet={13} computer={12}>
+								<Form>
+									<h5>Enter On-chain Data</h5>
 
-								<div className='topMargin'>
-									{/* Submit with account */}
-									<Form.Group>
-										<Form.Field width={16}>
-											<label className='input-label'>
+									<div className='topMargin'>
+										{/* Submit with account */}
+										<Form.Group>
+											<Form.Field width={16}>
+												<label className='input-label'>
 													Submit with account
-												<HelperTooltip content='This account will make the proposal and be responsible for the bond.' />
-											</label>
+													<HelperTooltip content='This account will make the proposal and be responsible for the bond.' />
+												</label>
 
-											<div className='accountInputDiv'>
-												<Identicon
-													className='identicon'
-													value={submitWithAccount}
-													size={26}
-													theme={'polkadot'}
-												/>
-												<Input
-													size='big'
-													value={submitWithAccount}
-													onChange={ (e) => setSubmitWithAccount(e.target.value)}
-													placeholder='Account Address'
-													error={errorsFound.includes('submitWithAccount')}
-												/>
-											</div>
-
-											{!extensionNotAvailable && <div className='availableAddressOptions'>
-												<div onClick={() => handleDetect(AvailableAccountsInput.submitWithAccount)} className='availableAddressToggle'>
-														or choose from available addresses
-													{showAvailableAccountsObj['submitWithAccount'] ? <Icon name='chevron up' /> : <Icon name='chevron down' />}
+												<div className='accountInputDiv'>
+													<Identicon
+														className='identicon'
+														value={submitWithAccount}
+														size={26}
+														theme={'polkadot'}
+													/>
+													<Input
+														size='big'
+														value={submitWithAccount}
+														onChange={ (e) => setSubmitWithAccount(e.target.value)}
+														placeholder='Account Address'
+														error={errorsFound.includes('submitWithAccount')}
+													/>
 												</div>
-											</div>}
-											{extensionNotAvailable && <div className="error">Please install polkadot.js extension</div>}
-											{showAvailableAccountsObj['submitWithAccount'] && availableAccounts.length > 0 && getAvailableAccounts(AvailableAccountsInput.submitWithAccount)}
-										</Form.Field>
-									</Form.Group>
 
-									{/* Beneficiary account */}
-									<Form.Group>
-										<Form.Field width={16}>
-											<label className='input-label'>
+												{!extensionNotAvailable && <div className='availableAddressOptions'>
+													<div onClick={() => handleDetect(AvailableAccountsInput.submitWithAccount)} className='availableAddressToggle'>
+														or choose from available addresses
+														{showAvailableAccountsObj['submitWithAccount'] ? <Icon name='chevron up' /> : <Icon name='chevron down' />}
+													</div>
+												</div>}
+												{extensionNotAvailable && <div className="error">Please install polkadot.js extension</div>}
+												{showAvailableAccountsObj['submitWithAccount'] && availableAccounts.length > 0 && getAvailableAccounts(AvailableAccountsInput.submitWithAccount)}
+											</Form.Field>
+										</Form.Group>
+
+										{/* Beneficiary account */}
+										<Form.Group>
+											<Form.Field width={16}>
+												<label className='input-label'>
 													Beneficiary Account
-												<HelperTooltip content='The beneficiary will receive the full amount if the proposal passes.' />
-											</label>
+													<HelperTooltip content='The beneficiary will receive the full amount if the proposal passes.' />
+												</label>
 
-											<div className='accountInputDiv'>
-												<Identicon
-													className='identicon'
-													value={beneficiaryAccount}
-													size={26}
-													theme={'polkadot'}
-												/>
-												<Input
-													size='big'
-													value={beneficiaryAccount}
-													onChange={ (e) => setBeneficiaryAccount(e.target.value)}
-													placeholder='Account Address'
-													error={errorsFound.includes('beneficiaryAccount')}
-												/>
-											</div>
-
-											{!extensionNotAvailable && <div className='availableAddressOptions'>
-												<div onClick={() => handleDetect(AvailableAccountsInput.beneficiary)} className='availableAddressToggle'>
-														or choose from available addresses
-													{showAvailableAccountsObj['beneficiary'] ? <Icon name='chevron up' /> : <Icon name='chevron down' />}
+												<div className='accountInputDiv'>
+													<Identicon
+														className='identicon'
+														value={beneficiaryAccount}
+														size={26}
+														theme={'polkadot'}
+													/>
+													<Input
+														size='big'
+														value={beneficiaryAccount}
+														onChange={ (e) => setBeneficiaryAccount(e.target.value)}
+														placeholder='Account Address'
+														error={errorsFound.includes('beneficiaryAccount')}
+													/>
 												</div>
-											</div>}
-											{extensionNotAvailable && <div className="error">Please install polkadot.js extension</div>}
-											{showAvailableAccountsObj['beneficiary'] && availableAccounts.length > 0 && getAvailableAccounts(AvailableAccountsInput.beneficiary)}
-										</Form.Field>
-									</Form.Group>
 
-									{/* Value */}
-									<Form.Group>
-										<Form.Field width={16} className='input-form-field'>
-											<label className='input-label'>
+												{!extensionNotAvailable && <div className='availableAddressOptions'>
+													<div onClick={() => handleDetect(AvailableAccountsInput.beneficiary)} className='availableAddressToggle'>
+														or choose from available addresses
+														{showAvailableAccountsObj['beneficiary'] ? <Icon name='chevron up' /> : <Icon name='chevron down' />}
+													</div>
+												</div>}
+												{extensionNotAvailable && <div className="error">Please install polkadot.js extension</div>}
+												{showAvailableAccountsObj['beneficiary'] && availableAccounts.length > 0 && getAvailableAccounts(AvailableAccountsInput.beneficiary)}
+											</Form.Field>
+										</Form.Group>
+
+										{/* Value */}
+										<Form.Group>
+											<Form.Field width={16} className='input-form-field'>
+												<label className='input-label'>
 													Value
-												<HelperTooltip content='The value is the amount that is being asked for and that will be allocated to the beneficiary if the proposal is approved.' />
-											</label>
+													<HelperTooltip content='The value is the amount that is being asked for and that will be allocated to the beneficiary if the proposal is approved.' />
+												</label>
 
-											<Input
-												label={ <Dropdown defaultValue='DOT' options={valueUnitOptions} onChange={(event, { value }) => setValueUnit(value as string)} />}
-												labelPosition='right'
-												type='number'
-												min='1'
-												placeholder='0'
-												className='text-input'
-												size='big'
-												onChange={ (e) => setValue(e.target.value as string)}
-												error={errorsFound.includes('value')}
-											/>
-										</Form.Field>
-									</Form.Group>
+												<Input
+													label={ <Dropdown defaultValue='DOT' options={valueUnitOptions} onChange={(event, { value }) => setValueUnit(value as string)} />}
+													labelPosition='right'
+													type='number'
+													min='1'
+													placeholder='0'
+													className='text-input'
+													size='big'
+													onChange={ (e) => setValue(e.target.value as string)}
+													error={errorsFound.includes('value')}
+												/>
+											</Form.Field>
+										</Form.Group>
 
-									{/* Proposal Bond */}
-									<Form.Group>
-										<Form.Field width={16} className='input-form-field'>
-											<label className='input-label'>
+										{/* Proposal Bond */}
+										<Form.Group>
+											<Form.Field width={16} className='input-form-field'>
+												<label className='input-label'>
 													Proposal Bond
-												<HelperTooltip content='Of the beneficiary amount, at least 5.00% would need to be put up as collateral. The maximum of this and the minimum bond will be used to secure the proposal, refundable if it passes.' />
-											</label>
+													<HelperTooltip content='Of the beneficiary amount, at least 5.00% would need to be put up as collateral. The maximum of this and the minimum bond will be used to secure the proposal, refundable if it passes.' />
+												</label>
 
-											<Input
-												className='text-input hide-pointer'
-												value='5.00%'
-												size='big'
-											/>
-										</Form.Field>
-									</Form.Group>
+												<Input
+													className='text-input hide-pointer'
+													value='5.00%'
+													size='big'
+												/>
+											</Form.Field>
+										</Form.Group>
 
-									{/* Minimum Bond */}
-									<Form.Group>
-										<Form.Field width={16} className='input-form-field'>
-											<label className='input-label'>
+										{/* Minimum Bond */}
+										<Form.Group>
+											<Form.Field width={16} className='input-form-field'>
+												<label className='input-label'>
 												Minimum Bond
-												<HelperTooltip content='The minimum amount that will be bonded.' />
-											</label>
+													<HelperTooltip content='The minimum amount that will be bonded.' />
+												</label>
 
-											<Input
-												className='text-input hide-pointer'
-												value='100.0000 DOT'
-												size='big'
-											/>
-										</Form.Field>
-									</Form.Group>
+												<Input
+													className='text-input hide-pointer'
+													value='100.0000 DOT'
+													size='big'
+												/>
+											</Form.Field>
+										</Form.Group>
 
-									<Message color='yellow' className='text-input topMargin'>
-										<p><Icon name='warning circle' /> Be aware that once submitted the proposal will be put to a council vote. If the proposal is rejected due to a lack of info, invalid requirements or non-benefit to the network as a whole, the full bond posted (as describe above) will be lost.</p>
-									</Message>
-								</div>
+										<Message color='yellow' className='text-input topMargin'>
+											<p><Icon name='warning circle' /> Be aware that once submitted the proposal will be put to a council vote. If the proposal is rejected due to a lack of info, invalid requirements or non-benefit to the network as a whole, the full bond posted (as describe above) will be lost.</p>
+										</Message>
+									</div>
 
-								<div className='post-form-div'>
-									<Controller
-										as={<TitleForm
-											errorTitle={errors.title}
-										/>}
-										control={control}
-										name='title'
-										onChange={onTitleChange}
-										rules={{ required: true }}
-									/>
+									<div className='post-form-div'>
+										<Controller
+											as={<TitleForm
+												errorTitle={errors.title}
+											/>}
+											control={control}
+											name='title'
+											onChange={onTitleChange}
+											rules={{ required: true }}
+										/>
 
-									<Controller
-										as={<ContentForm
-											errorContent={errors.content}
-										/>}
-										control={control}
-										name='content'
-										onChange={onPostDescriptionChange}
-										rules={{ required: true }}
-									/>
-								</div>
-							</Form>
-						</Grid.Column>
-					</Grid>
-				</Modal.Description>
-			</Modal.Content>
-			<Modal.Actions className='modal-actions'>
-				<Button floated='right' className='submitBtn' onClick={handleSubmit(handleSignAndSubmit)}>Sign &amp; Submit</Button>
-				<Button floated='right' onClick={() => setTipModalOpen(false)}>Close</Button>
-			</Modal.Actions>
-		</Modal>
+										<Controller
+											as={<ContentForm
+												errorContent={errors.content}
+											/>}
+											control={control}
+											name='content'
+											onChange={onPostDescriptionChange}
+											rules={{ required: true }}
+										/>
+									</div>
+								</Form>
+							</Grid.Column>
+						</Grid>
+					</Modal.Description>
+				</Modal.Content>
+				<Modal.Actions className='modal-actions'>
+					<Button floated='right' className='submitBtn' onClick={handleSubmit(handleSignAndSubmit)}>Sign &amp; Submit</Button>
+					<Button floated='right' onClick={() => setTipModalOpen(false)}>Close</Button>
+				</Modal.Actions>
+			</Modal>
 	);
 
 };
