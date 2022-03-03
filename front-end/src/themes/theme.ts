@@ -11,7 +11,7 @@ export const theme = {
 		blue_secondary: '#EBF0F5',
 		green_primary: '#4DD18F',
 		green_secondary: '#399969',
-		grey_app_background: '#F7F9FA',
+		grey_app_background: '#EAEEF0',
 		grey_border: '#DDE4ED',
 		grey_light: '#EBF0F5',
 		grey_primary: '#777B80',

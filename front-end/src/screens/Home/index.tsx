@@ -11,6 +11,7 @@ import NetworkInfo from '../../components/NetworkInfo';
 import { UserDetailsContext } from '../../context/UserDetailsContext';
 import { useRouter } from '../../hooks';
 import Button from '../../ui-components/Button';
+import LatestActivity from './LatestActivity';
 import BountyContainer from './LatestBounties';
 import DiscussionContainer from './LatestDiscussions';
 import MotionsContainer from './LatestMotions';
@@ -19,6 +20,7 @@ import ReferendaContainer from './LatestReferenda';
 import TechCommitteeProposals from './LatestTechCommitteeProposals';
 import TipContainer from './LatestTips';
 import TreasuryContainer from './LatestTreasury';
+import TreasuryOverviewCards from './TreasuryOverviewCards';
 
 interface Props {
   className?: string
@@ -34,9 +36,14 @@ const Home = ({ className }: Props) => {
 	return (
 		<div className={className}>
 			<Grid stackable reversed='mobile tablet'>
-				<Grid.Column mobile={16} tablet={16} computer={10}>
+				<Grid.Column mobile={16} tablet={16} computer={16}>
+					<h1 style={ { fontSize: '4.4rem', fontWeight: 500 } }>Dashboard</h1>
 					<NetworkInfo />
-					<h1>Latest activity.</h1>
+					<br/><br/>
+					<TreasuryOverviewCards />
+					<br/><br/>
+					<LatestActivity />
+					<br/><br/>
 					<h3>Latest discussions</h3>
 					<DiscussionContainer className='discussionContainer'/>
 					<h3>Current referenda</h3>
