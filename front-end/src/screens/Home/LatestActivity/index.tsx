@@ -6,9 +6,12 @@ import styled from '@xstyled/styled-components';
 import React from 'react';
 import { Tab, Table } from 'semantic-ui-react';
 
+import LatestBountiesTable from '../LatestBountiesTable';
 import LatestMotionsTable from '../LatestMotionsTable';
 import LatestProposalsTable from '../LatestProposalsTable';
 import LatestReferendaTable from '../LatestReferendaTable';
+import LatestTipsTable from '../LatestTipsTable';
+import LatestTreasuryTable from '../LatestTreasuryTable';
 
 interface Props {
   className?: string
@@ -70,15 +73,15 @@ const LatestActivity = ({ className }: Props) => {
 		},
 		{
 			menuItem: 'Treasury Proposals',
-			render: () => <Tab.Pane className='tab-panel'>Tab 5 Content</Tab.Pane>
+			render: () => <LatestTreasuryTable />
 		},
 		{
 			menuItem: 'Bounties',
-			render: () => <Tab.Pane className='tab-panel'>Tab 6 Content</Tab.Pane>
+			render: () => <LatestBountiesTable />
 		},
 		{
 			menuItem: 'Tips',
-			render: () => <Tab.Pane className='tab-panel'>Tab 7 Content</Tab.Pane>
+			render: () => <LatestTipsTable />
 		}
 	];
 
