@@ -73,7 +73,7 @@ const LatestMotionsTable = ({ className }:Props) => {
 									status={post.onchain_link.onchain_motion[0]?.motionStatus?.[0].status}
 									title={post.title}
 									// topic={post.topic.name}
-									postType='referenda'
+									postType='motions'
 									created_at={post.created_at}
 								/>
 							;

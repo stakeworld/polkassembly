@@ -77,7 +77,7 @@ const LatestProposalsTable = ({ className }:Props) => {
 									onchainId={onchainId}
 									status={post.onchain_link.onchain_proposal[0]?.proposalStatus?.[0].status}
 									title={post.title}
-									postType='referenda'
+									postType='proposals'
 									created_at={post.created_at}
 								/>
 							;

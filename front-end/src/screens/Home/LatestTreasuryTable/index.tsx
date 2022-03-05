@@ -68,7 +68,7 @@ const LatestTreasuryTable = ({ className }:Props) => {
 									onchainId={onchainId}
 									status={post.onchain_link.onchain_treasury_spend_proposal?.[0]?.treasuryStatus?.[0].status}
 									title={post.title}
-									postType='referenda'
+									postType='treasury proposals'
 									created_at={post.created_at}
 								/>
 							;

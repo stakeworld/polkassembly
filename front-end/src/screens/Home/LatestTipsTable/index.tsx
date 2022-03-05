@@ -77,7 +77,7 @@ const LatestTipsTable = ({ className }:Props) => {
 									status={post.onchain_link.onchain_tip?.[0]?.tipStatus?.[0].status}
 									title={post.title}
 									// topic={post.topic.name}
-									postType='referenda'
+									postType='tips'
 									created_at={post.created_at}
 								/>
 							;

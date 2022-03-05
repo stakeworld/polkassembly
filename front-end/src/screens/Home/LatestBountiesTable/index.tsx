@@ -75,7 +75,7 @@ const LatestBountiesTable = ({ className }:Props) => {
 									status={post.onchain_link.onchain_bounty[0]?.bountyStatus?.[0].status}
 									title={post.title}
 									// topic={post.topic.name}
-									postType='referenda'
+									postType='bounties'
 									created_at={post.created_at}
 								/>
 							;
