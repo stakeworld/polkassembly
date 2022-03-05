@@ -12,14 +12,6 @@ import { UserDetailsContext } from '../../context/UserDetailsContext';
 import { useRouter } from '../../hooks';
 import Button from '../../ui-components/Button';
 import LatestActivity from './LatestActivity';
-import BountyContainer from './LatestBounties';
-import DiscussionContainer from './LatestDiscussions';
-import MotionsContainer from './LatestMotions';
-import ProposalContainer from './LatestProposals';
-import ReferendaContainer from './LatestReferenda';
-import TechCommitteeProposals from './LatestTechCommitteeProposals';
-import TipContainer from './LatestTips';
-import TreasuryContainer from './LatestTreasury';
 import TreasuryOverviewCards from './TreasuryOverviewCards';
 
 interface Props {
@@ -44,22 +36,6 @@ const Home = ({ className }: Props) => {
 					<br/><br/>
 					<LatestActivity />
 					<br/><br/>
-					<h3>Latest discussions</h3>
-					<DiscussionContainer className='discussionContainer'/>
-					<h3>Current referenda</h3>
-					<ReferendaContainer className='referendumContainer' />
-					<h3>Latest proposals</h3>
-					<ProposalContainer className='proposalContainer' />
-					<h3>Latest motions</h3>
-					<MotionsContainer className='motionContainer' />
-					<h3>Latest treasury proposals</h3>
-					<TreasuryContainer className='treasuryContainer' />
-					<h3>Latest tips</h3>
-					<TipContainer className='tipContainer' />
-					<h3>Latest Bounties</h3>
-					<BountyContainer className='bountyContainer' />
-					<h3>Latest Technical committee proposals</h3>
-					<TechCommitteeProposals className='techCommitteeProposalContainer' />
 				</Grid.Column>
 				<Grid.Column mobile={16} tablet={16} computer={6}>
 					{currentUser.id && <div className='mainButtonContainer'>

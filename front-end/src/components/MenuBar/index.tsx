@@ -9,6 +9,7 @@ import { MdClose } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import { Accordion, Dropdown, Icon, Menu, Responsive, Sidebar, SidebarPusher } from 'semantic-ui-react';
 import NetworkDropdown from 'src/ui-components/NetworkDropdown';
+import SearchBar from 'src/ui-components/SearchBar';
 import getNetwork from 'src/util/getNetwork';
 
 import logo from '../../assets/polkassembly-logo.png';
@@ -160,19 +161,8 @@ const MenuBar = ({ className } : Props): JSX.Element => {
 			<Responsive minWidth={Responsive.onlyComputer.minWidth}>
 				<Menu className={`${className} ${NETWORK}`} stackable inverted borderless>
 					<Menu.Item as={NavLink} to="/" className='logo' id='title'><img alt='Polkassembly Logo' src={logo} /></Menu.Item>
-					{contentItems.map((item, index) => <Menu.Item as={NavLink} className='desktop_items' key={index} {...item} />)}
-					<Menu.Item className='desktop_items'>
-						<Dropdown trigger={<>On-chain</>} icon={caretIcon} item={true}>
-							<Dropdown.Menu>
-								{onchainItems.map((item, index) => <Menu.Item as={NavLink} key={index} {...item}/>)}
-							</Dropdown.Menu>
-						</Dropdown>
-					</Menu.Item>
-					{latestBlockNumber ? <Menu.Item>
-						<Icon name="cube" style={{ marginRight: '10px' }}/>
-						<a href={blockUrl} target='_blank' rel='noreferrer'>{` ${latestBlockNumber}`}</a>
-					</Menu.Item> : null}
-					<Menu.Menu position="right">
+					<Menu.Menu className='right-menu' position="right">
+						<SearchBar className='search-bar' />
 						<NetworkDropdown />
 						{username
 							? <>
@@ -234,6 +224,15 @@ export default styled(MenuBar)`
 				}
 			}
 			background-color: black_full !important;
+		}
+	}
+
+	.right-menu {
+		display: flex;
+		align-items: center;
+
+		.search-bar {
+			margin-right: 1em;
 		}
 	}
 
