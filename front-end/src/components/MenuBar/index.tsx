@@ -241,6 +241,8 @@ export default styled(MenuBar)`
 
 			.results {
 				width: 35.5vw !important;
+				overflow-y: auto;
+				height: 70vh;
 			}
 		}
 	}
