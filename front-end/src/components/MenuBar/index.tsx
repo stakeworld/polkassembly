@@ -195,13 +195,13 @@ export default styled(MenuBar)`
 
 	&.ui.menu, .ui.inverted.menu {
 		font-family: font_default;
-		background-color: black_full;
+		background-color: nav_black;
 		border-radius: 0rem;
 		letter-spacing: 0.2px;
 
 		& a.active {
 			outline: none;
-			background-color: black_full !important;
+			background-color: nav_black !important;
 		}
 		.item {
 			color: grey_secondary;
@@ -223,7 +223,7 @@ export default styled(MenuBar)`
 					width: 10rem;
 				}
 			}
-			background-color: black_full !important;
+			background-color: nav_black !important;
 		}
 	}
 
@@ -233,6 +233,15 @@ export default styled(MenuBar)`
 
 		.search-bar {
 			margin-right: 1em;
+
+			input {
+				color: #ddd;
+				background: rgba(255, 255, 255, 0.25);
+			}
+
+			.results {
+				width: 35.5vw !important;
+			}
 		}
 	}
 
@@ -315,7 +324,7 @@ export default styled(MenuBar)`
 				padding: 0.5rem 0.5rem;
 				margin: 0 1.2rem;
 				:hover {
-					background-color: black_full !important;
+					background-color: nav_black !important;
 				}
 			}
 
