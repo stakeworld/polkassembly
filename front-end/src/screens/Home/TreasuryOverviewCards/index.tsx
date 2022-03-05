@@ -373,6 +373,8 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 
 export default styled(TreasuryOverviewCards)`
 	&&& {
+		justify-content: center;
+
 		.treasury-card{
 			border-radius: 0.5em;
 			
