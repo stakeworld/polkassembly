@@ -4,7 +4,11 @@
 
 import styled from '@xstyled/styled-components';
 import React from 'react';
-import { Header, Tab, Table } from 'semantic-ui-react';
+import { Tab, Table } from 'semantic-ui-react';
+
+import LatestMotionsTable from '../LatestMotionsTable';
+import LatestProposalsTable from '../LatestProposalsTable';
+import LatestReferendaTable from '../LatestReferendaTable';
 
 interface Props {
   className?: string
@@ -15,56 +19,38 @@ const LatestActivity = ({ className }: Props) => {
 		{
 			menuItem: 'All',
 			render: () => <Tab.Pane className='tab-panel'>
-				<Table celled padded>
-					<Table.Header>
+				<Table basic='very' striped unstackable>
+					<Table.Header className='table-header'>
 						<Table.Row>
-							<Table.HeaderCell singleLine>Evidence Rating</Table.HeaderCell>
-							<Table.HeaderCell>Effect</Table.HeaderCell>
-							<Table.HeaderCell>Efficacy</Table.HeaderCell>
-							<Table.HeaderCell>Consensus</Table.HeaderCell>
-							<Table.HeaderCell>Comments</Table.HeaderCell>
+							<Table.HeaderCell width={7}><span>Title</span></Table.HeaderCell>
+							<Table.HeaderCell width={3}><span>Posted By</span></Table.HeaderCell>
+							<Table.HeaderCell width={2}><span>Type</span></Table.HeaderCell>
+							<Table.HeaderCell width={2}><span>Status</span></Table.HeaderCell>
+							<Table.HeaderCell width={2}><span>Actions</span></Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>
 
 					<Table.Body>
 						<Table.Row>
-							<Table.Cell>
-								<Header as='h2' textAlign='center'>
-            A
-								</Header>
-							</Table.Cell>
-							<Table.Cell singleLine>Power Output</Table.Cell>
-							<Table.Cell>
-								1
-							</Table.Cell>
-							<Table.Cell textAlign='right'>
-          80% <br />
-								<a href='#'>18 studies</a>
-							</Table.Cell>
-							<Table.Cell>
-          Creatine supplementation is the reference compound for increasing
-          muscular creatine levels; there is variability in this increase,
-          however, with some nonresponders.
-							</Table.Cell>
+							<Table.Cell>John<br/>John</Table.Cell>
+							<Table.Cell>Approved</Table.Cell>
+							<Table.Cell>None</Table.Cell>
+							<Table.Cell>None</Table.Cell>
+							<Table.Cell>None</Table.Cell>
 						</Table.Row>
 						<Table.Row>
-							<Table.Cell>
-								<Header as='h2' textAlign='center'>
-            A
-								</Header>
-							</Table.Cell>
-							<Table.Cell singleLine>Weight</Table.Cell>
-							<Table.Cell>
-								2
-							</Table.Cell>
-							<Table.Cell textAlign='right'>
-          100% <br />
-								<a href='#'>65 studies</a>
-							</Table.Cell>
-							<Table.Cell>
-          Creatine is the reference compound for power improvement, with numbers
-          from one meta-analysis to assess potency
-							</Table.Cell>
+							<Table.Cell>Jamie</Table.Cell>
+							<Table.Cell>Approved</Table.Cell>
+							<Table.Cell>Requires call</Table.Cell>
+							<Table.Cell>Requires call</Table.Cell>
+							<Table.Cell>Requires call</Table.Cell>
+						</Table.Row>
+						<Table.Row>
+							<Table.Cell>Jill</Table.Cell>
+							<Table.Cell>Denied</Table.Cell>
+							<Table.Cell>None</Table.Cell>
+							<Table.Cell>None</Table.Cell>
+							<Table.Cell>None</Table.Cell>
 						</Table.Row>
 					</Table.Body>
 				</Table>
@@ -72,15 +58,15 @@ const LatestActivity = ({ className }: Props) => {
 		},
 		{
 			menuItem: 'Referenda',
-			render: () => <Tab.Pane loading className='tab-panel'>Tab 2 Content</Tab.Pane>
+			render: () => <LatestReferendaTable />
 		},
 		{
 			menuItem: 'Proposals',
-			render: () => <Tab.Pane className='tab-panel'>Tab 3 Content</Tab.Pane>
+			render: () => <LatestProposalsTable />
 		},
 		{
 			menuItem: 'Motions',
-			render: () => <Tab.Pane className='tab-panel'>Tab 4 Content</Tab.Pane>
+			render: () => <LatestMotionsTable />
 		},
 		{
 			menuItem: 'Treasury Proposals',
@@ -99,33 +85,64 @@ const LatestActivity = ({ className }: Props) => {
 	return (
 		<div className={className}>
 			<h1>Latest activity</h1>
-			{/* menu={{ color, inverted: true, }} */}
-			<Tab className='tab-header' menu={{ pointing: true, secondary: true }} panes={panes} />
+			<Tab className='tab-header' menu={{ className:'tab-menu', pointing: true, secondary: true }} panes={panes} />
 		</div>
 	);
 };
 
 export default styled(LatestActivity)`
-	.tab-header {
-		background: white;
-		border-top-left-radius: 0.5em;
-		border-top-right-radius: 0.5em;
-		padding-top: 0.5em;
-		margin-left: 0.5em;
-	}
+	&&& {
+			.tab-header {
+				background: white;
+				border-top-left-radius: 0.5em;
+				border-top-right-radius: 0.5em;
+				padding-top: 0.5em;
+				margin-left: 0.5em;
+			}
+		
+			.tab-menu {
+				overflow-x: auto;
+				overflow-y: hidden;
+		
+				a.active {
+					border-bottom: 5px solid #E5007A !important;
+				}
+			}
+		
+			.item:first-child{
+				margin-left: 1em !important;
+			}
+		
+			.item {
+				font-size: 1.5em;
+			}
+		
+			.tab-panel{
+				background: white;
+				border: none !important;
+				width: 100% !important;
+				margin-left: 0 !important;
+				font-size: 1.5rem;
+				overflow-x: auto;
+				overflow-y: hidden;
+			}
+		
+			.table-header{
+				background: #F2F2F2;
+		
+				th {
+					font-weight: 500 !important;
+					padding-top: 1.5em;
+					padding-bottom: 1.5em;
 
-	.item:first-child{
-		margin-left: 1em !important;
-	}
-
-	.item {
-		font-size: 1.5em;
-	}
-
-	.tab-panel{
-		background: white;
-		border: none !important;
-		width: 90% !important;
-		margin-left: 1em;
+					:not(:first-child){
+						span {
+							border-left: 1px solid #ddd;
+							padding 0.3em 0 0.3em 1em;
+							margin-left: -1em;
+						}
+					}
+				}
+			}
 	}
 `;

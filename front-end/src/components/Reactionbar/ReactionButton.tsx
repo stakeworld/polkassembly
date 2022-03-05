@@ -192,9 +192,13 @@ export default styled(ReactionButton)`
 	.social {
 		color: blue_primary !important;
 		font-size: 1em !important;
+
+		:not(.reacted) {
+			background-color: transparent !important;
+		}
 	}
 
-	.reacted {
+	.social:hover, .reacted {
 		background-color: blue_secondary !important;
 		border: none !important;
 	}
