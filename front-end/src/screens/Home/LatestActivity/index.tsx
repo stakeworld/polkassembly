@@ -34,54 +34,42 @@ const LatestActivity = ({ className }: Props) => {
 					</Table.Header>
 
 					<Table.Body>
-						<Table.Row>
-							<Table.Cell>John<br/>John</Table.Cell>
-							<Table.Cell>Approved</Table.Cell>
-							<Table.Cell>None</Table.Cell>
-							<Table.Cell>None</Table.Cell>
-							<Table.Cell>None</Table.Cell>
-						</Table.Row>
-						<Table.Row>
-							<Table.Cell>Jamie</Table.Cell>
-							<Table.Cell>Approved</Table.Cell>
-							<Table.Cell>Requires call</Table.Cell>
-							<Table.Cell>Requires call</Table.Cell>
-							<Table.Cell>Requires call</Table.Cell>
-						</Table.Row>
-						<Table.Row>
-							<Table.Cell>Jill</Table.Cell>
-							<Table.Cell>Denied</Table.Cell>
-							<Table.Cell>None</Table.Cell>
-							<Table.Cell>None</Table.Cell>
-							<Table.Cell>None</Table.Cell>
-						</Table.Row>
+						{[...Array(10)].map((x, i) =>
+							<Table.Row key={ i }>
+								<Table.Cell>John<br/>John</Table.Cell>
+								<Table.Cell>Approved</Table.Cell>
+								<Table.Cell>None</Table.Cell>
+								<Table.Cell>None</Table.Cell>
+								<Table.Cell>None</Table.Cell>
+							</Table.Row>
+						)}
 					</Table.Body>
 				</Table>
 			</Tab.Pane>
 		},
 		{
 			menuItem: 'Referenda',
-			render: () => <LatestReferendaTable />
+			render: () => <LatestReferendaTable className='tab-panel' />
 		},
 		{
 			menuItem: 'Proposals',
-			render: () => <LatestProposalsTable />
+			render: () => <LatestProposalsTable className='tab-panel' />
 		},
 		{
 			menuItem: 'Motions',
-			render: () => <LatestMotionsTable />
+			render: () => <LatestMotionsTable className='tab-panel' />
 		},
 		{
 			menuItem: 'Treasury Proposals',
-			render: () => <LatestTreasuryTable />
+			render: () => <LatestTreasuryTable className='tab-panel' />
 		},
 		{
 			menuItem: 'Bounties',
-			render: () => <LatestBountiesTable />
+			render: () => <LatestBountiesTable className='tab-panel' />
 		},
 		{
 			menuItem: 'Tips',
-			render: () => <LatestTipsTable />
+			render: () => <LatestTipsTable className='tab-panel' />
 		}
 	];
 
@@ -127,7 +115,8 @@ export default styled(LatestActivity)`
 				margin-left: 0 !important;
 				font-size: 1.5rem;
 				overflow-x: auto;
-				overflow-y: hidden;
+				overflow-y: auto;
+				max-height: 500px;
 			}
 		
 			.table-header{
