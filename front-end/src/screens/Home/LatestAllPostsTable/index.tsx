@@ -8,7 +8,7 @@ import React, { useEffect } from 'react';
 import { Tab, Table } from 'semantic-ui-react';
 import NothingFoundCard from 'src/ui-components/NothingFoundCard';
 
-import { useLatestBountyPostsQuery } from '../../../generated/graphql';
+import { useLatestReferendaPostsQuery } from '../../../generated/graphql';
 import { post_type } from '../../../global/post_types';
 import FilteredError from '../../../ui-components/FilteredError';
 import LatestActivityTableRow from '../LatestActivityTableRow';
@@ -17,10 +17,11 @@ interface Props {
 	className?: string
 }
 
-const LatestBountiesTable = ({ className }:Props) => {
+const LatestAllPostsTable = ({ className }:Props) => {
 
-	const { data, error, refetch } = useLatestBountyPostsQuery({ variables: {
-		limit: 2,
+	// TODO: change query to all posts
+	const { data, error, refetch } = useLatestReferendaPostsQuery({ variables: {
+		limit: 10,
 		postType: post_type.ON_CHAIN
 	} });
 
@@ -32,18 +33,18 @@ const LatestBountiesTable = ({ className }:Props) => {
 
 	if(data){
 		const noPost = !data.posts || !data.posts.length;
-		const atLeastOneCurrentBounty = data.posts.some((post) => {
-			if (post.onchain_link?.onchain_bounty.length){
+		const atLeastOneCurrentReferendum = data.posts.some((post) => {
+			if(post.onchain_link?.onchain_referendum.length){
 				// this breaks the loop as soon as
-				// we find a post that has a bounty.
+				// we find a post that has a referendum.
 				return true;
 			}
 			return false;
 		});
 
-		if (!atLeastOneCurrentBounty || noPost)
+		if (!atLeastOneCurrentReferendum || noPost)
 			return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
-				<NothingFoundCard className={className} text='There are currently no active bounties.'/>
+				<NothingFoundCard className={className} text='There are currently no active referenda.'/>
 			</Tab.Pane>;
 
 		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
@@ -61,9 +62,9 @@ const LatestBountiesTable = ({ className }:Props) => {
 				<Table.Body>
 					{data.posts.map(
 						(post) => {
-							const onchainId = post.onchain_link?.onchain_bounty_id;
+							const onchainId = post.onchain_link?.onchain_referendum_id;
 
-							return !!post?.author?.username && !!post.onchain_link?.onchain_bounty.length &&
+							return !!post?.author?.username && !!post.onchain_link?.onchain_referendum.length &&
 								<LatestActivityTableRow
 									key={post.id}
 									postId={post.id}
@@ -71,10 +72,11 @@ const LatestBountiesTable = ({ className }:Props) => {
 									comments={post.comments_aggregate.aggregate?.count
 										? post.comments_aggregate.aggregate.count.toString()
 										: 'no'}
+									method={post.onchain_link.onchain_referendum[0]?.preimage?.method}
 									onchainId={onchainId}
-									status={post.onchain_link.onchain_bounty[0]?.bountyStatus?.[0].status}
+									status={post.onchain_link.onchain_referendum[0]?.referendumStatus?.[0].status}
+									end={post.onchain_link.onchain_referendum[0]?.end}
 									title={post.title}
-									// topic={post.topic.name}
 									postType='referenda'
 									created_at={post.created_at}
 								/>
@@ -90,7 +92,7 @@ const LatestBountiesTable = ({ className }:Props) => {
 
 };
 
-export default styled(LatestBountiesTable)`
+export default styled(LatestAllPostsTable)`
 	&&& {
     .tab-header {
       background: white;

@@ -4,8 +4,9 @@
 
 import styled from '@xstyled/styled-components';
 import React from 'react';
-import { Tab, Table } from 'semantic-ui-react';
+import { Tab } from 'semantic-ui-react';
 
+import LatestAllPostsTable from '../LatestAllPostsTable';
 import LatestBountiesTable from '../LatestBountiesTable';
 import LatestMotionsTable from '../LatestMotionsTable';
 import LatestProposalsTable from '../LatestProposalsTable';
@@ -21,31 +22,7 @@ const LatestActivity = ({ className }: Props) => {
 	const panes = [
 		{
 			menuItem: 'All',
-			render: () => <Tab.Pane className='tab-panel'>
-				<Table basic='very' striped unstackable>
-					<Table.Header className='table-header'>
-						<Table.Row>
-							<Table.HeaderCell width={7}><span>Title</span></Table.HeaderCell>
-							<Table.HeaderCell width={3}><span>Posted By</span></Table.HeaderCell>
-							<Table.HeaderCell width={2}><span>Type</span></Table.HeaderCell>
-							<Table.HeaderCell width={2}><span>Status</span></Table.HeaderCell>
-							<Table.HeaderCell width={2}><span>Actions</span></Table.HeaderCell>
-						</Table.Row>
-					</Table.Header>
-
-					<Table.Body>
-						{[...Array(10)].map((x, i) =>
-							<Table.Row key={ i }>
-								<Table.Cell>John<br/>John</Table.Cell>
-								<Table.Cell>Approved</Table.Cell>
-								<Table.Cell>None</Table.Cell>
-								<Table.Cell>None</Table.Cell>
-								<Table.Cell>None</Table.Cell>
-							</Table.Row>
-						)}
-					</Table.Body>
-				</Table>
-			</Tab.Pane>
+			render: () => <LatestAllPostsTable className='tab-panel' />
 		},
 		{
 			menuItem: 'Referenda',
