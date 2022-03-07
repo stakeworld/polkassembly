@@ -184,6 +184,8 @@ const MenuBar = ({ className } : Props): JSX.Element => {
 };
 
 export default styled(MenuBar)`
+	z-index: 103 !important;
+
 	&.polkadot {
 		border-top: solid !important;
 		border-top-color: pink_primary !important;

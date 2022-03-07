@@ -44,6 +44,7 @@ export default styled(Footer)`
 	bottom: 0;
 	width: 100%;
 	height: 4rem;
+	z-index: 103;
 
 	.ui.menu {
 		background-color: black_full;
