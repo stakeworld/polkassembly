@@ -41,10 +41,9 @@ const Footer = ({ className }:Props ): JSX.Element => {
 
 export default styled(Footer)`
 	position: absolute;
-	bottom: 0;
+	bottom: -4.2rem;
 	width: 100%;
 	height: 4rem;
-	z-index: 103;
 
 	.ui.menu {
 		background-color: black_full;

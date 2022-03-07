@@ -3,11 +3,20 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from '@xstyled/styled-components';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Icon, List } from 'semantic-ui-react';
+import { useRouter } from 'src/hooks';
 
 const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
-	const [activeRoute] = useState<string>('/');
+	const { history } = useRouter();
+
+	const [activeRoute, setActiveRoute] = useState<string>('/');
+	const location = useLocation();
+
+	useEffect(() => {
+		setActiveRoute(location.pathname);
+	}, [location.pathname]);
 
 	const SidebarItems = [
 		{
@@ -16,17 +25,17 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 			name: 'Overview'
 		},
 		{
-			icon: <Icon name='home' />,
+			icon: <Icon name='comments outline' />,
 			link: '/discussions',
 			name: 'Discussions'
 		},
 		{
-			icon: <Icon name='home' />,
+			icon: <Icon name='calendar alternate outline' />,
 			link: '/calendar',
 			name: 'Calendar'
 		},
 		{
-			icon: <Icon name='home' />,
+			icon: <Icon name='newspaper outline' />,
 			link: '/news',
 			name: 'News'
 		}
@@ -34,17 +43,17 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 
 	const TreasuryItems = [
 		{
-			icon: <Icon name='th' />,
+			icon: <Icon name='file alternate outline' />,
 			link: '/treasury-proposals',
 			name: 'Proposals'
 		},
 		{
-			icon: <Icon name='home' />,
+			icon: <Icon name='dollar sign' />,
 			link: '/bounties',
 			name: 'Bounties'
 		},
 		{
-			icon: <Icon name='home' />,
+			icon: <Icon name='lightbulb outline' />,
 			link: '/tips',
 			name: 'Tips'
 		}
@@ -52,12 +61,12 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 
 	const DemocracyItems = [
 		{
-			icon: <Icon name='th' />,
+			icon: <Icon name='file alternate outline' />,
 			link: '/proposals',
 			name: 'Proposals'
 		},
 		{
-			icon: <Icon name='home' />,
+			icon: <Icon name='clipboard check' />,
 			link: '/referenda',
 			name: 'Referenda'
 		}
@@ -65,40 +74,22 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 
 	const CouncilItems = [
 		{
-			icon: <Icon name='th' />,
-			link: '/bv',
+			icon: <Icon name='forward' />,
+			link: '/motions',
 			name: 'Motions'
 		},
 		{
-			icon: <Icon name='home' />,
-			link: '/a',
+			icon: <Icon name='users' />,
+			link: '/council',
 			name: 'Members'
 		}
 	];
 
 	const TechCommItems = [
 		{
-			icon: <Icon name='th' />,
-			link: '/bv',
+			icon: <Icon name='file alternate outline' />,
+			link: '/tech-comm-proposals',
 			name: 'Proposals'
-		},
-		{
-			icon: <Icon name='home' />,
-			link: '/a',
-			name: 'Members'
-		}
-	];
-
-	const FinancialCouncilItems = [
-		{
-			icon: <Icon name='th' />,
-			link: '/bv',
-			name: 'Motions'
-		},
-		{
-			icon: <Icon name='home' />,
-			link: '/a',
-			name: 'Members'
 		}
 	];
 
@@ -107,9 +98,10 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 			<div className={className}>
 				<div className="sidebar-parent">
 					<List size='large' verticalAlign='middle'>
+						{/* Uncategorized */}
 						{
 							SidebarItems.map(item => (
-								<List.Item key={item.name} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+								<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
 									{item.icon}
 									<List.Content>
 										<List.Header>{item.name}</List.Header>
@@ -126,7 +118,7 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 						</List.Item>
 						{
 							TreasuryItems.map(item => (
-								<List.Item key={item.name} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+								<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
 									{item.icon}
 									<List.Content>
 										<List.Header>{item.name}</List.Header>
@@ -143,7 +135,7 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 						</List.Item>
 						{
 							DemocracyItems.map(item => (
-								<List.Item key={item.name} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+								<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
 									{item.icon}
 									<List.Content>
 										<List.Header>{item.name}</List.Header>
@@ -160,7 +152,7 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 						</List.Item>
 						{
 							CouncilItems.map(item => (
-								<List.Item key={item.name} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+								<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
 									{item.icon}
 									<List.Content>
 										<List.Header>{item.name}</List.Header>
@@ -177,24 +169,7 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 						</List.Item>
 						{
 							TechCommItems.map(item => (
-								<List.Item key={item.name} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
-									{item.icon}
-									<List.Content>
-										<List.Header>{item.name}</List.Header>
-									</List.Content>
-								</List.Item>
-							))
-						}
-
-						{/* FinancialCouncil */}
-						<List.Item className='sidebar-heading'>
-							<List.Content>
-								<List.Header>Financial Council</List.Header>
-							</List.Content>
-						</List.Item>
-						{
-							FinancialCouncilItems.map(item => (
-								<List.Item key={item.name} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+								<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
 									{item.icon}
 									<List.Content>
 										<List.Header>{item.name}</List.Header>
@@ -219,6 +194,7 @@ export default styled(CustomSidebar)`
 		border-radius: 4px;
 		margin: 0 0;
 		padding: 0.8em !important;
+		cursor: pointer;
 		
 		&.active {
 			background: #E5007A !important;
