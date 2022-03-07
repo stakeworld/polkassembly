@@ -39,9 +39,9 @@ const App = () => {
 										<ApiContextProvider>
 											<div id='page-container'>
 												<MenuBar />
-												<div style={ { display: 'flex' } }>
+												<div className='d-flex'>
 													<CustomSidebar />
-													<div style={ { marginBottom: '6em', marginLeft: '1em', marginRight: '1em', marginTop: '2em',  width:'100%' } }>
+													<div className='route-wrapper'>
 														<SwitchRoutes />
 													</div>
 												</div>

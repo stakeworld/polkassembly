@@ -57,6 +57,15 @@ export const GlobalStyle = createGlobalStyle`
         text-decoration: none;
     }
 
+    .d-flex {
+        display: flex;
+    }
+
+    .route-wrapper {
+        margin: 2em 1em 6em 1em;
+        width: 100%;
+    }
+
     .container-fluid {
         max-width: 1200px;
         padding: 0 2.5rem 0 2.5rem;
