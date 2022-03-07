@@ -69,7 +69,7 @@ const SearchBar = ({ className }: Props) => {
 			results={results}
 			value={value}
 			resultRenderer={resultRenderer}
-			placeholder='Search'
+			placeholder='Search By Proposal Keyword'
 		/>
 	);
 };

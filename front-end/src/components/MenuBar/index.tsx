@@ -81,7 +81,7 @@ const MenuBar = ({ className } : Props): JSX.Element => {
 
 	const userMenu = currentUser.web3signup && currentUser.defaultAddress
 		? <><AddressComponent address={currentUser.defaultAddress} /></>
-		: <><Icon name='user circle' inverted />{username}</>;
+		: <><Icon size='big' name='user circle' inverted />{username}</>;
 
 	const caretIcon = <Icon name='caret down' inverted />;
 
@@ -166,7 +166,7 @@ const MenuBar = ({ className } : Props): JSX.Element => {
 						<NetworkDropdown />
 						{username
 							? <>
-								<Dropdown trigger={userMenu} icon={caretIcon} item={true}>
+								<Dropdown className='logged-in-dropdown' trigger={userMenu} icon={caretIcon} item={true}>
 									<Dropdown.Menu>
 										{loggedInItems.map((item, index) => <Menu.Item as={NavLink} key={index} {...item}/>)}
 									</Dropdown.Menu>
@@ -184,12 +184,9 @@ const MenuBar = ({ className } : Props): JSX.Element => {
 };
 
 export default styled(MenuBar)`
-	z-index: 103 !important;
-
-	&.polkadot {
-		border-top: solid !important;
-		border-top-color: pink_primary !important;
-	}
+@media only screen and (min-width: 992px) {
+	height: 80px;
+}
 
 	.pink_primary-text{
 		color: pink_primary !important;
@@ -239,6 +236,10 @@ export default styled(MenuBar)`
 			input {
 				color: #ddd;
 				background: rgba(255, 255, 255, 0.25);
+				border-radius: 0.7em !important;
+				padding-top: 1em;
+				padding-bottom: 1em;
+				width: 26rem;
 			}
 
 			.results {
@@ -246,6 +247,10 @@ export default styled(MenuBar)`
 				overflow-y: auto;
 				height: 70vh;
 			}
+		}
+
+		.logged-in-dropdown, i.icon.caret {
+			color: #fff !important;
 		}
 	}
 

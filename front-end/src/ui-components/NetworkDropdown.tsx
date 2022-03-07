@@ -21,7 +21,10 @@ const StyledDiv = styled.div`
     text-transform: capitalize;
 
     img {
-        width: 3rem;
+			width: 2rem;
+			@media only screen and (min-width: 992px) {
+      	width: 4rem;
+			}
         border-radius: 50%;
         margin-right: 0.5rem;
     }
@@ -109,11 +112,12 @@ const NetworkDropdown = ({ className }: Props) =>  {
 };
 
 export default styled(NetworkDropdown)`
-    color: grey_secondary;
+    color: #fff;
     display: flex !important;
     align-items: center;
-    &:hover {
-		color: white;
-	}
-	margin: 0 1.2rem;
+		margin: 0 1.2rem;
+
+		i.icon {
+			color: #fff !important;
+		}
 `;
