@@ -19,7 +19,7 @@ interface Props {
 
 const LatestMotionsTable = ({ className }:Props) => {
 
-	const { data, error, refetch } = useLatestMotionPostsQuery({ variables: { limit: 2, postType: post_type.ON_CHAIN } });
+	const { data, error, refetch } = useLatestMotionPostsQuery({ variables: { limit: 10, postType: post_type.ON_CHAIN } });
 
 	useEffect(() => {
 		refetch();

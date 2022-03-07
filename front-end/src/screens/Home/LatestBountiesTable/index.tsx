@@ -20,7 +20,7 @@ interface Props {
 const LatestBountiesTable = ({ className }:Props) => {
 
 	const { data, error, refetch } = useLatestBountyPostsQuery({ variables: {
-		limit: 2,
+		limit: 10,
 		postType: post_type.ON_CHAIN
 	} });
 

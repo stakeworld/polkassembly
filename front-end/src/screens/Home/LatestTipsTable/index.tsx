@@ -21,7 +21,7 @@ interface Props {
 const LatestTipsTable = ({ className }:Props) => {
 
 	const { data, error, refetch } = useLatestTipPostsQuery({ variables: {
-		limit: 2,
+		limit: 10,
 		postTopic: post_topic.TREASURY,
 		postType: post_type.ON_CHAIN
 	} });
