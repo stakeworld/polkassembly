@@ -44,9 +44,9 @@ const LatestTreasuryTable = ({ className }:Props) => {
 			<Table basic='very' striped unstackable selectable>
 				<Table.Header className='table-header'>
 					<Table.Row>
-						<Table.HeaderCell width={7}><span>Title</span></Table.HeaderCell>
+						<Table.HeaderCell width={6}><span>Title</span></Table.HeaderCell>
 						<Table.HeaderCell width={3}><span>Posted By</span></Table.HeaderCell>
-						<Table.HeaderCell width={2}><span>Type</span></Table.HeaderCell>
+						<Table.HeaderCell width={3}><span>Type</span></Table.HeaderCell>
 						<Table.HeaderCell width={2}><span>Status</span></Table.HeaderCell>
 						<Table.HeaderCell width={2}><span>Actions</span></Table.HeaderCell>
 					</Table.Row>

@@ -34,7 +34,7 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 
 	const TreasuryItems = [
 		{
-			icon: <Icon name='file alternate outline' />,
+			icon: <Icon name='diamond' />,
 			link: '/treasury-proposals',
 			name: 'Proposals'
 		},
