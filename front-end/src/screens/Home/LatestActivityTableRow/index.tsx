@@ -6,7 +6,7 @@ import styled from '@xstyled/styled-components';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Icon, Table } from 'semantic-ui-react';
-import PostReactionBar from 'src/components/Reactionbar/PostReactionBar';
+import LatestActivityPostReactions from 'src/components/Reactionbar/LatestActivityPostReactions';
 // import BlockCountdown from 'src/components/BlockCountdown';
 import { noTitle } from 'src/global/noTitle';
 
@@ -126,7 +126,7 @@ const LatestActivityTableRow = function ({
 			<Table.Cell className='postType-cell' onClick={ gotoPost }> {postTypeIcon} { postType }</Table.Cell>
 			<Table.Cell onClick={ gotoPost }>{status && <StatusTag className='statusTag' status={status} />}</Table.Cell>
 			<Table.Cell className='action-btn-cell'>
-				<PostReactionBar className='reactions' postId={postId} />
+				<LatestActivityPostReactions className='reactions' gotoPost={gotoPost} postId={postId} />
 			</Table.Cell>
 		</Table.Row>
 	);
@@ -155,6 +155,7 @@ export default styled(LatestActivityTableRow)`
 	.action-btn-cell {
 		display: flex;
 		cursor: default !important;
+		padding-top: 0.9em !important;
 	}
 
 	.action-btn {

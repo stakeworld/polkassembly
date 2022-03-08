@@ -242,7 +242,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			);
 			const responseJSON = await response.json();
 			if (responseJSON['message'] == 'Success') {
-				setCurrentTokenPrice(responseJSON['data']['average']);
+				setCurrentTokenPrice(parseFloat(responseJSON['data']['average']).toFixed(2));
 			}
 		}
 
@@ -387,12 +387,12 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			<Card className='treasury-card'>
 				<Card.Content>
 					<Card.Meta className='treasury-card-meta'>
-					Next Burn
-						<HelperTooltip content='Funds held in the treasury can be spent by making a spending proposal that, if approved by the Council, will enter a spend period before distribution, it is subject to governance, with the current default set to 24 days.' />
+						Next Burn
+						<HelperTooltip content='If the Treasury ends a spend period without spending all of its funds, it suffers a burn of a percentage of its funds.' />
 					</Card.Meta>
 					<Card.Header className='treasury-card-header'>
 						{result.burn ? (
-							<h6>
+							<span>
 								{formatBnBalance(
 									result.burn.toString(),
 									{
@@ -400,7 +400,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 										withUnit: true
 									}
 								)}
-							</h6>
+							</span>
 						) : (
 							<div>
 								<Icon loading name='circle notched' />
