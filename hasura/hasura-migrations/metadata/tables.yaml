@@ -486,6 +486,71 @@
           _eq: X-Hasura-User-Id
 - table:
     schema: public
+    name: polkassembly_proposals
+  remote_relationships:
+  - definition:
+      remote_field:
+        user:
+          arguments: {}
+      hasura_fields: []
+      remote_schema: auth
+    name: author
+  insert_permissions:
+  - role: user
+    permission:
+      check:
+        author_id:
+          _eq: X-Hasura-User-Id
+      columns:
+      - author_id
+      - content
+      - created_at
+      - id
+      - is_synced
+      - proposal_hash
+      - proposal_id
+      - proposal_type
+      - proposer_address
+      - title
+      - updated_at
+      backend_only: false
+  select_permissions:
+  - role: proposal_bot
+    permission:
+      columns:
+      - author_id
+      - content
+      - created_at
+      - id
+      - is_synced
+      - proposal_hash
+      - proposal_id
+      - proposal_type
+      - proposer_address
+      - title
+      - updated_at
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - author_id
+      - content
+      - created_at
+      - id
+      - is_synced
+      - proposal_hash
+      - proposal_id
+      - proposal_type
+      - proposer_address
+      - title
+      - updated_at
+      filter: {}
+  delete_permissions:
+  - role: proposal_bot
+    permission:
+      filter: {}
+- table:
+    schema: public
     name: poll
   object_relationships:
   - name: post

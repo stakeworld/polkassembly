@@ -58,6 +58,35 @@ export const addPostAndTreasurySpendProposalMutation = gql`
     }
 `;
 
+export const addPostAndTreasurySpendProposalWithTitleMutation = gql`
+    mutation addPostAndTreasurySpendProposalWithTitleMutation (
+        $onchainTreasuryProposalId:Int!,
+        $authorId: Int!,
+        $proposerAddress: String!,
+        $content: String!,
+        $topicId: Int!,
+        $typeId: Int!,
+        $title: String!
+        ){
+        __typename
+        insert_onchain_links(objects: {
+            onchain_treasury_proposal_id: $onchainTreasuryProposalId,
+            proposer_address: $proposerAddress,
+            post: {data: {
+                author_id: $authorId,
+                content: $content,
+                topic_id: $topicId,
+                type_id: $typeId,
+                title: $title
+            }
+        }}) {
+            returning {
+                id
+            }
+        }
+    }
+`;
+
 export const addPostAndBountyMutation = gql`
     mutation addPostAndBountyMutation (
         $onchainBountyId:Int!,

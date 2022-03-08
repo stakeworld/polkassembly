@@ -1,0 +1,1 @@
+CREATE TABLE "public"."polkassembly_proposals"("id" serial NOT NULL, "proposal_id" integer NOT NULL, "proposal_type" text NOT NULL, "title" text NOT NULL, "content" text NOT NULL, "is_synced" boolean NOT NULL DEFAULT False, "created_at" timestamptz NOT NULL DEFAULT now(), "updated_at" timestamptz NOT NULL DEFAULT now(), PRIMARY KEY ("id") );

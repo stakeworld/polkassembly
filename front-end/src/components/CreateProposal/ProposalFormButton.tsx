@@ -11,6 +11,8 @@ import { Controller,useForm } from 'react-hook-form';
 import { Button, Dropdown, Form, Grid, Icon, Input, Message, Modal } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
 import { NotificationContext } from 'src/context/NotificationContext';
+import { UserDetailsContext } from 'src/context/UserDetailsContext';
+import { useAddPolkassemblyProposalMutation } from 'src/generated/graphql';
 import { APPNAME } from 'src/global/appName';
 import { LoadingStatusType, NotificationStatus } from 'src/types';
 import Card from 'src/ui-components/Card';
@@ -18,10 +20,10 @@ import HelperTooltip from 'src/ui-components/HelperTooltip';
 import Loader from 'src/ui-components/Loader';
 import getEncodedAddress from 'src/util/getEncodedAddress';
 
+import { PolkassemblyProposalTypes } from '../../types';
 import AddressComponent from '../../ui-components/Address';
 import ContentForm from '../ContentForm';
 import TitleForm from '../TitleForm';
-
 interface Props {
 	className?: string
 	setTipModalOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -50,10 +52,17 @@ const ProposalFormButton = ({ className, setTipModalOpen, proposalType } : Props
 	const [postDescription, setPostDescription] = useState<string>('');
 	const [loadingStatus, setLoadingStatus] = useState<LoadingStatusType>({ isLoading: false, message:'' });
 	const { queueNotification } = useContext(NotificationContext);
+	const [addPolkassemblyProposalMutation] = useAddPolkassemblyProposalMutation();
 
 	const { control, errors, handleSubmit } = useForm();
 
 	const [errorsFound, setErrorsFound] = useState<string[]>([]);
+
+	// const {  } = useContext(UserDetailsContext); #TODO check if !not web3 login or not default address if true return error with web3 login required
+	// set authorid from UserDetailsContext
+	const { id, web3signup, addresses  }  = useContext(UserDetailsContext);
+	console.log('user_id:', id, 'web3sign:', web3signup, addresses);
+	const authorId = id || 1;
 
 	const valueUnitOptions = [
 		{ key: 'nano', text: 'nano', value: 'nano' },
@@ -169,19 +178,9 @@ const ProposalFormButton = ({ className, setTipModalOpen, proposalType } : Props
 
 		return true;
 	};
-
 	const { api, apiReady } = useContext(ApiContext);
 
-	const handleSignAndSubmit = async () => {
-
-		if(!isFormValid()) return;
-
-		console.log('submitWithAccount : ', submitWithAccount);
-		console.log('beneficiaryAccount : ', beneficiaryAccount);
-		console.log('value : ', value);
-		console.log('valueUnit : ', valueUnit);
-		console.log('postTitle : ', postTitle);
-		console.log('postDescription : ', postDescription);
+	const saveProposal = async (authorId: number, proposalType: number, title: string, content: string, proposalHash: string, proposerAddress: string) => {
 
 		if (!api) {
 			return;
@@ -191,13 +190,31 @@ const ProposalFormButton = ({ className, setTipModalOpen, proposalType } : Props
 			return;
 		}
 
+		const proposalId: number = (await api.query.treasury.proposalCount()).toNumber() - 1;
+
+		addPolkassemblyProposalMutation({ variables: { authorId, content, proposalHash, proposalId, proposalType, proposerAddress, title } }).catch((e) => console.error('Error creating to proposal',e));
+	};
+
+	const handleSignAndSubmit = async () => {
+
+		if(!isFormValid()) return;
+
+		if (!api) {
+			return;
+		}
+
+		if (!apiReady) {
+			return;
+		}
+
+		console.log('valueUnit', valueUnit);
+
 		const injected = await web3FromSource(availableAccounts[0].meta.source);
 
 		api.setSigner(injected.signer);
 
 		setLoadingStatus({ isLoading: true, message: 'Waiting for signature' });
 		const proposal = api.tx.treasury.proposeSpend(value, beneficiaryAccount);
-
 		proposal.signAndSend(submitWithAccount, ({ status }) => {
 			if (status.isInBlock) {
 				queueNotification({
@@ -208,6 +225,7 @@ const ProposalFormButton = ({ className, setTipModalOpen, proposalType } : Props
 				setLoadingStatus({ isLoading: false, message: '' });
 				console.log(`Completed at block hash #${status.asInBlock.toString()}`);
 				setModalOpen(false);
+				saveProposal(authorId, PolkassemblyProposalTypes.TreasurySpendProposal, postTitle, postDescription, proposal.hash.toString(), submitWithAccount);
 			} else {
 				if (status.isBroadcast){
 					setLoadingStatus({ isLoading: true, message: 'Broadcasting the endorsement' });
