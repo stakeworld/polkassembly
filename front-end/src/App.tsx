@@ -37,7 +37,7 @@ const App = () => {
 										<Notifications/>
 										<Modal/>
 										<ApiContextProvider>
-											<div id='page-container'>
+											<div>
 												<MenuBar />
 												<div className='d-flex'>
 													<CustomSidebar />

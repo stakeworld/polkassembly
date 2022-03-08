@@ -378,6 +378,11 @@ export default styled(TreasuryOverviewCards)`
 		.treasury-card{
 			border-radius: 0.5em;
 			
+			@media only screen and (min-width: 945px) {
+				// width: 170px;
+				width: 254px;
+			}
+			
 			.content{
 				padding-bottom: 0 !important;
 			}

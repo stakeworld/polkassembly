@@ -62,8 +62,13 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     .route-wrapper {
-        margin: 2em 1em 6em 1em;
-        width: 100%;
+        margin: 2em 1em 6em 3vw;
+        width: 90%;
+
+        @media only screen and (max-width: 1000px) {
+            margin: 1em auto 6em auto;
+            width: 95%;
+        }
     }
 
     .container-fluid {
@@ -75,11 +80,6 @@ export const GlobalStyle = createGlobalStyle`
 			padding: 0 2.5rem 0 2.5rem;
 		}
     }
-    }
-
-    #page-container {
-        position: relative;
-        min-height: 100vh;
     }
 
     .ui.container {

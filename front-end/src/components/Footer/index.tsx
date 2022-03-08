@@ -41,7 +41,6 @@ const Footer = ({ className }:Props ): JSX.Element => {
 
 export default styled(Footer)`
 	position: absolute;
-	bottom: -4.2rem;
 	width: 100%;
 	height: 4rem;
 
