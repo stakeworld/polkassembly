@@ -111,7 +111,7 @@ const LatestActivityTableRow = function ({
 		<Table.Row className={className + ' table-row'}>
 			<Table.Cell onClick={ gotoPost }>
 				<div className='main-title-text'>{mainTitle}</div>
-				{subTitle && <div className='sub-title-text'>{ subTitle }</div>}
+				{subTitle && <div className='sub-title-text'>{subTitle}</div>}
 			</Table.Cell>
 			<Table.Cell onClick={ gotoPost }>
 				<Address
@@ -143,10 +143,12 @@ export default styled(LatestActivityTableRow)`
 	.main-title-text h4 {
 		color: #75767C !important;
 		font-size: 16px;
+		font-weight: 500;
 	}
 
 	.sub-title-text {
-		margin-top: 0.3em;
+		font-size: 14px;
+		margin-top: 0.5em;
 		color: #A4A4A4;
 	}
 

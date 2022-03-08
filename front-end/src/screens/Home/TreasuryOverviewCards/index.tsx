@@ -6,6 +6,7 @@ import { DeriveBalancesAccount } from '@polkadot/api-derive/types';
 import type { Balance } from '@polkadot/types/interfaces';
 import { BN_MILLION, BN_ZERO, u8aConcat, u8aToHex } from '@polkadot/util';
 import BN from 'bn.js';
+import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
 import { Card, Icon, Progress } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
@@ -58,11 +59,12 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 		)
 	}));
 
-	const [resultValue, setResultValue] = useState<String>('0');
-	const [resultBurn, setResultBurn] = useState<String>('0');
-	const [availableUSD, setAvailableUSD] = useState<String>('');
-	const [nextBurnUSD, setNextBurnUSD] = useState<String>('');
-	const [currentTokenPrice, setCurrentTokenPrice] = useState<String>('');
+	const [resultValue, setResultValue] = useState<string>('0');
+	const [resultBurn, setResultBurn] = useState<string>('0');
+	const [availableUSD, setAvailableUSD] = useState<string>('');
+	const [nextBurnUSD, setNextBurnUSD] = useState<string>('');
+	const [currentTokenPrice, setCurrentTokenPrice] = useState<string>('');
+	const [priceWeeklyChange, setPriceWeeklyChange] = useState<number>();
 	const [spendPeriodPercentage, setSpendPeriodPercentage] = useState<number>(0);
 
 	useEffect(() => {
@@ -120,7 +122,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [api, apiReady, treasuryBalance, currentBlock]);
 
-	function formatUSDWithUnits (usd:String) {
+	function formatUSDWithUnits (usd:string) {
 		// Nine Zeroes for Billions
 		const formattedUSD = Math.abs(Number(usd)) >= 1.0e+9
 
@@ -247,6 +249,39 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 		fetchCurrentTokenPrice();
 	}, []);
 
+	// fetch a week ago price of the token and calc priceWeeklyChange
+	useEffect(() => {
+		async function fetchWeekAgoTokenPrice() {
+			const weekAgoDate = moment().subtract(7,'d').format('YYYY-MM-DD');
+
+			const response = await fetch(
+				'https://'+NETWORK+'.api.subscan.io/api/scan/price/history',
+				{
+					body: JSON.stringify({
+						end: weekAgoDate,
+						start: weekAgoDate
+					}),
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json',
+						'X-API-Key': 'cf41f0b0e400974bc0a3db0455ce9e11'
+					},
+					method: 'POST'
+				}
+			);
+			const responseJSON = await response.json();
+			if (responseJSON['message'] == 'Success') {
+				const weekAgoPrice = responseJSON['data']['average'];
+				const currentTokenPriceNum : number = parseFloat(currentTokenPrice);
+				const weekAgoPriceNum : number = parseFloat(weekAgoPrice);
+				const percentChange = ((currentTokenPriceNum - weekAgoPriceNum) / weekAgoPriceNum) * 100;
+				setPriceWeeklyChange(parseFloat(percentChange.toFixed(2)));
+			}
+		}
+
+		fetchWeekAgoTokenPrice();
+	}, [currentTokenPrice]);
+
 	// TODO: calculate the percentage of spending period.
 	useEffect(() => {
 		// const twentyFourDaystoSeconds = 2.074e+6;
@@ -306,9 +341,13 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 					</Card.Header>
 
 					<Card.Description className='treasury-card-desc'>
-						{result.value
-							? 'Weekly Change'
-							: 'loading...'}
+						{priceWeeklyChange ?
+							<div>
+								Weekly Change &nbsp;{Math.abs(priceWeeklyChange)}%
+								{priceWeeklyChange < 0 ? <Icon color='red' name='caret down' /> : <Icon color='green' name='caret up' /> }
+							</div> :
+							'Fetching...'
+						}
 					</Card.Description>
 				</Card.Content>
 			</Card>
@@ -373,7 +412,9 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 
 export default styled(TreasuryOverviewCards)`
 	&&& {
-		justify-content: center;
+		@media only screen and (max-width: 1024px) {
+			justify-content: center;
+		}
 
 		.treasury-card{
 			border-radius: 0.5em;
@@ -395,11 +436,13 @@ export default styled(TreasuryOverviewCards)`
 
 		.treasury-card-header {
 			margin-top: 0.4em !important;
+			font-size: 24px !important;
 		}
 
 		.treasury-card-desc{
 			border-top: 1px solid #eee;
 			padding-top: 0.5em;
+			color: #000 !important;
 
 			.bar {
 				background-color: #E5007A !important;
