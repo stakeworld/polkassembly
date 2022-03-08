@@ -12,7 +12,7 @@ import { Card, Icon, Progress } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
 import { useBlockTime } from 'src/hooks';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
-import blockToTime from 'src/util/blockToTime';
+import blockToDays from 'src/util/blockToDays';
 import formatBnBalance from 'src/util/formatBnBalance';
 import getNetwork from 'src/util/getNetwork';
 import styled from 'styled-components';
@@ -284,14 +284,26 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 
 	// TODO: calculate the percentage of spending period.
 	useEffect(() => {
-		// const twentyFourDaystoSeconds = 2.074e+6;
-		const currentDHM = blockToTime(
-			result.spendPeriod.toNumber(),
-			blocktime
-		);
-		console.log('currentDHM : ', currentDHM);
+		if (!api || !apiReady) {
+			return;
+		}
+
+		// async function getBN() {
+		//  if (!api || !apiReady) {
+		// return;
+		//  }
+
+		//  return new BN((await api.derive.chain.bestNumber()).toNumber()).mod(api.consts.democracy.launchPeriod).iadd(BN_ONE);
+		// }
+
+		// getBN().then((data) => {
+		//  if(data){
+		// console.log('getBN :', data.toNumber() * 6 );
+		//  }
+		// });
+
 		setSpendPeriodPercentage(75);
-	}, [blocktime, result.spendPeriod]);
+	}, [api, apiReady]);
 
 	return (
 		<Card.Group className={className}>
@@ -356,14 +368,11 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			<Card className='treasury-card'>
 				<Card.Content>
 					<Card.Meta className='treasury-card-meta'>
-					Spend Period Remaining
-						<HelperTooltip content='Funds held in the treasury can be spent by making a spending proposal that, if approved by the Council, will enter a spend period before distribution, it is subject to governance, with the current default set to 24 days.' />
+						Spend Period Remaining
+						<HelperTooltip content={'Funds held in the treasury can be spent by making a spending proposal that, if approved by the Council, will enter a spend period before distribution, it is subject to governance, with the current default set to ' + blockToDays(result.spendPeriod.toNumber(), blocktime)} />
 					</Card.Meta>
 					<Card.Header className='treasury-card-header'>
-						{blockToTime(
-							result.spendPeriod.toNumber(),
-							blocktime
-						)}
+						{ blockToDays(result.spendPeriod.toNumber(), blocktime) }
 					</Card.Header>
 
 					<Card.Description className='treasury-card-desc'>
