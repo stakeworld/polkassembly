@@ -65,7 +65,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 	const [nextBurnUSD, setNextBurnUSD] = useState<string>('');
 	const [currentTokenPrice, setCurrentTokenPrice] = useState<string>('');
 	const [priceWeeklyChange, setPriceWeeklyChange] = useState<number>();
-	const [spendPeriodPercentage, setSpendPeriodPercentage] = useState<number>(0);
+	const [spendPeriodPercentage, setSpendPeriodPercentage] = useState<number>();
 
 	useEffect(() => {
 		if (!api) {
@@ -372,7 +372,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 						<HelperTooltip content={'Funds held in the treasury can be spent by making a spending proposal that, if approved by the Council, will enter a spend period before distribution, it is subject to governance, with the current default set to ' + blockToDays(result.spendPeriod.toNumber(), blocktime)} />
 					</Card.Meta>
 					<Card.Header className='treasury-card-header'>
-						{ blockToDays(result.spendPeriod.toNumber(), blocktime) }
+						{ spendPeriodPercentage ? blockToDays(result.spendPeriod.toNumber(), blocktime) : <Icon loading name='circle notched' /> }
 					</Card.Header>
 
 					<Card.Description className='treasury-card-desc'>

@@ -7,13 +7,10 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import Apollo from './components/Apollo';
-import CustomSidebar from './components/CustomSidebar';
-import Footer from './components/Footer';
+import AppLayout from './components/AppLayout';
 import Head from './components/Head';
-import MenuBar from './components/MenuBar';
 import Modal from './components/Modal';
 import Notifications from './components/Notifications';
-import SwitchRoutes from './components/SwitchRoutes';
 import { ApiContextProvider } from './context/ApiContext';
 import { MetaProvider } from './context/MetaContext';
 import { ModalProvider } from './context/ModalContext';
@@ -37,16 +34,7 @@ const App = () => {
 										<Notifications/>
 										<Modal/>
 										<ApiContextProvider>
-											<div>
-												<MenuBar />
-												<div className='d-flex'>
-													<CustomSidebar />
-													<div className='route-wrapper'>
-														<SwitchRoutes />
-													</div>
-												</div>
-												<Footer />
-											</div>
+											<AppLayout />
 										</ApiContextProvider>
 									</Apollo>
 								</MetaProvider>

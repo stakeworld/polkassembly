@@ -63,7 +63,7 @@ const LatestAllPostsTable = ({ className }:Props) => {
 					{data.posts.map(
 						(post) => {
 							const onchainId = post.onchain_link?.onchain_referendum_id;
-							// check postType here and send to LatestActivityTableRow
+							//TODO: check postType here and send to LatestActivityTableRow
 
 							return !!post?.author?.username && !!post.onchain_link?.onchain_referendum.length &&
 								<LatestActivityTableRow
@@ -78,7 +78,7 @@ const LatestAllPostsTable = ({ className }:Props) => {
 									status={post.onchain_link.onchain_referendum[0]?.referendumStatus?.[0].status}
 									end={post.onchain_link.onchain_referendum[0]?.end}
 									title={post.title}
-									postType='all'
+									postType='referenda'
 									created_at={post.created_at}
 								/>
 							;
