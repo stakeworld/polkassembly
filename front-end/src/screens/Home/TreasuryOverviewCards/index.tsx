@@ -374,10 +374,10 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 						{ spendPeriodPercentage ? blockToDays(result.spendPeriod.toNumber(), blocktime) : <Icon loading name='circle notched' /> }
 					</Card.Header>
 
-					<Card.Description className='treasury-card-desc'>
+					<Card.Description className='treasury-card-desc progress-desc'>
 						{/* TODO: Check on how to calculate for every network */}
-						{/* <div className='progressNumber'>75%</div><br/> */}
-						<Progress percent={spendPeriodPercentage} progress />
+						<div className='progressNumber'>{ spendPeriodPercentage }%</div><br/>
+						<Progress percent={spendPeriodPercentage} />
 					</Card.Description>
 				</Card.Content>
 			</Card>
@@ -447,20 +447,26 @@ export default styled(TreasuryOverviewCards)`
 		}
 
 		.treasury-card-desc{
-			border-top: 1px solid #eee;
-			padding-top: 0.5em;
+			&:not(.progress-desc){
+				margin-top: 0.9em !important;
+				border-top: 1px solid #eee;
+				padding-top: 0.7em;
+			}
+			
 			color: #000 !important;
 
 			.bar {
 				background-color: #E5007A !important;
 				border-radius: 1em;
-				height: 1.5em;
+				height: 8px;
 				margin-top: 0.5em;
 			}
 
 
 			.progressNumber{
 				float: right;
+				color: #787878;
+				font-size: 14px;
 			}
 
 		}

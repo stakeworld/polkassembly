@@ -5,9 +5,11 @@
 import styled from '@xstyled/styled-components';
 import { ApolloQueryResult } from 'apollo-client';
 import React, { useContext } from 'react';
-import { Icon, Popup } from 'semantic-ui-react';
+import { Popup } from 'semantic-ui-react';
 import { ReactionMapFields } from 'src/types';
 
+import likeImg from '../../assets/latest-activity-like.png';
+import likedImg from '../../assets/latest-activity-liked.png';
 import { UserDetailsContext } from '../../context/UserDetailsContext';
 import {
 	CommentReactionsQuery,
@@ -182,9 +184,9 @@ const ReactionButton = function ({
 					disabled={!id || reactionsDisabled}
 				>
 					{reacted ?
-						<Icon className='bg-pink reaction-icon' name='thumbs up' />
+						<img width='17.86px' height='18.4px' src={likedImg} alt="Liked" />
 						:
-						<Icon color='grey' className='reaction-icon' name='thumbs up outline' />
+						<img width='17.86px' height='18.4px' src={likeImg} alt="Like" />
 					}
 				</Button>
 				:

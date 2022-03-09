@@ -4,8 +4,8 @@
 
 import styled from '@xstyled/styled-components';
 import React from 'react';
-import { Icon } from 'semantic-ui-react';
 
+import commentImg from '../../assets/latest-activity-comment.png';
 import Button from '../../ui-components/Button';
 
 export interface CommentButtonProps {
@@ -27,7 +27,7 @@ const CommentButton = function ({
 				className='social'
 				onClick={gotoPost}
 			>
-				<Icon color='grey' size='large' name='comment alternate outline' />
+				<img width='20px' height='20px' src={commentImg} alt="Comment" />
 			</Button>
 		}
 
