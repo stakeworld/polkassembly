@@ -368,8 +368,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			<Card className='treasury-card'>
 				<Card.Content>
 					<Card.Meta className='treasury-card-meta'>
-						Spend Period Remaining
-						<HelperTooltip content={'Funds held in the treasury can be spent by making a spending proposal that, if approved by the Council, will enter a spend period before distribution, it is subject to governance, with the current default set to ' + blockToDays(result.spendPeriod.toNumber(), blocktime)} />
+						Spend Period Remaining <HelperTooltip content={'Funds held in the treasury can be spent by making a spending proposal that, if approved by the Council, will enter a spend period before distribution, it is subject to governance, with the current default set to ' + blockToDays(result.spendPeriod.toNumber(), blocktime)} />
 					</Card.Meta>
 					<Card.Header className='treasury-card-header'>
 						{ spendPeriodPercentage ? blockToDays(result.spendPeriod.toNumber(), blocktime) : <Icon loading name='circle notched' /> }
@@ -387,8 +386,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			<Card className='treasury-card'>
 				<Card.Content>
 					<Card.Meta className='treasury-card-meta'>
-						Next Burn
-						<HelperTooltip content='If the Treasury ends a spend period without spending all of its funds, it suffers a burn of a percentage of its funds.' />
+						Next Burn <HelperTooltip content='If the Treasury ends a spend period without spending all of its funds, it suffers a burn of a percentage of its funds.' />
 					</Card.Meta>
 					<Card.Header className='treasury-card-header'>
 						{result.burn ? (

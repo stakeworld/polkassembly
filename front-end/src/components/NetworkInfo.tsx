@@ -29,25 +29,25 @@ const NetworkInfo = ({ className }: Props) => {
 								<a href={links.homepage} target='_blank' rel='noreferrer'>
 									<Icon size='large' name='home'/>
 								</a>
-								<a href={links.homepage} target='_blank' rel='noreferrer'>
+								<a href={links.twitter} target='_blank' rel='noreferrer'>
 									<Icon size='large' name='twitter'/>
 								</a>
-								<a href={links.homepage} target='_blank' rel='noreferrer'>
+								<a href={links.discord} target='_blank' rel='noreferrer'>
 									<Icon size='large' name='discord'/>
 								</a>
-								<a href={links.homepage} target='_blank' rel='noreferrer'>
+								<a href={links.github} target='_blank' rel='noreferrer'>
 									<Icon size='large' name='github'/>
 								</a>
-								<a href={links.homepage} target='_blank' rel='noreferrer'>
+								<a href={links.youtube} target='_blank' rel='noreferrer'>
 									<Icon size='large' name='youtube'/>
 								</a>
-								<a href={links.homepage} target='_blank' rel='noreferrer'>
+								<a href={links.reddit} target='_blank' rel='noreferrer'>
 									<Icon size='large' name='reddit alien'/>
 								</a>
-								<a href={links.homepage} target='_blank' rel='noreferrer'>
+								<a href={links.telegram} target='_blank' rel='noreferrer'>
 									<Icon size='large' name='telegram plane'/>
 								</a>
-								<a href={links.homepage} target='_blank' rel='noreferrer'>
+								<a href={links.blockExplorer} target='_blank' rel='noreferrer'>
 									<Icon size='large' name='cube'/>
 								</a>
 							</Grid>
