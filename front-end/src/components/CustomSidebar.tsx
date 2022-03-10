@@ -89,6 +89,7 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 
 	const [activeRoute, setActiveRoute] = useState<string>('/');
 	const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
+	const [collapsedOptions, setCollapsedOptions] = useState<string[]>([]);
 
 	useEffect(() => {
 		setActiveRoute(location.pathname);
@@ -97,6 +98,21 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 	const toggleSidebarCollapse = () => {
 		setSidebarCollapsed(!sidebarCollapsed);
 	};
+
+	function toggleOptionCollapse (optionTitle:string) {
+		const index = collapsedOptions.indexOf(optionTitle);
+
+		if(index > -1){
+			//is collapsed: remove from array
+			const newCollapsedOptions = collapsedOptions.splice(0); //makes copy
+			newCollapsedOptions.splice(index, 1);
+			setCollapsedOptions(newCollapsedOptions);
+		}else{
+			const newCollapsedOptions = collapsedOptions.splice(0); //makes copy
+			newCollapsedOptions.push(optionTitle);
+			setCollapsedOptions(newCollapsedOptions);
+		}
+	}
 
 	return (
 		<>
@@ -122,27 +138,30 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 						{/* Treasury */}
 						<List.Item className='sidebar-heading'>
 							<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
-								<List.Header>Treasury</List.Header>
+								<List.Header> <div>Treasury</div> {collapsedOptions.includes('treasury') ? <Icon onClick={() => toggleOptionCollapse('treasury')} name='chevron down' /> : <Icon onClick={() => toggleOptionCollapse('treasury')} name='chevron up' />} </List.Header>
 							</List.Content>
 						</List.Item>
 						{
-							TreasuryItems.map(item => (
-								<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
-									{item.icon}
-									<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
-										<List.Header>{item.name}</List.Header>
-									</List.Content>
-								</List.Item>
-							))
+							!collapsedOptions.includes('treasury') || sidebarCollapsed ?
+								TreasuryItems.map(item => (
+									<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+										{item.icon}
+										<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
+											<List.Header>{item.name}</List.Header>
+										</List.Content>
+									</List.Item>
+								))
+								:
+								null
 						}
 
 						{/* Democracy */}
 						<List.Item className='sidebar-heading'>
 							<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
-								<List.Header>Democracy</List.Header>
+								<List.Header><div>Democracy</div> {collapsedOptions.includes('democracy') ? <Icon onClick={() => toggleOptionCollapse('democracy')} name='chevron down' /> : <Icon onClick={() => toggleOptionCollapse('democracy')} name='chevron up' />}</List.Header>
 							</List.Content>
 						</List.Item>
-						{
+						{!collapsedOptions.includes('democracy') || sidebarCollapsed ?
 							DemocracyItems.map(item => (
 								<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
 									{item.icon}
@@ -151,40 +170,48 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 									</List.Content>
 								</List.Item>
 							))
+							:
+							null
 						}
 
 						{/* Council */}
 						<List.Item className='sidebar-heading'>
 							<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
-								<List.Header>Council</List.Header>
+								<List.Header> <div>Council</div> {collapsedOptions.includes('council') ? <Icon onClick={() => toggleOptionCollapse('council')} name='chevron down' /> : <Icon onClick={() => toggleOptionCollapse('council')} name='chevron up' />}</List.Header>
 							</List.Content>
 						</List.Item>
 						{
-							CouncilItems.map(item => (
-								<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
-									{item.icon}
-									<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
-										<List.Header>{item.name}</List.Header>
-									</List.Content>
-								</List.Item>
-							))
+							!collapsedOptions.includes('council') || sidebarCollapsed ?
+								CouncilItems.map(item => (
+									<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+										{item.icon}
+										<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
+											<List.Header>{item.name}</List.Header>
+										</List.Content>
+									</List.Item>
+								))
+								:
+								null
 						}
 
 						{/* TechComm */}
 						<List.Item className='sidebar-heading'>
 							<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
-								<List.Header>Tech. Comm.</List.Header>
+								<List.Header> <div>Tech. Comm.</div> {collapsedOptions.includes('techComm') ? <Icon onClick={() => toggleOptionCollapse('techComm')} name='chevron down' /> : <Icon onClick={() => toggleOptionCollapse('techComm')} name='chevron up' />}</List.Header>
 							</List.Content>
 						</List.Item>
 						{
-							TechCommItems.map(item => (
-								<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
-									{item.icon}
-									<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
-										<List.Header>{item.name}</List.Header>
-									</List.Content>
-								</List.Item>
-							))
+							!collapsedOptions.includes('techComm') || sidebarCollapsed ?
+								TechCommItems.map(item => (
+									<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+										{item.icon}
+										<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
+											<List.Header>{item.name}</List.Header>
+										</List.Content>
+									</List.Item>
+								))
+								:
+								null
 						}
 					</List>
 				</div>
@@ -252,13 +279,19 @@ export default styled(CustomSidebar)`
 	.sidebar-heading {
 		margin-top: 1em;
 		margin-bottom: 0.5em;
-		text-align: center;
+		margin-left: 1em;
 		font-size: 0.95em;
 
 		.header {
 			color: #B9C1CE !important;
 			font-weight: 400 !important;
 			text-transform: uppercase;
+			display: flex !important;
+			justify-content: space-between;
+
+			.icon {
+				cursor: pointer;
+			}
 		}
 	}
 `;
