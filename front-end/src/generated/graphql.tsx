@@ -3933,7 +3933,11 @@ export type Mutation = {
   changeNotificationPreference?: Maybe<ChangeResponse>;
   changePassword?: Maybe<Message>;
   changeUsername?: Maybe<ChangeResponse>;
+  createPostConfirm?: Maybe<Message>;
+  createPostStart?: Maybe<AddressLoginType>;
   deleteAccount?: Maybe<Message>;
+  editPostConfirm?: Maybe<Message>;
+  editPostStart?: Maybe<AddressLoginType>;
   login?: Maybe<LoginResponse>;
   logout?: Maybe<Message>;
   multisigLinkConfirm?: Maybe<ChangeResponse>;
@@ -4026,8 +4030,38 @@ export type MutationChangeUsernameArgs = {
 };
 
 
+export type MutationCreatePostConfirmArgs = {
+  address: Scalars['String'];
+  content: Scalars['String'];
+  network: Scalars['String'];
+  signature: Scalars['String'];
+  title: Scalars['String'];
+};
+
+
+export type MutationCreatePostStartArgs = {
+  address: Scalars['String'];
+};
+
+
 export type MutationDeleteAccountArgs = {
   password: Scalars['String'];
+};
+
+
+export type MutationEditPostConfirmArgs = {
+  address: Scalars['String'];
+  content: Scalars['String'];
+  network: Scalars['String'];
+  proposalId: Scalars['String'];
+  proposalType: Scalars['String'];
+  signature: Scalars['String'];
+  title: Scalars['String'];
+};
+
+
+export type MutationEditPostStartArgs = {
+  address: Scalars['String'];
 };
 
 
@@ -11557,6 +11591,363 @@ export type ValidatorWhereUniqueInput = {
   id?: Maybe<Scalars['ID']>;
 };
 
+/** columns and relationships of "blockchain_socials" */
+export type Blockchain_Socials = {
+  __typename?: 'blockchain_socials';
+  block_explorer?: Maybe<Scalars['String']>;
+  discord?: Maybe<Scalars['String']>;
+  github?: Maybe<Scalars['String']>;
+  homepage?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  network: Scalars['String'];
+  reddit?: Maybe<Scalars['String']>;
+  telegram?: Maybe<Scalars['String']>;
+  twitter?: Maybe<Scalars['String']>;
+  youtube?: Maybe<Scalars['String']>;
+};
+
+/** aggregated selection of "blockchain_socials" */
+export type Blockchain_Socials_Aggregate = {
+  __typename?: 'blockchain_socials_aggregate';
+  aggregate?: Maybe<Blockchain_Socials_Aggregate_Fields>;
+  nodes: Array<Blockchain_Socials>;
+};
+
+/** aggregate fields of "blockchain_socials" */
+export type Blockchain_Socials_Aggregate_Fields = {
+  __typename?: 'blockchain_socials_aggregate_fields';
+  avg?: Maybe<Blockchain_Socials_Avg_Fields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Blockchain_Socials_Max_Fields>;
+  min?: Maybe<Blockchain_Socials_Min_Fields>;
+  stddev?: Maybe<Blockchain_Socials_Stddev_Fields>;
+  stddev_pop?: Maybe<Blockchain_Socials_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Blockchain_Socials_Stddev_Samp_Fields>;
+  sum?: Maybe<Blockchain_Socials_Sum_Fields>;
+  var_pop?: Maybe<Blockchain_Socials_Var_Pop_Fields>;
+  var_samp?: Maybe<Blockchain_Socials_Var_Samp_Fields>;
+  variance?: Maybe<Blockchain_Socials_Variance_Fields>;
+};
+
+
+/** aggregate fields of "blockchain_socials" */
+export type Blockchain_Socials_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Blockchain_Socials_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "blockchain_socials" */
+export type Blockchain_Socials_Aggregate_Order_By = {
+  avg?: Maybe<Blockchain_Socials_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Blockchain_Socials_Max_Order_By>;
+  min?: Maybe<Blockchain_Socials_Min_Order_By>;
+  stddev?: Maybe<Blockchain_Socials_Stddev_Order_By>;
+  stddev_pop?: Maybe<Blockchain_Socials_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Blockchain_Socials_Stddev_Samp_Order_By>;
+  sum?: Maybe<Blockchain_Socials_Sum_Order_By>;
+  var_pop?: Maybe<Blockchain_Socials_Var_Pop_Order_By>;
+  var_samp?: Maybe<Blockchain_Socials_Var_Samp_Order_By>;
+  variance?: Maybe<Blockchain_Socials_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "blockchain_socials" */
+export type Blockchain_Socials_Arr_Rel_Insert_Input = {
+  data: Array<Blockchain_Socials_Insert_Input>;
+  on_conflict?: Maybe<Blockchain_Socials_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Blockchain_Socials_Avg_Fields = {
+  __typename?: 'blockchain_socials_avg_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "blockchain_socials" */
+export type Blockchain_Socials_Avg_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "blockchain_socials". All fields are combined with a logical 'AND'. */
+export type Blockchain_Socials_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Blockchain_Socials_Bool_Exp>>>;
+  _not?: Maybe<Blockchain_Socials_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Blockchain_Socials_Bool_Exp>>>;
+  block_explorer?: Maybe<String_Comparison_Exp>;
+  discord?: Maybe<String_Comparison_Exp>;
+  github?: Maybe<String_Comparison_Exp>;
+  homepage?: Maybe<String_Comparison_Exp>;
+  id?: Maybe<Int_Comparison_Exp>;
+  network?: Maybe<String_Comparison_Exp>;
+  reddit?: Maybe<String_Comparison_Exp>;
+  telegram?: Maybe<String_Comparison_Exp>;
+  twitter?: Maybe<String_Comparison_Exp>;
+  youtube?: Maybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "blockchain_socials" */
+export enum Blockchain_Socials_Constraint {
+  /** unique or primary key constraint */
+  BlockchainSocialsPkey = 'blockchain_socials_pkey'
+}
+
+/** input type for incrementing integer column in table "blockchain_socials" */
+export type Blockchain_Socials_Inc_Input = {
+  id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "blockchain_socials" */
+export type Blockchain_Socials_Insert_Input = {
+  block_explorer?: Maybe<Scalars['String']>;
+  discord?: Maybe<Scalars['String']>;
+  github?: Maybe<Scalars['String']>;
+  homepage?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  network?: Maybe<Scalars['String']>;
+  reddit?: Maybe<Scalars['String']>;
+  telegram?: Maybe<Scalars['String']>;
+  twitter?: Maybe<Scalars['String']>;
+  youtube?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Blockchain_Socials_Max_Fields = {
+  __typename?: 'blockchain_socials_max_fields';
+  block_explorer?: Maybe<Scalars['String']>;
+  discord?: Maybe<Scalars['String']>;
+  github?: Maybe<Scalars['String']>;
+  homepage?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  network?: Maybe<Scalars['String']>;
+  reddit?: Maybe<Scalars['String']>;
+  telegram?: Maybe<Scalars['String']>;
+  twitter?: Maybe<Scalars['String']>;
+  youtube?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "blockchain_socials" */
+export type Blockchain_Socials_Max_Order_By = {
+  block_explorer?: Maybe<Order_By>;
+  discord?: Maybe<Order_By>;
+  github?: Maybe<Order_By>;
+  homepage?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  network?: Maybe<Order_By>;
+  reddit?: Maybe<Order_By>;
+  telegram?: Maybe<Order_By>;
+  twitter?: Maybe<Order_By>;
+  youtube?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Blockchain_Socials_Min_Fields = {
+  __typename?: 'blockchain_socials_min_fields';
+  block_explorer?: Maybe<Scalars['String']>;
+  discord?: Maybe<Scalars['String']>;
+  github?: Maybe<Scalars['String']>;
+  homepage?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  network?: Maybe<Scalars['String']>;
+  reddit?: Maybe<Scalars['String']>;
+  telegram?: Maybe<Scalars['String']>;
+  twitter?: Maybe<Scalars['String']>;
+  youtube?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "blockchain_socials" */
+export type Blockchain_Socials_Min_Order_By = {
+  block_explorer?: Maybe<Order_By>;
+  discord?: Maybe<Order_By>;
+  github?: Maybe<Order_By>;
+  homepage?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  network?: Maybe<Order_By>;
+  reddit?: Maybe<Order_By>;
+  telegram?: Maybe<Order_By>;
+  twitter?: Maybe<Order_By>;
+  youtube?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "blockchain_socials" */
+export type Blockchain_Socials_Mutation_Response = {
+  __typename?: 'blockchain_socials_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Blockchain_Socials>;
+};
+
+/** input type for inserting object relation for remote table "blockchain_socials" */
+export type Blockchain_Socials_Obj_Rel_Insert_Input = {
+  data: Blockchain_Socials_Insert_Input;
+  on_conflict?: Maybe<Blockchain_Socials_On_Conflict>;
+};
+
+/** on conflict condition type for table "blockchain_socials" */
+export type Blockchain_Socials_On_Conflict = {
+  constraint: Blockchain_Socials_Constraint;
+  update_columns: Array<Blockchain_Socials_Update_Column>;
+  where?: Maybe<Blockchain_Socials_Bool_Exp>;
+};
+
+/** ordering options when selecting data from "blockchain_socials" */
+export type Blockchain_Socials_Order_By = {
+  block_explorer?: Maybe<Order_By>;
+  discord?: Maybe<Order_By>;
+  github?: Maybe<Order_By>;
+  homepage?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  network?: Maybe<Order_By>;
+  reddit?: Maybe<Order_By>;
+  telegram?: Maybe<Order_By>;
+  twitter?: Maybe<Order_By>;
+  youtube?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: "blockchain_socials" */
+export type Blockchain_Socials_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "blockchain_socials" */
+export enum Blockchain_Socials_Select_Column {
+  /** column name */
+  BlockExplorer = 'block_explorer',
+  /** column name */
+  Discord = 'discord',
+  /** column name */
+  Github = 'github',
+  /** column name */
+  Homepage = 'homepage',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Network = 'network',
+  /** column name */
+  Reddit = 'reddit',
+  /** column name */
+  Telegram = 'telegram',
+  /** column name */
+  Twitter = 'twitter',
+  /** column name */
+  Youtube = 'youtube'
+}
+
+/** input type for updating data in table "blockchain_socials" */
+export type Blockchain_Socials_Set_Input = {
+  block_explorer?: Maybe<Scalars['String']>;
+  discord?: Maybe<Scalars['String']>;
+  github?: Maybe<Scalars['String']>;
+  homepage?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  network?: Maybe<Scalars['String']>;
+  reddit?: Maybe<Scalars['String']>;
+  telegram?: Maybe<Scalars['String']>;
+  twitter?: Maybe<Scalars['String']>;
+  youtube?: Maybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type Blockchain_Socials_Stddev_Fields = {
+  __typename?: 'blockchain_socials_stddev_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "blockchain_socials" */
+export type Blockchain_Socials_Stddev_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Blockchain_Socials_Stddev_Pop_Fields = {
+  __typename?: 'blockchain_socials_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "blockchain_socials" */
+export type Blockchain_Socials_Stddev_Pop_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Blockchain_Socials_Stddev_Samp_Fields = {
+  __typename?: 'blockchain_socials_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "blockchain_socials" */
+export type Blockchain_Socials_Stddev_Samp_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Blockchain_Socials_Sum_Fields = {
+  __typename?: 'blockchain_socials_sum_fields';
+  id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "blockchain_socials" */
+export type Blockchain_Socials_Sum_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** update columns of table "blockchain_socials" */
+export enum Blockchain_Socials_Update_Column {
+  /** column name */
+  BlockExplorer = 'block_explorer',
+  /** column name */
+  Discord = 'discord',
+  /** column name */
+  Github = 'github',
+  /** column name */
+  Homepage = 'homepage',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Network = 'network',
+  /** column name */
+  Reddit = 'reddit',
+  /** column name */
+  Telegram = 'telegram',
+  /** column name */
+  Twitter = 'twitter',
+  /** column name */
+  Youtube = 'youtube'
+}
+
+/** aggregate var_pop on columns */
+export type Blockchain_Socials_Var_Pop_Fields = {
+  __typename?: 'blockchain_socials_var_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "blockchain_socials" */
+export type Blockchain_Socials_Var_Pop_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Blockchain_Socials_Var_Samp_Fields = {
+  __typename?: 'blockchain_socials_var_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "blockchain_socials" */
+export type Blockchain_Socials_Var_Samp_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Blockchain_Socials_Variance_Fields = {
+  __typename?: 'blockchain_socials_variance_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "blockchain_socials" */
+export type Blockchain_Socials_Variance_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
 
 /** expression to compare columns of type bpchar. All fields are combined with logical 'AND'. */
 export type Bpchar_Comparison_Exp = {
@@ -12309,6 +12700,8 @@ export type Mutation_Root = {
   createMotionStatus: MotionStatus;
   createNomination: Nomination;
   createOfflineValidator: OfflineValidator;
+  createPostConfirm?: Maybe<Message>;
+  createPostStart?: Maybe<AddressLoginType>;
   createPreimage: Preimage;
   createPreimageArgument: PreimageArgument;
   createPreimageStatus: PreimageStatus;
@@ -12396,6 +12789,10 @@ export type Mutation_Root = {
   deleteTreasurySpendProposal?: Maybe<TreasurySpendProposal>;
   deleteTreasuryStatus?: Maybe<TreasuryStatus>;
   deleteValidator?: Maybe<Validator>;
+  /** delete data from the table: "blockchain_socials" */
+  delete_blockchain_socials?: Maybe<Blockchain_Socials_Mutation_Response>;
+  /** delete single row from the table: "blockchain_socials" */
+  delete_blockchain_socials_by_pk?: Maybe<Blockchain_Socials>;
   /** delete data from the table: "comment_reactions" */
   delete_comment_reactions?: Maybe<Comment_Reactions_Mutation_Response>;
   /** delete single row from the table: "comment_reactions" */
@@ -12444,7 +12841,13 @@ export type Mutation_Root = {
   delete_replies?: Maybe<Replies_Mutation_Response>;
   /** delete single row from the table: "replies" */
   delete_replies_by_pk?: Maybe<Replies>;
+  editPostConfirm?: Maybe<Message>;
+  editPostStart?: Maybe<AddressLoginType>;
   executeRaw: Scalars['Json'];
+  /** insert data into the table: "blockchain_socials" */
+  insert_blockchain_socials?: Maybe<Blockchain_Socials_Mutation_Response>;
+  /** insert a single row into the table: "blockchain_socials" */
+  insert_blockchain_socials_one?: Maybe<Blockchain_Socials>;
   /** insert data into the table: "comment_reactions" */
   insert_comment_reactions?: Maybe<Comment_Reactions_Mutation_Response>;
   /** insert a single row into the table: "comment_reactions" */
@@ -12573,6 +12976,10 @@ export type Mutation_Root = {
   updateTreasurySpendProposal?: Maybe<TreasurySpendProposal>;
   updateTreasuryStatus?: Maybe<TreasuryStatus>;
   updateValidator?: Maybe<Validator>;
+  /** update data of the table: "blockchain_socials" */
+  update_blockchain_socials?: Maybe<Blockchain_Socials_Mutation_Response>;
+  /** update single row of the table: "blockchain_socials" */
+  update_blockchain_socials_by_pk?: Maybe<Blockchain_Socials>;
   /** update data of the table: "comment_reactions" */
   update_comment_reactions?: Maybe<Comment_Reactions_Mutation_Response>;
   /** update single row of the table: "comment_reactions" */
@@ -12818,6 +13225,22 @@ export type Mutation_RootCreateNominationArgs = {
 /** mutation root */
 export type Mutation_RootCreateOfflineValidatorArgs = {
   data: OfflineValidatorCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreatePostConfirmArgs = {
+  address: Scalars['String'];
+  content: Scalars['String'];
+  network: Scalars['String'];
+  signature: Scalars['String'];
+  title: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootCreatePostStartArgs = {
+  address: Scalars['String'];
 };
 
 
@@ -13344,6 +13767,18 @@ export type Mutation_RootDeleteValidatorArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_Blockchain_SocialsArgs = {
+  where: Blockchain_Socials_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Blockchain_Socials_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_Comment_ReactionsArgs = {
   where: Comment_Reactions_Bool_Exp;
 };
@@ -13488,9 +13923,41 @@ export type Mutation_RootDelete_Replies_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootEditPostConfirmArgs = {
+  address: Scalars['String'];
+  content: Scalars['String'];
+  network: Scalars['String'];
+  proposalId: Scalars['String'];
+  proposalType: Scalars['String'];
+  signature: Scalars['String'];
+  title: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootEditPostStartArgs = {
+  address: Scalars['String'];
+};
+
+
+/** mutation root */
 export type Mutation_RootExecuteRawArgs = {
   database?: Maybe<PrismaDatabase>;
   query: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Blockchain_SocialsArgs = {
+  objects: Array<Blockchain_Socials_Insert_Input>;
+  on_conflict?: Maybe<Blockchain_Socials_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Blockchain_Socials_OneArgs = {
+  object: Blockchain_Socials_Insert_Input;
+  on_conflict?: Maybe<Blockchain_Socials_On_Conflict>;
 };
 
 
@@ -14211,6 +14678,22 @@ export type Mutation_RootUpdateTreasuryStatusArgs = {
 export type Mutation_RootUpdateValidatorArgs = {
   data: ValidatorUpdateInput;
   where: ValidatorWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Blockchain_SocialsArgs = {
+  _inc?: Maybe<Blockchain_Socials_Inc_Input>;
+  _set?: Maybe<Blockchain_Socials_Set_Input>;
+  where: Blockchain_Socials_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Blockchain_Socials_By_PkArgs = {
+  _inc?: Maybe<Blockchain_Socials_Inc_Input>;
+  _set?: Maybe<Blockchain_Socials_Set_Input>;
+  pk_columns: Blockchain_Socials_Pk_Columns_Input;
 };
 
 
@@ -18397,6 +18880,12 @@ export type Query_Root = {
   blockNumber?: Maybe<BlockNumber>;
   blockNumbers: Array<Maybe<BlockNumber>>;
   blockNumbersConnection: BlockNumberConnection;
+  /** fetch data from the table: "blockchain_socials" */
+  blockchain_socials: Array<Blockchain_Socials>;
+  /** fetch aggregated fields from the table: "blockchain_socials" */
+  blockchain_socials_aggregate: Blockchain_Socials_Aggregate;
+  /** fetch data from the table: "blockchain_socials" using primary key columns */
+  blockchain_socials_by_pk?: Maybe<Blockchain_Socials>;
   bounties: Array<Maybe<Bounty>>;
   bountiesConnection: BountyConnection;
   bounty?: Maybe<Bounty>;
@@ -18639,6 +19128,32 @@ export type Query_RootBlockNumbersConnectionArgs = {
   orderBy?: Maybe<BlockNumberOrderByInput>;
   skip?: Maybe<Scalars['Int']>;
   where?: Maybe<BlockNumberWhereInput>;
+};
+
+
+/** query root */
+export type Query_RootBlockchain_SocialsArgs = {
+  distinct_on?: Maybe<Array<Blockchain_Socials_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Blockchain_Socials_Order_By>>;
+  where?: Maybe<Blockchain_Socials_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootBlockchain_Socials_AggregateArgs = {
+  distinct_on?: Maybe<Array<Blockchain_Socials_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Blockchain_Socials_Order_By>>;
+  where?: Maybe<Blockchain_Socials_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootBlockchain_Socials_By_PkArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -20244,6 +20759,12 @@ export type Subscription_Root = {
   __typename?: 'subscription_root';
   blockIndex?: Maybe<BlockIndexSubscriptionPayload>;
   blockNumber?: Maybe<BlockNumberSubscriptionPayload>;
+  /** fetch data from the table: "blockchain_socials" */
+  blockchain_socials: Array<Blockchain_Socials>;
+  /** fetch aggregated fields from the table: "blockchain_socials" */
+  blockchain_socials_aggregate: Blockchain_Socials_Aggregate;
+  /** fetch data from the table: "blockchain_socials" using primary key columns */
+  blockchain_socials_by_pk?: Maybe<Blockchain_Socials>;
   bounty?: Maybe<BountySubscriptionPayload>;
   bountyStatus?: Maybe<BountyStatusSubscriptionPayload>;
   /** fetch data from the table: "comment_reactions" */
@@ -20364,6 +20885,32 @@ export type Subscription_RootBlockIndexArgs = {
 /** subscription root */
 export type Subscription_RootBlockNumberArgs = {
   where?: Maybe<BlockNumberSubscriptionWhereInput>;
+};
+
+
+/** subscription root */
+export type Subscription_RootBlockchain_SocialsArgs = {
+  distinct_on?: Maybe<Array<Blockchain_Socials_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Blockchain_Socials_Order_By>>;
+  where?: Maybe<Blockchain_Socials_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootBlockchain_Socials_AggregateArgs = {
+  distinct_on?: Maybe<Array<Blockchain_Socials_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Blockchain_Socials_Order_By>>;
+  where?: Maybe<Blockchain_Socials_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootBlockchain_Socials_By_PkArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -20953,6 +21500,21 @@ export type DeleteCommentMutation = (
   )> }
 );
 
+export type AddCommentReplyMutationVariables = Exact<{
+  authorId: Scalars['Int'];
+  content: Scalars['String'];
+  commentId: Scalars['uuid'];
+}>;
+
+
+export type AddCommentReplyMutation = (
+  { __typename: 'mutation_root' }
+  & { insert_replies?: Maybe<(
+    { __typename?: 'replies_mutation_response' }
+    & Pick<Replies_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
 export type LoginMutationVariables = Exact<{
   password: Scalars['String'];
   username: Scalars['String'];
@@ -21241,21 +21803,6 @@ export type AddPostCommentMutation = (
   & { insert_comments?: Maybe<(
     { __typename?: 'comments_mutation_response' }
     & Pick<Comments_Mutation_Response, 'affected_rows'>
-  )> }
-);
-
-export type AddCommentReplyMutationVariables = Exact<{
-  authorId: Scalars['Int'];
-  content: Scalars['String'];
-  commentId: Scalars['uuid'];
-}>;
-
-
-export type AddCommentReplyMutation = (
-  { __typename: 'mutation_root' }
-  & { insert_replies?: Maybe<(
-    { __typename?: 'replies_mutation_response' }
-    & Pick<Replies_Mutation_Response, 'affected_rows'>
   )> }
 );
 
@@ -21943,6 +22490,22 @@ export type LatestBountyPostsQuery = (
   )> }
 );
 
+export type BountiesCountQueryVariables = Exact<{
+  postType: Scalars['Int'];
+}>;
+
+
+export type BountiesCountQuery = (
+  { __typename?: 'query_root' }
+  & { posts_aggregate: (
+    { __typename?: 'posts_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'posts_aggregate_fields' }
+      & Pick<Posts_Aggregate_Fields, 'count'>
+    )> }
+  ) }
+);
+
 export type LatestMotionPostsQueryVariables = Exact<{
   postType: Scalars['Int'];
   limit?: Scalars['Int'];
@@ -21985,6 +22548,22 @@ export type LatestMotionPostsQuery = (
       )>> }
     )> }
   )> }
+);
+
+export type LatestMotionsCountQueryVariables = Exact<{
+  postType: Scalars['Int'];
+}>;
+
+
+export type LatestMotionsCountQuery = (
+  { __typename?: 'query_root' }
+  & { posts_aggregate: (
+    { __typename?: 'posts_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'posts_aggregate_fields' }
+      & Pick<Posts_Aggregate_Fields, 'count'>
+    )> }
+  ) }
 );
 
 export type LatestDemocracyProposalPostsQueryVariables = Exact<{
@@ -22032,6 +22611,23 @@ export type LatestDemocracyProposalPostsQuery = (
   )> }
 );
 
+export type DemocracyProposalCountQueryVariables = Exact<{
+  postType: Scalars['Int'];
+  postTopic: Scalars['Int'];
+}>;
+
+
+export type DemocracyProposalCountQuery = (
+  { __typename?: 'query_root' }
+  & { posts_aggregate: (
+    { __typename?: 'posts_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'posts_aggregate_fields' }
+      & Pick<Posts_Aggregate_Fields, 'count'>
+    )> }
+  ) }
+);
+
 export type LatestReferendaPostsQueryVariables = Exact<{
   postType: Scalars['Int'];
   limit?: Scalars['Int'];
@@ -22074,6 +22670,22 @@ export type LatestReferendaPostsQuery = (
       )>> }
     )> }
   )> }
+);
+
+export type ReferundumCountQueryVariables = Exact<{
+  postType: Scalars['Int'];
+}>;
+
+
+export type ReferundumCountQuery = (
+  { __typename?: 'query_root' }
+  & { posts_aggregate: (
+    { __typename?: 'posts_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'posts_aggregate_fields' }
+      & Pick<Posts_Aggregate_Fields, 'count'>
+    )> }
+  ) }
 );
 
 export type LatestTechCommitteeProposalPostsQueryVariables = Exact<{
@@ -22120,6 +22732,22 @@ export type LatestTechCommitteeProposalPostsQuery = (
   )> }
 );
 
+export type TechCommitteeProposalCountQueryVariables = Exact<{
+  postType: Scalars['Int'];
+}>;
+
+
+export type TechCommitteeProposalCountQuery = (
+  { __typename?: 'query_root' }
+  & { posts_aggregate: (
+    { __typename?: 'posts_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'posts_aggregate_fields' }
+      & Pick<Posts_Aggregate_Fields, 'count'>
+    )> }
+  ) }
+);
+
 export type LatestTipPostsQueryVariables = Exact<{
   postType: Scalars['Int'];
   postTopic: Scalars['Int'];
@@ -22162,6 +22790,23 @@ export type LatestTipPostsQuery = (
   )> }
 );
 
+export type TipProposalCountQueryVariables = Exact<{
+  postType: Scalars['Int'];
+  postTopic: Scalars['Int'];
+}>;
+
+
+export type TipProposalCountQuery = (
+  { __typename?: 'query_root' }
+  & { posts_aggregate: (
+    { __typename?: 'posts_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'posts_aggregate_fields' }
+      & Pick<Posts_Aggregate_Fields, 'count'>
+    )> }
+  ) }
+);
+
 export type LatestDemocracyTreasuryProposalPostsQueryVariables = Exact<{
   postType: Scalars['Int'];
   postTopic: Scalars['Int'];
@@ -22202,6 +22847,23 @@ export type LatestDemocracyTreasuryProposalPostsQuery = (
       )>> }
     )> }
   )> }
+);
+
+export type DemocracyTreasuryProposalCountQueryVariables = Exact<{
+  postType: Scalars['Int'];
+  postTopic: Scalars['Int'];
+}>;
+
+
+export type DemocracyTreasuryProposalCountQuery = (
+  { __typename?: 'query_root' }
+  & { posts_aggregate: (
+    { __typename?: 'posts_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'posts_aggregate_fields' }
+      & Pick<Posts_Aggregate_Fields, 'count'>
+    )> }
+  ) }
 );
 
 export type AboutQueryVariables = Exact<{
@@ -23999,6 +24661,43 @@ export function useDeleteCommentMutation(baseOptions?: ApolloReactHooks.Mutation
 export type DeleteCommentMutationHookResult = ReturnType<typeof useDeleteCommentMutation>;
 export type DeleteCommentMutationResult = ApolloReactCommon.MutationResult<DeleteCommentMutation>;
 export type DeleteCommentMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteCommentMutation, DeleteCommentMutationVariables>;
+export const AddCommentReplyDocument = gql`
+    mutation AddCommentReply($authorId: Int!, $content: String!, $commentId: uuid!) {
+  __typename
+  insert_replies(
+    objects: {author_id: $authorId, content: $content, comment_id: $commentId}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export type AddCommentReplyMutationFn = ApolloReactCommon.MutationFunction<AddCommentReplyMutation, AddCommentReplyMutationVariables>;
+
+/**
+ * __useAddCommentReplyMutation__
+ *
+ * To run a mutation, you first call `useAddCommentReplyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddCommentReplyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addCommentReplyMutation, { data, loading, error }] = useAddCommentReplyMutation({
+ *   variables: {
+ *      authorId: // value for 'authorId'
+ *      content: // value for 'content'
+ *      commentId: // value for 'commentId'
+ *   },
+ * });
+ */
+export function useAddCommentReplyMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddCommentReplyMutation, AddCommentReplyMutationVariables>) {
+        return ApolloReactHooks.useMutation<AddCommentReplyMutation, AddCommentReplyMutationVariables>(AddCommentReplyDocument, baseOptions);
+      }
+export type AddCommentReplyMutationHookResult = ReturnType<typeof useAddCommentReplyMutation>;
+export type AddCommentReplyMutationResult = ApolloReactCommon.MutationResult<AddCommentReplyMutation>;
+export type AddCommentReplyMutationOptions = ApolloReactCommon.BaseMutationOptions<AddCommentReplyMutation, AddCommentReplyMutationVariables>;
 export const LoginDocument = gql`
     mutation LOGIN($password: String!, $username: String!) {
   login(password: $password, username: $username) {
@@ -24651,43 +25350,6 @@ export function useAddPostCommentMutation(baseOptions?: ApolloReactHooks.Mutatio
 export type AddPostCommentMutationHookResult = ReturnType<typeof useAddPostCommentMutation>;
 export type AddPostCommentMutationResult = ApolloReactCommon.MutationResult<AddPostCommentMutation>;
 export type AddPostCommentMutationOptions = ApolloReactCommon.BaseMutationOptions<AddPostCommentMutation, AddPostCommentMutationVariables>;
-export const AddCommentReplyDocument = gql`
-    mutation AddCommentReply($authorId: Int!, $content: String!, $commentId: uuid!) {
-  __typename
-  insert_replies(
-    objects: {author_id: $authorId, content: $content, comment_id: $commentId}
-  ) {
-    affected_rows
-  }
-}
-    `;
-export type AddCommentReplyMutationFn = ApolloReactCommon.MutationFunction<AddCommentReplyMutation, AddCommentReplyMutationVariables>;
-
-/**
- * __useAddCommentReplyMutation__
- *
- * To run a mutation, you first call `useAddCommentReplyMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAddCommentReplyMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [addCommentReplyMutation, { data, loading, error }] = useAddCommentReplyMutation({
- *   variables: {
- *      authorId: // value for 'authorId'
- *      content: // value for 'content'
- *      commentId: // value for 'commentId'
- *   },
- * });
- */
-export function useAddCommentReplyMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddCommentReplyMutation, AddCommentReplyMutationVariables>) {
-        return ApolloReactHooks.useMutation<AddCommentReplyMutation, AddCommentReplyMutationVariables>(AddCommentReplyDocument, baseOptions);
-      }
-export type AddCommentReplyMutationHookResult = ReturnType<typeof useAddCommentReplyMutation>;
-export type AddCommentReplyMutationResult = ApolloReactCommon.MutationResult<AddCommentReplyMutation>;
-export type AddCommentReplyMutationOptions = ApolloReactCommon.BaseMutationOptions<AddCommentReplyMutation, AddCommentReplyMutationVariables>;
 export const EditCommentReplyDocument = gql`
     mutation EditCommentReply($id: uuid!, $content: String!) {
   update_replies(where: {id: {_eq: $id}}, _set: {content: $content}) {
@@ -25803,6 +26465,43 @@ export function useLatestBountyPostsLazyQuery(baseOptions?: ApolloReactHooks.Laz
 export type LatestBountyPostsQueryHookResult = ReturnType<typeof useLatestBountyPostsQuery>;
 export type LatestBountyPostsLazyQueryHookResult = ReturnType<typeof useLatestBountyPostsLazyQuery>;
 export type LatestBountyPostsQueryResult = ApolloReactCommon.QueryResult<LatestBountyPostsQuery, LatestBountyPostsQueryVariables>;
+export const BountiesCountDocument = gql`
+    query BountiesCount($postType: Int!) {
+  posts_aggregate(
+    where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_bounty_id: {_is_null: false}}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useBountiesCountQuery__
+ *
+ * To run a query within a React component, call `useBountiesCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBountiesCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBountiesCountQuery({
+ *   variables: {
+ *      postType: // value for 'postType'
+ *   },
+ * });
+ */
+export function useBountiesCountQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<BountiesCountQuery, BountiesCountQueryVariables>) {
+        return ApolloReactHooks.useQuery<BountiesCountQuery, BountiesCountQueryVariables>(BountiesCountDocument, baseOptions);
+      }
+export function useBountiesCountLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<BountiesCountQuery, BountiesCountQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<BountiesCountQuery, BountiesCountQueryVariables>(BountiesCountDocument, baseOptions);
+        }
+export type BountiesCountQueryHookResult = ReturnType<typeof useBountiesCountQuery>;
+export type BountiesCountLazyQueryHookResult = ReturnType<typeof useBountiesCountLazyQuery>;
+export type BountiesCountQueryResult = ApolloReactCommon.QueryResult<BountiesCountQuery, BountiesCountQueryVariables>;
 export const LatestMotionPostsDocument = gql`
     query LatestMotionPosts($postType: Int!, $limit: Int! = 5) {
   posts(
@@ -25878,6 +26577,43 @@ export function useLatestMotionPostsLazyQuery(baseOptions?: ApolloReactHooks.Laz
 export type LatestMotionPostsQueryHookResult = ReturnType<typeof useLatestMotionPostsQuery>;
 export type LatestMotionPostsLazyQueryHookResult = ReturnType<typeof useLatestMotionPostsLazyQuery>;
 export type LatestMotionPostsQueryResult = ApolloReactCommon.QueryResult<LatestMotionPostsQuery, LatestMotionPostsQueryVariables>;
+export const LatestMotionsCountDocument = gql`
+    query LatestMotionsCount($postType: Int!) {
+  posts_aggregate(
+    where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_referendum_id: {_is_null: true}, onchain_motion_id: {_is_null: false}}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useLatestMotionsCountQuery__
+ *
+ * To run a query within a React component, call `useLatestMotionsCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLatestMotionsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLatestMotionsCountQuery({
+ *   variables: {
+ *      postType: // value for 'postType'
+ *   },
+ * });
+ */
+export function useLatestMotionsCountQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<LatestMotionsCountQuery, LatestMotionsCountQueryVariables>) {
+        return ApolloReactHooks.useQuery<LatestMotionsCountQuery, LatestMotionsCountQueryVariables>(LatestMotionsCountDocument, baseOptions);
+      }
+export function useLatestMotionsCountLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<LatestMotionsCountQuery, LatestMotionsCountQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<LatestMotionsCountQuery, LatestMotionsCountQueryVariables>(LatestMotionsCountDocument, baseOptions);
+        }
+export type LatestMotionsCountQueryHookResult = ReturnType<typeof useLatestMotionsCountQuery>;
+export type LatestMotionsCountLazyQueryHookResult = ReturnType<typeof useLatestMotionsCountLazyQuery>;
+export type LatestMotionsCountQueryResult = ApolloReactCommon.QueryResult<LatestMotionsCountQuery, LatestMotionsCountQueryVariables>;
 export const LatestDemocracyProposalPostsDocument = gql`
     query LatestDemocracyProposalPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
   posts(
@@ -25954,6 +26690,44 @@ export function useLatestDemocracyProposalPostsLazyQuery(baseOptions?: ApolloRea
 export type LatestDemocracyProposalPostsQueryHookResult = ReturnType<typeof useLatestDemocracyProposalPostsQuery>;
 export type LatestDemocracyProposalPostsLazyQueryHookResult = ReturnType<typeof useLatestDemocracyProposalPostsLazyQuery>;
 export type LatestDemocracyProposalPostsQueryResult = ApolloReactCommon.QueryResult<LatestDemocracyProposalPostsQuery, LatestDemocracyProposalPostsQueryVariables>;
+export const DemocracyProposalCountDocument = gql`
+    query DemocracyProposalCount($postType: Int!, $postTopic: Int!) {
+  posts_aggregate(
+    where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_proposal_id: {_is_null: false}, onchain_referendum_id: {_is_null: true}}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useDemocracyProposalCountQuery__
+ *
+ * To run a query within a React component, call `useDemocracyProposalCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDemocracyProposalCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDemocracyProposalCountQuery({
+ *   variables: {
+ *      postType: // value for 'postType'
+ *      postTopic: // value for 'postTopic'
+ *   },
+ * });
+ */
+export function useDemocracyProposalCountQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<DemocracyProposalCountQuery, DemocracyProposalCountQueryVariables>) {
+        return ApolloReactHooks.useQuery<DemocracyProposalCountQuery, DemocracyProposalCountQueryVariables>(DemocracyProposalCountDocument, baseOptions);
+      }
+export function useDemocracyProposalCountLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<DemocracyProposalCountQuery, DemocracyProposalCountQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<DemocracyProposalCountQuery, DemocracyProposalCountQueryVariables>(DemocracyProposalCountDocument, baseOptions);
+        }
+export type DemocracyProposalCountQueryHookResult = ReturnType<typeof useDemocracyProposalCountQuery>;
+export type DemocracyProposalCountLazyQueryHookResult = ReturnType<typeof useDemocracyProposalCountLazyQuery>;
+export type DemocracyProposalCountQueryResult = ApolloReactCommon.QueryResult<DemocracyProposalCountQuery, DemocracyProposalCountQueryVariables>;
 export const LatestReferendaPostsDocument = gql`
     query LatestReferendaPosts($postType: Int!, $limit: Int! = 5) {
   posts(
@@ -26030,6 +26804,43 @@ export function useLatestReferendaPostsLazyQuery(baseOptions?: ApolloReactHooks.
 export type LatestReferendaPostsQueryHookResult = ReturnType<typeof useLatestReferendaPostsQuery>;
 export type LatestReferendaPostsLazyQueryHookResult = ReturnType<typeof useLatestReferendaPostsLazyQuery>;
 export type LatestReferendaPostsQueryResult = ApolloReactCommon.QueryResult<LatestReferendaPostsQuery, LatestReferendaPostsQueryVariables>;
+export const ReferundumCountDocument = gql`
+    query ReferundumCount($postType: Int!) {
+  posts_aggregate(
+    where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_referendum_id: {_is_null: false}}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useReferundumCountQuery__
+ *
+ * To run a query within a React component, call `useReferundumCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useReferundumCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useReferundumCountQuery({
+ *   variables: {
+ *      postType: // value for 'postType'
+ *   },
+ * });
+ */
+export function useReferundumCountQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ReferundumCountQuery, ReferundumCountQueryVariables>) {
+        return ApolloReactHooks.useQuery<ReferundumCountQuery, ReferundumCountQueryVariables>(ReferundumCountDocument, baseOptions);
+      }
+export function useReferundumCountLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ReferundumCountQuery, ReferundumCountQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<ReferundumCountQuery, ReferundumCountQueryVariables>(ReferundumCountDocument, baseOptions);
+        }
+export type ReferundumCountQueryHookResult = ReturnType<typeof useReferundumCountQuery>;
+export type ReferundumCountLazyQueryHookResult = ReturnType<typeof useReferundumCountLazyQuery>;
+export type ReferundumCountQueryResult = ApolloReactCommon.QueryResult<ReferundumCountQuery, ReferundumCountQueryVariables>;
 export const LatestTechCommitteeProposalPostsDocument = gql`
     query LatestTechCommitteeProposalPosts($postType: Int!, $limit: Int! = 5) {
   posts(
@@ -26105,6 +26916,43 @@ export function useLatestTechCommitteeProposalPostsLazyQuery(baseOptions?: Apoll
 export type LatestTechCommitteeProposalPostsQueryHookResult = ReturnType<typeof useLatestTechCommitteeProposalPostsQuery>;
 export type LatestTechCommitteeProposalPostsLazyQueryHookResult = ReturnType<typeof useLatestTechCommitteeProposalPostsLazyQuery>;
 export type LatestTechCommitteeProposalPostsQueryResult = ApolloReactCommon.QueryResult<LatestTechCommitteeProposalPostsQuery, LatestTechCommitteeProposalPostsQueryVariables>;
+export const TechCommitteeProposalCountDocument = gql`
+    query TechCommitteeProposalCount($postType: Int!) {
+  posts_aggregate(
+    where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_tech_committee_proposal_id: {_is_null: false}}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useTechCommitteeProposalCountQuery__
+ *
+ * To run a query within a React component, call `useTechCommitteeProposalCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTechCommitteeProposalCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTechCommitteeProposalCountQuery({
+ *   variables: {
+ *      postType: // value for 'postType'
+ *   },
+ * });
+ */
+export function useTechCommitteeProposalCountQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<TechCommitteeProposalCountQuery, TechCommitteeProposalCountQueryVariables>) {
+        return ApolloReactHooks.useQuery<TechCommitteeProposalCountQuery, TechCommitteeProposalCountQueryVariables>(TechCommitteeProposalCountDocument, baseOptions);
+      }
+export function useTechCommitteeProposalCountLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<TechCommitteeProposalCountQuery, TechCommitteeProposalCountQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<TechCommitteeProposalCountQuery, TechCommitteeProposalCountQueryVariables>(TechCommitteeProposalCountDocument, baseOptions);
+        }
+export type TechCommitteeProposalCountQueryHookResult = ReturnType<typeof useTechCommitteeProposalCountQuery>;
+export type TechCommitteeProposalCountLazyQueryHookResult = ReturnType<typeof useTechCommitteeProposalCountLazyQuery>;
+export type TechCommitteeProposalCountQueryResult = ApolloReactCommon.QueryResult<TechCommitteeProposalCountQuery, TechCommitteeProposalCountQueryVariables>;
 export const LatestTipPostsDocument = gql`
     query LatestTipPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
   posts(
@@ -26178,6 +27026,44 @@ export function useLatestTipPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQu
 export type LatestTipPostsQueryHookResult = ReturnType<typeof useLatestTipPostsQuery>;
 export type LatestTipPostsLazyQueryHookResult = ReturnType<typeof useLatestTipPostsLazyQuery>;
 export type LatestTipPostsQueryResult = ApolloReactCommon.QueryResult<LatestTipPostsQuery, LatestTipPostsQueryVariables>;
+export const TipProposalCountDocument = gql`
+    query TipProposalCount($postType: Int!, $postTopic: Int!) {
+  posts_aggregate(
+    where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_tip_id: {_is_null: false}}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useTipProposalCountQuery__
+ *
+ * To run a query within a React component, call `useTipProposalCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTipProposalCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTipProposalCountQuery({
+ *   variables: {
+ *      postType: // value for 'postType'
+ *      postTopic: // value for 'postTopic'
+ *   },
+ * });
+ */
+export function useTipProposalCountQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<TipProposalCountQuery, TipProposalCountQueryVariables>) {
+        return ApolloReactHooks.useQuery<TipProposalCountQuery, TipProposalCountQueryVariables>(TipProposalCountDocument, baseOptions);
+      }
+export function useTipProposalCountLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<TipProposalCountQuery, TipProposalCountQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<TipProposalCountQuery, TipProposalCountQueryVariables>(TipProposalCountDocument, baseOptions);
+        }
+export type TipProposalCountQueryHookResult = ReturnType<typeof useTipProposalCountQuery>;
+export type TipProposalCountLazyQueryHookResult = ReturnType<typeof useTipProposalCountLazyQuery>;
+export type TipProposalCountQueryResult = ApolloReactCommon.QueryResult<TipProposalCountQuery, TipProposalCountQueryVariables>;
 export const LatestDemocracyTreasuryProposalPostsDocument = gql`
     query LatestDemocracyTreasuryProposalPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
   posts(
@@ -26248,6 +27134,44 @@ export function useLatestDemocracyTreasuryProposalPostsLazyQuery(baseOptions?: A
 export type LatestDemocracyTreasuryProposalPostsQueryHookResult = ReturnType<typeof useLatestDemocracyTreasuryProposalPostsQuery>;
 export type LatestDemocracyTreasuryProposalPostsLazyQueryHookResult = ReturnType<typeof useLatestDemocracyTreasuryProposalPostsLazyQuery>;
 export type LatestDemocracyTreasuryProposalPostsQueryResult = ApolloReactCommon.QueryResult<LatestDemocracyTreasuryProposalPostsQuery, LatestDemocracyTreasuryProposalPostsQueryVariables>;
+export const DemocracyTreasuryProposalCountDocument = gql`
+    query DemocracyTreasuryProposalCount($postType: Int!, $postTopic: Int!) {
+  posts_aggregate(
+    where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_treasury_proposal_id: {_is_null: false}, onchain_motion_id: {_is_null: true}}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useDemocracyTreasuryProposalCountQuery__
+ *
+ * To run a query within a React component, call `useDemocracyTreasuryProposalCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDemocracyTreasuryProposalCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDemocracyTreasuryProposalCountQuery({
+ *   variables: {
+ *      postType: // value for 'postType'
+ *      postTopic: // value for 'postTopic'
+ *   },
+ * });
+ */
+export function useDemocracyTreasuryProposalCountQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<DemocracyTreasuryProposalCountQuery, DemocracyTreasuryProposalCountQueryVariables>) {
+        return ApolloReactHooks.useQuery<DemocracyTreasuryProposalCountQuery, DemocracyTreasuryProposalCountQueryVariables>(DemocracyTreasuryProposalCountDocument, baseOptions);
+      }
+export function useDemocracyTreasuryProposalCountLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<DemocracyTreasuryProposalCountQuery, DemocracyTreasuryProposalCountQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<DemocracyTreasuryProposalCountQuery, DemocracyTreasuryProposalCountQueryVariables>(DemocracyTreasuryProposalCountDocument, baseOptions);
+        }
+export type DemocracyTreasuryProposalCountQueryHookResult = ReturnType<typeof useDemocracyTreasuryProposalCountQuery>;
+export type DemocracyTreasuryProposalCountLazyQueryHookResult = ReturnType<typeof useDemocracyTreasuryProposalCountLazyQuery>;
+export type DemocracyTreasuryProposalCountQueryResult = ApolloReactCommon.QueryResult<DemocracyTreasuryProposalCountQuery, DemocracyTreasuryProposalCountQueryVariables>;
 export const AboutDocument = gql`
     query ABOUT($network: String!, $address: String!) {
   about(network: $network, address: $address) {

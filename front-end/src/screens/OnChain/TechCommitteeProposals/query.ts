@@ -64,3 +64,13 @@ export const QUERY_LATEST_TECH_COMMITTEE_PROPOSALS = gql`
     }
     ${authorFields}
 `;
+
+export const QUERY_COUNT_TECH_COMMITTE_PROPOSAL = gql`
+    query TechCommitteeProposalCount($postType: Int!) {
+        posts_aggregate(where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_tech_committee_proposal_id: {_is_null: false}}}) {
+            aggregate {
+                count
+            }
+        }
+    }
+`;
