@@ -167,4 +167,9 @@ export default styled(LatestActivityTableRow)`
 		text-transform: capitalize;
 		color: #75767C;
 	}
+
+	.statusTag {
+		font-size: 16px !important;
+		font-weight: 400 !important;
+	}
 `;

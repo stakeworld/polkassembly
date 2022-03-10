@@ -30,7 +30,7 @@ export default styled(LatestActivitySearchPage)`
 				margin-right: 1em;
 	
 				input {
-					color: #ddd;
+					color: #333;
 					background: rgba(255, 255, 255, 0.25);
 					border-radius: 0.7em !important;
 					padding-top: 0.7em;
