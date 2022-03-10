@@ -4,8 +4,10 @@
 
 import styled from '@xstyled/styled-components';
 import React from 'react';
-import { Tab } from 'semantic-ui-react';
+import { Icon, Menu, Tab } from 'semantic-ui-react';
 
+import filterIMG from '../../../assets/latest-activity-filter.png';
+import LatestActivitySearchPage from '../LatestActivitySearchPage';
 import LatestAllPostsTable from '../LatestAllPostsTable';
 import LatestBountiesTable from '../LatestBountiesTable';
 import LatestMotionsTable from '../LatestMotionsTable';
@@ -47,6 +49,20 @@ const LatestActivity = ({ className }: Props) => {
 		{
 			menuItem: 'Tips',
 			render: () => <LatestTipsTable className='tab-panel' />
+		},
+		{
+			menuItem: <Menu.Item className='menu-right' key='search'> <Icon name='search' /> </Menu.Item>,
+			render: () => <LatestActivitySearchPage className='tab-panel' /> //TODO: Change to relevant page
+		},
+		{
+			menuItem: <Menu.Item className='no-border' key='filter'>
+				<img style={ { height:'auto', width:'1.2em' } } src={filterIMG} alt="Filter" />
+			</Menu.Item>,
+			render: () => <LatestTipsTable className='tab-panel' /> //TODO: Change to relevant page
+		},
+		{
+			menuItem: <Menu.Item className='no-border' key='th'> <Icon name='th' /> </Menu.Item>,
+			render: () => <LatestTipsTable className='tab-panel' /> //TODO: Change to relevant page
 		}
 	];
 
@@ -60,6 +76,10 @@ const LatestActivity = ({ className }: Props) => {
 
 export default styled(LatestActivity)`
 	&&& {
+			.menu-right{
+				margin-left: auto !important;
+			}
+
 			.tab-header {
 				background: white;
 				border-top-left-radius: 0.5em;
@@ -74,6 +94,10 @@ export default styled(LatestActivity)`
 		
 				a.active {
 					border-bottom: 5px solid #E5007A !important;
+				}
+
+				a.active.no-border {
+					border-bottom: 5px solid #fff !important;
 				}
 			}
 		

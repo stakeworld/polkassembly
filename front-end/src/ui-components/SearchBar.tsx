@@ -13,6 +13,8 @@ import getDefaultAddressField from '../util/getDefaultAddressField';
 
 interface Props {
   className?: string
+	size?: 'mini' | 'tiny' | 'small' | 'large' | 'big' | 'huge' | 'massive'
+	placeholder?: string
 }
 
 const defaultAddressField = getDefaultAddressField();
@@ -30,7 +32,7 @@ const resultRenderer = (post: any) => (
 	/>
 );
 
-const SearchBar = ({ className }: Props) => {
+const SearchBar = ({ className, placeholder, size }: Props) => {
 	const history = useHistory();
 
 	const [results, setResults] = useState<any[]>([]);
@@ -62,6 +64,7 @@ const SearchBar = ({ className }: Props) => {
 	return (
 		<Search
 			className={className}
+			size={size}
 			fluid
 			loading={loading}
 			onResultSelect={handleResultSelect}
@@ -69,7 +72,7 @@ const SearchBar = ({ className }: Props) => {
 			results={results}
 			value={value}
 			resultRenderer={resultRenderer}
-			placeholder='Search By Proposal Keyword'
+			placeholder={placeholder ? placeholder : 'Search By Proposal Keyword'}
 		/>
 	);
 };

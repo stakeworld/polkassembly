@@ -26,7 +26,7 @@ const Home = ({ className }: Props) => {
 						<NetworkInfo />
 						<br/><br/>
 						<TreasuryOverviewCards />
-						<br/><br/>
+						<br/><br/><br/>
 						<LatestActivity />
 						<br/><br/>
 					</Grid.Column>
