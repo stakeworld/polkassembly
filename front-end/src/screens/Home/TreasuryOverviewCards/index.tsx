@@ -65,6 +65,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 	const [nextBurnUSD, setNextBurnUSD] = useState<string>('');
 	const [currentTokenPrice, setCurrentTokenPrice] = useState<string>('');
 	const [priceWeeklyChange, setPriceWeeklyChange] = useState<number>();
+	const [spendPeriodRemaining, setSpendPeriodRemaining] = useState<number>();
 	const [spendPeriodPercentage, setSpendPeriodPercentage] = useState<number>();
 
 	useEffect(() => {
@@ -301,28 +302,19 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 		return () => {cancel = true;};
 	}, [currentTokenPrice]);
 
-	// TODO: calculate the percentage of spending period.
 	useEffect(() => {
-		if (!api || !apiReady) {
+		if (!api || !apiReady || currentBlock.isZero()) {
 			return;
 		}
 
-		// async function getBN() {
-		//  if (!api || !apiReady) {
-		// return;
-		//  }
+		const totalSpendPeriod: number = blockToDays(result.spendPeriod.toNumber(), blocktime);
+		const spendPeriodElapsed: number = blockToDays(currentBlock.toNumber() % (result.spendPeriod.toNumber()), blocktime);
+		const spendPeriodRemaining: number = totalSpendPeriod - spendPeriodElapsed;
+		setSpendPeriodRemaining(spendPeriodRemaining);
 
-		//  return new BN((await api.derive.chain.bestNumber()).toNumber()).mod(api.consts.democracy.launchPeriod).iadd(BN_ONE);
-		// }
-
-		// getBN().then((data) => {
-		//  if(data){
-		// console.log('getBN :', data.toNumber() * 6 );
-		//  }
-		// });
-
-		setSpendPeriodPercentage(75);
-	}, [api, apiReady]);
+		const percentage = ((spendPeriodRemaining/totalSpendPeriod) * 100).toFixed(0);
+		setSpendPeriodPercentage(parseFloat(percentage));
+	}, [api, apiReady, currentBlock, blocktime, result.spendPeriod]);
 
 	return (
 		<Card.Group className={className}>
@@ -387,14 +379,13 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			<Card className='treasury-card'>
 				<Card.Content>
 					<Card.Meta className='treasury-card-meta'>
-						Spend Period Remaining <HelperTooltip content={'Funds held in the treasury can be spent by making a spending proposal that, if approved by the Council, will enter a spend period before distribution, it is subject to governance, with the current default set to ' + blockToDays(result.spendPeriod.toNumber(), blocktime)} />
+						Spend Period Remaining <HelperTooltip content={'Funds held in the treasury can be spent by making a spending proposal that, if approved by the Council, will enter a spend period before distribution, it is subject to governance, with the current default set to '+ blockToDays(result.spendPeriod.toNumber(), blocktime) + ' days.'} />
 					</Card.Meta>
 					<Card.Header className='treasury-card-header'>
-						{ spendPeriodPercentage ? blockToDays(result.spendPeriod.toNumber(), blocktime) : <Icon loading name='circle notched' /> }
+						{spendPeriodRemaining && spendPeriodRemaining + ' days' }
 					</Card.Header>
 
 					<Card.Description className='treasury-card-desc progress-desc'>
-						{/* TODO: Check on how to calculate for every network */}
 						<div className='progressNumber'>{ spendPeriodPercentage }%</div><br/>
 						<Progress percent={spendPeriodPercentage} />
 					</Card.Description>

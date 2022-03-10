@@ -5,7 +5,7 @@ import BN from 'bn.js';
 import { chainProperties } from 'src/global/networkConstants';
 import getNetwork from 'src/util/getNetwork';
 
-export default function blockToDays (blocks: BN |  number, blocktime?: number ): string {
+export default function blockToDays (blocks: BN |  number, blocktime?: number ): number {
 	const network = getNetwork();
 
 	if (!blocktime) {
@@ -18,7 +18,7 @@ export default function blockToDays (blocks: BN |  number, blocktime?: number ):
 		blocks = blocks.toNumber();
 	}
 
-	const time = Math.floor((blocks * blocktime) / (3600*24)) + ' days ';
+	const time = Math.floor((blocks * blocktime) / (3600*24));
 
 	return time;
 }
