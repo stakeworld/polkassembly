@@ -16,11 +16,12 @@ interface Props {
 	address: string
 	className?: string
 	displayInline?: boolean
+	disableIdenticon?: boolean
 	extensionName?: string
 	popupContent?: string
 }
 
-const Address = ({ address, className, displayInline, extensionName, popupContent }: Props): JSX.Element => {
+const Address = ({ address, className, displayInline, disableIdenticon, extensionName, popupContent }: Props): JSX.Element => {
 	const { api, apiReady } = useContext(ApiContext);
 	const [mainDisplay, setMainDisplay] = useState<string>('');
 	const [sub, setSub] = useState<string | null>(null);
@@ -80,12 +81,17 @@ const Address = ({ address, className, displayInline, extensionName, popupConten
 
 	return (
 		<div className={displayInline ? `${className} inline`: className}>
-			<Identicon
-				className='image identicon'
-				value={address}
-				size={displayInline ? 20 : 32}
-				theme={'polkadot'}
-			/>
+			{
+				!disableIdenticon ?
+					<Identicon
+						className='image identicon'
+						value={address}
+						size={displayInline ? 20 : 32}
+						theme={'polkadot'}
+					/>
+					:
+					null
+			}
 			<div className='content'>
 				{displayInline
 					// When inline disregard the extension name.

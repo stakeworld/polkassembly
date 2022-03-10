@@ -118,6 +118,7 @@ const LatestActivityTableRow = function ({
 					address={address}
 					className='address'
 					displayInline={true}
+					disableIdenticon={true}
 				/>
 				<div className='sub-title-text'>
 					Posted { relativeCreatedAt }
