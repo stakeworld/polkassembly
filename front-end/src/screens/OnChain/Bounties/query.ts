@@ -60,3 +60,13 @@ export const QUERY_LATEST_BOUNTIES = gql`
     }
     ${authorFields}
 `;
+
+export const QUERY_COUNT_BOUNTIES = gql`
+    query BountiesCount($postType: Int!) {
+        posts_aggregate(where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_bounty_id: {_is_null: false}}}) {
+            aggregate {
+                count
+            }
+        }
+    }
+`;

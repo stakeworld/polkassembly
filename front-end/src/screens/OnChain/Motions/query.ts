@@ -67,3 +67,13 @@ export const QUERY_LATEST_MOTIONS = gql`
     }
     ${authorFields}
 `;
+
+export const QUERY_COUNT_MOTIONS = gql`
+    query LatestMotionsCount($postType: Int!) {
+        posts_aggregate(where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_referendum_id: {_is_null: true}, onchain_motion_id: {_is_null: false}}}) {
+            aggregate {
+                count
+            }
+        }
+    }
+`;
