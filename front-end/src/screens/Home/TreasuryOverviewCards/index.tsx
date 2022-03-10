@@ -144,6 +144,8 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 
 	// fetch available token to USD price whenever available token changes
 	useEffect(() => {
+		let cancel = false;
+
 		// replace spaces returned in string by format function
 		const token_available: number = parseFloat(formatBnBalance(
 			resultValue.toString(),
@@ -154,6 +156,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 		).replaceAll(/\s/g,''));
 
 		async function fetchAvailableUSDCPrice(token: number) {
+			if (cancel) return;
 			const response = await fetch(
 				'https://'+NETWORK+'.api.subscan.io/api/open/price_converter',
 				{
@@ -178,10 +181,14 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 		}
 
 		fetchAvailableUSDCPrice(token_available);
+
+		return () => { cancel = true; };
 	}, [resultValue]);
 
 	// fetch Next Burn token to USD price whenever Next Burn token changes
 	useEffect(() => {
+		let cancel = false;
+
 		// replace spaces returned in string by format function
 		const token_burn: number = parseFloat(formatBnBalance(
 			resultBurn.toString(),
@@ -192,6 +199,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 		).replaceAll(/\s/g,''));
 
 		async function fetchNextBurnUSDCPrice(token: number) {
+			if (cancel) return;
 			const response = await fetch(
 				'https://'+NETWORK+'.api.subscan.io/api/open/price_converter',
 				{
@@ -216,11 +224,16 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 		}
 
 		fetchNextBurnUSDCPrice(token_burn);
+
+		return () => {cancel = true;};
 	}, [resultBurn]);
 
 	// fetch current price of the token
 	useEffect(() => {
+		let cancel = false;
+
 		async function fetchCurrentTokenPrice() {
+			if (cancel) return;
 			let today = new Date();
 			const offset = today.getTimezoneOffset();
 			today = new Date(today.getTime() - (offset*60*1000));
@@ -247,11 +260,16 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 		}
 
 		fetchCurrentTokenPrice();
+
+		return () => {cancel = true;};
 	}, []);
 
 	// fetch a week ago price of the token and calc priceWeeklyChange
 	useEffect(() => {
+		let cancel = false;
+
 		async function fetchWeekAgoTokenPrice() {
+			if (cancel) return;
 			const weekAgoDate = moment().subtract(7,'d').format('YYYY-MM-DD');
 
 			const response = await fetch(
@@ -280,6 +298,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 		}
 
 		fetchWeekAgoTokenPrice();
+		return () => {cancel = true;};
 	}, [currentTokenPrice]);
 
 	// TODO: calculate the percentage of spending period.
