@@ -3,8 +3,11 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from '@xstyled/styled-components';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Icon, Menu, Tab } from 'semantic-ui-react';
+import { useDemocracyProposalCountQuery } from 'src/generated/graphql';
+import { post_topic } from 'src/global/post_topics';
+import { post_type } from 'src/global/post_types';
 
 import filterIMG from '../../../assets/latest-activity-filter.png';
 import LatestActivitySearchPage from '../LatestActivitySearchPage';
@@ -21,13 +24,29 @@ interface Props {
 }
 
 const LatestActivity = ({ className }: Props) => {
+	const { data, error, refetch } = useDemocracyProposalCountQuery({ variables: {
+		postTopic: post_topic.DEMOCRACY,
+		postType: post_type.ON_CHAIN
+	} });
+
+	if(!error){
+		console.log('data :', data);
+	}else{
+		console.log('error :', error);
+	}
+
+	useEffect(() => {
+		refetch();
+	}, [refetch]);
+
 	const panes = [
 		{
-			menuItem: 'All',
+			menuItem: <Menu.Item key='all'>All</Menu.Item>,
 			render: () => <LatestAllPostsTable className='tab-panel' />
 		},
 		{
-			menuItem: 'Referenda',
+			//{ !error && data ?<Label circular> &nbsp;{ data }</Label> : null }
+			menuItem: <Menu.Item key='referenda'>Referenda</Menu.Item>,
 			render: () => <LatestReferendaTable className='tab-panel' />
 		},
 		{
@@ -52,7 +71,7 @@ const LatestActivity = ({ className }: Props) => {
 		},
 		{
 			menuItem: <Menu.Item className='menu-right' key='search'> <Icon name='search' /> </Menu.Item>,
-			render: () => <LatestActivitySearchPage className='tab-panel' /> //TODO: Change to relevant page
+			render: () => <LatestActivitySearchPage className='tab-panel' />
 		},
 		{
 			menuItem: <Menu.Item className='no-border' key='filter'>

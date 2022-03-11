@@ -4,13 +4,28 @@
 
 import styled from '@xstyled/styled-components';
 import React from 'react';
-import { Grid, Icon } from 'semantic-ui-react';
+import { Grid, Icon, Image,List } from 'semantic-ui-react';
 
 interface Props {
   className?: string
 }
 
 const News = ({ className }: Props) => {
+	const listItems = [];
+	for (let i = 0; i <= 16; i++) {
+		listItems.push(
+			<List.Item className='news-list-item' key={i}>
+				<Image avatar src='https://avatars.githubusercontent.com/u/33775474?s=280&v=4' />
+				<List.Content>
+					<List.Description className='list-item-date'>
+						Jan 17, 2022 at 21:33 UTC
+					</List.Description>
+					<List.Header className='list-item-title'>New Project: Ajuna Network</List.Header>
+				</List.Content>
+			</List.Item>
+		);
+	}
+
 	return (
 		<div className={className}>
 			<h1>News</h1>
@@ -23,7 +38,9 @@ const News = ({ className }: Props) => {
 					</Grid.Row>
 					<Grid.Row className='event-content-row'>
 						<Grid.Column className='event-list-col' width={16}>
-							News List
+							<List relaxed='very'>
+								{ listItems }
+							</List>
 						</Grid.Column>
 					</Grid.Row>
 				</Grid>
@@ -38,6 +55,7 @@ export default styled(News)`
 		padding-left: 1rem;
 		padding-right: 1rem;
 		border-radius: 10px;
+		height: 500px;
 		max-height: 500px;
 
 		.action-bar {
@@ -54,11 +72,28 @@ export default styled(News)`
 		.event-list-col {
 			overflow-y: auto;
 			border-right: 2px #eee solid;
-		}
-		
-		.event-list-col{
+			max-height: 446px;
 			padding-top: 1em;
+			padding-left: 1.5em !important;
 		}
+
+		.news-list-item {
+			display: flex;
+
+			.list-item-date {
+				margin-left: 0.6em;
+				color: #75767C;
+				font-size: 0.88em;
+			}
+
+			.list-item-title {
+				margin-left: 0.6em;
+				font-weight: 500;
+				font-size: 1.1em;
+				margin-top: 0.2em;
+			}
+		}
+
 	}
 
 `;
