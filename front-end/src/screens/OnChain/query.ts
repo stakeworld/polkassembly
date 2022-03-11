@@ -116,7 +116,7 @@ export const QUERY_ALL_POSTS = gql`
 `;
 
 export const QUERY_COUNT_POSTS = gql`
-    query PostsCount() {
+    query PostsCount {
         posts_aggregate{
             aggregate {
                 count

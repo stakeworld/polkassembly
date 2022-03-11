@@ -877,6 +877,7 @@
       - type_id
       - updated_at
       filter: {}
+      allow_aggregations: true
   - role: proposal_bot
     permission:
       columns:
@@ -889,6 +890,7 @@
       - type_id
       - updated_at
       filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -901,6 +903,7 @@
       - type_id
       - updated_at
       filter: {}
+      allow_aggregations: true
   update_permissions:
   - role: user
     permission:

@@ -22866,6 +22866,127 @@ export type DemocracyTreasuryProposalCountQuery = (
   ) }
 );
 
+export type LatestPostsQueryVariables = Exact<{
+  limit?: Scalars['Int'];
+}>;
+
+
+export type LatestPostsQuery = (
+  { __typename?: 'query_root' }
+  & { posts: Array<(
+    { __typename?: 'posts' }
+    & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
+    & { author?: Maybe<(
+      { __typename?: 'User' }
+      & AuthorFieldsFragment
+    )>, comments_aggregate: (
+      { __typename?: 'comments_aggregate' }
+      & { aggregate?: Maybe<(
+        { __typename?: 'comments_aggregate_fields' }
+        & Pick<Comments_Aggregate_Fields, 'count'>
+      )> }
+    ), type: (
+      { __typename?: 'post_types' }
+      & Pick<Post_Types, 'name' | 'id'>
+    ), topic: (
+      { __typename?: 'post_topics' }
+      & Pick<Post_Topics, 'id' | 'name'>
+    ), onchain_link?: Maybe<(
+      { __typename?: 'onchain_links' }
+      & Pick<Onchain_Links, 'id' | 'onchain_proposal_id' | 'onchain_bounty_id' | 'onchain_motion_id' | 'onchain_referendum_id' | 'onchain_tech_committee_proposal_id' | 'onchain_tip_id' | 'onchain_treasury_proposal_id' | 'proposer_address'>
+      & { onchain_proposal: Array<Maybe<(
+        { __typename?: 'Proposal' }
+        & Pick<Proposal, 'id'>
+        & { proposalStatus?: Maybe<Array<(
+          { __typename?: 'ProposalStatus' }
+          & Pick<ProposalStatus, 'id' | 'status'>
+        )>>, preimage?: Maybe<(
+          { __typename?: 'Preimage' }
+          & Pick<Preimage, 'id' | 'method'>
+        )> }
+      )>>, onchain_bounty: Array<Maybe<(
+        { __typename?: 'Bounty' }
+        & Pick<Bounty, 'id'>
+        & { bountyStatus?: Maybe<Array<(
+          { __typename?: 'BountyStatus' }
+          & Pick<BountyStatus, 'id' | 'status'>
+        )>> }
+      )>>, onchain_motion: Array<Maybe<(
+        { __typename?: 'Motion' }
+        & Pick<Motion, 'id'>
+        & { motionStatus?: Maybe<Array<(
+          { __typename?: 'MotionStatus' }
+          & Pick<MotionStatus, 'id' | 'status'>
+        )>>, preimage?: Maybe<(
+          { __typename?: 'Preimage' }
+          & Pick<Preimage, 'id' | 'method'>
+        )> }
+      )>>, onchain_referendum: Array<Maybe<(
+        { __typename?: 'Referendum' }
+        & Pick<Referendum, 'id' | 'end'>
+        & { referendumStatus?: Maybe<Array<(
+          { __typename?: 'ReferendumStatus' }
+          & Pick<ReferendumStatus, 'id' | 'status'>
+        )>>, preimage?: Maybe<(
+          { __typename?: 'Preimage' }
+          & Pick<Preimage, 'id' | 'method'>
+        )> }
+      )>>, onchain_tech_committee_proposal: Array<Maybe<(
+        { __typename?: 'TechCommitteeProposal' }
+        & Pick<TechCommitteeProposal, 'id'>
+        & { status?: Maybe<Array<(
+          { __typename?: 'TechCommitteeProposalStatus' }
+          & Pick<TechCommitteeProposalStatus, 'id' | 'status'>
+        )>>, preimage?: Maybe<(
+          { __typename?: 'Preimage' }
+          & Pick<Preimage, 'id' | 'method'>
+        )> }
+      )>>, onchain_tip: Array<Maybe<(
+        { __typename?: 'Tip' }
+        & Pick<Tip, 'id' | 'reason'>
+        & { tipStatus?: Maybe<Array<(
+          { __typename?: 'TipStatus' }
+          & Pick<TipStatus, 'id' | 'status'>
+        )>> }
+      )>>, onchain_treasury_spend_proposal: Array<Maybe<(
+        { __typename?: 'TreasurySpendProposal' }
+        & Pick<TreasurySpendProposal, 'id'>
+        & { treasuryStatus?: Maybe<Array<(
+          { __typename?: 'TreasuryStatus' }
+          & Pick<TreasuryStatus, 'id' | 'status'>
+        )>> }
+      )>> }
+    )> }
+  )> }
+);
+
+export type PostsCountQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PostsCountQuery = (
+  { __typename?: 'query_root' }
+  & { posts_aggregate: (
+    { __typename?: 'posts_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'posts_aggregate_fields' }
+      & Pick<Posts_Aggregate_Fields, 'count'>
+    )> }
+  ) }
+);
+
+export type NetworkSocialsQueryVariables = Exact<{
+  network: Scalars['String'];
+}>;
+
+
+export type NetworkSocialsQuery = (
+  { __typename?: 'query_root' }
+  & { blockchain_socials: Array<(
+    { __typename?: 'blockchain_socials' }
+    & Pick<Blockchain_Socials, 'block_explorer' | 'discord' | 'github' | 'homepage' | 'id' | 'network' | 'reddit' | 'telegram' | 'twitter' | 'youtube'>
+  )> }
+);
+
 export type AboutQueryVariables = Exact<{
   network: Scalars['String'];
   address: Scalars['String'];
@@ -27172,6 +27293,224 @@ export function useDemocracyTreasuryProposalCountLazyQuery(baseOptions?: ApolloR
 export type DemocracyTreasuryProposalCountQueryHookResult = ReturnType<typeof useDemocracyTreasuryProposalCountQuery>;
 export type DemocracyTreasuryProposalCountLazyQueryHookResult = ReturnType<typeof useDemocracyTreasuryProposalCountLazyQuery>;
 export type DemocracyTreasuryProposalCountQueryResult = ApolloReactCommon.QueryResult<DemocracyTreasuryProposalCountQuery, DemocracyTreasuryProposalCountQueryVariables>;
+export const LatestPostsDocument = gql`
+    query LatestPosts($limit: Int! = 10) {
+  posts(limit: $limit, order_by: {onchain_link: {created_at: desc}}) {
+    id
+    title
+    author {
+      ...authorFields
+    }
+    created_at
+    updated_at
+    comments_aggregate {
+      aggregate {
+        count
+      }
+    }
+    type {
+      name
+      id
+    }
+    topic {
+      id
+      name
+    }
+    onchain_link {
+      id
+      onchain_proposal_id
+      onchain_proposal(
+        where: {NOT: {proposalStatus_some: {OR: [{status: "Tabled"}, {status: "Cleared"}]}}}
+      ) {
+        id
+        proposalStatus(last: 1) {
+          id
+          status
+        }
+        preimage {
+          id
+          method
+        }
+      }
+      onchain_bounty_id
+      onchain_bounty(
+        where: {NOT: {bountyStatus_some: {OR: [{status: "BountyCanceled"}, {status: "BountyRejected"}, {status: "BountyAwarded"}, {status: "BountyClaimed"}]}}}
+      ) {
+        id
+        bountyStatus(last: 1) {
+          id
+          status
+        }
+      }
+      onchain_motion_id
+      onchain_motion(
+        where: {NOT: {motionStatus_some: {OR: [{status: "Executed"}, {status: "Disapproved"}]}}}
+      ) {
+        id
+        motionStatus(last: 1) {
+          id
+          status
+        }
+        preimage {
+          id
+          method
+        }
+      }
+      onchain_referendum_id
+      onchain_referendum(
+        where: {NOT: {referendumStatus_some: {OR: [{status: "Passed"}, {status: "Executed"}, {status: "NotPassed"}, {status: "Cancelled"}, {status: "Vetoed"}]}}}
+      ) {
+        id
+        end
+        referendumStatus(last: 1) {
+          id
+          status
+        }
+        preimage {
+          id
+          method
+        }
+      }
+      onchain_tech_committee_proposal_id
+      onchain_tech_committee_proposal(
+        where: {NOT: {status_some: {OR: [{status: "Closed"}, {status: "Approved"}, {status: "Executed"}, {status: "Disapproved"}]}}}
+      ) {
+        id
+        status(last: 1) {
+          id
+          status
+        }
+        preimage {
+          id
+          method
+        }
+      }
+      onchain_tip_id
+      onchain_tip(
+        where: {NOT: {tipStatus_some: {OR: [{status: "TipClosed"}, {status: "TipClosing"}, {status: "TipRetracted"}]}}}
+      ) {
+        id
+        reason
+        tipStatus(last: 1) {
+          id
+          status
+        }
+      }
+      onchain_treasury_proposal_id
+      onchain_treasury_spend_proposal(where: {}) {
+        id
+        treasuryStatus(last: 1) {
+          id
+          status
+        }
+      }
+      proposer_address
+    }
+  }
+}
+    ${AuthorFieldsFragmentDoc}`;
+
+/**
+ * __useLatestPostsQuery__
+ *
+ * To run a query within a React component, call `useLatestPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLatestPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLatestPostsQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useLatestPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<LatestPostsQuery, LatestPostsQueryVariables>) {
+        return ApolloReactHooks.useQuery<LatestPostsQuery, LatestPostsQueryVariables>(LatestPostsDocument, baseOptions);
+      }
+export function useLatestPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<LatestPostsQuery, LatestPostsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<LatestPostsQuery, LatestPostsQueryVariables>(LatestPostsDocument, baseOptions);
+        }
+export type LatestPostsQueryHookResult = ReturnType<typeof useLatestPostsQuery>;
+export type LatestPostsLazyQueryHookResult = ReturnType<typeof useLatestPostsLazyQuery>;
+export type LatestPostsQueryResult = ApolloReactCommon.QueryResult<LatestPostsQuery, LatestPostsQueryVariables>;
+export const PostsCountDocument = gql`
+    query PostsCount {
+  posts_aggregate {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __usePostsCountQuery__
+ *
+ * To run a query within a React component, call `usePostsCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePostsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePostsCountQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function usePostsCountQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<PostsCountQuery, PostsCountQueryVariables>) {
+        return ApolloReactHooks.useQuery<PostsCountQuery, PostsCountQueryVariables>(PostsCountDocument, baseOptions);
+      }
+export function usePostsCountLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<PostsCountQuery, PostsCountQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<PostsCountQuery, PostsCountQueryVariables>(PostsCountDocument, baseOptions);
+        }
+export type PostsCountQueryHookResult = ReturnType<typeof usePostsCountQuery>;
+export type PostsCountLazyQueryHookResult = ReturnType<typeof usePostsCountLazyQuery>;
+export type PostsCountQueryResult = ApolloReactCommon.QueryResult<PostsCountQuery, PostsCountQueryVariables>;
+export const NetworkSocialsDocument = gql`
+    query NetworkSocials($network: String!) {
+  blockchain_socials(where: {network: {_ilike: $network}}) {
+    block_explorer
+    discord
+    github
+    homepage
+    id
+    network
+    reddit
+    telegram
+    twitter
+    youtube
+  }
+}
+    `;
+
+/**
+ * __useNetworkSocialsQuery__
+ *
+ * To run a query within a React component, call `useNetworkSocialsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNetworkSocialsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNetworkSocialsQuery({
+ *   variables: {
+ *      network: // value for 'network'
+ *   },
+ * });
+ */
+export function useNetworkSocialsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<NetworkSocialsQuery, NetworkSocialsQueryVariables>) {
+        return ApolloReactHooks.useQuery<NetworkSocialsQuery, NetworkSocialsQueryVariables>(NetworkSocialsDocument, baseOptions);
+      }
+export function useNetworkSocialsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<NetworkSocialsQuery, NetworkSocialsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<NetworkSocialsQuery, NetworkSocialsQueryVariables>(NetworkSocialsDocument, baseOptions);
+        }
+export type NetworkSocialsQueryHookResult = ReturnType<typeof useNetworkSocialsQuery>;
+export type NetworkSocialsLazyQueryHookResult = ReturnType<typeof useNetworkSocialsLazyQuery>;
+export type NetworkSocialsQueryResult = ApolloReactCommon.QueryResult<NetworkSocialsQuery, NetworkSocialsQueryVariables>;
 export const AboutDocument = gql`
     query ABOUT($network: String!, $address: String!) {
   about(network: $network, address: $address) {
