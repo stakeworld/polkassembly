@@ -382,7 +382,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 						Spend Period Remaining <HelperTooltip content={'Funds held in the treasury can be spent by making a spending proposal that, if approved by the Council, will enter a spend period before distribution, it is subject to governance, with the current default set to '+ blockToDays(result.spendPeriod.toNumber(), blocktime) + ' days.'} />
 					</Card.Meta>
 					<Card.Header className='treasury-card-header'>
-						{spendPeriodRemaining && spendPeriodRemaining + ' days' }
+						{spendPeriodRemaining && `${spendPeriodRemaining} days` }
 					</Card.Header>
 
 					<Card.Description className='treasury-card-desc progress-desc'>

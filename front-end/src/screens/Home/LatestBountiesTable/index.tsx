@@ -68,13 +68,9 @@ const LatestBountiesTable = ({ className }:Props) => {
 									key={post.id}
 									postId={post.id}
 									address={post.onchain_link.proposer_address}
-									comments={post.comments_aggregate.aggregate?.count
-										? post.comments_aggregate.aggregate.count.toString()
-										: 'no'}
 									onchainId={onchainId}
 									status={post.onchain_link.onchain_bounty[0]?.bountyStatus?.[0].status}
 									title={post.title}
-									// topic={post.topic.name}
 									postType='bounties'
 									created_at={post.created_at}
 								/>

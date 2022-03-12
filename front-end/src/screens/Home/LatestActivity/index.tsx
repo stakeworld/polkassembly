@@ -4,8 +4,8 @@
 
 import styled from '@xstyled/styled-components';
 import React, { useEffect } from 'react';
-import { Icon, Menu, Tab } from 'semantic-ui-react';
-import { useDemocracyProposalCountQuery } from 'src/generated/graphql';
+import { Icon, Label, Menu, Tab } from 'semantic-ui-react';
+import { useBountiesCountQuery,useDemocracyProposalCountQuery, useDemocracyTreasuryProposalCountQuery,useLatestMotionsCountQuery, usePostsCountQuery, useReferundumCountQuery, useTipProposalCountQuery } from 'src/generated/graphql';
 import { post_topic } from 'src/global/post_topics';
 import { post_type } from 'src/global/post_types';
 
@@ -24,49 +24,91 @@ interface Props {
 }
 
 const LatestActivity = ({ className }: Props) => {
-	const { data, error, refetch } = useDemocracyProposalCountQuery({ variables: {
+	const { data: postsData, refetch: postsRefetch } = usePostsCountQuery();
+
+	const { data: referendaData, refetch: referendaRefetch } = useReferundumCountQuery({ variables: {
+		postType: post_type.ON_CHAIN
+	} });
+
+	const { data: proposalData, refetch: proposalRefetch } = useDemocracyProposalCountQuery({ variables: {
 		postTopic: post_topic.DEMOCRACY,
 		postType: post_type.ON_CHAIN
 	} });
 
-	if(!error){
-		console.log('data :', data);
-	}else{
-		console.log('error :', error);
-	}
+	const { data: motionsData, refetch: motionsRefetch } = useLatestMotionsCountQuery({ variables: {
+		postType: post_type.ON_CHAIN
+	} });
+
+	const { data: treasuryProposalsData, refetch: treasuryProposalsRefetch } = useDemocracyTreasuryProposalCountQuery({ variables: {
+		postTopic: post_topic.DEMOCRACY,
+		postType: post_type.ON_CHAIN
+	} });
+
+	const { data: bountiesData, refetch: bountiesRefetch } = useBountiesCountQuery({ variables: {
+		postType: post_type.ON_CHAIN
+	} });
+
+	const { data: tipsData, refetch: tipsRefetch } = useTipProposalCountQuery({ variables: {
+		postTopic: post_topic.DEMOCRACY,
+		postType: post_type.ON_CHAIN
+	} });
 
 	useEffect(() => {
-		refetch();
-	}, [refetch]);
+		postsRefetch();
+	}, [postsRefetch]);
+
+	useEffect(() => {
+		referendaRefetch();
+	}, [referendaRefetch]);
+
+	useEffect(() => {
+		proposalRefetch();
+	}, [proposalRefetch]);
+
+	useEffect(() => {
+		motionsRefetch();
+	}, [motionsRefetch]);
+
+	useEffect(() => {
+		treasuryProposalsRefetch();
+	}, [treasuryProposalsRefetch]);
+
+	useEffect(() => {
+		bountiesRefetch();
+	}, [bountiesRefetch]);
+
+	useEffect(() => {
+		tipsRefetch();
+	}, [tipsRefetch]);
 
 	const panes = [
 		{
-			menuItem: <Menu.Item key='all'>All</Menu.Item>,
+			menuItem: <Menu.Item key='all'>All <Label circular>{ postsData?.posts_aggregate.aggregate?.count }</Label></Menu.Item>,
 			render: () => <LatestAllPostsTable className='tab-panel' />
 		},
 		{
 			//{ !error && data ?<Label circular> &nbsp;{ data }</Label> : null }
-			menuItem: <Menu.Item key='referenda'>Referenda</Menu.Item>,
+			menuItem: <Menu.Item key='referenda'>Referenda <Label circular>{ referendaData?.posts_aggregate.aggregate?.count }</Label></Menu.Item>,
 			render: () => <LatestReferendaTable className='tab-panel' />
 		},
 		{
-			menuItem: 'Proposals',
+			menuItem: <Menu.Item key='proposals'>Proposals <Label circular>{ proposalData?.posts_aggregate.aggregate?.count }</Label></Menu.Item>,
 			render: () => <LatestProposalsTable className='tab-panel' />
 		},
 		{
-			menuItem: 'Motions',
+			menuItem: <Menu.Item key='motions'>Motions <Label circular>{ motionsData?.posts_aggregate.aggregate?.count }</Label></Menu.Item>,
 			render: () => <LatestMotionsTable className='tab-panel' />
 		},
 		{
-			menuItem: 'Treasury Proposals',
+			menuItem: <Menu.Item key='treasuryProposals'>Treasury Proposals <Label circular>{ treasuryProposalsData?.posts_aggregate.aggregate?.count }</Label></Menu.Item>,
 			render: () => <LatestTreasuryTable className='tab-panel' />
 		},
 		{
-			menuItem: 'Bounties',
+			menuItem: <Menu.Item key='bounties'>Bounties <Label circular>{ bountiesData?.posts_aggregate.aggregate?.count }</Label></Menu.Item>,
 			render: () => <LatestBountiesTable className='tab-panel' />
 		},
 		{
-			menuItem: 'Tips',
+			menuItem: <Menu.Item key='tips'>Tips <Label circular>{ tipsData?.posts_aggregate.aggregate?.count }</Label></Menu.Item>,
 			render: () => <LatestTipsTable className='tab-panel' />
 		},
 		{
@@ -77,11 +119,11 @@ const LatestActivity = ({ className }: Props) => {
 			menuItem: <Menu.Item className='no-border' key='filter'>
 				<img style={ { height:'auto', width:'1.2em' } } src={filterIMG} alt="Filter" />
 			</Menu.Item>,
-			render: () => <LatestTipsTable className='tab-panel' /> //TODO: Change to relevant page
+			render: () => <LatestActivitySearchPage className='tab-panel' /> //TODO: Change to button
 		},
 		{
 			menuItem: <Menu.Item className='no-border' key='th'> <Icon name='th' /> </Menu.Item>,
-			render: () => <LatestTipsTable className='tab-panel' /> //TODO: Change to relevant page
+			render: () => <LatestActivitySearchPage className='tab-panel' /> //TODO: Change to button
 		}
 	];
 
@@ -110,9 +152,23 @@ export default styled(LatestActivity)`
 			.tab-menu {
 				overflow-x: auto;
 				overflow-y: hidden;
+
+				a {
+					.label {
+						color: rgba(0, 0, 0, 0.45) !important;
+						background: #F0F0F0 !important;
+						font-size: 12px !important;
+					}
+				}
 		
 				a.active {
 					border-bottom: 5px solid #E5007A !important;
+
+					.label {
+						font-size: 12px !important;
+						color: #E5007A !important;
+						background: rgba(229, 0, 122, 0.1) !important;
+					}
 				}
 
 				a.active.no-border {

@@ -62,9 +62,6 @@ const LatestTreasuryTable = ({ className }:Props) => {
 									key={post.id}
 									postId={post.id}
 									address={post.onchain_link.proposer_address}
-									comments={post.comments_aggregate.aggregate?.count
-										? post.comments_aggregate.aggregate.count.toString()
-										: 'no'}
 									onchainId={onchainId}
 									status={post.onchain_link.onchain_treasury_spend_proposal?.[0]?.treasuryStatus?.[0].status}
 									title={post.title}

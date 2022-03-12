@@ -70,13 +70,9 @@ const LatestTipsTable = ({ className }:Props) => {
 									key={post.id}
 									postId={post.id}
 									address={post.onchain_link.proposer_address}
-									comments={post.comments_aggregate.aggregate?.count
-										? post.comments_aggregate.aggregate.count.toString()
-										: 'no'}
 									onchainId={onchainId}
 									status={post.onchain_link.onchain_tip?.[0]?.tipStatus?.[0].status}
 									title={post.title}
-									// topic={post.topic.name}
 									postType='tips'
 									created_at={post.created_at}
 								/>

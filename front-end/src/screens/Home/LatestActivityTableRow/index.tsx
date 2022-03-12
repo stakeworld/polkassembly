@@ -19,9 +19,7 @@ interface LatestActivityTableRowProps {
 	postId: number
 	address: string
 	className?: string
-	comments?: string
 	created_at?: Date
-	end?: number
 	method?: string
 	onchainId?: string | number | null
 	status?: string | null
@@ -34,8 +32,6 @@ const LatestActivityTableRow = function ({
 	postId,
 	address,
 	className,
-	// comments,
-	// end = 0,
 	created_at,
 	method,
 	onchainId,

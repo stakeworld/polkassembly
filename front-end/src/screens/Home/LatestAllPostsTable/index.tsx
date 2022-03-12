@@ -8,8 +8,7 @@ import React, { useEffect } from 'react';
 import { Tab, Table } from 'semantic-ui-react';
 import NothingFoundCard from 'src/ui-components/NothingFoundCard';
 
-import { useLatestReferendaPostsQuery } from '../../../generated/graphql';
-import { post_type } from '../../../global/post_types';
+import { useLatestPostsQuery } from '../../../generated/graphql';
 import FilteredError from '../../../ui-components/FilteredError';
 import LatestActivityTableRow from '../LatestActivityTableRow';
 
@@ -19,32 +18,90 @@ interface Props {
 
 const LatestAllPostsTable = ({ className }:Props) => {
 
-	// TODO: change query to all posts
-	const { data, error, refetch } = useLatestReferendaPostsQuery({ variables: {
-		limit: 10,
-		postType: post_type.ON_CHAIN
+	const { data, error, refetch } = useLatestPostsQuery({ variables: {
+		limit: 10
 	} });
 
 	useEffect(() => {
 		refetch();
 	}, [refetch]);
 
+	function getPostTypeData(post: any): { method: string, onChainId: number, postTypeString: string, status: string } | null{
+		if(!post.onchain_link){
+			return null;
+		}
+
+		let postType: string = '';
+
+		for (const key of Object.keys(post.onchain_link)) {
+			if(/_id$/.test(key) && post.onchain_link[key]){
+				postType = key;
+				break;
+			}
+		}
+
+		const postData = {
+			method: '',
+			onChainId: 0,
+			postTypeString: '',
+			status: ''
+		};
+
+		switch (postType){
+		case 'onchain_bounty_id':
+			postData.postTypeString = 'bounties';
+			postData.method = '';
+			postData.onChainId = post.onchain_link?.onchain_bounty_id;
+			postData.status = post.onchain_link.onchain_bounty[0]?.bountyStatus?.[0].status;
+			break;
+		case 'onchain_motion_id':
+			postData.postTypeString = 'motions';
+			postData.method = post.onchain_link.onchain_motion[0]?.preimage?.method;
+			postData.onChainId = post.onchain_link?.onchain_motion_id;
+			postData.status = post.onchain_link.onchain_motion[0]?.motionStatus?.[0].status;
+			break;
+		case 'onchain_proposal_id':
+			postData.postTypeString = 'proposals';
+			postData.method = post.onchain_link.onchain_proposal[0]?.preimage?.method;
+			postData.onChainId = post.onchain_link?.onchain_proposal_id;
+			postData.status = post.onchain_link.onchain_proposal[0]?.proposalStatus?.[0].status;
+			break;
+		case 'onchain_referendum_id':
+			postData.postTypeString = 'referenda';
+			postData.method = post.onchain_link.onchain_referendum[0]?.preimage?.method;
+			postData.onChainId = post.onchain_link?.onchain_referendum_id;
+			postData.status = post.onchain_link.onchain_referendum[0]?.referendumStatus?.[0].status;
+			break;
+		case 'onchain_tech_committee_proposal_id':
+			postData.postTypeString = 'proposals tech';
+			postData.method = post.onchain_link.onchain_tech_committee_proposal[0]?.preimage?.method;
+			postData.onChainId = post.onchain_link?.onchain_tech_committee_proposal_id;
+			postData.status = post.onchain_link.onchain_tech_committee_proposal[0]?.status?.[0].status;
+			break;
+		case 'onchain_treasury_proposal_id':
+			postData.postTypeString = 'treasury proposals';
+			postData.method = '';
+			postData.onChainId = post.onchain_link?.onchain_treasury_proposal_id;
+			postData.status = post.onchain_link.onchain_treasury_spend_proposal[0]?.treasuryStatus?.[0].status;
+			break;
+		case 'onchain_tip_id':
+			postData.postTypeString = 'tips';
+			postData.method = '';
+			postData.onChainId = post.onchain_link?.onchain_tip_id;
+			postData.status = post.onchain_link.onchain_tip[0]?.tipStatus?.[0].status;
+		}
+
+		return postData;
+	}
+
 	if (error?.message) return <Tab.Pane loading={!data} className='tab-panel'><FilteredError text={error.message}/></Tab.Pane>;
 
 	if(data){
 		const noPost = !data.posts || !data.posts.length;
-		const atLeastOneCurrentReferendum = data.posts.some((post) => {
-			if(post.onchain_link?.onchain_referendum.length){
-				// this breaks the loop as soon as
-				// we find a post that has a referendum.
-				return true;
-			}
-			return false;
-		});
 
-		if (!atLeastOneCurrentReferendum || noPost)
+		if (noPost)
 			return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
-				<NothingFoundCard className={className} text='There are currently no active referenda.'/>
+				<NothingFoundCard className={className} text='There are currently no posts.'/>
 			</Tab.Pane>;
 
 		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
@@ -62,26 +119,26 @@ const LatestAllPostsTable = ({ className }:Props) => {
 				<Table.Body>
 					{data.posts.map(
 						(post) => {
-							const onchainId = post.onchain_link?.onchain_referendum_id;
-							//TODO: check postType here and send to LatestActivityTableRow
+							const postTypeData = getPostTypeData(post);
 
-							return !!post?.author?.username && !!post.onchain_link?.onchain_referendum.length &&
-								<LatestActivityTableRow
-									key={post.id}
-									postId={post.id}
-									address={post.onchain_link.proposer_address}
-									comments={post.comments_aggregate.aggregate?.count
-										? post.comments_aggregate.aggregate.count.toString()
-										: 'no'}
-									method={post.onchain_link.onchain_referendum[0]?.preimage?.method}
-									onchainId={onchainId}
-									status={post.onchain_link.onchain_referendum[0]?.referendumStatus?.[0].status}
-									end={post.onchain_link.onchain_referendum[0]?.end}
-									title={post.title}
-									postType='referenda'
-									created_at={post.created_at}
-								/>
-							;
+							console.log('postTypeData :', postTypeData);
+
+							if(postTypeData){
+								return postTypeData && !!post?.author?.username && !!post.onchain_link?.proposer_address &&
+									<LatestActivityTableRow
+										key={post.id}
+										postId={post.id}
+										address={post.onchain_link.proposer_address}
+										method={postTypeData.method ? postTypeData.method : undefined}
+										onchainId={postTypeData?.onChainId}
+										status={postTypeData.status}
+										title={post.title}
+										postType={postTypeData.postTypeString}
+										created_at={post.created_at}
+									/>
+								;
+							}
+							return null;
 						}
 					)}
 				</Table.Body>

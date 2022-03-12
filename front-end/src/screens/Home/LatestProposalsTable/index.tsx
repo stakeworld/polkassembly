@@ -70,9 +70,6 @@ const LatestProposalsTable = ({ className }:Props) => {
 									key={post.id}
 									postId={post.id}
 									address={post.onchain_link.proposer_address}
-									comments={post.comments_aggregate.aggregate?.count
-										? post.comments_aggregate.aggregate.count.toString()
-										: 'no'}
 									method={post.onchain_link.onchain_proposal[0]?.preimage?.method}
 									onchainId={onchainId}
 									status={post.onchain_link.onchain_proposal[0]?.proposalStatus?.[0].status}
