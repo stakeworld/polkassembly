@@ -139,7 +139,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 
 					: Math.abs(Number(usd));
 
-		return formattedUSD.toString();
+		return parseFloat(formattedUSD.toString()).toFixed(2);
 
 	}
 
@@ -432,6 +432,7 @@ export default styled(TreasuryOverviewCards)`
 		@media only screen and (max-width: 1024px) {
 			justify-content: center;
 		}
+		justify-content: space-evenly;
 
 		.treasury-card{
 			border-radius: 0.5em;
