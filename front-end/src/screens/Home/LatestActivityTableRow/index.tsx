@@ -25,7 +25,7 @@ interface LatestActivityTableRowProps {
 	status?: string | null
 	tipReason?: string
 	title?: string | null
-	postType: string
+	postType: 'referenda' | 'proposal' | 'motion' | 'treasury proposal' | 'tech committee proposal' | 'bounty' | 'tip'
 }
 
 const LatestActivityTableRow = function ({
@@ -50,19 +50,22 @@ const LatestActivityTableRow = function ({
 		case 'referenda':
 			icon = <Icon name='clipboard check' />;
 			break;
-		case 'proposals':
+		case 'proposal':
 			icon = <Icon name='file alternate' />;
 			break;
-		case 'motions':
+		case 'motion':
 			icon = <Icon name='forward' />;
 			break;
-		case 'treasury proposals':
+		case 'treasury proposal':
 			icon = <Icon name='diamond' />;
 			break;
-		case 'bounties':
+		case 'tech committee proposal':
+			icon = <Icon name='file alternate' />;
+			break;
+		case 'bounty':
 			icon = <Icon name='dollar sign' />;
 			break;
-		case 'tips':
+		case 'tip':
 			icon = <Icon name='lightbulb' />;
 			break;
 		}
@@ -83,19 +86,22 @@ const LatestActivityTableRow = function ({
 		case 'referenda':
 			path = 'referendum';
 			break;
-		case 'proposals':
+		case 'proposal':
 			path = 'proposal';
 			break;
-		case 'motions':
+		case 'motion':
 			path = 'motion';
 			break;
-		case 'treasury proposals':
+		case 'treasury proposal':
 			path = 'treasury';
 			break;
-		case 'bounties':
+		case 'tech committee proposal':
+			path = 'tech';
+			break;
+		case 'bounty':
 			path = 'bounty';
 			break;
-		case 'tips':
+		case 'tip':
 			path = 'tip';
 			break;
 		}
@@ -120,7 +126,7 @@ const LatestActivityTableRow = function ({
 					Posted { relativeCreatedAt }
 				</div>
 			</Table.Cell>
-			<Table.Cell className='postType-cell' onClick={ gotoPost }> {postTypeIcon} { postType }</Table.Cell>
+			<Table.Cell className='postType-cell' onClick={ gotoPost }> {postTypeIcon} { postType == 'tech committee proposal' ? 'Proposal': postType }</Table.Cell>
 			<Table.Cell onClick={ gotoPost }>{status && <StatusTag className='statusTag' status={status} />}</Table.Cell>
 			<Table.Cell className='action-btn-cell'>
 				<LatestActivityPostReactions className='reactions' gotoPost={gotoPost} postId={postId} />

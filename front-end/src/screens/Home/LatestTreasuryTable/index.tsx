@@ -19,7 +19,6 @@ interface Props {
 }
 
 const LatestTreasuryTable = ({ className }:Props) => {
-
 	const { data, error, refetch } = useLatestDemocracyTreasuryProposalPostsQuery({ variables: {
 		limit: 10,
 		postTopic: post_topic.TREASURY,
@@ -33,9 +32,19 @@ const LatestTreasuryTable = ({ className }:Props) => {
 	if (error?.message) return <Tab.Pane loading={!data} className='tab-panel'><FilteredError text={error.message}/></Tab.Pane>;
 
 	if(data){
+
 		const noPost = !data.posts || !data.posts.length;
 
-		if (noPost)
+		const atLeastOneTreasuryProposal = data.posts.some((post) => {
+			if(post.onchain_link?.onchain_treasury_spend_proposal.length || post.onchain_link?.onchain_treasury_proposal_id){
+				// this breaks the loop as soon as
+				// we find a post that has a motion.
+				return true;
+			}
+			return false;
+		});
+
+		if (!atLeastOneTreasuryProposal || noPost)
 			return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
 				<NothingFoundCard className={className} text='There are currently no active treasury proposals.'/>
 			</Tab.Pane>;
@@ -55,17 +64,15 @@ const LatestTreasuryTable = ({ className }:Props) => {
 				<Table.Body>
 					{data.posts.map(
 						(post) => {
-							const onchainId = post.onchain_link?.onchain_treasury_proposal_id;
-
-							return !!post?.author?.username && !!post.onchain_link &&
+							return !!post?.author?.username && (!!post.onchain_link?.onchain_treasury_spend_proposal.length || post.onchain_link?.onchain_treasury_proposal_id) &&
 								<LatestActivityTableRow
 									key={post.id}
 									postId={post.id}
 									address={post.onchain_link.proposer_address}
-									onchainId={onchainId}
+									onchainId={post.onchain_link?.onchain_treasury_proposal_id}
 									status={post.onchain_link.onchain_treasury_spend_proposal?.[0]?.treasuryStatus?.[0].status}
 									title={post.title}
-									postType='treasury proposals'
+									postType='treasury proposal'
 									created_at={post.created_at}
 								/>
 							;

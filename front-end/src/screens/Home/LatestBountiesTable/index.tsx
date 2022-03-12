@@ -33,7 +33,7 @@ const LatestBountiesTable = ({ className }:Props) => {
 	if(data){
 		const noPost = !data.posts || !data.posts.length;
 		const atLeastOneCurrentBounty = data.posts.some((post) => {
-			if (post.onchain_link?.onchain_bounty.length){
+			if (post.onchain_link?.onchain_bounty.length || post.onchain_link?.onchain_bounty_id){
 				// this breaks the loop as soon as
 				// we find a post that has a bounty.
 				return true;
@@ -61,17 +61,15 @@ const LatestBountiesTable = ({ className }:Props) => {
 				<Table.Body>
 					{data.posts.map(
 						(post) => {
-							const onchainId = post.onchain_link?.onchain_bounty_id;
-
-							return !!post?.author?.username && !!post.onchain_link?.onchain_bounty.length &&
+							return !!post?.author?.username && (!!post.onchain_link?.onchain_bounty.length || post.onchain_link?.onchain_bounty_id) &&
 								<LatestActivityTableRow
 									key={post.id}
 									postId={post.id}
 									address={post.onchain_link.proposer_address}
-									onchainId={onchainId}
+									onchainId={post.onchain_link?.onchain_bounty_id}
 									status={post.onchain_link.onchain_bounty[0]?.bountyStatus?.[0].status}
 									title={post.title}
-									postType='bounties'
+									postType='bounty'
 									created_at={post.created_at}
 								/>
 							;

@@ -16,6 +16,13 @@ interface Props {
 	className?: string
 }
 
+interface PostTypeData {
+	method: string,
+	onChainId: number,
+	postTypeString: 'referenda' | 'proposal' | 'motion' | 'treasury proposal' | 'tech committee proposal' | 'bounty' | 'tip',
+	status: string
+}
+
 const LatestAllPostsTable = ({ className }:Props) => {
 
 	const { data, error, refetch } = useLatestPostsQuery({ variables: {
@@ -26,7 +33,7 @@ const LatestAllPostsTable = ({ className }:Props) => {
 		refetch();
 	}, [refetch]);
 
-	function getPostTypeData(post: any): { method: string, onChainId: number, postTypeString: string, status: string } | null{
+	function getPostTypeData(post: any): PostTypeData | null{
 		if(!post.onchain_link){
 			return null;
 		}
@@ -40,28 +47,28 @@ const LatestAllPostsTable = ({ className }:Props) => {
 			}
 		}
 
-		const postData = {
+		const postData: PostTypeData = {
 			method: '',
 			onChainId: 0,
-			postTypeString: '',
+			postTypeString: 'proposal',
 			status: ''
 		};
 
 		switch (postType){
 		case 'onchain_bounty_id':
-			postData.postTypeString = 'bounties';
+			postData.postTypeString = 'bounty';
 			postData.method = '';
 			postData.onChainId = post.onchain_link?.onchain_bounty_id;
 			postData.status = post.onchain_link.onchain_bounty[0]?.bountyStatus?.[0].status;
 			break;
 		case 'onchain_motion_id':
-			postData.postTypeString = 'motions';
+			postData.postTypeString = 'motion';
 			postData.method = post.onchain_link.onchain_motion[0]?.preimage?.method;
 			postData.onChainId = post.onchain_link?.onchain_motion_id;
 			postData.status = post.onchain_link.onchain_motion[0]?.motionStatus?.[0].status;
 			break;
 		case 'onchain_proposal_id':
-			postData.postTypeString = 'proposals';
+			postData.postTypeString = 'proposal';
 			postData.method = post.onchain_link.onchain_proposal[0]?.preimage?.method;
 			postData.onChainId = post.onchain_link?.onchain_proposal_id;
 			postData.status = post.onchain_link.onchain_proposal[0]?.proposalStatus?.[0].status;
@@ -73,19 +80,19 @@ const LatestAllPostsTable = ({ className }:Props) => {
 			postData.status = post.onchain_link.onchain_referendum[0]?.referendumStatus?.[0].status;
 			break;
 		case 'onchain_tech_committee_proposal_id':
-			postData.postTypeString = 'proposals tech';
+			postData.postTypeString = 'tech committee proposal';
 			postData.method = post.onchain_link.onchain_tech_committee_proposal[0]?.preimage?.method;
 			postData.onChainId = post.onchain_link?.onchain_tech_committee_proposal_id;
 			postData.status = post.onchain_link.onchain_tech_committee_proposal[0]?.status?.[0].status;
 			break;
 		case 'onchain_treasury_proposal_id':
-			postData.postTypeString = 'treasury proposals';
+			postData.postTypeString = 'treasury proposal';
 			postData.method = '';
 			postData.onChainId = post.onchain_link?.onchain_treasury_proposal_id;
 			postData.status = post.onchain_link.onchain_treasury_spend_proposal[0]?.treasuryStatus?.[0].status;
 			break;
 		case 'onchain_tip_id':
-			postData.postTypeString = 'tips';
+			postData.postTypeString = 'tip';
 			postData.method = '';
 			postData.onChainId = post.onchain_link?.onchain_tip_id;
 			postData.status = post.onchain_link.onchain_tip[0]?.tipStatus?.[0].status;
@@ -120,8 +127,6 @@ const LatestAllPostsTable = ({ className }:Props) => {
 					{data.posts.map(
 						(post) => {
 							const postTypeData = getPostTypeData(post);
-
-							console.log('postTypeData :', postTypeData);
 
 							if(postTypeData){
 								return postTypeData && !!post?.author?.username && !!post.onchain_link?.proposer_address &&

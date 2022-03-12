@@ -33,7 +33,7 @@ const LatestReferendaTable = ({ className }:Props) => {
 	if(data){
 		const noPost = !data.posts || !data.posts.length;
 		const atLeastOneCurrentReferendum = data.posts.some((post) => {
-			if(post.onchain_link?.onchain_referendum.length){
+			if(post.onchain_link?.onchain_referendum.length || post.onchain_link?.onchain_referendum_id){
 				// this breaks the loop as soon as
 				// we find a post that has a referendum.
 				return true;
@@ -61,15 +61,13 @@ const LatestReferendaTable = ({ className }:Props) => {
 				<Table.Body>
 					{data.posts.map(
 						(post) => {
-							const onchainId = post.onchain_link?.onchain_referendum_id;
-
-							return !!post?.author?.username && !!post.onchain_link?.onchain_referendum.length &&
+							return !!post?.author?.username && (!!post.onchain_link?.onchain_referendum.length || post.onchain_link?.onchain_referendum_id) &&
 								<LatestActivityTableRow
 									key={post.id}
 									postId={post.id}
 									address={post.onchain_link.proposer_address}
 									method={post.onchain_link.onchain_referendum[0]?.preimage?.method}
-									onchainId={onchainId}
+									onchainId={post.onchain_link?.onchain_referendum_id}
 									status={post.onchain_link.onchain_referendum[0]?.referendumStatus?.[0].status}
 									title={post.title}
 									postType='referenda'

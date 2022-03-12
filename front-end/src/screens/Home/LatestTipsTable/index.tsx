@@ -35,7 +35,7 @@ const LatestTipsTable = ({ className }:Props) => {
 	if(data){
 		const noPost = !data.posts || !data.posts.length;
 		const atLeastOneCurrentTip = data.posts.some((post) => {
-			if(post.onchain_link?.onchain_tip.length){
+			if(post.onchain_link?.onchain_tip.length|| post.onchain_link?.onchain_tip_id){
 				// this breaks the loop as soon as
 				// we find a post that has a tip.
 				return true;
@@ -65,7 +65,7 @@ const LatestTipsTable = ({ className }:Props) => {
 						(post) => {
 							const onchainId = post.onchain_link?.onchain_tip_id;
 
-							return !!post?.author?.username && !!post.onchain_link?.onchain_tip.length &&
+							return !!post?.author?.username && (!!post.onchain_link?.onchain_tip.length || post.onchain_link?.onchain_tip_id) &&
 								<LatestActivityTableRow
 									key={post.id}
 									postId={post.id}
@@ -73,7 +73,7 @@ const LatestTipsTable = ({ className }:Props) => {
 									onchainId={onchainId}
 									status={post.onchain_link.onchain_tip?.[0]?.tipStatus?.[0].status}
 									title={post.title}
-									postType='tips'
+									postType='tip'
 									created_at={post.created_at}
 								/>
 							;

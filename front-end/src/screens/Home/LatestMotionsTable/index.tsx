@@ -30,7 +30,7 @@ const LatestMotionsTable = ({ className }:Props) => {
 	if(data){
 		const noPost = !data.posts || !data.posts.length;
 		const atLeastOneCurrentMotion = data.posts.some((post) => {
-			if(post.onchain_link?.onchain_motion.length){
+			if(post.onchain_link?.onchain_motion.length || post.onchain_link?.onchain_motion_id){
 				// this breaks the loop as soon as
 				// we find a post that has a motion.
 				return true;
@@ -58,18 +58,16 @@ const LatestMotionsTable = ({ className }:Props) => {
 				<Table.Body>
 					{data.posts.map(
 						(post) => {
-							const onchainId = post.onchain_link?.onchain_motion_id;
-
-							return !!post?.author?.username && !!post.onchain_link?.onchain_motion.length &&
+							return !!post?.author?.username && (!!post.onchain_link?.onchain_motion.length || post.onchain_link?.onchain_motion_id) &&
 								<LatestActivityTableRow
 									key={post.id}
 									postId={post.id}
 									address={post.onchain_link.proposer_address}
 									method={post.onchain_link.onchain_motion[0]?.preimage?.method}
-									onchainId={onchainId}
+									onchainId={post.onchain_link?.onchain_motion_id}
 									status={post.onchain_link.onchain_motion[0]?.motionStatus?.[0].status}
 									title={post.title}
-									postType='motions'
+									postType='motion'
 									created_at={post.created_at}
 								/>
 							;

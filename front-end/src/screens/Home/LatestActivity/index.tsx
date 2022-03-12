@@ -40,7 +40,7 @@ const LatestActivity = ({ className }: Props) => {
 	} });
 
 	const { data: treasuryProposalsData, refetch: treasuryProposalsRefetch } = useDemocracyTreasuryProposalCountQuery({ variables: {
-		postTopic: post_topic.DEMOCRACY,
+		postTopic: post_topic.TREASURY,
 		postType: post_type.ON_CHAIN
 	} });
 
@@ -49,7 +49,7 @@ const LatestActivity = ({ className }: Props) => {
 	} });
 
 	const { data: tipsData, refetch: tipsRefetch } = useTipProposalCountQuery({ variables: {
-		postTopic: post_topic.DEMOCRACY,
+		postTopic: post_topic.TREASURY,
 		postType: post_type.ON_CHAIN
 	} });
 
@@ -87,7 +87,6 @@ const LatestActivity = ({ className }: Props) => {
 			render: () => <LatestAllPostsTable className='tab-panel' />
 		},
 		{
-			//{ !error && data ?<Label circular> &nbsp;{ data }</Label> : null }
 			menuItem: <Menu.Item key='referenda'>Referenda <Label circular>{ referendaData?.posts_aggregate.aggregate?.count }</Label></Menu.Item>,
 			render: () => <LatestReferendaTable className='tab-panel' />
 		},

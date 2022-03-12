@@ -35,7 +35,7 @@ const LatestProposalsTable = ({ className }:Props) => {
 	if(data){
 		const noPost = !data.posts || !data.posts.length;
 		const atLeastOneCurrentProposal = data.posts.some((post) => {
-			if(post.onchain_link?.onchain_proposal.length){
+			if(post.onchain_link?.onchain_proposal.length || post.onchain_link?.onchain_proposal_id){
 				// this breaks the loop as soon as
 				// we find a post that has a proposal.
 				return true;
@@ -63,18 +63,16 @@ const LatestProposalsTable = ({ className }:Props) => {
 				<Table.Body>
 					{data.posts.map(
 						(post) => {
-							const onchainId = post.onchain_link?.onchain_proposal_id;
-
-							return !!post?.author?.username && !!post.onchain_link?.onchain_proposal.length &&
+							return !!post?.author?.username && (!!post.onchain_link?.onchain_proposal.length || post.onchain_link?.onchain_proposal_id) &&
 								<LatestActivityTableRow
 									key={post.id}
 									postId={post.id}
 									address={post.onchain_link.proposer_address}
 									method={post.onchain_link.onchain_proposal[0]?.preimage?.method}
-									onchainId={onchainId}
+									onchainId={post.onchain_link?.onchain_proposal_id}
 									status={post.onchain_link.onchain_proposal[0]?.proposalStatus?.[0].status}
 									title={post.title}
-									postType='proposals'
+									postType='proposal'
 									created_at={post.created_at}
 								/>
 							;
