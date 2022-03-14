@@ -64,3 +64,13 @@ export const QUERY_LATEST_REFERENDA = gql`
     }
     ${authorFields}
 `;
+
+export const QUERY_COUNT_REFERENDA = gql`
+    query ReferundumCount($postType: Int!) {
+        posts_aggregate(where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_referendum_id: {_is_null: false}}}) {
+            aggregate {
+                count
+            }
+        }
+    }
+`;

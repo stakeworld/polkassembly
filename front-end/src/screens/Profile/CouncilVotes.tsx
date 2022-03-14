@@ -42,24 +42,24 @@ const client = new ApolloClient({
 const CouncilVotes = ({ className, address } : Props) => {
 
 	const VOTES_QUERY = gql`
-		query {
-			councillor (id: "${address}") {
-				id
-				numberOfVotes
-				voteHistory(orderBy:BLOCK_DESC) {
-					nodes {
-						block
-						approvedVote
-						votedYes
-						votedNo
-						proposalHash {
-							index
-							hash
-						}
-					}
-				}
-			}
-		}
+		# query {
+		# 	councillor (id: "${address}") {
+		# 		id
+		# 		numberOfVotes
+		# 		voteHistory(orderBy:BLOCK_DESC) {
+		# 			nodes {
+		# 				block
+		# 				approvedVote
+		# 				votedYes
+		# 				votedNo
+		# 				proposalHash {
+		# 					index
+		# 					hash
+		# 				}
+		# 			}
+		# 		}
+		# 	}
+		# }
 	`;
 
 	const { loading, error, data } = useQuery(VOTES_QUERY);

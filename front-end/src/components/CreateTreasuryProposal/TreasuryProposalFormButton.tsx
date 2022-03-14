@@ -6,28 +6,30 @@ import { web3Accounts, web3Enable, web3FromSource } from '@polkadot/extension-da
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import Identicon from '@polkadot/react-identicon';
 import styled from '@xstyled/styled-components';
-import React, {  useContext, useState } from 'react';
-import { Controller,useForm } from 'react-hook-form';
-import { Button, Dropdown, Form, Grid, Icon, Input, Message, Modal } from 'semantic-ui-react';
-import { ApiContext } from 'src/context/ApiContext';
-import { NotificationContext } from 'src/context/NotificationContext';
-import { UserDetailsContext } from 'src/context/UserDetailsContext';
-import { useAddPolkassemblyProposalMutation } from 'src/generated/graphql';
-import { APPNAME } from 'src/global/appName';
 import { LoadingStatusType, NotificationStatus } from 'src/types';
 import Card from 'src/ui-components/Card';
+import BN from 'bn.js';
+import React, { useContext, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Button, Dropdown, Form, Grid, Icon, Input, Label, Message, Modal } from 'semantic-ui-react';
+import { UserDetailsContext } from 'src/context/UserDetailsContext';
+import { ApiContext } from 'src/context/ApiContext';
+import { APPNAME } from 'src/global/appName';
+import BalanceInput from 'src/ui-components/BalanceInput';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
 import Loader from 'src/ui-components/Loader';
 import getEncodedAddress from 'src/util/getEncodedAddress';
 
 import { PolkassemblyProposalTypes } from '../../types';
 import AddressComponent from '../../ui-components/Address';
+import { inputToBn } from '../../util/inputToBn';
 import ContentForm from '../ContentForm';
 import TitleForm from '../TitleForm';
+import { NotificationContext } from 'src/context/NotificationContext';
+import { useAddPolkassemblyProposalMutation } from 'src/generated/graphql';
 interface Props {
 	className?: string
-	setTipModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-	proposalType?: string
+	// setTipModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 enum AvailableAccountsInput {
@@ -35,7 +37,11 @@ enum AvailableAccountsInput {
 	beneficiary
 }
 
-const ProposalFormButton = ({ className, setTipModalOpen, proposalType } : Props) => {
+const TreasuryProposalFormButton = ({
+	className
+	// setTipModalOpen,
+} : Props) => {
+
 	const [modalOpen, setModalOpen] = useState<boolean>(false);
 	const [extensionNotAvailable, setExtensionNotAvailable] = useState(false);
 	const [availableAccounts, setAvailableAccounts] = useState<InjectedAccountWithMeta[]>([]);
@@ -43,10 +49,9 @@ const ProposalFormButton = ({ className, setTipModalOpen, proposalType } : Props
 		'beneficiary': false,
 		'submitWithAccount': false
 	});
-
 	const [submitWithAccount, setSubmitWithAccount] = useState<string>('');
 	const [beneficiaryAccount, setBeneficiaryAccount] = useState<string>('');
-	const [value, setValue] = useState<string>('');
+	const [value, setValue] = useState<BN>(new BN(0));
 	const [valueUnit, setValueUnit] = useState<string>('DOT');
 	const [postTitle, setPostTitle] = useState<string>('');
 	const [postDescription, setPostDescription] = useState<string>('');
@@ -67,9 +72,9 @@ const ProposalFormButton = ({ className, setTipModalOpen, proposalType } : Props
 	const valueUnitOptions = [
 		{ key: 'nano', text: 'nano', value: 'nano' },
 		{ key: 'micro', text: 'micro', value: 'micro' },
-		{ key: 'DOT', text: 'DOT', value: 'DOT' },
 		{ key: 'Kilo', text: 'Kilo', value: 'Kilo' },
 		{ key: 'Mill', text: 'Mill', value: 'Mill' },
+		{ key: 'Dot', text: 'Dot', value: 'Dot' },
 		{ key: 'Bill', text: 'Bill', value: 'Bill' },
 		{ key: 'Tril', text: 'Tril', value: 'Tril' },
 		{ key: 'Peta', text: 'Peta', value: 'Peta' },
@@ -153,6 +158,8 @@ const ProposalFormButton = ({ className, setTipModalOpen, proposalType } : Props
 		);
 	};
 
+	const onBalanceChange = (balance: BN) => setValue(balance);
+
 	const onTitleChange = (event: React.ChangeEvent<HTMLInputElement>[]) => {setPostTitle(event[0].currentTarget.value); return event[0].currentTarget.value;};
 	const onPostDescriptionChange = (data: Array<string>) => {setPostDescription(data[0]); return data[0].length ? data[0] : null;};
 
@@ -165,8 +172,11 @@ const ProposalFormButton = ({ className, setTipModalOpen, proposalType } : Props
 		if(!submitWithAccount){
 			errorsFound.push('submitWithAccount');
 		}
-		if(!value){
-			errorsFound.push('value');
+		const [balance, isValid] = inputToBn(`${value}`, false);
+		if(!isValid){
+			return false;
+		}else{
+			setValue(balance);
 		}
 
 		if(errorsFound.length > 0){
@@ -245,197 +255,190 @@ const ProposalFormButton = ({ className, setTipModalOpen, proposalType } : Props
 	};
 
 	return (
-		loadingStatus.isLoading ?
-			<Card className={'LoaderWrapper'}>
-				<Loader text={loadingStatus.message}/>
-			</Card>
-			:
-			<Modal
-				className={className}
-				closeOnEscape={false}
-				closeOnDimmerClick={false}
-				onClose={() => setModalOpen(false)}
-				onOpen={() => setModalOpen(true)}
-				open={modalOpen}
-				size='small'
-				trigger={<Button size='big' style={ { backgroundColor: 'transparent', color: '#333', textDecoration: 'underline' } }> Or proceed manually</Button>}
-			>
-				<Modal.Header className='text-center modal-header'>
-				Create {proposalType} Proposal
-				</Modal.Header>
-				<Modal.Content scrolling>
-					<Modal.Description className='modal-desc'>
-						<Grid centered stackable verticalAlign='middle' reversed='mobile tablet'>
-							<Grid.Column mobile={13} tablet={13} computer={12}>
-								<Form>
-									<h5>Enter On-chain Data</h5>
+		<Modal
+			className={className}
+			closeOnEscape={false}
+			closeOnDimmerClick={false}
+			onClose={() => setModalOpen(false)}
+			onOpen={() => setModalOpen(true)}
+			open={modalOpen}
+			size='small'
+			trigger={<Button disabled={!id} style={ { background: '#E5007A', color:'#fff', textTransform: 'capitalize' } } size='huge'> <Icon name='plus circle' /> Create Treasury Proposal</Button>}
+		>
+			<Modal.Header className='text-center modal-header'>
+				Create Treasury Proposal
+			</Modal.Header>
+			<Modal.Content scrolling>
+				<Modal.Description className='modal-desc'>
+					<Grid centered stackable verticalAlign='middle' reversed='mobile tablet'>
+						<Grid.Column mobile={13} tablet={13} computer={12}>
+							<Form>
+								<br />
+								<h5>Enter On-chain Data</h5>
 
-									<div className='topMargin'>
-										{/* Submit with account */}
-										<Form.Group>
-											<Form.Field width={16}>
-												<label className='input-label'>
+								<div className='topMargin'>
+									{/* Submit with account */}
+									<Form.Group>
+										<Form.Field width={16}>
+											<label className='input-label'>
 													Submit with account
-													<HelperTooltip content='This account will make the proposal and be responsible for the bond.' />
-												</label>
+												<HelperTooltip content='This account will make the proposal and be responsible for the bond.' />
+											</label>
 
-												<div className='accountInputDiv'>
-													<Identicon
-														className='identicon'
-														value={submitWithAccount}
-														size={26}
-														theme={'polkadot'}
-													/>
-													<Input
-														size='big'
-														value={submitWithAccount}
-														onChange={ (e) => setSubmitWithAccount(e.target.value)}
-														placeholder='Account Address'
-														error={errorsFound.includes('submitWithAccount')}
-													/>
-												</div>
+											<div className='accountInputDiv'>
+												<Identicon
+													className='identicon'
+													value={submitWithAccount}
+													size={26}
+													theme={'polkadot'}
+												/>
+												<Input
+													size='big'
+													value={submitWithAccount}
+													onChange={ (e) => setSubmitWithAccount(e.target.value)}
+													placeholder='Account Address'
+													error={errorsFound.includes('submitWithAccount')}
+												/>
+											</div>
 
-												{!extensionNotAvailable && <div className='availableAddressOptions'>
-													<div onClick={() => handleDetect(AvailableAccountsInput.submitWithAccount)} className='availableAddressToggle'>
+											{!extensionNotAvailable && <div className='availableAddressOptions'>
+												<div onClick={() => handleDetect(AvailableAccountsInput.submitWithAccount)} className='availableAddressToggle'>
 														or choose from available addresses
-														{showAvailableAccountsObj['submitWithAccount'] ? <Icon name='chevron up' /> : <Icon name='chevron down' />}
-													</div>
-												</div>}
-												{extensionNotAvailable && <div className="error">Please install polkadot.js extension</div>}
-												{showAvailableAccountsObj['submitWithAccount'] && availableAccounts.length > 0 && getAvailableAccounts(AvailableAccountsInput.submitWithAccount)}
-											</Form.Field>
-										</Form.Group>
+													{showAvailableAccountsObj['submitWithAccount'] ? <Icon name='chevron up' /> : <Icon name='chevron down' />}
+												</div>
+											</div>}
+											{extensionNotAvailable && <div className="error">Please install polkadot.js extension</div>}
+											{showAvailableAccountsObj['submitWithAccount'] && availableAccounts.length > 0 && getAvailableAccounts(AvailableAccountsInput.submitWithAccount)}
+										</Form.Field>
+									</Form.Group>
 
-										{/* Beneficiary account */}
-										<Form.Group>
-											<Form.Field width={16}>
-												<label className='input-label'>
+									{/* Beneficiary account */}
+									<Form.Group>
+										<Form.Field width={16}>
+											<label className='input-label'>
 													Beneficiary Account
-													<HelperTooltip content='The beneficiary will receive the full amount if the proposal passes.' />
-												</label>
+												<HelperTooltip content='The beneficiary will receive the full amount if the proposal passes.' />
+											</label>
 
-												<div className='accountInputDiv'>
-													<Identicon
-														className='identicon'
-														value={beneficiaryAccount}
-														size={26}
-														theme={'polkadot'}
-													/>
-													<Input
-														size='big'
-														value={beneficiaryAccount}
-														onChange={ (e) => setBeneficiaryAccount(e.target.value)}
-														placeholder='Account Address'
-														error={errorsFound.includes('beneficiaryAccount')}
-													/>
-												</div>
+											<div className='accountInputDiv'>
+												<Identicon
+													className='identicon'
+													value={beneficiaryAccount}
+													size={26}
+													theme={'polkadot'}
+												/>
+												<Input
+													size='big'
+													value={beneficiaryAccount}
+													onChange={ (e) => setBeneficiaryAccount(e.target.value)}
+													placeholder='Account Address'
+													error={errorsFound.includes('beneficiaryAccount')}
+												/>
+											</div>
 
-												{!extensionNotAvailable && <div className='availableAddressOptions'>
-													<div onClick={() => handleDetect(AvailableAccountsInput.beneficiary)} className='availableAddressToggle'>
+											{!extensionNotAvailable && <div className='availableAddressOptions'>
+												<div onClick={() => handleDetect(AvailableAccountsInput.beneficiary)} className='availableAddressToggle'>
 														or choose from available addresses
-														{showAvailableAccountsObj['beneficiary'] ? <Icon name='chevron up' /> : <Icon name='chevron down' />}
-													</div>
-												</div>}
-												{extensionNotAvailable && <div className="error">Please install polkadot.js extension</div>}
-												{showAvailableAccountsObj['beneficiary'] && availableAccounts.length > 0 && getAvailableAccounts(AvailableAccountsInput.beneficiary)}
-											</Form.Field>
-										</Form.Group>
+													{showAvailableAccountsObj['beneficiary'] ? <Icon name='chevron up' /> : <Icon name='chevron down' />}
+												</div>
+											</div>}
+											{extensionNotAvailable && <div className="error">Please install polkadot.js extension</div>}
+											{showAvailableAccountsObj['beneficiary'] && availableAccounts.length > 0 && getAvailableAccounts(AvailableAccountsInput.beneficiary)}
+										</Form.Field>
+									</Form.Group>
 
-										{/* Value */}
-										<Form.Group>
-											<Form.Field width={16} className='input-form-field'>
-												<label className='input-label'>
-													Value
-													<HelperTooltip content='The value is the amount that is being asked for and that will be allocated to the beneficiary if the proposal is approved.' />
-												</label>
+									{/* Value */}
+									<Form.Group className='value-form-group'>
+										<Form.Field width={13}>
+											<BalanceInput
+												label={'Value'}
+												helpText={'The value is the amount that is being asked for and that will be allocated to the beneficiary if the proposal is approved.'}
+												placeholder={'0'}
+												className='text-input'
+												onChange={onBalanceChange}
+											/>
+										</Form.Field>
+										<Form.Field width={3} className='input-form-field'>
+											<Label size='big'>
+												<Dropdown upward={false} defaultValue='nano' options={valueUnitOptions} onChange={(event, { value }) => setValueUnit(value as string)} />
+											</Label>
+										</Form.Field>
+									</Form.Group>
 
-												<Input
-													label={ <Dropdown defaultValue='DOT' options={valueUnitOptions} onChange={(event, { value }) => setValueUnit(value as string)} />}
-													labelPosition='right'
-													type='number'
-													min='1'
-													placeholder='0'
-													className='text-input'
-													size='big'
-													onChange={ (e) => setValue(e.target.value as string)}
-													error={errorsFound.includes('value')}
-												/>
-											</Form.Field>
-										</Form.Group>
-
-										{/* Proposal Bond */}
-										<Form.Group>
-											<Form.Field width={16} className='input-form-field'>
-												<label className='input-label'>
+									{/* Proposal Bond */}
+									<Form.Group>
+										<Form.Field width={16} className='input-form-field'>
+											<label className='input-label'>
 													Proposal Bond
-													<HelperTooltip content='Of the beneficiary amount, at least 5.00% would need to be put up as collateral. The maximum of this and the minimum bond will be used to secure the proposal, refundable if it passes.' />
-												</label>
+												<HelperTooltip content='Of the beneficiary amount, at least 5.00% would need to be put up as collateral. The maximum of this and the minimum bond will be used to secure the proposal, refundable if it passes.' />
+											</label>
 
-												<Input
-													className='text-input hide-pointer'
-													value='5.00%'
-													size='big'
-												/>
-											</Form.Field>
-										</Form.Group>
+											<Input
+												className='text-input hide-pointer'
+												value='5.00%'
+												size='big'
+											/>
+										</Form.Field>
+									</Form.Group>
 
-										{/* Minimum Bond */}
-										<Form.Group>
-											<Form.Field width={16} className='input-form-field'>
-												<label className='input-label'>
+									{/* Minimum Bond */}
+									<Form.Group>
+										<Form.Field width={16} className='input-form-field'>
+											<label className='input-label'>
 												Minimum Bond
-													<HelperTooltip content='The minimum amount that will be bonded.' />
-												</label>
+												<HelperTooltip content='The minimum amount that will be bonded.' />
+											</label>
 
-												<Input
-													className='text-input hide-pointer'
-													value='100.0000 DOT'
-													size='big'
-												/>
-											</Form.Field>
-										</Form.Group>
+											<Input
+												className='text-input hide-pointer'
+												value='100.0000 DOT'
+												size='big'
+											/>
+										</Form.Field>
+									</Form.Group>
 
-										<Message color='yellow' className='text-input topMargin'>
-											<p><Icon name='warning circle' /> Be aware that once submitted the proposal will be put to a council vote. If the proposal is rejected due to a lack of info, invalid requirements or non-benefit to the network as a whole, the full bond posted (as describe above) will be lost.</p>
-										</Message>
-									</div>
+									<Message color='yellow' className='text-input topMargin'>
+										<p><Icon name='warning circle' /> Be aware that once submitted the proposal will be put to a council vote. If the proposal is rejected due to a lack of info, invalid requirements or non-benefit to the network as a whole, the full bond posted (as describe above) will be lost.</p>
+									</Message>
+								</div>
 
-									<div className='post-form-div'>
-										<Controller
-											as={<TitleForm
-												errorTitle={errors.title}
-											/>}
-											control={control}
-											name='title'
-											onChange={onTitleChange}
-											rules={{ required: true }}
-										/>
+								<div className='post-form-div'>
+									<Controller
+										as={<TitleForm
+											errorTitle={errors.title}
+										/>}
+										control={control}
+										name='title'
+										onChange={onTitleChange}
+										rules={{ required: true }}
+									/>
 
-										<Controller
-											as={<ContentForm
-												errorContent={errors.content}
-											/>}
-											control={control}
-											name='content'
-											onChange={onPostDescriptionChange}
-											rules={{ required: true }}
-										/>
-									</div>
-								</Form>
-							</Grid.Column>
-						</Grid>
-					</Modal.Description>
-				</Modal.Content>
-				<Modal.Actions className='modal-actions'>
-					<Button floated='right' className='submitBtn' onClick={handleSubmit(handleSignAndSubmit)}>Sign &amp; Submit</Button>
-					<Button floated='right' onClick={() => setTipModalOpen(false)}>Close</Button>
-				</Modal.Actions>
-			</Modal>
+									<Controller
+										as={<ContentForm
+											errorContent={errors.content}
+										/>}
+										control={control}
+										name='content'
+										onChange={onPostDescriptionChange}
+										rules={{ required: true }}
+									/>
+								</div>
+							</Form>
+						</Grid.Column>
+					</Grid>
+				</Modal.Description>
+			</Modal.Content>
+			<Modal.Actions className='modal-actions'>
+				<Button floated='right' className='submitBtn' onClick={handleSubmit(handleSignAndSubmit)}>Sign &amp; Submit</Button>
+				{/* TODO: change onclick to () => setTipModalOpen(false)*/}
+				<Button floated='right' onClick={() => setModalOpen(false)}>Close</Button>
+			</Modal.Actions>
+		</Modal>
 	);
 
 };
 
-export default styled(ProposalFormButton)`
+export default styled(TreasuryProposalFormButton)`
 	.text-center  {
 		text-align : center;
 	}
@@ -502,6 +505,12 @@ export default styled(ProposalFormButton)`
 		margin-right: 1.5em !important;
 	}
 
+	.value-form-group{
+		display: flex !important;
+		align-items: center;
+		margin-left: 0.45em !important;
+	}
+
 	.text-input{
 		margin-left: 1.5em;
 	}
@@ -541,3 +550,4 @@ export default styled(ProposalFormButton)`
 		color: #fff;
 	}
 `;
+
