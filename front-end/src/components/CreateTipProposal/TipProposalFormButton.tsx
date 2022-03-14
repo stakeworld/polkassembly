@@ -9,7 +9,7 @@ import styled from '@xstyled/styled-components';
 import BN from 'bn.js';
 import React, { useContext, useEffect, useState } from 'react';
 import { Controller,useForm } from 'react-hook-form';
-import { Button, Dropdown, Form, Grid, Icon, Input, Label, Message, Modal } from 'semantic-ui-react';
+import { Button, Dropdown, Form, Grid, Icon, Input, Label, Message, Modal, Popup } from 'semantic-ui-react';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { useGetCouncilMembersQuery } from 'src/generated/graphql';
 import { APPNAME } from 'src/global/appName';
@@ -36,8 +36,8 @@ const TipProposalFormButton = ({
 	className
 	// setTipModalOpen,
 } : Props) => {
-	const { id } = useContext(UserDetailsContext);
-	const { addresses } = useContext(UserDetailsContext);
+	// const { id } = useContext(UserDetailsContext);
+	const { addresses, defaultAddress, id, web3signup } = useContext(UserDetailsContext);
 
 	const [modalOpen, setModalOpen] = useState<boolean>(false);
 	const [extensionNotAvailable, setExtensionNotAvailable] = useState(false);
@@ -217,6 +217,8 @@ const TipProposalFormButton = ({
 		console.log('postDescription : ', postDescription);
 	};
 
+	const triggerBtn = <Button disabled={!id} style={ { background: '#E5007A', color:'#fff', textTransform: 'capitalize' } } size='huge'> <Icon name='plus circle' /> Create Tip Proposal</Button>;
+
 	return (
 		<Modal
 			className={className}
@@ -226,7 +228,7 @@ const TipProposalFormButton = ({
 			onOpen={() => setModalOpen(true)}
 			open={modalOpen}
 			size='small'
-			trigger={<Button disabled={!id} style={ { background: '#E5007A', color:'#fff', textTransform: 'capitalize' } } size='huge'> <Icon name='plus circle' /> Create Tip Proposal</Button>}
+			trigger={web3signup || defaultAddress ? triggerBtn: <Popup position='bottom center' content='Please login using a web3 address' trigger={triggerBtn} />}
 		>
 			<Modal.Header className='text-center modal-header'>
 				Create Tip Proposal
