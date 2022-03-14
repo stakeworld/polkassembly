@@ -6,21 +6,25 @@ import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import Identicon from '@polkadot/react-identicon';
 import styled from '@xstyled/styled-components';
-import React, { useState } from 'react';
+import BN from 'bn.js';
+import React, { useContext, useEffect, useState } from 'react';
 import { Controller,useForm } from 'react-hook-form';
-import { Button, Dropdown, Form, Grid, Icon, Input, Message, Modal } from 'semantic-ui-react';
+import { Button, Dropdown, Form, Grid, Icon, Input, Label, Message, Modal } from 'semantic-ui-react';
+import { UserDetailsContext } from 'src/context/UserDetailsContext';
+import { useGetCouncilMembersQuery } from 'src/generated/graphql';
 import { APPNAME } from 'src/global/appName';
+import BalanceInput from 'src/ui-components/BalanceInput';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
 import getEncodedAddress from 'src/util/getEncodedAddress';
 
 import AddressComponent from '../../ui-components/Address';
+import { inputToBn } from '../../util/inputToBn';
 import ContentForm from '../ContentForm';
 import TitleForm from '../TitleForm';
 
 interface Props {
 	className?: string
-	setTipModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-	proposalType?: string
+	// setTipModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 enum AvailableAccountsInput {
@@ -28,7 +32,13 @@ enum AvailableAccountsInput {
 	beneficiary
 }
 
-const ProposalFormButton = ({ className, setTipModalOpen, proposalType } : Props) => {
+const TipProposalFormButton = ({
+	className
+	// setTipModalOpen,
+} : Props) => {
+	const { id } = useContext(UserDetailsContext);
+	const { addresses } = useContext(UserDetailsContext);
+
 	const [modalOpen, setModalOpen] = useState<boolean>(false);
 	const [extensionNotAvailable, setExtensionNotAvailable] = useState(false);
 	const [availableAccounts, setAvailableAccounts] = useState<InjectedAccountWithMeta[]>([]);
@@ -36,22 +46,42 @@ const ProposalFormButton = ({ className, setTipModalOpen, proposalType } : Props
 		'beneficiary': false,
 		'submitWithAccount': false
 	});
-
 	const [submitWithAccount, setSubmitWithAccount] = useState<string>('');
 	const [beneficiaryAccount, setBeneficiaryAccount] = useState<string>('');
-	const [value, setValue] = useState<string>('');
+	const [value, setValue] = useState<BN>();
 	const [valueUnit, setValueUnit] = useState<string>('DOT');
 	const [postTitle, setPostTitle] = useState<string>('');
 	const [postDescription, setPostDescription] = useState<string>('');
+
+	const councilQueryresult = useGetCouncilMembersQuery();
+	const [isCouncil, setIsCouncil] = useState(false);
+	const [currentCouncil, setCurrentCouncil] = useState<string[]>([]);
 
 	const { control, errors, handleSubmit } = useForm();
 
 	const [errorsFound, setErrorsFound] = useState<string[]>([]);
 
+	useEffect(() => {
+		councilQueryresult.data?.councils?.[0]?.members?.forEach( member => {
+			setCurrentCouncil(currentCouncil => [...currentCouncil, member?.address]);
+		});
+	}, [councilQueryresult]);
+
+	useEffect(() => {
+		// it will iterate through all addresses
+		addresses && addresses.some(address => {
+			if (currentCouncil.includes(address)) {
+				setIsCouncil(true);
+				// this breaks the loop as soon as we find a matching address
+				return true;
+			}
+			return false;
+		});
+	}, [addresses, currentCouncil]);
+
 	const valueUnitOptions = [
 		{ key: 'nano', text: 'nano', value: 'nano' },
 		{ key: 'micro', text: 'micro', value: 'micro' },
-		{ key: 'DOT', text: 'DOT', value: 'DOT' },
 		{ key: 'Kilo', text: 'Kilo', value: 'Kilo' },
 		{ key: 'Mill', text: 'Mill', value: 'Mill' },
 		{ key: 'Bill', text: 'Bill', value: 'Bill' },
@@ -137,6 +167,13 @@ const ProposalFormButton = ({ className, setTipModalOpen, proposalType } : Props
 		);
 	};
 
+	const onBalanceChange = (balance: BN) => setValue(balance);
+
+	const onSubmitWithAccountChange = (address: string) => {
+		setSubmitWithAccount(address);
+		setIsCouncil(currentCouncil.includes(address));
+	};
+
 	const onTitleChange = (event: React.ChangeEvent<HTMLInputElement>[]) => {setPostTitle(event[0].currentTarget.value); return event[0].currentTarget.value;};
 	const onPostDescriptionChange = (data: Array<string>) => {setPostDescription(data[0]); return data[0].length ? data[0] : null;};
 
@@ -149,8 +186,14 @@ const ProposalFormButton = ({ className, setTipModalOpen, proposalType } : Props
 		if(!submitWithAccount){
 			errorsFound.push('submitWithAccount');
 		}
-		if(!value){
-			errorsFound.push('value');
+
+		if(isCouncil){
+			const [balance, isValid] = inputToBn(`${value}`, false);
+			if(!isValid){
+				return false;
+			}else{
+				setValue(balance);
+			}
 		}
 
 		if(errorsFound.length > 0){
@@ -183,16 +226,17 @@ const ProposalFormButton = ({ className, setTipModalOpen, proposalType } : Props
 			onOpen={() => setModalOpen(true)}
 			open={modalOpen}
 			size='small'
-			trigger={<Button size='big' style={ { backgroundColor: 'transparent', color: '#333', textDecoration: 'underline' } }> Or proceed manually</Button>}
+			trigger={<Button disabled={!id} style={ { background: '#E5007A', color:'#fff', textTransform: 'capitalize' } } size='huge'> <Icon name='plus circle' /> Create Tip Proposal</Button>}
 		>
 			<Modal.Header className='text-center modal-header'>
-				Create {proposalType} Proposal
+				Create Tip Proposal
 			</Modal.Header>
 			<Modal.Content scrolling>
 				<Modal.Description className='modal-desc'>
 					<Grid centered stackable verticalAlign='middle' reversed='mobile tablet'>
 						<Grid.Column mobile={13} tablet={13} computer={12}>
 							<Form>
+								<br />
 								<h5>Enter On-chain Data</h5>
 
 								<div className='topMargin'>
@@ -214,7 +258,7 @@ const ProposalFormButton = ({ className, setTipModalOpen, proposalType } : Props
 												<Input
 													size='big'
 													value={submitWithAccount}
-													onChange={ (e) => setSubmitWithAccount(e.target.value)}
+													onChange={ (e) => onSubmitWithAccountChange(e.target.value)}
 													placeholder='Account Address'
 													error={errorsFound.includes('submitWithAccount')}
 												/>
@@ -267,58 +311,22 @@ const ProposalFormButton = ({ className, setTipModalOpen, proposalType } : Props
 									</Form.Group>
 
 									{/* Value */}
-									<Form.Group>
-										<Form.Field width={16} className='input-form-field'>
-											<label className='input-label'>
-													Value
-												<HelperTooltip content='The value is the amount that is being asked for and that will be allocated to the beneficiary if the proposal is approved.' />
-											</label>
-
-											<Input
-												label={ <Dropdown defaultValue='DOT' options={valueUnitOptions} onChange={(event, { value }) => setValueUnit(value as string)} />}
-												labelPosition='right'
-												type='number'
-												min='1'
-												placeholder='0'
+									{isCouncil && <Form.Group className='value-form-group'>
+										<Form.Field width={13}>
+											<BalanceInput
+												label={'Value'}
+												helpText={'The value is the amount that is being asked for and that will be allocated to the beneficiary if the proposal is approved.'}
+												placeholder={'0'}
 												className='text-input'
-												size='big'
-												onChange={ (e) => setValue(e.target.value as string)}
-												error={errorsFound.includes('value')}
+												onChange={onBalanceChange}
 											/>
 										</Form.Field>
-									</Form.Group>
-
-									{/* Proposal Bond */}
-									<Form.Group>
-										<Form.Field width={16} className='input-form-field'>
-											<label className='input-label'>
-													Proposal Bond
-												<HelperTooltip content='Of the beneficiary amount, at least 5.00% would need to be put up as collateral. The maximum of this and the minimum bond will be used to secure the proposal, refundable if it passes.' />
-											</label>
-
-											<Input
-												className='text-input hide-pointer'
-												value='5.00%'
-												size='big'
-											/>
+										<Form.Field width={3} className='input-form-field'>
+											<Label size='big'>
+												<Dropdown upward={false} defaultValue='nano' options={valueUnitOptions} onChange={(event, { value }) => setValueUnit(value as string)} />
+											</Label>
 										</Form.Field>
-									</Form.Group>
-
-									{/* Minimum Bond */}
-									<Form.Group>
-										<Form.Field width={16} className='input-form-field'>
-											<label className='input-label'>
-												Minimum Bond
-												<HelperTooltip content='The minimum amount that will be bonded.' />
-											</label>
-
-											<Input
-												className='text-input hide-pointer'
-												value='100.0000 DOT'
-												size='big'
-											/>
-										</Form.Field>
-									</Form.Group>
+									</Form.Group>}
 
 									<Message color='yellow' className='text-input topMargin'>
 										<p><Icon name='warning circle' /> Be aware that once submitted the proposal will be put to a council vote. If the proposal is rejected due to a lack of info, invalid requirements or non-benefit to the network as a whole, the full bond posted (as describe above) will be lost.</p>
@@ -353,14 +361,15 @@ const ProposalFormButton = ({ className, setTipModalOpen, proposalType } : Props
 			</Modal.Content>
 			<Modal.Actions className='modal-actions'>
 				<Button floated='right' className='submitBtn' onClick={handleSubmit(handleSignAndSubmit)}>Sign &amp; Submit</Button>
-				<Button floated='right' onClick={() => setTipModalOpen(false)}>Close</Button>
+				{/* TODO: change for two model process: onclick to () => setTipModalOpen(false)*/}
+				<Button floated='right' onClick={() => setModalOpen(false)}>Close</Button>
 			</Modal.Actions>
 		</Modal>
 	);
 
 };
 
-export default styled(ProposalFormButton)`
+export default styled(TipProposalFormButton)`
 	.text-center  {
 		text-align : center;
 	}
@@ -427,6 +436,12 @@ export default styled(ProposalFormButton)`
 		margin-right: 1.5em !important;
 	}
 
+	.value-form-group{
+		display: flex !important;
+		align-items: center;
+		margin-left: 0.45em !important;
+	}
+
 	.text-input{
 		margin-left: 1.5em;
 	}
@@ -466,3 +481,4 @@ export default styled(ProposalFormButton)`
 		color: #fff;
 	}
 `;
+

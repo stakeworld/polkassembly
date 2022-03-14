@@ -6,7 +6,7 @@ import styled from '@xstyled/styled-components';
 import React, { useState } from 'react';
 import { Button, Icon, Input, Modal } from 'semantic-ui-react';
 
-import ProposalFormButton from './ProposalFormButton';
+// import ProposalFormButton from './ProposalFormButton';
 
 interface Props {
 	className?: string
@@ -65,10 +65,9 @@ const CreateProposalButton = ({ className, proposalType } : Props) => {
 					</div>
 
 					<div className='proceed-manually-div'>
-						<ProposalFormButton
+						{/* <TreasuryProposalFormButton
 							setTipModalOpen={setModalOpen}
-							proposalType={proposalType}
-						/>
+						/> */}
 					</div>
 				</Modal.Description>
 			</Modal.Content>
