@@ -210,29 +210,42 @@ const TreasuryProposalFormButton = ({
 		api.setSigner(injected.signer);
 
 		setLoadingStatus({ isLoading: true, message: 'Waiting for signature' });
-		const proposal = api.tx.treasury.proposeSpend(value, beneficiaryAccount);
-		proposal.signAndSend(submitWithAccount, ({ status }) => {
-			if (status.isInBlock) {
-				queueNotification({
-					header: 'Success!',
-					message: `Propsal #${proposal.hash} successful.`,
-					status: NotificationStatus.SUCCESS
-				});
+		try {
+			const proposal = api.tx.treasury.proposeSpend(value, beneficiaryAccount);
+			proposal.signAndSend(submitWithAccount, ({ status }) => {
+				if (status.isInBlock) {
+					queueNotification({
+						header: 'Success!',
+						message: `Propsal #${proposal.hash} successful.`,
+						status: NotificationStatus.SUCCESS
+					});
+					setLoadingStatus({ isLoading: false, message: '' });
+					console.log(`Completed at block hash #${status.asInBlock.toString()}`);
+					setModalOpen(false);
+					const authorId = id;
+					if (!authorId){
+						return;
+					}
+					saveProposal(authorId, PolkassemblyProposalTypes.TreasurySpendProposal, postTitle, postDescription, proposal.hash.toString(), submitWithAccount);
+				} else {
+					if (status.isBroadcast){
+						setLoadingStatus({ isLoading: true, message: 'Broadcasting the endorsement' });
+					}
+					console.log(`Current status: ${status.type}`);
+				}
+			}).catch((error) => {
 				setLoadingStatus({ isLoading: false, message: '' });
-				console.log(`Completed at block hash #${status.asInBlock.toString()}`);
+				console.log(':( transaction failed');
+				console.error('ERROR:', error);
 				setModalOpen(false);
-				const authorId = id;
-				if (!authorId){
-					return;
-				}
-				saveProposal(authorId, PolkassemblyProposalTypes.TreasurySpendProposal, postTitle, postDescription, proposal.hash.toString(), submitWithAccount);
-			} else {
-				if (status.isBroadcast){
-					setLoadingStatus({ isLoading: true, message: 'Broadcasting the endorsement' });
-				}
-				console.log(`Current status: ${status.type}`);
-			}
-		}).catch((error) => {
+				queueNotification({
+					header: 'Failed!',
+					message: error.message,
+					status: NotificationStatus.ERROR
+				});
+			});
+		}
+		catch(error){
 			setLoadingStatus({ isLoading: false, message: '' });
 			console.log(':( transaction failed');
 			console.error('ERROR:', error);
@@ -242,7 +255,7 @@ const TreasuryProposalFormButton = ({
 				message: error.message,
 				status: NotificationStatus.ERROR
 			});
-		});
+		}
 	};
 
 	const triggerBtn = <Button disabled={!id} style={ { background: '#E5007A', color:'#fff', textTransform: 'capitalize' } } size='huge'> <Icon name='plus circle' /> Create Treasury Proposal</Button>;

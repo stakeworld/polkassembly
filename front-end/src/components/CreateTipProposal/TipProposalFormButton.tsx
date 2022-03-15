@@ -74,11 +74,21 @@ const TipProposalFormButton = ({
 
 	const [errorsFound, setErrorsFound] = useState<string[]>([]);
 
+	const { api, apiReady } = useContext(ApiContext);
+
 	useEffect(() => {
-		councilQueryresult.data?.councils?.[0]?.members?.forEach( member => {
-			setCurrentCouncil(currentCouncil => [...currentCouncil, member?.address]);
+		if (!api) {
+			return;
+		}
+
+		if (!apiReady) {
+			return;
+		}
+		api.query.council.members().then((members) => {
+			setCurrentCouncil(members.map(member => member.toString()));
 		});
-	}, [councilQueryresult]);
+
+	}, [api, apiReady, councilQueryresult]);
 
 	useEffect(() => {
 		// it will iterate through all addresses
@@ -206,8 +216,6 @@ const TipProposalFormButton = ({
 		return true;
 	};
 
-	const { api, apiReady } = useContext(ApiContext);
-
 	const saveProposal = async (authorId: number, proposalType: number, title: string, content: string, proposalHash: string, proposerAddress: string) => {
 
 		if (!api) {
@@ -218,7 +226,7 @@ const TipProposalFormButton = ({
 			return;
 		}
 
-		const proposalId: number = api.query.tips.tips.length;
+		const proposalId: number = api.query.tips.tips.length; //Won't work since we need pass in all the hashes to extract all tips. We don't need this ID though.
 
 		addPolkassemblyProposalMutation({ variables: { authorId, content, proposalHash, proposalId, proposalType, proposerAddress, title } }).catch((e) => console.error('Error creating to proposal',e));
 	};
@@ -241,43 +249,57 @@ const TipProposalFormButton = ({
 		let tip: SubmittableExtrinsic<'promise', ISubmittableResult>;
 
 		setLoadingStatus({ isLoading: true, message: 'Waiting for signature' });
-		if (isCouncil){
-			tip = api.tx.tips.tipNew(postTitle, beneficiaryAccount, value);
-		}
-		else {
-			tip = api.tx.tips.reportAwesome(postTitle, beneficiaryAccount);
-		}
-		tip.signAndSend(submitWithAccount, ({ status }) => {
-			if (status.isInBlock) {
-				queueNotification({
-					header: 'Success!',
-					message: `Tip Propsal #${tip.hash} successful.`,
-					status: NotificationStatus.SUCCESS
-				});
-				setLoadingStatus({ isLoading: false, message: 'Success' });
-				console.log(`Completed at block hash #${status.asInBlock.toString()}`);
-				setModalOpen(false);
-				const authorId = id;
-				if (!authorId){
-					return;
-				}
-				saveProposal(authorId, PolkassemblyProposalTypes.TipProposal, postTitle, postDescription, tip.hash.toString(), submitWithAccount);
-			} else {
-				if (status.isBroadcast){
-					setLoadingStatus({ isLoading: true, message: 'Broadcasting the endorsement' });
-				}
-				console.log(`Current status: ${status.type}`);
+
+		try{
+			if (isCouncil){
+				tip = api.tx.tips.tipNew(postTitle, beneficiaryAccount, value);
 			}
-		}).catch((error) => {
+			else {
+				tip = api.tx.tips.reportAwesome(postTitle, beneficiaryAccount);
+			}
+			tip?.signAndSend(submitWithAccount, ({ status }) => {
+				if (status.isInBlock) {
+					queueNotification({
+						header: 'Success!',
+						message: `Tip Propsal #${tip.hash} successful.`,
+						status: NotificationStatus.SUCCESS
+					});
+					setLoadingStatus({ isLoading: false, message: 'Success' });
+					console.log(`Completed at block hash #${status.asInBlock.toString()}`);
+					setModalOpen(false);
+					const authorId = id;
+					if (!authorId){
+						return;
+					}
+					saveProposal(authorId, PolkassemblyProposalTypes.TipProposal, postTitle, postDescription, tip.hash.toString(), submitWithAccount);
+				} else {
+					if (status.isBroadcast){
+						setLoadingStatus({ isLoading: true, message: 'Broadcasting the endorsement' });
+					}
+					console.log(`Current status: ${status.type}`);
+				}
+			}).catch((error) => {
+				setLoadingStatus({ isLoading: false, message: '' });
+				console.log(':( transaction failed');
+				console.error('ERROR:', error);
+				queueNotification({
+					header: 'Failed!',
+					message: error.message,
+					status: NotificationStatus.ERROR
+				});
+			});
+		}
+		catch(error){
 			setLoadingStatus({ isLoading: false, message: '' });
 			console.log(':( transaction failed');
 			console.error('ERROR:', error);
+			setModalOpen(false);
 			queueNotification({
 				header: 'Failed!',
 				message: error.message,
 				status: NotificationStatus.ERROR
 			});
-		});
+		}
 	};
 
 	const triggerBtn = <Button disabled={!id} style={ { background: '#E5007A', color:'#fff', textTransform: 'capitalize' } } size='huge'> <Icon name='plus circle' /> Create Tip Proposal</Button>;
