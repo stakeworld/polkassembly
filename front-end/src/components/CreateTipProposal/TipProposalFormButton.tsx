@@ -2,26 +2,38 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
+import { SubmittableExtrinsic } from '@polkadot/api/types';
+import { web3Accounts, web3Enable, web3FromSource } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import Identicon from '@polkadot/react-identicon';
+import { ISubmittableResult } from '@polkadot/types/types';
 import styled from '@xstyled/styled-components';
 import BN from 'bn.js';
 import React, { useContext, useEffect, useState } from 'react';
 import { Controller,useForm } from 'react-hook-form';
-import { Button, Dropdown, Form, Grid, Icon, Input, Label, Message, Modal } from 'semantic-ui-react';
+import { Button, Form, Grid, Icon, Input, Label, Modal, Popup } from 'semantic-ui-react';
+import { ApiContext } from 'src/context/ApiContext';
+import { NotificationContext } from 'src/context/NotificationContext';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { useGetCouncilMembersQuery } from 'src/generated/graphql';
+import { useAddPolkassemblyProposalMutation } from 'src/generated/graphql';
 import { APPNAME } from 'src/global/appName';
+import { chainProperties } from 'src/global/networkConstants';
+import { LoadingStatusType, NotificationStatus } from 'src/types';
 import BalanceInput from 'src/ui-components/BalanceInput';
+import Card from 'src/ui-components/Card';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
+import Loader from 'src/ui-components/Loader';
 import getEncodedAddress from 'src/util/getEncodedAddress';
+import getNetwork from 'src/util/getNetwork';
 
+import { PolkassemblyProposalTypes } from '../../types';
 import AddressComponent from '../../ui-components/Address';
 import { inputToBn } from '../../util/inputToBn';
 import ContentForm from '../ContentForm';
 import TitleForm from '../TitleForm';
 
+const currentNetwork = getNetwork();
 interface Props {
 	className?: string
 	// setTipModalOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -36,8 +48,7 @@ const TipProposalFormButton = ({
 	className
 	// setTipModalOpen,
 } : Props) => {
-	const { id } = useContext(UserDetailsContext);
-	const { addresses } = useContext(UserDetailsContext);
+	const { id, web3signup, addresses, defaultAddress }  = useContext(UserDetailsContext);
 
 	const [modalOpen, setModalOpen] = useState<boolean>(false);
 	const [extensionNotAvailable, setExtensionNotAvailable] = useState(false);
@@ -48,14 +59,16 @@ const TipProposalFormButton = ({
 	});
 	const [submitWithAccount, setSubmitWithAccount] = useState<string>('');
 	const [beneficiaryAccount, setBeneficiaryAccount] = useState<string>('');
-	const [value, setValue] = useState<BN>();
-	const [valueUnit, setValueUnit] = useState<string>('DOT');
+	const [value, setValue] = useState<BN>(new BN(0));
 	const [postTitle, setPostTitle] = useState<string>('');
 	const [postDescription, setPostDescription] = useState<string>('');
 
 	const councilQueryresult = useGetCouncilMembersQuery();
 	const [isCouncil, setIsCouncil] = useState(false);
 	const [currentCouncil, setCurrentCouncil] = useState<string[]>([]);
+	const [addPolkassemblyProposalMutation] = useAddPolkassemblyProposalMutation();
+	const [loadingStatus, setLoadingStatus] = useState<LoadingStatusType>({ isLoading: false, message:'' });
+	const { queueNotification } = useContext(NotificationContext);
 
 	const { control, errors, handleSubmit } = useForm();
 
@@ -78,19 +91,6 @@ const TipProposalFormButton = ({
 			return false;
 		});
 	}, [addresses, currentCouncil]);
-
-	const valueUnitOptions = [
-		{ key: 'nano', text: 'nano', value: 'nano' },
-		{ key: 'micro', text: 'micro', value: 'micro' },
-		{ key: 'Kilo', text: 'Kilo', value: 'Kilo' },
-		{ key: 'Mill', text: 'Mill', value: 'Mill' },
-		{ key: 'Bill', text: 'Bill', value: 'Bill' },
-		{ key: 'Tril', text: 'Tril', value: 'Tril' },
-		{ key: 'Peta', text: 'Peta', value: 'Peta' },
-		{ key: 'Exa', text: 'Exa', value: 'Exa' },
-		{ key: 'Zeta', text: 'Zeta', value: 'Zeta' },
-		{ key: 'Yotta', text: 'Yotta', value: 'Yotta' }
-	];
 
 	const handleDetect = async (updateForInput: AvailableAccountsInput) => {
 		const extensions = await web3Enable(APPNAME);
@@ -206,165 +206,234 @@ const TipProposalFormButton = ({
 		return true;
 	};
 
-	const handleSignAndSubmit = () => {
-		if(!isFormValid()) return;
+	const { api, apiReady } = useContext(ApiContext);
 
-		console.log('submitWithAccount : ', submitWithAccount);
-		console.log('beneficiaryAccount : ', beneficiaryAccount);
-		console.log('value : ', value);
-		console.log('valueUnit : ', valueUnit);
-		console.log('postTitle : ', postTitle);
-		console.log('postDescription : ', postDescription);
+	const saveProposal = async (authorId: number, proposalType: number, title: string, content: string, proposalHash: string, proposerAddress: string) => {
+
+		if (!api) {
+			return;
+		}
+
+		if (!apiReady) {
+			return;
+		}
+
+		const proposalId: number = api.query.tips.tips.length;
+
+		addPolkassemblyProposalMutation({ variables: { authorId, content, proposalHash, proposalId, proposalType, proposerAddress, title } }).catch((e) => console.error('Error creating to proposal',e));
 	};
 
+	const handleSignAndSubmit = async () => {
+		if(!isFormValid()) return;
+
+		if (!api) {
+			return;
+		}
+
+		if (!apiReady) {
+			return;
+		}
+
+		const injected = await web3FromSource(availableAccounts[0].meta.source);
+
+		api.setSigner(injected.signer);
+
+		let tip: SubmittableExtrinsic<'promise', ISubmittableResult>;
+
+		setLoadingStatus({ isLoading: true, message: 'Waiting for signature' });
+		if (isCouncil){
+			tip = api.tx.tips.tipNew(postTitle, beneficiaryAccount, value);
+		}
+		else {
+			tip = api.tx.tips.reportAwesome(postTitle, beneficiaryAccount);
+		}
+		tip.signAndSend(submitWithAccount, ({ status }) => {
+			if (status.isInBlock) {
+				queueNotification({
+					header: 'Success!',
+					message: `Tip Propsal #${tip.hash} successful.`,
+					status: NotificationStatus.SUCCESS
+				});
+				setLoadingStatus({ isLoading: false, message: 'Success' });
+				console.log(`Completed at block hash #${status.asInBlock.toString()}`);
+				setModalOpen(false);
+				const authorId = id;
+				if (!authorId){
+					return;
+				}
+				saveProposal(authorId, PolkassemblyProposalTypes.TipProposal, postTitle, postDescription, tip.hash.toString(), submitWithAccount);
+			} else {
+				if (status.isBroadcast){
+					setLoadingStatus({ isLoading: true, message: 'Broadcasting the endorsement' });
+				}
+				console.log(`Current status: ${status.type}`);
+			}
+		}).catch((error) => {
+			setLoadingStatus({ isLoading: false, message: '' });
+			console.log(':( transaction failed');
+			console.error('ERROR:', error);
+			queueNotification({
+				header: 'Failed!',
+				message: error.message,
+				status: NotificationStatus.ERROR
+			});
+		});
+	};
+
+	const triggerBtn = <Button disabled={!id} style={ { background: '#E5007A', color:'#fff', textTransform: 'capitalize' } } size='huge'> <Icon name='plus circle' /> Create Tip Proposal</Button>;
+
 	return (
-		<Modal
-			className={className}
-			closeOnEscape={false}
-			closeOnDimmerClick={false}
-			onClose={() => setModalOpen(false)}
-			onOpen={() => setModalOpen(true)}
-			open={modalOpen}
-			size='small'
-			trigger={<Button disabled={!id} style={ { background: '#E5007A', color:'#fff', textTransform: 'capitalize' } } size='huge'> <Icon name='plus circle' /> Create Tip Proposal</Button>}
-		>
-			<Modal.Header className='text-center modal-header'>
+		loadingStatus.isLoading
+			? <Card className={'LoaderWrapper'}>
+				<Loader text={loadingStatus.message}/>
+			</Card>:
+			<Modal
+				className={className}
+				closeOnEscape={false}
+				closeOnDimmerClick={false}
+				onClose={() => setModalOpen(false)}
+				onOpen={() => setModalOpen(true)}
+				open={modalOpen}
+				size='small'
+				trigger={web3signup || defaultAddress ? triggerBtn: <Popup position='bottom center' content='Please login using a web3 address' trigger={triggerBtn} />} >
+				<Modal.Header className='text-center modal-header'>
 				Create Tip Proposal
-			</Modal.Header>
-			<Modal.Content scrolling>
-				<Modal.Description className='modal-desc'>
-					<Grid centered stackable verticalAlign='middle' reversed='mobile tablet'>
-						<Grid.Column mobile={13} tablet={13} computer={12}>
-							<Form>
-								<br />
-								<h5>Enter On-chain Data</h5>
+				</Modal.Header>
+				<Modal.Content scrolling>
+					<Modal.Description className='modal-desc'>
+						<Grid centered stackable verticalAlign='middle' reversed='mobile tablet'>
+							<Grid.Column mobile={13} tablet={13} computer={12}>
+								<Form>
+									<br />
+									<h5>Enter On-chain Data</h5>
 
-								<div className='topMargin'>
-									{/* Submit with account */}
-									<Form.Group>
-										<Form.Field width={16}>
-											<label className='input-label'>
+									<div className='topMargin'>
+										{/* Submit with account */}
+										<Form.Group>
+											<Form.Field width={16}>
+												<label className='input-label'>
 													Submit with account
-												<HelperTooltip content='This account will make the proposal and be responsible for the bond.' />
-											</label>
+													<HelperTooltip content='Use this account to request the tip from. This can be a normal or council account.' />
+												</label>
 
-											<div className='accountInputDiv'>
-												<Identicon
-													className='identicon'
-													value={submitWithAccount}
-													size={26}
-													theme={'polkadot'}
-												/>
-												<Input
-													size='big'
-													value={submitWithAccount}
-													onChange={ (e) => onSubmitWithAccountChange(e.target.value)}
-													placeholder='Account Address'
-													error={errorsFound.includes('submitWithAccount')}
-												/>
-											</div>
-
-											{!extensionNotAvailable && <div className='availableAddressOptions'>
-												<div onClick={() => handleDetect(AvailableAccountsInput.submitWithAccount)} className='availableAddressToggle'>
-														or choose from available addresses
-													{showAvailableAccountsObj['submitWithAccount'] ? <Icon name='chevron up' /> : <Icon name='chevron down' />}
+												<div className='accountInputDiv'>
+													<Identicon
+														className='identicon'
+														value={submitWithAccount}
+														size={26}
+														theme={'polkadot'}
+													/>
+													<Input
+														size='big'
+														value={submitWithAccount}
+														onChange={ (e) => onSubmitWithAccountChange(e.target.value)}
+														placeholder='Account Address'
+														error={errorsFound.includes('submitWithAccount')}
+													/>
 												</div>
-											</div>}
-											{extensionNotAvailable && <div className="error">Please install polkadot.js extension</div>}
-											{showAvailableAccountsObj['submitWithAccount'] && availableAccounts.length > 0 && getAvailableAccounts(AvailableAccountsInput.submitWithAccount)}
-										</Form.Field>
-									</Form.Group>
 
-									{/* Beneficiary account */}
-									<Form.Group>
-										<Form.Field width={16}>
-											<label className='input-label'>
+												{!extensionNotAvailable && <div className='availableAddressOptions'>
+													<div onClick={() => handleDetect(AvailableAccountsInput.submitWithAccount)} className='availableAddressToggle'>
+														or choose from available addresses
+														{showAvailableAccountsObj['submitWithAccount'] ? <Icon name='chevron up' /> : <Icon name='chevron down' />}
+													</div>
+												</div>}
+												{extensionNotAvailable && <div className="error">Please install polkadot.js extension</div>}
+												{showAvailableAccountsObj['submitWithAccount'] && availableAccounts.length > 0 && getAvailableAccounts(AvailableAccountsInput.submitWithAccount)}
+											</Form.Field>
+										</Form.Group>
+
+										{/* Beneficiary account */}
+										<Form.Group>
+											<Form.Field width={16}>
+												<label className='input-label'>
 													Beneficiary Account
-												<HelperTooltip content='The beneficiary will receive the full amount if the proposal passes.' />
-											</label>
+													<HelperTooltip content='The beneficiary will received the tip as approved by council members.' />
+												</label>
 
-											<div className='accountInputDiv'>
-												<Identicon
-													className='identicon'
-													value={beneficiaryAccount}
-													size={26}
-													theme={'polkadot'}
-												/>
-												<Input
-													size='big'
-													value={beneficiaryAccount}
-													onChange={ (e) => setBeneficiaryAccount(e.target.value)}
-													placeholder='Account Address'
-													error={errorsFound.includes('beneficiaryAccount')}
-												/>
-											</div>
-
-											{!extensionNotAvailable && <div className='availableAddressOptions'>
-												<div onClick={() => handleDetect(AvailableAccountsInput.beneficiary)} className='availableAddressToggle'>
-														or choose from available addresses
-													{showAvailableAccountsObj['beneficiary'] ? <Icon name='chevron up' /> : <Icon name='chevron down' />}
+												<div className='accountInputDiv'>
+													<Identicon
+														className='identicon'
+														value={beneficiaryAccount}
+														size={26}
+														theme={'polkadot'}
+													/>
+													<Input
+														size='big'
+														value={beneficiaryAccount}
+														onChange={ (e) => setBeneficiaryAccount(e.target.value)}
+														placeholder='Account Address'
+														error={errorsFound.includes('beneficiaryAccount')}
+													/>
 												</div>
-											</div>}
-											{extensionNotAvailable && <div className="error">Please install polkadot.js extension</div>}
-											{showAvailableAccountsObj['beneficiary'] && availableAccounts.length > 0 && getAvailableAccounts(AvailableAccountsInput.beneficiary)}
-										</Form.Field>
-									</Form.Group>
 
-									{/* Value */}
-									{isCouncil && <Form.Group className='value-form-group'>
-										<Form.Field width={13}>
-											<BalanceInput
-												label={'Value'}
-												helpText={'The value is the amount that is being asked for and that will be allocated to the beneficiary if the proposal is approved.'}
-												placeholder={'0'}
-												className='text-input'
-												onChange={onBalanceChange}
-											/>
-										</Form.Field>
-										<Form.Field width={3} className='input-form-field'>
-											<Label size='big'>
-												<Dropdown upward={false} defaultValue='nano' options={valueUnitOptions} onChange={(event, { value }) => setValueUnit(value as string)} />
-											</Label>
-										</Form.Field>
-									</Form.Group>}
+												{!extensionNotAvailable && <div className='availableAddressOptions'>
+													<div onClick={() => handleDetect(AvailableAccountsInput.beneficiary)} className='availableAddressToggle'>
+														or choose from available addresses
+														{showAvailableAccountsObj['beneficiary'] ? <Icon name='chevron up' /> : <Icon name='chevron down' />}
+													</div>
+												</div>}
+												{extensionNotAvailable && <div className="error">Please install polkadot.js extension</div>}
+												{showAvailableAccountsObj['beneficiary'] && availableAccounts.length > 0 && getAvailableAccounts(AvailableAccountsInput.beneficiary)}
+											</Form.Field>
+										</Form.Group>
 
-									<Message color='yellow' className='text-input topMargin'>
+										{/* Value */}
+										{isCouncil && <Form.Group className='value-form-group'>
+											<Form.Field width={13}>
+												<BalanceInput
+													label={'Value'}
+													helpText={'As a council member, you can suggest an initial value for the tip, each other council member can suggest their own.'}
+													placeholder={'0'}
+													className='text-input'
+													onChange={onBalanceChange}
+												/>
+											</Form.Field>
+											<Form.Field width={3} className='input-form-field'>
+												<Label size='big'>
+													{chainProperties[currentNetwork].tokenSymbol}
+													{/* <Dropdown upward={false} defaultValue='nano' options={valueUnitOptions} onChange={(event, { value }) => setValueUnit(value as string)} /> */}
+												</Label>
+											</Form.Field>
+										</Form.Group>}
+
+										{/* <Message color='yellow' className='text-input topMargin'>
 										<p><Icon name='warning circle' /> Be aware that once submitted the proposal will be put to a council vote. If the proposal is rejected due to a lack of info, invalid requirements or non-benefit to the network as a whole, the full bond posted (as describe above) will be lost.</p>
-									</Message>
-								</div>
+									</Message> */}
+									</div>
 
-								<div className='post-form-div'>
-									<Controller
-										as={<TitleForm
-											errorTitle={errors.title}
-										/>}
-										control={control}
-										name='title'
-										onChange={onTitleChange}
-										rules={{ required: true }}
-									/>
-
-									<Controller
-										as={<ContentForm
-											errorContent={errors.content}
-										/>}
-										control={control}
-										name='content'
-										onChange={onPostDescriptionChange}
-										rules={{ required: true }}
-									/>
-								</div>
-							</Form>
-						</Grid.Column>
-					</Grid>
-				</Modal.Description>
-			</Modal.Content>
-			<Modal.Actions className='modal-actions'>
-				<Button floated='right' className='submitBtn' onClick={handleSubmit(handleSignAndSubmit)}>Sign &amp; Submit</Button>
-				{/* TODO: change for two model process: onclick to () => setTipModalOpen(false)*/}
-				<Button floated='right' onClick={() => setModalOpen(false)}>Close</Button>
-			</Modal.Actions>
-		</Modal>
+									<div className='post-form-div' >
+										<HelperTooltip content='Reason' />
+										<Controller
+											as={<TitleForm
+												errorTitle={errors.title}
+											/>}
+											control={control}
+											name='title'
+											onChange={onTitleChange}
+											rules={{ required: true }}
+										/>
+										<Controller
+											as={<ContentForm
+												errorContent={errors.content}
+											/>}
+											control={control}
+											name='content'
+											onChange={onPostDescriptionChange}
+											rules={{ required: true }}
+										/>
+									</div>
+								</Form>
+							</Grid.Column>
+						</Grid>
+					</Modal.Description>
+				</Modal.Content>
+				<Modal.Actions className='modal-actions'>
+					<Button floated='right' className='submitBtn' onClick={handleSubmit(handleSignAndSubmit)}>Sign &amp; Submit</Button>
+					{/* TODO: change for two model process: onclick to () => setTipModalOpen(false)*/}
+					<Button floated='right' onClick={() => setModalOpen(false)}>Close</Button>
+				</Modal.Actions>
+			</Modal>
 	);
 
 };

@@ -96,7 +96,20 @@ export const getDiscussionTechCommitteeProposals = gql`
 
 export const GetPolkassemblyProposals = gql`
 	query getPolkassemblyProposals($onchainTreasuryProposalId: Int!) {
-		polkassembly_proposals(where: {proposal_id: {_eq: $onchainTreasuryProposalId}}) {
+		polkassembly_proposals(where: {proposal_id: {_eq: $onchainTreasuryProposalId}, proposal_type: {_eq: 0}}) {
+			author_id
+			content
+			proposal_hash
+			proposal_type
+			proposer_address
+			title
+		}
+	}
+`;
+
+export const GetPolkassemblyTipProposals = gql`
+	query getPolkassemblyTipProposals($onchainTipHash: String!) {
+		polkassembly_proposals(where: {proposal_hash: {_eq: $onchainTipHash}, proposal_type: {_eq: 1}}) {
 			author_id
 			content
 			proposal_hash

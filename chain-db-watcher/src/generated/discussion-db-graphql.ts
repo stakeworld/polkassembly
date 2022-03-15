@@ -226,6 +226,363 @@ export type BatchPayload = {
   count: Scalars['Long'];
 };
 
+/** columns and relationships of "blockchain_socials" */
+export type Blockchain_Socials = {
+  __typename?: 'blockchain_socials';
+  block_explorer?: Maybe<Scalars['String']>;
+  discord?: Maybe<Scalars['String']>;
+  github?: Maybe<Scalars['String']>;
+  homepage?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  network: Scalars['String'];
+  reddit?: Maybe<Scalars['String']>;
+  telegram?: Maybe<Scalars['String']>;
+  twitter?: Maybe<Scalars['String']>;
+  youtube?: Maybe<Scalars['String']>;
+};
+
+/** aggregated selection of "blockchain_socials" */
+export type Blockchain_Socials_Aggregate = {
+  __typename?: 'blockchain_socials_aggregate';
+  aggregate?: Maybe<Blockchain_Socials_Aggregate_Fields>;
+  nodes: Array<Blockchain_Socials>;
+};
+
+/** aggregate fields of "blockchain_socials" */
+export type Blockchain_Socials_Aggregate_Fields = {
+  __typename?: 'blockchain_socials_aggregate_fields';
+  avg?: Maybe<Blockchain_Socials_Avg_Fields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Blockchain_Socials_Max_Fields>;
+  min?: Maybe<Blockchain_Socials_Min_Fields>;
+  stddev?: Maybe<Blockchain_Socials_Stddev_Fields>;
+  stddev_pop?: Maybe<Blockchain_Socials_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Blockchain_Socials_Stddev_Samp_Fields>;
+  sum?: Maybe<Blockchain_Socials_Sum_Fields>;
+  var_pop?: Maybe<Blockchain_Socials_Var_Pop_Fields>;
+  var_samp?: Maybe<Blockchain_Socials_Var_Samp_Fields>;
+  variance?: Maybe<Blockchain_Socials_Variance_Fields>;
+};
+
+
+/** aggregate fields of "blockchain_socials" */
+export type Blockchain_Socials_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Blockchain_Socials_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "blockchain_socials" */
+export type Blockchain_Socials_Aggregate_Order_By = {
+  avg?: Maybe<Blockchain_Socials_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Blockchain_Socials_Max_Order_By>;
+  min?: Maybe<Blockchain_Socials_Min_Order_By>;
+  stddev?: Maybe<Blockchain_Socials_Stddev_Order_By>;
+  stddev_pop?: Maybe<Blockchain_Socials_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Blockchain_Socials_Stddev_Samp_Order_By>;
+  sum?: Maybe<Blockchain_Socials_Sum_Order_By>;
+  var_pop?: Maybe<Blockchain_Socials_Var_Pop_Order_By>;
+  var_samp?: Maybe<Blockchain_Socials_Var_Samp_Order_By>;
+  variance?: Maybe<Blockchain_Socials_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "blockchain_socials" */
+export type Blockchain_Socials_Arr_Rel_Insert_Input = {
+  data: Array<Blockchain_Socials_Insert_Input>;
+  on_conflict?: Maybe<Blockchain_Socials_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Blockchain_Socials_Avg_Fields = {
+  __typename?: 'blockchain_socials_avg_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "blockchain_socials" */
+export type Blockchain_Socials_Avg_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "blockchain_socials". All fields are combined with a logical 'AND'. */
+export type Blockchain_Socials_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Blockchain_Socials_Bool_Exp>>>;
+  _not?: Maybe<Blockchain_Socials_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Blockchain_Socials_Bool_Exp>>>;
+  block_explorer?: Maybe<String_Comparison_Exp>;
+  discord?: Maybe<String_Comparison_Exp>;
+  github?: Maybe<String_Comparison_Exp>;
+  homepage?: Maybe<String_Comparison_Exp>;
+  id?: Maybe<Int_Comparison_Exp>;
+  network?: Maybe<String_Comparison_Exp>;
+  reddit?: Maybe<String_Comparison_Exp>;
+  telegram?: Maybe<String_Comparison_Exp>;
+  twitter?: Maybe<String_Comparison_Exp>;
+  youtube?: Maybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "blockchain_socials" */
+export enum Blockchain_Socials_Constraint {
+  /** unique or primary key constraint */
+  BlockchainSocialsPkey = 'blockchain_socials_pkey'
+}
+
+/** input type for incrementing integer column in table "blockchain_socials" */
+export type Blockchain_Socials_Inc_Input = {
+  id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "blockchain_socials" */
+export type Blockchain_Socials_Insert_Input = {
+  block_explorer?: Maybe<Scalars['String']>;
+  discord?: Maybe<Scalars['String']>;
+  github?: Maybe<Scalars['String']>;
+  homepage?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  network?: Maybe<Scalars['String']>;
+  reddit?: Maybe<Scalars['String']>;
+  telegram?: Maybe<Scalars['String']>;
+  twitter?: Maybe<Scalars['String']>;
+  youtube?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Blockchain_Socials_Max_Fields = {
+  __typename?: 'blockchain_socials_max_fields';
+  block_explorer?: Maybe<Scalars['String']>;
+  discord?: Maybe<Scalars['String']>;
+  github?: Maybe<Scalars['String']>;
+  homepage?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  network?: Maybe<Scalars['String']>;
+  reddit?: Maybe<Scalars['String']>;
+  telegram?: Maybe<Scalars['String']>;
+  twitter?: Maybe<Scalars['String']>;
+  youtube?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "blockchain_socials" */
+export type Blockchain_Socials_Max_Order_By = {
+  block_explorer?: Maybe<Order_By>;
+  discord?: Maybe<Order_By>;
+  github?: Maybe<Order_By>;
+  homepage?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  network?: Maybe<Order_By>;
+  reddit?: Maybe<Order_By>;
+  telegram?: Maybe<Order_By>;
+  twitter?: Maybe<Order_By>;
+  youtube?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Blockchain_Socials_Min_Fields = {
+  __typename?: 'blockchain_socials_min_fields';
+  block_explorer?: Maybe<Scalars['String']>;
+  discord?: Maybe<Scalars['String']>;
+  github?: Maybe<Scalars['String']>;
+  homepage?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  network?: Maybe<Scalars['String']>;
+  reddit?: Maybe<Scalars['String']>;
+  telegram?: Maybe<Scalars['String']>;
+  twitter?: Maybe<Scalars['String']>;
+  youtube?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "blockchain_socials" */
+export type Blockchain_Socials_Min_Order_By = {
+  block_explorer?: Maybe<Order_By>;
+  discord?: Maybe<Order_By>;
+  github?: Maybe<Order_By>;
+  homepage?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  network?: Maybe<Order_By>;
+  reddit?: Maybe<Order_By>;
+  telegram?: Maybe<Order_By>;
+  twitter?: Maybe<Order_By>;
+  youtube?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "blockchain_socials" */
+export type Blockchain_Socials_Mutation_Response = {
+  __typename?: 'blockchain_socials_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Blockchain_Socials>;
+};
+
+/** input type for inserting object relation for remote table "blockchain_socials" */
+export type Blockchain_Socials_Obj_Rel_Insert_Input = {
+  data: Blockchain_Socials_Insert_Input;
+  on_conflict?: Maybe<Blockchain_Socials_On_Conflict>;
+};
+
+/** on conflict condition type for table "blockchain_socials" */
+export type Blockchain_Socials_On_Conflict = {
+  constraint: Blockchain_Socials_Constraint;
+  update_columns: Array<Blockchain_Socials_Update_Column>;
+  where?: Maybe<Blockchain_Socials_Bool_Exp>;
+};
+
+/** ordering options when selecting data from "blockchain_socials" */
+export type Blockchain_Socials_Order_By = {
+  block_explorer?: Maybe<Order_By>;
+  discord?: Maybe<Order_By>;
+  github?: Maybe<Order_By>;
+  homepage?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  network?: Maybe<Order_By>;
+  reddit?: Maybe<Order_By>;
+  telegram?: Maybe<Order_By>;
+  twitter?: Maybe<Order_By>;
+  youtube?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: "blockchain_socials" */
+export type Blockchain_Socials_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "blockchain_socials" */
+export enum Blockchain_Socials_Select_Column {
+  /** column name */
+  BlockExplorer = 'block_explorer',
+  /** column name */
+  Discord = 'discord',
+  /** column name */
+  Github = 'github',
+  /** column name */
+  Homepage = 'homepage',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Network = 'network',
+  /** column name */
+  Reddit = 'reddit',
+  /** column name */
+  Telegram = 'telegram',
+  /** column name */
+  Twitter = 'twitter',
+  /** column name */
+  Youtube = 'youtube'
+}
+
+/** input type for updating data in table "blockchain_socials" */
+export type Blockchain_Socials_Set_Input = {
+  block_explorer?: Maybe<Scalars['String']>;
+  discord?: Maybe<Scalars['String']>;
+  github?: Maybe<Scalars['String']>;
+  homepage?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  network?: Maybe<Scalars['String']>;
+  reddit?: Maybe<Scalars['String']>;
+  telegram?: Maybe<Scalars['String']>;
+  twitter?: Maybe<Scalars['String']>;
+  youtube?: Maybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type Blockchain_Socials_Stddev_Fields = {
+  __typename?: 'blockchain_socials_stddev_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "blockchain_socials" */
+export type Blockchain_Socials_Stddev_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Blockchain_Socials_Stddev_Pop_Fields = {
+  __typename?: 'blockchain_socials_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "blockchain_socials" */
+export type Blockchain_Socials_Stddev_Pop_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Blockchain_Socials_Stddev_Samp_Fields = {
+  __typename?: 'blockchain_socials_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "blockchain_socials" */
+export type Blockchain_Socials_Stddev_Samp_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Blockchain_Socials_Sum_Fields = {
+  __typename?: 'blockchain_socials_sum_fields';
+  id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "blockchain_socials" */
+export type Blockchain_Socials_Sum_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** update columns of table "blockchain_socials" */
+export enum Blockchain_Socials_Update_Column {
+  /** column name */
+  BlockExplorer = 'block_explorer',
+  /** column name */
+  Discord = 'discord',
+  /** column name */
+  Github = 'github',
+  /** column name */
+  Homepage = 'homepage',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Network = 'network',
+  /** column name */
+  Reddit = 'reddit',
+  /** column name */
+  Telegram = 'telegram',
+  /** column name */
+  Twitter = 'twitter',
+  /** column name */
+  Youtube = 'youtube'
+}
+
+/** aggregate var_pop on columns */
+export type Blockchain_Socials_Var_Pop_Fields = {
+  __typename?: 'blockchain_socials_var_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "blockchain_socials" */
+export type Blockchain_Socials_Var_Pop_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Blockchain_Socials_Var_Samp_Fields = {
+  __typename?: 'blockchain_socials_var_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "blockchain_socials" */
+export type Blockchain_Socials_Var_Samp_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Blockchain_Socials_Variance_Fields = {
+  __typename?: 'blockchain_socials_variance_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "blockchain_socials" */
+export type Blockchain_Socials_Variance_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
 export type BlockIndex = Node & {
   __typename?: 'BlockIndex';
   id: Scalars['ID'];
@@ -5007,6 +5364,10 @@ export type Mutation_Root = {
   deleteTreasurySpendProposal?: Maybe<TreasurySpendProposal>;
   deleteTreasuryStatus?: Maybe<TreasuryStatus>;
   deleteValidator?: Maybe<Validator>;
+  /** delete data from the table: "blockchain_socials" */
+  delete_blockchain_socials?: Maybe<Blockchain_Socials_Mutation_Response>;
+  /** delete single row from the table: "blockchain_socials" */
+  delete_blockchain_socials_by_pk?: Maybe<Blockchain_Socials>;
   /** delete data from the table: "comment_reactions" */
   delete_comment_reactions?: Maybe<Comment_Reactions_Mutation_Response>;
   /** delete single row from the table: "comment_reactions" */
@@ -5062,6 +5423,10 @@ export type Mutation_Root = {
   editPostConfirm?: Maybe<Message>;
   editPostStart?: Maybe<AddressLoginType>;
   executeRaw: Scalars['Json'];
+  /** insert data into the table: "blockchain_socials" */
+  insert_blockchain_socials?: Maybe<Blockchain_Socials_Mutation_Response>;
+  /** insert a single row into the table: "blockchain_socials" */
+  insert_blockchain_socials_one?: Maybe<Blockchain_Socials>;
   /** insert data into the table: "comment_reactions" */
   insert_comment_reactions?: Maybe<Comment_Reactions_Mutation_Response>;
   /** insert a single row into the table: "comment_reactions" */
@@ -5194,6 +5559,10 @@ export type Mutation_Root = {
   updateTreasurySpendProposal?: Maybe<TreasurySpendProposal>;
   updateTreasuryStatus?: Maybe<TreasuryStatus>;
   updateValidator?: Maybe<Validator>;
+  /** update data of the table: "blockchain_socials" */
+  update_blockchain_socials?: Maybe<Blockchain_Socials_Mutation_Response>;
+  /** update single row of the table: "blockchain_socials" */
+  update_blockchain_socials_by_pk?: Maybe<Blockchain_Socials>;
   /** update data of the table: "comment_reactions" */
   update_comment_reactions?: Maybe<Comment_Reactions_Mutation_Response>;
   /** update single row of the table: "comment_reactions" */
@@ -5985,6 +6354,18 @@ export type Mutation_RootDeleteValidatorArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_Blockchain_SocialsArgs = {
+  where: Blockchain_Socials_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Blockchain_Socials_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_Comment_ReactionsArgs = {
   where: Comment_Reactions_Bool_Exp;
 };
@@ -6162,6 +6543,20 @@ export type Mutation_RootEditPostStartArgs = {
 export type Mutation_RootExecuteRawArgs = {
   database?: Maybe<PrismaDatabase>;
   query: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Blockchain_SocialsArgs = {
+  objects: Array<Blockchain_Socials_Insert_Input>;
+  on_conflict?: Maybe<Blockchain_Socials_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Blockchain_Socials_OneArgs = {
+  object: Blockchain_Socials_Insert_Input;
+  on_conflict?: Maybe<Blockchain_Socials_On_Conflict>;
 };
 
 
@@ -6896,6 +7291,22 @@ export type Mutation_RootUpdateTreasuryStatusArgs = {
 export type Mutation_RootUpdateValidatorArgs = {
   data: ValidatorUpdateInput;
   where: ValidatorWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Blockchain_SocialsArgs = {
+  _inc?: Maybe<Blockchain_Socials_Inc_Input>;
+  _set?: Maybe<Blockchain_Socials_Set_Input>;
+  where: Blockchain_Socials_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Blockchain_Socials_By_PkArgs = {
+  _inc?: Maybe<Blockchain_Socials_Inc_Input>;
+  _set?: Maybe<Blockchain_Socials_Set_Input>;
+  pk_columns: Blockchain_Socials_Pk_Columns_Input;
 };
 
 
@@ -14083,6 +14494,12 @@ export type Query_Root = {
   blockNumber?: Maybe<BlockNumber>;
   blockNumbers: Array<Maybe<BlockNumber>>;
   blockNumbersConnection: BlockNumberConnection;
+  /** fetch data from the table: "blockchain_socials" */
+  blockchain_socials: Array<Blockchain_Socials>;
+  /** fetch aggregated fields from the table: "blockchain_socials" */
+  blockchain_socials_aggregate: Blockchain_Socials_Aggregate;
+  /** fetch data from the table: "blockchain_socials" using primary key columns */
+  blockchain_socials_by_pk?: Maybe<Blockchain_Socials>;
   bounties: Array<Maybe<Bounty>>;
   bountiesConnection: BountyConnection;
   bounty?: Maybe<Bounty>;
@@ -14331,6 +14748,32 @@ export type Query_RootBlockNumbersConnectionArgs = {
   orderBy?: Maybe<BlockNumberOrderByInput>;
   skip?: Maybe<Scalars['Int']>;
   where?: Maybe<BlockNumberWhereInput>;
+};
+
+
+/** query root */
+export type Query_RootBlockchain_SocialsArgs = {
+  distinct_on?: Maybe<Array<Blockchain_Socials_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Blockchain_Socials_Order_By>>;
+  where?: Maybe<Blockchain_Socials_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootBlockchain_Socials_AggregateArgs = {
+  distinct_on?: Maybe<Array<Blockchain_Socials_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Blockchain_Socials_Order_By>>;
+  where?: Maybe<Blockchain_Socials_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootBlockchain_Socials_By_PkArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -17441,6 +17884,12 @@ export type Subscription_Root = {
   __typename?: 'subscription_root';
   blockIndex?: Maybe<BlockIndexSubscriptionPayload>;
   blockNumber?: Maybe<BlockNumberSubscriptionPayload>;
+  /** fetch data from the table: "blockchain_socials" */
+  blockchain_socials: Array<Blockchain_Socials>;
+  /** fetch aggregated fields from the table: "blockchain_socials" */
+  blockchain_socials_aggregate: Blockchain_Socials_Aggregate;
+  /** fetch data from the table: "blockchain_socials" using primary key columns */
+  blockchain_socials_by_pk?: Maybe<Blockchain_Socials>;
   bounty?: Maybe<BountySubscriptionPayload>;
   bountyStatus?: Maybe<BountyStatusSubscriptionPayload>;
   /** fetch data from the table: "comment_reactions" */
@@ -17567,6 +18016,32 @@ export type Subscription_RootBlockIndexArgs = {
 /** subscription root */
 export type Subscription_RootBlockNumberArgs = {
   where?: Maybe<BlockNumberSubscriptionWhereInput>;
+};
+
+
+/** subscription root */
+export type Subscription_RootBlockchain_SocialsArgs = {
+  distinct_on?: Maybe<Array<Blockchain_Socials_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Blockchain_Socials_Order_By>>;
+  where?: Maybe<Blockchain_Socials_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootBlockchain_Socials_AggregateArgs = {
+  distinct_on?: Maybe<Array<Blockchain_Socials_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Blockchain_Socials_Order_By>>;
+  where?: Maybe<Blockchain_Socials_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootBlockchain_Socials_By_PkArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -21683,6 +22158,28 @@ export type AddPostAndTipMutationMutation = (
   )> }
 );
 
+export type AddPostAndTipWithTitleMutationMutationVariables = {
+  onchainTipId: Scalars['String'];
+  authorId: Scalars['Int'];
+  proposerAddress: Scalars['String'];
+  content: Scalars['String'];
+  topicId: Scalars['Int'];
+  typeId: Scalars['Int'];
+  title: Scalars['String'];
+};
+
+
+export type AddPostAndTipWithTitleMutationMutation = (
+  { __typename: 'mutation_root' }
+  & { insert_onchain_links?: Maybe<(
+    { __typename?: 'onchain_links_mutation_response' }
+    & { returning: Array<(
+      { __typename?: 'onchain_links' }
+      & Pick<Onchain_Links, 'id'>
+    )> }
+  )> }
+);
+
 export type AddPostAndMotionMutationMutationVariables = {
   onchainMotionProposalId: Scalars['Int'];
   authorId: Scalars['Int'];
@@ -21989,6 +22486,19 @@ export type GetPolkassemblyProposalsQuery = (
   )> }
 );
 
+export type GetPolkassemblyTipProposalsQueryVariables = {
+  onchainTipHash: Scalars['String'];
+};
+
+
+export type GetPolkassemblyTipProposalsQuery = (
+  { __typename?: 'query_root' }
+  & { polkassembly_proposals: Array<(
+    { __typename?: 'polkassembly_proposals' }
+    & Pick<Polkassembly_Proposals, 'author_id' | 'content' | 'proposal_hash' | 'proposal_type' | 'proposer_address' | 'title'>
+  )> }
+);
+
 export const DiscussionMotionFragmentDoc = gql`
     fragment discussionMotion on onchain_links {
   id
@@ -22091,6 +22601,16 @@ export const AddPostAndTipMutationDocument = gql`
     mutation addPostAndTipMutation($onchainTipId: String!, $authorId: Int!, $proposerAddress: String!, $content: String!, $topicId: Int!, $typeId: Int!) {
   __typename
   insert_onchain_links(objects: {onchain_tip_id: $onchainTipId, proposer_address: $proposerAddress, post: {data: {author_id: $authorId, content: $content, topic_id: $topicId, type_id: $typeId}}}) {
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const AddPostAndTipWithTitleMutationDocument = gql`
+    mutation addPostAndTipWithTitleMutation($onchainTipId: String!, $authorId: Int!, $proposerAddress: String!, $content: String!, $topicId: Int!, $typeId: Int!, $title: String!) {
+  __typename
+  insert_onchain_links(objects: {onchain_tip_id: $onchainTipId, proposer_address: $proposerAddress, post: {data: {author_id: $authorId, content: $content, topic_id: $topicId, type_id: $typeId, title: $title}}}) {
     returning {
       id
     }
@@ -22242,7 +22762,19 @@ export const GetDiscussionTechCommitteeProposalsDocument = gql`
     ${DiscussionTechCommitteeProposalFragmentDoc}`;
 export const GetPolkassemblyProposalsDocument = gql`
     query getPolkassemblyProposals($onchainTreasuryProposalId: Int!) {
-  polkassembly_proposals(where: {proposal_id: {_eq: $onchainTreasuryProposalId}}) {
+  polkassembly_proposals(where: {proposal_id: {_eq: $onchainTreasuryProposalId}, proposal_type: {_eq: 0}}) {
+    author_id
+    content
+    proposal_hash
+    proposal_type
+    proposer_address
+    title
+  }
+}
+    `;
+export const GetPolkassemblyTipProposalsDocument = gql`
+    query getPolkassemblyTipProposals($onchainTipHash: String!) {
+  polkassembly_proposals(where: {proposal_hash: {_eq: $onchainTipHash}, proposal_type: {_eq: 1}}) {
     author_id
     content
     proposal_hash
@@ -22276,6 +22808,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     addPostAndTipMutation(variables: AddPostAndTipMutationMutationVariables): Promise<AddPostAndTipMutationMutation> {
       return withWrapper(() => client.request<AddPostAndTipMutationMutation>(print(AddPostAndTipMutationDocument), variables));
+    },
+    addPostAndTipWithTitleMutation(variables: AddPostAndTipWithTitleMutationMutationVariables): Promise<AddPostAndTipWithTitleMutationMutation> {
+      return withWrapper(() => client.request<AddPostAndTipWithTitleMutationMutation>(print(AddPostAndTipWithTitleMutationDocument), variables));
     },
     addPostAndMotionMutation(variables: AddPostAndMotionMutationMutationVariables): Promise<AddPostAndMotionMutationMutation> {
       return withWrapper(() => client.request<AddPostAndMotionMutationMutation>(print(AddPostAndMotionMutationDocument), variables));
@@ -22339,6 +22874,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getPolkassemblyProposals(variables: GetPolkassemblyProposalsQueryVariables): Promise<GetPolkassemblyProposalsQuery> {
       return withWrapper(() => client.request<GetPolkassemblyProposalsQuery>(print(GetPolkassemblyProposalsDocument), variables));
+    },
+    getPolkassemblyTipProposals(variables: GetPolkassemblyTipProposalsQueryVariables): Promise<GetPolkassemblyTipProposalsQuery> {
+      return withWrapper(() => client.request<GetPolkassemblyTipProposalsQuery>(print(GetPolkassemblyTipProposalsDocument), variables));
     }
   };
 }

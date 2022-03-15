@@ -168,6 +168,35 @@ export const addPostAndTipMutation = gql`
     }
 `;
 
+export const addPostAndTipWithTitleMutation = gql`
+    mutation addPostAndTipWithTitleMutation (
+        $onchainTipId:String!,
+        $authorId: Int!,
+        $proposerAddress: String!,
+        $content: String!,
+        $topicId: Int!,
+        $typeId: Int!,
+        $title: String!
+        ){
+        __typename
+        insert_onchain_links(objects: {
+            onchain_tip_id: $onchainTipId,
+            proposer_address: $proposerAddress,
+            post: {data: {
+                author_id: $authorId,
+                content: $content,
+                topic_id: $topicId,
+                type_id: $typeId,
+                title: $title
+            }
+        }}) {
+            returning {
+                id
+            }
+        }
+    }
+`;
+
 export const addPostAndMotionMutation = gql`
     mutation addPostAndMotionMutation (
         $onchainMotionProposalId:Int!,
