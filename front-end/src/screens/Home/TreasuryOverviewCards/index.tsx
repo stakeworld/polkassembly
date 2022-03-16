@@ -137,9 +137,9 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 
 					? (Math.abs(Number(usd)) / 1.0e+3).toFixed(2) + 'K'
 
-					: Math.abs(Number(usd));
+					: Math.abs(Number(usd)).toFixed(2);
 
-		return parseFloat(formattedUSD.toString()).toFixed(2);
+		return formattedUSD;
 
 	}
 
@@ -152,6 +152,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			resultValue.toString(),
 			{
 				numberAfterComma: 2,
+				withThousandDelimitor: false,
 				withUnit: false
 			}
 		).replaceAll(/\s/g,''));
@@ -180,7 +181,6 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 				setAvailableUSD(formattedUSD);
 			}
 		}
-
 		fetchAvailableUSDCPrice(token_available);
 
 		return () => { cancel = true; };
