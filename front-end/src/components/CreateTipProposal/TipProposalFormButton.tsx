@@ -218,6 +218,7 @@ const TipProposalFormButton = ({
 	};
 
 	const triggerBtn = <Button disabled={!id} style={ { background: '#E5007A', color:'#fff', textTransform: 'capitalize' } } size='huge'> <Icon name='plus circle' /> Create Tip Proposal</Button>;
+	const triggerBtnLoginDisabled = <Popup position='bottom center' content='Please signup/login using a web3 address to add a tip proposal' trigger={<Button style={ {  background: '#E5007A', backgroundImage: 'none', boxShadow: 'none',  color:'#fff', cursor: 'default', opacity: '.45', textTransform: 'capitalize' } } size='huge'> <Icon name='plus circle' /> Create Tip Proposal</Button> } />;
 
 	return (
 		<Modal
@@ -228,7 +229,7 @@ const TipProposalFormButton = ({
 			onOpen={() => setModalOpen(true)}
 			open={modalOpen}
 			size='small'
-			trigger={web3signup || defaultAddress ? triggerBtn: <Popup position='bottom center' content='Please login using a web3 address' trigger={triggerBtn} />}
+			trigger={!id ? triggerBtnLoginDisabled : web3signup || defaultAddress ? triggerBtn: <Popup position='bottom center' content='Please login using a web3 address' trigger={triggerBtn} />}
 		>
 			<Modal.Header className='text-center modal-header'>
 				Create Tip Proposal
