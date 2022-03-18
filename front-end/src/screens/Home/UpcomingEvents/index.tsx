@@ -10,6 +10,12 @@ interface Props {
   className?: string
 }
 
+const iframe = '<iframe src="https://calendar.google.com/calendar/embed?src=events%40polkassembly.io&ctz=Asia%2FKolkata" style="border: 0" frameborder="0" scrolling="no"></iframe>';
+
+function Iframe(props: any) {
+	return (<div dangerouslySetInnerHTML={ { __html:  props.iframe?props.iframe:'' } } />);
+}
+
 const UpcomingEvents = ({ className }: Props) => {
 	const listItems = [];
 	for (let i = 0; i <= 16; i++) {
@@ -53,7 +59,9 @@ const UpcomingEvents = ({ className }: Props) => {
 								</List>
 							</Grid.Column>
 							<Grid.Column className='event-calendar-col' mobile={16} tablet={16} computer={10}>
-								Calendar
+								<div className="iframe-wrapper">
+									<Iframe iframe={iframe} />
+								</div>
 							</Grid.Column>
 						</Grid>
 					</Grid.Row>
@@ -71,6 +79,11 @@ export default styled(UpcomingEvents)`
 		border-radius: 10px;
 		height: 500px;
 		max-height: 500px;
+		
+		@media only screen and (max-width: 991.5px) {
+			height: fit-content;
+			max-height: fit-content;
+		}
 
 		.action-bar {
 			display: flex !important;
@@ -82,6 +95,10 @@ export default styled(UpcomingEvents)`
 		.event-filter-row, .event-content-row{
 			padding-bottom: 0;
 			padding-top: 0;
+		}
+
+		.event-content-row {
+			justify-content: center;
 		}
 		
 		.event-filter-bar {
@@ -98,11 +115,33 @@ export default styled(UpcomingEvents)`
 			overflow-y: auto;
 			max-height: 402px;
 			border-right: 2px #eee solid;
+
+			@media only screen and (max-width: 991.5px) {
+				max-height: 120px !important;
+			}
 		}
 		
 		.event-list-col, .event-calendar-col{
 			padding-top: 1em;
 		}
+
+		.event-calendar-col{
+			height: 402px;
+
+			.iframe-wrapper {
+				position: relative;
+				padding-bottom: 56.25%; /* 16:9 */
+				padding-top: 25px;
+				height: 0;
+			}
+			.iframe-wrapper iframe {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 385px;
+			}
+	}
 
 		.news-list-item {
 			display: flex;
@@ -121,5 +160,4 @@ export default styled(UpcomingEvents)`
 			}
 		}
 	}
-
 `;

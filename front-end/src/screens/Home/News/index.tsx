@@ -55,6 +55,10 @@ const News = ({ className }: Props) => {
 };
 
 export default styled(News)`
+	@media only screen and (max-width: 991.5px) {
+		margin-top: 3em;
+	}
+
 	.card {
 		background: #fff;
 		padding-left: 1rem;
