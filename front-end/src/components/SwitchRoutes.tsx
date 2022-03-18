@@ -15,6 +15,7 @@ import { PrivacyPolicy, TermsAndConditions, TermsOfWebsite } from 'src/screens/L
 import LoginForm from 'src/screens/LoginForm';
 import PostMotion from 'src/screens/MotionPost';
 import Motions from 'src/screens/Motions';
+import NewsView from 'src/screens/NewsView';
 import NotFound from 'src/screens/NotFound';
 import NotificationSettings from 'src/screens/NotificationSettings';
 import OnChain from 'src/screens/OnChain';
@@ -149,6 +150,9 @@ function SwitchRoutes() {
 			</Route>
 			<Route path="/calendar">
 				<CalendarView/>
+			</Route>
+			<Route path="/news">
+				<NewsView/>
 			</Route>
 			<Route path="*">
 				<NotFound/>

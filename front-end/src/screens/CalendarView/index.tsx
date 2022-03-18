@@ -10,16 +10,17 @@ import React from 'react';
 // import { Calendar, momentLocalizer } from 'react-big-calendar';
 import { Grid } from 'semantic-ui-react';
 
-declare global {
-	interface Window { gapi: any; }
-}
-window.gapi = window.gapi || {};
+// declare global {
+// interface Window { gapi: any; }
+// }
+// window.gapi = window.gapi || {};
 
 interface Props {
   className?: string
 }
 
 // const localizer = momentLocalizer(moment);
+
 const iframe = '<iframe src="https://calendar.google.com/calendar/embed?src=events%40polkassembly.io&ctz=Asia%2FKolkata" style="border: 0" frameborder="0" scrolling="no"></iframe>';
 
 function Iframe(props: any) {

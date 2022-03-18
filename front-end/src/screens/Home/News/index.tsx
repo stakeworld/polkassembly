@@ -4,8 +4,8 @@
 
 import styled from '@xstyled/styled-components';
 import React from 'react';
+import { TwitterTimelineEmbed } from 'react-twitter-embed';
 import { Grid, Icon, Image,List } from 'semantic-ui-react';
-
 interface Props {
   className?: string
 }
@@ -38,9 +38,14 @@ const News = ({ className }: Props) => {
 					</Grid.Row>
 					<Grid.Row className='event-content-row'>
 						<Grid.Column className='event-list-col' width={16}>
-							<List relaxed='very'>
+							{/* <List relaxed='very'>
 								{ listItems }
-							</List>
+							</List> */}
+							<TwitterTimelineEmbed
+								sourceType="profile"
+								screenName="polk_gov"
+								options={ { height: 440 } }
+							/>
 						</Grid.Column>
 					</Grid.Row>
 				</Grid>
@@ -73,7 +78,7 @@ export default styled(News)`
 			overflow-y: auto;
 			border-right: 2px #eee solid;
 			max-height: 446px;
-			padding-top: 1em;
+			padding-top: 0;
 			padding-left: 1.5em !important;
 		}
 
