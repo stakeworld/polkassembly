@@ -5,6 +5,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Bounties from 'src/screens/Bounties';
 import PostBounty from 'src/screens/BountyPost';
+import CalendarView from 'src/screens/CalendarView';
 import Council from 'src/screens/Council';
 import CreatePost from 'src/screens/CreatePost';
 import PostDiscussion from 'src/screens/DiscussionPost';
@@ -145,6 +146,9 @@ function SwitchRoutes() {
 			</Route>
 			<Route path="/profile/:address">
 				<Profile/>
+			</Route>
+			<Route path="/calendar">
+				<CalendarView/>
 			</Route>
 			<Route path="*">
 				<NotFound/>
