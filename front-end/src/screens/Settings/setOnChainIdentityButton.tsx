@@ -134,7 +134,7 @@ const SetOnChainIdentityButton = ({
 											className='custom-input'
 											fluid size='large'
 											value={email}
-											onChange={ (e) => setEmail(e.target.value)}
+											onChange={ (e) => setEmail(e.target.value.toLowerCase())}
 											error={errorsFound.includes('email')}
 										/>
 									</Form.Field>
