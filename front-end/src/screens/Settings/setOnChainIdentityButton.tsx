@@ -7,7 +7,9 @@ import BN from 'bn.js';
 import React, { useContext, useState } from 'react';
 import { Button, Form, Grid, Icon, Input, Modal, Popup } from 'semantic-ui-react';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
+import { chainProperties } from 'src/global/networkConstants';
 import BalanceInput from 'src/ui-components/BalanceInput';
+import getNetwork from 'src/util/getNetwork';
 import { inputToBn } from 'src/util/inputToBn';
 
 interface Props {
@@ -20,11 +22,17 @@ const SetOnChainIdentityButton = ({
 	// setTipModalOpen,
 } : Props) => {
 	const { id } = useContext(UserDetailsContext);
+	const currentNetwork = getNetwork();
 
 	const [modalOpen, setModalOpen] = useState<boolean>(false);
 
 	const [value, setValue] = useState<BN>();
 	const [displayName, setDisplayName] = useState<string>('');
+	const [legalName, setLegalName] = useState<string>('');
+	const [email, setEmail] = useState<string>('');
+	const [website, setWebsite] = useState<string>('');
+	const [twitter, setTwitter] = useState<string>('');
+	const [riotName, setRiotName] = useState<string>('');
 
 	const onBalanceChange = (balance: BN) => setValue(balance);
 
@@ -105,7 +113,13 @@ const SetOnChainIdentityButton = ({
 											<label>Legal Name</label>
 											<span>*Optional</span>
 										</div>
-										<Input className='custom-input' fluid size='large' />
+										<Input
+											className='custom-input'
+											fluid size='large'
+											value={legalName}
+											onChange={ (e) => setLegalName(e.target.value)}
+											error={errorsFound.includes('legalName')}
+										/>
 									</Form.Field>
 								</Form.Group>
 
@@ -116,7 +130,13 @@ const SetOnChainIdentityButton = ({
 											<label>Email</label>
 											<span>*Optional</span>
 										</div>
-										<Input className='custom-input' fluid size='large' type='email' />
+										<Input
+											className='custom-input'
+											fluid size='large'
+											value={email}
+											onChange={ (e) => setEmail(e.target.value)}
+											error={errorsFound.includes('email')}
+										/>
 									</Form.Field>
 								</Form.Group>
 
@@ -127,7 +147,13 @@ const SetOnChainIdentityButton = ({
 											<label>Website</label>
 											<span>*Optional</span>
 										</div>
-										<Input className='custom-input' fluid size='large' type='url' />
+										<Input
+											className='custom-input'
+											fluid size='large'
+											value={website}
+											onChange={ (e) => setWebsite(e.target.value)}
+											error={errorsFound.includes('website')}
+										/>
 									</Form.Field>
 								</Form.Group>
 
@@ -138,7 +164,13 @@ const SetOnChainIdentityButton = ({
 											<label>Twitter</label>
 											<span>*Optional</span>
 										</div>
-										<Input className='custom-input' fluid size='large' />
+										<Input
+											className='custom-input'
+											fluid size='large'
+											value={twitter}
+											onChange={ (e) => setTwitter(e.target.value)}
+											error={errorsFound.includes('twitter')}
+										/>
 									</Form.Field>
 								</Form.Group>
 
@@ -149,7 +181,13 @@ const SetOnChainIdentityButton = ({
 											<label>Riot Name</label>
 											<span>*Optional</span>
 										</div>
-										<Input className='custom-input' fluid size='large' />
+										<Input
+											className='custom-input'
+											fluid size='large'
+											value={riotName}
+											onChange={ (e) => setRiotName(e.target.value)}
+											error={errorsFound.includes('riotName')}
+										/>
 									</Form.Field>
 								</Form.Group>
 
@@ -160,11 +198,16 @@ const SetOnChainIdentityButton = ({
 											<label>Total Deposit</label>
 										</div>
 
-										<BalanceInput
-											placeholder={'0'}
-											className='text-input'
-											onChange={onBalanceChange}
-										/>
+										<div className="balance-input">
+											<BalanceInput
+												placeholder={'0'}
+												className='text-input'
+												onChange={onBalanceChange}
+											/>
+											<span>
+												{chainProperties[currentNetwork].tokenSymbol}
+											</span>
+										</div>
 									</Form.Field>
 								</Form.Group>
 							</Form>
@@ -289,5 +332,12 @@ export default styled(SetOnChainIdentityButton)`
 	.submitBtn{
 		background-color: pink_primary;
 		color: #fff;
+	}
+	.balance-input {
+		display: flex;
+		align-items: center;
+		span {
+			margin-top: -0.9em;
+		}
 	}
 `;
