@@ -260,7 +260,7 @@ const TreasuryProposalFormButton = ({
 
 	const triggerBtn = <Button disabled={!id} style={ { background: '#E5007A', color:'#fff', textTransform: 'capitalize' } } size='huge'> <Icon name='plus circle' /> Create Treasury Proposal</Button>;
 	const triggerBtnLoginDisabled = <Popup position='bottom center' content='Please signup/login using a web3 address to add a treasury proposal' trigger={<Button style={ {  background: '#E5007A', backgroundImage: 'none', boxShadow: 'none',  color:'#fff', cursor: 'default', opacity: '.45', textTransform: 'capitalize' } } size='huge'> <Icon name='plus circle' /> Create Treasury Proposal</Button> } />;
-	
+
 	return (
 		loadingStatus.isLoading
 			? <Card className={'LoaderWrapper'}>
