@@ -35,7 +35,7 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 						</Label.Group>
 					</Grid.Column>
 					<Grid.Column className='profile-edit-col' mobile={16} tablet={3} computer={3} largeScreen={2} widescreen={2}>
-						<Button basic> <Icon name='pencil' /> Standard</Button>
+						<Button basic size='large' className='edit-profile-btn'> <Icon name='pencil' /> Edit Profile</Button>
 					</Grid.Column>
 				</Grid>
 				{/* End First Row */}
@@ -103,12 +103,19 @@ export default styled(UserProfile)`
 		}
 	}
 
+	.profile-edit-col {
+		.edit-profile-btn {
+			border-radius: 5px;
+			border: 1px solid #8D8D8D;
+		}
+	}
+
 	.profile-divider {
 		margin-top: 3.5em;
 	}
 
 	.about-div {
-		margin-top: 1.4em;
+		margin: 1.4em 0.5em;
 
 		h2 {
 			font-weight: 500;
