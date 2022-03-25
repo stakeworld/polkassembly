@@ -5,7 +5,7 @@
 import styled from '@xstyled/styled-components';
 import React from 'react';
 import { TwitterTimelineEmbed } from 'react-twitter-embed';
-import { Grid, Icon, Image,List } from 'semantic-ui-react';
+import { Grid, Image,List } from 'semantic-ui-react';
 interface Props {
   className?: string
 }
@@ -31,11 +31,11 @@ const News = ({ className }: Props) => {
 			<h1>News</h1>
 			<div className="card">
 				<Grid stackable>
-					<Grid.Row>
+					{/* <Grid.Row>
 						<Grid.Column className='action-bar' width={16}>
 							<Icon name='search' />
 						</Grid.Column>
-					</Grid.Row>
+					</Grid.Row> */}
 					<Grid.Row className='event-content-row'>
 						<Grid.Column className='event-list-col' width={16}>
 							{/* <List relaxed='very'>
@@ -44,7 +44,7 @@ const News = ({ className }: Props) => {
 							<TwitterTimelineEmbed
 								sourceType="profile"
 								screenName="polk_gov"
-								options={ { height: 440 } }
+								options={ { height: 490 } }
 							/>
 						</Grid.Column>
 					</Grid.Row>
@@ -57,6 +57,10 @@ const News = ({ className }: Props) => {
 export default styled(News)`
 	@media only screen and (max-width: 991.5px) {
 		margin-top: 3em;
+	}
+
+	h1 {
+		margin-bottom: 4rem;
 	}
 
 	.card {
@@ -81,7 +85,7 @@ export default styled(News)`
 		.event-list-col {
 			overflow-y: auto;
 			border-right: 2px #eee solid;
-			max-height: 446px;
+			max-height: 496px;
 			padding-top: 0;
 			padding-left: 1.5em !important;
 		}

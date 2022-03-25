@@ -9,7 +9,7 @@ import { useBountiesCountQuery,useDemocracyProposalCountQuery, useDemocracyTreas
 import { post_topic } from 'src/global/post_topics';
 import { post_type } from 'src/global/post_types';
 
-import filterIMG from '../../../assets/latest-activity-filter.png';
+// import filterIMG from '../../../assets/latest-activity-filter.png';
 import LatestActivitySearchPage from '../LatestActivitySearchPage';
 import LatestAllPostsTable from '../LatestAllPostsTable';
 import LatestBountiesTable from '../LatestBountiesTable';
@@ -113,17 +113,17 @@ const LatestActivity = ({ className }: Props) => {
 		{
 			menuItem: <Menu.Item className='menu-right' key='search'> <Icon name='search' /> </Menu.Item>,
 			render: () => <LatestActivitySearchPage className='tab-panel' />
-		},
-		{
-			menuItem: <Menu.Item className='no-border' key='filter'>
-				<img style={ { height:'auto', width:'1.2em' } } src={filterIMG} alt="Filter" />
-			</Menu.Item>,
-			render: () => <LatestActivitySearchPage className='tab-panel' /> //TODO: Change to button
-		},
-		{
-			menuItem: <Menu.Item className='no-border' key='th'> <Icon name='th' /> </Menu.Item>,
-			render: () => <LatestActivitySearchPage className='tab-panel' /> //TODO: Change to button
 		}
+	// {
+	// menuItem: <Menu.Item className='no-border' key='filter'>
+	// <img style={ { height:'auto', width:'1.2em' } } src={filterIMG} alt="Filter" />
+	// </Menu.Item>,
+	// render: () => <LatestActivitySearchPage className='tab-panel' /> //TODO: Change to button
+	// },
+	// {
+	// menuItem: <Menu.Item className='no-border' key='th'> <Icon name='th' /> </Menu.Item>,
+	// render: () => <LatestActivitySearchPage className='tab-panel' /> //TODO: Change to button
+	// }
 	];
 
 	return (

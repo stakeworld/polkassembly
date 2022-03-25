@@ -4,17 +4,17 @@
 
 import styled from '@xstyled/styled-components';
 import React from 'react';
-import { Checkbox, Grid, Icon, Image, List } from 'semantic-ui-react';
+import { Image, List } from 'semantic-ui-react';
 
 interface Props {
   className?: string
 }
 
-const iframe = '<iframe src="https://calendar.google.com/calendar/embed?src=events%40polkassembly.io&ctz=Asia%2FKolkata" style="border: 0" frameborder="0" scrolling="no"></iframe>';
+// const iframe = '<iframe src="https://calendar.google.com/calendar/embed?src=events%40polkassembly.io&ctz=Asia%2FKolkata" style="border: 0" frameborder="0" scrolling="no"></iframe>';
 
-function Iframe(props: any) {
-	return (<div dangerouslySetInnerHTML={ { __html:  props.iframe?props.iframe:'' } } />);
-}
+// function Iframe(props: any) {
+// return (<div dangerouslySetInnerHTML={ { __html:  props.iframe?props.iframe:'' } } />);
+// }
 
 const UpcomingEvents = ({ className }: Props) => {
 	const listItems = [];
@@ -36,7 +36,10 @@ const UpcomingEvents = ({ className }: Props) => {
 		<div className={className}>
 			<h1>Upcoming Events</h1>
 			<div className="card">
-				<Grid stackable>
+				<p className="coming-soon-text">
+					Coming Soon
+				</p>
+				{/* <Grid stackable>
 					<Grid.Row>
 						<Grid.Column className='action-bar' width={16}>
 							<Icon name='search' />
@@ -65,7 +68,7 @@ const UpcomingEvents = ({ className }: Props) => {
 							</Grid.Column>
 						</Grid>
 					</Grid.Row>
-				</Grid>
+				</Grid> */}
 			</div>
 		</div>
 	);
@@ -79,6 +82,15 @@ export default styled(UpcomingEvents)`
 		border-radius: 10px;
 		height: 500px;
 		max-height: 500px;
+
+		// for coming soon text
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		.coming-soon-text {
+			font-size: 3em;
+		}
 		
 		@media only screen and (max-width: 991.5px) {
 			height: fit-content;
