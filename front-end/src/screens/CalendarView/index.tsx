@@ -21,11 +21,11 @@ interface Props {
 
 // const localizer = momentLocalizer(moment);
 
-const iframe = '<iframe src="https://calendar.google.com/calendar/embed?src=events%40polkassembly.io&ctz=Asia%2FKolkata" style="border: 0" frameborder="0" scrolling="no"></iframe>';
+// const iframe = '<iframe src="https://calendar.google.com/calendar/embed?src=events%40polkassembly.io&ctz=Asia%2FKolkata" style="border: 0" frameborder="0" scrolling="no"></iframe>';
 
-function Iframe(props: any) {
-	return (<div dangerouslySetInnerHTML={ { __html:  props.iframe?props.iframe:'' } } />);
-}
+// function Iframe(props: any) {
+// return (<div dangerouslySetInnerHTML={ { __html:  props.iframe?props.iframe:'' } } />);
+// }
 
 const CalendarView = ({ className }: Props) => {
 	// const myEventsList = [
@@ -82,9 +82,12 @@ const CalendarView = ({ className }: Props) => {
 				</Grid.Row> */}
 				<Grid.Row>
 					<Grid.Column mobile={16} tablet={16} computer={14} className='calendar-col'>
-						<div className="iframe-wrapper">
+						<p className="coming-soon-text">
+							Coming Soon
+						</p>
+						{/* <div className="iframe-wrapper">
 							<Iframe iframe={iframe} />
-						</div>
+						</div> */}
 					</Grid.Column>
 				</Grid.Row>
 			</Grid>
@@ -93,6 +96,11 @@ const CalendarView = ({ className }: Props) => {
 };
 
 export default styled(CalendarView)`
+
+.coming-soon-text {
+	font-size: 3em;
+	text-align: center;
+}
 
 h1 {
 	@media only screen and (max-width: 576px) {
