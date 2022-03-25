@@ -2,8 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-// TODO: Rename file and directory.
-
 import styled from '@xstyled/styled-components';
 import React from 'react';
 import { Button, Divider, Grid, Icon, Label } from 'semantic-ui-react';
