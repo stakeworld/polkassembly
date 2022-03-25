@@ -2,144 +2,52 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DeriveAccountFlags, DeriveAccountInfo, DeriveAccountRegistration } from '@polkadot/api-derive/types';
-import styled from '@xstyled/styled-components';
-import React, { useContext, useEffect, useState } from 'react';
-import { Grid, Icon, Table } from 'semantic-ui-react';
-import { ApiContext } from 'src/context/ApiContext';
+// TODO: Rename file and directory.
 
-import Balance from '../../components/Balance';
-import { useProfileQuery } from '../../generated/graphql';
-import { network } from '../../global/networkConstants';
-import { useRouter } from '../../hooks';
-import AddressComponent from '../../ui-components/Address';
-import FilteredError from '../../ui-components/FilteredError';
-import getNetwork from '../../util/getNetwork';
+import styled from '@xstyled/styled-components';
+import React from 'react';
+import { Button, Divider, Grid, Icon, Label } from 'semantic-ui-react';
+// import CouncilVotes from '././CouncilVotes';
 
 interface Props {
 	className?: string
 }
 
-const NETWORK = getNetwork();
-
-const CouncilEmoji = () => <span aria-label="council member" className='councilMember' role="img">👑</span>;
-
 const UserProfile = ({ className }: Props): JSX.Element => {
-	const router = useRouter();
-
-	const { api, apiReady } = useContext(ApiContext);
-	const [identity, setIdentity] = useState<DeriveAccountRegistration | null>(null);
-	const [flags, setFlags] = useState<DeriveAccountFlags | undefined>(undefined);
-	const { data, error } = useProfileQuery({ variables: { username: router.query.username } });
-
-	const address = NETWORK === network.POLKADOT ? data?.profile?.polkadot_default_address : data?.profile?.kusama_default_address;
-
-	useEffect(() => {
-
-		if (!api) {
-			return;
-		}
-
-		if (!apiReady) {
-			return;
-		}
-
-		if (!address) {
-			return;
-		}
-
-		let unsubscribe: () => void;
-
-		api.derive.accounts.info(address, (info: DeriveAccountInfo) => {
-			setIdentity(info.identity);
-		})
-			.then(unsub => { unsubscribe = unsub; })
-			.catch(e => console.error(e));
-
-		return () => unsubscribe && unsubscribe();
-	}, [address, api, apiReady]);
-
-	useEffect(() => {
-		if (!api) {
-			return;
-		}
-
-		if (!apiReady) {
-			return;
-		}
-
-		if (!address) {
-			return;
-		}
-
-		let unsubscribe: () => void;
-
-		api.derive.accounts.flags(address, (result: DeriveAccountFlags) => {
-			setFlags(result);
-		})
-			.then(unsub => { unsubscribe = unsub; })
-			.catch(e => console.error(e));
-
-		return () => unsubscribe && unsubscribe();
-	}, [address, api, apiReady]);
-
-	if (error?.message) return <FilteredError text={error.message}/>;
-
-	const judgements = identity ? identity.judgements.filter(([, judgement]): boolean => !judgement.isFeePaid) : [];
-	const displayJudgements = judgements.map(([,jud]) => jud.toString()).join(', ');
-	const isGood = judgements.some(([, judgement]): boolean => judgement.isKnownGood || judgement.isReasonable);
-	const isBad = judgements.some(([, judgement]): boolean => judgement.isErroneous || judgement.isLowQuality);
-
-	const color: 'brown' | 'green' | 'grey' = isGood ? 'green' : isBad ? 'brown' : 'grey';
-	const iconName = isGood ? 'check circle' : 'minus circle';
 
 	return (
-		<Grid className={className}>
-			<Grid.Column mobile={16} tablet={16} computer={10} largeScreen={10}>
-				<div className='info-box'>
-					<h2>{router.query.username}</h2>
-					{address ? <>
-						<div className="address-container">
-							<AddressComponent address={address}/>
-						</div>
-						<Balance address={address} className='balance'/>
-						{identity && <Table basic='very' celled collapsing>
-							<Table.Body>
-								{identity?.legal && <Table.Row>
-									<Table.Cell className='desc'>Legal:</Table.Cell>
-									<Table.Cell>{identity.legal}</Table.Cell>
-								</Table.Row>}
-								{identity?.email && <Table.Row>
-									<Table.Cell className='desc'>Email:</Table.Cell>
-									<Table.Cell><a href={`mailto:${identity.email}`}>{identity.email}</a></Table.Cell>
-								</Table.Row>}
-								{identity?.judgements?.length > 0 && <Table.Row>
-									<Table.Cell className='desc'>Judgements:</Table.Cell>
-									<Table.Cell className='judgments'><Icon name={iconName} color={color} /> {displayJudgements}</Table.Cell>
-								</Table.Row>}
-								{identity?.pgp && <Table.Row>
-									<Table.Cell className='desc'>PGP:</Table.Cell>
-									<Table.Cell>{identity.pgp}</Table.Cell>
-								</Table.Row>}
-								{identity?.riot && <Table.Row>
-									<Table.Cell className='desc'>Riot:</Table.Cell>
-									<Table.Cell>{identity.riot}</Table.Cell>
-								</Table.Row>}
-								{identity?.twitter && <Table.Row>
-									<Table.Cell className='desc'>Twitter:</Table.Cell>
-									<Table.Cell><a href={`https://twitter.com/${identity.twitter.substring(1)}`}>{identity.twitter}</a></Table.Cell>
-								</Table.Row>}
-								{identity?.web && <Table.Row>
-									<Table.Cell className='desc'>Web:</Table.Cell>
-									<Table.Cell>{identity.web}</Table.Cell>
-								</Table.Row>}
-								{flags?.isCouncil && <Table.Row>
-									<Table.Cell className='desc'>Roles:</Table.Cell>
-									<Table.Cell>Council member <CouncilEmoji/></Table.Cell>
-								</Table.Row>}
-							</Table.Body>
-						</Table>}
-					</> : <p>No address attached to this account</p>}
+		<Grid stackable>
+			<Grid.Column width={15}>
+				<h1 style={ { fontSize: '4.4rem', fontWeight: 500 } }>Profile</h1>
+			</Grid.Column>
+			<Grid.Column className={className} mobile={16} tablet={16} computer={15} largeScreen={15} widescreen={15}>
+				{/* First Row */}
+				<Grid stackable>
+					<Grid.Column className='profile-photo-col' mobile={16} tablet={16} computer={16} largeScreen={2} widescreen={2}>
+						<img width={130} height={130} className='profile-img' src='https://image.shutterstock.com/image-vector/august-20-2014-illustration-robocop-600w-216216121.jpg' />
+					</Grid.Column>
+					<Grid.Column className='profile-text-col' mobile={16} tablet={12} computer={12} largeScreen={10} widescreen={10}>
+						<h3 className='display-name'>Display Name</h3>
+						<h3 className='display-title'>Display Title</h3>
+						<Label.Group className='display-badges' size='big'>
+							<Label>Fun</Label>
+							<Label>Happy</Label>
+							<Label>Smart</Label>
+							<Label>Witty</Label>
+						</Label.Group>
+					</Grid.Column>
+					<Grid.Column className='profile-edit-col' mobile={16} tablet={3} computer={3} largeScreen={2} widescreen={2}>
+						<Button basic> <Icon name='pencil' /> Standard</Button>
+					</Grid.Column>
+				</Grid>
+				{/* End First Row */}
+				<Divider className='profile-divider' />
+				<div className='about-div'>
+					<h2>About</h2>
+
+					<p>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisi parturient diam, gravida vitae lobortis. Facilisis nisl enim pellentesque pellentesque sed tristique. Ullamcorper dapibus pharetra, libero aliquet id viverra adipiscing odio viverra. Turpis orci id nec, auctor ac venenatis sed mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisi parturient diam, gravida vitae lobortis. Facilisis nisl enim pellentesque pellentesque sed tristique. Ullamcorper dapibus pharetra, libero aliquet id viverra adipiscing odio viverra. Turpis orci id nec, auctor ac venenatis sed mauris.
+					</p>
 				</div>
 			</Grid.Column>
 		</Grid>
@@ -147,34 +55,73 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 };
 
 export default styled(UserProfile)`
-	display: flex;
-	justify-content: center;
-
-	.info-box {
-		background-color: white;
-		border-radius: 3px;
-		box-shadow: box_shadow_card;
-		margin: 1rem;
-		width: calc(100% - 60px);
-		word-break: break-word;
-		padding: 10px;
-		text-align: center;
-		display: flex;
-		align-items: center;
-		flex-direction: column;
-
-		@media only screen and (max-width: 576px) {
-			width: 100%;
-			border-radius: 0px;
+	background-color: white;
+	padding: 2rem 3rem 3rem 3rem!important;
+	border-radius: 0.3rem;
+	box-shadow: box_shadow_card;
+	margin-top: 1em;
+	
+	.profile-photo-col, .profile-edit-col {
+		display: flex !important;
+		justify-content: center;
+		align-items: start;
+		.profile-img {
+			border-radius: 50%;
 		}
 	}
 
+	.profile-text-col {
+		margin-left: 1.5em;
 
-	.address-container {
-		margin: 10px 0;
+		@media only screen and (max-width: 767px) {
+			text-align: center;
+		}
+
+		h3 {
+			font-weight: 500;
+		}
+		
+		h3.display-name {
+			margin-top: 1rem;
+			font-size: 22px;
+		}
+
+		h3.display-title {
+			font-size: 18px;
+			color: #7D7D7D;
+			margin-top: 1em;
+		}
+
+		.display-badges {
+			margin-top: 1.6em;
+
+			.label {
+				border-radius: 48px;
+				background: #E5007A;
+				color: #fff;
+				font-size: 14px;
+				font-weight: 500;
+			}
+		}
 	}
 
-	.desc {
-		font-weight: bold;
+	.profile-divider {
+		margin-top: 3.5em;
+	}
+
+	.about-div {
+		margin-top: 1.4em;
+
+		h2 {
+			font-weight: 500;
+			font-size: 22px;
+		}
+
+		p {
+			font-weight: 400;
+			font-size: 16px;
+			line-height: 24px;
+			color: #7D7D7D !important;
+		}
 	}
 `;
