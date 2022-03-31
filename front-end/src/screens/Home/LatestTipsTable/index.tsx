@@ -65,7 +65,7 @@ const LatestTipsTable = ({ className }:Props) => {
 									address={post.onchain_link.proposer_address}
 									onchainId={onchainId}
 									status={post.onchain_link.onchain_tip?.[0]?.tipStatus?.[0].status}
-									title={post.title}
+									title={post.title ? post.title : post.onchain_link.onchain_tip?.[0]?.reason}
 									postType='tip'
 									created_at={post.created_at}
 									hideSerialNum={true}

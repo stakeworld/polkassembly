@@ -91,7 +91,7 @@ const LatestActivityTableRow = function ({
 		setPostSerialID(serialID);
 	},[postType, onchainId]);
 
-	const mainTitle = <h4 className={tipReason ? 'tipTitle' : ''}><div>{method || tipReason ||  title || noTitle}</div></h4>;
+	const mainTitle = <h4><div>{title || method || noTitle}</div></h4>;
 	const subTitle = title && tipReason && method && <h5>{title}</h5>;
 	// const currentBlock = useCurrentBlock()?.toNumber() || 0;
 
