@@ -6,8 +6,14 @@ import styled from '@xstyled/styled-components';
 import React from 'react';
 import { TwitterTimelineEmbed } from 'react-twitter-embed';
 import Grid from 'semantic-ui-react/dist/commonjs/collections/Grid';
+import { chainLinks } from 'src/global/networkConstants';
+import getNetwork from 'src/util/getNetwork';
+
+const network = getNetwork();
 
 const NewsView = ({ className } : {className?: string}) => {
+
+	const profile = chainLinks[network].twitter.split('/')[3];
 
 	return (
 		<div className={className}>
@@ -16,7 +22,7 @@ const NewsView = ({ className } : {className?: string}) => {
 				<Grid.Column className='timeline-col' mobile={16} tablet={16} computer={10}>
 					<TwitterTimelineEmbed
 						sourceType="profile"
-						screenName="polk_gov"
+						screenName={profile}
 						autoHeight={true}
 					/>
 				</Grid.Column>

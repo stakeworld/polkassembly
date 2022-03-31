@@ -6,9 +6,14 @@ import styled from '@xstyled/styled-components';
 import React from 'react';
 import { TwitterTimelineEmbed } from 'react-twitter-embed';
 import { Grid, Image,List } from 'semantic-ui-react';
+import { chainLinks } from 'src/global/networkConstants';
+import getNetwork from 'src/util/getNetwork';
+
 interface Props {
   className?: string
 }
+
+const network = getNetwork();
 
 const News = ({ className }: Props) => {
 	const listItems = [];
@@ -25,6 +30,8 @@ const News = ({ className }: Props) => {
 			</List.Item>
 		);
 	}
+
+	const profile = chainLinks[network].twitter.split('/')[3];
 
 	return (
 		<div className={className}>
@@ -43,7 +50,7 @@ const News = ({ className }: Props) => {
 							</List> */}
 							<TwitterTimelineEmbed
 								sourceType="profile"
-								screenName="polk_gov"
+								screenName={profile}
 								options={ { height: 490 } }
 							/>
 						</Grid.Column>
