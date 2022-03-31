@@ -8,16 +8,18 @@ import { Table } from 'semantic-ui-react';
 
 interface LatestActivityTableHeaderProps {
 	className?: string
+	hideSerialNum?: boolean
 }
 
 const LatestActivityTableHeader = function ({
-	className
+	className,
+	hideSerialNum
 }:LatestActivityTableHeaderProps) {
 
 	return (
 		<Table.Header className={`${className}`}>
 			<Table.Row>
-				<Table.HeaderCell width={1}><span>#</span></Table.HeaderCell>
+				{!hideSerialNum ? <Table.HeaderCell width={1}><span>#</span></Table.HeaderCell> : null }
 				<Table.HeaderCell width={6}><span>Title</span></Table.HeaderCell>
 				<Table.HeaderCell width={3}><span>Posted By</span></Table.HeaderCell>
 				<Table.HeaderCell width={2}><span>Type</span></Table.HeaderCell>

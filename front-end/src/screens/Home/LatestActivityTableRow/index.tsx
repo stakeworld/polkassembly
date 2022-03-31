@@ -27,6 +27,7 @@ interface LatestActivityTableRowProps {
 	title?: string | null
 	postType: 'discussion' | 'referenda' | 'proposal' | 'motion' | 'treasury proposal' | 'tech committee proposal' | 'bounty' | 'tip'
 	username?: string | null
+	hideSerialNum?: boolean
 }
 
 const LatestActivityTableRow = function ({
@@ -40,7 +41,8 @@ const LatestActivityTableRow = function ({
 	tipReason,
 	title,
 	postType,
-	username
+	username,
+	hideSerialNum
 }:LatestActivityTableRowProps) {
 	const { history } = useRouter();
 	const [postTypeIcon, setPostTypeIcon] = useState<any>();
@@ -119,9 +121,9 @@ const LatestActivityTableRow = function ({
 
 	return (
 		<Table.Row className={className + ' table-row'}>
-			<Table.Cell onClick={ gotoPost } className='sub-title-text'>
+			{!hideSerialNum ? <Table.Cell onClick={ gotoPost } className='sub-title-text'>
 				{ postId }
-			</Table.Cell>
+			</Table.Cell> : null}
 			<Table.Cell onClick={ gotoPost }>
 				<div className='main-title-text'>{mainTitle}</div>
 				{subTitle && <div className='sub-title-text'>{subTitle}</div>}
