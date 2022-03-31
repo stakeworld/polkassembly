@@ -174,6 +174,7 @@ const TreasuryOverview = () => {
 			resultBurn.toString(),
 			{
 				numberAfterComma: 2,
+				withThousandDelimitor: false,
 				withUnit: false
 			}
 		).replaceAll(/\s/g,''));
