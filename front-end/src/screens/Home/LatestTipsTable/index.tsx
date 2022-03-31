@@ -12,6 +12,7 @@ import NothingFoundCard from 'src/ui-components/NothingFoundCard';
 import { useLatestTipPostsQuery } from '../../../generated/graphql';
 import { post_type } from '../../../global/post_types';
 import FilteredError from '../../../ui-components/FilteredError';
+import LatestActivityTableHeader from '../LatestActivityTableHeader';
 import LatestActivityTableRow from '../LatestActivityTableRow';
 
 interface Props {
@@ -50,15 +51,7 @@ const LatestTipsTable = ({ className }:Props) => {
 
 		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
 			<Table basic='very' striped unstackable selectable>
-				<Table.Header className='table-header'>
-					<Table.Row>
-						<Table.HeaderCell width={7}><span>Title</span></Table.HeaderCell>
-						<Table.HeaderCell width={3}><span>Posted By</span></Table.HeaderCell>
-						<Table.HeaderCell width={2}><span>Type</span></Table.HeaderCell>
-						<Table.HeaderCell width={2}><span>Status</span></Table.HeaderCell>
-						<Table.HeaderCell width={2}><span>Actions</span></Table.HeaderCell>
-					</Table.Row>
-				</Table.Header>
+				<LatestActivityTableHeader className={className} hideSerialNum={true} />
 
 				<Table.Body>
 					{data.posts.map(
@@ -75,6 +68,7 @@ const LatestTipsTable = ({ className }:Props) => {
 									title={post.title}
 									postType='tip'
 									created_at={post.created_at}
+									hideSerialNum={true}
 								/>
 							;
 						}

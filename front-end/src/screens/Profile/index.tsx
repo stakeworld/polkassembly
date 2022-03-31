@@ -207,7 +207,7 @@ const Profile = ({ className }: Props): JSX.Element => {
 
 		const signMessage = `<Bytes>about::network:${network}|address:${address}|title:${title || ''}|description:${description || ''}|image:</Bytes>`;
 
-		console.log(signMessage);
+		// console.log(signMessage);
 
 		const { signature } = await signRaw({
 			address,

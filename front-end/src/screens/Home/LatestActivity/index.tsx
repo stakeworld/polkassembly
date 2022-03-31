@@ -92,12 +92,12 @@ const LatestActivity = ({ className }: Props) => {
 			render: () => <LatestDiscussionsTable className='tab-panel' />
 		},
 		{
-			menuItem: <Menu.Item key='referenda'>Referenda <Label circular>{ referendaData?.posts_aggregate.aggregate?.count }</Label></Menu.Item>,
-			render: () => <LatestReferendaTable className='tab-panel' />
-		},
-		{
 			menuItem: <Menu.Item key='proposals'>Proposals <Label circular>{ proposalData?.posts_aggregate.aggregate?.count }</Label></Menu.Item>,
 			render: () => <LatestProposalsTable className='tab-panel' />
+		},
+		{
+			menuItem: <Menu.Item key='referenda'>Referenda <Label circular>{ referendaData?.posts_aggregate.aggregate?.count }</Label></Menu.Item>,
+			render: () => <LatestReferendaTable className='tab-panel' />
 		},
 		{
 			menuItem: <Menu.Item key='motions'>Motions <Label circular>{ motionsData?.posts_aggregate.aggregate?.count }</Label></Menu.Item>,

@@ -8,10 +8,11 @@ import React, { useEffect } from 'react';
 import { Tab, Table } from 'semantic-ui-react';
 import NothingFoundCard from 'src/ui-components/NothingFoundCard';
 
-import { useLatestDemocracyProposalPostsQuery } from '../../../generated/graphql';
+import { useAllDemocracyProposalPostsQuery } from '../../../generated/graphql';
 import { post_topic } from '../../../global/post_topics';
 import { post_type } from '../../../global/post_types';
 import FilteredError from '../../../ui-components/FilteredError';
+import LatestActivityTableHeader from '../LatestActivityTableHeader';
 import LatestActivityTableRow from '../LatestActivityTableRow';
 
 interface Props {
@@ -20,7 +21,7 @@ interface Props {
 
 const LatestProposalsTable = ({ className }:Props) => {
 
-	const { data, error, refetch } = useLatestDemocracyProposalPostsQuery({ variables: {
+	const { data, error, refetch } = useAllDemocracyProposalPostsQuery({ variables: {
 		limit: 10,
 		postTopic: post_topic.DEMOCRACY,
 		postType: post_type.ON_CHAIN
@@ -50,15 +51,7 @@ const LatestProposalsTable = ({ className }:Props) => {
 
 		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
 			<Table basic='very' striped unstackable selectable>
-				<Table.Header className='table-header'>
-					<Table.Row>
-						<Table.HeaderCell width={7}><span>Title</span></Table.HeaderCell>
-						<Table.HeaderCell width={3}><span>Posted By</span></Table.HeaderCell>
-						<Table.HeaderCell width={2}><span>Type</span></Table.HeaderCell>
-						<Table.HeaderCell width={2}><span>Status</span></Table.HeaderCell>
-						<Table.HeaderCell width={2}><span>Actions</span></Table.HeaderCell>
-					</Table.Row>
-				</Table.Header>
+				<LatestActivityTableHeader className={className} />
 
 				<Table.Body>
 					{data.posts.map(
