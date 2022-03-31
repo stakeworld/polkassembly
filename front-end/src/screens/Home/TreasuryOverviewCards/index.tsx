@@ -178,8 +178,6 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 	useEffect(() => {
 		let cancel = false;
 
-		console.log(resultBurn.toString());
-
 		// replace spaces returned in string by format function
 		const tokenBurn: number = parseFloat(formatBnBalance(
 			resultBurn.toString(),
@@ -214,8 +212,6 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 				setNextBurnUSD(formattedUSD);
 			}
 		}
-
-		console.log(tokenBurn);
 
 		fetchNextBurnUSDCPrice(tokenBurn);
 

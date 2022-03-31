@@ -43,9 +43,6 @@ const LatestMotionsTable = ({ className }:Props) => {
 			return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
 				<NothingFoundCard className={className} text='There are currently no active motions.'/>
 			</Tab.Pane>;
-
-		console.log('data: ', data.posts);
-
 		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
 			<Table basic='very' striped unstackable selectable>
 				<LatestActivityTableHeader className={className} />

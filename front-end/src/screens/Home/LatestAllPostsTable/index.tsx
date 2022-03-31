@@ -127,8 +127,6 @@ const LatestAllPostsTable = ({ className }:Props) => {
 						(post, index) => {
 							const postTypeData = getPostTypeData(post);
 
-							console.log('index : ', index);
-
 							if(postTypeData){
 								return postTypeData && !!post?.author?.username &&
 									<LatestActivityTableRow
