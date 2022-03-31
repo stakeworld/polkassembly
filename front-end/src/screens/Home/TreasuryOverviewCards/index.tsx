@@ -10,6 +10,8 @@ import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
 import { Card, Icon, Progress } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
+import { SUBSCAN_API_KEY } from 'src/global/apiKeys';
+import { chainProperties } from 'src/global/networkConstants';
 import { useBlockTime } from 'src/hooks';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
 import blockToDays from 'src/util/blockToDays';
@@ -36,20 +38,6 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 	>(undefined);
 
 	const { blocktime } = useBlockTime();
-
-	function getNetworkTokenSymbol(network:string){
-		let symbol = 'DOT';
-
-		switch (network){
-		case 'kusama':
-			symbol = 'KSM';
-			break;
-		default:
-			symbol = 'DOT';
-		}
-
-		return symbol;
-	}
 
 	const [result, setResult] = useState<Result>(() => ({
 		spendPeriod: BN_ZERO,
@@ -160,17 +148,17 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 		async function fetchAvailableUSDCPrice(token: number) {
 			if (cancel) return;
 			const response = await fetch(
-				'https://'+NETWORK+'.api.subscan.io/api/open/price_converter',
+				`https://${NETWORK}.api.subscan.io/api/open/price_converter`,
 				{
 					body: JSON.stringify({
-						from: getNetworkTokenSymbol(NETWORK),
+						from: chainProperties[NETWORK].tokenSymbol,
 						quote: 'USD',
 						value: token
 					}),
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-Key': 'cf41f0b0e400974bc0a3db0455ce9e11'
+						'X-API-Key': SUBSCAN_API_KEY
 					},
 					method: 'POST'
 				}
@@ -190,29 +178,32 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 	useEffect(() => {
 		let cancel = false;
 
+		console.log(resultBurn.toString());
+
 		// replace spaces returned in string by format function
-		const token_burn: number = parseFloat(formatBnBalance(
+		const tokenBurn: number = parseFloat(formatBnBalance(
 			resultBurn.toString(),
 			{
 				numberAfterComma: 2,
+				withThousandDelimitor: false,
 				withUnit: false
 			}
-		).replaceAll(/\s/g,''));
+		));
 
 		async function fetchNextBurnUSDCPrice(token: number) {
 			if (cancel) return;
 			const response = await fetch(
-				'https://'+NETWORK+'.api.subscan.io/api/open/price_converter',
+				`https://${NETWORK}.api.subscan.io/api/open/price_converter`,
 				{
 					body: JSON.stringify({
-						from: getNetworkTokenSymbol(NETWORK),
+						from: chainProperties[NETWORK].tokenSymbol,
 						quote: 'USD',
 						value: token
 					}),
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-Key': 'cf41f0b0e400974bc0a3db0455ce9e11'
+						'X-API-Key': SUBSCAN_API_KEY
 					},
 					method: 'POST'
 				}
@@ -224,7 +215,9 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			}
 		}
 
-		fetchNextBurnUSDCPrice(token_burn);
+		console.log(tokenBurn);
+
+		fetchNextBurnUSDCPrice(tokenBurn);
 
 		return () => {cancel = true;};
 	}, [resultBurn]);
@@ -240,23 +233,24 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			today = new Date(today.getTime() - (offset*60*1000));
 
 			const response = await fetch(
-				'https://'+NETWORK+'.api.subscan.io/api/scan/price/history',
+				`https://${NETWORK}.api.subscan.io/api/open/price_converter`,
 				{
 					body: JSON.stringify({
-						end: `${today.toISOString().split('T')[0]}`,
-						start: `${today.toISOString().split('T')[0]}`
+						from: chainProperties[NETWORK].tokenSymbol,
+						quote: 'USD',
+						value: 1
 					}),
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-Key': 'cf41f0b0e400974bc0a3db0455ce9e11'
+						'X-API-Key': SUBSCAN_API_KEY
 					},
 					method: 'POST'
 				}
 			);
 			const responseJSON = await response.json();
 			if (responseJSON['message'] == 'Success') {
-				setCurrentTokenPrice(parseFloat(responseJSON['data']['average']).toFixed(2));
+				setCurrentTokenPrice(parseFloat(responseJSON['data']['output']).toFixed(2));
 			}
 		}
 
@@ -274,7 +268,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			const weekAgoDate = moment().subtract(7,'d').format('YYYY-MM-DD');
 
 			const response = await fetch(
-				'https://'+NETWORK+'.api.subscan.io/api/scan/price/history',
+				`https://${NETWORK}.api.subscan.io/api/scan/price/history`,
 				{
 					body: JSON.stringify({
 						end: weekAgoDate,
@@ -283,7 +277,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-Key': 'cf41f0b0e400974bc0a3db0455ce9e11'
+						'X-API-Key': SUBSCAN_API_KEY
 					},
 					method: 'POST'
 				}
@@ -354,7 +348,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			<Card className='treasury-card'>
 				<Card.Content>
 					<Card.Meta className='treasury-card-meta'>
-						Current Price of DOT
+						Current Price of {chainProperties[NETWORK].tokenSymbol}
 					</Card.Meta>
 					<Card.Header className='treasury-card-header'>
 						{currentTokenPrice ?

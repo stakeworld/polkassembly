@@ -9,6 +9,8 @@ import BN from 'bn.js';
 import React, { useContext, useEffect, useState } from 'react';
 import { Grid, Icon } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
+import { SUBSCAN_API_KEY } from 'src/global/apiKeys';
+import { chainProperties } from 'src/global/networkConstants';
 import { useBlockTime } from 'src/hooks';
 import Card from 'src/ui-components/Card';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
@@ -37,20 +39,6 @@ const TreasuryOverview = () => {
 	>(undefined);
 
 	const { blocktime } = useBlockTime();
-
-	function getNetworkTokenSymbol(network:string){
-		let symbol = 'DOT';
-
-		switch (network){
-		case 'kusama':
-			symbol = 'KSM';
-			break;
-		default:
-			symbol = 'DOT';
-		}
-
-		return symbol;
-	}
 
 	const [result, setResult] = useState<Result>(() => ({
 		spendPeriod: BN_ZERO,
@@ -154,17 +142,17 @@ const TreasuryOverview = () => {
 
 		async function fetchAvailableUSDCPrice(token: number) {
 			const response = await fetch(
-				'https://'+NETWORK+'.api.subscan.io/api/open/price_converter',
+				`https://${NETWORK}.api.subscan.io/api/open/price_converter`,
 				{
 					body: JSON.stringify({
-						from: getNetworkTokenSymbol(NETWORK),
+						from: chainProperties[NETWORK].tokenSymbol,
 						quote: 'USD',
 						value: token
 					}),
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-Key': 'cf41f0b0e400974bc0a3db0455ce9e11'
+						'X-API-Key': SUBSCAN_API_KEY
 					},
 					method: 'POST'
 				}
@@ -192,17 +180,17 @@ const TreasuryOverview = () => {
 
 		async function fetchNextBurnUSDCPrice(token: number) {
 			const response = await fetch(
-				'https://'+NETWORK+'.api.subscan.io/api/open/price_converter',
+				`https://${NETWORK}.api.subscan.io/api/open/price_converter`,
 				{
 					body: JSON.stringify({
-						from: getNetworkTokenSymbol(NETWORK),
+						from: chainProperties[NETWORK].tokenSymbol,
 						quote: 'USD',
 						value: token
 					}),
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-Key': 'cf41f0b0e400974bc0a3db0455ce9e11'
+						'X-API-Key': SUBSCAN_API_KEY
 					},
 					method: 'POST'
 				}
