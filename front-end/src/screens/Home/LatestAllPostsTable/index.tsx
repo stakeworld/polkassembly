@@ -7,6 +7,7 @@ import React, { useEffect } from 'react';
 // import { Link } from 'react-router-dom';
 import { Tab, Table } from 'semantic-ui-react';
 import NothingFoundCard from 'src/ui-components/NothingFoundCard';
+import getDefaultAddressField from 'src/util/getDefaultAddressField';
 
 import { useLatestPostsQuery } from '../../../generated/graphql';
 import FilteredError from '../../../ui-components/FilteredError';
@@ -19,11 +20,13 @@ interface Props {
 interface PostTypeData {
 	method: string,
 	onChainId: number,
-	postTypeString: 'referenda' | 'proposal' | 'motion' | 'treasury proposal' | 'tech committee proposal' | 'bounty' | 'tip',
+	postTypeString: 'discussion' |'referenda' | 'proposal' | 'motion' | 'treasury proposal' | 'tech committee proposal' | 'bounty' | 'tip',
 	status: string
 }
 
 const LatestAllPostsTable = ({ className }:Props) => {
+
+	const defaultAddressField = getDefaultAddressField();
 
 	const { data, error, refetch } = useLatestPostsQuery({ variables: {
 		limit: 10
@@ -34,18 +37,7 @@ const LatestAllPostsTable = ({ className }:Props) => {
 	}, [refetch]);
 
 	function getPostTypeData(post: any): PostTypeData | null{
-		if(!post.onchain_link){
-			return null;
-		}
-
 		let postType: string = '';
-
-		for (const key of Object.keys(post.onchain_link)) {
-			if(/_id$/.test(key) && post.onchain_link[key]){
-				postType = key;
-				break;
-			}
-		}
 
 		const postData: PostTypeData = {
 			method: '',
@@ -53,6 +45,20 @@ const LatestAllPostsTable = ({ className }:Props) => {
 			postTypeString: 'proposal',
 			status: ''
 		};
+
+		if(!post.onchain_link){
+			//is discussion post
+			postData.postTypeString = 'discussion';
+			postData.onChainId = post.id;
+			return postData;
+		}
+
+		for (const key of Object.keys(post.onchain_link)) {
+			if(/_id$/.test(key) && post.onchain_link[key]){
+				postType = key;
+				break;
+			}
+		}
 
 		switch (postType){
 		case 'onchain_bounty_id':
@@ -129,17 +135,18 @@ const LatestAllPostsTable = ({ className }:Props) => {
 							const postTypeData = getPostTypeData(post);
 
 							if(postTypeData){
-								return postTypeData && !!post?.author?.username && !!post.onchain_link?.proposer_address &&
+								return postTypeData && !!post?.author?.username &&
 									<LatestActivityTableRow
 										key={post.id}
 										postId={post.id}
-										address={post.onchain_link.proposer_address}
+										address={postTypeData.postTypeString == 'discussion' ? post.author[defaultAddressField]! : post.onchain_link?.proposer_address!}
 										method={postTypeData.method ? postTypeData.method : undefined}
 										onchainId={postTypeData?.onChainId}
 										status={postTypeData.status}
 										title={post.title}
 										postType={postTypeData.postTypeString}
 										created_at={post.created_at}
+										username = {post.author.username}
 									/>
 								;
 							}

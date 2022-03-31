@@ -26,7 +26,7 @@ interface LatestActivityTableRowProps {
 	tipReason?: string
 	title?: string | null
 	postType: 'discussion' | 'referenda' | 'proposal' | 'motion' | 'treasury proposal' | 'tech committee proposal' | 'bounty' | 'tip'
-	username?: string
+	username?: string | null
 }
 
 const LatestActivityTableRow = function ({
