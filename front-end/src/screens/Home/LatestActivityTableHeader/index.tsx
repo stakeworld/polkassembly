@@ -1,0 +1,47 @@
+// Copyright 2019-2020 @Premiurly/polkassembly authors & contributors
+// This software may be modified and distributed under the terms
+// of the Apache-2.0 license. See the LICENSE file for details.
+
+import styled from '@xstyled/styled-components';
+import React from 'react';
+import { Table } from 'semantic-ui-react';
+
+interface LatestActivityTableHeaderProps {
+	className?: string
+}
+
+const LatestActivityTableHeader = function ({
+	className
+}:LatestActivityTableHeaderProps) {
+
+	return (
+		<Table.Header className={`${className}`}>
+			<Table.Row>
+				<Table.HeaderCell width={1}><span>#</span></Table.HeaderCell>
+				<Table.HeaderCell width={6}><span>Title</span></Table.HeaderCell>
+				<Table.HeaderCell width={3}><span>Posted By</span></Table.HeaderCell>
+				<Table.HeaderCell width={2}><span>Type</span></Table.HeaderCell>
+				<Table.HeaderCell width={2}><span>Status</span></Table.HeaderCell>
+				<Table.HeaderCell width={2}><span>Actions</span></Table.HeaderCell>
+			</Table.Row>
+		</Table.Header>
+	);
+};
+
+export default styled(LatestActivityTableHeader)`
+	background: #F2F2F2;
+
+	th {
+		font-weight: 500 !important;
+		padding-top: 1.5em;
+		padding-bottom: 1.5em;
+
+		:not(:first-child){
+			span {
+				border-left: 1px solid #ddd;
+				padding 0.3em 0 0.3em 1em;
+				margin-left: -1em;
+			}
+		}
+	}
+`;

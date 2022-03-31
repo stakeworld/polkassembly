@@ -17,6 +17,7 @@ import StatusTag from '../../../ui-components/StatusTag';
 
 interface LatestActivityTableRowProps {
 	postId: number
+	index: number
 	address: string
 	className?: string
 	created_at?: Date
@@ -31,6 +32,7 @@ interface LatestActivityTableRowProps {
 
 const LatestActivityTableRow = function ({
 	postId,
+	index,
 	address,
 	className,
 	created_at,
@@ -119,6 +121,9 @@ const LatestActivityTableRow = function ({
 
 	return (
 		<Table.Row className={className + ' table-row'}>
+			<Table.Cell onClick={ gotoPost } className='sub-title-text'>
+				{ index }
+			</Table.Cell>
 			<Table.Cell onClick={ gotoPost }>
 				<div className='main-title-text'>{mainTitle}</div>
 				{subTitle && <div className='sub-title-text'>{subTitle}</div>}
@@ -167,7 +172,7 @@ export default styled(LatestActivityTableRow)`
 
 	.username {
 		color: #75767C !important;
-		font-weight: 500;
+		font-weight: 400;
 	}
 
 	.action-btn-cell {

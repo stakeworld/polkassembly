@@ -12,6 +12,7 @@ import { useLatestDemocracyTreasuryProposalPostsQuery } from '../../../generated
 import { post_topic } from '../../../global/post_topics';
 import { post_type } from '../../../global/post_types';
 import FilteredError from '../../../ui-components/FilteredError';
+import LatestActivityTableHeader from '../LatestActivityTableHeader';
 import LatestActivityTableRow from '../LatestActivityTableRow';
 
 interface Props {
@@ -51,22 +52,15 @@ const LatestTreasuryTable = ({ className }:Props) => {
 
 		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
 			<Table basic='very' striped unstackable selectable>
-				<Table.Header className='table-header'>
-					<Table.Row>
-						<Table.HeaderCell width={6}><span>Title</span></Table.HeaderCell>
-						<Table.HeaderCell width={3}><span>Posted By</span></Table.HeaderCell>
-						<Table.HeaderCell width={3}><span>Type</span></Table.HeaderCell>
-						<Table.HeaderCell width={2}><span>Status</span></Table.HeaderCell>
-						<Table.HeaderCell width={2}><span>Actions</span></Table.HeaderCell>
-					</Table.Row>
-				</Table.Header>
+				<LatestActivityTableHeader className={className} />
 
 				<Table.Body>
 					{data.posts.map(
-						(post) => {
+						(post, index) => {
 							return !!post?.author?.username && (!!post.onchain_link?.onchain_treasury_spend_proposal.length || post.onchain_link?.onchain_treasury_proposal_id) &&
 								<LatestActivityTableRow
 									key={post.id}
+									index={index+1}
 									postId={post.id}
 									address={post.onchain_link.proposer_address}
 									onchainId={post.onchain_link?.onchain_treasury_proposal_id}
