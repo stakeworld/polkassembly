@@ -51,7 +51,7 @@ const LatestTipsTable = ({ className }:Props) => {
 
 		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
 			<Table basic='very' striped unstackable selectable>
-				<LatestActivityTableHeader className={className} />
+				<LatestActivityTableHeader className={className} hideSerialNum={true} />
 
 				<Table.Body>
 					{data.posts.map(
@@ -68,6 +68,7 @@ const LatestTipsTable = ({ className }:Props) => {
 									title={post.title}
 									postType='tip'
 									created_at={post.created_at}
+									hideSerialNum={true}
 								/>
 							;
 						}

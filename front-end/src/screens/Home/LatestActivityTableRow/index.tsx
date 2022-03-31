@@ -46,39 +46,50 @@ const LatestActivityTableRow = function ({
 }:LatestActivityTableRowProps) {
 	const { history } = useRouter();
 	const [postTypeIcon, setPostTypeIcon] = useState<any>();
+	const [postSerialID, setPostSerialID] = useState<any>();
 
 	useEffect(() => {
 		let icon;
+		let serialID:any = 0;
 
 		switch (postType){
 		case 'discussion':
 			icon = <Icon name='comments outline' />;
+			serialID = null;
 			break;
 		case 'referenda':
 			icon = <Icon name='clipboard check' />;
+			serialID = onchainId;
 			break;
 		case 'proposal':
 			icon = <Icon name='file alternate' />;
+			serialID = onchainId;
 			break;
 		case 'motion':
 			icon = <Icon name='forward' />;
+			serialID = onchainId;
 			break;
 		case 'treasury proposal':
 			icon = <Icon name='diamond' />;
+			serialID = onchainId;
 			break;
 		case 'tech committee proposal':
 			icon = <Icon name='file alternate' />;
+			serialID = onchainId;
 			break;
 		case 'bounty':
 			icon = <Icon name='dollar sign' />;
+			serialID = onchainId;
 			break;
 		case 'tip':
 			icon = <Icon name='lightbulb' />;
+			serialID = null;
 			break;
 		}
 
 		setPostTypeIcon(icon);
-	},[postType]);
+		setPostSerialID(serialID);
+	},[postType, onchainId]);
 
 	const mainTitle = <h4 className={tipReason ? 'tipTitle' : ''}><div>{method || tipReason ||  title || noTitle}</div></h4>;
 	const subTitle = title && tipReason && method && <h5>{title}</h5>;
@@ -122,7 +133,7 @@ const LatestActivityTableRow = function ({
 	return (
 		<Table.Row className={className + ' table-row'}>
 			{!hideSerialNum ? <Table.Cell onClick={ gotoPost } className='sub-title-text'>
-				{ postId }
+				{ postSerialID }
 			</Table.Cell> : null}
 			<Table.Cell onClick={ gotoPost }>
 				<div className='main-title-text'>{mainTitle}</div>
