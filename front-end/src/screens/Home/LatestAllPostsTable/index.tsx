@@ -1,0 +1,213 @@
+// Copyright 2019-2020 @Premiurly/polkassembly authors & contributors
+// This software may be modified and distributed under the terms
+// of the Apache-2.0 license. See the LICENSE file for details.
+
+import styled from '@xstyled/styled-components';
+import React, { useEffect } from 'react';
+// import { Link } from 'react-router-dom';
+import { Tab, Table } from 'semantic-ui-react';
+import NothingFoundCard from 'src/ui-components/NothingFoundCard';
+
+import { useLatestPostsQuery } from '../../../generated/graphql';
+import FilteredError from '../../../ui-components/FilteredError';
+import LatestActivityTableRow from '../LatestActivityTableRow';
+
+interface Props {
+	className?: string
+}
+
+interface PostTypeData {
+	method: string,
+	onChainId: number,
+	postTypeString: 'referenda' | 'proposal' | 'motion' | 'treasury proposal' | 'tech committee proposal' | 'bounty' | 'tip',
+	status: string
+}
+
+const LatestAllPostsTable = ({ className }:Props) => {
+
+	const { data, error, refetch } = useLatestPostsQuery({ variables: {
+		limit: 10
+	} });
+
+	useEffect(() => {
+		refetch();
+	}, [refetch]);
+
+	function getPostTypeData(post: any): PostTypeData | null{
+		if(!post.onchain_link){
+			return null;
+		}
+
+		let postType: string = '';
+
+		for (const key of Object.keys(post.onchain_link)) {
+			if(/_id$/.test(key) && post.onchain_link[key]){
+				postType = key;
+				break;
+			}
+		}
+
+		const postData: PostTypeData = {
+			method: '',
+			onChainId: 0,
+			postTypeString: 'proposal',
+			status: ''
+		};
+
+		switch (postType){
+		case 'onchain_bounty_id':
+			postData.postTypeString = 'bounty';
+			postData.method = '';
+			postData.onChainId = post.onchain_link?.onchain_bounty_id;
+			postData.status = post.onchain_link.onchain_bounty[0]?.bountyStatus?.[0].status;
+			break;
+		case 'onchain_motion_id':
+			postData.postTypeString = 'motion';
+			postData.method = post.onchain_link.onchain_motion[0]?.preimage?.method;
+			postData.onChainId = post.onchain_link?.onchain_motion_id;
+			postData.status = post.onchain_link.onchain_motion[0]?.motionStatus?.[0].status;
+			break;
+		case 'onchain_proposal_id':
+			postData.postTypeString = 'proposal';
+			postData.method = post.onchain_link.onchain_proposal[0]?.preimage?.method;
+			postData.onChainId = post.onchain_link?.onchain_proposal_id;
+			postData.status = post.onchain_link.onchain_proposal[0]?.proposalStatus?.[0].status;
+			break;
+		case 'onchain_referendum_id':
+			postData.postTypeString = 'referenda';
+			postData.method = post.onchain_link.onchain_referendum[0]?.preimage?.method;
+			postData.onChainId = post.onchain_link?.onchain_referendum_id;
+			postData.status = post.onchain_link.onchain_referendum[0]?.referendumStatus?.[0].status;
+			break;
+		case 'onchain_tech_committee_proposal_id':
+			postData.postTypeString = 'tech committee proposal';
+			postData.method = post.onchain_link.onchain_tech_committee_proposal[0]?.preimage?.method;
+			postData.onChainId = post.onchain_link?.onchain_tech_committee_proposal_id;
+			postData.status = post.onchain_link.onchain_tech_committee_proposal[0]?.status?.[0].status;
+			break;
+		case 'onchain_treasury_proposal_id':
+			postData.postTypeString = 'treasury proposal';
+			postData.method = '';
+			postData.onChainId = post.onchain_link?.onchain_treasury_proposal_id;
+			postData.status = post.onchain_link.onchain_treasury_spend_proposal[0]?.treasuryStatus?.[0].status;
+			break;
+		case 'onchain_tip_id':
+			postData.postTypeString = 'tip';
+			postData.method = '';
+			postData.onChainId = post.onchain_link?.onchain_tip_id;
+			postData.status = post.onchain_link.onchain_tip[0]?.tipStatus?.[0].status;
+		}
+
+		return postData;
+	}
+
+	if (error?.message) return <Tab.Pane loading={!data} className='tab-panel'><FilteredError text={error.message}/></Tab.Pane>;
+
+	if(data){
+		const noPost = !data.posts || !data.posts.length;
+
+		if (noPost)
+			return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
+				<NothingFoundCard className={className} text='There are currently no posts.'/>
+			</Tab.Pane>;
+
+		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
+			<Table basic='very' striped unstackable selectable>
+				<Table.Header className='table-header'>
+					<Table.Row>
+						<Table.HeaderCell width={7}><span>Title</span></Table.HeaderCell>
+						<Table.HeaderCell width={3}><span>Posted By</span></Table.HeaderCell>
+						<Table.HeaderCell width={2}><span>Type</span></Table.HeaderCell>
+						<Table.HeaderCell width={2}><span>Status</span></Table.HeaderCell>
+						<Table.HeaderCell width={2}><span>Actions</span></Table.HeaderCell>
+					</Table.Row>
+				</Table.Header>
+
+				<Table.Body>
+					{data.posts.map(
+						(post) => {
+							const postTypeData = getPostTypeData(post);
+
+							if(postTypeData){
+								return postTypeData && !!post?.author?.username && !!post.onchain_link?.proposer_address &&
+									<LatestActivityTableRow
+										key={post.id}
+										postId={post.id}
+										address={post.onchain_link.proposer_address}
+										method={postTypeData.method ? postTypeData.method : undefined}
+										onchainId={postTypeData?.onChainId}
+										status={postTypeData.status}
+										title={post.title}
+										postType={postTypeData.postTypeString}
+										created_at={post.created_at}
+									/>
+								;
+							}
+							return null;
+						}
+					)}
+				</Table.Body>
+			</Table>
+		</Tab.Pane>;
+	}
+
+	return <Tab.Pane loading className='tab-panel'></Tab.Pane>;
+
+};
+
+export default styled(LatestAllPostsTable)`
+	&&& {
+    .tab-header {
+      background: white;
+      border-top-left-radius: 0.5em;
+      border-top-right-radius: 0.5em;
+      padding-top: 0.5em;
+      margin-left: 0.5em;
+    }
+  
+    .tab-menu {
+      overflow-x: auto;
+      overflow-y: hidden;
+  
+      a.active {
+        border-bottom: 5px solid #E5007A !important;
+      }
+    }
+  
+    .item:first-child{
+      margin-left: 1em !important;
+    }
+  
+    .item {
+      font-size: 1.5em;
+    }
+  
+    .tab-panel{
+      background: white;
+      border: none !important;
+      width: 100% !important;
+      margin-left: 0 !important;
+      font-size: 1.5rem;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+  
+    .table-header{
+      background: #F2F2F2;
+  
+      th {
+        font-weight: 500 !important;
+        padding-top: 1.5em;
+        padding-bottom: 1.5em;
+
+        :not(:first-child){
+          span {
+            border-left: 1px solid #ddd;
+            padding 0.3em 0 0.3em 1em;
+            margin-left: -1em;
+          }
+        }
+      }
+    }
+	}
+`;

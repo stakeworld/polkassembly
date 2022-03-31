@@ -9,6 +9,7 @@ import { MdClose } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import { Accordion, Dropdown, Icon, Menu, Responsive, Sidebar, SidebarPusher } from 'semantic-ui-react';
 import NetworkDropdown from 'src/ui-components/NetworkDropdown';
+import SearchBar from 'src/ui-components/SearchBar';
 import getNetwork from 'src/util/getNetwork';
 
 import logo from '../../assets/polkassembly-logo.png';
@@ -80,7 +81,7 @@ const MenuBar = ({ className } : Props): JSX.Element => {
 
 	const userMenu = currentUser.web3signup && currentUser.defaultAddress
 		? <><AddressComponent address={currentUser.defaultAddress} /></>
-		: <><Icon name='user circle' inverted />{username}</>;
+		: <><Icon size='big' name='user circle' inverted />{username}</>;
 
 	const caretIcon = <Icon name='caret down' inverted />;
 
@@ -160,23 +161,12 @@ const MenuBar = ({ className } : Props): JSX.Element => {
 			<Responsive minWidth={Responsive.onlyComputer.minWidth}>
 				<Menu className={`${className} ${NETWORK}`} stackable inverted borderless>
 					<Menu.Item as={NavLink} to="/" className='logo' id='title'><img alt='Polkassembly Logo' src={logo} /></Menu.Item>
-					{contentItems.map((item, index) => <Menu.Item as={NavLink} className='desktop_items' key={index} {...item} />)}
-					<Menu.Item className='desktop_items'>
-						<Dropdown trigger={<>On-chain</>} icon={caretIcon} item={true}>
-							<Dropdown.Menu>
-								{onchainItems.map((item, index) => <Menu.Item as={NavLink} key={index} {...item}/>)}
-							</Dropdown.Menu>
-						</Dropdown>
-					</Menu.Item>
-					{latestBlockNumber ? <Menu.Item>
-						<Icon name="cube" style={{ marginRight: '10px' }}/>
-						<a href={blockUrl} target='_blank' rel='noreferrer'>{` ${latestBlockNumber}`}</a>
-					</Menu.Item> : null}
-					<Menu.Menu position="right">
+					<Menu.Menu className='right-menu' position="right">
+						<SearchBar className='search-bar' />
 						<NetworkDropdown />
 						{username
 							? <>
-								<Dropdown trigger={userMenu} icon={caretIcon} item={true}>
+								<Dropdown className='logged-in-dropdown' trigger={userMenu} icon={caretIcon} item={true}>
 									<Dropdown.Menu>
 										{loggedInItems.map((item, index) => <Menu.Item as={NavLink} key={index} {...item}/>)}
 									</Dropdown.Menu>
@@ -194,10 +184,9 @@ const MenuBar = ({ className } : Props): JSX.Element => {
 };
 
 export default styled(MenuBar)`
-	&.polkadot {
-		border-top: solid !important;
-		border-top-color: pink_primary !important;
-	}
+@media only screen and (min-width: 992px) {
+	height: 80px;
+}
 
 	.pink_primary-text{
 		color: pink_primary !important;
@@ -205,13 +194,13 @@ export default styled(MenuBar)`
 
 	&.ui.menu, .ui.inverted.menu {
 		font-family: font_default;
-		background-color: black_full;
+		background-color: nav_black;
 		border-radius: 0rem;
 		letter-spacing: 0.2px;
 
 		& a.active {
 			outline: none;
-			background-color: black_full !important;
+			background-color: nav_black !important;
 		}
 		.item {
 			color: grey_secondary;
@@ -233,7 +222,35 @@ export default styled(MenuBar)`
 					width: 10rem;
 				}
 			}
-			background-color: black_full !important;
+			background-color: nav_black !important;
+		}
+	}
+
+	.right-menu {
+		display: flex;
+		align-items: center;
+
+		.search-bar {
+			margin-right: 1em;
+
+			input {
+				color: #ddd;
+				background: rgba(255, 255, 255, 0.25);
+				border-radius: 0.7em !important;
+				padding-top: 1em;
+				padding-bottom: 1em;
+				width: 26rem;
+			}
+
+			.results {
+				width: 35.5vw !important;
+				overflow-y: auto;
+				height: 70vh;
+			}
+		}
+
+		.logged-in-dropdown, i.icon.caret {
+			color: #fff !important;
 		}
 	}
 
@@ -316,7 +333,7 @@ export default styled(MenuBar)`
 				padding: 0.5rem 0.5rem;
 				margin: 0 1.2rem;
 				:hover {
-					background-color: black_full !important;
+					background-color: nav_black !important;
 				}
 			}
 

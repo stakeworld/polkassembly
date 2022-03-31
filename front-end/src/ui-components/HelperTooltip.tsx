@@ -15,11 +15,11 @@ const popupStyle = {
 	marginLeft: '-1rem'
 };
 
-const myIcon = ({ className }:{className?: string}) => <Icon className={className} name='question circle'/>;
+const myIcon = ({ className }:{className?: string}) => <Icon className={className} name='info circle'/>;
 
 export const StyledIcon = styled(myIcon)`
 	color: grey_secondary;
-	font-size: 1.3rem !important;
+	// font-size: 1.3rem !important;
 	margin-left: 0.2rem !important;
 `;
 

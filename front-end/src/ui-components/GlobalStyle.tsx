@@ -57,6 +57,20 @@ export const GlobalStyle = createGlobalStyle`
         text-decoration: none;
     }
 
+    .d-flex {
+        display: flex;
+    }
+
+    .route-wrapper {
+        margin: 2em 1em 6em 3vw;
+        width: 90%;
+
+        @media only screen and (max-width: 1000px) {
+            margin: 1em auto 6em auto;
+            width: 95%;
+        }
+    }
+
     .container-fluid {
         max-width: 1200px;
         padding: 0 2.5rem 0 2.5rem;
@@ -66,11 +80,6 @@ export const GlobalStyle = createGlobalStyle`
 			padding: 0 2.5rem 0 2.5rem;
 		}
     }
-    }
-
-    #page-container {
-        position: relative;
-        min-height: 100vh;
     }
 
     .ui.container {
