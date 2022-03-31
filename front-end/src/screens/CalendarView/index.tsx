@@ -38,7 +38,7 @@ const CalendarView = ({ className }: Props) => {
 	// function getEvents(){
 	// function start() {
 	// window.gapi.client.init({
-	// 'apiKey': 'AIzaSyDTTeR90xmQUC3xQcrqnghpg5s46MFsfpg'
+	// 'apiKey': ''
 	// }).then(function() {
 	// return window.gapi.client.request({
 	// 'path': 'https://www.googleapis.com/calendar/v3/calendars/events@polkassembly.io/events'
