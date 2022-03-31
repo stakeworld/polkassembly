@@ -25,7 +25,8 @@ interface LatestActivityTableRowProps {
 	status?: string | null
 	tipReason?: string
 	title?: string | null
-	postType: 'referenda' | 'proposal' | 'motion' | 'treasury proposal' | 'tech committee proposal' | 'bounty' | 'tip'
+	postType: 'discussion' | 'referenda' | 'proposal' | 'motion' | 'treasury proposal' | 'tech committee proposal' | 'bounty' | 'tip'
+	username?: string
 }
 
 const LatestActivityTableRow = function ({
@@ -38,7 +39,8 @@ const LatestActivityTableRow = function ({
 	status,
 	tipReason,
 	title,
-	postType
+	postType,
+	username
 }:LatestActivityTableRowProps) {
 	const { history } = useRouter();
 	const [postTypeIcon, setPostTypeIcon] = useState<any>();
@@ -47,6 +49,9 @@ const LatestActivityTableRow = function ({
 		let icon;
 
 		switch (postType){
+		case 'discussion':
+			icon = <Icon name='comments outline' />;
+			break;
 		case 'referenda':
 			icon = <Icon name='clipboard check' />;
 			break;
@@ -83,6 +88,9 @@ const LatestActivityTableRow = function ({
 		let path: string = '';
 
 		switch (postType){
+		case 'discussion':
+			path = 'post';
+			break;
 		case 'referenda':
 			path = 'referendum';
 			break;
@@ -116,12 +124,14 @@ const LatestActivityTableRow = function ({
 				{subTitle && <div className='sub-title-text'>{subTitle}</div>}
 			</Table.Cell>
 			<Table.Cell onClick={ gotoPost }>
-				<Address
-					address={address}
-					className='address'
-					displayInline={true}
-					disableIdenticon={true}
-				/>
+				{!address ? <span className='username'> { username } </span> :
+					<Address
+						address={address}
+						className='address'
+						displayInline={true}
+						disableIdenticon={true}
+					/>
+				}
 				<div className='sub-title-text'>
 					Posted { relativeCreatedAt }
 				</div>
@@ -153,6 +163,11 @@ export default styled(LatestActivityTableRow)`
 		font-size: 14px;
 		margin-top: 0.5em;
 		color: #A4A4A4;
+	}
+
+	.username {
+		color: #75767C !important;
+		font-weight: 500;
 	}
 
 	.action-btn-cell {

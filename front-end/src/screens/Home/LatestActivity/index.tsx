@@ -13,6 +13,7 @@ import { post_type } from 'src/global/post_types';
 import LatestActivitySearchPage from '../LatestActivitySearchPage';
 import LatestAllPostsTable from '../LatestAllPostsTable';
 import LatestBountiesTable from '../LatestBountiesTable';
+import LatestDiscussionsTable from '../LatestDiscussionsTable';
 import LatestMotionsTable from '../LatestMotionsTable';
 import LatestProposalsTable from '../LatestProposalsTable';
 import LatestReferendaTable from '../LatestReferendaTable';
@@ -87,6 +88,10 @@ const LatestActivity = ({ className }: Props) => {
 			render: () => <LatestAllPostsTable className='tab-panel' />
 		},
 		{
+			menuItem: <Menu.Item key='discussions' className='no-label-item'>Discussions</Menu.Item>,
+			render: () => <LatestDiscussionsTable className='tab-panel' />
+		},
+		{
 			menuItem: <Menu.Item key='referenda'>Referenda <Label circular>{ referendaData?.posts_aggregate.aggregate?.count }</Label></Menu.Item>,
 			render: () => <LatestReferendaTable className='tab-panel' />
 		},
@@ -111,7 +116,7 @@ const LatestActivity = ({ className }: Props) => {
 			render: () => <LatestTipsTable className='tab-panel' />
 		},
 		{
-			menuItem: <Menu.Item className='menu-right' key='search'> <Icon name='search' /> </Menu.Item>,
+			menuItem: <Menu.Item className='menu-right no-label-item' key='search'> <Icon name='search' /> </Menu.Item>,
 			render: () => <LatestActivitySearchPage className='tab-panel' />
 		}
 	// {
@@ -152,6 +157,10 @@ export default styled(LatestActivity)`
 				overflow-x: auto;
 				overflow-y: hidden;
 
+				.no-label-item {
+					padding-bottom: 1.2em;
+				}
+
 				a {
 					.label {
 						color: rgba(0, 0, 0, 0.45) !important;
@@ -168,6 +177,7 @@ export default styled(LatestActivity)`
 						color: #E5007A !important;
 						background: rgba(229, 0, 122, 0.1) !important;
 					}
+
 				}
 
 				a.active.no-border {
