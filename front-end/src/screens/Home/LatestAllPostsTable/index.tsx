@@ -19,10 +19,11 @@ interface Props {
 }
 
 interface PostTypeData {
-	method: string,
-	onChainId: number,
-	postTypeString: 'discussion' |'referenda' | 'proposal' | 'motion' | 'treasury proposal' | 'tech committee proposal' | 'bounty' | 'tip',
+	method: string
+	onChainId: number
+	postTypeString: 'discussion' |'referenda' | 'proposal' | 'motion' | 'treasury proposal' | 'tech committee proposal' | 'bounty' | 'tip'
 	status: string
+	title: string
 }
 
 const LatestAllPostsTable = ({ className }:Props) => {
@@ -44,7 +45,8 @@ const LatestAllPostsTable = ({ className }:Props) => {
 			method: '',
 			onChainId: 0,
 			postTypeString: 'proposal',
-			status: ''
+			status: '',
+			title: post.title
 		};
 
 		if(!post.onchain_link){
@@ -103,6 +105,7 @@ const LatestAllPostsTable = ({ className }:Props) => {
 			postData.method = '';
 			postData.onChainId = post.onchain_link?.onchain_tip_id;
 			postData.status = post.onchain_link.onchain_tip[0]?.tipStatus?.[0].status;
+			postData.title = post.title ? post.title : post.onchain_link.onchain_tip?.[0]?.reason;
 		}
 
 		return postData;
@@ -136,7 +139,7 @@ const LatestAllPostsTable = ({ className }:Props) => {
 										method={postTypeData.method ? postTypeData.method : undefined}
 										onchainId={postTypeData?.onChainId}
 										status={postTypeData.status}
-										title={post.title}
+										title={postTypeData.title}
 										postType={postTypeData.postTypeString}
 										created_at={post.created_at}
 										username = {post.author.username}
