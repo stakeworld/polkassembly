@@ -56,11 +56,10 @@ const LatestTreasuryTable = ({ className }:Props) => {
 
 				<Table.Body>
 					{data.posts.map(
-						(post, index) => {
+						(post) => {
 							return !!post?.author?.username && (!!post.onchain_link?.onchain_treasury_spend_proposal.length || post.onchain_link?.onchain_treasury_proposal_id) &&
 								<LatestActivityTableRow
 									key={post.id}
-									index={index+1}
 									postId={post.id}
 									address={post.onchain_link.proposer_address}
 									onchainId={post.onchain_link?.onchain_treasury_proposal_id}

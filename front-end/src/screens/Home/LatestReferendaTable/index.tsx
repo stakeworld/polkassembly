@@ -53,11 +53,10 @@ const LatestReferendaTable = ({ className }:Props) => {
 
 				<Table.Body>
 					{data.posts.map(
-						(post, index) => {
+						(post) => {
 							return !!post?.author?.username && (!!post.onchain_link?.onchain_referendum.length || post.onchain_link?.onchain_referendum_id) &&
 								<LatestActivityTableRow
 									key={post.id}
-									index={index+1}
 									postId={post.id}
 									address={post.onchain_link.proposer_address}
 									method={post.onchain_link.onchain_referendum[0]?.preimage?.method}

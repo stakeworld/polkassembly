@@ -55,13 +55,12 @@ const LatestTipsTable = ({ className }:Props) => {
 
 				<Table.Body>
 					{data.posts.map(
-						(post, index) => {
+						(post) => {
 							const onchainId = post.onchain_link?.onchain_tip_id;
 
 							return !!post?.author?.username && (!!post.onchain_link?.onchain_tip.length || post.onchain_link?.onchain_tip_id) &&
 								<LatestActivityTableRow
 									key={post.id}
-									index={index+1}
 									postId={post.id}
 									address={post.onchain_link.proposer_address}
 									onchainId={onchainId}

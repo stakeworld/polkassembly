@@ -17,7 +17,6 @@ import StatusTag from '../../../ui-components/StatusTag';
 
 interface LatestActivityTableRowProps {
 	postId: number
-	index: number
 	address: string
 	className?: string
 	created_at?: Date
@@ -32,7 +31,6 @@ interface LatestActivityTableRowProps {
 
 const LatestActivityTableRow = function ({
 	postId,
-	index,
 	address,
 	className,
 	created_at,
@@ -122,7 +120,7 @@ const LatestActivityTableRow = function ({
 	return (
 		<Table.Row className={className + ' table-row'}>
 			<Table.Cell onClick={ gotoPost } className='sub-title-text'>
-				{ index }
+				{ postId }
 			</Table.Cell>
 			<Table.Cell onClick={ gotoPost }>
 				<div className='main-title-text'>{mainTitle}</div>

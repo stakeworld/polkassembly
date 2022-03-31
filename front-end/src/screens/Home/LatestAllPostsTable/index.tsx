@@ -124,14 +124,13 @@ const LatestAllPostsTable = ({ className }:Props) => {
 
 				<Table.Body>
 					{data.posts.map(
-						(post, index) => {
+						(post) => {
 							const postTypeData = getPostTypeData(post);
 
 							if(postTypeData){
 								return postTypeData && !!post?.author?.username &&
 									<LatestActivityTableRow
 										key={post.id}
-										index={index+1}
 										postId={post.id}
 										address={postTypeData.postTypeString == 'discussion' ? post.author[defaultAddressField]! : post.onchain_link?.proposer_address!}
 										method={postTypeData.method ? postTypeData.method : undefined}

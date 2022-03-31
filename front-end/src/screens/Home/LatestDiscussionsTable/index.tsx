@@ -46,11 +46,10 @@ const LatestDiscussionsTable = ({ className }:Props) => {
 
 				<Table.Body>
 					{data.posts.map(
-						(post, index) => {
+						(post) => {
 							return !!post?.author?.username &&
 								<LatestActivityTableRow
 									key={post.id}
-									index={index+1}
 									postId={post.id}
 									address={post.author[defaultAddressField]!}
 									onchainId={post.id}
