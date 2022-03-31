@@ -8,9 +8,7 @@ import { authorFields } from 'src/fragments/author';
 export const QUERY_ALL_POSTS = gql`
     query LatestPosts($limit: Int! = 10) {
         posts(limit: $limit, order_by: {
-            onchain_link: {
-                created_at: desc
-            }
+            id: desc
         }) {
             id
             title
