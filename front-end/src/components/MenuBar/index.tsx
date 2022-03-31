@@ -162,6 +162,9 @@ const MenuBar = ({ className } : Props): JSX.Element => {
 				<Menu className={`${className} ${NETWORK}`} stackable inverted borderless>
 					<Menu.Item as={NavLink} to="/" className='logo' id='title'><img alt='Polkassembly Logo' src={logo} /></Menu.Item>
 					<Menu.Menu className='right-menu' position="right">
+
+						{username && <Menu.Item title='Create Post' as={NavLink} to="/post/create"><Icon className='create-post-btn' name='add circle' size='large' /></Menu.Item>}
+
 						<SearchBar className='search-bar' />
 						<NetworkDropdown />
 						{username
@@ -187,6 +190,9 @@ export default styled(MenuBar)`
 @media only screen and (min-width: 992px) {
 	height: 80px;
 }
+	.create-post-btn {
+		cursor: pointer; 
+	}
 
 	.pink_primary-text{
 		color: pink_primary !important;
