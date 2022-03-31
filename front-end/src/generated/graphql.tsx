@@ -26739,7 +26739,7 @@ export const LatestDemocracyProposalPostsDocument = gql`
     query LatestDemocracyProposalPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
   posts(
     limit: $limit
-    where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_proposal_id: {_is_null: false}, onchain_referendum_id: {_is_null: true}}}
+    where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_proposal_id: {_is_null: false}}}
     order_by: {onchain_link: {onchain_proposal_id: desc}}
   ) {
     id
@@ -26814,7 +26814,7 @@ export type LatestDemocracyProposalPostsQueryResult = ApolloReactCommon.QueryRes
 export const DemocracyProposalCountDocument = gql`
     query DemocracyProposalCount($postType: Int!, $postTopic: Int!) {
   posts_aggregate(
-    where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_proposal_id: {_is_null: false}, onchain_referendum_id: {_is_null: true}}}
+    where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_proposal_id: {_is_null: false}}}
   ) {
     aggregate {
       count

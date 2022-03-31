@@ -21,9 +21,6 @@ export const QUERY_LATEST_PROPOSALS = gql`
             onchain_link: {
                 onchain_proposal_id: {
                     _is_null: false
-                },
-                onchain_referendum_id: {
-                    _is_null: true
                 }
             }
         }, order_by: {
@@ -74,7 +71,7 @@ export const QUERY_LATEST_PROPOSALS = gql`
 
 export const QUERY_COUNT_DEMOCRACY_PROPOSALS = gql`
     query DemocracyProposalCount($postType: Int!, $postTopic: Int!) {
-        posts_aggregate(where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_proposal_id: {_is_null: false}, onchain_referendum_id: {_is_null: true}}}) {
+        posts_aggregate(where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_proposal_id: {_is_null: false}}}) {
             aggregate {
             count
             }
