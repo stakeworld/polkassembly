@@ -10,7 +10,7 @@ import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
 import { Card, Icon, Progress } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
-import { SUBSCAN_API_KEY } from 'src/global/apiKeys';
+import { REACT_APP_SUBSCAN_API_KEY } from 'src/global/apiKeys';
 import { chainProperties } from 'src/global/networkConstants';
 import { useBlockTime } from 'src/hooks';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
@@ -158,7 +158,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-Key': SUBSCAN_API_KEY
+						'X-API-Key': REACT_APP_SUBSCAN_API_KEY || ''
 					},
 					method: 'POST'
 				}
@@ -201,7 +201,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-Key': SUBSCAN_API_KEY
+						'X-API-Key': REACT_APP_SUBSCAN_API_KEY || ''
 					},
 					method: 'POST'
 				}
@@ -239,7 +239,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-Key': SUBSCAN_API_KEY
+						'X-API-Key': REACT_APP_SUBSCAN_API_KEY || ''
 					},
 					method: 'POST'
 				}
@@ -273,7 +273,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-Key': SUBSCAN_API_KEY
+						'X-API-Key': REACT_APP_SUBSCAN_API_KEY || ''
 					},
 					method: 'POST'
 				}

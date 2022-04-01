@@ -9,7 +9,7 @@ import BN from 'bn.js';
 import React, { useContext, useEffect, useState } from 'react';
 import { Grid, Icon } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
-import { SUBSCAN_API_KEY } from 'src/global/apiKeys';
+import { REACT_APP_SUBSCAN_API_KEY } from 'src/global/apiKeys';
 import { chainProperties } from 'src/global/networkConstants';
 import { useBlockTime } from 'src/hooks';
 import Card from 'src/ui-components/Card';
@@ -152,7 +152,7 @@ const TreasuryOverview = () => {
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-Key': SUBSCAN_API_KEY
+						'X-API-Key': REACT_APP_SUBSCAN_API_KEY || ''
 					},
 					method: 'POST'
 				}
@@ -191,7 +191,7 @@ const TreasuryOverview = () => {
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-Key': SUBSCAN_API_KEY
+						'X-API-Key': REACT_APP_SUBSCAN_API_KEY || ''
 					},
 					method: 'POST'
 				}
