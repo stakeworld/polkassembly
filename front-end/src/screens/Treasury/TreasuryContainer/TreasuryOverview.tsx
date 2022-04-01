@@ -152,7 +152,7 @@ const TreasuryOverview = () => {
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-Key': SUBSCAN_API_KEY
+						'X-API-Key': SUBSCAN_API_KEY || ''
 					},
 					method: 'POST'
 				}
@@ -191,7 +191,7 @@ const TreasuryOverview = () => {
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-Key': SUBSCAN_API_KEY
+						'X-API-Key': SUBSCAN_API_KEY || ''
 					},
 					method: 'POST'
 				}

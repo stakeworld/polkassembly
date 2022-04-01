@@ -158,7 +158,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-Key': SUBSCAN_API_KEY
+						'X-API-Key': SUBSCAN_API_KEY || ''
 					},
 					method: 'POST'
 				}
@@ -201,7 +201,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-Key': SUBSCAN_API_KEY
+						'X-API-Key': SUBSCAN_API_KEY || ''
 					},
 					method: 'POST'
 				}
@@ -239,7 +239,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-Key': SUBSCAN_API_KEY
+						'X-API-Key': SUBSCAN_API_KEY || ''
 					},
 					method: 'POST'
 				}
@@ -273,7 +273,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-Key': SUBSCAN_API_KEY
+						'X-API-Key': SUBSCAN_API_KEY || ''
 					},
 					method: 'POST'
 				}
