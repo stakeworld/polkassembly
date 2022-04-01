@@ -9,7 +9,7 @@ import { Tab, Table } from 'semantic-ui-react';
 import NothingFoundCard from 'src/ui-components/NothingFoundCard';
 import getDefaultAddressField from 'src/util/getDefaultAddressField';
 
-import { useLatestPostsQuery } from '../../../generated/graphql';
+import { useGetLatestPostsQuery } from '../../../generated/graphql';
 import FilteredError from '../../../ui-components/FilteredError';
 import LatestActivityTableHeader from '../LatestActivityTableHeader';
 import LatestActivityTableRow from '../LatestActivityTableRow';
@@ -30,7 +30,7 @@ const LatestAllPostsTable = ({ className }:Props) => {
 
 	const defaultAddressField = getDefaultAddressField();
 
-	const { data, error, refetch } = useLatestPostsQuery({ variables: {
+	const { data, error, refetch } = useGetLatestPostsQuery({ variables: {
 		limit: 10
 	} });
 

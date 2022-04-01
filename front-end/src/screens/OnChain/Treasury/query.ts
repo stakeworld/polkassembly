@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import { authorFields } from 'src/fragments/author';
 
 export const QUERY_LATEST_TREASURY_PROPOSALS = gql`
-    query LatestDemocracyTreasuryProposalPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5 ) {
+    query GetLatestDemocracyTreasuryProposalPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5 ) {
         posts(limit: $limit, where: {
             type: {
                 id: {
@@ -51,7 +51,7 @@ export const QUERY_LATEST_TREASURY_PROPOSALS = gql`
             onchain_link {
                 id
                 onchain_treasury_proposal_id
-                onchain_treasury_spend_proposal(where: {}) {
+                onchain_treasury_spend_proposal {
                     id
                     treasuryStatus(last: 1) {
                         id

@@ -8,7 +8,7 @@ import React, { useEffect } from 'react';
 import { Tab, Table } from 'semantic-ui-react';
 import NothingFoundCard from 'src/ui-components/NothingFoundCard';
 
-import { useLatestDemocracyTreasuryProposalPostsQuery } from '../../../generated/graphql';
+import { useGetLatestDemocracyTreasuryProposalPostsQuery } from '../../../generated/graphql';
 import { post_topic } from '../../../global/post_topics';
 import { post_type } from '../../../global/post_types';
 import FilteredError from '../../../ui-components/FilteredError';
@@ -20,7 +20,7 @@ interface Props {
 }
 
 const LatestTreasuryTable = ({ className }:Props) => {
-	const { data, error, refetch } = useLatestDemocracyTreasuryProposalPostsQuery({ variables: {
+	const { data, error, refetch } = useGetLatestDemocracyTreasuryProposalPostsQuery({ variables: {
 		limit: 10,
 		postTopic: post_topic.TREASURY,
 		postType: post_type.ON_CHAIN

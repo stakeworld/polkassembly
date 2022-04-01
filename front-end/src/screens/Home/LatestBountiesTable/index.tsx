@@ -8,7 +8,7 @@ import React, { useEffect } from 'react';
 import { Tab, Table } from 'semantic-ui-react';
 import NothingFoundCard from 'src/ui-components/NothingFoundCard';
 
-import { useLatestBountyPostsQuery } from '../../../generated/graphql';
+import { useGetLatestBountyPostsQuery } from '../../../generated/graphql';
 import { post_type } from '../../../global/post_types';
 import FilteredError from '../../../ui-components/FilteredError';
 import LatestActivityTableHeader from '../LatestActivityTableHeader';
@@ -20,7 +20,7 @@ interface Props {
 
 const LatestBountiesTable = ({ className }:Props) => {
 
-	const { data, error, refetch } = useLatestBountyPostsQuery({ variables: {
+	const { data, error, refetch } = useGetLatestBountyPostsQuery({ variables: {
 		limit: 10,
 		postType: post_type.ON_CHAIN
 	} });

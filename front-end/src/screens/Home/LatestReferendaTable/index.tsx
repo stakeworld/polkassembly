@@ -8,7 +8,7 @@ import React, { useEffect } from 'react';
 import { Tab, Table } from 'semantic-ui-react';
 import NothingFoundCard from 'src/ui-components/NothingFoundCard';
 
-import { useAllReferendaPostsQuery } from '../../../generated/graphql';
+import { useGetLatestReferendaPostsQuery } from '../../../generated/graphql';
 import { post_type } from '../../../global/post_types';
 import FilteredError from '../../../ui-components/FilteredError';
 import LatestActivityTableHeader from '../LatestActivityTableHeader';
@@ -20,7 +20,7 @@ interface Props {
 
 const LatestReferendaTable = ({ className }:Props) => {
 
-	const { data, error, refetch } = useAllReferendaPostsQuery({ variables: {
+	const { data, error, refetch } = useGetLatestReferendaPostsQuery({ variables: {
 		limit: 10,
 		postType: post_type.ON_CHAIN
 	} });
