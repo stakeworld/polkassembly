@@ -27189,7 +27189,7 @@ export const LatestDemocracyTreasuryProposalPostsDocument = gql`
     query LatestDemocracyTreasuryProposalPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
   posts(
     limit: $limit
-    where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_treasury_proposal_id: {_is_null: false}, onchain_motion_id: {_is_null: true}}}
+    where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_treasury_proposal_id: {_is_null: false}}}
     order_by: {onchain_link: {onchain_treasury_proposal_id: desc}}
   ) {
     id
@@ -27258,7 +27258,7 @@ export type LatestDemocracyTreasuryProposalPostsQueryResult = ApolloReactCommon.
 export const DemocracyTreasuryProposalCountDocument = gql`
     query DemocracyTreasuryProposalCount($postType: Int!, $postTopic: Int!) {
   posts_aggregate(
-    where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_treasury_proposal_id: {_is_null: false}, onchain_motion_id: {_is_null: true}}}
+    where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_treasury_proposal_id: {_is_null: false}}}
   ) {
     aggregate {
       count
