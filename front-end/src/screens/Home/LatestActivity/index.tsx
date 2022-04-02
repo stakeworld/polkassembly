@@ -212,6 +212,19 @@ export default styled(LatestActivity)`
 			overflow-x: auto;
 			overflow-y: auto;
 			max-height: 500px;
+
+			table tbody {
+				tr:nth-child(2n){
+					background-color: rgba(30, 30, 40, 0.03) !important;
+				}
+
+				tr:hover {
+					background-color: rgba(0, 0, 0, 0.1) !important;
+					
+				}
+			}
+			
+
 		}
 	
 		.table-header{
