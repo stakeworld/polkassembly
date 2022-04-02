@@ -4,7 +4,9 @@
 
 import styled from '@xstyled/styled-components';
 import React from 'react';
-import { Icon, Popup } from 'semantic-ui-react';
+import { Popup } from 'semantic-ui-react';
+
+import infoCircleIcon from '../assets/InfoCircle.png';
 
 interface Props {
 	content: string
@@ -15,17 +17,16 @@ const popupStyle = {
 	marginLeft: '-1rem'
 };
 
-const myIcon = ({ className }:{className?: string}) => <Icon className={className} name='info circle'/>;
+const myIcon = ({ className }:{className?: string}) => <img className={className} height="18" width="18" src={infoCircleIcon} />;
 
 export const StyledIcon = styled(myIcon)`
-	color: grey_secondary;
-	// font-size: 1.3rem !important;
-	margin-left: 0.2rem !important;
+	margin-top: -0.25em !important;
+	margin-left: 0.25em !important;
 `;
 
 const HelperTooltip = ({ content }:Props) =>
 	<Popup
-		trigger={<span><StyledIcon/></span>}
+		trigger={<span><StyledIcon /></span>}
 		content={content}
 		style={popupStyle}
 		hoverable={true}
