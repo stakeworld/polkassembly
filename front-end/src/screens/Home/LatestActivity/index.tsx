@@ -5,7 +5,7 @@
 import styled from '@xstyled/styled-components';
 import React, { useEffect } from 'react';
 import { Icon, Label, Menu, Tab } from 'semantic-ui-react';
-import { useBountiesCountQuery,useDemocracyProposalCountQuery, useDemocracyTreasuryProposalCountQuery,useLatestMotionsCountQuery, usePostsCountQuery, useReferundumCountQuery, useTipProposalCountQuery } from 'src/generated/graphql';
+import { useBountiesCountQuery,useDemocracyProposalCountQuery, useDemocracyTreasuryProposalCountQuery,useGetLatestMotionsCountQuery, usePostsCountQuery, useReferundumCountQuery, useTipProposalCountQuery } from 'src/generated/graphql';
 import { post_topic } from 'src/global/post_topics';
 import { post_type } from 'src/global/post_types';
 
@@ -36,7 +36,7 @@ const LatestActivity = ({ className }: Props) => {
 		postType: post_type.ON_CHAIN
 	} });
 
-	const { data: motionsData, refetch: motionsRefetch } = useLatestMotionsCountQuery({ variables: {
+	const { data: motionsData, refetch: motionsRefetch } = useGetLatestMotionsCountQuery({ variables: {
 		postType: post_type.ON_CHAIN
 	} });
 

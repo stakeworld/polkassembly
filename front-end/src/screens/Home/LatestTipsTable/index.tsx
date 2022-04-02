@@ -9,7 +9,7 @@ import { Tab, Table } from 'semantic-ui-react';
 import { post_topic } from 'src/global/post_topics';
 import NothingFoundCard from 'src/ui-components/NothingFoundCard';
 
-import { useLatestTipPostsQuery } from '../../../generated/graphql';
+import { useGetLatestTipPostsQuery } from '../../../generated/graphql';
 import { post_type } from '../../../global/post_types';
 import FilteredError from '../../../ui-components/FilteredError';
 import LatestActivityTableHeader from '../LatestActivityTableHeader';
@@ -21,7 +21,7 @@ interface Props {
 
 const LatestTipsTable = ({ className }:Props) => {
 
-	const { data, error, refetch } = useLatestTipPostsQuery({ variables: {
+	const { data, error, refetch } = useGetLatestTipPostsQuery({ variables: {
 		limit: 10,
 		postTopic: post_topic.TREASURY,
 		postType: post_type.ON_CHAIN

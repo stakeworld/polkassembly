@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import { authorFields } from 'src/fragments/author';
 
 export const QUERY_ALL_POSTS = gql`
-    query LatestPosts($limit: Int! = 10) {
+    query GetLatestPosts($limit: Int! = 10) {
         posts(limit: $limit, order_by: {
             id: desc
         }) {
@@ -33,7 +33,7 @@ export const QUERY_ALL_POSTS = gql`
             onchain_link {
                 id
                 onchain_proposal_id
-                onchain_proposal(where: {NOT: {proposalStatus_some: {OR: [{status: "Tabled"}, {status: "Cleared"}]}}}) {
+                onchain_proposal {
                     id
                     proposalStatus(last: 1) {
                         id
@@ -45,7 +45,7 @@ export const QUERY_ALL_POSTS = gql`
                     }
                 }
                 onchain_bounty_id
-                onchain_bounty(where: {NOT: {bountyStatus_some: {OR: [{status: "BountyCanceled"}, {status: "BountyRejected"}, {status: "BountyAwarded"}, {status: "BountyClaimed"}]}}}) {
+                onchain_bounty {
                     id
                     bountyStatus(last: 1) {
                         id
@@ -53,7 +53,7 @@ export const QUERY_ALL_POSTS = gql`
                     }
                 }
                 onchain_motion_id
-                onchain_motion(where: {NOT: {motionStatus_some: {OR: [{status: "Executed"}, {status: "Disapproved"}]}}}) {
+                onchain_motion {
                     id
                     motionStatus(last: 1) {
                         id
@@ -65,7 +65,7 @@ export const QUERY_ALL_POSTS = gql`
                     }
                 }
                 onchain_referendum_id
-                onchain_referendum(where: {NOT: {referendumStatus_some: {OR: [{status: "Passed"}, {status: "Executed"}, {status: "NotPassed"}, {status: "Cancelled"}, {status: "Vetoed"}]}}}) {
+                onchain_referendum {
                     id
                     end
                     referendumStatus(last: 1) {
@@ -78,7 +78,7 @@ export const QUERY_ALL_POSTS = gql`
                     }
                 }
                 onchain_tech_committee_proposal_id
-                onchain_tech_committee_proposal(where: {NOT: {status_some: {OR: [{status: "Closed"}, {status: "Approved"}, {status: "Executed"}, {status: "Disapproved"}]}}}) {
+                onchain_tech_committee_proposal {
                     id
                     status(last: 1) {
                         id
@@ -90,7 +90,7 @@ export const QUERY_ALL_POSTS = gql`
                     }
                 }
                 onchain_tip_id
-                onchain_tip(where: {NOT: {tipStatus_some: {OR: [{status: "TipClosed"}, {status: "TipClosing"}, {status: "TipRetracted"}]}}}) {
+                onchain_tip {
                     id
                     reason
                     tipStatus(last: 1) {
@@ -99,7 +99,7 @@ export const QUERY_ALL_POSTS = gql`
                     }
                 }
                 onchain_treasury_proposal_id
-                onchain_treasury_spend_proposal(where: {}) {
+                onchain_treasury_spend_proposal {
                     id
                     treasuryStatus(last: 1) {
                         id

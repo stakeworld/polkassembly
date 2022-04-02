@@ -8,7 +8,7 @@ import React, { useEffect } from 'react';
 import { Tab, Table } from 'semantic-ui-react';
 import NothingFoundCard from 'src/ui-components/NothingFoundCard';
 
-import { useAllDemocracyProposalPostsQuery } from '../../../generated/graphql';
+import { useGetLatestDemocracyProposalPostsQuery } from '../../../generated/graphql';
 import { post_topic } from '../../../global/post_topics';
 import { post_type } from '../../../global/post_types';
 import FilteredError from '../../../ui-components/FilteredError';
@@ -21,7 +21,7 @@ interface Props {
 
 const LatestProposalsTable = ({ className }:Props) => {
 
-	const { data, error, refetch } = useAllDemocracyProposalPostsQuery({ variables: {
+	const { data, error, refetch } = useGetLatestDemocracyProposalPostsQuery({ variables: {
 		limit: 10,
 		postTopic: post_topic.DEMOCRACY,
 		postType: post_type.ON_CHAIN
