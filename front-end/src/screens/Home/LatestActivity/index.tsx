@@ -4,14 +4,13 @@
 
 import styled from '@xstyled/styled-components';
 import React, { useEffect } from 'react';
-import { Icon, Label, Menu, Popup, Tab } from 'semantic-ui-react';
+import { Icon, Label, Menu, Tab } from 'semantic-ui-react';
 import { useBountiesCountQuery,useDemocracyProposalCountQuery, useDemocracyTreasuryProposalCountQuery,useGetLatestMotionsCountQuery, usePostsCountQuery, useReferundumCountQuery, useTipProposalCountQuery } from 'src/generated/graphql';
 import { post_topic } from 'src/global/post_topics';
 import { post_type } from 'src/global/post_types';
-import SearchBar from 'src/ui-components/SearchBar';
 
 // import filterIMG from '../../../assets/latest-activity-filter.png';
-// import LatestActivitySearchPage from '../LatestActivitySearchPage';
+import LatestActivitySearchPage from '../LatestActivitySearchPage';
 import LatestAllPostsTable from '../LatestAllPostsTable';
 import LatestBountiesTable from '../LatestBountiesTable';
 import LatestDiscussionsTable from '../LatestDiscussionsTable';
@@ -26,11 +25,6 @@ interface Props {
 }
 
 const LatestActivity = ({ className }: Props) => {
-	const searchPopupStyle = {
-		padding: '2em',
-		width: '310px'
-	};
-
 	const { data: postsData, refetch: postsRefetch } = usePostsCountQuery();
 
 	const { data: referendaData, refetch: referendaRefetch } = useReferundumCountQuery({ variables: {
@@ -122,18 +116,8 @@ const LatestActivity = ({ className }: Props) => {
 			render: () => <LatestTipsTable className='tab-panel' />
 		},
 		{
-			menuItem: <Popup
-				key='search'
-				trigger={<Menu.Item className='menu-right no-label-item'><Icon name='search' /></Menu.Item>}
-				position='left center'
-				pinned
-				style={searchPopupStyle}
-				hoverable
-				on='click'
-				eventsEnabled={false}
-			>
-				<SearchBar className='search-bar' size='massive' />
-			</Popup>
+			menuItem: <Menu.Item className='menu-right no-label-item' key='search'> <Icon name='search' /> </Menu.Item>,
+			render: () => <LatestActivitySearchPage className='tab-panel' />
 		}
 	// {
 	// menuItem: <Menu.Item className='no-border' key='filter'>
