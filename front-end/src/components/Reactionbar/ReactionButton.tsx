@@ -167,14 +167,6 @@ const ReactionButton = function ({
 		}
 	};
 
-	let popupContent = '';
-
-	if (userNames.length > 5) {
-		popupContent = `${userNames.slice(0, 5).join(', ')} and ${userNames.length - 5} others`;
-	} else {
-		popupContent = userNames.join(', ');
-	}
-
 	const button =  <span className={className}>
 		{
 			isLatestActivity ?
@@ -201,9 +193,9 @@ const ReactionButton = function ({
 
 	</span>;
 
-	return userNames.length > 0 ?
+	return !id ?
 		<Popup
-			content={popupContent}
+			content={'Please sign in to react.'}
 			trigger={button}
 		/> : button;
 };

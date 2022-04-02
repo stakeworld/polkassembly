@@ -98,6 +98,7 @@ export default styled(NetworkInfo)`
 			h4 {
 				color: #fff !important;
 				font-weight: 400;
+				font-size: 18px !important;
 			}
 		}
 

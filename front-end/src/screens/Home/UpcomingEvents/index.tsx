@@ -4,7 +4,7 @@
 
 import styled from '@xstyled/styled-components';
 import React from 'react';
-import { Image, List } from 'semantic-ui-react';
+// import { Image, List } from 'semantic-ui-react';
 
 interface Props {
   className?: string
@@ -17,20 +17,20 @@ interface Props {
 // }
 
 const UpcomingEvents = ({ className }: Props) => {
-	const listItems = [];
-	for (let i = 0; i <= 16; i++) {
-		listItems.push(
-			<List.Item className='news-list-item' key={i}>
-				<Image avatar src='https://avatars.githubusercontent.com/u/33775474?s=280&v=4' />
-				<List.Content>
-					<List.Description className='list-item-date'>
-						Jan 17, 2022 at 21:33 UTC
-					</List.Description>
-					<List.Header className='list-item-title'>New Project: Ajuna Network</List.Header>
-				</List.Content>
-			</List.Item>
-		);
-	}
+	// const listItems = [];
+	// for (let i = 0; i <= 16; i++) {
+	// listItems.push(
+	// <List.Item className='news-list-item' key={i}>
+	// <Image avatar src='https://avatars.githubusercontent.com/u/33775474?s=280&v=4' />
+	// <List.Content>
+	// <List.Description className='list-item-date'>
+	// Jan 17, 2022 at 21:33 UTC
+	// </List.Description>
+	// <List.Header className='list-item-title'>New Project: Ajuna Network</List.Header>
+	// </List.Content>
+	// </List.Item>
+	// );
+	// }
 
 	return (
 		<div className={className}>
