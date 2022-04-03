@@ -141,85 +141,108 @@ const LatestActivity = ({ className }: Props) => {
 
 export default styled(LatestActivity)`
 	&&& {
-			.menu-right{
-				margin-left: auto !important;
-			}
 
-			.tab-header {
-				background: white;
-				border-top-left-radius: 0.5em;
-				border-top-right-radius: 0.5em;
-				padding-top: 0.5em;
-				margin-left: 0.5em;
-			}
+		h1 {
+			font-size: 30px;
+		}
 		
-			.tab-menu {
-				overflow-x: auto;
-				overflow-y: hidden;
+		.menu-right{
+			margin-left: auto !important;
+		}
 
-				.no-label-item {
-					padding-bottom: 1.2em;
+		.tab-header {
+			background: white;
+			border-top-left-radius: 0.5em;
+			border-top-right-radius: 0.5em;
+			padding-top: 0.5em;
+			margin-left: 0.5em;
+
+			.item:hover {
+				border-bottom: 5px solid #E5007A !important;
+			}
+		}
+	
+		.tab-menu {
+			overflow-x: auto;
+			overflow-y: hidden;
+
+			.no-label-item {
+				padding-top: 1.15em;
+				padding-bottom: 1.15em;
+			}
+
+			a {
+				.label {
+					color: rgba(0, 0, 0, 0.45) !important;
+					background: #F0F0F0 !important;
+					font-size: 12px !important;
+				}
+			}
+	
+			a.active {
+				border-bottom: 5px solid #E5007A !important;
+
+				.label {
+					font-size: 12px !important;
+					color: #E5007A !important;
+					background: rgba(229, 0, 122, 0.1) !important;
 				}
 
-				a {
-					.label {
-						color: rgba(0, 0, 0, 0.45) !important;
-						background: #F0F0F0 !important;
-						font-size: 12px !important;
+			}
+
+			a.active.no-border {
+				border-bottom: 5px solid #fff !important;
+			}
+		}
+	
+		.item:first-child{
+			margin-left: 1em !important;
+		}
+	
+		.item {
+			font-size: 1.5em;
+		}
+	
+		.tab-panel{
+			background: white;
+			border: none !important;
+			width: 100% !important;
+			margin-left: 0 !important;
+			font-size: 1.5rem;
+			overflow-x: auto;
+			overflow-y: auto;
+			max-height: 500px;
+
+			table tbody {
+				tr:nth-child(2n){
+					background-color: rgba(30, 30, 40, 0.03) !important;
+				}
+
+				tr:hover {
+					background-color: rgba(0, 0, 0, 0.1) !important;
+					
+				}
+			}
+			
+
+		}
+	
+		.table-header{
+			background: #F2F2F2;
+	
+			th {
+				font-weight: 500 !important;
+				padding-top: 1.5em;
+				padding-bottom: 1.5em;
+
+				:not(:first-child){
+					span {
+						border-left: 1px solid #ddd;
+						padding 0.3em 0 0.3em 1em;
+						margin-left: -1em;
 					}
 				}
-		
-				a.active {
-					border-bottom: 5px solid #E5007A !important;
-
-					.label {
-						font-size: 12px !important;
-						color: #E5007A !important;
-						background: rgba(229, 0, 122, 0.1) !important;
-					}
-
-				}
-
-				a.active.no-border {
-					border-bottom: 5px solid #fff !important;
-				}
 			}
-		
-			.item:first-child{
-				margin-left: 1em !important;
-			}
-		
-			.item {
-				font-size: 1.5em;
-			}
-		
-			.tab-panel{
-				background: white;
-				border: none !important;
-				width: 100% !important;
-				margin-left: 0 !important;
-				font-size: 1.5rem;
-				overflow-x: auto;
-				overflow-y: auto;
-				max-height: 500px;
-			}
-		
-			.table-header{
-				background: #F2F2F2;
-		
-				th {
-					font-weight: 500 !important;
-					padding-top: 1.5em;
-					padding-bottom: 1.5em;
-
-					:not(:first-child){
-						span {
-							border-left: 1px solid #ddd;
-							padding 0.3em 0 0.3em 1em;
-							margin-left: -1em;
-						}
-					}
-				}
-			}
+		}
 	}
 `;

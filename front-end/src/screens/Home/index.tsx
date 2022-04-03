@@ -20,15 +20,12 @@ const Home = ({ className }: Props) => {
 	return (
 		<div className={className}>
 			<Grid stackable>
-				<Grid.Row>
+				<Grid.Row className='margin-bottom-48'>
 					<Grid.Column width={16}>
-						<h1 style={ { fontSize: '4.4rem', fontWeight: 500 } }>Dashboard</h1>
-						<NetworkInfo />
-						<br/><br/>
-						<TreasuryOverviewCards />
-						<br/><br/><br/>
+						<h1 className='dashboard-heading'>Dashboard</h1>
+						<NetworkInfo className='margin-bottom-48' />
+						<TreasuryOverviewCards className='margin-bottom-48' />
 						<LatestActivity />
-						<br/><br/>
 					</Grid.Column>
 				</Grid.Row>
 
@@ -46,70 +43,13 @@ const Home = ({ className }: Props) => {
 };
 
 export default styled(Home)`
-
-	.referendumContainer, .proposalContainer, .discussionContainer, .motionContainer, .treasuryContainer, .tipContainer, .bountyContainer, .techCommitteeProposalContainer {
-		margin-bottom: 3rem;
+	.dashboard-heading {
+		font-size: 48px;
+		font-weight: 500;
+		margin-bottom: 36px;
 	}
 
-	h1 {
-		@media only screen and (max-width: 576px) {
-			margin: 3rem 1rem 1rem 1rem;
-		}
-
-		@media only screen and (max-width: 768px) and (min-width: 576px) {
-			margin-left: 1rem;
-		}
-
-		@media only screen and (max-width: 991px) and (min-width: 768px) {
-			margin-left: 1rem;
-		}
-	}
-
-	@media only screen and (max-width: 992px) {
-		.default-address-infobox {
-			display: none;
-		}
-	}
-
-	@media only screen and (max-width: 768px) {
-
-		.mainButtonContainer {
-			margin: 0rem;
-		}
-	}
-
-	@media only screen and (max-width: 991px) and (min-width: 768px) {
-		.ui[class*="tablet reversed"].grid {
-			flex-direction: column-reverse;
-		}
-
-		.mainButtonContainer {
-			margin-top: 1rem!important;
-		}
-	}
-
-	@media only screen and (max-width: 576px) {
-
-		.mainButtonContainer {
-			align-items: stretch!important;
-			margin: 1rem!important;
-
-			.newPostButton {
-				padding: 0.8rem 1rem;
-				border-radius: 0.5rem;
-			}
-		}
-	}
-
-	li {
-        list-style-type: none;
-    }
-
-	.mainButtonContainer {
-		align-items: flex-start;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		margin-bottom: 2rem;
+	.margin-bottom-48{
+		margin-bottom: 48px;
 	}
 `;

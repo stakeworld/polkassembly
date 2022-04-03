@@ -307,7 +307,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 	}, [api, apiReady, currentBlock, blocktime, result.spendPeriod]);
 
 	return (
-		<Card.Group className={className}>
+		<Card.Group id='card-group' className={className}>
 			{/* Available Card */}
 			<Card className='treasury-card'>
 				<Card.Content>
@@ -419,56 +419,61 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 
 export default styled(TreasuryOverviewCards)`
 	&&& {
-		@media only screen and (max-width: 1024px) {
+		overflow-x: auto !important;
+		flex-wrap: nowrap;
+
+		/* @media only screen and (max-width: 1024px) {
 			justify-content: center;
-		}
+		} */
 
 		.treasury-card{
+			display: inline-block;
 			border-radius: 0.5em;
+
+			min-width: 254px;
 			
 			@media only screen and (min-width: 945px) {
-				// width: 170px;
 				width: 254px;
 			}
 			
 			.content{
 				padding-bottom: 0 !important;
 			}
+			
+			.treasury-card-meta {
+				color: #333 !important;
+				font-size: 16px;
+			}
+	
+			.treasury-card-header {
+				margin-top: 0.4em !important;
+				font-size: 24px !important;
+			}
+	
+			.treasury-card-desc{
+				&:not(.progress-desc){
+					margin-top: 0.9em !important;
+					border-top: 1px solid #eee;
+					padding-top: 0.7em;
+				}
+				
+				color: #000 !important;
+	
+				.bar {
+					background-color: #E5007A !important;
+					border-radius: 1em;
+					height: 8px;
+					margin-top: 0.5em;
+				}
+
+				.progressNumber{
+					float: right;
+					color: #787878;
+					font-size: 14px;
+				}
+	
+			}
 		}
 		
-		.treasury-card-meta {
-			color: #333 !important;
-			font-size: 1.5rem;
-		}
-
-		.treasury-card-header {
-			margin-top: 0.4em !important;
-			font-size: 24px !important;
-		}
-
-		.treasury-card-desc{
-			&:not(.progress-desc){
-				margin-top: 0.9em !important;
-				border-top: 1px solid #eee;
-				padding-top: 0.7em;
-			}
-			
-			color: #000 !important;
-
-			.bar {
-				background-color: #E5007A !important;
-				border-radius: 1em;
-				height: 8px;
-				margin-top: 0.5em;
-			}
-
-
-			.progressNumber{
-				float: right;
-				color: #787878;
-				font-size: 14px;
-			}
-
-		}
 	}
 `;

@@ -91,7 +91,11 @@ const LatestActivityTableRow = function ({
 		setPostSerialID(serialID);
 	},[postType, onchainId]);
 
-	const mainTitle = <h4><div>{title || method || noTitle}</div></h4>;
+	const mainTitle = title || method || noTitle;
+
+	// truncate mainTitle
+	const trimmedMainTitle = mainTitle.length > 80 ? `${mainTitle.substring(0, Math.min(80, mainTitle.length))}...`  : mainTitle.substring(0, Math.min(80, mainTitle.length));
+
 	const subTitle = title && tipReason && method && <h5>{title}</h5>;
 	// const currentBlock = useCurrentBlock()?.toNumber() || 0;
 
@@ -136,7 +140,13 @@ const LatestActivityTableRow = function ({
 				{ postSerialID }
 			</Table.Cell> : null}
 			<Table.Cell onClick={ gotoPost }>
-				<div className='main-title-text'>{mainTitle}</div>
+				<div className='main-title-text'>
+					<h4>
+						<div>
+							{trimmedMainTitle}
+						</div>
+					</h4>
+				</div>
 				{subTitle && <div className='sub-title-text'>{subTitle}</div>}
 			</Table.Cell>
 			<Table.Cell onClick={ gotoPost }>
@@ -172,7 +182,7 @@ export default styled(LatestActivityTableRow)`
 	.main-title-text h4 {
 		color: #75767C !important;
 		font-size: 16px;
-		font-weight: 500;
+		font-weight: 400;
 	}
 
 	.sub-title-text {
@@ -184,6 +194,13 @@ export default styled(LatestActivityTableRow)`
 	.username {
 		color: #75767C !important;
 		font-weight: 400;
+		font-size: 16px !important;
+	}
+
+	.address{
+		.identityName{
+			font-size: 16px !important;
+		}
 	}
 
 	.action-btn-cell {
@@ -199,6 +216,7 @@ export default styled(LatestActivityTableRow)`
 	.postType-cell {
 		text-transform: capitalize;
 		color: #75767C;
+		font-size: 16px !important;
 	}
 
 	.statusTag {
