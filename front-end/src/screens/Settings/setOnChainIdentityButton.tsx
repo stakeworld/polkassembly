@@ -8,12 +8,14 @@ import Identicon from '@polkadot/react-identicon';
 import type { Data, Option } from '@polkadot/types';
 import type { Registration } from '@polkadot/types/interfaces';
 import { u8aToString } from '@polkadot/util';
+import { checkAddress } from '@polkadot/util-crypto';
 import styled from '@xstyled/styled-components';
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Form, Grid, Icon, Input, Modal, Popup } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
 import { NotificationContext } from 'src/context/NotificationContext';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
+import { addressPrefix } from 'src/global/addressPrefix';
 import { APPNAME } from 'src/global/appName';
 import { chainProperties } from 'src/global/networkConstants';
 import { LoadingStatusType, NotificationStatus } from 'src/types';
@@ -89,6 +91,7 @@ const SetOnChainIdentityButton = ({
 	const currentNetwork = getNetwork();
 
 	const [modalOpen, setModalOpen] = useState<boolean>(false);
+	const [validAddress, setValidAddress] = useState<boolean>(false);
 	const { queueNotification } = useContext(NotificationContext);
 
 	const [displayName, setDisplayName] = useState<string>('');
@@ -114,7 +117,7 @@ const SetOnChainIdentityButton = ({
 
 	const [loadingStatus, setLoadingStatus] = useState<LoadingStatusType>({ isLoading: false, message:'' });
 
-	const [errorsFound, setErrorsFound] = useState<string[]>([]);
+	const [, setErrorsFound] = useState<string[]>([]);
 	const isFormValid = () => {
 		const errorsFound: string[] = [];
 
@@ -145,7 +148,6 @@ const SetOnChainIdentityButton = ({
 		setAvailableAccounts(allAccounts);
 
 		const availableAccountsObj : { [key: string]: boolean } = {
-			'beneficiary': false,
 			'submitWithAccount': false
 		};
 
@@ -174,7 +176,6 @@ const SetOnChainIdentityButton = ({
 
 		// Close dropdown on select
 		const availableAccountsObj : { [key: string]: boolean } = {
-			'beneficiary': false,
 			'submitWithAccount': false
 		};
 		setShowAvailableAccountsObj(availableAccountsObj);
@@ -212,29 +213,67 @@ const SetOnChainIdentityButton = ({
 		if (!apiReady) {
 			return;
 		}
-		api.query.identity.identityOf(submitWithAccount, (data: any) =>
-			setidentityOpt(data)
-		);
 
-		if (identityOpt && identityOpt.isSome) {
+		const [validAddress] = checkAddress(submitWithAccount, addressPrefix[currentNetwork]);
 
-			const { info } = identityOpt.unwrap();
-			setData(info.display, null, setDisplayName);
-			setData(info.email, setHasEmail, setEmail);
-			setData(info.legal, setHasLegal, setLegalName);
-			setData(info.riot, setHasRiot, setRiotName);
-			setData(info.twitter, setHasTwitter, setTwitter);
-			setData(info.web, setHasWeb, setWebsite);
+		setValidAddress(validAddress);
 
-			[info.display, info.email, info.legal, info.riot, info.twitter, info.web].some((info: Data) => {
-				if (info.isRaw) {
-					return true;
-				} else {
-					return false;
-				}
-			});
+		if (validAddress) {
+
+			try{
+				api.query.identity.identityOf(submitWithAccount, (data: any) =>
+					setidentityOpt(data)
+				);
+			}catch(e){
+				setidentityOpt(undefined);
+			}
+
+			if (identityOpt && identityOpt.isSome) {
+
+				const { info } = identityOpt.unwrap();
+				setData(info.display, null, setDisplayName);
+				setData(info.email, setHasEmail, setEmail);
+				setData(info.legal, setHasLegal, setLegalName);
+				setData(info.riot, setHasRiot, setRiotName);
+				setData(info.twitter, setHasTwitter, setTwitter);
+				setData(info.web, setHasWeb, setWebsite);
+
+				[info.display, info.email, info.legal, info.riot, info.twitter, info.web].some((info: Data) => {
+					if (info.isRaw) {
+						return true;
+					} else {
+						return false;
+					}
+				});
+			}
+			else{
+				setDisplayName('');
+				setHasEmail(false);
+				setEmail('');
+				setHasLegal(false);
+				setLegalName('');
+				setHasRiot(false);
+				setRiotName('');
+				setHasTwitter(false);
+				setTwitter('');
+				setHasWeb(false);
+				setWebsite('');
+			}
 		}
-	}, [api, apiReady, submitWithAccount, identityOpt]);
+		else {
+			setDisplayName('');
+			setHasEmail(false);
+			setEmail('');
+			setHasLegal(false);
+			setLegalName('');
+			setHasRiot(false);
+			setRiotName('');
+			setHasTwitter(false);
+			setTwitter('');
+			setHasWeb(false);
+			setWebsite('');
+		}
+	}, [api, apiReady, submitWithAccount, identityOpt, currentNetwork]);
 
 	useEffect((): void => {
 		const okDisplay = checkValue(true, displayName, 1, [], [], []);
@@ -299,7 +338,7 @@ const SetOnChainIdentityButton = ({
 				console.log(`Completed at block hash #${status.asInBlock.toString()}`);
 			} else {
 				if (status.isBroadcast){
-					setLoadingStatus({ isLoading: true, message: 'Broadcasting the vote' });
+					setLoadingStatus({ isLoading: true, message: 'Broadcasting the identity' });
 				}
 				console.log(`Current status: ${status.type}`);
 			}
@@ -346,7 +385,7 @@ const SetOnChainIdentityButton = ({
 										<Form.Field width={16}>
 											<label className='input-label-div'>
 												Submit with account
-												<HelperTooltip content='Set idenity for account' />
+												<HelperTooltip content='Set identity for account' />
 											</label>
 
 											<div className='accountInputDiv'>
@@ -361,7 +400,7 @@ const SetOnChainIdentityButton = ({
 													value={submitWithAccount}
 													onChange={ (e) => onSubmitWithAccountChange(e.target.value)}
 													placeholder='Account Address'
-													error={errorsFound.includes('submitWithAccount')}
+													error={!validAddress}
 												/>
 											</div>
 
