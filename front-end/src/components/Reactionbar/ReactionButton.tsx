@@ -196,7 +196,7 @@ const ReactionButton = function ({
 	let popupContent = '';
 
 	if (userNames.length > 10) {
-		popupContent = `${userNames.slice(0, 5).join(', ')} and ${userNames.length - 5} others`;
+		popupContent = `${userNames.slice(0, 10).join(', ')} and ${userNames.length - 10} others`;
 	} else {
 		popupContent = userNames.join(', ');
 	}
