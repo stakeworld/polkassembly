@@ -22,9 +22,8 @@ const Home = ({ className }: Props) => {
 			<Grid stackable>
 				<Grid.Row className='margin-bottom-48'>
 					<Grid.Column width={16}>
-						<h1 className='dashboard-heading'>Dashboard</h1>
 						<NetworkInfo className='margin-bottom-48' />
-						<TreasuryOverviewCards className='margin-bottom-48' />
+						<TreasuryOverviewCards className='margin-bottom-36' />
 						<LatestActivity />
 					</Grid.Column>
 				</Grid.Row>
@@ -43,13 +42,10 @@ const Home = ({ className }: Props) => {
 };
 
 export default styled(Home)`
-	.dashboard-heading {
-		font-size: 48px;
-		font-weight: 500;
-		margin-bottom: 36px;
-	}
-
 	.margin-bottom-48{
 		margin-bottom: 48px;
+	}
+	.margin-bottom-36{
+		margin-bottom: 36px;
 	}
 `;

@@ -144,6 +144,7 @@ export default styled(LatestActivity)`
 
 		h1 {
 			font-size: 30px;
+			margin-bottom: 16px;
 		}
 		
 		.menu-right{
