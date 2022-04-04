@@ -213,6 +213,7 @@ export default styled(LatestActivity)`
 			overflow-x: auto;
 			overflow-y: auto;
 			max-height: 500px;
+			padding: 0 !important;
 
 			table tbody {
 				tr:nth-child(2n){
@@ -239,7 +240,7 @@ export default styled(LatestActivity)`
 				:not(:first-child){
 					span {
 						border-left: 1px solid #ddd;
-						padding 0.3em 0 0.3em 1em;
+						padding: 0.3em 0 0.3em 1em;
 						margin-left: -1em;
 					}
 				}
