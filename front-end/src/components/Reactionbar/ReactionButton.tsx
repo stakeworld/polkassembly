@@ -193,9 +193,17 @@ const ReactionButton = function ({
 
 	</span>;
 
-	return !id ?
+	let popupContent = '';
+
+	if (userNames.length > 10) {
+		popupContent = `${userNames.slice(0, 10).join(', ')} and ${userNames.length - 10} others`;
+	} else {
+		popupContent = userNames.join(', ');
+	}
+
+	return userNames.length > 0 ?
 		<Popup
-			content={'Please sign in to react.'}
+			content={popupContent}
 			trigger={button}
 		/> : button;
 };
