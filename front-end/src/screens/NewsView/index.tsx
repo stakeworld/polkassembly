@@ -15,15 +15,21 @@ const NewsView = ({ className } : {className?: string}) => {
 
 	const profile = chainLinks[network].twitter.split('/')[3];
 
+	const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+
 	return (
 		<div className={className}>
 			<h1>News</h1>
 			<Grid stackable reversed='mobile tablet'>
-				<Grid.Column className='timeline-col' mobile={16} tablet={16} computer={10}>
+				<Grid.Column className='timeline-col' mobile={16} tablet={10} computer={8}>
 					<TwitterTimelineEmbed
 						sourceType="profile"
 						screenName={profile}
-						autoHeight={true}
+						autoHeight={false}
+						noHeader={true}
+						options={
+							{ height: vh - 20 }
+						}
 					/>
 				</Grid.Column>
 			</Grid>

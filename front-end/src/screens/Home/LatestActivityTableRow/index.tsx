@@ -139,7 +139,7 @@ const LatestActivityTableRow = function ({
 			{!hideSerialNum ? <Table.Cell onClick={ gotoPost } className='sub-title-text serial-num'>
 				{ postSerialID }
 			</Table.Cell> : null}
-			<Table.Cell className='main-title' onClick={ gotoPost }>
+			<Table.Cell className={!hideSerialNum ? 'pl-0' : ''} onClick={ gotoPost }>
 				<div className='main-title-text'>
 					<h4>
 						<div>
@@ -184,7 +184,7 @@ export default styled(LatestActivityTableRow)`
 	}
 
 	@media only screen and (min-width: 992px) {
-		.main-title {
+		.pl-0 {
 			padding-left: 0 !important;
 		}
 	}

@@ -320,7 +320,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 								{formatBnBalance(
 									result.value.toString(),
 									{
-										numberAfterComma: 2,
+										numberAfterComma: 0,
 										withUnit: true
 									}
 								)}
@@ -394,7 +394,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 								{formatBnBalance(
 									result.burn.toString(),
 									{
-										numberAfterComma: 2,
+										numberAfterComma: 0,
 										withUnit: true
 									}
 								)}

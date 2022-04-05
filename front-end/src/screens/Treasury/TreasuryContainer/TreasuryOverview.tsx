@@ -238,7 +238,7 @@ const TreasuryOverview = () => {
 													{formatBnBalance(
 														result.value.toString(),
 														{
-															numberAfterComma: 2,
+															numberAfterComma: 0,
 															withUnit: true
 														}
 													)}
@@ -274,7 +274,7 @@ const TreasuryOverview = () => {
 													{formatBnBalance(
 														result.value.toString(),
 														{
-															numberAfterComma: 2,
+															numberAfterComma: 0,
 															withUnit: true
 														}
 													)}
