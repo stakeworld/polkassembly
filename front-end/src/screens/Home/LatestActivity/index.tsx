@@ -156,8 +156,6 @@ export default styled(LatestActivity)`
 			border-top-left-radius: 0.5em;
 			border-top-right-radius: 0.5em;
 			padding-top: 0.5em;
-			margin-left: 0.5em;
-
 			.item:hover {
 				border-bottom: 5px solid #E5007A !important;
 			}
