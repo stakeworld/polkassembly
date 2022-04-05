@@ -320,7 +320,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 								{formatBnBalance(
 									result.value.toString(),
 									{
-										numberAfterComma: 2,
+										numberAfterComma: 0,
 										withUnit: true
 									}
 								)}
@@ -394,7 +394,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 								{formatBnBalance(
 									result.burn.toString(),
 									{
-										numberAfterComma: 2,
+										numberAfterComma: 0,
 										withUnit: true
 									}
 								)}
@@ -421,6 +421,7 @@ export default styled(TreasuryOverviewCards)`
 	&&& {
 		overflow-x: auto !important;
 		flex-wrap: nowrap;
+		max-width: 99.9%;
 
 		/* @media only screen and (max-width: 1024px) {
 			justify-content: center;

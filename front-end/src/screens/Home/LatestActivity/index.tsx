@@ -144,6 +144,7 @@ export default styled(LatestActivity)`
 
 		h1 {
 			font-size: 30px;
+			margin-bottom: 16px;
 		}
 		
 		.menu-right{
@@ -155,8 +156,6 @@ export default styled(LatestActivity)`
 			border-top-left-radius: 0.5em;
 			border-top-right-radius: 0.5em;
 			padding-top: 0.5em;
-			margin-left: 0.5em;
-
 			.item:hover {
 				border-bottom: 5px solid #E5007A !important;
 			}
@@ -212,6 +211,7 @@ export default styled(LatestActivity)`
 			overflow-x: auto;
 			overflow-y: auto;
 			max-height: 500px;
+			padding: 0 !important;
 
 			table tbody {
 				tr:nth-child(2n){
@@ -238,7 +238,7 @@ export default styled(LatestActivity)`
 				:not(:first-child){
 					span {
 						border-left: 1px solid #ddd;
-						padding 0.3em 0 0.3em 1em;
+						padding: 0.3em 0 0.3em 1em;
 						margin-left: -1em;
 					}
 				}

@@ -51,7 +51,9 @@ const News = ({ className }: Props) => {
 							<TwitterTimelineEmbed
 								sourceType="profile"
 								screenName={profile}
-								options={ { height: 490 } }
+								options={ { height: 480 } }
+								noHeader={true}
+								noFooter={true}
 							/>
 						</Grid.Column>
 					</Grid.Row>
@@ -93,7 +95,7 @@ export default styled(News)`
 			overflow-y: auto;
 			border-right: 2px #eee solid;
 			max-height: 496px;
-			padding-top: 0;
+			padding-top: 10px;
 			padding-left: 1.5em !important;
 		}
 

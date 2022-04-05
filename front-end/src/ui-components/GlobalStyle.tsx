@@ -62,12 +62,17 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     .route-wrapper {
-        margin: 2em 1em 6em 3vw;
+        margin: 2em 1em 6em 3em;
         width: 90%;
 
         @media only screen and (max-width: 1000px) {
-            margin: 1em auto 6em auto;
-            width: 95%;
+            margin: 1em 0 6em 0;
+            width: 100%;
+        }
+
+        @media only screen and (min-width: 768px) and (max-width: 1000px) {
+            margin: 1em 0 6em 1em;
+            width: 100%;
         }
     }
 
