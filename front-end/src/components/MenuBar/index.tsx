@@ -187,9 +187,6 @@ const MenuBar = ({ className } : Props): JSX.Element => {
 };
 
 export default styled(MenuBar)`
-@media only screen and (min-width: 992px) {
-	height: 80px;
-}
 	.create-post-btn {
 		cursor: pointer; 
 	}
