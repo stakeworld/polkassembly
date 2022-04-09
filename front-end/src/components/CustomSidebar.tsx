@@ -29,6 +29,11 @@ const CustomSidebar = ({ className, setIsCollapsed } : { className?: string, set
 			icon: <Icon name='newspaper outline' />,
 			link: '/news',
 			name: 'News'
+		},
+		{
+			icon: <Icon name='chain' />,
+			link: 'https://parachains.polkassembly.io/',
+			name: 'Parachains'
 		}
 	];
 
@@ -115,6 +120,14 @@ const CustomSidebar = ({ className, setIsCollapsed } : { className?: string, set
 		}
 	}
 
+	function gotoRoute(link: string){
+		if(link == 'https://parachains.polkassembly.io/'){
+			window.location.href = link;
+		}else{
+			history.push(link);
+		}
+	}
+
 	return (
 		<>
 			<div className={className} style={ sidebarCollapsed ? { minWidth: '47px', padding: '1.5em 0.2em 0 0.2em', width:'47px' } : {} }>
@@ -127,7 +140,7 @@ const CustomSidebar = ({ className, setIsCollapsed } : { className?: string, set
 						{/* Uncategorized */}
 						{
 							SidebarItems.map(item => (
-								<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+								<List.Item key={item.name} onClick={() => gotoRoute(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
 									{item.icon}
 									<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
 										<List.Header>{item.name}</List.Header>
