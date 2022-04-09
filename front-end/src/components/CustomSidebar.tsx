@@ -281,6 +281,9 @@ export default styled(CustomSidebar)`
 
 		.icon {
 			color: #778192 !important;
+			min-width: 20px !important;
+			max-width: 20px !important;
+			width: 20px !important;
 		}
 
 		.header {
