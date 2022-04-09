@@ -8,7 +8,7 @@ import { useLocation } from 'react-router-dom';
 import { Icon, List } from 'semantic-ui-react';
 import { useRouter } from 'src/hooks';
 
-const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
+const CustomSidebar = ({ className, setIsCollapsed } : { className?: string, setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>> }): JSX.Element => {
 	const SidebarItems = [
 		{
 			icon: <Icon name='th' />,
@@ -97,6 +97,7 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 
 	const toggleSidebarCollapse = () => {
 		setSidebarCollapsed(!sidebarCollapsed);
+		setIsCollapsed(!sidebarCollapsed);
 	};
 
 	function toggleOptionCollapse (optionTitle:string) {

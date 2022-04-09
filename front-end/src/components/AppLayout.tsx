@@ -1,7 +1,7 @@
 // Copyright 2019-2020 @Premiurly/polkassembly authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { ApiContext } from 'src/context/ApiContext';
 import Loader from 'src/ui-components/Loader';
 
@@ -12,6 +12,7 @@ import SwitchRoutes from './SwitchRoutes';
 
 function AppLayout() {
 	const { apiReady } = useContext(ApiContext);
+	const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
 
 	return (
 		<>
@@ -19,8 +20,8 @@ function AppLayout() {
 			<div style={!apiReady ? { opacity: 0.1 } : {}}>
 				<MenuBar />
 				<div className='d-flex'>
-					<CustomSidebar />
-					<div className='route-wrapper'>
+					<CustomSidebar setIsCollapsed={setSidebarCollapsed} />
+					<div className={`route-wrapper ${sidebarCollapsed ? 'collapsed' : ''}`}>
 						<SwitchRoutes />
 					</div>
 				</div>

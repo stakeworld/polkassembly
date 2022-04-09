@@ -62,17 +62,23 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     .route-wrapper {
-        margin: 2em 1em 6em 3em;
-        width: 90%;
+        flex: 1;
 
-        @media only screen and (max-width: 1000px) {
-            margin: 1em 0 6em 0;
-            width: 100%;
+        @media screen and (max-width:992px) {
+            margin: 1em auto 6em auto;
+            max-width: 95% !important;
         }
 
-        @media only screen and (min-width: 768px) and (max-width: 1000px) {
-            margin: 1em 0 6em 1em;
-            width: 100%;
+        &.collapsed {
+            @media screen and (min-width:992px) {
+                margin: 2em 1em 6em 3em;
+                max-width: calc(100vw - 110px);
+            }
+        }
+
+        @media screen and (min-width:992px) {
+            margin: 2em 1em 6em 3em;
+            max-width: calc(100vw - 290px);
         }
     }
 
@@ -84,7 +90,6 @@ export const GlobalStyle = createGlobalStyle`
 		@media (max-width: 1299px) {
 			padding: 0 2.5rem 0 2.5rem;
 		}
-    }
     }
 
     .ui.container {
