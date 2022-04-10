@@ -247,7 +247,7 @@ export default styled(CustomSidebar)`
 	.sidebar-collapse-btn{
 		position: absolute;
 		top: 500px;
-		left: 229px;
+		left: 217px;
 		background: #fff;
 		height: 4em;
 		width: 1em;
@@ -310,5 +310,10 @@ export default styled(CustomSidebar)`
 				cursor: pointer;
 			}
 		}
+	}
+
+	.sidebar-parent {
+		position: sticky;
+		top: -167px;
 	}
 `;
