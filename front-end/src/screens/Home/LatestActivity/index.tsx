@@ -159,6 +159,10 @@ export default styled(LatestActivity)`
 			.item:hover {
 				border-bottom: 5px solid #E5007A !important;
 			}
+
+			.menu {
+				margin-bottom: 0 !important;
+			}
 		}
 	
 		.tab-menu {

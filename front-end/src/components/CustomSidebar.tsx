@@ -8,7 +8,7 @@ import { useLocation } from 'react-router-dom';
 import { Icon, List } from 'semantic-ui-react';
 import { useRouter } from 'src/hooks';
 
-const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
+const CustomSidebar = ({ className, setIsCollapsed } : { className?: string, setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>> }): JSX.Element => {
 	const SidebarItems = [
 		{
 			icon: <Icon name='th' />,
@@ -29,6 +29,11 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 			icon: <Icon name='newspaper outline' />,
 			link: '/news',
 			name: 'News'
+		},
+		{
+			icon: <Icon name='chain' />,
+			link: 'https://parachains.polkassembly.io/',
+			name: 'Parachains'
 		}
 	];
 
@@ -97,6 +102,7 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 
 	const toggleSidebarCollapse = () => {
 		setSidebarCollapsed(!sidebarCollapsed);
+		setIsCollapsed(!sidebarCollapsed);
 	};
 
 	function toggleOptionCollapse (optionTitle:string) {
@@ -114,6 +120,14 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 		}
 	}
 
+	function gotoRoute(link: string){
+		if(link == 'https://parachains.polkassembly.io/'){
+			window.location.href = link;
+		}else{
+			history.push(link);
+		}
+	}
+
 	return (
 		<>
 			<div className={className} style={ sidebarCollapsed ? { minWidth: '47px', padding: '1.5em 0.2em 0 0.2em', width:'47px' } : {} }>
@@ -126,7 +140,7 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 						{/* Uncategorized */}
 						{
 							SidebarItems.map(item => (
-								<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+								<List.Item key={item.name} onClick={() => gotoRoute(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
 									{item.icon}
 									<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
 										<List.Header>{item.name}</List.Header>
@@ -233,7 +247,7 @@ export default styled(CustomSidebar)`
 	.sidebar-collapse-btn{
 		position: absolute;
 		top: 500px;
-		left: 229px;
+		left: 217px;
 		background: #fff;
 		height: 4em;
 		width: 1em;
@@ -267,6 +281,9 @@ export default styled(CustomSidebar)`
 
 		.icon {
 			color: #778192 !important;
+			min-width: 20px !important;
+			max-width: 20px !important;
+			width: 20px !important;
 		}
 
 		.header {
@@ -293,5 +310,10 @@ export default styled(CustomSidebar)`
 				cursor: pointer;
 			}
 		}
+	}
+
+	.sidebar-parent {
+		position: sticky;
+		top: -167px;
 	}
 `;
