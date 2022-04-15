@@ -181,6 +181,8 @@ export default styled(LatestActivityTableRow)`
 
 	.serial-num {
 		padding-right: 0 !important;
+		padding: 0 !important;
+		text-align: center !important;
 	}
 
 	@media only screen and (min-width: 992px) {
