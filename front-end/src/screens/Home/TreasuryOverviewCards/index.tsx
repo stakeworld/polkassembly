@@ -302,7 +302,8 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 		const spendPeriodRemaining: number = totalSpendPeriod - spendPeriodElapsed;
 		setSpendPeriodRemaining(spendPeriodRemaining);
 
-		const percentage = ((spendPeriodRemaining/totalSpendPeriod) * 100).toFixed(0);
+		// spendPeriodRemaining/totalSpendPeriod for opposite
+		const percentage = ((spendPeriodElapsed/totalSpendPeriod) * 100).toFixed(0);
 		setSpendPeriodPercentage(parseFloat(percentage));
 	}, [api, apiReady, currentBlock, blocktime, result.spendPeriod]);
 
