@@ -4,6 +4,7 @@
 
 import { gql } from 'apollo-server-express';
 
+import addProfile from './mutation/addProfile';
 import addressLinkConfirm from './mutation/addressLinkConfirm';
 import addressLinkStart from './mutation/addressLinkStart';
 import addressLogin from './mutation/addressLogin';
@@ -42,6 +43,7 @@ import profileQuery from './query/profile';
 import subscription from './query/subscription';
 import tokenQuery from './query/token';
 import userQuery from './query/user';
+import userDetailsQuery from './query/userDetails';
 import about from './type/about';
 import address from './type/address';
 import addressLinkType from './type/addressLinkType';
@@ -51,6 +53,7 @@ import loginResponseType from './type/loginResponse';
 import messageType from './type/message';
 import notificationPreferencesType from './type/notificationPreferences';
 import notificationPreferencesInput from './type/notificationPreferencesInput';
+import profile from './type/profile';
 import publicUser from './type/publicUser';
 import subscriptionType from './type/subscription';
 import tokenType from './type/token';
@@ -72,6 +75,7 @@ export default gql`
 	${tokenType}
 	${undoEmailChangeResponse}
 	${userType}
+	${profile}
 
 	type Query {
 		${aboutQuery}
@@ -79,9 +83,11 @@ export default gql`
 		${subscription}
 		${tokenQuery}
 		${userQuery}
+		${userDetailsQuery}
 	}
 
 	type Mutation {
+		${addProfile}
 		${addressLinkConfirm}
 		${addressLinkStart}
 		${addressLogin}
