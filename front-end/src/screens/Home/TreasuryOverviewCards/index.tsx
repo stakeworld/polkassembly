@@ -433,6 +433,12 @@ export default styled(TreasuryOverviewCards)`
 			border-radius: 0.5em;
 
 			min-width: 254px;
+			margin-right: 16px !important;
+			margin-left: 0 !important;
+			
+			&:first-child{
+			margin-left: 1px !important;
+			}
 			
 			@media only screen and (min-width: 945px) {
 				width: 254px;
