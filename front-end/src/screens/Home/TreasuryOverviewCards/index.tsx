@@ -450,6 +450,8 @@ export default styled(TreasuryOverviewCards)`
 			.treasury-card-header {
 				margin-top: 0.4em !important;
 				font-size: 24px !important;
+				font-family: 'Roboto';
+				font-weight: 500 !important;
 			}
 	
 			.treasury-card-desc{

@@ -187,6 +187,11 @@ const MenuBar = ({ className } : Props): JSX.Element => {
 };
 
 export default styled(MenuBar)`
+	#title, .item {
+		padding-left: 0 !important;
+		margin-left: 0 !important;
+	}
+
 	.create-post-btn {
 		cursor: pointer; 
 	}
@@ -277,7 +282,7 @@ export default styled(MenuBar)`
 			.desktop_items, #title {
 				text-align: left;
 				margin: auto 0;
-				left: 2rem;
+				left: 0rem;
 				top: 0.3rem;
 				padding-top: 1rem;
 				padding-bottom: 0;
@@ -323,7 +328,7 @@ export default styled(MenuBar)`
 			&>.icon:not(.dropdown) {
 				font-size: 1.6rem!important;
 				display: inline-block;
-				margin: 0 1.2rem auto 0!important;
+				margin: 0 1.2rem auto 0 !important;
 			}
 		}
 	}
