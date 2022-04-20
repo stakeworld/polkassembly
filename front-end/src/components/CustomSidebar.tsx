@@ -132,8 +132,8 @@ const CustomSidebar = ({ className, setIsCollapsed } : { className?: string, set
 		<>
 			<div className={className} style={ sidebarCollapsed ? { minWidth: '47px', padding: '1.5em 0.2em 0 0.2em', width:'47px' } : {} }>
 				<div className='sidebar-parent'>
-					<div onClick={ toggleSidebarCollapse } className='sidebar-collapse-btn' style={ sidebarCollapsed ? { left: '47px' } : {} }>
-						<Icon size='small' name={sidebarCollapsed ? 'chevron right': 'chevron left' } />
+					<div onClick={ toggleSidebarCollapse } className='sidebar-collapse-btn' style={ sidebarCollapsed ? { left: '20px' } : {} }>
+						<Icon size='small' name={sidebarCollapsed ? 'chevron up': 'chevron down' } />
 					</div>
 
 					<List size='large' verticalAlign='middle'>
@@ -246,17 +246,24 @@ export default styled(CustomSidebar)`
 
 	.sidebar-collapse-btn{
 		position: absolute;
-		top: 500px;
-		left: 217px;
-		background: #fff;
-		height: 4em;
-		width: 1em;
+		top: 439px;
+		left: 194px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		cursor: pointer;
 		z-index: 100;
-		border-radius: 0 30px 30px 0;
+		border-bottom: 14px solid #fff;
+		border-left: 12px solid transparent;
+		border-right: 12px solid transparent;
+		height: 0;
+		width: 63px;
+    transform : rotate(90deg);
+    filter: drop-shadow(3px -1px 1px #88888860);
+
+		.icon {
+			margin-bottom: -17px;
+		}
 	}
 
 	.sidebar-item {

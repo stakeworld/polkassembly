@@ -3,14 +3,14 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from '@xstyled/styled-components';
-import React, { useEffect } from 'react';
-import { Icon, Label, Menu, Tab } from 'semantic-ui-react';
+import React, { useEffect, useState } from 'react';
+import { Button, Icon, Label, Menu, Tab } from 'semantic-ui-react';
 import { useBountiesCountQuery,useDemocracyProposalCountQuery, useDemocracyTreasuryProposalCountQuery,useGetLatestMotionsCountQuery, usePostsCountQuery, useReferundumCountQuery, useTipProposalCountQuery } from 'src/generated/graphql';
 import { post_topic } from 'src/global/post_topics';
 import { post_type } from 'src/global/post_types';
 
 // import filterIMG from '../../../assets/latest-activity-filter.png';
-import LatestActivitySearchPage from '../LatestActivitySearchPage';
+// import LatestActivitySearchPage from '../LatestActivitySearchPage';
 import LatestAllPostsTable from '../LatestAllPostsTable';
 import LatestBountiesTable from '../LatestBountiesTable';
 import LatestDiscussionsTable from '../LatestDiscussionsTable';
@@ -116,9 +116,12 @@ const LatestActivity = ({ className }: Props) => {
 			render: () => <LatestTipsTable className='tab-panel' />
 		},
 		{
-			menuItem: <Menu.Item className='menu-right no-label-item' key='search'> <Icon name='search' /> </Menu.Item>,
-			render: () => <LatestActivitySearchPage className='tab-panel' />
+			menuItem: <Button id='search-btn' className='menu-right no-label-item' key='search'> <Icon name='search' /> </Button>
 		}
+		// {
+		// menuItem: <Menu.Item className='menu-right no-label-item' key='search'> <Icon name='search' /> </Menu.Item>,
+		// render: () => <LatestActivitySearchPage className='tab-panel' />
+		// }
 	// {
 	// menuItem: <Menu.Item className='no-border' key='filter'>
 	// <img style={ { height:'auto', width:'1.2em' } } src={filterIMG} alt="Filter" />
@@ -131,10 +134,21 @@ const LatestActivity = ({ className }: Props) => {
 	// }
 	];
 
+	const [activeTabIndex, setActiveIndex] = useState<number>(0);
+
+	const handleChange = (e: any, data:any) => {
+		console.log('data: ', data);
+		if(data.activeIndex == 8){
+			setActiveIndex(0);
+		}else{
+			setActiveIndex(data.activeIndex);
+		}
+	};
+
 	return (
 		<div className={className}>
-			<h1>Latest activity</h1>
-			<Tab className='tab-header' menu={{ className:'tab-menu', pointing: true, secondary: true }} panes={panes} />
+			<h1 id='tab-header'>Latest activity</h1>
+			<Tab className='tab-header' activeIndex={activeTabIndex} defaultActiveIndex={activeTabIndex} onTabChange={handleChange} menu={{ className:'tab-menu', pointing: true, secondary: true }} panes={panes} />
 		</div>
 	);
 };
@@ -162,6 +176,10 @@ export default styled(LatestActivity)`
 
 			.menu {
 				margin-bottom: 0 !important;
+			}
+
+			.search-btn{
+				outline: solid red 1px !important;
 			}
 		}
 	
