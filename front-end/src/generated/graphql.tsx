@@ -19677,6 +19677,34 @@ export type GetLatestDemocracyTreasuryProposalPostsQuery = (
   )> }
 );
 
+export type MyQueryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyQueryQuery = (
+  { __typename?: 'query_root' }
+  & { posts_aggregate: (
+    { __typename?: 'posts_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'posts_aggregate_fields' }
+      & Pick<Posts_Aggregate_Fields, 'count'>
+    )> }
+  ) }
+);
+
+export type DiscussionsCountQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type DiscussionsCountQuery = (
+  { __typename?: 'query_root' }
+  & { posts_aggregate: (
+    { __typename?: 'posts_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'posts_aggregate_fields' }
+      & Pick<Posts_Aggregate_Fields, 'count'>
+    )> }
+  ) }
+);
+
 export const OptionPollFieldsFragmentDoc = gql`
     fragment optionPollFields on option_poll {
   id
@@ -25522,3 +25550,71 @@ export function useGetLatestDemocracyTreasuryProposalPostsLazyQuery(baseOptions?
 export type GetLatestDemocracyTreasuryProposalPostsQueryHookResult = ReturnType<typeof useGetLatestDemocracyTreasuryProposalPostsQuery>;
 export type GetLatestDemocracyTreasuryProposalPostsLazyQueryHookResult = ReturnType<typeof useGetLatestDemocracyTreasuryProposalPostsLazyQuery>;
 export type GetLatestDemocracyTreasuryProposalPostsQueryResult = ApolloReactCommon.QueryResult<GetLatestDemocracyTreasuryProposalPostsQuery, GetLatestDemocracyTreasuryProposalPostsQueryVariables>;
+export const MyQueryDocument = gql`
+    query MyQuery {
+  posts_aggregate(where: {type: {id: {_eq: 1}}}) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useMyQueryQuery__
+ *
+ * To run a query within a React component, call `useMyQueryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyQueryQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyQueryQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MyQueryQuery, MyQueryQueryVariables>) {
+        return ApolloReactHooks.useQuery<MyQueryQuery, MyQueryQueryVariables>(MyQueryDocument, baseOptions);
+      }
+export function useMyQueryLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MyQueryQuery, MyQueryQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<MyQueryQuery, MyQueryQueryVariables>(MyQueryDocument, baseOptions);
+        }
+export type MyQueryQueryHookResult = ReturnType<typeof useMyQueryQuery>;
+export type MyQueryLazyQueryHookResult = ReturnType<typeof useMyQueryLazyQuery>;
+export type MyQueryQueryResult = ApolloReactCommon.QueryResult<MyQueryQuery, MyQueryQueryVariables>;
+export const DiscussionsCountDocument = gql`
+    query DiscussionsCount {
+  posts_aggregate(where: {type: {id: {_eq: 1}}}) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useDiscussionsCountQuery__
+ *
+ * To run a query within a React component, call `useDiscussionsCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDiscussionsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDiscussionsCountQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDiscussionsCountQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<DiscussionsCountQuery, DiscussionsCountQueryVariables>) {
+        return ApolloReactHooks.useQuery<DiscussionsCountQuery, DiscussionsCountQueryVariables>(DiscussionsCountDocument, baseOptions);
+      }
+export function useDiscussionsCountLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<DiscussionsCountQuery, DiscussionsCountQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<DiscussionsCountQuery, DiscussionsCountQueryVariables>(DiscussionsCountDocument, baseOptions);
+        }
+export type DiscussionsCountQueryHookResult = ReturnType<typeof useDiscussionsCountQuery>;
+export type DiscussionsCountLazyQueryHookResult = ReturnType<typeof useDiscussionsCountLazyQuery>;
+export type DiscussionsCountQueryResult = ApolloReactCommon.QueryResult<DiscussionsCountQuery, DiscussionsCountQueryVariables>;

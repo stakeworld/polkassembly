@@ -92,10 +92,10 @@ export default styled(NetworkInfo)`
 		a {
 			margin-top: 0.5em;
 			margin-bottom: 0.5em;
-			padding-right: 1.2em;
+			padding-right: 0.6em;
 
 			&:not(:first-child) {
-				padding-left: 0.5em;
+				padding-left: 0.6em;
 				border-left: 1px solid rgba(238, 238, 238, 0.25);
 			}
 		}
