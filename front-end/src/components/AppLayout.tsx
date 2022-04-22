@@ -13,14 +13,19 @@ import SwitchRoutes from './SwitchRoutes';
 function AppLayout() {
 	const { apiReady } = useContext(ApiContext);
 	const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
+	const [sidebarHidden, setSidebarHidden] = useState<boolean>(false);
+
+	const toggleSidebarHidden = () => {
+		setSidebarHidden(!sidebarHidden);
+	};
 
 	return (
 		<>
 			{!apiReady && <div style={ { left: '50vw', position: 'fixed', top: '50vh', transform: 'translate(-50%, 0)', width: '100%', zIndex: 500 } } ><Loader text='Waiting to make a connection to the remote endpoint and finishing API initialization.' size="big" /></div>}
 			<div style={!apiReady ? { opacity: 0.1 } : {}}>
-				<MenuBar />
+				<MenuBar toggleSidebarHidden={toggleSidebarHidden} />
 				<div className='d-flex'>
-					<CustomSidebar setIsCollapsed={setSidebarCollapsed} />
+					<CustomSidebar sidebarHidden={sidebarHidden} setIsCollapsed={setSidebarCollapsed} setSidebarHidden={setSidebarHidden} />
 					<div className={`route-wrapper ${sidebarCollapsed ? 'collapsed' : ''}`}>
 						<SwitchRoutes />
 					</div>

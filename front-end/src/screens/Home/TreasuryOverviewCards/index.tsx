@@ -423,21 +423,34 @@ export default styled(TreasuryOverviewCards)`
 		overflow-x: auto !important;
 		flex-wrap: nowrap;
 		max-width: 99.9%;
+		margin-left: 0 !important;
 
-		/* @media only screen and (max-width: 1024px) {
-			justify-content: center;
-		} */
+		@media only screen and (max-width: 767px) {
+			width: 100%;
+			flex-direction: column !important;
+			overflow-x: hidden !important;
+		}
 
 		.treasury-card{
 			display: inline-block;
 			border-radius: 0.5em;
 
+			width: 98%;
 			min-width: 254px;
 			margin-right: 16px !important;
 			margin-left: 0 !important;
-			
+
 			&:first-child{
-			margin-left: 1px !important;
+				margin-left: 1px !important;
+			}
+
+			@media only screen and (max-width: 767px) {
+				padding-bottom: 12px;
+				margin-right: auto !important;
+				margin-left: auto !important;
+				&:first-child{
+					margin-left: auto !important;
+				}
 			}
 			
 			@media only screen and (min-width: 945px) {

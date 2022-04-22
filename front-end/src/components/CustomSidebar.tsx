@@ -8,7 +8,7 @@ import { useLocation } from 'react-router-dom';
 import { Icon, List } from 'semantic-ui-react';
 import { useRouter } from 'src/hooks';
 
-const CustomSidebar = ({ className, setIsCollapsed } : { className?: string, setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>> }): JSX.Element => {
+const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHidden } : { className?: string, setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>, sidebarHidden: boolean, setSidebarHidden: React.Dispatch<React.SetStateAction<boolean>> }): JSX.Element => {
 	const SidebarItems = [
 		{
 			icon: <Icon name='th' />,
@@ -125,12 +125,13 @@ const CustomSidebar = ({ className, setIsCollapsed } : { className?: string, set
 			window.location.href = link;
 		}else{
 			history.push(link);
+			setSidebarHidden(true);
 		}
 	}
 
 	return (
 		<>
-			<div className={className} style={ sidebarCollapsed ? { minWidth: '47px', padding: '1.5em 0.2em 0 0.2em', width:'47px' } : {} }>
+			<div className={`${className} ${sidebarHidden ? 'hidden-sm' : ''}`} style={ sidebarCollapsed ? { minWidth: '47px', padding: '1.5em 0.2em 0 0.2em', width:'47px' } : {} }>
 				<div className='sidebar-parent'>
 					<div onClick={ toggleSidebarCollapse } className='sidebar-collapse-btn' style={ sidebarCollapsed ? { left: '20px' } : {} }>
 						<Icon size='small' name={sidebarCollapsed ? 'chevron up': 'chevron down' } />
@@ -157,7 +158,7 @@ const CustomSidebar = ({ className, setIsCollapsed } : { className?: string, set
 						</List.Item>
 						{!collapsedOptions.includes('democracy') || sidebarCollapsed ?
 							DemocracyItems.map(item => (
-								<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+								<List.Item key={item.name} onClick={() => gotoRoute(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
 									{item.icon}
 									<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
 										<List.Header>{item.name}</List.Header>
@@ -177,7 +178,7 @@ const CustomSidebar = ({ className, setIsCollapsed } : { className?: string, set
 						{
 							!collapsedOptions.includes('council') || sidebarCollapsed ?
 								CouncilItems.map(item => (
-									<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+									<List.Item key={item.name} onClick={() => gotoRoute(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
 										{item.icon}
 										<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
 											<List.Header>{item.name}</List.Header>
@@ -197,7 +198,7 @@ const CustomSidebar = ({ className, setIsCollapsed } : { className?: string, set
 						{
 							!collapsedOptions.includes('treasury') || sidebarCollapsed ?
 								TreasuryItems.map(item => (
-									<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+									<List.Item key={item.name} onClick={() => gotoRoute(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
 										{item.icon}
 										<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
 											<List.Header>{item.name}</List.Header>
@@ -217,7 +218,7 @@ const CustomSidebar = ({ className, setIsCollapsed } : { className?: string, set
 						{
 							!collapsedOptions.includes('techComm') || sidebarCollapsed ?
 								TechCommItems.map(item => (
-									<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+									<List.Item key={item.name} onClick={() => gotoRoute(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
 										{item.icon}
 										<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
 											<List.Header>{item.name}</List.Header>
@@ -241,7 +242,17 @@ export default styled(CustomSidebar)`
 	box-shadow: 0.5px 0 5px -2px #888;
 
 	@media only screen and (max-width: 992px) {
-		display: none;
+		position: fixed;
+		z-index: 300;
+		top: 25px;
+		height: 100vh;
+		width: 60%;
+		padding-right: 0;
+		max-width: 250px;
+
+		&.hidden-sm {
+			display: none;
+		}
 	}
 
 	.sidebar-collapse-btn{
@@ -263,6 +274,10 @@ export default styled(CustomSidebar)`
 
 		.icon {
 			margin-bottom: -17px;
+		}
+
+		@media only screen and (max-width: 992px) {
+			display: none;
 		}
 	}
 
@@ -322,5 +337,12 @@ export default styled(CustomSidebar)`
 	.sidebar-parent {
 		position: sticky;
 		top: -167px;
+
+		@media only screen and (max-width: 992px) {
+			overflow-y: auto;
+			position: static;
+			height: 93.8vh;
+			padding-right: 1rem;
+		}
 	}
 `;

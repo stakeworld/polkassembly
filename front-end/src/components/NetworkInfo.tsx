@@ -29,45 +29,46 @@ const NetworkInfo = ({ className }: Props) => {
 			{!error && data &&
 				<div className="networkInfo-icons">
 					{ data.blockchain_socials[0].homepage &&
-					<a href={data.blockchain_socials[0].homepage} target='_blank' rel='noreferrer'>
-						<Icon name='home'/>
-					</a>
+						<a href={data.blockchain_socials[0].homepage} target='_blank' rel='noreferrer'>
+							<Icon name='home'/>
+						</a>
 					}
 					{ data.blockchain_socials[0].twitter &&
-					<a href={data.blockchain_socials[0].twitter} target='_blank' rel='noreferrer'>
-						<Icon name='twitter'/>
-					</a>
+						<a href={data.blockchain_socials[0].twitter} target='_blank' rel='noreferrer'>
+							<Icon name='twitter'/>
+						</a>
 					}
 					{data.blockchain_socials[0].discord &&
-					<a href={data.blockchain_socials[0].discord} target='_blank' rel='noreferrer'>
-						<Icon name='discord'/>
-					</a>
+						<a href={data.blockchain_socials[0].discord} target='_blank' rel='noreferrer'>
+							<Icon name='discord'/>
+						</a>
 					}
 					{data.blockchain_socials[0].github &&
-					<a href={data.blockchain_socials[0].github} target='_blank' rel='noreferrer'>
-						<Icon name='github'/>
-					</a>
+						<a href={data.blockchain_socials[0].github} target='_blank' rel='noreferrer'>
+							<Icon name='github'/>
+						</a>
 					}
 					{data.blockchain_socials[0].youtube &&
-					<a href={data.blockchain_socials[0].youtube} target='_blank' rel='noreferrer'>
-						<Icon name='youtube'/>
-					</a>
+						<a href={data.blockchain_socials[0].youtube} target='_blank' rel='noreferrer'>
+							<Icon name='youtube'/>
+						</a>
 					}
 					{data.blockchain_socials[0].reddit &&
-					<a href={data.blockchain_socials[0].reddit} target='_blank' rel='noreferrer'>
-						<Icon name='reddit alien'/>
-					</a>
+						<a href={data.blockchain_socials[0].reddit} target='_blank' rel='noreferrer'>
+							<Icon name='reddit alien'/>
+						</a>
 					}
 					{data.blockchain_socials[0].telegram &&
-					<a href={data.blockchain_socials[0].telegram} target='_blank' rel='noreferrer'>
-						<Icon name='telegram plane'/>
-					</a>
+						<a href={data.blockchain_socials[0].telegram} target='_blank' rel='noreferrer'>
+							<Icon name='telegram plane'/>
+						</a>
 					}
 					{data.blockchain_socials[0].block_explorer &&
-					<a href={data.blockchain_socials[0].block_explorer} target='_blank' rel='noreferrer'>
-						<Icon name='cube'/>
-					</a>
+						<a href={data.blockchain_socials[0].block_explorer} target='_blank' rel='noreferrer'>
+							<Icon name='cube'/>
+						</a>
 					}
+
 				</div>
 			}
 		</div>
@@ -76,8 +77,6 @@ const NetworkInfo = ({ className }: Props) => {
 
 export default styled(NetworkInfo)`
 	border-radius: 0.8em;
-	margin-left: auto !important;
-	margin-right: auto !important;
 	-webkit-box-shadow: 0px 5px 10px 1px rgba(186,182,186,1);
 	-moz-box-shadow: 0px 5px 10px 1px rgba(186,182,186,1);
 	box-shadow: 0px 5px 10px 1px rgba(186,182,186,1);
@@ -93,7 +92,8 @@ export default styled(NetworkInfo)`
 		a {
 			margin-top: 0.5em;
 			margin-bottom: 0.5em;
-			padding-right: 0.5em;
+			padding-right: 1.2em;
+
 			&:not(:first-child) {
 				padding-left: 0.5em;
 				border-left: 1px solid rgba(238, 238, 238, 0.25);
@@ -114,9 +114,11 @@ export default styled(NetworkInfo)`
 
 		.networkInfo-icons {
 			margin-top: 20px;
+			
 			a {
+				padding-right: 0.6em !important;
 				&:not(:first-child) {
-					padding-left: 0em;
+					padding-left: 0.6em;
 					border-left: 1px solid rgba(238, 238, 238, 0.25);
 				}
 			}
@@ -128,6 +130,8 @@ export default styled(NetworkInfo)`
 		flex-direction: column;
 		justify-content: center;
 		text-align: left;
+		margin-left: auto !important;
+		margin-right: auto !important;
 
 		.networkInfo-icons {
 			margin-top: 20px;
