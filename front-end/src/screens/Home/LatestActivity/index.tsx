@@ -3,14 +3,16 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from '@xstyled/styled-components';
-import React, { useEffect } from 'react';
-import { Icon, Label, Menu, Tab } from 'semantic-ui-react';
-import { useBountiesCountQuery,useDemocracyProposalCountQuery, useDemocracyTreasuryProposalCountQuery,useDiscussionsCountQuery,useGetLatestMotionsCountQuery, usePostsCountQuery, useReferundumCountQuery, useTipProposalCountQuery } from 'src/generated/graphql';
+import debounce from 'lodash/debounce';
+import React, { useEffect, useState } from 'react';
+import { Button, Icon, Input, Label, Menu, Tab } from 'semantic-ui-react';
+import { useBountiesCountQuery,useDemocracyProposalCountQuery, useDemocracyTreasuryProposalCountQuery,useDiscussionsCountQuery,useGetLatestMotionsCountQuery, usePostsCountQuery, useReferundumCountQuery, useSearchPostsLazyQuery, useTipProposalCountQuery } from 'src/generated/graphql';
 import { post_topic } from 'src/global/post_topics';
 import { post_type } from 'src/global/post_types';
 
+// import SearchBar from 'src/ui-components/SearchBar';
 // import filterIMG from '../../../assets/latest-activity-filter.png';
-import LatestActivitySearchPage from '../LatestActivitySearchPage';
+// import LatestActivitySearchPage from '../LatestActivitySearchPage';
 import LatestAllPostsTable from '../LatestAllPostsTable';
 import LatestBountiesTable from '../LatestBountiesTable';
 import LatestDiscussionsTable from '../LatestDiscussionsTable';
@@ -19,12 +21,15 @@ import LatestProposalsTable from '../LatestProposalsTable';
 import LatestReferendaTable from '../LatestReferendaTable';
 import LatestTipsTable from '../LatestTipsTable';
 import LatestTreasuryTable from '../LatestTreasuryTable';
+import SearchPostsTable from '../SearchPostsTable';
 
 interface Props {
   className?: string
 }
 
 const LatestActivity = ({ className }: Props) => {
+	const [searchPostsQuery, { data, loading }] = useSearchPostsLazyQuery();
+
 	const { data: postsData, refetch: postsRefetch } = usePostsCountQuery();
 	const { data: discussionsData, refetch: discussionsRefetch } = useDiscussionsCountQuery();
 
@@ -87,10 +92,47 @@ const LatestActivity = ({ className }: Props) => {
 		tipsRefetch();
 	}, [tipsRefetch]);
 
+	const [showSearchBar, setShowSearchBar] = useState<boolean>();
+	const [searchValue, setSearchValue] = useState<string>('');
+	const [searchResults, setSearchResults] = useState<any[]>([]);
+
+	const toggleSearchBar = () => {
+		setShowSearchBar(!showSearchBar);
+		setActiveIndex(0);
+		setTimeout(() => {
+			document.querySelector('.tab-menu')!.scrollLeft += 200;
+		}, 10);
+	};
+
+	function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
+		const value = e.target.value;
+		setSearchValue(value || '');
+
+		if (!value) {
+			return;
+		}
+
+		searchPostsQuery({
+			variables: {
+				term: `%${value}%`
+			}
+		});
+
+		if (data && data.posts && data.posts.length > 0) {
+			setSearchResults(data.posts);
+		}
+
+	}
+
+	const searchButton =
+			showSearchBar ? <Input className='menu-right no-label-item' loading={loading} fluid icon='search' iconPosition='left' placeholder='Search By Proposal Keyword' value={searchValue} onChange={debounce(handleSearchChange, 500, { leading: true })} />
+				:
+				<Button id='search-btn' onClick={toggleSearchBar} className='menu-right no-label-item'> <Icon name='search' /> </Button>;
+
 	const panes = [
 		{
 			menuItem: <Menu.Item key='all'>All <Label circular>{ postsData?.posts_aggregate.aggregate?.count }</Label></Menu.Item>,
-			render: () => <LatestAllPostsTable className='tab-panel' />
+			render: () => showSearchBar && searchValue ? <SearchPostsTable className='tab-panel' loading={loading} searchResults={searchResults} /> : <LatestAllPostsTable className='tab-panel' />
 		},
 		{
 			menuItem: <Menu.Item key='discussions'>Discussions <Label circular>{ discussionsData?.posts_aggregate.aggregate?.count }</Label></Menu.Item>,
@@ -120,13 +162,13 @@ const LatestActivity = ({ className }: Props) => {
 			menuItem: <Menu.Item key='tips'>Tips <Label circular>{ tipsData?.posts_aggregate.aggregate?.count }</Label></Menu.Item>,
 			render: () => <LatestTipsTable className='tab-panel' />
 		},
-		// {
-		// menuItem: <Button id='search-btn' className='menu-right no-label-item' key='search'> <Icon name='search' /> </Button>
-		// }
 		{
-			menuItem: <Menu.Item className='menu-right no-label-item' key='search'> <Icon name='search' /> </Menu.Item>,
-			render: () => <LatestActivitySearchPage className='tab-panel' />
+			menuItem: <Menu.Item className='menu-right no-label-item menu-search-btn' key='search'>{searchButton}</Menu.Item>
 		}
+		// {
+		// menuItem: <Menu.Item className='menu-right no-label-item' key='search'> <Icon name='search' /> </Menu.Item>,
+		// render: () => <LatestActivitySearchPage className='tab-panel' />
+		// }
 	// {
 	// menuItem: <Menu.Item className='no-border' key='filter'>
 	// <img style={ { height:'auto', width:'1.2em' } } src={filterIMG} alt="Filter" />
@@ -139,21 +181,25 @@ const LatestActivity = ({ className }: Props) => {
 	// }
 	];
 
-	// const [activeTabIndex, setActiveIndex] = useState<number>(0);
+	const [activeTabIndex, setActiveIndex] = useState<number>(0);
 
-	// const handleChange = (e: any, data:any) => {
-	// if(data.activeIndex == 8){
-	// setActiveIndex(0);
-	// }else{
-	// setActiveIndex(data.activeIndex);
-	// }
-	// };
+	const handleChange = (e: any, data:any) => {
+		if(data.activeIndex == 8){
+			setActiveIndex(0);
+		}else{
+			setActiveIndex(data.activeIndex);
+			setSearchValue('');
+			setShowSearchBar(false);
+		}
+	};
 
 	return (
 		<div className={className}>
 			<h1 id='tab-header'>Latest activity</h1>
-			{/* activeIndex={activeTabIndex} onTabChange={handleChange} */}
-			<Tab className='tab-header' menu={{ className:'tab-menu', pointing: true, secondary: true }} panes={panes} />
+			<div className='mobile-action-bar'>
+				{searchButton}
+			</div>
+			<Tab className='tab-header' activeIndex={activeTabIndex} onTabChange={handleChange} menu={{ className:'tab-menu', pointing: true, secondary: true }} panes={panes} />
 		</div>
 	);
 };
@@ -165,9 +211,44 @@ export default styled(LatestActivity)`
 			font-size: 30px;
 			margin-bottom: 16px;
 		}
+
+		.mobile-action-bar {
+			background: #fff;
+			border-top-right-radius: 10px;
+			border-top-left-radius: 10px;
+			display: flex;
+			justify-content: flex-end;
+			margin-bottom: -10px;
+
+			.menu-right {
+				margin-left: 0;
+				width: 100%
+			}
+
+			button {
+				background: transparent;
+    		padding-right: 23px;
+    		padding-top: 12px;
+				width: 30px !important;
+
+				.icon{
+					font-size: 16px !important;
+				}
+			}
+
+			@media only screen and (min-width: 992px) {
+				display: none;
+			}
+		}
 		
 		.menu-right{
 			margin-left: auto !important;
+			
+			&.menu-search-btn {
+				@media only screen and (max-width: 992px) {
+					display: none;
+				}
+			}
 		}
 
 		.tab-header {
@@ -183,8 +264,19 @@ export default styled(LatestActivity)`
 				margin-bottom: 0 !important;
 			}
 
-			.search-btn{
-				outline: solid red 1px !important;
+			button{
+				background: transparent !important;
+			}
+
+			.input {
+				margin-top: -10px;
+				margin-left: 1em;
+				width: 252px;
+				height: 36px;
+
+				input {
+					border-radius: 5px;
+				}
 			}
 		}
 	
@@ -192,9 +284,16 @@ export default styled(LatestActivity)`
 			overflow-x: auto;
 			overflow-y: hidden;
 
+			.no-label-item:hover {
+				border-bottom: 1px solid #fff !important;
+			}
+
 			.no-label-item {
-				padding-top: 1.15em;
-				padding-bottom: 1.15em;
+				align-self: center !important;
+				padding-right: 6px;
+				&.active {
+					padding: 0;
+				}
 			}
 
 			a {
