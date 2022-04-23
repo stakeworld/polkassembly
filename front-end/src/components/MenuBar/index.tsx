@@ -165,6 +165,7 @@ export default styled(MenuBar)`
 				padding-top: 1em;
 				padding-bottom: 1em;
 				width: 26rem;
+				font-family: 'Roboto' !important;
 			}
 
 			.results {

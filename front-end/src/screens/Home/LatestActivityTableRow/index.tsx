@@ -135,7 +135,7 @@ const LatestActivityTableRow = function ({
 	};
 
 	return (
-		<Table.Row className={className + ' table-row'}>
+		<Table.Row className={className}>
 			{!hideSerialNum ? <Table.Cell onClick={ gotoPost } className='sub-title-text serial-num'>
 				{ postSerialID }
 			</Table.Cell> : null}
@@ -173,6 +173,8 @@ const LatestActivityTableRow = function ({
 
 export default styled(LatestActivityTableRow)`
 	cursor: pointer !important;
+	min-height: 89px;
+	height: 89px;
 	
 	td {
 		padding-top: 0.5em !important;
@@ -186,6 +188,9 @@ export default styled(LatestActivityTableRow)`
 	}
 
 	@media only screen and (min-width: 992px) {
+		min-height: 76px;
+		height: 76px;
+		
 		.pl-0 {
 			padding-left: 0 !important;
 		}

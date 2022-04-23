@@ -125,7 +125,7 @@ const LatestActivity = ({ className }: Props) => {
 	}
 
 	const searchButton =
-			showSearchBar ? <Input className='menu-right no-label-item' loading={loading} fluid icon='search' iconPosition='left' placeholder='Search By Proposal Keyword' value={searchValue} onChange={debounce(handleSearchChange, 500, { leading: true })} />
+			showSearchBar ? <Input className='menu-right no-label-item' autoFocus loading={loading} fluid icon='search' iconPosition='left' placeholder='Search By Proposal Keyword' value={searchValue} onChange={debounce(handleSearchChange, 500, { leading: true })} />
 				:
 				<Button id='search-btn' onClick={toggleSearchBar} className='menu-right no-label-item'> <Icon name='search' /> </Button>;
 
@@ -276,6 +276,7 @@ export default styled(LatestActivity)`
 
 				input {
 					border-radius: 5px;
+					font-family: 'Roboto' !important;
 				}
 			}
 		}

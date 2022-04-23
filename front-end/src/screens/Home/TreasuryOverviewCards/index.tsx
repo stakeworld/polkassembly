@@ -454,7 +454,8 @@ export default styled(TreasuryOverviewCards)`
 			}
 			
 			@media only screen and (min-width: 945px) {
-				width: 254px;
+				width: 23%;
+				max-width: 320px;
 			}
 			
 			.content{

@@ -240,6 +240,10 @@ export default styled(CustomSidebar)`
 	min-width: 230px;
 	padding: 1.5em 0.8em 0 0.8em;
 	box-shadow: 0.5px 0 5px -2px #888;
+	
+	.header { 
+		font-family: 'Roboto' !important;
+	}
 
 	@media only screen and (max-width: 992px) {
 		position: fixed;
@@ -327,6 +331,7 @@ export default styled(CustomSidebar)`
 			text-transform: uppercase;
 			display: flex !important;
 			justify-content: space-between;
+			font-family: 'Roboto' !important;
 
 			.icon {
 				cursor: pointer;

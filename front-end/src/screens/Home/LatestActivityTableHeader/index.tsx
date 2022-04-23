@@ -35,6 +35,11 @@ export default styled(LatestActivityTableHeader)`
 	top: 0;
 	z-index: 200;
 
+	tr {
+		height: 76px;
+    min-height: 76px;
+	}
+
 	th {
 		font-weight: 500 !important;
 		padding-top: 1.5em;
