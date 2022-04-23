@@ -55,7 +55,7 @@ const LatestActivityTableRow = function ({
 		switch (postType){
 		case 'discussion':
 			icon = <Icon name='comments outline' />;
-			serialID = null;
+			serialID = onchainId;
 			break;
 		case 'referenda':
 			icon = <Icon name='clipboard check' />;
