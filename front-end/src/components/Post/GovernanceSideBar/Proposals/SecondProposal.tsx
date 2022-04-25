@@ -106,7 +106,7 @@ const SecondProposal = ({ className, proposalId, address, accounts, onAccountCha
 					</Card>
 					: <Card>
 						<AccountSelectionForm
-							title='Second with account'
+							title='Endorse with account'
 							accounts={accounts}
 							address={address}
 							withBalance
