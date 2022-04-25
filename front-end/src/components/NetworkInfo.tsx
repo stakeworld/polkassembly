@@ -4,7 +4,7 @@
 
 import styled from '@xstyled/styled-components';
 import React, { useEffect } from 'react';
-import { Card, Grid, Icon } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 import { useNetworkSocialsQuery } from 'src/generated/graphql';
 import getNetwork from 'src/util/getNetwork';
 
@@ -25,99 +25,119 @@ const NetworkInfo = ({ className }: Props) => {
 
 	return (
 		<div className={className}>
-			<Card fluid className='networkInfo-card'>
-				<Card.Content>
-					<Grid centered stackable columns={2} verticalAlign='middle'>
-						<Grid.Column className='networkInfo-text' mobile={16} tablet={8} computer={10}>
-							<h4> Join our community to discuss, contribute and get regular updates from us! </h4>
-						</Grid.Column>
-						<Grid.Column className='networkInfo-icons' mobile={16} tablet={8} computer={6}>
-							{
-								!error && data &&
-									<Grid centered stackable columns={8} verticalAlign='middle'>
-										{ data.blockchain_socials[0].homepage &&
-											<a href={data.blockchain_socials[0].homepage} target='_blank' rel='noreferrer'>
-												<Icon size='large' name='home'/>
-											</a>
-										}
-										{ data.blockchain_socials[0].twitter &&
-											<a href={data.blockchain_socials[0].twitter} target='_blank' rel='noreferrer'>
-												<Icon size='large' name='twitter'/>
-											</a>
-										}
-										{data.blockchain_socials[0].discord &&
-											<a href={data.blockchain_socials[0].discord} target='_blank' rel='noreferrer'>
-												<Icon size='large' name='discord'/>
-											</a>
-										}
-										{data.blockchain_socials[0].github &&
-											<a href={data.blockchain_socials[0].github} target='_blank' rel='noreferrer'>
-												<Icon size='large' name='github'/>
-											</a>
-										}
-										{data.blockchain_socials[0].youtube &&
-											<a href={data.blockchain_socials[0].youtube} target='_blank' rel='noreferrer'>
-												<Icon size='large' name='youtube'/>
-											</a>
-										}
-										{data.blockchain_socials[0].reddit &&
-											<a href={data.blockchain_socials[0].reddit} target='_blank' rel='noreferrer'>
-												<Icon size='large' name='reddit alien'/>
-											</a>
-										}
-										{data.blockchain_socials[0].telegram &&
-											<a href={data.blockchain_socials[0].telegram} target='_blank' rel='noreferrer'>
-												<Icon size='large' name='telegram plane'/>
-											</a>
-										}
-										{data.blockchain_socials[0].block_explorer &&
-											<a href={data.blockchain_socials[0].block_explorer} target='_blank' rel='noreferrer'>
-												<Icon size='large' name='cube'/>
-											</a>
-										}
-									</Grid>
-							}
-						</Grid.Column>
-					</Grid>
-				</Card.Content>
-			</Card>
+			<div className="text">Join our Community to discuss, contribute and get regular updates from us!</div>
+			{!error && data &&
+				<div className="networkInfo-icons">
+					{ data.blockchain_socials[0].homepage &&
+						<a href={data.blockchain_socials[0].homepage} target='_blank' rel='noreferrer'>
+							<Icon name='home'/>
+						</a>
+					}
+					{ data.blockchain_socials[0].twitter &&
+						<a href={data.blockchain_socials[0].twitter} target='_blank' rel='noreferrer'>
+							<Icon name='twitter'/>
+						</a>
+					}
+					{data.blockchain_socials[0].discord &&
+						<a href={data.blockchain_socials[0].discord} target='_blank' rel='noreferrer'>
+							<Icon name='discord'/>
+						</a>
+					}
+					{data.blockchain_socials[0].github &&
+						<a href={data.blockchain_socials[0].github} target='_blank' rel='noreferrer'>
+							<Icon name='github'/>
+						</a>
+					}
+					{data.blockchain_socials[0].youtube &&
+						<a href={data.blockchain_socials[0].youtube} target='_blank' rel='noreferrer'>
+							<Icon name='youtube'/>
+						</a>
+					}
+					{data.blockchain_socials[0].reddit &&
+						<a href={data.blockchain_socials[0].reddit} target='_blank' rel='noreferrer'>
+							<Icon name='reddit alien'/>
+						</a>
+					}
+					{data.blockchain_socials[0].telegram &&
+						<a href={data.blockchain_socials[0].telegram} target='_blank' rel='noreferrer'>
+							<Icon name='telegram plane'/>
+						</a>
+					}
+					{data.blockchain_socials[0].block_explorer &&
+						<a href={data.blockchain_socials[0].block_explorer} target='_blank' rel='noreferrer'>
+							<Icon name='cube'/>
+						</a>
+					}
+
+				</div>
+			}
 		</div>
 	);
 };
 
 export default styled(NetworkInfo)`
-	.networkInfo-card {
-		background: #E5007A !important;
-		border-radius: 0.8em;
-		padding: 0.8em 0.3em 0.8em 0.3em;
-		-webkit-box-shadow: 0px 5px 10px 1px rgba(186,182,186,1);
-		-moz-box-shadow: 0px 5px 10px 1px rgba(186,182,186,1);
-		box-shadow: 0px 5px 10px 1px rgba(186,182,186,1);
+	border-radius: 0.8em;
+	-webkit-box-shadow: 0px 5px 10px 1px rgba(186,182,186,1);
+	-moz-box-shadow: 0px 5px 10px 1px rgba(186,182,186,1);
+	box-shadow: 0px 5px 10px 1px rgba(186,182,186,1);
+	background: #E5007A !important;
+	display: flex;
+	padding: 24px 24px;
+	color: #fff;
+	font-size: 16px;
+	width: 98%;
+	justify-content: space-between;
 
-		.networkInfo-text{
-			h4 {
-				color: #fff !important;
-				font-weight: 400;
-				font-size: 18px !important;
+	.networkInfo-icons{
+		a {
+			margin-top: 0.5em;
+			margin-bottom: 0.5em;
+			padding-right: 0.6em;
+
+			&:not(:first-child) {
+				padding-left: 0.6em;
+				border-left: 1px solid rgba(238, 238, 238, 0.25);
 			}
 		}
 
-		.networkInfo-icons{
+		.icon {
+			color: #fff;
+		}
+		
+	}
+
+	@media only screen and (max-width: 1189px) {
+		padding: 20px 20px;
+		flex-direction: column;
+		justify-content: center;
+		text-align: center;
+
+		.networkInfo-icons {
+			margin-top: 20px;
+			
 			a {
-				margin-top: 0.5em;
-				margin-bottom: 0.5em;
-	
-				padding-right: 0.5em;
+				padding-right: 0.6em !important;
 				&:not(:first-child) {
-					padding-left: 0.5em;
-					border-left: 1px solid rgba(238, 238, 238, 0.3);
+					padding-left: 0.6em;
+					border-left: 1px solid rgba(238, 238, 238, 0.25);
 				}
 			}
-
-			.icon {
-				color: #fff;
-			}
-			
 		}
+		
 	}
+
+	@media only screen and (max-width: 767px) {
+		flex-direction: column;
+		justify-content: center;
+		text-align: left;
+		margin-left: auto !important;
+		margin-right: auto !important;
+
+		.networkInfo-icons {
+			margin-top: 20px;
+			text-align: center;
+		}
+		
+	}
+	
 `;

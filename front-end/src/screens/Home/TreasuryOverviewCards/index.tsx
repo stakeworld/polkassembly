@@ -302,7 +302,8 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 		const spendPeriodRemaining: number = totalSpendPeriod - spendPeriodElapsed;
 		setSpendPeriodRemaining(spendPeriodRemaining);
 
-		const percentage = ((spendPeriodRemaining/totalSpendPeriod) * 100).toFixed(0);
+		// spendPeriodRemaining/totalSpendPeriod for opposite
+		const percentage = ((spendPeriodElapsed/totalSpendPeriod) * 100).toFixed(0);
 		setSpendPeriodPercentage(parseFloat(percentage));
 	}, [api, apiReady, currentBlock, blocktime, result.spendPeriod]);
 
@@ -422,19 +423,39 @@ export default styled(TreasuryOverviewCards)`
 		overflow-x: auto !important;
 		flex-wrap: nowrap;
 		max-width: 99.9%;
+		margin-left: 0 !important;
 
-		/* @media only screen and (max-width: 1024px) {
-			justify-content: center;
-		} */
+		@media only screen and (max-width: 767px) {
+			width: 100%;
+			flex-direction: column !important;
+			overflow-x: hidden !important;
+		}
 
 		.treasury-card{
 			display: inline-block;
 			border-radius: 0.5em;
 
+			width: 98%;
 			min-width: 254px;
+			margin-right: 16px !important;
+			margin-left: 0 !important;
+
+			&:first-child{
+				margin-left: 1px !important;
+			}
+
+			@media only screen and (max-width: 767px) {
+				padding-bottom: 12px;
+				margin-right: auto !important;
+				margin-left: auto !important;
+				&:first-child{
+					margin-left: auto !important;
+				}
+			}
 			
 			@media only screen and (min-width: 945px) {
-				width: 254px;
+				width: 23%;
+				max-width: 320px;
 			}
 			
 			.content{
@@ -449,6 +470,8 @@ export default styled(TreasuryOverviewCards)`
 			.treasury-card-header {
 				margin-top: 0.4em !important;
 				font-size: 24px !important;
+				font-family: 'Roboto';
+				font-weight: 500 !important;
 			}
 	
 			.treasury-card-desc{

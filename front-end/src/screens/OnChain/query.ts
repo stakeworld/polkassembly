@@ -139,3 +139,13 @@ export const QUERY_NETWORK_SOCIALS = gql`
         }
     }   
 `;
+
+export const QUERY_COUNT_DISCUSSION_POSTS = gql`
+    query DiscussionsCount {
+        posts_aggregate(where: {type: {id: {_eq: 1}}}) {
+            aggregate {
+                count
+            }
+        }
+    }
+`;

@@ -42,7 +42,7 @@ const LatestDiscussionsTable = ({ className }:Props) => {
 
 		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
 			<Table basic='very' striped unstackable selectable>
-				<LatestActivityTableHeader className={className} hideSerialNum={true} />
+				<LatestActivityTableHeader className={className} hideSerialNum={false} />
 
 				<Table.Body>
 					{data.posts.map(
@@ -57,7 +57,7 @@ const LatestDiscussionsTable = ({ className }:Props) => {
 									postType='discussion'
 									created_at={post.created_at}
 									username={post.author.username}
-									hideSerialNum={true}
+									hideSerialNum={false}
 								/>
 							;
 						}
@@ -73,57 +73,57 @@ const LatestDiscussionsTable = ({ className }:Props) => {
 
 export default styled(LatestDiscussionsTable)`
 	&&& {
-		.tab-header {
-			background: white;
-			border-top-left-radius: 0.5em;
-			border-top-right-radius: 0.5em;
-			padding-top: 0.5em;
-			margin-left: 0.5em;
-		}
-	
-		.tab-menu {
-			overflow-x: auto;
-			overflow-y: hidden;
-	
-			a.active {
-				border-bottom: 5px solid #E5007A !important;
-			}
-		}
-	
-		.item:first-child{
-			margin-left: 1em !important;
-		}
-	
-		.item {
-			font-size: 1.5em;
-		}
-	
-		.tab-panel{
-			background: white;
-			border: none !important;
-			width: 100% !important;
-			margin-left: 0 !important;
-			font-size: 1.5rem;
-			overflow-x: auto;
-			overflow-y: hidden;
-		}
-	
-		.table-header{
-			background: #F2F2F2;
-	
-			th {
-				font-weight: 500 !important;
-				padding-top: 1.5em;
-				padding-bottom: 1.5em;
+    .tab-header {
+      background: white;
+      border-top-left-radius: 0.5em;
+      border-top-right-radius: 0.5em;
+      padding-top: 0.5em;
+      margin-left: 0.5em;
+    }
+  
+    .tab-menu {
+      overflow-x: auto;
+      overflow-y: hidden;
+  
+      a.active {
+        border-bottom: 5px solid #E5007A !important;
+      }
+    }
+  
+    .item:first-child{
+      margin-left: 1em !important;
+    }
+  
+    .item {
+      font-size: 1.5em;
+    }
+  
+    .tab-panel{
+      background: white;
+      border: none !important;
+      width: 100% !important;
+      margin-left: 0 !important;
+      font-size: 1.5rem;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+  
+    .table-header{
+      background: #F2F2F2;
+  
+      th {
+        font-weight: 500 !important;
+        padding-top: 1.5em;
+        padding-bottom: 1.5em;
 
-				:not(:first-child){
-					span {
-						border-left: 1px solid #ddd;
-						padding 0.3em 0 0.3em 1em;
-						margin-left: -1em;
-					}
-				}
-			}
-		}
+        :not(:first-child){
+          span {
+            border-left: 1px solid #ddd;
+            padding: 0.3em 0 0.3em 1em;
+            margin-left: -1em;
+          }
+        }
+      }
+    }
 	}
 `;

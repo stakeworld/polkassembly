@@ -19,7 +19,7 @@ const LatestActivityTableHeader = function ({
 	return (
 		<Table.Header className={`${className}`}>
 			<Table.Row>
-				{!hideSerialNum ? <Table.HeaderCell><span>#</span></Table.HeaderCell> : null }
+				{!hideSerialNum ? <Table.HeaderCell><span className='title'>#</span></Table.HeaderCell> : null }
 				<Table.HeaderCell width={6}><span>Title</span></Table.HeaderCell>
 				<Table.HeaderCell width={3}><span>Posted By</span></Table.HeaderCell>
 				<Table.HeaderCell width={2}><span>Type</span></Table.HeaderCell>
@@ -35,10 +35,21 @@ export default styled(LatestActivityTableHeader)`
 	top: 0;
 	z-index: 200;
 
+	tr {
+		height: 76px;
+    min-height: 76px;
+	}
+
 	th {
 		font-weight: 500 !important;
 		padding-top: 1.5em;
 		padding-bottom: 1.5em;
+		
+		:first-child {
+			padding: 0 !important;
+			min-width: 50px;
+			text-align: center !important;
+		}
 
 		:not(:first-child){
 			span {

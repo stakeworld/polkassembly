@@ -5,8 +5,8 @@
 import styled from '@xstyled/styled-components';
 import React from 'react';
 import { Grid } from 'semantic-ui-react';
+import NetworkInfo from 'src/components/NetworkInfo';
 
-import NetworkInfo from '../../components/NetworkInfo';
 import LatestActivity from './LatestActivity';
 import News from './News';
 import TreasuryOverviewCards from './TreasuryOverviewCards';
@@ -22,8 +22,8 @@ const Home = ({ className }: Props) => {
 			<Grid stackable>
 				<Grid.Row className='margin-bottom-48'>
 					<Grid.Column className='px-0'>
-						<NetworkInfo className='margin-bottom-48 px-sm-1' />
-						<TreasuryOverviewCards className='margin-bottom-36 pl-sm-1' />
+						<NetworkInfo className='margin-bottom-48 mb-sm-32' />
+						<TreasuryOverviewCards className='margin-bottom-36' />
 						<LatestActivity />
 					</Grid.Column>
 				</Grid.Row>
@@ -56,13 +56,13 @@ export default styled(Home)`
 	}
 
 	@media only screen and (max-width: 768px){
-		.pl-sm-1 {
-			padding-left: 1em;
-		}
-		
 		.px-sm-1 {
 			padding-left: 1em !important;
 			padding-right: 1em !important;
+		}
+
+		.mb-sm-32 {
+			margin-bottom: 32px !important;
 		}
 
 		.stackable.grid>.row>.column {

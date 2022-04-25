@@ -55,7 +55,7 @@ const LatestActivityTableRow = function ({
 		switch (postType){
 		case 'discussion':
 			icon = <Icon name='comments outline' />;
-			serialID = null;
+			serialID = onchainId;
 			break;
 		case 'referenda':
 			icon = <Icon name='clipboard check' />;
@@ -135,7 +135,7 @@ const LatestActivityTableRow = function ({
 	};
 
 	return (
-		<Table.Row className={className + ' table-row'}>
+		<Table.Row className={className}>
 			{!hideSerialNum ? <Table.Cell onClick={ gotoPost } className='sub-title-text serial-num'>
 				{ postSerialID }
 			</Table.Cell> : null}
@@ -173,6 +173,8 @@ const LatestActivityTableRow = function ({
 
 export default styled(LatestActivityTableRow)`
 	cursor: pointer !important;
+	min-height: 89px;
+	height: 89px;
 	
 	td {
 		padding-top: 0.5em !important;
@@ -181,9 +183,14 @@ export default styled(LatestActivityTableRow)`
 
 	.serial-num {
 		padding-right: 0 !important;
+		padding: 0 !important;
+		text-align: center !important;
 	}
 
 	@media only screen and (min-width: 992px) {
+		min-height: 76px;
+		height: 76px;
+		
 		.pl-0 {
 			padding-left: 0 !important;
 		}
