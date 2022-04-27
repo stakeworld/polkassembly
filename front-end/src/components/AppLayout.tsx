@@ -13,7 +13,7 @@ import SwitchRoutes from './SwitchRoutes';
 function AppLayout() {
 	const { apiReady } = useContext(ApiContext);
 	const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
-	const [sidebarHidden, setSidebarHidden] = useState<boolean>(false);
+	const [sidebarHidden, setSidebarHidden] = useState<boolean>(true);
 
 	const toggleSidebarHidden = () => {
 		setSidebarHidden(!sidebarHidden);
