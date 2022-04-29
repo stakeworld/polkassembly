@@ -224,6 +224,7 @@ export default styled(LatestActivityTableRow)`
 		display: flex;
 		cursor: default !important;
 		padding-top: 0.9em !important;
+		white-space: nowrap;
 	}
 
 	.action-btn {
@@ -234,6 +235,7 @@ export default styled(LatestActivityTableRow)`
 		text-transform: capitalize;
 		color: #75767C;
 		font-size: 16px !important;
+		white-space: nowrap;
 	}
 
 	.statusTag {

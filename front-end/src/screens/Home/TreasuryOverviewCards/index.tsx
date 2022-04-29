@@ -437,10 +437,16 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 
 export default styled(TreasuryOverviewCards)`
 	&&& {
-		overflow-x: auto !important;
+		overflow-x: hidden !important;
 		flex-wrap: nowrap;
 		max-width: 99.9%;
 		margin-left: 0 !important;
+
+		@media only screen and (min-width: 767px) {
+			&:hover {
+				overflow-x: auto !important;
+			}
+		}
 
 		@media only screen and (max-width: 767px) {
 			max-width: 98%;
@@ -457,7 +463,8 @@ export default styled(TreasuryOverviewCards)`
 			border-radius: 0.5em;
 
 			width: 98%;
-			min-width: 254px;
+			min-width: min-content;
+			white-space: nowrap;
 			margin-right: 16px !important;
 			margin-left: 0 !important;
 
@@ -492,7 +499,7 @@ export default styled(TreasuryOverviewCards)`
 			
 			.treasury-card-meta {
 				color: #333 !important;
-				font-size: 16px;
+				font-size: 15px;
 			}
 	
 			.treasury-card-header {
