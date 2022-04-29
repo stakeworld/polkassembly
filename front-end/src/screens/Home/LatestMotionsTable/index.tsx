@@ -11,6 +11,7 @@ import NothingFoundCard from 'src/ui-components/NothingFoundCard';
 import { useFetchLatestMotionPostsQuery } from '../../../generated/graphql';
 import { post_type } from '../../../global/post_types';
 import FilteredError from '../../../ui-components/FilteredError';
+import LatestActivityCard from '../LatestActivityCard';
 import LatestActivityTableHeader from '../LatestActivityTableHeader';
 import LatestActivityTableRow from '../LatestActivityTableRow';
 
@@ -44,7 +45,7 @@ const LatestMotionsTable = ({ className }:Props) => {
 				<NothingFoundCard className={className} text='There are currently no active motions.'/>
 			</Tab.Pane>;
 		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
-			<Table basic='very' striped unstackable selectable>
+			<Table className='hidden-mobile' basic='very' striped unstackable selectable>
 				<LatestActivityTableHeader className={className} />
 
 				<Table.Body>
@@ -67,6 +68,26 @@ const LatestMotionsTable = ({ className }:Props) => {
 					)}
 				</Table.Body>
 			</Table>
+
+			<div className='hidden-desktop cards-container'>
+				{data.posts.map(
+					(post) => {
+						return !!post?.author?.username && (!!post.onchain_link?.onchain_motion.length || post.onchain_link?.onchain_motion_id) &&
+							<LatestActivityCard
+								key={post.id}
+								postId={post.id}
+								address={post.onchain_link.proposer_address}
+								method={post.onchain_link.onchain_motion[0]?.preimage?.method}
+								onchainId={post.onchain_link?.onchain_motion_id}
+								status={post.onchain_link.onchain_motion[0]?.motionStatus?.[0].status}
+								title={post.title}
+								postType='motion'
+								created_at={post.created_at}
+							/>
+						;
+					}
+				)}
+			</div>
 		</Tab.Pane>;
 	}
 
@@ -122,7 +143,7 @@ export default styled(LatestMotionsTable)`
         :not(:first-child){
           span {
             border-left: 1px solid #ddd;
-            padding 0.3em 0 0.3em 1em;
+            padding: 0.3em 0 0.3em 1em;
             margin-left: -1em;
           }
         }

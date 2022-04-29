@@ -207,6 +207,18 @@ const LatestActivity = ({ className }: Props) => {
 export default styled(LatestActivity)`
 	&&& {
 
+		.hidden-mobile {
+			@media only screen and (max-width: 767px) {
+				display: none;
+			}
+		}
+
+		.hidden-desktop {
+			@media only screen and (min-width: 767px) {
+				display: none;
+			}
+		}
+
 		h1 {
 			font-size: 30px;
 			margin-bottom: 16px;
@@ -219,6 +231,10 @@ export default styled(LatestActivity)`
 			display: flex;
 			justify-content: flex-end;
 			margin-bottom: -10px;
+
+			@media only screen and (max-width: 767px) {
+				background: transparent;
+			}
 
 			.menu-right {
 				margin-left: 0;
@@ -256,6 +272,15 @@ export default styled(LatestActivity)`
 			border-top-left-radius: 0.5em;
 			border-top-right-radius: 0.5em;
 			padding-top: 0.5em;
+
+			@media only screen and (max-width: 767px) {
+				background: transparent;
+			}
+
+			.item {
+				border-bottom: 5px solid #D8D8D8 !important;
+			}
+
 			.item:hover {
 				border-bottom: 5px solid #E5007A !important;
 			}
@@ -282,8 +307,23 @@ export default styled(LatestActivity)`
 		}
 	
 		.tab-menu {
-			overflow-x: auto;
+			overflow-x: hidden;
 			overflow-y: hidden;
+
+			@media only screen and (max-width: 767px) {
+				overflow-x: auto;
+				background: transparent !important;
+				-ms-overflow-style: none;  /* Internet Explorer 10+ */
+				scrollbar-width: none;  /* Firefox */
+
+				&::-webkit-scrollbar {
+					display: none;  /* Safari and Chrome */
+				}
+			}
+
+			&:hover {
+				overflow-x: auto;
+			}
 
 			.no-label-item:hover {
 				border-bottom: 1px solid #fff !important;
@@ -340,6 +380,16 @@ export default styled(LatestActivity)`
 			max-height: 500px;
 			padding: 0 !important;
 
+			@media only screen and (max-width: 767px) {
+				background: transparent !important;
+				-ms-overflow-style: none;  /* Internet Explorer 10+ */
+				scrollbar-width: none;  /* Firefox */
+
+				&::-webkit-scrollbar {
+					display: none;  /* Safari and Chrome */
+				}
+			}
+
 			table tbody {
 				tr:nth-child(2n){
 					background-color: rgba(30, 30, 40, 0.03) !important;
@@ -351,6 +401,21 @@ export default styled(LatestActivity)`
 				}
 			}
 			
+			.cards-container {
+				padding-top: 16px;
+
+				@media only screen and (max-width: 767px) {
+					padding-top: 0;
+				}
+
+				.dot-divider {
+					height: 4px;
+					width: 4px;
+					background-color: #75767C;
+					border-radius: 50%;
+					display: inline-block;
+				}
+			}
 
 		}
 	

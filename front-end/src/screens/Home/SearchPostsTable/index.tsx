@@ -9,6 +9,7 @@ import { Tab, Table } from 'semantic-ui-react';
 import NothingFoundCard from 'src/ui-components/NothingFoundCard';
 import getDefaultAddressField from 'src/util/getDefaultAddressField';
 
+import LatestActivityCard from '../LatestActivityCard';
 import LatestActivityTableHeader from '../LatestActivityTableHeader';
 import LatestActivityTableRow from '../LatestActivityTableRow';
 
@@ -114,7 +115,7 @@ const SearchPostsTable = ({ className, searchResults, loading }:Props) => {
 			</Tab.Pane>;
 
 		return <Tab.Pane loading={loading} className={`${className} tab-panel`}>
-			<Table basic='very' striped unstackable selectable>
+			<Table className='hidden-mobile' basic='very' striped unstackable selectable>
 				<LatestActivityTableHeader className={className} />
 
 				<Table.Body>
@@ -143,6 +144,32 @@ const SearchPostsTable = ({ className, searchResults, loading }:Props) => {
 					)}
 				</Table.Body>
 			</Table>
+
+			<div className='hidden-desktop cards-container'>
+				{data.map(
+					(post) => {
+						const postTypeData = getPostTypeData(post);
+
+						if(postTypeData){
+							return postTypeData && !!post?.author?.username &&
+							<LatestActivityCard
+								key={post.id}
+								postId={post.id}
+								address={postTypeData.postTypeString == 'discussion' ? post.author[defaultAddressField]! : post.onchain_link?.proposer_address!}
+								method={postTypeData.method ? postTypeData.method : undefined}
+								onchainId={postTypeData?.onChainId}
+								status={postTypeData.status}
+								title={postTypeData.title}
+								postType={postTypeData.postTypeString}
+								created_at={post.created_at}
+								username = {post.author.username}
+							/>
+							;
+						}
+						return null;
+					}
+				)}
+			</div>
 		</Tab.Pane>;
 	}
 
