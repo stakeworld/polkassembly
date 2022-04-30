@@ -8,25 +8,37 @@ import { useLocation } from 'react-router-dom';
 import { Icon, List } from 'semantic-ui-react';
 import { useRouter } from 'src/hooks';
 
+import { ReactComponent as BountyIcon } from '../assets/sidebar/bounties.svg';
+import { ReactComponent as CalendarIcon } from '../assets/sidebar/calendar.svg';
+import { ReactComponent as DiscussionsIcon } from '../assets/sidebar/discussions.svg';
+import { ReactComponent as MembersIcon } from '../assets/sidebar/members.svg';
+import { ReactComponent as MotionIcon } from '../assets/sidebar/motion.svg';
+import { ReactComponent as NewsIcon } from '../assets/sidebar/news.svg';
+import { ReactComponent as OverviewIcon } from '../assets/sidebar/overview_white.svg';
+import { ReactComponent as ProposalIcon } from '../assets/sidebar/proposals.svg';
+import { ReactComponent as ReferendaIcon } from '../assets/sidebar/referenda.svg';
+import { ReactComponent as TipIcon } from '../assets/sidebar/tips.svg';
+import { ReactComponent as TreasuryProposalIcon } from '../assets/sidebar/treasury_proposals.svg';
+
 const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHidden } : { className?: string, setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>, sidebarHidden: boolean, setSidebarHidden: React.Dispatch<React.SetStateAction<boolean>> }): JSX.Element => {
 	const SidebarItems = [
 		{
-			icon: <Icon name='th' />,
+			icon: <OverviewIcon />,
 			link: '/',
 			name: 'Overview'
 		},
 		{
-			icon: <Icon name='comments outline' />,
+			icon: <DiscussionsIcon />,
 			link: '/discussions',
 			name: 'Discussions'
 		},
 		{
-			icon: <Icon name='calendar alternate outline' />,
+			icon: <CalendarIcon />,
 			link: '/calendar',
 			name: 'Calendar'
 		},
 		{
-			icon: <Icon name='newspaper outline' />,
+			icon: <NewsIcon />,
 			link: '/news',
 			name: 'News'
 		},
@@ -39,17 +51,17 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 
 	const TreasuryItems = [
 		{
-			icon: <Icon name='diamond' />,
+			icon: <TreasuryProposalIcon />,
 			link: '/treasury-proposals',
 			name: 'Proposals'
 		},
 		{
-			icon: <Icon name='dollar sign' />,
+			icon: <BountyIcon />,
 			link: '/bounties',
 			name: 'Bounties'
 		},
 		{
-			icon: <Icon name='lightbulb outline' />,
+			icon: <TipIcon />,
 			link: '/tips',
 			name: 'Tips'
 		}
@@ -57,12 +69,12 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 
 	const DemocracyItems = [
 		{
-			icon: <Icon name='file alternate outline' />,
+			icon: <ProposalIcon />,
 			link: '/proposals',
 			name: 'Proposals'
 		},
 		{
-			icon: <Icon name='clipboard check' />,
+			icon: <ReferendaIcon className='motion-icon' />,
 			link: '/referenda',
 			name: 'Referenda'
 		}
@@ -70,12 +82,12 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 
 	const CouncilItems = [
 		{
-			icon: <Icon name='forward' />,
+			icon: <MotionIcon className='motion-icon' />,
 			link: '/motions',
 			name: 'Motions'
 		},
 		{
-			icon: <Icon name='users' />,
+			icon: <MembersIcon />,
 			link: '/council',
 			name: 'Members'
 		}
@@ -83,7 +95,7 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 
 	const TechCommItems = [
 		{
-			icon: <Icon name='file alternate outline' />,
+			icon: <ProposalIcon />,
 			link: '/tech-comm-proposals',
 			name: 'Proposals'
 		}
@@ -290,26 +302,57 @@ export default styled(CustomSidebar)`
 		margin: 0 0;
 		padding: 0.8em !important;
 		cursor: pointer;
+		display: flex !important;
+		align-items: center;
 		
 		&.active {
 			background: #E5007A !important;
 			color: #fff;
 			margin: 0.6em 0;
 			
-			.header, .icon {
+			.header{
 				color: #fff !important;
 			}
+
+			svg {
+				&:not(.motion-icon) {
+					path {
+						fill: #fff;
+					}
+				}
+
+				&.motion-icon {
+					path {
+						stroke: #fff;
+
+						&:nth-of-type(2) {
+							fill: #fff;
+						}
+						
+					}
+				}
+			}
+		}
+
+		.content {
+			padding-left: 0.5em;
 		}
 		
 		&:hover {
 			background: #eee;
 		}
 
-		.icon {
-			color: #778192 !important;
+		svg {
 			min-width: 20px !important;
 			max-width: 20px !important;
 			width: 20px !important;
+
+			&:not(.motion-icon) {
+				path {
+					fill: #778192;
+				}
+			}
+
 		}
 
 		.header {

@@ -5,11 +5,18 @@
 import styled from '@xstyled/styled-components';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Icon, Table } from 'semantic-ui-react';
+import { Table } from 'semantic-ui-react';
 import LatestActivityPostReactions from 'src/components/Reactionbar/LatestActivityPostReactions';
 // import BlockCountdown from 'src/components/BlockCountdown';
 import { noTitle } from 'src/global/noTitle';
 
+import { ReactComponent as BountyIcon } from '../../../assets/sidebar/bounties.svg';
+import { ReactComponent as DiscussionsIcon } from '../../../assets/sidebar/discussions.svg';
+import { ReactComponent as MotionIcon } from '../../../assets/sidebar/motion.svg';
+import { ReactComponent as ProposalIcon } from '../../../assets/sidebar/proposals.svg';
+import { ReactComponent as ReferendaIcon } from '../../../assets/sidebar/referenda.svg';
+import { ReactComponent as TipIcon } from '../../../assets/sidebar/tips.svg';
+import { ReactComponent as TreasuryProposalIcon } from '../../../assets/sidebar/treasury_proposals.svg';
 import { useRouter } from '../../../hooks';
 // import useCurrentBlock from 'src/hooks/useCurrentBlock';
 import Address from '../../../ui-components/Address';
@@ -54,35 +61,35 @@ const LatestActivityTableRow = function ({
 
 		switch (postType){
 		case 'discussion':
-			icon = <Icon name='comments outline' />;
+			icon = <DiscussionsIcon className='discusssion-icon' />;
 			serialID = onchainId;
 			break;
 		case 'referenda':
-			icon = <Icon name='clipboard check' />;
+			icon = <ReferendaIcon />;
 			serialID = onchainId;
 			break;
 		case 'proposal':
-			icon = <Icon name='file alternate' />;
+			icon = <ProposalIcon />;
 			serialID = onchainId;
 			break;
 		case 'motion':
-			icon = <Icon name='forward' />;
+			icon = <MotionIcon />;
 			serialID = onchainId;
 			break;
 		case 'treasury proposal':
-			icon = <Icon name='diamond' />;
+			icon = <TreasuryProposalIcon />;
 			serialID = onchainId;
 			break;
 		case 'tech committee proposal':
-			icon = <Icon name='file alternate' />;
+			icon = <ProposalIcon />;
 			serialID = onchainId;
 			break;
 		case 'bounty':
-			icon = <Icon name='dollar sign' />;
+			icon = <BountyIcon />;
 			serialID = onchainId;
 			break;
 		case 'tip':
-			icon = <Icon name='lightbulb' />;
+			icon = <TipIcon />;
 			serialID = null;
 			break;
 		}
@@ -162,7 +169,11 @@ const LatestActivityTableRow = function ({
 					Posted { relativeCreatedAt }
 				</div>
 			</Table.Cell>
-			<Table.Cell className='postType-cell' onClick={ gotoPost }> {postTypeIcon} { postType == 'tech committee proposal' ? 'Proposal': postType }</Table.Cell>
+			<Table.Cell className='postType-cell' onClick={ gotoPost }>
+				<div className='flex'>
+					{postTypeIcon} { postType == 'tech committee proposal' ? 'Proposal': postType }
+				</div>
+			</Table.Cell>
 			<Table.Cell onClick={ gotoPost }>{status && <StatusTag className='statusTag' status={status} />}</Table.Cell>
 			<Table.Cell className='action-btn-cell'>
 				<LatestActivityPostReactions className='reactions' gotoPost={gotoPost} postId={postId} />
@@ -236,6 +247,18 @@ export default styled(LatestActivityTableRow)`
 		color: #75767C;
 		font-size: 16px !important;
 		white-space: nowrap;
+
+		.flex {
+			display: flex;
+			
+			svg {
+				margin-right: 6px;
+
+				&.discusssion-icon {
+					margin-top: 5px;
+				}
+			}
+		}
 	}
 
 	.statusTag {
