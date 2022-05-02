@@ -3,19 +3,25 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from '@xstyled/styled-components';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Divider, Icon } from 'semantic-ui-react';
+import { useNetworkSocialsQuery } from 'src/generated/graphql';
 // import { Link } from 'react-router-dom';
-import { chainLinks } from 'src/global/networkConstants';
 import getNetwork from 'src/util/getNetwork';
 
 import logo from '../../assets/polkassembly-logo.png';
 
 const Footer = ({ className }:{ className?: string } ): JSX.Element => {
-
 	const network = getNetwork();
-	const links = chainLinks[network];
+
+	const { data, error, refetch } = useNetworkSocialsQuery({ variables: {
+		network
+	} });
+
+	useEffect(() => {
+		refetch();
+	}, [refetch]);
 
 	const year = new Date().getFullYear();
 
@@ -51,37 +57,44 @@ const Footer = ({ className }:{ className?: string } ): JSX.Element => {
 
 				<div className="network-links">
 					<h3>Network Links</h3>
-					<div className='network-links-container'>
+					{!error && data && data.blockchain_socials[0] && <div className='network-links-container'>
 						<div className="network-row">
-							<a href={links.homepage} target='_blank' rel='noreferrer' className='network-icon first-network-icon'>
+							{data.blockchain_socials[0].homepage && <a href={data.blockchain_socials[0].homepage} target='_blank' rel='noreferrer' className='network-icon first-network-icon'>
 								<Icon name='home' />
-							</a>
-							<a href={links.twitter} target='_blank' rel='noreferrer' className='network-icon'>
+							</a>}
+
+							{data.blockchain_socials[0].twitter && <a href={data.blockchain_socials[0].twitter} target='_blank' rel='noreferrer' className='network-icon'>
 								<Icon name='twitter' />
-							</a>
-							<a href={links.discord} target='_blank' rel='noreferrer' className='network-icon'>
+							</a>}
+
+							{data.blockchain_socials[0].discord && <a href={data.blockchain_socials[0].discord} target='_blank' rel='noreferrer' className='network-icon'>
 								<Icon name='discord' />
-							</a>
-							<a href={links.github} target='_blank' rel='noreferrer' className='network-icon'>
+							</a>}
+
+							{data.blockchain_socials[0].github && <a href={data.blockchain_socials[0].github} target='_blank' rel='noreferrer' className='network-icon'>
 								<Icon name='github' />
-							</a>
+							</a>}
+
 						</div>
 
 						<div className="network-row">
-							<a href={links.youtube} target='_blank' rel='noreferrer' className='network-icon'>
+							{data.blockchain_socials[0].youtube && <a href={data.blockchain_socials[0].youtube} target='_blank' rel='noreferrer' className='network-icon'>
 								<Icon name='youtube' />
-							</a>
-							<a href={links.reddit} target='_blank' rel='noreferrer' className='network-icon'>
+							</a>}
+
+							{data.blockchain_socials[0].reddit && <a href={data.blockchain_socials[0].reddit} target='_blank' rel='noreferrer' className='network-icon'>
 								<Icon name='reddit alien' />
-							</a>
-							<a href={links.telegram} target='_blank' rel='noreferrer' className='network-icon'>
+							</a>}
+
+							{data.blockchain_socials[0].telegram && <a href={data.blockchain_socials[0].telegram} target='_blank' rel='noreferrer' className='network-icon'>
 								<Icon name='telegram plane' />
-							</a>
-							<a href={links.blockExplorer} target='_blank' rel='noreferrer' className='network-icon'>
+							</a>}
+
+							{data.blockchain_socials[0].block_explorer && <a href={data.blockchain_socials[0].block_explorer} target='_blank' rel='noreferrer' className='network-icon'>
 								<Icon name='cube' />
-							</a>
+							</a>}
 						</div>
-					</div>
+					</div>}
 				</div>
 			</div>
 

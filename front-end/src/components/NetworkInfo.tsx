@@ -26,7 +26,7 @@ const NetworkInfo = ({ className }: Props) => {
 	return (
 		<div className={className}>
 			<div className="text">Join our Community to discuss, contribute and get regular updates from us!</div>
-			{!error && data &&
+			{!error && data && data.blockchain_socials[0] &&
 				<div className="networkInfo-icons">
 					{data.blockchain_socials[0].homepage && <a href={data.blockchain_socials[0].homepage} target='_blank' rel='noreferrer'>
 						<Icon name='home'/>
