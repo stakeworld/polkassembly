@@ -195,9 +195,9 @@ const LatestActivity = ({ className }: Props) => {
 
 	return (
 		<div className={className}>
-			<h1 id='tab-header'>Latest activity</h1>
-			<div className='mobile-action-bar'>
-				{searchButton}
+			<h1 className='table-heading'>Latest activity <Button id='search-btn' onClick={toggleSearchBar} className='menu-right no-label-item hidden-lg'> <Icon size='large' name='search' /> </Button></h1>
+			<div className='hidden-desktop'>
+				{ showSearchBar && <Input className='menu-right no-label-item' autoFocus loading={loading} fluid icon='search' iconPosition='left' placeholder='Search By Proposal Keyword' value={searchValue} onChange={debounce(handleSearchChange, 500, { leading: true })} /> }
 			</div>
 			<Tab className='tab-header' activeIndex={activeTabIndex} onTabChange={handleChange} menu={{ className:'tab-menu', pointing: true, secondary: true }} panes={panes} />
 		</div>
@@ -206,10 +206,35 @@ const LatestActivity = ({ className }: Props) => {
 
 export default styled(LatestActivity)`
 	&&& {
+		.hidden-mobile {
+			@media only screen and (max-width: 767px) {
+				display: none !important;
+			}
+		}
+
+		.hidden-desktop {
+			@media only screen and (min-width: 767px) {
+				display: none !important;
+			}
+		}
+
+		.hidden-lg {
+			@media only screen and (min-width: 992px) {
+				display: none !important;
+			}
+		}
 
 		h1 {
 			font-size: 30px;
 			margin-bottom: 16px;
+		}
+
+		#search-btn {
+			background: transparent;
+
+			&.hidden-lg {
+				padding-right: 0 !important;
+			}
 		}
 
 		.mobile-action-bar {
@@ -219,6 +244,10 @@ export default styled(LatestActivity)`
 			display: flex;
 			justify-content: flex-end;
 			margin-bottom: -10px;
+
+			@media only screen and (max-width: 767px) {
+				background: transparent;
+			}
 
 			.menu-right {
 				margin-left: 0;
@@ -251,11 +280,25 @@ export default styled(LatestActivity)`
 			}
 		}
 
+		.table-heading {
+			display: flex;
+		}
+
 		.tab-header {
 			background: white;
 			border-top-left-radius: 0.5em;
 			border-top-right-radius: 0.5em;
 			padding-top: 0.5em;
+
+			@media only screen and (max-width: 767px) {
+				background: transparent;
+
+				.item {
+					border-bottom: 5px solid #D8D8D8 !important;
+				}
+			}
+
+
 			.item:hover {
 				border-bottom: 5px solid #E5007A !important;
 			}
@@ -282,8 +325,23 @@ export default styled(LatestActivity)`
 		}
 	
 		.tab-menu {
-			overflow-x: auto;
+			overflow-x: hidden;
 			overflow-y: hidden;
+
+			@media only screen and (max-width: 767px) {
+				overflow-x: auto;
+				background: transparent !important;
+				-ms-overflow-style: none;  /* Internet Explorer 10+ */
+				scrollbar-width: none;  /* Firefox */
+
+				&::-webkit-scrollbar {
+					display: none;  /* Safari and Chrome */
+				}
+			}
+
+			&:hover {
+				overflow-x: auto;
+			}
 
 			.no-label-item:hover {
 				border-bottom: 1px solid #fff !important;
@@ -340,6 +398,16 @@ export default styled(LatestActivity)`
 			max-height: 500px;
 			padding: 0 !important;
 
+			@media only screen and (max-width: 767px) {
+				background: transparent !important;
+				-ms-overflow-style: none;  /* Internet Explorer 10+ */
+				scrollbar-width: none;  /* Firefox */
+
+				&::-webkit-scrollbar {
+					display: none;  /* Safari and Chrome */
+				}
+			}
+
 			table tbody {
 				tr:nth-child(2n){
 					background-color: rgba(30, 30, 40, 0.03) !important;
@@ -351,6 +419,21 @@ export default styled(LatestActivity)`
 				}
 			}
 			
+			.cards-container {
+				padding-top: 16px;
+
+				@media only screen and (max-width: 767px) {
+					padding-top: 0;
+				}
+
+				.dot-divider {
+					height: 4px;
+					width: 4px;
+					background-color: #75767C;
+					border-radius: 50%;
+					display: inline-block;
+				}
+			}
 
 		}
 	

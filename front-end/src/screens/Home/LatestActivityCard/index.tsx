@@ -5,24 +5,17 @@
 import styled from '@xstyled/styled-components';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Table } from 'semantic-ui-react';
+import { Divider, Icon } from 'semantic-ui-react';
 import LatestActivityPostReactions from 'src/components/Reactionbar/LatestActivityPostReactions';
 // import BlockCountdown from 'src/components/BlockCountdown';
 import { noTitle } from 'src/global/noTitle';
 
-import { ReactComponent as BountyIcon } from '../../../assets/sidebar/bounties.svg';
-import { ReactComponent as DiscussionsIcon } from '../../../assets/sidebar/discussions.svg';
-import { ReactComponent as MotionIcon } from '../../../assets/sidebar/motion.svg';
-import { ReactComponent as ProposalIcon } from '../../../assets/sidebar/proposals.svg';
-import { ReactComponent as ReferendaIcon } from '../../../assets/sidebar/referenda.svg';
-import { ReactComponent as TipIcon } from '../../../assets/sidebar/tips.svg';
-import { ReactComponent as TreasuryProposalIcon } from '../../../assets/sidebar/treasury_proposals.svg';
 import { useRouter } from '../../../hooks';
 // import useCurrentBlock from 'src/hooks/useCurrentBlock';
 import Address from '../../../ui-components/Address';
 import StatusTag from '../../../ui-components/StatusTag';
 
-interface LatestActivityTableRowProps {
+interface LatestActivityCardProps {
 	postId: number
 	address: string
 	className?: string
@@ -37,7 +30,7 @@ interface LatestActivityTableRowProps {
 	hideSerialNum?: boolean
 }
 
-const LatestActivityTableRow = function ({
+const LatestActivityCard = function ({
 	postId,
 	address,
 	className,
@@ -50,7 +43,7 @@ const LatestActivityTableRow = function ({
 	postType,
 	username,
 	hideSerialNum
-}:LatestActivityTableRowProps) {
+}:LatestActivityCardProps) {
 	const { history } = useRouter();
 	const [postTypeIcon, setPostTypeIcon] = useState<any>();
 	const [postSerialID, setPostSerialID] = useState<any>();
@@ -61,35 +54,35 @@ const LatestActivityTableRow = function ({
 
 		switch (postType){
 		case 'discussion':
-			icon = <DiscussionsIcon className='discusssion-icon' />;
+			icon = <Icon name='comments outline' />;
 			serialID = onchainId;
 			break;
 		case 'referenda':
-			icon = <ReferendaIcon />;
+			icon = <Icon name='clipboard check' />;
 			serialID = onchainId;
 			break;
 		case 'proposal':
-			icon = <ProposalIcon />;
+			icon = <Icon name='file alternate' />;
 			serialID = onchainId;
 			break;
 		case 'motion':
-			icon = <MotionIcon />;
+			icon = <Icon name='forward' />;
 			serialID = onchainId;
 			break;
 		case 'treasury proposal':
-			icon = <TreasuryProposalIcon />;
+			icon = <Icon name='diamond' />;
 			serialID = onchainId;
 			break;
 		case 'tech committee proposal':
-			icon = <ProposalIcon />;
+			icon = <Icon name='file alternate' />;
 			serialID = onchainId;
 			break;
 		case 'bounty':
-			icon = <BountyIcon />;
+			icon = <Icon name='dollar sign' />;
 			serialID = onchainId;
 			break;
 		case 'tip':
-			icon = <TipIcon />;
+			icon = <Icon name='lightbulb' />;
 			serialID = null;
 			break;
 		}
@@ -142,81 +135,106 @@ const LatestActivityTableRow = function ({
 	};
 
 	return (
-		<Table.Row className={className}>
-			{!hideSerialNum ? <Table.Cell onClick={ gotoPost } className='sub-title-text serial-num'>
-				{ postSerialID }
-			</Table.Cell> : null}
-			<Table.Cell className={!hideSerialNum ? 'pl-0' : ''} onClick={ gotoPost }>
-				<div className='main-title-text'>
-					<h4>
-						<div>
-							{trimmedMainTitle}
-						</div>
-					</h4>
+		<div onClick={gotoPost} className={`${className} post-card`}>
+			<div className="post-head">
+				<div className="post-type">
+					{postTypeIcon} <span>{ postType == 'tech committee proposal' ? 'Proposal': postType == 'treasury proposal' ? 'Treasury' : postType }</span> {!hideSerialNum && postSerialID ? <><span className="dot-divider"></span> #{postSerialID}</> : null}
 				</div>
-				{subTitle && <div className='sub-title-text'>{subTitle}</div>}
-			</Table.Cell>
-			<Table.Cell onClick={ gotoPost }>
-				{!address ? <span className='username'> { username } </span> :
-					<Address
-						address={address}
-						className='address'
-						displayInline={true}
-						disableIdenticon={true}
-					/>
-				}
-				<div className='sub-title-text'>
-					Posted { relativeCreatedAt }
+				<div className="post-status">
+					{status && <StatusTag className='statusTag' status={status} />}
 				</div>
-			</Table.Cell>
-			<Table.Cell className='postType-cell' onClick={ gotoPost }>
-				<div className='flex'>
-					{postTypeIcon} { postType == 'tech committee proposal' ? 'Proposal': postType }
+			</div>
+
+			<div className="post-content">
+				<div className="post-title">
+					{trimmedMainTitle} {subTitle}
 				</div>
-			</Table.Cell>
-			<Table.Cell onClick={ gotoPost }>{status && <StatusTag className='statusTag' status={status} />}</Table.Cell>
-			<Table.Cell className='action-btn-cell'>
+				<div className="post-meta">
+					{!address ? <span className='username'> { username } </span> :
+						<Address
+							address={address}
+							className='address'
+							displayInline={true}
+							disableIdenticon={true}
+						/>
+					}
+					<span className="dot-divider"></span>
+					<span> { relativeCreatedAt } </span>
+				</div>
+			</div>
+
+			<Divider />
+
+			<div className="post-actions">
 				<LatestActivityPostReactions className='reactions' gotoPost={gotoPost} postId={postId} />
-			</Table.Cell>
-		</Table.Row>
+			</div>
+		</div>
 	);
 };
 
-export default styled(LatestActivityTableRow)`
+export default styled(LatestActivityCard)`
 	cursor: pointer !important;
-	min-height: 89px;
-	height: 89px;
-	
-	td {
-		padding-top: 0.5em !important;
-		padding-bottom: 0.5em !important;
-	}
 
-	.serial-num {
-		padding-right: 0 !important;
-		padding: 0 !important;
-		text-align: center !important;
-	}
+	background: #fff;
+	width: 98%;
+	height: 100%;
+	margin-top: 16px;
+	margin-right: auto;
+	margin-left: auto;
+	padding: 15px 15px 5px 15px;
+	border-radius: 10px;
+	border: 1px solid #D5DBDE;
 
-	@media only screen and (min-width: 992px) {
-		min-height: 76px;
-		height: 76px;
-		
-		.pl-0 {
-			padding-left: 0 !important;
+	.post-head {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 16px;
+
+		.post-type {
+			display: flex;
+			align-items: center;
+			text-transform: capitalize;
+
+			i {
+				margin-top: -4px;
+			}
+
+			& > * {
+				margin-right: 10px;
+			}
 		}
 	}
 
-	.main-title-text h4 {
-		color: #75767C !important;
-		font-size: 16px;
-		font-weight: 400;
+	.post-content {
+		margin-bottom: 12px;
+
+		.post-title {
+			font-size: 16px;
+			color: #75767C;
+			font-weight: 500;
+			margin-bottom: 12px;
+		}
+
+		.post-meta {
+			display: flex;
+			align-items: center;
+			font-size: 14px !important;
+			color: #ADADAD !important;
+
+			.dot-divider {
+				margin-top: -2px;
+			}
+
+			& > * {
+				margin-right: 10px;
+			}
+		}
 	}
 
-	.sub-title-text {
-		font-size: 14px;
-		margin-top: 0.5em;
-		color: #A4A4A4;
+	.post-actions {
+		display: flex;
+		justify-content: flex-end;
 	}
 
 	.username {
@@ -227,37 +245,8 @@ export default styled(LatestActivityTableRow)`
 
 	.address{
 		.identityName{
-			font-size: 16px !important;
-		}
-	}
-
-	.action-btn-cell {
-		display: flex;
-		cursor: default !important;
-		padding-top: 0.9em !important;
-		white-space: nowrap;
-	}
-
-	.action-btn {
-		background: transparent;
-	}
-
-	.postType-cell {
-		text-transform: capitalize;
-		color: #75767C;
-		font-size: 16px !important;
-		white-space: nowrap;
-
-		.flex {
-			display: flex;
-			
-			svg {
-				margin-right: 6px;
-
-				&.discusssion-icon {
-					margin-top: 5px;
-				}
-			}
+			font-size: 14px !important;
+			color: #ADADAD !important;
 		}
 	}
 
@@ -265,4 +254,6 @@ export default styled(LatestActivityTableRow)`
 		font-size: 16px !important;
 		font-weight: 400 !important;
 	}
+
+				
 `;

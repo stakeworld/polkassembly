@@ -12,6 +12,7 @@ import { useGetLatestDemocracyProposalPostsQuery } from '../../../generated/grap
 import { post_topic } from '../../../global/post_topics';
 import { post_type } from '../../../global/post_types';
 import FilteredError from '../../../ui-components/FilteredError';
+import LatestActivityCard from '../LatestActivityCard';
 import LatestActivityTableHeader from '../LatestActivityTableHeader';
 import LatestActivityTableRow from '../LatestActivityTableRow';
 
@@ -50,7 +51,7 @@ const LatestProposalsTable = ({ className }:Props) => {
 			</Tab.Pane>;
 
 		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
-			<Table basic='very' striped unstackable selectable>
+			<Table className='hidden-mobile' basic='very' striped unstackable selectable>
 				<LatestActivityTableHeader className={className} />
 
 				<Table.Body>
@@ -73,6 +74,26 @@ const LatestProposalsTable = ({ className }:Props) => {
 					)}
 				</Table.Body>
 			</Table>
+
+			<div className='hidden-desktop cards-container'>
+				{data.posts.map(
+					(post) => {
+						return !!post?.author?.username && (!!post.onchain_link?.onchain_proposal.length || post.onchain_link?.onchain_proposal_id) &&
+							<LatestActivityCard
+								key={post.id}
+								postId={post.id}
+								address={post.onchain_link.proposer_address}
+								method={post.onchain_link.onchain_proposal[0]?.preimage?.method}
+								onchainId={post.onchain_link?.onchain_proposal_id}
+								status={post.onchain_link.onchain_proposal[0]?.proposalStatus?.[0].status}
+								title={post.title}
+								postType='proposal'
+								created_at={post.created_at}
+							/>
+						;
+					}
+				)}
+			</div>
 		</Tab.Pane>;
 	}
 

@@ -53,7 +53,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 	const [nextBurnUSD, setNextBurnUSD] = useState<string>('');
 	const [currentTokenPrice, setCurrentTokenPrice] = useState<string>('');
 	const [priceWeeklyChange, setPriceWeeklyChange] = useState<number>();
-	const [spendPeriodRemaining, setSpendPeriodRemaining] = useState<number>();
+	const [spendPeriodElapsed, setSpendPeriodElapsed] = useState<number>();
 	const [spendPeriodPercentage, setSpendPeriodPercentage] = useState<number>();
 
 	useEffect(() => {
@@ -299,10 +299,10 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 
 		const totalSpendPeriod: number = blockToDays(result.spendPeriod.toNumber(), blocktime);
 		const spendPeriodElapsed: number = blockToDays(currentBlock.toNumber() % (result.spendPeriod.toNumber()), blocktime);
-		const spendPeriodRemaining: number = totalSpendPeriod - spendPeriodElapsed;
-		setSpendPeriodRemaining(spendPeriodRemaining);
+		// const spendPeriodRemaining: number = totalSpendPeriod - spendPeriodElapsed;
+		setSpendPeriodElapsed(spendPeriodElapsed);
 
-		// spendPeriodRemaining/totalSpendPeriod for opposite
+		// spendPeriodElapsed/totalSpendPeriod for opposite
 		const percentage = ((spendPeriodElapsed/totalSpendPeriod) * 100).toFixed(0);
 		setSpendPeriodPercentage(parseFloat(percentage));
 	}, [api, apiReady, currentBlock, blocktime, result.spendPeriod]);
@@ -318,13 +318,14 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 					<Card.Header className='treasury-card-header'>
 						{result.value ? (
 							<span>
-								{formatBnBalance(
+								{formatUSDWithUnits(formatBnBalance(
 									result.value.toString(),
 									{
 										numberAfterComma: 0,
-										withUnit: true
+										withThousandDelimitor: false,
+										withUnit: false
 									}
-								)}
+								))} {chainProperties[NETWORK].tokenSymbol}
 							</span>
 						) : (
 							<div>
@@ -345,7 +346,13 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			<Card className='treasury-card'>
 				<Card.Content>
 					<Card.Meta className='treasury-card-meta'>
-						Current Price of {chainProperties[NETWORK].tokenSymbol}
+						<span className='desktop-text'>
+							Current Price of {chainProperties[NETWORK].tokenSymbol}
+						</span>
+
+						<span className='mobile-text'>
+							{chainProperties[NETWORK].tokenSymbol} Price
+						</span>
 					</Card.Meta>
 					<Card.Header className='treasury-card-header'>
 						{currentTokenPrice ?
@@ -357,8 +364,12 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 					<Card.Description className='treasury-card-desc'>
 						{priceWeeklyChange ?
 							<div>
-								Weekly Change &nbsp;{Math.abs(priceWeeklyChange)}%
-								{priceWeeklyChange < 0 ? <Icon color='red' name='caret down' /> : <Icon color='green' name='caret up' /> }
+								<span className='desktop-text'>
+									Weekly Change &nbsp;{Math.abs(priceWeeklyChange)}% {priceWeeklyChange < 0 ? <Icon color='red' name='caret down' /> : <Icon color='green' name='caret up' /> }
+								</span>
+								<span className='mobile-text'>
+								Weekly &nbsp;{Math.abs(Number(priceWeeklyChange.toFixed(0)))}% {priceWeeklyChange < 0 ? <Icon color='red' name='caret down' /> : <Icon color='green' name='caret up' /> }
+								</span>
 							</div> :
 							'Fetching...'
 						}
@@ -370,10 +381,15 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			<Card className='treasury-card'>
 				<Card.Content>
 					<Card.Meta className='treasury-card-meta'>
-						Spend Period Remaining <HelperTooltip content={'Funds held in the treasury can be spent by making a spending proposal that, if approved by the Council, will enter a spend period before distribution, it is subject to governance, with the current default set to '+ blockToDays(result.spendPeriod.toNumber(), blocktime) + ' days.'} />
+						<span className='desktop-text'>
+							Spend Period Elapsed <HelperTooltip content={'Funds held in the treasury can be spent by making a spending proposal that, if approved by the Council, will enter a spend period before distribution, it is subject to governance, with the current default set to '+ blockToDays(result.spendPeriod.toNumber(), blocktime) + ' days.'} />
+						</span>
+						<span className='mobile-text'>
+						Spend Period
+						</span>
 					</Card.Meta>
 					<Card.Header className='treasury-card-header'>
-						{spendPeriodRemaining && `${spendPeriodRemaining} days` }
+						{spendPeriodElapsed && `${spendPeriodElapsed} days` }
 					</Card.Header>
 
 					<Card.Description className='treasury-card-desc progress-desc'>
@@ -392,13 +408,14 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 					<Card.Header className='treasury-card-header'>
 						{result.burn ? (
 							<span>
-								{formatBnBalance(
+								{formatUSDWithUnits(formatBnBalance(
 									result.burn.toString(),
 									{
 										numberAfterComma: 0,
-										withUnit: true
+										withThousandDelimitor: false,
+										withUnit: false
 									}
-								)}
+								))} {chainProperties[NETWORK].tokenSymbol}
 							</span>
 						) : (
 							<div>
@@ -420,15 +437,25 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 
 export default styled(TreasuryOverviewCards)`
 	&&& {
-		overflow-x: auto !important;
+		overflow-x: hidden !important;
 		flex-wrap: nowrap;
 		max-width: 99.9%;
 		margin-left: 0 !important;
 
+		@media only screen and (min-width: 767px) {
+			&:hover {
+				overflow-x: auto !important;
+			}
+		}
+
 		@media only screen and (max-width: 767px) {
-			width: 100%;
-			flex-direction: column !important;
-			overflow-x: hidden !important;
+			max-width: 98%;
+			display: grid;
+			column-gap: 16px;
+			grid-template-columns: auto auto;
+			overflow-x: visible !important;
+			margin-left: auto !important;
+			margin-right: auto !important;
 		}
 
 		.treasury-card{
@@ -436,7 +463,8 @@ export default styled(TreasuryOverviewCards)`
 			border-radius: 0.5em;
 
 			width: 98%;
-			min-width: 254px;
+			min-width: min-content;
+			white-space: nowrap;
 			margin-right: 16px !important;
 			margin-left: 0 !important;
 
@@ -444,12 +472,20 @@ export default styled(TreasuryOverviewCards)`
 				margin-left: 1px !important;
 			}
 
+			.mobile-text {
+				display: none;
+			}
+
 			@media only screen and (max-width: 767px) {
 				padding-bottom: 12px;
-				margin-right: auto !important;
-				margin-left: auto !important;
-				&:first-child{
-					margin-left: auto !important;
+				min-width: 14px;
+
+				.mobile-text {
+					display: block;
+				}
+				
+				.desktop-text {
+					display: none;
 				}
 			}
 			
@@ -457,14 +493,13 @@ export default styled(TreasuryOverviewCards)`
 				width: 23%;
 				max-width: 320px;
 			}
-			
 			.content{
 				padding-bottom: 0 !important;
 			}
 			
 			.treasury-card-meta {
 				color: #333 !important;
-				font-size: 16px;
+				font-size: 15px;
 			}
 	
 			.treasury-card-header {
@@ -472,6 +507,10 @@ export default styled(TreasuryOverviewCards)`
 				font-size: 24px !important;
 				font-family: 'Roboto';
 				font-weight: 500 !important;
+
+				@media only screen and (max-width: 767px) {
+					font-size: 18px !important;
+				}
 			}
 	
 			.treasury-card-desc{

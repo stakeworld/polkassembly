@@ -11,6 +11,7 @@ import getDefaultAddressField from 'src/util/getDefaultAddressField';
 
 import { useGetLatestPostsQuery } from '../../../generated/graphql';
 import FilteredError from '../../../ui-components/FilteredError';
+import LatestActivityCard from '../LatestActivityCard';
 import LatestActivityTableHeader from '../LatestActivityTableHeader';
 import LatestActivityTableRow from '../LatestActivityTableRow';
 
@@ -122,7 +123,7 @@ const LatestAllPostsTable = ({ className }:Props) => {
 			</Tab.Pane>;
 
 		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
-			<Table basic='very' striped unstackable selectable>
+			<Table className='hidden-mobile' basic='very' striped unstackable selectable>
 				<LatestActivityTableHeader className={className} />
 
 				<Table.Body>
@@ -151,6 +152,32 @@ const LatestAllPostsTable = ({ className }:Props) => {
 					)}
 				</Table.Body>
 			</Table>
+
+			<div className='hidden-desktop cards-container'>
+				{data.posts.map(
+					(post) => {
+						const postTypeData = getPostTypeData(post);
+
+						if(postTypeData){
+							return postTypeData && !!post?.author?.username &&
+							<LatestActivityCard
+								key={post.id}
+								postId={post.id}
+								address={postTypeData.postTypeString == 'discussion' ? post.author[defaultAddressField]! : post.onchain_link?.proposer_address!}
+								method={postTypeData.method ? postTypeData.method : undefined}
+								onchainId={postTypeData?.onChainId}
+								status={postTypeData.status}
+								title={postTypeData.title}
+								postType={postTypeData.postTypeString}
+								created_at={post.created_at}
+								username = {post.author.username}
+							/>
+							;
+						}
+						return null;
+					}
+				)}
+			</div>
 		</Tab.Pane>;
 	}
 
@@ -171,7 +198,7 @@ export default styled(LatestAllPostsTable)`
     .tab-menu {
       overflow-x: auto;
       overflow-y: hidden;
-  
+
       a.active {
         border-bottom: 5px solid #E5007A !important;
       }
@@ -212,5 +239,6 @@ export default styled(LatestAllPostsTable)`
         }
       }
     }
+
 	}
 `;

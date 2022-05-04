@@ -11,6 +11,7 @@ import getDefaultAddressField from 'src/util/getDefaultAddressField';
 
 import { useLatestDiscussionPostsQuery } from '../../../generated/graphql';
 import FilteredError from '../../../ui-components/FilteredError';
+import LatestActivityCard from '../LatestActivityCard';
 import LatestActivityTableHeader from '../LatestActivityTableHeader';
 import LatestActivityTableRow from '../LatestActivityTableRow';
 
@@ -41,7 +42,7 @@ const LatestDiscussionsTable = ({ className }:Props) => {
 			</Tab.Pane>;
 
 		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
-			<Table basic='very' striped unstackable selectable>
+			<Table className='hidden-mobile' basic='very' striped unstackable selectable>
 				<LatestActivityTableHeader className={className} hideSerialNum={false} />
 
 				<Table.Body>
@@ -64,6 +65,26 @@ const LatestDiscussionsTable = ({ className }:Props) => {
 					)}
 				</Table.Body>
 			</Table>
+
+			<div className='hidden-desktop cards-container'>
+				{data.posts.map(
+					(post) => {
+						return !!post?.author?.username &&
+							<LatestActivityCard
+								key={post.id}
+								postId={post.id}
+								address={post.author[defaultAddressField]!}
+								onchainId={post.id}
+								title={post.title}
+								postType='discussion'
+								created_at={post.created_at}
+								username={post.author.username}
+								hideSerialNum={false}
+							/>
+						;
+					}
+				)}
+			</div>
 		</Tab.Pane>;
 	}
 
