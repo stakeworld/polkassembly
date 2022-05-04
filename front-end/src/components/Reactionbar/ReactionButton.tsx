@@ -8,6 +8,8 @@ import React, { useContext } from 'react';
 import { Popup } from 'semantic-ui-react';
 import { ReactionMapFields } from 'src/types';
 
+import likeImg from '../../assets/latest-activity-like.png';
+import likedImg from '../../assets/latest-activity-liked.png';
 import { UserDetailsContext } from '../../context/UserDetailsContext';
 import {
 	CommentReactionsQuery,
@@ -20,6 +22,7 @@ import Button from '../../ui-components/Button';
 
 export interface ReactionButtonProps {
 	className?: string
+	isLatestActivity? : boolean
 	reaction: string
 	reactionMap:  { [ key: string ]: ReactionMapFields; }
 	postId?: number
@@ -32,6 +35,7 @@ export interface ReactionButtonProps {
 
 const ReactionButton = function ({
 	className,
+	isLatestActivity,
 	reaction,
 	reactionMap,
 	postId,
@@ -163,23 +167,39 @@ const ReactionButton = function ({
 		}
 	};
 
+	const button =  <span className={className}>
+		{
+			isLatestActivity ?
+				<Button
+					className={'social' + (reacted ? ' reacted' : '')}
+					onClick={handleReact}
+					disabled={!id || reactionsDisabled}
+				>
+					{reacted ?
+						<img width='17.86px' height='18.4px' src={likedImg} alt="Liked" />
+						:
+						<img width='17.86px' height='18.4px' src={likeImg} alt="Like" />
+					}
+				</Button>
+				:
+				<Button
+					className={'social' + (reacted ? ' reacted' : '')}
+					onClick={handleReact}
+					disabled={!id || reactionsDisabled}
+				>
+					{reaction} {reactionMap[reaction].count}
+				</Button>
+		}
+
+	</span>;
+
 	let popupContent = '';
 
-	if (userNames.length > 5) {
-		popupContent = `${userNames.slice(0, 5).join(', ')} and ${userNames.length - 5} others`;
+	if (userNames.length > 10) {
+		popupContent = `${userNames.slice(0, 10).join(', ')} and ${userNames.length - 10} others`;
 	} else {
 		popupContent = userNames.join(', ');
 	}
-
-	const button =  <span className={className}>
-		<Button
-			className={'social' + (reacted ? ' reacted' : '')}
-			onClick={handleReact}
-			disabled={!id || reactionsDisabled}
-		>
-			{reaction} {reactionMap[reaction].count}
-		</Button>
-	</span>;
 
 	return userNames.length > 0 ?
 		<Popup
@@ -192,10 +212,23 @@ export default styled(ReactionButton)`
 	.social {
 		color: blue_primary !important;
 		font-size: 1em !important;
+
+		:not(.reacted) {
+			background-color: transparent !important;
+		}
 	}
 
-	.reacted {
-		background-color: blue_secondary !important;
+	.social:hover, .reacted {
+		background-color: transparent !important;
 		border: none !important;
+	}
+
+	.bg-pink {
+		color: pink_primary;
+		background: transparent !important;
+	}
+
+	.reaction-icon{
+		font-size: 1.5em;
 	}
 `;

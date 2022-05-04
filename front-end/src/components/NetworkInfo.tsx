@@ -3,90 +3,136 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from '@xstyled/styled-components';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Icon } from 'semantic-ui-react';
-import { chainLinks } from 'src/global/networkConstants';
-import InfoBox from 'src/ui-components/InfoBox';
+import { useNetworkSocialsQuery } from 'src/generated/graphql';
 import getNetwork from 'src/util/getNetwork';
 
 interface Props {
 	className?: string
 }
 
-function capitalize(string: string): string {
-	return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 const NetworkInfo = ({ className }: Props) => {
 	const network = getNetwork();
-	const links = chainLinks[network];
+
+	const { data, error, refetch } = useNetworkSocialsQuery({ variables: {
+		network
+	} });
+
+	useEffect(() => {
+		refetch();
+	}, [refetch]);
 
 	return (
-		<InfoBox
-			className={className}
-			dismissable={false}
-			name='networkInfo'
-			title={`${capitalize(network)} network`}
-		>
-			<a
-				className='social'
-				href={links.homepage}
-			>
-				<Icon size='large' bordered={true} name='home'/>
-			</a>
-			<a
-				className='social'
-				href={links.github}
-			>
-				<Icon size='large' bordered={true} name='github'/>
-			</a>
-			<a
-				className='social'
-				href={links.twitter}
-			>
-				<Icon size='large' bordered={true} name='twitter'/>
-			</a>
-			<a
-				className='social'
-				href={links.discord}
-			>
-				<Icon size='large' bordered={true} name='discord'/>
-			</a>
-			<a
-				className='social'
-				href={links.youtube}
-			>
-				<Icon size='large' bordered={true} name='youtube'/>
-			</a>
-			<a
-				className='social'
-				href={links.reddit}
-			>
-				<Icon size='large' bordered={true} name='reddit'/>
-			</a>
-			<a
-				className='social'
-				href={links.telegram}
-			>
-				<Icon size='large' bordered={true} name='telegram'/>
-			</a>
-			<a
-				className='social'
-				href={links.blockExplorer}
-			>
-				<Icon size='large' bordered={true} name='cube'/>
-			</a>
-		</InfoBox>
+		<div className={className}>
+			<div className="text">Join our Community to discuss, contribute and get regular updates from us!</div>
+			{!error && data && data.blockchain_socials[0] &&
+				<div className="networkInfo-icons">
+					{data.blockchain_socials[0].homepage && <a href={data.blockchain_socials[0].homepage} target='_blank' rel='noreferrer'>
+						<Icon name='home'/>
+					</a>
+					}
+					{data.blockchain_socials[0].twitter && <a href={data.blockchain_socials[0].twitter} target='_blank' rel='noreferrer'>
+						<Icon name='twitter'/>
+					</a>
+					}
+					{data.blockchain_socials[0].discord && <a href={data.blockchain_socials[0].discord} target='_blank' rel='noreferrer'>
+						<Icon name='discord'/>
+					</a>
+					}
+					{data.blockchain_socials[0].github && <a href={data.blockchain_socials[0].github} target='_blank' rel='noreferrer'>
+						<Icon name='github'/>
+					</a>
+					}
+					{data.blockchain_socials[0].youtube && <a href={data.blockchain_socials[0].youtube} target='_blank' rel='noreferrer'>
+						<Icon name='youtube'/>
+					</a>
+					}
+					{data.blockchain_socials[0].reddit && <a href={data.blockchain_socials[0].reddit} target='_blank' rel='noreferrer'>
+						<Icon name='reddit alien'/>
+					</a>
+					}
+					{data.blockchain_socials[0].telegram && <a href={data.blockchain_socials[0].telegram} target='_blank' rel='noreferrer'>
+						<Icon name='telegram plane'/>
+					</a>
+					}
+					{data.blockchain_socials[0].block_explorer && <a href={data.blockchain_socials[0].block_explorer} target='_blank' rel='noreferrer'>
+						<Icon name='cube'/>
+					</a>
+					}
+
+				</div>
+			}
+		</div>
 	);
 };
 
 export default styled(NetworkInfo)`
-	a {
-		color: black_primary;
-		text-decoration: none;
-		&:hover {
-			color: grey_primary;
-			text-decoration: none;
+	border-radius: 0.8em;
+	-webkit-box-shadow: 0px 5px 10px 1px rgba(186,182,186,1);
+	-moz-box-shadow: 0px 5px 10px 1px rgba(186,182,186,1);
+	box-shadow: 0px 5px 10px 1px rgba(186,182,186,1);
+	background: #E5007A !important;
+	display: flex;
+	padding: 24px 24px;
+	color: #fff;
+	font-size: 16px;
+	width: 98%;
+	justify-content: space-between;
+
+	.networkInfo-icons{
+		a {
+			margin-top: 0.5em;
+			margin-bottom: 0.5em;
+			padding-right: 0.6em;
+
+			&:not(:first-child) {
+				padding-left: 0.6em;
+				border-left: 1px solid rgba(226, 226, 226, 0.25);
+			}
 		}
+
+		.icon {
+			color: #fff;
+		}
+		
 	}
+
+	@media only screen and (max-width: 1189px) {
+		padding: 20px 20px;
+		flex-direction: column;
+		justify-content: center;
+		text-align: center;
+
+		.networkInfo-icons {
+			margin-top: 20px;
+			
+			a {
+				padding-right: 0.4em !important;
+				&:not(:first-child) {
+					padding-left: 0.4em;
+				}
+			}
+
+			.icon {
+				font-size: 13.98px !important;
+			}
+		}
+		
+	}
+
+	@media only screen and (max-width: 767px) {
+		flex-direction: column;
+		justify-content: center;
+		text-align: left;
+		margin-left: auto !important;
+		margin-right: auto !important;
+
+		.networkInfo-icons {
+			margin-top: 20px;
+			text-align: center;
+		}
+		
+	}
+	
 `;

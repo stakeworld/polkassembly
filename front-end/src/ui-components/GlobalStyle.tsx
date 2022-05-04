@@ -57,6 +57,31 @@ export const GlobalStyle = createGlobalStyle`
         text-decoration: none;
     }
 
+    .d-flex {
+        display: flex;
+    }
+
+    .route-wrapper {
+        flex: 1;
+
+        @media screen and (max-width:992px) {
+            margin: 60px auto 6em auto;
+            max-width: 95% !important;
+        }
+
+        &.collapsed {
+            @media screen and (min-width:992px) {
+                margin: 2em 1em 6em 3em;
+                max-width: calc(100vw - 110px);
+            }
+        }
+
+        @media screen and (min-width:992px) {
+            margin: 2em 1em 6em 3em;
+            max-width: calc(100vw - 290px);
+        }
+    }
+
     .container-fluid {
         max-width: 1200px;
         padding: 0 2.5rem 0 2.5rem;
@@ -65,12 +90,6 @@ export const GlobalStyle = createGlobalStyle`
 		@media (max-width: 1299px) {
 			padding: 0 2.5rem 0 2.5rem;
 		}
-    }
-    }
-
-    #page-container {
-        position: relative;
-        min-height: 100vh;
     }
 
     .ui.container {

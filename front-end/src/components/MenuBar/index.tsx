@@ -4,39 +4,30 @@
 
 import styled from '@xstyled/styled-components';
 import React from 'react';
-import { ReactNode, useContext, useState } from 'react';
-import { MdClose } from 'react-icons/md';
+import { ReactNode, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Accordion, Dropdown, Icon, Menu, Responsive, Sidebar, SidebarPusher } from 'semantic-ui-react';
+import { Dropdown, Icon, Menu, Responsive } from 'semantic-ui-react';
 import NetworkDropdown from 'src/ui-components/NetworkDropdown';
-import getNetwork from 'src/util/getNetwork';
+import SearchBar from 'src/ui-components/SearchBar';
 
 import logo from '../../assets/polkassembly-logo.png';
 import { UserDetailsContext } from '../../context/UserDetailsContext';
 import { useLogoutMutation } from '../../generated/graphql';
-import { useFetchLatestBlockNumberQuery } from '../../generated/graphql';
 import { useRouter } from '../../hooks';
 import { logout } from '../../services/auth.service';
 import AddressComponent from '../../ui-components/Address';
 
 interface Props {
-	children?: ReactNode,
-	className?: string,
-	visible?: boolean
+	children?: ReactNode
+	className?: string
+	toggleSidebarHidden: () => void
 }
 
-const NETWORK = getNetwork();
-
-const MenuBar = ({ className } : Props): JSX.Element => {
+const MenuBar = ({ className, toggleSidebarHidden } : Props): JSX.Element => {
 	const currentUser = useContext(UserDetailsContext);
 	const [logoutMutation] = useLogoutMutation();
 	const { history } = useRouter();
 	const { setUserDetailsContextState, username } = currentUser;
-	const { data } = useFetchLatestBlockNumberQuery();
-
-	const latestBlockNumber = data?.blockNumbers[0]?.number;
-
-	const blockUrl = `https://${NETWORK}.subscan.io/block/${latestBlockNumber}`;
 
 	const handleLogout = async () => {
 		try {
@@ -47,24 +38,6 @@ const MenuBar = ({ className } : Props): JSX.Element => {
 		logout(setUserDetailsContextState);
 		history.push('/');
 	};
-
-	// Menu Items
-	const contentItems = [
-		{ content: 'Discussions', icon:'comments', to:'/discussions' }
-	];
-
-	const onchainItems = [
-		{ content: 'Overview', to: '/onchain' },
-		{ content: 'Referenda', to: '/referenda' },
-		{ content: 'Proposals', to: '/proposals' },
-		{ content: 'Motions', to: '/motions' },
-		{ content: 'Treasury proposals', to: '/treasury-proposals' },
-		{ content: 'Tech comm proposals', to: '/tech-comm-proposals' },
-		{ content: 'Tips', to: '/tips' },
-		{ content: 'Bounties', to: '/bounties' },
-		{ content: 'Council', to: '/council' },
-		{ content: 'Search', to: '/search' }
-	];
 
 	const loggedOutItems = [
 		{ content:'Login', icon:'sign in', to:'/login' },
@@ -78,105 +51,42 @@ const MenuBar = ({ className } : Props): JSX.Element => {
 		{ content:'Logout', icon:'sign-out', onClick: handleLogout, to:'/' }
 	];
 
+	const toggleSidebar = () => {
+		toggleSidebarHidden();
+	};
+
 	const userMenu = currentUser.web3signup && currentUser.defaultAddress
 		? <><AddressComponent address={currentUser.defaultAddress} /></>
-		: <><Icon name='user circle' inverted />{username}</>;
+		: <><Icon size='big' name='user circle' inverted />{username}</>;
 
 	const caretIcon = <Icon name='caret down' inverted />;
-
-	// Mobile Sidebar
-	const [menuVisible, setMenuVisible] = useState(false);
-	const [pushableHeight, setPushableHeight] = useState('0rem');
-	const [accordionActive, setAccordionActive] = useState(false);
-
-	const handleToggle = () => {
-		menuVisible ? setMenuVisible(false) : setMenuVisible(true);
-		menuVisible ? setPushableHeight('0rem'): setPushableHeight('100%');
-	};
-
-	const handleClose = () => {
-		setMenuVisible(false);
-		setPushableHeight('0rem');
-	};
-
-	const handleAccordionClick = () => {
-		setAccordionActive(!accordionActive);
-	};
 
 	return (
 		<>
 			<Responsive maxWidth={Responsive.onlyTablet.maxWidth}>
-				<Menu className={`${className} ${NETWORK}`} inverted widths={2} id='menubar'>
-					<Menu.Item as={NavLink} to="/" className='logo' id='title' onClick={handleClose}><img alt='Polkassembly Logo' src={logo} /></Menu.Item>
+				<Menu className={className} inverted widths={3} id='menubar'>
+					<Menu.Menu position="left" className='sidebar-btn'>
+						<Icon onClick={toggleSidebar} name="sidebar" size='large' />
+					</Menu.Menu>
+					<Menu.Item as={NavLink} to="/" className='logo' id='title'><img alt='Polkassembly Logo' src={logo} /></Menu.Item>
 					<Menu.Menu position="right">
 						<NetworkDropdown />
-						<Menu.Item onClick={handleToggle} id='rightmenu'>
-							{!menuVisible ? <Icon name="sidebar" /> : <MdClose />}
-						</Menu.Item>
 					</Menu.Menu>
-
 				</Menu>
-				<Sidebar.Pushable className={className} style={{ height:pushableHeight }}>
-					<Sidebar
-						as={Menu}
-						direction='top'
-						icon="labeled"
-						inverted
-						stackable
-						vertical
-						visible={menuVisible}
-					>
-						<Accordion>
-							{contentItems.map((item, index) => <Menu.Item as={NavLink} key={index} onClick={handleClose} {...item} />)}
-							<Accordion.Title
-								active={accordionActive}
-								index={0}
-								onClick={handleAccordionClick}
-							>
-								<Menu.Item as={NavLink} content='On-chain' icon='chain' to='#' />
-							</Accordion.Title>
-							<Accordion.Content active={accordionActive}>
-								{onchainItems.map((item, index) => <Menu.Item as={NavLink} key={index} onClick={handleClose} {...item} />)}
-							</Accordion.Content>
-							{username
-								?
-								<>
-									{loggedInItems.map((item, index) => <Menu.Item as={NavLink} key={index} {...item}/>)}
-								</>
-								:
-								<>
-									{loggedOutItems.map((item, index) => <Menu.Item as={NavLink} key={index} activeClassName="pink_primary-text" onClick={handleClose} {...item} />)}
-								</>
-							}
-							{latestBlockNumber ? <Menu.Item>
-								<Icon name="cube" />
-								<a href={blockUrl} target='_blank' rel='noreferrer'>{` ${latestBlockNumber}`}</a>
-							</Menu.Item> : null}
-						</Accordion>
-					</Sidebar>
-					<SidebarPusher />
-				</Sidebar.Pushable>
 			</Responsive>
+
 			<Responsive minWidth={Responsive.onlyComputer.minWidth}>
-				<Menu className={`${className} ${NETWORK}`} stackable inverted borderless>
+				<Menu className={className} stackable inverted borderless>
 					<Menu.Item as={NavLink} to="/" className='logo' id='title'><img alt='Polkassembly Logo' src={logo} /></Menu.Item>
-					{contentItems.map((item, index) => <Menu.Item as={NavLink} className='desktop_items' key={index} {...item} />)}
-					<Menu.Item className='desktop_items'>
-						<Dropdown trigger={<>On-chain</>} icon={caretIcon} item={true}>
-							<Dropdown.Menu>
-								{onchainItems.map((item, index) => <Menu.Item as={NavLink} key={index} {...item}/>)}
-							</Dropdown.Menu>
-						</Dropdown>
-					</Menu.Item>
-					{latestBlockNumber ? <Menu.Item>
-						<Icon name="cube" style={{ marginRight: '10px' }}/>
-						<a href={blockUrl} target='_blank' rel='noreferrer'>{` ${latestBlockNumber}`}</a>
-					</Menu.Item> : null}
-					<Menu.Menu position="right">
+					<Menu.Menu className='right-menu' position="right">
+
+						{username && <Menu.Item title='Create Post' as={NavLink} to="/post/create"><Icon className='create-post-btn' name='add circle' size='large' /></Menu.Item>}
+
+						<SearchBar className='search-bar' />
 						<NetworkDropdown />
 						{username
 							? <>
-								<Dropdown trigger={userMenu} icon={caretIcon} item={true}>
+								<Dropdown className='logged-in-dropdown' trigger={userMenu} icon={caretIcon} item={true}>
 									<Dropdown.Menu>
 										{loggedInItems.map((item, index) => <Menu.Item as={NavLink} key={index} {...item}/>)}
 									</Dropdown.Menu>
@@ -194,9 +104,13 @@ const MenuBar = ({ className } : Props): JSX.Element => {
 };
 
 export default styled(MenuBar)`
-	&.polkadot {
-		border-top: solid !important;
-		border-top-color: pink_primary !important;
+	#title, .item {
+		padding-left: 0 !important;
+		margin-left: 0 !important;
+	}
+
+	.create-post-btn {
+		cursor: pointer; 
 	}
 
 	.pink_primary-text{
@@ -205,13 +119,13 @@ export default styled(MenuBar)`
 
 	&.ui.menu, .ui.inverted.menu {
 		font-family: font_default;
-		background-color: black_full;
+		background-color: nav_black;
 		border-radius: 0rem;
 		letter-spacing: 0.2px;
 
 		& a.active {
 			outline: none;
-			background-color: black_full !important;
+			background-color: nav_black !important;
 		}
 		.item {
 			color: grey_secondary;
@@ -233,11 +147,51 @@ export default styled(MenuBar)`
 					width: 10rem;
 				}
 			}
-			background-color: black_full !important;
+			background-color: nav_black !important;
+		}
+	}
+
+	.right-menu {
+		display: flex;
+		align-items: center;
+
+		.search-bar {
+			margin-right: 1em;
+
+			input {
+				color: #ddd;
+				background: rgba(255, 255, 255, 0.25);
+				border-radius: 0.7em !important;
+				padding-top: 1em;
+				padding-bottom: 1em;
+				width: 26rem;
+				font-family: 'Roboto' !important;
+			}
+
+			.results {
+				width: 35.5vw !important;
+				overflow-y: auto;
+				height: 70vh;
+			}
+		}
+
+		.logged-in-dropdown, i.icon.caret {
+			color: #fff !important;
 		}
 	}
 
 	@media only screen and (max-width: 992px) {
+		position: fixed;
+		z-index: 400;
+
+		.sidebar-btn {
+			margin-left: 20px !important;
+			align-items: center;
+
+			.icon {
+				cursor: pointer;
+			}
+		}
 
 		&.pushable {
 			position: relative;
@@ -257,7 +211,7 @@ export default styled(MenuBar)`
 			.desktop_items, #title {
 				text-align: left;
 				margin: auto 0;
-				left: 2rem;
+				left: 54px;
 				top: 0.3rem;
 				padding-top: 1rem;
 				padding-bottom: 0;
@@ -303,7 +257,7 @@ export default styled(MenuBar)`
 			&>.icon:not(.dropdown) {
 				font-size: 1.6rem!important;
 				display: inline-block;
-				margin: 0 1.2rem auto 0!important;
+				margin: 0 1.2rem auto 0 !important;
 			}
 		}
 	}
@@ -316,7 +270,7 @@ export default styled(MenuBar)`
 				padding: 0.5rem 0.5rem;
 				margin: 0 1.2rem;
 				:hover {
-					background-color: black_full !important;
+					background-color: nav_black !important;
 				}
 			}
 

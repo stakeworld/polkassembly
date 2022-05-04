@@ -28,15 +28,13 @@ const Login = ({ className }: Props) => {
 	const toggleWeb2Login = () => setDisplayWeb2(!displayWeb2);
 
 	return (
-		<Grid className={className}>
-			<Grid.Column only='tablet computer' tablet={2} computer={4} largeScreen={5} widescreen={5}/>
-			<Grid.Column mobile={16} tablet={12} computer={8} largeScreen={6} widescreen={6}>
+		<Grid centered className={className}>
+			<Grid.Column width={10}>
 				{ displayWeb2
 					? <Web2Login toggleWeb2Login={toggleWeb2Login}/>
 					: <Web3Login toggleWeb2Login={toggleWeb2Login}/>
 				}
 			</Grid.Column>
-			<Grid.Column only='tablet computer' tablet={2} computer={4} largeScreen={5} widescreen={5}/>
 		</Grid>
 	);
 };
