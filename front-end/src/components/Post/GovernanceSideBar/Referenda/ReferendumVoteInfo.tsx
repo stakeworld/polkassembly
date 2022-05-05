@@ -55,8 +55,8 @@ const ReferendumVoteInfo = ({ className, referendumId, threshold }: Props) => {
 	const { addresses } = useContext(UserDetailsContext);
 
 	const getBalance = (balance: Balance, convictions: number) => {
-		balance.muln(LOCKS[convictions]).div(new BN(10));
-		return formatBnBalance(balance, {});
+		const votedBalance = balance.muln(LOCKS[convictions]).div(new BN(10));
+		return formatBnBalance(votedBalance, {});
 	};
 
 	const getThreshold = useMemo(
