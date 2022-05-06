@@ -23,6 +23,7 @@ interface Props {
 	className?: string
 	referendumId: number
 	threshold?: VoteThreshold
+	setLastVote: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 const ZERO = new BN(0);
@@ -30,14 +31,13 @@ const ZERO = new BN(0);
 const sizing = ['0.1x', '1x', '2x', '3x', '4x', '5x', '6x'];
 const LOCKS = [1, 10, 20, 30, 40, 50, 60];
 
-const ReferendumVoteInfo = ({ className, referendumId, threshold }: Props) => {
+const ReferendumVoteInfo = ({ className, referendumId, threshold, setLastVote }: Props) => {
 	const { api, apiReady } = useContext(ApiContext);
 	const [turnout, setTurnout] = useState(ZERO);
 	const [totalIssuance, setTotalIssuance] = useState(ZERO);
 	const [ayeVotes, setAyeVotes] = useState(ZERO);
 	const [nayVotes, setNayVotes] = useState(ZERO);
-	/* eslint-disable @typescript-eslint/no-unused-vars */
-	const [accounts, setAccounts] = useState([{ 'accountId': '', 'balance': '','label': '', 'voted': '' }]);
+	const [votedAccounts, setVotedAccounts] = useState([{ 'accountId': '', 'balance': '','label': '', 'voted': '' }]);
 	const [nayVotesWithoutConviction, setNayVotesWithoutConviction] = useState(ZERO);
 	const [ayeVotesWithoutConviction, setAyeVotesWithoutConviction] = useState(ZERO);
 	const [isPassing, setIsPassing] = useState<boolean | null>(null);
@@ -100,7 +100,7 @@ const ReferendumVoteInfo = ({ className, referendumId, threshold }: Props) => {
 				setNayVotesWithoutConviction(totalNay);
 				setAyeVotesWithoutConviction(totalAye);
 
-				let voteObj = {};
+				let voteObj: any = {};
 				const acc: any = [];
 
 				if(addresses){
@@ -110,7 +110,7 @@ const ReferendumVoteInfo = ({ className, referendumId, threshold }: Props) => {
 							acc.push(voteObj);
 						}
 					});
-					setAccounts(acc);
+					setVotedAccounts(acc);
 				}
 			}
 		}).then( unsub => {unsubscribe = unsub;})
@@ -118,6 +118,12 @@ const ReferendumVoteInfo = ({ className, referendumId, threshold }: Props) => {
 
 		return () => unsubscribe && unsubscribe();
 	}, [api, apiReady, referendumId, addresses]);
+
+	useEffect(() => {
+		if(votedAccounts.length>0){
+			setLastVote(votedAccounts[votedAccounts.length - 1].voted == '' ? null : votedAccounts[votedAccounts.length - 1].voted);
+		}
+	}, [setLastVote, votedAccounts]);
 
 	useEffect(() => {
 		if (!api) {
@@ -210,7 +216,7 @@ const ReferendumVoteInfo = ({ className, referendumId, threshold }: Props) => {
 };
 
 export default styled(ReferendumVoteInfo)`
-	margin-bottom: 1rem;
+	padding-bottom: 1rem;
 
 	.vote-progress {
 		margin-bottom: 5rem;
@@ -230,5 +236,8 @@ export default styled(ReferendumVoteInfo)`
 	.progressLoader{
 		position: inherit;
 		height: 10rem;
+		.loader {
+			margin-top: -8rem !important;
+		}
 	}
 `;
