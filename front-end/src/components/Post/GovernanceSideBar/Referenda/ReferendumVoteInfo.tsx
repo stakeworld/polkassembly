@@ -182,16 +182,14 @@ const ReferendumVoteInfo = ({ className, referendumId, threshold, setLastVote }:
 					: <>
 						{
 							isPassing === null
-								? <Loader className={'progressLoader'} text={'Loading vote progress'} timeout={30000} timeoutText='Vote calculation failed'/>
-								: <>
-									<VoteProgress
-										ayeVotes={ayeVotes}
-										className='vote-progress'
-										isPassing={isPassing}
-										threshold={getThreshold}
-										nayVotes={nayVotes}
-									/>
-								</>
+								? <Loader className={'progressLoader'} text={'Loading vote progress'} timeout={300000} timeoutText='Vote calculation failed'/>
+								: <VoteProgress
+									ayeVotes={ayeVotes}
+									className='vote-progress'
+									isPassing={isPassing}
+									threshold={getThreshold}
+									nayVotes={nayVotes}
+								/>
 						}
 
 						<Grid columns={3} divided>
@@ -238,5 +236,8 @@ export default styled(ReferendumVoteInfo)`
 	.progressLoader{
 		position: inherit;
 		height: 10rem;
+		.loader {
+			margin-top: -8rem !important;
+		}
 	}
 `;
