@@ -37,7 +37,6 @@ const ReferendumVoteInfo = ({ className, referendumId, threshold, setLastVote }:
 	const [totalIssuance, setTotalIssuance] = useState(ZERO);
 	const [ayeVotes, setAyeVotes] = useState(ZERO);
 	const [nayVotes, setNayVotes] = useState(ZERO);
-	/* eslint-disable @typescript-eslint/no-unused-vars */
 	const [votedAccounts, setVotedAccounts] = useState([{ 'accountId': '', 'balance': '','label': '', 'voted': '' }]);
 	const [nayVotesWithoutConviction, setNayVotesWithoutConviction] = useState(ZERO);
 	const [ayeVotesWithoutConviction, setAyeVotesWithoutConviction] = useState(ZERO);
