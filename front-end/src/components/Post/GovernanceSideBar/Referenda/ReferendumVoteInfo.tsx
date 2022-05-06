@@ -3,12 +3,14 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DeriveReferendumVote } from '@polkadot/api-derive/types';
+import { Balance } from '@polkadot/types/interfaces';
 import { getFailingThreshold, getPassingThreshold } from '@polkassembly/util';
 import styled from '@xstyled/styled-components';
 import BN from 'bn.js';
 import React, { useContext, useEffect, useMemo,useState } from 'react';
 import { Grid } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
+import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { LoadingStatusType, VoteThreshold } from 'src/types';
 import Card from 'src/ui-components/Card';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
@@ -25,12 +27,17 @@ interface Props {
 
 const ZERO = new BN(0);
 
+const sizing = ['0.1x', '1x', '2x', '3x', '4x', '5x', '6x'];
+const LOCKS = [1, 10, 20, 30, 40, 50, 60];
+
 const ReferendumVoteInfo = ({ className, referendumId, threshold }: Props) => {
 	const { api, apiReady } = useContext(ApiContext);
 	const [turnout, setTurnout] = useState(ZERO);
 	const [totalIssuance, setTotalIssuance] = useState(ZERO);
 	const [ayeVotes, setAyeVotes] = useState(ZERO);
 	const [nayVotes, setNayVotes] = useState(ZERO);
+	/* eslint-disable @typescript-eslint/no-unused-vars */
+	const [accounts, setAccounts] = useState([{ 'accountId': '', 'balance': '','label': '', 'voted': '' }]);
 	const [nayVotesWithoutConviction, setNayVotesWithoutConviction] = useState(ZERO);
 	const [ayeVotesWithoutConviction, setAyeVotesWithoutConviction] = useState(ZERO);
 	const [isPassing, setIsPassing] = useState<boolean | null>(null);
@@ -44,6 +51,13 @@ const ReferendumVoteInfo = ({ className, referendumId, threshold }: Props) => {
 		// and devide by 100 to have percentage --> 12.00%
 		return turnout.muln(10000).div(totalIssuance).toNumber()/100;
 	} , [turnout, totalIssuance]);
+
+	const { addresses } = useContext(UserDetailsContext);
+
+	const getBalance = (balance: Balance, convictions: number) => {
+		const votedBalance = balance.muln(LOCKS[convictions]).div(new BN(10));
+		return formatBnBalance(votedBalance, {});
+	};
 
 	const getThreshold = useMemo(
 		() => {
@@ -76,7 +90,6 @@ const ReferendumVoteInfo = ({ className, referendumId, threshold }: Props) => {
 
 			if (referendum) {
 				setIsPassing(referendum.isPassing);
-
 				const totalAye: BN = referendum.allAye.reduce((acc: BN, curr: DeriveReferendumVote) => {
 					return acc.add(new BN(curr.balance));
 				}, ZERO);
@@ -86,12 +99,25 @@ const ReferendumVoteInfo = ({ className, referendumId, threshold }: Props) => {
 
 				setNayVotesWithoutConviction(totalNay);
 				setAyeVotesWithoutConviction(totalAye);
+
+				let voteObj = {};
+				const acc: any = [];
+
+				if(addresses){
+					referendum.votes.forEach(vote => {
+						if(addresses.includes(vote.accountId.toHuman())) {
+							voteObj = { 'accountId': vote.accountId.toHuman(),'balance': getBalance(vote.balance, vote.vote.conviction.toNumber()), 'label': `${sizing[vote.vote.conviction.toNumber()]}${vote.isDelegating ? '/d' : ''} - `, 'voted': vote.vote.isAye ? 'aye' : 'nay' };
+							acc.push(voteObj);
+						}
+					});
+					setAccounts(acc);
+				}
 			}
 		}).then( unsub => {unsubscribe = unsub;})
 			.catch(console.error);
 
 		return () => unsubscribe && unsubscribe();
-	}, [api, apiReady, referendumId]);
+	}, [api, apiReady, referendumId, addresses]);
 
 	useEffect(() => {
 		if (!api) {
