@@ -26,9 +26,10 @@ interface Props {
 	accounts: InjectedAccountWithMeta[]
 	onAccountChange: (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => void
 	getAccounts: () => Promise<undefined>
+	setLastVote: React.Dispatch<React.SetStateAction<string | null>>
 }
 
-const VoteRefrendum = ({ className, referendumId, address, accounts, onAccountChange, getAccounts }: Props) => {
+const VoteRefrendum = ({ className, referendumId, address, accounts, onAccountChange, getAccounts, setLastVote }: Props) => {
 	const { queueNotification } = useContext(NotificationContext);
 	const [lockedBalance, setLockedBalance] = useState<BN | undefined>(undefined);
 	const { api, apiReady } = useContext(ApiContext);
@@ -75,6 +76,7 @@ const VoteRefrendum = ({ className, referendumId, address, accounts, onAccountCh
 					message: `Vote on referendum #${referendumId} successful.`,
 					status: NotificationStatus.SUCCESS
 				});
+				setLastVote(aye ? 'aye' : 'nay');
 				console.log(`Completed at block hash #${status.asInBlock.toString()}`);
 			} else {
 				if (status.isBroadcast){

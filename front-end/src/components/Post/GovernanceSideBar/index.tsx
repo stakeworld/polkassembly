@@ -165,6 +165,7 @@ const GovenanceSideBar = ({ className, isMotion, isProposal, isReferendum, isTip
 									}
 
 									{canVote && <VoteReferendum
+										setLastVote={setLastVote}
 										accounts={accounts}
 										address={address}
 										getAccounts={getAccounts}
