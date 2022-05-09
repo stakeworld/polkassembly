@@ -2,8 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import styled from '@xstyled/styled-components';
 import React, { useEffect } from 'react';
 import { Icon } from 'semantic-ui-react';
@@ -21,9 +19,9 @@ const NetworkInfo = ({ className }: Props) => {
 		network
 	} });
 
-	// useEffect(() => {
-	// refetch();
-	// }, [refetch]);
+	useEffect(() => {
+		refetch();
+	}, [refetch]);
 
 	return (
 		<div className={className}>
