@@ -8,7 +8,7 @@ import React, { useEffect } from 'react';
 import { Tab, Table } from 'semantic-ui-react';
 import NothingFoundCard from 'src/ui-components/NothingFoundCard';
 
-import { useFetchLatestMotionPostsQuery } from '../../../generated/graphql';
+import { useGetLatestMotionPostsQuery } from '../../../generated/graphql';
 import { post_type } from '../../../global/post_types';
 import FilteredError from '../../../ui-components/FilteredError';
 import LatestActivityCard from '../LatestActivityCard';
@@ -21,7 +21,7 @@ interface Props {
 
 const LatestMotionsTable = ({ className }:Props) => {
 
-	const { data, error, refetch } = useFetchLatestMotionPostsQuery({ variables: { limit: 10, postType: post_type.ON_CHAIN } });
+	const { data, error, refetch } = useGetLatestMotionPostsQuery({ variables: { limit: 10, postType: post_type.ON_CHAIN } });
 
 	useEffect(() => {
 		refetch();

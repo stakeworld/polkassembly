@@ -7,7 +7,7 @@ import { authorFields } from 'src/fragments/author';
 
 // for motions postType shoud be 2, postTopic should be 2
 export const QUERY_LATEST_MOTIONS = gql`
-    query FetchLatestMotionPosts($postType: Int!, $limit: Int! = 5 ) {
+    query GetLatestMotionPosts($postType: Int!, $limit: Int! = 5 ) {
         posts(limit: $limit, where: {
             type: {
                 id: {
