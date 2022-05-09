@@ -356,3 +356,20 @@ export interface EditPostArgs {
     proposalType: string;
     proposalId: string;
 }
+
+export interface AddProfileArgs {
+    bio?: string;
+    image?: string;
+}
+
+export interface GetProfileArgs {
+    user_id: number;
+}
+
+export interface ProfileDetails {
+    id: number;
+    user_id: number;
+    bio?: string;
+    username?: string;
+    image?: string;
+}
