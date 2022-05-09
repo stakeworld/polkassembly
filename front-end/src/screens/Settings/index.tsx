@@ -38,7 +38,7 @@ const Settings = ({ className }:Props): JSX.Element => {
 				<Divider/>
 				<DeleteAccount/>
 			</Grid.Column>
-			<Grid.Column className='col-right' only='computer' computer={4} largeScreen={5} widescreen={5}>
+			<Grid.Column className='col-right' mobile={16} tablet={16} computer={5} largeScreen={5} widescreen={5}>
 				<div className='card-right'>
 					<h4>Identity </h4>
 					<SetOnChainIdentityButton />
@@ -70,6 +70,10 @@ export default styled(Settings)`
 		.divider {
 			margin-top: 3em;
 			margin-bottom: 2em;
+		}
+		@media only screen and (max-width: 576px) {
+			width: 100%;
+			border-radius: 0px;
 		}
 	}
 

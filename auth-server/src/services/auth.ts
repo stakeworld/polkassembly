@@ -966,6 +966,11 @@ export default class AuthService {
 			currentRole = Role.PROPOSAL_BOT;
 		}
 
+		if (id === Number(process.env.EVENT_BOT_USER_ID)) {
+			allowedRoles.push(Role.EVENT_BOT);
+			currentRole = Role.EVENT_BOT;
+		}
+
 		const tokenContent: JWTPayploadType = {
 			email,
 			email_verified: email_verified || false,

@@ -7,12 +7,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import NothingFoundCard from 'src/ui-components/NothingFoundCard';
 
-import { LatestBountyPostsQuery } from '../../generated/graphql';
+import { GetLatestBountyPostsQuery } from '../../generated/graphql';
 import GovernanceCard from '../GovernanceCard';
 
 interface Props {
   className?: string
-  data: LatestBountyPostsQuery
+  data: GetLatestBountyPostsQuery
 }
 
 const Bounties = ({ className, data }: Props) => {
