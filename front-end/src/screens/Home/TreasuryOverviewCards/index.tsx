@@ -313,7 +313,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			<Card className='treasury-card'>
 				<Card.Content>
 					<Card.Meta className='treasury-card-meta'>
-						Available <HelperTooltip content='Available funds collected through a portion of block production rewards, transaction fees, slashing, staking inefficiencies, etc.' />
+						Available <HelperTooltip position='top left' content='Funds collected through a portion of block production rewards, transaction fees, slashing, staking inefficiencies, etc.' />
 					</Card.Meta>
 					<Card.Header className='treasury-card-header'>
 						{result.value ? (
@@ -403,7 +403,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			<Card className='treasury-card'>
 				<Card.Content>
 					<Card.Meta className='treasury-card-meta'>
-						Next Burn <HelperTooltip content='If the Treasury ends a spend period without spending all of its funds, it suffers a burn of a percentage of its funds.' />
+						Next Burn <HelperTooltip position='right center' content='If the Treasury ends a spend period without spending all of its funds, it suffers a burn of a percentage of its funds.' />
 					</Card.Meta>
 					<Card.Header className='treasury-card-header'>
 						{result.burn ? (
