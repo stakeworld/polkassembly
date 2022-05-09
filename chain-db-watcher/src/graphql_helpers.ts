@@ -459,11 +459,41 @@ export const addDiscussionPostAndTreasuryProposal = async ({
 		});
 
 		const discussionSdk = getDiscussionSdk(client);
-		const data = await discussionSdk.addPostAndTreasurySpendProposalMutation(proposalAndPostVariables);
-		const addedId = data?.insert_onchain_links?.returning[0]?.id;
+		const polkassemblyProposal = await discussionSdk.getPolkassemblyProposals({ onchainTreasuryProposalId });
+		if (polkassemblyProposal?.polkassembly_proposals?.length > 0) {
+			const proposalData = polkassemblyProposal?.polkassembly_proposals[0];
+			if (proposalData.proposer_address === proposer) {
+				const proposalAndPostWithTitleVariables = {
+					authorId: Number(proposalBotUserId),
+					content: proposalData.content,
+					onchainTreasuryProposalId,
+					proposerAddress: proposer,
+					title: proposalData.title,
+					topicId: Number(treasuryTopicId),
+					typeId: Number(proposalPostTypeId)
+				};
+				const data = await discussionSdk.addPostAndTreasurySpendProposalWithTitleMutation(proposalAndPostWithTitleVariables);
+				const addedId = data?.insert_onchain_links?.returning[0]?.id;
 
-		if (addedId || addedId === 0) {
-			console.log(`${chalk.green('✔︎')} Treasury proposal ${onchainTreasuryProposalId} added to the database.`);
+				if (addedId || addedId === 0) {
+					console.log(`${chalk.green('✔︎')} Treasury proposal ${onchainTreasuryProposalId} added to the database.`);
+				}
+			} else {
+				const data = await discussionSdk.addPostAndTreasurySpendProposalMutation(proposalAndPostVariables);
+				const addedId = data?.insert_onchain_links?.returning[0]?.id;
+
+				if (addedId || addedId === 0) {
+					console.log(`${chalk.green('✔︎')} Treasury proposal ${onchainTreasuryProposalId} added to the database.`);
+				}
+			}
+		} else {
+			const data = await discussionSdk.addPostAndTreasurySpendProposalMutation(proposalAndPostVariables);
+
+			const addedId = data?.insert_onchain_links?.returning[0]?.id;
+
+			if (addedId || addedId === 0) {
+				console.log(`${chalk.green('✔︎')} Treasury proposal ${onchainTreasuryProposalId} added to the database.`);
+			}
 		}
 	} catch (err) {
 		console.error(chalk.red(`addPostAndTreasuryProposal execution error, treasury proposal id ${onchainTreasuryProposalId}\n`), err);
@@ -684,11 +714,40 @@ export const addDiscussionPostAndTip = async ({
 		});
 
 		const discussionSdk = getDiscussionSdk(client);
-		const data = await discussionSdk.addPostAndTipMutation(tipAndPostVariables);
-		const addedId = data?.insert_onchain_links?.returning[0]?.id;
+		const polkassemblyProposalTip = await discussionSdk.getPolkassemblyTipProposals({ onchainTipHash });
+		if (polkassemblyProposalTip?.polkassembly_proposals?.length > 0) {
+			const proposalData = polkassemblyProposalTip?.polkassembly_proposals[0];
+			if (proposalData.proposer_address === proposer) {
+				const tipAndPostWithTitleVariables = {
+					authorId: Number(proposalBotUserId),
+					content: proposalData.content,
+					onchainTipId: onchainTipHash,
+					proposerAddress: proposer,
+					title: proposalData.title,
+					topicId: Number(treasuryTopicId),
+					typeId: Number(proposalPostTypeId)
+				};
+				const data = await discussionSdk.addPostAndTipWithTitleMutation(tipAndPostWithTitleVariables);
+				const addedId = data?.insert_onchain_links?.returning[0]?.id;
 
-		if (addedId || addedId === 0) {
-			console.log(`${chalk.green('✔︎')} Tip ${onchainTipHash} added to the database.`);
+				if (addedId || addedId === 0) {
+					console.log(`${chalk.green('✔︎')} Tip ${onchainTipHash} added to the database.`);
+				}
+			} else {
+				const data = await discussionSdk.addPostAndTipMutation(tipAndPostVariables);
+				const addedId = data?.insert_onchain_links?.returning[0]?.id;
+
+				if (addedId || addedId === 0) {
+					console.log(`${chalk.green('✔︎')} Tip ${onchainTipHash} added to the database.`);
+				}
+			}
+		} else {
+			const data = await discussionSdk.addPostAndTipMutation(tipAndPostVariables);
+			const addedId = data?.insert_onchain_links?.returning[0]?.id;
+
+			if (addedId || addedId === 0) {
+				console.log(`${chalk.green('✔︎')} Tip ${onchainTipHash} added to the database.`);
+			}
 		}
 	} catch (err) {
 		console.error(chalk.red(`addPostAndTipMutation execution error, tip id ${onchainTipHash}\n`), err);

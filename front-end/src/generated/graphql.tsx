@@ -590,6 +590,19 @@ export type BlockNumberWhereUniqueInput = {
   number?: Maybe<Scalars['Int']>;
 };
 
+/** expression to compare columns of type Boolean. All fields are combined with logical 'AND'. */
+export type Boolean_Comparison_Exp = {
+  _eq?: Maybe<Scalars['Boolean']>;
+  _gt?: Maybe<Scalars['Boolean']>;
+  _gte?: Maybe<Scalars['Boolean']>;
+  _in?: Maybe<Array<Scalars['Boolean']>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _lt?: Maybe<Scalars['Boolean']>;
+  _lte?: Maybe<Scalars['Boolean']>;
+  _neq?: Maybe<Scalars['Boolean']>;
+  _nin?: Maybe<Array<Scalars['Boolean']>>;
+};
+
 export type Bounty = {
   __typename?: 'Bounty';
   beneficiary?: Maybe<Scalars['String']>;
@@ -9396,6 +9409,10 @@ export type Mutation_Root = {
   delete_option_poll_votes?: Maybe<Option_Poll_Votes_Mutation_Response>;
   /** delete single row from the table: "option_poll_votes" */
   delete_option_poll_votes_by_pk?: Maybe<Option_Poll_Votes>;
+  /** delete data from the table: "polkassembly_proposals" */
+  delete_polkassembly_proposals?: Maybe<Polkassembly_Proposals_Mutation_Response>;
+  /** delete single row from the table: "polkassembly_proposals" */
+  delete_polkassembly_proposals_by_pk?: Maybe<Polkassembly_Proposals>;
   /** delete data from the table: "poll" */
   delete_poll?: Maybe<Poll_Mutation_Response>;
   /** delete single row from the table: "poll" */
@@ -9450,6 +9467,10 @@ export type Mutation_Root = {
   insert_option_poll_votes?: Maybe<Option_Poll_Votes_Mutation_Response>;
   /** insert a single row into the table: "option_poll_votes" */
   insert_option_poll_votes_one?: Maybe<Option_Poll_Votes>;
+  /** insert data into the table: "polkassembly_proposals" */
+  insert_polkassembly_proposals?: Maybe<Polkassembly_Proposals_Mutation_Response>;
+  /** insert a single row into the table: "polkassembly_proposals" */
+  insert_polkassembly_proposals_one?: Maybe<Polkassembly_Proposals>;
   /** insert data into the table: "poll" */
   insert_poll?: Maybe<Poll_Mutation_Response>;
   /** insert a single row into the table: "poll" */
@@ -9517,6 +9538,10 @@ export type Mutation_Root = {
   update_option_poll_votes?: Maybe<Option_Poll_Votes_Mutation_Response>;
   /** update single row of the table: "option_poll_votes" */
   update_option_poll_votes_by_pk?: Maybe<Option_Poll_Votes>;
+  /** update data of the table: "polkassembly_proposals" */
+  update_polkassembly_proposals?: Maybe<Polkassembly_Proposals_Mutation_Response>;
+  /** update single row of the table: "polkassembly_proposals" */
+  update_polkassembly_proposals_by_pk?: Maybe<Polkassembly_Proposals>;
   /** update data of the table: "poll" */
   update_poll?: Maybe<Poll_Mutation_Response>;
   /** update single row of the table: "poll" */
@@ -10529,6 +10554,19 @@ export type Onchain_Links_Arr_Rel_Insert_Input = {
   on_conflict?: Maybe<Onchain_Links_On_Conflict>;
 };
 
+
+/** mutation root */
+export type Mutation_RootDelete_Polkassembly_ProposalsArgs = {
+  where: Polkassembly_Proposals_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Polkassembly_Proposals_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
 /** aggregate avg on columns */
 export type Onchain_Links_Avg_Fields = {
   __typename?: 'onchain_links_avg_fields';
@@ -10967,6 +11005,20 @@ export type Onchain_Links_Variance_Order_By = {
   onchain_treasury_proposal_id?: Maybe<Order_By>;
   post_id?: Maybe<Order_By>;
 };
+
+/** mutation root */
+export type Mutation_RootInsert_Polkassembly_ProposalsArgs = {
+  objects: Array<Polkassembly_Proposals_Insert_Input>;
+  on_conflict?: Maybe<Polkassembly_Proposals_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Polkassembly_Proposals_OneArgs = {
+  object: Polkassembly_Proposals_Insert_Input;
+  on_conflict?: Maybe<Polkassembly_Proposals_On_Conflict>;
+};
+
 
 /** columns and relationships of "option_poll" */
 export type Option_Poll = {
@@ -11698,22 +11750,6 @@ export type Option_Poll_Votes_Variance_Order_By = {
   user_id?: Maybe<Order_By>;
 };
 
-/** column ordering options */
-export enum Order_By {
-  /** in the ascending order, nulls last */
-  Asc = 'asc',
-  /** in the ascending order, nulls first */
-  AscNullsFirst = 'asc_nulls_first',
-  /** in the ascending order, nulls last */
-  AscNullsLast = 'asc_nulls_last',
-  /** in the descending order, nulls first */
-  Desc = 'desc',
-  /** in the descending order, nulls first */
-  DescNullsFirst = 'desc_nulls_first',
-  /** in the descending order, nulls last */
-  DescNullsLast = 'desc_nulls_last'
-}
-
 /** columns and relationships of "poll" */
 export type Poll = {
   __typename?: 'poll';
@@ -12034,6 +12070,23 @@ export type Poll_Var_Pop_Fields = {
   id?: Maybe<Scalars['Float']>;
   post_id?: Maybe<Scalars['Float']>;
 };
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Polkassembly_ProposalsArgs = {
+  _inc?: Maybe<Polkassembly_Proposals_Inc_Input>;
+  _set?: Maybe<Polkassembly_Proposals_Set_Input>;
+  where: Polkassembly_Proposals_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Polkassembly_Proposals_By_PkArgs = {
+  _inc?: Maybe<Polkassembly_Proposals_Inc_Input>;
+  _set?: Maybe<Polkassembly_Proposals_Set_Input>;
+  pk_columns: Polkassembly_Proposals_Pk_Columns_Input;
+};
+
 
 /** order by var_pop() on columns of table "poll" */
 export type Poll_Var_Pop_Order_By = {
@@ -13522,6 +13575,450 @@ export type Post_Types_Variance_Order_By = {
   id?: Maybe<Order_By>;
 };
 
+/** column ordering options */
+export enum Order_By {
+  /** in the ascending order, nulls last */
+  Asc = 'asc',
+  /** in the ascending order, nulls first */
+  AscNullsFirst = 'asc_nulls_first',
+  /** in the ascending order, nulls last */
+  AscNullsLast = 'asc_nulls_last',
+  /** in the descending order, nulls first */
+  Desc = 'desc',
+  /** in the descending order, nulls first */
+  DescNullsFirst = 'desc_nulls_first',
+  /** in the descending order, nulls last */
+  DescNullsLast = 'desc_nulls_last'
+}
+
+/** columns and relationships of "polkassembly_proposals" */
+export type Polkassembly_Proposals = {
+  __typename?: 'polkassembly_proposals';
+  /** Remote relationship field */
+  author?: Maybe<User>;
+  author_id: Scalars['Int'];
+  content: Scalars['String'];
+  created_at: Scalars['timestamptz'];
+  id: Scalars['Int'];
+  is_synced: Scalars['Boolean'];
+  proposal_hash: Scalars['String'];
+  proposal_id: Scalars['Int'];
+  proposal_type: Scalars['Int'];
+  proposer_address: Scalars['String'];
+  title: Scalars['String'];
+  updated_at: Scalars['timestamptz'];
+};
+
+
+/** columns and relationships of "polkassembly_proposals" */
+export type Polkassembly_ProposalsAuthorArgs = {
+  id: Scalars['Int'];
+};
+
+/** aggregated selection of "polkassembly_proposals" */
+export type Polkassembly_Proposals_Aggregate = {
+  __typename?: 'polkassembly_proposals_aggregate';
+  aggregate?: Maybe<Polkassembly_Proposals_Aggregate_Fields>;
+  nodes: Array<Polkassembly_Proposals>;
+};
+
+/** aggregate fields of "polkassembly_proposals" */
+export type Polkassembly_Proposals_Aggregate_Fields = {
+  __typename?: 'polkassembly_proposals_aggregate_fields';
+  avg?: Maybe<Polkassembly_Proposals_Avg_Fields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Polkassembly_Proposals_Max_Fields>;
+  min?: Maybe<Polkassembly_Proposals_Min_Fields>;
+  stddev?: Maybe<Polkassembly_Proposals_Stddev_Fields>;
+  stddev_pop?: Maybe<Polkassembly_Proposals_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Polkassembly_Proposals_Stddev_Samp_Fields>;
+  sum?: Maybe<Polkassembly_Proposals_Sum_Fields>;
+  var_pop?: Maybe<Polkassembly_Proposals_Var_Pop_Fields>;
+  var_samp?: Maybe<Polkassembly_Proposals_Var_Samp_Fields>;
+  variance?: Maybe<Polkassembly_Proposals_Variance_Fields>;
+};
+
+
+/** aggregate fields of "polkassembly_proposals" */
+export type Polkassembly_Proposals_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Polkassembly_Proposals_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Aggregate_Order_By = {
+  avg?: Maybe<Polkassembly_Proposals_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Polkassembly_Proposals_Max_Order_By>;
+  min?: Maybe<Polkassembly_Proposals_Min_Order_By>;
+  stddev?: Maybe<Polkassembly_Proposals_Stddev_Order_By>;
+  stddev_pop?: Maybe<Polkassembly_Proposals_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Polkassembly_Proposals_Stddev_Samp_Order_By>;
+  sum?: Maybe<Polkassembly_Proposals_Sum_Order_By>;
+  var_pop?: Maybe<Polkassembly_Proposals_Var_Pop_Order_By>;
+  var_samp?: Maybe<Polkassembly_Proposals_Var_Samp_Order_By>;
+  variance?: Maybe<Polkassembly_Proposals_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Arr_Rel_Insert_Input = {
+  data: Array<Polkassembly_Proposals_Insert_Input>;
+  on_conflict?: Maybe<Polkassembly_Proposals_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Polkassembly_Proposals_Avg_Fields = {
+  __typename?: 'polkassembly_proposals_avg_fields';
+  author_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  proposal_id?: Maybe<Scalars['Float']>;
+  proposal_type?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Avg_Order_By = {
+  author_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  proposal_id?: Maybe<Order_By>;
+  proposal_type?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "polkassembly_proposals". All fields are combined with a logical 'AND'. */
+export type Polkassembly_Proposals_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Polkassembly_Proposals_Bool_Exp>>>;
+  _not?: Maybe<Polkassembly_Proposals_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Polkassembly_Proposals_Bool_Exp>>>;
+  author_id?: Maybe<Int_Comparison_Exp>;
+  content?: Maybe<String_Comparison_Exp>;
+  created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  id?: Maybe<Int_Comparison_Exp>;
+  is_synced?: Maybe<Boolean_Comparison_Exp>;
+  proposal_hash?: Maybe<String_Comparison_Exp>;
+  proposal_id?: Maybe<Int_Comparison_Exp>;
+  proposal_type?: Maybe<Int_Comparison_Exp>;
+  proposer_address?: Maybe<String_Comparison_Exp>;
+  title?: Maybe<String_Comparison_Exp>;
+  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "polkassembly_proposals" */
+export enum Polkassembly_Proposals_Constraint {
+  /** unique or primary key constraint */
+  PolkassemblyProposalsPkey = 'polkassembly_proposals_pkey',
+  /** unique or primary key constraint */
+  PolkassemblyProposalsProposalHashKey = 'polkassembly_proposals_proposal_hash_key'
+}
+
+/** input type for incrementing integer column in table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Inc_Input = {
+  author_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  proposal_id?: Maybe<Scalars['Int']>;
+  proposal_type?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Insert_Input = {
+  author_id?: Maybe<Scalars['Int']>;
+  content?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  is_synced?: Maybe<Scalars['Boolean']>;
+  proposal_hash?: Maybe<Scalars['String']>;
+  proposal_id?: Maybe<Scalars['Int']>;
+  proposal_type?: Maybe<Scalars['Int']>;
+  proposer_address?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type Polkassembly_Proposals_Max_Fields = {
+  __typename?: 'polkassembly_proposals_max_fields';
+  author_id?: Maybe<Scalars['Int']>;
+  content?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  proposal_hash?: Maybe<Scalars['String']>;
+  proposal_id?: Maybe<Scalars['Int']>;
+  proposal_type?: Maybe<Scalars['Int']>;
+  proposer_address?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by max() on columns of table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Max_Order_By = {
+  author_id?: Maybe<Order_By>;
+  content?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  proposal_hash?: Maybe<Order_By>;
+  proposal_id?: Maybe<Order_By>;
+  proposal_type?: Maybe<Order_By>;
+  proposer_address?: Maybe<Order_By>;
+  title?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Polkassembly_Proposals_Min_Fields = {
+  __typename?: 'polkassembly_proposals_min_fields';
+  author_id?: Maybe<Scalars['Int']>;
+  content?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  proposal_hash?: Maybe<Scalars['String']>;
+  proposal_id?: Maybe<Scalars['Int']>;
+  proposal_type?: Maybe<Scalars['Int']>;
+  proposer_address?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by min() on columns of table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Min_Order_By = {
+  author_id?: Maybe<Order_By>;
+  content?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  proposal_hash?: Maybe<Order_By>;
+  proposal_id?: Maybe<Order_By>;
+  proposal_type?: Maybe<Order_By>;
+  proposer_address?: Maybe<Order_By>;
+  title?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Mutation_Response = {
+  __typename?: 'polkassembly_proposals_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Polkassembly_Proposals>;
+};
+
+/** input type for inserting object relation for remote table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Obj_Rel_Insert_Input = {
+  data: Polkassembly_Proposals_Insert_Input;
+  on_conflict?: Maybe<Polkassembly_Proposals_On_Conflict>;
+};
+
+/** on conflict condition type for table "polkassembly_proposals" */
+export type Polkassembly_Proposals_On_Conflict = {
+  constraint: Polkassembly_Proposals_Constraint;
+  update_columns: Array<Polkassembly_Proposals_Update_Column>;
+  where?: Maybe<Polkassembly_Proposals_Bool_Exp>;
+};
+
+/** ordering options when selecting data from "polkassembly_proposals" */
+export type Polkassembly_Proposals_Order_By = {
+  author_id?: Maybe<Order_By>;
+  content?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  is_synced?: Maybe<Order_By>;
+  proposal_hash?: Maybe<Order_By>;
+  proposal_id?: Maybe<Order_By>;
+  proposal_type?: Maybe<Order_By>;
+  proposer_address?: Maybe<Order_By>;
+  title?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: "polkassembly_proposals" */
+export type Polkassembly_Proposals_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "polkassembly_proposals" */
+export enum Polkassembly_Proposals_Select_Column {
+  /** column name */
+  AuthorId = 'author_id',
+  /** column name */
+  Content = 'content',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IsSynced = 'is_synced',
+  /** column name */
+  ProposalHash = 'proposal_hash',
+  /** column name */
+  ProposalId = 'proposal_id',
+  /** column name */
+  ProposalType = 'proposal_type',
+  /** column name */
+  ProposerAddress = 'proposer_address',
+  /** column name */
+  Title = 'title',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Set_Input = {
+  author_id?: Maybe<Scalars['Int']>;
+  content?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  is_synced?: Maybe<Scalars['Boolean']>;
+  proposal_hash?: Maybe<Scalars['String']>;
+  proposal_id?: Maybe<Scalars['Int']>;
+  proposal_type?: Maybe<Scalars['Int']>;
+  proposer_address?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate stddev on columns */
+export type Polkassembly_Proposals_Stddev_Fields = {
+  __typename?: 'polkassembly_proposals_stddev_fields';
+  author_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  proposal_id?: Maybe<Scalars['Float']>;
+  proposal_type?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Stddev_Order_By = {
+  author_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  proposal_id?: Maybe<Order_By>;
+  proposal_type?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Polkassembly_Proposals_Stddev_Pop_Fields = {
+  __typename?: 'polkassembly_proposals_stddev_pop_fields';
+  author_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  proposal_id?: Maybe<Scalars['Float']>;
+  proposal_type?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Stddev_Pop_Order_By = {
+  author_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  proposal_id?: Maybe<Order_By>;
+  proposal_type?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Polkassembly_Proposals_Stddev_Samp_Fields = {
+  __typename?: 'polkassembly_proposals_stddev_samp_fields';
+  author_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  proposal_id?: Maybe<Scalars['Float']>;
+  proposal_type?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Stddev_Samp_Order_By = {
+  author_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  proposal_id?: Maybe<Order_By>;
+  proposal_type?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Polkassembly_Proposals_Sum_Fields = {
+  __typename?: 'polkassembly_proposals_sum_fields';
+  author_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  proposal_id?: Maybe<Scalars['Int']>;
+  proposal_type?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Sum_Order_By = {
+  author_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  proposal_id?: Maybe<Order_By>;
+  proposal_type?: Maybe<Order_By>;
+};
+
+/** update columns of table "polkassembly_proposals" */
+export enum Polkassembly_Proposals_Update_Column {
+  /** column name */
+  AuthorId = 'author_id',
+  /** column name */
+  Content = 'content',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IsSynced = 'is_synced',
+  /** column name */
+  ProposalHash = 'proposal_hash',
+  /** column name */
+  ProposalId = 'proposal_id',
+  /** column name */
+  ProposalType = 'proposal_type',
+  /** column name */
+  ProposerAddress = 'proposer_address',
+  /** column name */
+  Title = 'title',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** aggregate var_pop on columns */
+export type Polkassembly_Proposals_Var_Pop_Fields = {
+  __typename?: 'polkassembly_proposals_var_pop_fields';
+  author_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  proposal_id?: Maybe<Scalars['Float']>;
+  proposal_type?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Var_Pop_Order_By = {
+  author_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  proposal_id?: Maybe<Order_By>;
+  proposal_type?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Polkassembly_Proposals_Var_Samp_Fields = {
+  __typename?: 'polkassembly_proposals_var_samp_fields';
+  author_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  proposal_id?: Maybe<Scalars['Float']>;
+  proposal_type?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Var_Samp_Order_By = {
+  author_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  proposal_id?: Maybe<Order_By>;
+  proposal_type?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Polkassembly_Proposals_Variance_Fields = {
+  __typename?: 'polkassembly_proposals_variance_fields';
+  author_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  proposal_id?: Maybe<Scalars['Float']>;
+  proposal_type?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Variance_Order_By = {
+  author_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  proposal_id?: Maybe<Order_By>;
+  proposal_type?: Maybe<Order_By>;
+};
+
+
 /** columns and relationships of "posts" */
 export type Posts = {
   __typename?: 'posts';
@@ -14114,6 +14611,12 @@ export type Query_Root = {
   option_poll_votes_aggregate: Option_Poll_Votes_Aggregate;
   /** fetch data from the table: "option_poll_votes" using primary key columns */
   option_poll_votes_by_pk?: Maybe<Option_Poll_Votes>;
+  /** fetch data from the table: "polkassembly_proposals" */
+  polkassembly_proposals: Array<Polkassembly_Proposals>;
+  /** fetch aggregated fields from the table: "polkassembly_proposals" */
+  polkassembly_proposals_aggregate: Polkassembly_Proposals_Aggregate;
+  /** fetch data from the table: "polkassembly_proposals" using primary key columns */
+  polkassembly_proposals_by_pk?: Maybe<Polkassembly_Proposals>;
   /** fetch data from the table: "poll" */
   poll: Array<Poll>;
   /** fetch aggregated fields from the table: "poll" */
@@ -14782,6 +15285,32 @@ export type Query_RootOption_Poll_Votes_AggregateArgs = {
 
 /** query root */
 export type Query_RootOption_Poll_Votes_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** query root */
+export type Query_RootPolkassembly_ProposalsArgs = {
+  distinct_on?: Maybe<Array<Polkassembly_Proposals_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Polkassembly_Proposals_Order_By>>;
+  where?: Maybe<Polkassembly_Proposals_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootPolkassembly_Proposals_AggregateArgs = {
+  distinct_on?: Maybe<Array<Polkassembly_Proposals_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Polkassembly_Proposals_Order_By>>;
+  where?: Maybe<Polkassembly_Proposals_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootPolkassembly_Proposals_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -15969,6 +16498,12 @@ export type Subscription_Root = {
   option_poll_votes_aggregate: Option_Poll_Votes_Aggregate;
   /** fetch data from the table: "option_poll_votes" using primary key columns */
   option_poll_votes_by_pk?: Maybe<Option_Poll_Votes>;
+  /** fetch data from the table: "polkassembly_proposals" */
+  polkassembly_proposals: Array<Polkassembly_Proposals>;
+  /** fetch aggregated fields from the table: "polkassembly_proposals" */
+  polkassembly_proposals_aggregate: Polkassembly_Proposals_Aggregate;
+  /** fetch data from the table: "polkassembly_proposals" using primary key columns */
+  polkassembly_proposals_by_pk?: Maybe<Polkassembly_Proposals>;
   /** fetch data from the table: "poll" */
   poll: Array<Poll>;
   /** fetch aggregated fields from the table: "poll" */
@@ -16269,6 +16804,32 @@ export type Subscription_RootOption_Poll_Votes_AggregateArgs = {
 
 /** subscription root */
 export type Subscription_RootOption_Poll_Votes_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** subscription root */
+export type Subscription_RootPolkassembly_ProposalsArgs = {
+  distinct_on?: Maybe<Array<Polkassembly_Proposals_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Polkassembly_Proposals_Order_By>>;
+  where?: Maybe<Polkassembly_Proposals_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootPolkassembly_Proposals_AggregateArgs = {
+  distinct_on?: Maybe<Array<Polkassembly_Proposals_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Polkassembly_Proposals_Order_By>>;
+  where?: Maybe<Polkassembly_Proposals_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootPolkassembly_Proposals_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -16675,6 +17236,25 @@ export type AddCommentReplyMutation = (
   & { insert_replies?: Maybe<(
     { __typename?: 'replies_mutation_response' }
     & Pick<Replies_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
+export type AddPolkassemblyProposalMutationVariables = Exact<{
+  authorId: Scalars['Int'];
+  proposalId: Scalars['Int'];
+  proposalType: Scalars['Int'];
+  proposalHash: Scalars['String'];
+  title: Scalars['String'];
+  content: Scalars['String'];
+  proposerAddress: Scalars['String'];
+}>;
+
+
+export type AddPolkassemblyProposalMutation = (
+  { __typename: 'mutation_root' }
+  & { insert_polkassembly_proposals?: Maybe<(
+    { __typename?: 'polkassembly_proposals_mutation_response' }
+    & Pick<Polkassembly_Proposals_Mutation_Response, 'affected_rows'>
   )> }
 );
 
@@ -20893,6 +21473,47 @@ export type AddPollVoteMutationFn = ApolloReactCommon.MutationFunction<AddPollVo
 export function useAddPollVoteMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddPollVoteMutation, AddPollVoteMutationVariables>) {
         return ApolloReactHooks.useMutation<AddPollVoteMutation, AddPollVoteMutationVariables>(AddPollVoteDocument, baseOptions);
       }
+export const AddPolkassemblyProposalDocument = gql`
+    mutation AddPolkassemblyProposal($authorId: Int!, $proposalId: Int!, $proposalType: Int!, $proposalHash: String!, $title: String!, $content: String!, $proposerAddress: String!) {
+  __typename
+  insert_polkassembly_proposals(
+    objects: {author_id: $authorId, proposal_id: $proposalId, proposal_type: $proposalType, proposal_hash: $proposalHash, content: $content, title: $title, proposer_address: $proposerAddress}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export type AddPolkassemblyProposalMutationFn = ApolloReactCommon.MutationFunction<AddPolkassemblyProposalMutation, AddPolkassemblyProposalMutationVariables>;
+
+/**
+ * __useAddPolkassemblyProposalMutation__
+ *
+ * To run a mutation, you first call `useAddPolkassemblyProposalMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddPolkassemblyProposalMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addPolkassemblyProposalMutation, { data, loading, error }] = useAddPolkassemblyProposalMutation({
+ *   variables: {
+ *      authorId: // value for 'authorId'
+ *      proposalId: // value for 'proposalId'
+ *      proposalType: // value for 'proposalType'
+ *      proposalHash: // value for 'proposalHash'
+ *      title: // value for 'title'
+ *      content: // value for 'content'
+ *      proposerAddress: // value for 'proposerAddress'
+ *   },
+ * });
+ */
+export function useAddPolkassemblyProposalMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddPolkassemblyProposalMutation, AddPolkassemblyProposalMutationVariables>) {
+        return ApolloReactHooks.useMutation<AddPolkassemblyProposalMutation, AddPolkassemblyProposalMutationVariables>(AddPolkassemblyProposalDocument, baseOptions);
+      }
+export type AddPolkassemblyProposalMutationHookResult = ReturnType<typeof useAddPolkassemblyProposalMutation>;
+export type AddPolkassemblyProposalMutationResult = ApolloReactCommon.MutationResult<AddPolkassemblyProposalMutation>;
+export type AddPolkassemblyProposalMutationOptions = ApolloReactCommon.BaseMutationOptions<AddPolkassemblyProposalMutation, AddPolkassemblyProposalMutationVariables>;
 export type AddPollVoteMutationHookResult = ReturnType<typeof useAddPollVoteMutation>;
 export type AddPollVoteMutationResult = ApolloReactCommon.MutationResult<AddPollVoteMutation>;
 export type AddPollVoteMutationOptions = ApolloReactCommon.BaseMutationOptions<AddPollVoteMutation, AddPollVoteMutationVariables>;
