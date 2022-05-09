@@ -5,7 +5,7 @@
 import React, { useEffect } from 'react';
 
 import ProposalsListing from '../../../components/Listings/ProposalsListing';
-import { useLatestDemocracyProposalPostsQuery } from '../../../generated/graphql';
+import { useGetLatestDemocracyProposalPostsQuery } from '../../../generated/graphql';
 import { post_topic } from '../../../global/post_topics';
 import { post_type } from '../../../global/post_types';
 import FilteredError from '../../../ui-components/FilteredError';
@@ -18,7 +18,7 @@ interface Props {
 
 const ProposalsContainer = ({ className, limit }:Props) => {
 
-	const { data, error, refetch } = useLatestDemocracyProposalPostsQuery({ variables: {
+	const { data, error, refetch } = useGetLatestDemocracyProposalPostsQuery({ variables: {
 		limit,
 		postTopic: post_topic.DEMOCRACY,
 		postType: post_type.ON_CHAIN

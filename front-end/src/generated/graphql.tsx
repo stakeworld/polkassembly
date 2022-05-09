@@ -8657,6 +8657,337 @@ export type Bpchar_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['bpchar']>>;
 };
 
+/** columns and relationships of "calender_events" */
+export type Calender_Events = {
+  __typename?: 'calender_events';
+  content?: Maybe<Scalars['String']>;
+  end_time: Scalars['timestamptz'];
+  id: Scalars['Int'];
+  module?: Maybe<Scalars['String']>;
+  network: Scalars['String'];
+  start_time: Scalars['timestamptz'];
+  title: Scalars['String'];
+  url?: Maybe<Scalars['String']>;
+};
+
+/** aggregated selection of "calender_events" */
+export type Calender_Events_Aggregate = {
+  __typename?: 'calender_events_aggregate';
+  aggregate?: Maybe<Calender_Events_Aggregate_Fields>;
+  nodes: Array<Calender_Events>;
+};
+
+/** aggregate fields of "calender_events" */
+export type Calender_Events_Aggregate_Fields = {
+  __typename?: 'calender_events_aggregate_fields';
+  avg?: Maybe<Calender_Events_Avg_Fields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Calender_Events_Max_Fields>;
+  min?: Maybe<Calender_Events_Min_Fields>;
+  stddev?: Maybe<Calender_Events_Stddev_Fields>;
+  stddev_pop?: Maybe<Calender_Events_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Calender_Events_Stddev_Samp_Fields>;
+  sum?: Maybe<Calender_Events_Sum_Fields>;
+  var_pop?: Maybe<Calender_Events_Var_Pop_Fields>;
+  var_samp?: Maybe<Calender_Events_Var_Samp_Fields>;
+  variance?: Maybe<Calender_Events_Variance_Fields>;
+};
+
+
+/** aggregate fields of "calender_events" */
+export type Calender_Events_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Calender_Events_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "calender_events" */
+export type Calender_Events_Aggregate_Order_By = {
+  avg?: Maybe<Calender_Events_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Calender_Events_Max_Order_By>;
+  min?: Maybe<Calender_Events_Min_Order_By>;
+  stddev?: Maybe<Calender_Events_Stddev_Order_By>;
+  stddev_pop?: Maybe<Calender_Events_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Calender_Events_Stddev_Samp_Order_By>;
+  sum?: Maybe<Calender_Events_Sum_Order_By>;
+  var_pop?: Maybe<Calender_Events_Var_Pop_Order_By>;
+  var_samp?: Maybe<Calender_Events_Var_Samp_Order_By>;
+  variance?: Maybe<Calender_Events_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "calender_events" */
+export type Calender_Events_Arr_Rel_Insert_Input = {
+  data: Array<Calender_Events_Insert_Input>;
+  on_conflict?: Maybe<Calender_Events_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Calender_Events_Avg_Fields = {
+  __typename?: 'calender_events_avg_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "calender_events" */
+export type Calender_Events_Avg_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "calender_events". All fields are combined with a logical 'AND'. */
+export type Calender_Events_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Calender_Events_Bool_Exp>>>;
+  _not?: Maybe<Calender_Events_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Calender_Events_Bool_Exp>>>;
+  content?: Maybe<String_Comparison_Exp>;
+  end_time?: Maybe<Timestamptz_Comparison_Exp>;
+  id?: Maybe<Int_Comparison_Exp>;
+  module?: Maybe<String_Comparison_Exp>;
+  network?: Maybe<String_Comparison_Exp>;
+  start_time?: Maybe<Timestamptz_Comparison_Exp>;
+  title?: Maybe<String_Comparison_Exp>;
+  url?: Maybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "calender_events" */
+export enum Calender_Events_Constraint {
+  /** unique or primary key constraint */
+  CalenderEventsPkey = 'calender_events_pkey'
+}
+
+/** input type for incrementing integer column in table "calender_events" */
+export type Calender_Events_Inc_Input = {
+  id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "calender_events" */
+export type Calender_Events_Insert_Input = {
+  content?: Maybe<Scalars['String']>;
+  end_time?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  module?: Maybe<Scalars['String']>;
+  network?: Maybe<Scalars['String']>;
+  start_time?: Maybe<Scalars['timestamptz']>;
+  title?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Calender_Events_Max_Fields = {
+  __typename?: 'calender_events_max_fields';
+  content?: Maybe<Scalars['String']>;
+  end_time?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  module?: Maybe<Scalars['String']>;
+  network?: Maybe<Scalars['String']>;
+  start_time?: Maybe<Scalars['timestamptz']>;
+  title?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "calender_events" */
+export type Calender_Events_Max_Order_By = {
+  content?: Maybe<Order_By>;
+  end_time?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  module?: Maybe<Order_By>;
+  network?: Maybe<Order_By>;
+  start_time?: Maybe<Order_By>;
+  title?: Maybe<Order_By>;
+  url?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Calender_Events_Min_Fields = {
+  __typename?: 'calender_events_min_fields';
+  content?: Maybe<Scalars['String']>;
+  end_time?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  module?: Maybe<Scalars['String']>;
+  network?: Maybe<Scalars['String']>;
+  start_time?: Maybe<Scalars['timestamptz']>;
+  title?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "calender_events" */
+export type Calender_Events_Min_Order_By = {
+  content?: Maybe<Order_By>;
+  end_time?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  module?: Maybe<Order_By>;
+  network?: Maybe<Order_By>;
+  start_time?: Maybe<Order_By>;
+  title?: Maybe<Order_By>;
+  url?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "calender_events" */
+export type Calender_Events_Mutation_Response = {
+  __typename?: 'calender_events_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Calender_Events>;
+};
+
+/** input type for inserting object relation for remote table "calender_events" */
+export type Calender_Events_Obj_Rel_Insert_Input = {
+  data: Calender_Events_Insert_Input;
+  on_conflict?: Maybe<Calender_Events_On_Conflict>;
+};
+
+/** on conflict condition type for table "calender_events" */
+export type Calender_Events_On_Conflict = {
+  constraint: Calender_Events_Constraint;
+  update_columns: Array<Calender_Events_Update_Column>;
+  where?: Maybe<Calender_Events_Bool_Exp>;
+};
+
+/** ordering options when selecting data from "calender_events" */
+export type Calender_Events_Order_By = {
+  content?: Maybe<Order_By>;
+  end_time?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  module?: Maybe<Order_By>;
+  network?: Maybe<Order_By>;
+  start_time?: Maybe<Order_By>;
+  title?: Maybe<Order_By>;
+  url?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: "calender_events" */
+export type Calender_Events_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "calender_events" */
+export enum Calender_Events_Select_Column {
+  /** column name */
+  Content = 'content',
+  /** column name */
+  EndTime = 'end_time',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Module = 'module',
+  /** column name */
+  Network = 'network',
+  /** column name */
+  StartTime = 'start_time',
+  /** column name */
+  Title = 'title',
+  /** column name */
+  Url = 'url'
+}
+
+/** input type for updating data in table "calender_events" */
+export type Calender_Events_Set_Input = {
+  content?: Maybe<Scalars['String']>;
+  end_time?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  module?: Maybe<Scalars['String']>;
+  network?: Maybe<Scalars['String']>;
+  start_time?: Maybe<Scalars['timestamptz']>;
+  title?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type Calender_Events_Stddev_Fields = {
+  __typename?: 'calender_events_stddev_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "calender_events" */
+export type Calender_Events_Stddev_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Calender_Events_Stddev_Pop_Fields = {
+  __typename?: 'calender_events_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "calender_events" */
+export type Calender_Events_Stddev_Pop_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Calender_Events_Stddev_Samp_Fields = {
+  __typename?: 'calender_events_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "calender_events" */
+export type Calender_Events_Stddev_Samp_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Calender_Events_Sum_Fields = {
+  __typename?: 'calender_events_sum_fields';
+  id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "calender_events" */
+export type Calender_Events_Sum_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** update columns of table "calender_events" */
+export enum Calender_Events_Update_Column {
+  /** column name */
+  Content = 'content',
+  /** column name */
+  EndTime = 'end_time',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Module = 'module',
+  /** column name */
+  Network = 'network',
+  /** column name */
+  StartTime = 'start_time',
+  /** column name */
+  Title = 'title',
+  /** column name */
+  Url = 'url'
+}
+
+/** aggregate var_pop on columns */
+export type Calender_Events_Var_Pop_Fields = {
+  __typename?: 'calender_events_var_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "calender_events" */
+export type Calender_Events_Var_Pop_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Calender_Events_Var_Samp_Fields = {
+  __typename?: 'calender_events_var_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "calender_events" */
+export type Calender_Events_Var_Samp_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Calender_Events_Variance_Fields = {
+  __typename?: 'calender_events_variance_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "calender_events" */
+export type Calender_Events_Variance_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
 /** columns and relationships of "comment_reactions" */
 export type Comment_Reactions = {
   __typename?: 'comment_reactions';
@@ -9389,6 +9720,10 @@ export type Mutation_Root = {
   delete_blockchain_socials?: Maybe<Blockchain_Socials_Mutation_Response>;
   /** delete single row from the table: "blockchain_socials" */
   delete_blockchain_socials_by_pk?: Maybe<Blockchain_Socials>;
+  /** delete data from the table: "calender_events" */
+  delete_calender_events?: Maybe<Calender_Events_Mutation_Response>;
+  /** delete single row from the table: "calender_events" */
+  delete_calender_events_by_pk?: Maybe<Calender_Events>;
   /** delete data from the table: "comment_reactions" */
   delete_comment_reactions?: Maybe<Comment_Reactions_Mutation_Response>;
   /** delete single row from the table: "comment_reactions" */
@@ -9447,6 +9782,10 @@ export type Mutation_Root = {
   insert_blockchain_socials?: Maybe<Blockchain_Socials_Mutation_Response>;
   /** insert a single row into the table: "blockchain_socials" */
   insert_blockchain_socials_one?: Maybe<Blockchain_Socials>;
+  /** insert data into the table: "calender_events" */
+  insert_calender_events?: Maybe<Calender_Events_Mutation_Response>;
+  /** insert a single row into the table: "calender_events" */
+  insert_calender_events_one?: Maybe<Calender_Events>;
   /** insert data into the table: "comment_reactions" */
   insert_comment_reactions?: Maybe<Comment_Reactions_Mutation_Response>;
   /** insert a single row into the table: "comment_reactions" */
@@ -9518,6 +9857,10 @@ export type Mutation_Root = {
   update_blockchain_socials?: Maybe<Blockchain_Socials_Mutation_Response>;
   /** update single row of the table: "blockchain_socials" */
   update_blockchain_socials_by_pk?: Maybe<Blockchain_Socials>;
+  /** update data of the table: "calender_events" */
+  update_calender_events?: Maybe<Calender_Events_Mutation_Response>;
+  /** update single row of the table: "calender_events" */
+  update_calender_events_by_pk?: Maybe<Calender_Events>;
   /** update data of the table: "comment_reactions" */
   update_comment_reactions?: Maybe<Comment_Reactions_Mutation_Response>;
   /** update single row of the table: "comment_reactions" */
@@ -9694,6 +10037,18 @@ export type Mutation_RootDelete_Blockchain_Socials_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_Calender_EventsArgs = {
+  where: Calender_Events_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Calender_Events_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_Comment_ReactionsArgs = {
   where: Comment_Reactions_Bool_Exp;
 };
@@ -9749,6 +10104,18 @@ export type Mutation_RootDelete_Option_Poll_VotesArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Option_Poll_Votes_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Polkassembly_ProposalsArgs = {
+  where: Polkassembly_Proposals_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Polkassembly_Proposals_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -9870,6 +10237,20 @@ export type Mutation_RootInsert_Blockchain_Socials_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_Calender_EventsArgs = {
+  objects: Array<Calender_Events_Insert_Input>;
+  on_conflict?: Maybe<Calender_Events_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Calender_Events_OneArgs = {
+  object: Calender_Events_Insert_Input;
+  on_conflict?: Maybe<Calender_Events_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_Comment_ReactionsArgs = {
   objects: Array<Comment_Reactions_Insert_Input>;
   on_conflict?: Maybe<Comment_Reactions_On_Conflict>;
@@ -9936,6 +10317,20 @@ export type Mutation_RootInsert_Option_Poll_VotesArgs = {
 export type Mutation_RootInsert_Option_Poll_Votes_OneArgs = {
   object: Option_Poll_Votes_Insert_Input;
   on_conflict?: Maybe<Option_Poll_Votes_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Polkassembly_ProposalsArgs = {
+  objects: Array<Polkassembly_Proposals_Insert_Input>;
+  on_conflict?: Maybe<Polkassembly_Proposals_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Polkassembly_Proposals_OneArgs = {
+  object: Polkassembly_Proposals_Insert_Input;
+  on_conflict?: Maybe<Polkassembly_Proposals_On_Conflict>;
 };
 
 
@@ -10151,6 +10546,22 @@ export type Mutation_RootUpdate_Blockchain_Socials_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Calender_EventsArgs = {
+  _inc?: Maybe<Calender_Events_Inc_Input>;
+  _set?: Maybe<Calender_Events_Set_Input>;
+  where: Calender_Events_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Calender_Events_By_PkArgs = {
+  _inc?: Maybe<Calender_Events_Inc_Input>;
+  _set?: Maybe<Calender_Events_Set_Input>;
+  pk_columns: Calender_Events_Pk_Columns_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Comment_ReactionsArgs = {
   _inc?: Maybe<Comment_Reactions_Inc_Input>;
   _set?: Maybe<Comment_Reactions_Set_Input>;
@@ -10227,6 +10638,22 @@ export type Mutation_RootUpdate_Option_Poll_Votes_By_PkArgs = {
   _inc?: Maybe<Option_Poll_Votes_Inc_Input>;
   _set?: Maybe<Option_Poll_Votes_Set_Input>;
   pk_columns: Option_Poll_Votes_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Polkassembly_ProposalsArgs = {
+  _inc?: Maybe<Polkassembly_Proposals_Inc_Input>;
+  _set?: Maybe<Polkassembly_Proposals_Set_Input>;
+  where: Polkassembly_Proposals_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Polkassembly_Proposals_By_PkArgs = {
+  _inc?: Maybe<Polkassembly_Proposals_Inc_Input>;
+  _set?: Maybe<Polkassembly_Proposals_Set_Input>;
+  pk_columns: Polkassembly_Proposals_Pk_Columns_Input;
 };
 
 
@@ -10553,19 +10980,6 @@ export type Onchain_Links_Arr_Rel_Insert_Input = {
   data: Array<Onchain_Links_Insert_Input>;
   on_conflict?: Maybe<Onchain_Links_On_Conflict>;
 };
-
-
-/** mutation root */
-export type Mutation_RootDelete_Polkassembly_ProposalsArgs = {
-  where: Polkassembly_Proposals_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_Polkassembly_Proposals_By_PkArgs = {
-  id: Scalars['Int'];
-};
-
 
 /** aggregate avg on columns */
 export type Onchain_Links_Avg_Fields = {
@@ -11005,20 +11419,6 @@ export type Onchain_Links_Variance_Order_By = {
   onchain_treasury_proposal_id?: Maybe<Order_By>;
   post_id?: Maybe<Order_By>;
 };
-
-/** mutation root */
-export type Mutation_RootInsert_Polkassembly_ProposalsArgs = {
-  objects: Array<Polkassembly_Proposals_Insert_Input>;
-  on_conflict?: Maybe<Polkassembly_Proposals_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Polkassembly_Proposals_OneArgs = {
-  object: Polkassembly_Proposals_Insert_Input;
-  on_conflict?: Maybe<Polkassembly_Proposals_On_Conflict>;
-};
-
 
 /** columns and relationships of "option_poll" */
 export type Option_Poll = {
@@ -11750,6 +12150,449 @@ export type Option_Poll_Votes_Variance_Order_By = {
   user_id?: Maybe<Order_By>;
 };
 
+/** column ordering options */
+export enum Order_By {
+  /** in the ascending order, nulls last */
+  Asc = 'asc',
+  /** in the ascending order, nulls first */
+  AscNullsFirst = 'asc_nulls_first',
+  /** in the ascending order, nulls last */
+  AscNullsLast = 'asc_nulls_last',
+  /** in the descending order, nulls first */
+  Desc = 'desc',
+  /** in the descending order, nulls first */
+  DescNullsFirst = 'desc_nulls_first',
+  /** in the descending order, nulls last */
+  DescNullsLast = 'desc_nulls_last'
+}
+
+/** columns and relationships of "polkassembly_proposals" */
+export type Polkassembly_Proposals = {
+  __typename?: 'polkassembly_proposals';
+  /** Remote relationship field */
+  author?: Maybe<User>;
+  author_id: Scalars['Int'];
+  content: Scalars['String'];
+  created_at: Scalars['timestamptz'];
+  id: Scalars['Int'];
+  is_synced: Scalars['Boolean'];
+  proposal_hash: Scalars['String'];
+  proposal_id: Scalars['Int'];
+  proposal_type: Scalars['Int'];
+  proposer_address: Scalars['String'];
+  title: Scalars['String'];
+  updated_at: Scalars['timestamptz'];
+};
+
+
+/** columns and relationships of "polkassembly_proposals" */
+export type Polkassembly_ProposalsAuthorArgs = {
+  id: Scalars['Int'];
+};
+
+/** aggregated selection of "polkassembly_proposals" */
+export type Polkassembly_Proposals_Aggregate = {
+  __typename?: 'polkassembly_proposals_aggregate';
+  aggregate?: Maybe<Polkassembly_Proposals_Aggregate_Fields>;
+  nodes: Array<Polkassembly_Proposals>;
+};
+
+/** aggregate fields of "polkassembly_proposals" */
+export type Polkassembly_Proposals_Aggregate_Fields = {
+  __typename?: 'polkassembly_proposals_aggregate_fields';
+  avg?: Maybe<Polkassembly_Proposals_Avg_Fields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Polkassembly_Proposals_Max_Fields>;
+  min?: Maybe<Polkassembly_Proposals_Min_Fields>;
+  stddev?: Maybe<Polkassembly_Proposals_Stddev_Fields>;
+  stddev_pop?: Maybe<Polkassembly_Proposals_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Polkassembly_Proposals_Stddev_Samp_Fields>;
+  sum?: Maybe<Polkassembly_Proposals_Sum_Fields>;
+  var_pop?: Maybe<Polkassembly_Proposals_Var_Pop_Fields>;
+  var_samp?: Maybe<Polkassembly_Proposals_Var_Samp_Fields>;
+  variance?: Maybe<Polkassembly_Proposals_Variance_Fields>;
+};
+
+
+/** aggregate fields of "polkassembly_proposals" */
+export type Polkassembly_Proposals_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Polkassembly_Proposals_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Aggregate_Order_By = {
+  avg?: Maybe<Polkassembly_Proposals_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Polkassembly_Proposals_Max_Order_By>;
+  min?: Maybe<Polkassembly_Proposals_Min_Order_By>;
+  stddev?: Maybe<Polkassembly_Proposals_Stddev_Order_By>;
+  stddev_pop?: Maybe<Polkassembly_Proposals_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Polkassembly_Proposals_Stddev_Samp_Order_By>;
+  sum?: Maybe<Polkassembly_Proposals_Sum_Order_By>;
+  var_pop?: Maybe<Polkassembly_Proposals_Var_Pop_Order_By>;
+  var_samp?: Maybe<Polkassembly_Proposals_Var_Samp_Order_By>;
+  variance?: Maybe<Polkassembly_Proposals_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Arr_Rel_Insert_Input = {
+  data: Array<Polkassembly_Proposals_Insert_Input>;
+  on_conflict?: Maybe<Polkassembly_Proposals_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Polkassembly_Proposals_Avg_Fields = {
+  __typename?: 'polkassembly_proposals_avg_fields';
+  author_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  proposal_id?: Maybe<Scalars['Float']>;
+  proposal_type?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Avg_Order_By = {
+  author_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  proposal_id?: Maybe<Order_By>;
+  proposal_type?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "polkassembly_proposals". All fields are combined with a logical 'AND'. */
+export type Polkassembly_Proposals_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Polkassembly_Proposals_Bool_Exp>>>;
+  _not?: Maybe<Polkassembly_Proposals_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Polkassembly_Proposals_Bool_Exp>>>;
+  author_id?: Maybe<Int_Comparison_Exp>;
+  content?: Maybe<String_Comparison_Exp>;
+  created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  id?: Maybe<Int_Comparison_Exp>;
+  is_synced?: Maybe<Boolean_Comparison_Exp>;
+  proposal_hash?: Maybe<String_Comparison_Exp>;
+  proposal_id?: Maybe<Int_Comparison_Exp>;
+  proposal_type?: Maybe<Int_Comparison_Exp>;
+  proposer_address?: Maybe<String_Comparison_Exp>;
+  title?: Maybe<String_Comparison_Exp>;
+  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "polkassembly_proposals" */
+export enum Polkassembly_Proposals_Constraint {
+  /** unique or primary key constraint */
+  PolkassemblyProposalsPkey = 'polkassembly_proposals_pkey',
+  /** unique or primary key constraint */
+  PolkassemblyProposalsProposalHashKey = 'polkassembly_proposals_proposal_hash_key'
+}
+
+/** input type for incrementing integer column in table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Inc_Input = {
+  author_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  proposal_id?: Maybe<Scalars['Int']>;
+  proposal_type?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Insert_Input = {
+  author_id?: Maybe<Scalars['Int']>;
+  content?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  is_synced?: Maybe<Scalars['Boolean']>;
+  proposal_hash?: Maybe<Scalars['String']>;
+  proposal_id?: Maybe<Scalars['Int']>;
+  proposal_type?: Maybe<Scalars['Int']>;
+  proposer_address?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type Polkassembly_Proposals_Max_Fields = {
+  __typename?: 'polkassembly_proposals_max_fields';
+  author_id?: Maybe<Scalars['Int']>;
+  content?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  proposal_hash?: Maybe<Scalars['String']>;
+  proposal_id?: Maybe<Scalars['Int']>;
+  proposal_type?: Maybe<Scalars['Int']>;
+  proposer_address?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by max() on columns of table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Max_Order_By = {
+  author_id?: Maybe<Order_By>;
+  content?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  proposal_hash?: Maybe<Order_By>;
+  proposal_id?: Maybe<Order_By>;
+  proposal_type?: Maybe<Order_By>;
+  proposer_address?: Maybe<Order_By>;
+  title?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Polkassembly_Proposals_Min_Fields = {
+  __typename?: 'polkassembly_proposals_min_fields';
+  author_id?: Maybe<Scalars['Int']>;
+  content?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  proposal_hash?: Maybe<Scalars['String']>;
+  proposal_id?: Maybe<Scalars['Int']>;
+  proposal_type?: Maybe<Scalars['Int']>;
+  proposer_address?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by min() on columns of table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Min_Order_By = {
+  author_id?: Maybe<Order_By>;
+  content?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  proposal_hash?: Maybe<Order_By>;
+  proposal_id?: Maybe<Order_By>;
+  proposal_type?: Maybe<Order_By>;
+  proposer_address?: Maybe<Order_By>;
+  title?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Mutation_Response = {
+  __typename?: 'polkassembly_proposals_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Polkassembly_Proposals>;
+};
+
+/** input type for inserting object relation for remote table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Obj_Rel_Insert_Input = {
+  data: Polkassembly_Proposals_Insert_Input;
+  on_conflict?: Maybe<Polkassembly_Proposals_On_Conflict>;
+};
+
+/** on conflict condition type for table "polkassembly_proposals" */
+export type Polkassembly_Proposals_On_Conflict = {
+  constraint: Polkassembly_Proposals_Constraint;
+  update_columns: Array<Polkassembly_Proposals_Update_Column>;
+  where?: Maybe<Polkassembly_Proposals_Bool_Exp>;
+};
+
+/** ordering options when selecting data from "polkassembly_proposals" */
+export type Polkassembly_Proposals_Order_By = {
+  author_id?: Maybe<Order_By>;
+  content?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  is_synced?: Maybe<Order_By>;
+  proposal_hash?: Maybe<Order_By>;
+  proposal_id?: Maybe<Order_By>;
+  proposal_type?: Maybe<Order_By>;
+  proposer_address?: Maybe<Order_By>;
+  title?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: "polkassembly_proposals" */
+export type Polkassembly_Proposals_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "polkassembly_proposals" */
+export enum Polkassembly_Proposals_Select_Column {
+  /** column name */
+  AuthorId = 'author_id',
+  /** column name */
+  Content = 'content',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IsSynced = 'is_synced',
+  /** column name */
+  ProposalHash = 'proposal_hash',
+  /** column name */
+  ProposalId = 'proposal_id',
+  /** column name */
+  ProposalType = 'proposal_type',
+  /** column name */
+  ProposerAddress = 'proposer_address',
+  /** column name */
+  Title = 'title',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Set_Input = {
+  author_id?: Maybe<Scalars['Int']>;
+  content?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  is_synced?: Maybe<Scalars['Boolean']>;
+  proposal_hash?: Maybe<Scalars['String']>;
+  proposal_id?: Maybe<Scalars['Int']>;
+  proposal_type?: Maybe<Scalars['Int']>;
+  proposer_address?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate stddev on columns */
+export type Polkassembly_Proposals_Stddev_Fields = {
+  __typename?: 'polkassembly_proposals_stddev_fields';
+  author_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  proposal_id?: Maybe<Scalars['Float']>;
+  proposal_type?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Stddev_Order_By = {
+  author_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  proposal_id?: Maybe<Order_By>;
+  proposal_type?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Polkassembly_Proposals_Stddev_Pop_Fields = {
+  __typename?: 'polkassembly_proposals_stddev_pop_fields';
+  author_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  proposal_id?: Maybe<Scalars['Float']>;
+  proposal_type?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Stddev_Pop_Order_By = {
+  author_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  proposal_id?: Maybe<Order_By>;
+  proposal_type?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Polkassembly_Proposals_Stddev_Samp_Fields = {
+  __typename?: 'polkassembly_proposals_stddev_samp_fields';
+  author_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  proposal_id?: Maybe<Scalars['Float']>;
+  proposal_type?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Stddev_Samp_Order_By = {
+  author_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  proposal_id?: Maybe<Order_By>;
+  proposal_type?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Polkassembly_Proposals_Sum_Fields = {
+  __typename?: 'polkassembly_proposals_sum_fields';
+  author_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  proposal_id?: Maybe<Scalars['Int']>;
+  proposal_type?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Sum_Order_By = {
+  author_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  proposal_id?: Maybe<Order_By>;
+  proposal_type?: Maybe<Order_By>;
+};
+
+/** update columns of table "polkassembly_proposals" */
+export enum Polkassembly_Proposals_Update_Column {
+  /** column name */
+  AuthorId = 'author_id',
+  /** column name */
+  Content = 'content',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IsSynced = 'is_synced',
+  /** column name */
+  ProposalHash = 'proposal_hash',
+  /** column name */
+  ProposalId = 'proposal_id',
+  /** column name */
+  ProposalType = 'proposal_type',
+  /** column name */
+  ProposerAddress = 'proposer_address',
+  /** column name */
+  Title = 'title',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** aggregate var_pop on columns */
+export type Polkassembly_Proposals_Var_Pop_Fields = {
+  __typename?: 'polkassembly_proposals_var_pop_fields';
+  author_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  proposal_id?: Maybe<Scalars['Float']>;
+  proposal_type?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Var_Pop_Order_By = {
+  author_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  proposal_id?: Maybe<Order_By>;
+  proposal_type?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Polkassembly_Proposals_Var_Samp_Fields = {
+  __typename?: 'polkassembly_proposals_var_samp_fields';
+  author_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  proposal_id?: Maybe<Scalars['Float']>;
+  proposal_type?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Var_Samp_Order_By = {
+  author_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  proposal_id?: Maybe<Order_By>;
+  proposal_type?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Polkassembly_Proposals_Variance_Fields = {
+  __typename?: 'polkassembly_proposals_variance_fields';
+  author_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  proposal_id?: Maybe<Scalars['Float']>;
+  proposal_type?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "polkassembly_proposals" */
+export type Polkassembly_Proposals_Variance_Order_By = {
+  author_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  proposal_id?: Maybe<Order_By>;
+  proposal_type?: Maybe<Order_By>;
+};
+
 /** columns and relationships of "poll" */
 export type Poll = {
   __typename?: 'poll';
@@ -12070,23 +12913,6 @@ export type Poll_Var_Pop_Fields = {
   id?: Maybe<Scalars['Float']>;
   post_id?: Maybe<Scalars['Float']>;
 };
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Polkassembly_ProposalsArgs = {
-  _inc?: Maybe<Polkassembly_Proposals_Inc_Input>;
-  _set?: Maybe<Polkassembly_Proposals_Set_Input>;
-  where: Polkassembly_Proposals_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Polkassembly_Proposals_By_PkArgs = {
-  _inc?: Maybe<Polkassembly_Proposals_Inc_Input>;
-  _set?: Maybe<Polkassembly_Proposals_Set_Input>;
-  pk_columns: Polkassembly_Proposals_Pk_Columns_Input;
-};
-
 
 /** order by var_pop() on columns of table "poll" */
 export type Poll_Var_Pop_Order_By = {
@@ -13575,450 +14401,6 @@ export type Post_Types_Variance_Order_By = {
   id?: Maybe<Order_By>;
 };
 
-/** column ordering options */
-export enum Order_By {
-  /** in the ascending order, nulls last */
-  Asc = 'asc',
-  /** in the ascending order, nulls first */
-  AscNullsFirst = 'asc_nulls_first',
-  /** in the ascending order, nulls last */
-  AscNullsLast = 'asc_nulls_last',
-  /** in the descending order, nulls first */
-  Desc = 'desc',
-  /** in the descending order, nulls first */
-  DescNullsFirst = 'desc_nulls_first',
-  /** in the descending order, nulls last */
-  DescNullsLast = 'desc_nulls_last'
-}
-
-/** columns and relationships of "polkassembly_proposals" */
-export type Polkassembly_Proposals = {
-  __typename?: 'polkassembly_proposals';
-  /** Remote relationship field */
-  author?: Maybe<User>;
-  author_id: Scalars['Int'];
-  content: Scalars['String'];
-  created_at: Scalars['timestamptz'];
-  id: Scalars['Int'];
-  is_synced: Scalars['Boolean'];
-  proposal_hash: Scalars['String'];
-  proposal_id: Scalars['Int'];
-  proposal_type: Scalars['Int'];
-  proposer_address: Scalars['String'];
-  title: Scalars['String'];
-  updated_at: Scalars['timestamptz'];
-};
-
-
-/** columns and relationships of "polkassembly_proposals" */
-export type Polkassembly_ProposalsAuthorArgs = {
-  id: Scalars['Int'];
-};
-
-/** aggregated selection of "polkassembly_proposals" */
-export type Polkassembly_Proposals_Aggregate = {
-  __typename?: 'polkassembly_proposals_aggregate';
-  aggregate?: Maybe<Polkassembly_Proposals_Aggregate_Fields>;
-  nodes: Array<Polkassembly_Proposals>;
-};
-
-/** aggregate fields of "polkassembly_proposals" */
-export type Polkassembly_Proposals_Aggregate_Fields = {
-  __typename?: 'polkassembly_proposals_aggregate_fields';
-  avg?: Maybe<Polkassembly_Proposals_Avg_Fields>;
-  count?: Maybe<Scalars['Int']>;
-  max?: Maybe<Polkassembly_Proposals_Max_Fields>;
-  min?: Maybe<Polkassembly_Proposals_Min_Fields>;
-  stddev?: Maybe<Polkassembly_Proposals_Stddev_Fields>;
-  stddev_pop?: Maybe<Polkassembly_Proposals_Stddev_Pop_Fields>;
-  stddev_samp?: Maybe<Polkassembly_Proposals_Stddev_Samp_Fields>;
-  sum?: Maybe<Polkassembly_Proposals_Sum_Fields>;
-  var_pop?: Maybe<Polkassembly_Proposals_Var_Pop_Fields>;
-  var_samp?: Maybe<Polkassembly_Proposals_Var_Samp_Fields>;
-  variance?: Maybe<Polkassembly_Proposals_Variance_Fields>;
-};
-
-
-/** aggregate fields of "polkassembly_proposals" */
-export type Polkassembly_Proposals_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Polkassembly_Proposals_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-};
-
-/** order by aggregate values of table "polkassembly_proposals" */
-export type Polkassembly_Proposals_Aggregate_Order_By = {
-  avg?: Maybe<Polkassembly_Proposals_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<Polkassembly_Proposals_Max_Order_By>;
-  min?: Maybe<Polkassembly_Proposals_Min_Order_By>;
-  stddev?: Maybe<Polkassembly_Proposals_Stddev_Order_By>;
-  stddev_pop?: Maybe<Polkassembly_Proposals_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<Polkassembly_Proposals_Stddev_Samp_Order_By>;
-  sum?: Maybe<Polkassembly_Proposals_Sum_Order_By>;
-  var_pop?: Maybe<Polkassembly_Proposals_Var_Pop_Order_By>;
-  var_samp?: Maybe<Polkassembly_Proposals_Var_Samp_Order_By>;
-  variance?: Maybe<Polkassembly_Proposals_Variance_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "polkassembly_proposals" */
-export type Polkassembly_Proposals_Arr_Rel_Insert_Input = {
-  data: Array<Polkassembly_Proposals_Insert_Input>;
-  on_conflict?: Maybe<Polkassembly_Proposals_On_Conflict>;
-};
-
-/** aggregate avg on columns */
-export type Polkassembly_Proposals_Avg_Fields = {
-  __typename?: 'polkassembly_proposals_avg_fields';
-  author_id?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-  proposal_id?: Maybe<Scalars['Float']>;
-  proposal_type?: Maybe<Scalars['Float']>;
-};
-
-/** order by avg() on columns of table "polkassembly_proposals" */
-export type Polkassembly_Proposals_Avg_Order_By = {
-  author_id?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  proposal_id?: Maybe<Order_By>;
-  proposal_type?: Maybe<Order_By>;
-};
-
-/** Boolean expression to filter rows from the table "polkassembly_proposals". All fields are combined with a logical 'AND'. */
-export type Polkassembly_Proposals_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Polkassembly_Proposals_Bool_Exp>>>;
-  _not?: Maybe<Polkassembly_Proposals_Bool_Exp>;
-  _or?: Maybe<Array<Maybe<Polkassembly_Proposals_Bool_Exp>>>;
-  author_id?: Maybe<Int_Comparison_Exp>;
-  content?: Maybe<String_Comparison_Exp>;
-  created_at?: Maybe<Timestamptz_Comparison_Exp>;
-  id?: Maybe<Int_Comparison_Exp>;
-  is_synced?: Maybe<Boolean_Comparison_Exp>;
-  proposal_hash?: Maybe<String_Comparison_Exp>;
-  proposal_id?: Maybe<Int_Comparison_Exp>;
-  proposal_type?: Maybe<Int_Comparison_Exp>;
-  proposer_address?: Maybe<String_Comparison_Exp>;
-  title?: Maybe<String_Comparison_Exp>;
-  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
-};
-
-/** unique or primary key constraints on table "polkassembly_proposals" */
-export enum Polkassembly_Proposals_Constraint {
-  /** unique or primary key constraint */
-  PolkassemblyProposalsPkey = 'polkassembly_proposals_pkey',
-  /** unique or primary key constraint */
-  PolkassemblyProposalsProposalHashKey = 'polkassembly_proposals_proposal_hash_key'
-}
-
-/** input type for incrementing integer column in table "polkassembly_proposals" */
-export type Polkassembly_Proposals_Inc_Input = {
-  author_id?: Maybe<Scalars['Int']>;
-  id?: Maybe<Scalars['Int']>;
-  proposal_id?: Maybe<Scalars['Int']>;
-  proposal_type?: Maybe<Scalars['Int']>;
-};
-
-/** input type for inserting data into table "polkassembly_proposals" */
-export type Polkassembly_Proposals_Insert_Input = {
-  author_id?: Maybe<Scalars['Int']>;
-  content?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['Int']>;
-  is_synced?: Maybe<Scalars['Boolean']>;
-  proposal_hash?: Maybe<Scalars['String']>;
-  proposal_id?: Maybe<Scalars['Int']>;
-  proposal_type?: Maybe<Scalars['Int']>;
-  proposer_address?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-};
-
-/** aggregate max on columns */
-export type Polkassembly_Proposals_Max_Fields = {
-  __typename?: 'polkassembly_proposals_max_fields';
-  author_id?: Maybe<Scalars['Int']>;
-  content?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['Int']>;
-  proposal_hash?: Maybe<Scalars['String']>;
-  proposal_id?: Maybe<Scalars['Int']>;
-  proposal_type?: Maybe<Scalars['Int']>;
-  proposer_address?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-};
-
-/** order by max() on columns of table "polkassembly_proposals" */
-export type Polkassembly_Proposals_Max_Order_By = {
-  author_id?: Maybe<Order_By>;
-  content?: Maybe<Order_By>;
-  created_at?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  proposal_hash?: Maybe<Order_By>;
-  proposal_id?: Maybe<Order_By>;
-  proposal_type?: Maybe<Order_By>;
-  proposer_address?: Maybe<Order_By>;
-  title?: Maybe<Order_By>;
-  updated_at?: Maybe<Order_By>;
-};
-
-/** aggregate min on columns */
-export type Polkassembly_Proposals_Min_Fields = {
-  __typename?: 'polkassembly_proposals_min_fields';
-  author_id?: Maybe<Scalars['Int']>;
-  content?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['Int']>;
-  proposal_hash?: Maybe<Scalars['String']>;
-  proposal_id?: Maybe<Scalars['Int']>;
-  proposal_type?: Maybe<Scalars['Int']>;
-  proposer_address?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-};
-
-/** order by min() on columns of table "polkassembly_proposals" */
-export type Polkassembly_Proposals_Min_Order_By = {
-  author_id?: Maybe<Order_By>;
-  content?: Maybe<Order_By>;
-  created_at?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  proposal_hash?: Maybe<Order_By>;
-  proposal_id?: Maybe<Order_By>;
-  proposal_type?: Maybe<Order_By>;
-  proposer_address?: Maybe<Order_By>;
-  title?: Maybe<Order_By>;
-  updated_at?: Maybe<Order_By>;
-};
-
-/** response of any mutation on the table "polkassembly_proposals" */
-export type Polkassembly_Proposals_Mutation_Response = {
-  __typename?: 'polkassembly_proposals_mutation_response';
-  /** number of affected rows by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data of the affected rows by the mutation */
-  returning: Array<Polkassembly_Proposals>;
-};
-
-/** input type for inserting object relation for remote table "polkassembly_proposals" */
-export type Polkassembly_Proposals_Obj_Rel_Insert_Input = {
-  data: Polkassembly_Proposals_Insert_Input;
-  on_conflict?: Maybe<Polkassembly_Proposals_On_Conflict>;
-};
-
-/** on conflict condition type for table "polkassembly_proposals" */
-export type Polkassembly_Proposals_On_Conflict = {
-  constraint: Polkassembly_Proposals_Constraint;
-  update_columns: Array<Polkassembly_Proposals_Update_Column>;
-  where?: Maybe<Polkassembly_Proposals_Bool_Exp>;
-};
-
-/** ordering options when selecting data from "polkassembly_proposals" */
-export type Polkassembly_Proposals_Order_By = {
-  author_id?: Maybe<Order_By>;
-  content?: Maybe<Order_By>;
-  created_at?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  is_synced?: Maybe<Order_By>;
-  proposal_hash?: Maybe<Order_By>;
-  proposal_id?: Maybe<Order_By>;
-  proposal_type?: Maybe<Order_By>;
-  proposer_address?: Maybe<Order_By>;
-  title?: Maybe<Order_By>;
-  updated_at?: Maybe<Order_By>;
-};
-
-/** primary key columns input for table: "polkassembly_proposals" */
-export type Polkassembly_Proposals_Pk_Columns_Input = {
-  id: Scalars['Int'];
-};
-
-/** select columns of table "polkassembly_proposals" */
-export enum Polkassembly_Proposals_Select_Column {
-  /** column name */
-  AuthorId = 'author_id',
-  /** column name */
-  Content = 'content',
-  /** column name */
-  CreatedAt = 'created_at',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  IsSynced = 'is_synced',
-  /** column name */
-  ProposalHash = 'proposal_hash',
-  /** column name */
-  ProposalId = 'proposal_id',
-  /** column name */
-  ProposalType = 'proposal_type',
-  /** column name */
-  ProposerAddress = 'proposer_address',
-  /** column name */
-  Title = 'title',
-  /** column name */
-  UpdatedAt = 'updated_at'
-}
-
-/** input type for updating data in table "polkassembly_proposals" */
-export type Polkassembly_Proposals_Set_Input = {
-  author_id?: Maybe<Scalars['Int']>;
-  content?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['Int']>;
-  is_synced?: Maybe<Scalars['Boolean']>;
-  proposal_hash?: Maybe<Scalars['String']>;
-  proposal_id?: Maybe<Scalars['Int']>;
-  proposal_type?: Maybe<Scalars['Int']>;
-  proposer_address?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-};
-
-/** aggregate stddev on columns */
-export type Polkassembly_Proposals_Stddev_Fields = {
-  __typename?: 'polkassembly_proposals_stddev_fields';
-  author_id?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-  proposal_id?: Maybe<Scalars['Float']>;
-  proposal_type?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev() on columns of table "polkassembly_proposals" */
-export type Polkassembly_Proposals_Stddev_Order_By = {
-  author_id?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  proposal_id?: Maybe<Order_By>;
-  proposal_type?: Maybe<Order_By>;
-};
-
-/** aggregate stddev_pop on columns */
-export type Polkassembly_Proposals_Stddev_Pop_Fields = {
-  __typename?: 'polkassembly_proposals_stddev_pop_fields';
-  author_id?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-  proposal_id?: Maybe<Scalars['Float']>;
-  proposal_type?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_pop() on columns of table "polkassembly_proposals" */
-export type Polkassembly_Proposals_Stddev_Pop_Order_By = {
-  author_id?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  proposal_id?: Maybe<Order_By>;
-  proposal_type?: Maybe<Order_By>;
-};
-
-/** aggregate stddev_samp on columns */
-export type Polkassembly_Proposals_Stddev_Samp_Fields = {
-  __typename?: 'polkassembly_proposals_stddev_samp_fields';
-  author_id?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-  proposal_id?: Maybe<Scalars['Float']>;
-  proposal_type?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_samp() on columns of table "polkassembly_proposals" */
-export type Polkassembly_Proposals_Stddev_Samp_Order_By = {
-  author_id?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  proposal_id?: Maybe<Order_By>;
-  proposal_type?: Maybe<Order_By>;
-};
-
-/** aggregate sum on columns */
-export type Polkassembly_Proposals_Sum_Fields = {
-  __typename?: 'polkassembly_proposals_sum_fields';
-  author_id?: Maybe<Scalars['Int']>;
-  id?: Maybe<Scalars['Int']>;
-  proposal_id?: Maybe<Scalars['Int']>;
-  proposal_type?: Maybe<Scalars['Int']>;
-};
-
-/** order by sum() on columns of table "polkassembly_proposals" */
-export type Polkassembly_Proposals_Sum_Order_By = {
-  author_id?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  proposal_id?: Maybe<Order_By>;
-  proposal_type?: Maybe<Order_By>;
-};
-
-/** update columns of table "polkassembly_proposals" */
-export enum Polkassembly_Proposals_Update_Column {
-  /** column name */
-  AuthorId = 'author_id',
-  /** column name */
-  Content = 'content',
-  /** column name */
-  CreatedAt = 'created_at',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  IsSynced = 'is_synced',
-  /** column name */
-  ProposalHash = 'proposal_hash',
-  /** column name */
-  ProposalId = 'proposal_id',
-  /** column name */
-  ProposalType = 'proposal_type',
-  /** column name */
-  ProposerAddress = 'proposer_address',
-  /** column name */
-  Title = 'title',
-  /** column name */
-  UpdatedAt = 'updated_at'
-}
-
-/** aggregate var_pop on columns */
-export type Polkassembly_Proposals_Var_Pop_Fields = {
-  __typename?: 'polkassembly_proposals_var_pop_fields';
-  author_id?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-  proposal_id?: Maybe<Scalars['Float']>;
-  proposal_type?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_pop() on columns of table "polkassembly_proposals" */
-export type Polkassembly_Proposals_Var_Pop_Order_By = {
-  author_id?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  proposal_id?: Maybe<Order_By>;
-  proposal_type?: Maybe<Order_By>;
-};
-
-/** aggregate var_samp on columns */
-export type Polkassembly_Proposals_Var_Samp_Fields = {
-  __typename?: 'polkassembly_proposals_var_samp_fields';
-  author_id?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-  proposal_id?: Maybe<Scalars['Float']>;
-  proposal_type?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_samp() on columns of table "polkassembly_proposals" */
-export type Polkassembly_Proposals_Var_Samp_Order_By = {
-  author_id?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  proposal_id?: Maybe<Order_By>;
-  proposal_type?: Maybe<Order_By>;
-};
-
-/** aggregate variance on columns */
-export type Polkassembly_Proposals_Variance_Fields = {
-  __typename?: 'polkassembly_proposals_variance_fields';
-  author_id?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-  proposal_id?: Maybe<Scalars['Float']>;
-  proposal_type?: Maybe<Scalars['Float']>;
-};
-
-/** order by variance() on columns of table "polkassembly_proposals" */
-export type Polkassembly_Proposals_Variance_Order_By = {
-  author_id?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  proposal_id?: Maybe<Order_By>;
-  proposal_type?: Maybe<Order_By>;
-};
-
-
 /** columns and relationships of "posts" */
 export type Posts = {
   __typename?: 'posts';
@@ -14553,6 +14935,12 @@ export type Query_Root = {
   bountyStatus?: Maybe<BountyStatus>;
   bountyStatuses: Array<Maybe<BountyStatus>>;
   bountyStatusesConnection: BountyStatusConnection;
+  /** fetch data from the table: "calender_events" */
+  calender_events: Array<Calender_Events>;
+  /** fetch aggregated fields from the table: "calender_events" */
+  calender_events_aggregate: Calender_Events_Aggregate;
+  /** fetch data from the table: "calender_events" using primary key columns */
+  calender_events_by_pk?: Maybe<Calender_Events>;
   /** fetch data from the table: "comment_reactions" */
   comment_reactions: Array<Comment_Reactions>;
   /** fetch aggregated fields from the table: "comment_reactions" */
@@ -14880,6 +15268,32 @@ export type Query_RootBountyStatusesConnectionArgs = {
   orderBy?: Maybe<BountyStatusOrderByInput>;
   skip?: Maybe<Scalars['Int']>;
   where?: Maybe<BountyStatusWhereInput>;
+};
+
+
+/** query root */
+export type Query_RootCalender_EventsArgs = {
+  distinct_on?: Maybe<Array<Calender_Events_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Calender_Events_Order_By>>;
+  where?: Maybe<Calender_Events_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootCalender_Events_AggregateArgs = {
+  distinct_on?: Maybe<Array<Calender_Events_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Calender_Events_Order_By>>;
+  where?: Maybe<Calender_Events_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootCalender_Events_By_PkArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -16459,6 +16873,12 @@ export type Subscription_Root = {
   blockchain_socials_by_pk?: Maybe<Blockchain_Socials>;
   bounty?: Maybe<BountySubscriptionPayload>;
   bountyStatus?: Maybe<BountyStatusSubscriptionPayload>;
+  /** fetch data from the table: "calender_events" */
+  calender_events: Array<Calender_Events>;
+  /** fetch aggregated fields from the table: "calender_events" */
+  calender_events_aggregate: Calender_Events_Aggregate;
+  /** fetch data from the table: "calender_events" using primary key columns */
+  calender_events_by_pk?: Maybe<Calender_Events>;
   /** fetch data from the table: "comment_reactions" */
   comment_reactions: Array<Comment_Reactions>;
   /** fetch aggregated fields from the table: "comment_reactions" */
@@ -16621,6 +17041,32 @@ export type Subscription_RootBountyArgs = {
 /** subscription root */
 export type Subscription_RootBountyStatusArgs = {
   where?: Maybe<BountyStatusSubscriptionWhereInput>;
+};
+
+
+/** subscription root */
+export type Subscription_RootCalender_EventsArgs = {
+  distinct_on?: Maybe<Array<Calender_Events_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Calender_Events_Order_By>>;
+  where?: Maybe<Calender_Events_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootCalender_Events_AggregateArgs = {
+  distinct_on?: Maybe<Array<Calender_Events_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Calender_Events_Order_By>>;
+  where?: Maybe<Calender_Events_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootCalender_Events_By_PkArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -17790,6 +18236,71 @@ export type Get_Refresh_TokenQuery = (
   )> }
 );
 
+export type GetCalenderEventsQueryVariables = Exact<{
+  network: Scalars['String'];
+}>;
+
+
+export type GetCalenderEventsQuery = (
+  { __typename?: 'query_root' }
+  & { calender_events: Array<(
+    { __typename?: 'calender_events' }
+    & Pick<Calender_Events, 'content' | 'end_time' | 'id' | 'module' | 'network' | 'start_time' | 'title' | 'url'>
+  )> }
+);
+
+export type EditCalenderEventMutationVariables = Exact<{
+  id: Scalars['Int'];
+  title: Scalars['String'];
+  start_time: Scalars['timestamptz'];
+  content?: Maybe<Scalars['String']>;
+  end_time: Scalars['timestamptz'];
+  url?: Maybe<Scalars['String']>;
+  module?: Maybe<Scalars['String']>;
+  network: Scalars['String'];
+}>;
+
+
+export type EditCalenderEventMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_calender_events?: Maybe<(
+    { __typename?: 'calender_events_mutation_response' }
+    & Pick<Calender_Events_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
+export type DeleteCalenderEventMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteCalenderEventMutation = (
+  { __typename?: 'mutation_root' }
+  & { delete_calender_events?: Maybe<(
+    { __typename?: 'calender_events_mutation_response' }
+    & Pick<Calender_Events_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
+export type AddCalenderEventMutationVariables = Exact<{
+  title: Scalars['String'];
+  start_time: Scalars['timestamptz'];
+  content?: Maybe<Scalars['String']>;
+  end_time: Scalars['timestamptz'];
+  url?: Maybe<Scalars['String']>;
+  module?: Maybe<Scalars['String']>;
+  network: Scalars['String'];
+}>;
+
+
+export type AddCalenderEventMutation = (
+  { __typename: 'mutation_root' }
+  & { insert_calender_events?: Maybe<(
+    { __typename?: 'calender_events_mutation_response' }
+    & Pick<Calender_Events_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
 export type AuthorFieldsFragment = (
   { __typename?: 'User' }
   & Pick<User, 'id' | 'kusama_default_address' | 'polkadot_default_address' | 'username'>
@@ -17814,397 +18325,6 @@ export type CommentFieldsFragment = (
     { __typename?: 'replies' }
     & ReplyFieldsFragment
   )> }
-);
-
-export type OnchainLinkBountyFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_bounty_id'>
-  & { onchain_bounty: Array<Maybe<(
-    { __typename?: 'Bounty' }
-    & Pick<Bounty, 'id' | 'proposer' | 'value' | 'fee' | 'curatorDeposit' | 'bond' | 'bountyId' | 'curator' | 'beneficiary'>
-    & { bountyStatus?: Maybe<Array<(
-      { __typename?: 'BountyStatus' }
-      & Pick<BountyStatus, 'id' | 'status'>
-      & { blockNumber: (
-        { __typename?: 'BlockNumber' }
-        & Pick<BlockNumber, 'startDateTime' | 'number'>
-      ) }
-    )>> }
-  )>> }
-);
-
-export type BountyPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkBountyFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
-);
-
-export type TopicFragment = (
-  { __typename?: 'post_topics' }
-  & Pick<Post_Topics, 'id' | 'name'>
-);
-
-export type OnchainLinkDiscussionFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'onchain_referendum_id' | 'onchain_motion_id' | 'onchain_proposal_id' | 'onchain_treasury_proposal_id'>
-);
-
-export type DiscussionPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkDiscussionFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
-);
-
-export type PostFieldsFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments_aggregate: (
-    { __typename?: 'comments_aggregate' }
-    & { aggregate?: Maybe<(
-      { __typename?: 'comments_aggregate_fields' }
-      & Pick<Comments_Aggregate_Fields, 'count'>
-    )> }
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'name' | 'id'>
-  ), last_update?: Maybe<(
-    { __typename?: 'post_last_update' }
-    & Pick<Post_Last_Update, 'last_update'>
-  )> }
-);
-
-export type OnchainLinkMotionPreimageFragment = (
-  { __typename?: 'Preimage' }
-  & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
-  & { preimageArguments?: Maybe<Array<(
-    { __typename?: 'PreimageArgument' }
-    & Pick<PreimageArgument, 'id' | 'name' | 'value'>
-  )>> }
-);
-
-export type OnchainLinkMotionTreasuryFragment = (
-  { __typename?: 'TreasurySpendProposal' }
-  & Pick<TreasurySpendProposal, 'beneficiary' | 'bond' | 'value'>
-);
-
-export type OnchainLinkMotionFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_referendum_id' | 'onchain_motion_id'>
-  & { onchain_motion: Array<Maybe<(
-    { __typename?: 'Motion' }
-    & Pick<Motion, 'id' | 'memberCount' | 'method' | 'motionProposalHash'>
-    & { motionStatus?: Maybe<Array<(
-      { __typename?: 'MotionStatus' }
-      & Pick<MotionStatus, 'id' | 'status'>
-      & { blockNumber: (
-        { __typename?: 'BlockNumber' }
-        & Pick<BlockNumber, 'number'>
-      ) }
-    )>>, motionProposalArguments?: Maybe<Array<(
-      { __typename?: 'MotionProposalArgument' }
-      & Pick<MotionProposalArgument, 'name' | 'value'>
-    )>>, preimage?: Maybe<(
-      { __typename?: 'Preimage' }
-      & OnchainLinkMotionPreimageFragment
-    )>, treasurySpendProposal?: Maybe<(
-      { __typename?: 'TreasurySpendProposal' }
-      & OnchainLinkMotionTreasuryFragment
-    )> }
-  )>> }
-);
-
-export type MotionPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkMotionFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
-);
-
-export type OnchainLinkProposalFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_proposal_id' | 'onchain_referendum_id'>
-  & { onchain_proposal: Array<Maybe<(
-    { __typename?: 'Proposal' }
-    & Pick<Proposal, 'id' | 'depositAmount'>
-    & { proposalStatus?: Maybe<Array<(
-      { __typename?: 'ProposalStatus' }
-      & Pick<ProposalStatus, 'id' | 'status'>
-      & { blockNumber: (
-        { __typename?: 'BlockNumber' }
-        & Pick<BlockNumber, 'number'>
-      ) }
-    )>>, preimage?: Maybe<(
-      { __typename?: 'Preimage' }
-      & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
-      & { preimageArguments?: Maybe<Array<(
-        { __typename?: 'PreimageArgument' }
-        & Pick<PreimageArgument, 'id' | 'name' | 'value'>
-      )>> }
-    )> }
-  )>> }
-);
-
-export type ProposalPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkProposalFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
-);
-
-export type OnchainLinkReferendumFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_referendum_id'>
-  & { onchain_referendum: Array<Maybe<(
-    { __typename?: 'Referendum' }
-    & Pick<Referendum, 'id' | 'delay' | 'end' | 'voteThreshold'>
-    & { referendumStatus?: Maybe<Array<(
-      { __typename?: 'ReferendumStatus' }
-      & Pick<ReferendumStatus, 'status' | 'id'>
-      & { blockNumber: (
-        { __typename?: 'BlockNumber' }
-        & Pick<BlockNumber, 'startDateTime' | 'number'>
-      ) }
-    )>>, preimage?: Maybe<(
-      { __typename?: 'Preimage' }
-      & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
-      & { preimageArguments?: Maybe<Array<(
-        { __typename?: 'PreimageArgument' }
-        & Pick<PreimageArgument, 'id' | 'name' | 'value'>
-      )>> }
-    )> }
-  )>> }
-);
-
-export type ReferendumPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkReferendumFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
-);
-
-export type SearchPostFieldsFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments_aggregate: (
-    { __typename?: 'comments_aggregate' }
-    & { aggregate?: Maybe<(
-      { __typename?: 'comments_aggregate_fields' }
-      & Pick<Comments_Aggregate_Fields, 'count'>
-    )> }
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'name' | 'id'>
-  ), last_update?: Maybe<(
-    { __typename?: 'post_last_update' }
-    & Pick<Post_Last_Update, 'last_update'>
-  )> }
-);
-
-export type OnchainLinkTechCommitteeProposalPreimageFragment = (
-  { __typename?: 'Preimage' }
-  & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
-  & { preimageArguments?: Maybe<Array<(
-    { __typename?: 'PreimageArgument' }
-    & Pick<PreimageArgument, 'id' | 'name' | 'value'>
-  )>> }
-);
-
-export type OnchainLinkTechCommitteeProposalFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_tech_committee_proposal_id'>
-  & { onchain_tech_committee_proposal: Array<Maybe<(
-    { __typename?: 'TechCommitteeProposal' }
-    & Pick<TechCommitteeProposal, 'id' | 'metaDescription' | 'memberCount' | 'method' | 'proposalHash'>
-    & { status?: Maybe<Array<(
-      { __typename?: 'TechCommitteeProposalStatus' }
-      & Pick<TechCommitteeProposalStatus, 'id' | 'status'>
-      & { blockNumber: (
-        { __typename?: 'BlockNumber' }
-        & Pick<BlockNumber, 'number'>
-      ) }
-    )>>, proposalArguments?: Maybe<Array<(
-      { __typename?: 'TechCommitteeProposalArgument' }
-      & Pick<TechCommitteeProposalArgument, 'name' | 'value'>
-    )>>, preimage?: Maybe<(
-      { __typename?: 'Preimage' }
-      & OnchainLinkTechCommitteeProposalPreimageFragment
-    )> }
-  )>> }
-);
-
-export type TechCommitteeProposalPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkTechCommitteeProposalFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
-);
-
-export type OnchainLinkTipFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_tip_id'>
-  & { onchain_tip: Array<Maybe<(
-    { __typename?: 'Tip' }
-    & Pick<Tip, 'id' | 'hash' | 'reason' | 'who' | 'finder' | 'finderFee' | 'closes'>
-    & { tipStatus?: Maybe<Array<(
-      { __typename?: 'TipStatus' }
-      & Pick<TipStatus, 'id' | 'status'>
-      & { blockNumber: (
-        { __typename?: 'BlockNumber' }
-        & Pick<BlockNumber, 'startDateTime' | 'number'>
-      ) }
-    )>> }
-  )>> }
-);
-
-export type TipPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkTipFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
-);
-
-export type OnchainLinkTreasuryProposalFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_treasury_proposal_id' | 'onchain_motion_id'>
-  & { onchain_treasury_spend_proposal: Array<Maybe<(
-    { __typename?: 'TreasurySpendProposal' }
-    & Pick<TreasurySpendProposal, 'id' | 'beneficiary' | 'value' | 'bond'>
-    & { treasuryStatus?: Maybe<Array<(
-      { __typename?: 'TreasuryStatus' }
-      & Pick<TreasuryStatus, 'id' | 'status'>
-      & { blockNumber: (
-        { __typename?: 'BlockNumber' }
-        & Pick<BlockNumber, 'number'>
-      ) }
-    )>> }
-  )>> }
-);
-
-export type TreasuryProposalPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkTreasuryProposalFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
 );
 
 export type AllBountyPostsQueryVariables = Exact<{
@@ -18247,6 +18367,44 @@ export type AllBountyPostsQuery = (
       )>> }
     )> }
   )> }
+);
+
+export type OnchainLinkBountyFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_bounty_id'>
+  & { onchain_bounty: Array<Maybe<(
+    { __typename?: 'Bounty' }
+    & Pick<Bounty, 'id' | 'proposer' | 'value' | 'fee' | 'curatorDeposit' | 'bond' | 'bountyId' | 'curator' | 'beneficiary'>
+    & { bountyStatus?: Maybe<Array<(
+      { __typename?: 'BountyStatus' }
+      & Pick<BountyStatus, 'id' | 'status'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'startDateTime' | 'number'>
+      ) }
+    )>> }
+  )>> }
+);
+
+export type BountyPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkBountyFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
 );
 
 export type BountyPostAndCommentsQueryVariables = Exact<{
@@ -18340,6 +18498,11 @@ export type CreatePollMutation = (
   )> }
 );
 
+export type TopicFragment = (
+  { __typename?: 'post_topics' }
+  & Pick<Post_Topics, 'id' | 'name'>
+);
+
 export type Post_TopicsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -18349,6 +18512,32 @@ export type Post_TopicsQuery = (
     { __typename?: 'post_topics' }
     & TopicFragment
   )> }
+);
+
+export type OnchainLinkDiscussionFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'onchain_referendum_id' | 'onchain_motion_id' | 'onchain_proposal_id' | 'onchain_treasury_proposal_id'>
+);
+
+export type DiscussionPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkDiscussionFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
 );
 
 export type DiscussionPostAndCommentsQueryVariables = Exact<{
@@ -18361,6 +18550,27 @@ export type DiscussionPostAndCommentsQuery = (
   & { posts: Array<(
     { __typename?: 'posts' }
     & DiscussionPostFragment
+  )> }
+);
+
+export type PostFieldsFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments_aggregate: (
+    { __typename?: 'comments_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'comments_aggregate_fields' }
+      & Pick<Comments_Aggregate_Fields, 'count'>
+    )> }
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'name' | 'id'>
+  ), last_update?: Maybe<(
+    { __typename?: 'post_last_update' }
+    & Pick<Post_Last_Update, 'last_update'>
   )> }
 );
 
@@ -18403,6 +18613,67 @@ export type DiscussionPostsIdAscQuery = (
   )> }
 );
 
+export type OnchainLinkMotionPreimageFragment = (
+  { __typename?: 'Preimage' }
+  & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
+  & { preimageArguments?: Maybe<Array<(
+    { __typename?: 'PreimageArgument' }
+    & Pick<PreimageArgument, 'id' | 'name' | 'value'>
+  )>> }
+);
+
+export type OnchainLinkMotionTreasuryFragment = (
+  { __typename?: 'TreasurySpendProposal' }
+  & Pick<TreasurySpendProposal, 'beneficiary' | 'bond' | 'value'>
+);
+
+export type OnchainLinkMotionFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_referendum_id' | 'onchain_motion_id'>
+  & { onchain_motion: Array<Maybe<(
+    { __typename?: 'Motion' }
+    & Pick<Motion, 'id' | 'memberCount' | 'method' | 'motionProposalHash'>
+    & { motionStatus?: Maybe<Array<(
+      { __typename?: 'MotionStatus' }
+      & Pick<MotionStatus, 'id' | 'status'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'number'>
+      ) }
+    )>>, motionProposalArguments?: Maybe<Array<(
+      { __typename?: 'MotionProposalArgument' }
+      & Pick<MotionProposalArgument, 'name' | 'value'>
+    )>>, preimage?: Maybe<(
+      { __typename?: 'Preimage' }
+      & OnchainLinkMotionPreimageFragment
+    )>, treasurySpendProposal?: Maybe<(
+      { __typename?: 'TreasurySpendProposal' }
+      & OnchainLinkMotionTreasuryFragment
+    )> }
+  )>> }
+);
+
+export type MotionPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkMotionFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
+);
+
 export type MotionPostAndCommentsQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -18432,13 +18703,13 @@ export type ChangeNotificationPreferenceMutation = (
   )> }
 );
 
-export type LatestBountyPostsQueryVariables = Exact<{
+export type GetLatestBountyPostsQueryVariables = Exact<{
   postType: Scalars['Int'];
   limit?: Scalars['Int'];
 }>;
 
 
-export type LatestBountyPostsQuery = (
+export type GetLatestBountyPostsQuery = (
   { __typename?: 'query_root' }
   & { posts: Array<(
     { __typename?: 'posts' }
@@ -18489,13 +18760,13 @@ export type BountiesCountQuery = (
   ) }
 );
 
-export type LatestMotionPostsQueryVariables = Exact<{
+export type GetLatestMotionPostsQueryVariables = Exact<{
   postType: Scalars['Int'];
   limit?: Scalars['Int'];
 }>;
 
 
-export type LatestMotionPostsQuery = (
+export type GetLatestMotionPostsQuery = (
   { __typename?: 'query_root' }
   & { posts: Array<(
     { __typename?: 'posts' }
@@ -18533,12 +18804,12 @@ export type LatestMotionPostsQuery = (
   )> }
 );
 
-export type LatestMotionsCountQueryVariables = Exact<{
+export type GetLatestMotionsCountQueryVariables = Exact<{
   postType: Scalars['Int'];
 }>;
 
 
-export type LatestMotionsCountQuery = (
+export type GetLatestMotionsCountQuery = (
   { __typename?: 'query_root' }
   & { posts_aggregate: (
     { __typename?: 'posts_aggregate' }
@@ -18549,14 +18820,14 @@ export type LatestMotionsCountQuery = (
   ) }
 );
 
-export type LatestDemocracyProposalPostsQueryVariables = Exact<{
+export type GetLatestDemocracyProposalPostsQueryVariables = Exact<{
   postType: Scalars['Int'];
   postTopic: Scalars['Int'];
   limit?: Scalars['Int'];
 }>;
 
 
-export type LatestDemocracyProposalPostsQuery = (
+export type GetLatestDemocracyProposalPostsQuery = (
   { __typename?: 'query_root' }
   & { posts: Array<(
     { __typename?: 'posts' }
@@ -18611,13 +18882,13 @@ export type DemocracyProposalCountQuery = (
   ) }
 );
 
-export type LatestReferendaPostsQueryVariables = Exact<{
+export type GetLatestReferendaPostsQueryVariables = Exact<{
   postType: Scalars['Int'];
   limit?: Scalars['Int'];
 }>;
 
 
-export type LatestReferendaPostsQuery = (
+export type GetLatestReferendaPostsQuery = (
   { __typename?: 'query_root' }
   & { posts: Array<(
     { __typename?: 'posts' }
@@ -18731,14 +19002,14 @@ export type TechCommitteeProposalCountQuery = (
   ) }
 );
 
-export type LatestTipPostsQueryVariables = Exact<{
+export type GetLatestTipPostsQueryVariables = Exact<{
   postType: Scalars['Int'];
   postTopic: Scalars['Int'];
   limit?: Scalars['Int'];
 }>;
 
 
-export type LatestTipPostsQuery = (
+export type GetLatestTipPostsQuery = (
   { __typename?: 'query_root' }
   & { posts: Array<(
     { __typename?: 'posts' }
@@ -18790,14 +19061,14 @@ export type TipProposalCountQuery = (
   ) }
 );
 
-export type LatestDemocracyTreasuryProposalPostsQueryVariables = Exact<{
+export type GetLatestDemocracyTreasuryProposalPostsQueryVariables = Exact<{
   postType: Scalars['Int'];
   postTopic: Scalars['Int'];
   limit?: Scalars['Int'];
 }>;
 
 
-export type LatestDemocracyTreasuryProposalPostsQuery = (
+export type GetLatestDemocracyTreasuryProposalPostsQuery = (
   { __typename?: 'query_root' }
   & { posts: Array<(
     { __typename?: 'posts' }
@@ -18849,12 +19120,12 @@ export type DemocracyTreasuryProposalCountQuery = (
   ) }
 );
 
-export type LatestPostsQueryVariables = Exact<{
+export type GetLatestPostsQueryVariables = Exact<{
   limit?: Scalars['Int'];
 }>;
 
 
-export type LatestPostsQuery = (
+export type GetLatestPostsQuery = (
   { __typename?: 'query_root' }
   & { posts: Array<(
     { __typename?: 'posts' }
@@ -18970,6 +19241,20 @@ export type NetworkSocialsQuery = (
   )> }
 );
 
+export type DiscussionsCountQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type DiscussionsCountQuery = (
+  { __typename?: 'query_root' }
+  & { posts_aggregate: (
+    { __typename?: 'posts_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'posts_aggregate_fields' }
+      & Pick<Posts_Aggregate_Fields, 'count'>
+    )> }
+  ) }
+);
+
 export type AboutQueryVariables = Exact<{
   network: Scalars['String'];
   address: Scalars['String'];
@@ -19000,6 +19285,51 @@ export type ChangeAboutMutation = (
     { __typename?: 'Message' }
     & Pick<Message, 'message'>
   )> }
+);
+
+export type OnchainLinkProposalFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_proposal_id' | 'onchain_referendum_id'>
+  & { onchain_proposal: Array<Maybe<(
+    { __typename?: 'Proposal' }
+    & Pick<Proposal, 'id' | 'depositAmount'>
+    & { proposalStatus?: Maybe<Array<(
+      { __typename?: 'ProposalStatus' }
+      & Pick<ProposalStatus, 'id' | 'status'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'number'>
+      ) }
+    )>>, preimage?: Maybe<(
+      { __typename?: 'Preimage' }
+      & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
+      & { preimageArguments?: Maybe<Array<(
+        { __typename?: 'PreimageArgument' }
+        & Pick<PreimageArgument, 'id' | 'name' | 'value'>
+      )>> }
+    )> }
+  )>> }
+);
+
+export type ProposalPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkProposalFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
 );
 
 export type ProposalPostAndCommentsQueryVariables = Exact<{
@@ -19104,6 +19434,51 @@ export type AllReferendaPostsQuery = (
   )> }
 );
 
+export type OnchainLinkReferendumFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_referendum_id'>
+  & { onchain_referendum: Array<Maybe<(
+    { __typename?: 'Referendum' }
+    & Pick<Referendum, 'id' | 'delay' | 'end' | 'voteThreshold'>
+    & { referendumStatus?: Maybe<Array<(
+      { __typename?: 'ReferendumStatus' }
+      & Pick<ReferendumStatus, 'status' | 'id'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'startDateTime' | 'number'>
+      ) }
+    )>>, preimage?: Maybe<(
+      { __typename?: 'Preimage' }
+      & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
+      & { preimageArguments?: Maybe<Array<(
+        { __typename?: 'PreimageArgument' }
+        & Pick<PreimageArgument, 'id' | 'name' | 'value'>
+      )>> }
+    )> }
+  )>> }
+);
+
+export type ReferendumPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkReferendumFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
+);
+
 export type ReferendumPostAndCommentsQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -19142,6 +19517,27 @@ export type ResetPasswordMutation = (
   & { resetPassword?: Maybe<(
     { __typename?: 'Message' }
     & Pick<Message, 'message'>
+  )> }
+);
+
+export type SearchPostFieldsFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments_aggregate: (
+    { __typename?: 'comments_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'comments_aggregate_fields' }
+      & Pick<Comments_Aggregate_Fields, 'count'>
+    )> }
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'name' | 'id'>
+  ), last_update?: Maybe<(
+    { __typename?: 'post_last_update' }
+    & Pick<Post_Last_Update, 'last_update'>
   )> }
 );
 
@@ -19340,6 +19736,59 @@ export type MultisigLinkConfirmMutation = (
   )> }
 );
 
+export type OnchainLinkTechCommitteeProposalPreimageFragment = (
+  { __typename?: 'Preimage' }
+  & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
+  & { preimageArguments?: Maybe<Array<(
+    { __typename?: 'PreimageArgument' }
+    & Pick<PreimageArgument, 'id' | 'name' | 'value'>
+  )>> }
+);
+
+export type OnchainLinkTechCommitteeProposalFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_tech_committee_proposal_id'>
+  & { onchain_tech_committee_proposal: Array<Maybe<(
+    { __typename?: 'TechCommitteeProposal' }
+    & Pick<TechCommitteeProposal, 'id' | 'metaDescription' | 'memberCount' | 'method' | 'proposalHash'>
+    & { status?: Maybe<Array<(
+      { __typename?: 'TechCommitteeProposalStatus' }
+      & Pick<TechCommitteeProposalStatus, 'id' | 'status'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'number'>
+      ) }
+    )>>, proposalArguments?: Maybe<Array<(
+      { __typename?: 'TechCommitteeProposalArgument' }
+      & Pick<TechCommitteeProposalArgument, 'name' | 'value'>
+    )>>, preimage?: Maybe<(
+      { __typename?: 'Preimage' }
+      & OnchainLinkTechCommitteeProposalPreimageFragment
+    )> }
+  )>> }
+);
+
+export type TechCommitteeProposalPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkTechCommitteeProposalFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
+);
+
 export type TechCommitteeProposalPostAndCommentsQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -19395,6 +19844,44 @@ export type AllTechCommitteeProposalPostsQuery = (
       )>> }
     )> }
   )> }
+);
+
+export type OnchainLinkTipFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_tip_id'>
+  & { onchain_tip: Array<Maybe<(
+    { __typename?: 'Tip' }
+    & Pick<Tip, 'id' | 'hash' | 'reason' | 'who' | 'finder' | 'finderFee' | 'closes'>
+    & { tipStatus?: Maybe<Array<(
+      { __typename?: 'TipStatus' }
+      & Pick<TipStatus, 'id' | 'status'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'startDateTime' | 'number'>
+      ) }
+    )>> }
+  )>> }
+);
+
+export type TipPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkTipFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
 );
 
 export type TipPostAndCommentsQueryVariables = Exact<{
@@ -19793,6 +20280,44 @@ export type AllDemocracyTreasuryProposalPostsQuery = (
   )> }
 );
 
+export type OnchainLinkTreasuryProposalFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_treasury_proposal_id' | 'onchain_motion_id'>
+  & { onchain_treasury_spend_proposal: Array<Maybe<(
+    { __typename?: 'TreasurySpendProposal' }
+    & Pick<TreasurySpendProposal, 'id' | 'beneficiary' | 'value' | 'bond'>
+    & { treasuryStatus?: Maybe<Array<(
+      { __typename?: 'TreasuryStatus' }
+      & Pick<TreasuryStatus, 'id' | 'status'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'number'>
+      ) }
+    )>> }
+  )>> }
+);
+
+export type TreasuryProposalPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkTreasuryProposalFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
+);
+
 export type TreasuryProposalPostAndCommentsQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -19843,446 +20368,6 @@ export type VerifyEmailMutation = (
     { __typename?: 'ChangeResponse' }
     & Pick<ChangeResponse, 'message' | 'token'>
   )> }
-);
-
-export type GetLatestMotionsCountQueryVariables = Exact<{
-  postType: Scalars['Int'];
-}>;
-
-
-export type GetLatestMotionsCountQuery = (
-  { __typename?: 'query_root' }
-  & { posts_aggregate: (
-    { __typename?: 'posts_aggregate' }
-    & { aggregate?: Maybe<(
-      { __typename?: 'posts_aggregate_fields' }
-      & Pick<Posts_Aggregate_Fields, 'count'>
-    )> }
-  ) }
-);
-
-export type GetLatestPostsQueryVariables = Exact<{
-  limit?: Scalars['Int'];
-}>;
-
-
-export type GetLatestPostsQuery = (
-  { __typename?: 'query_root' }
-  & { posts: Array<(
-    { __typename?: 'posts' }
-    & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
-    & { author?: Maybe<(
-      { __typename?: 'User' }
-      & AuthorFieldsFragment
-    )>, comments_aggregate: (
-      { __typename?: 'comments_aggregate' }
-      & { aggregate?: Maybe<(
-        { __typename?: 'comments_aggregate_fields' }
-        & Pick<Comments_Aggregate_Fields, 'count'>
-      )> }
-    ), type: (
-      { __typename?: 'post_types' }
-      & Pick<Post_Types, 'name' | 'id'>
-    ), topic: (
-      { __typename?: 'post_topics' }
-      & Pick<Post_Topics, 'id' | 'name'>
-    ), onchain_link?: Maybe<(
-      { __typename?: 'onchain_links' }
-      & Pick<Onchain_Links, 'id' | 'onchain_proposal_id' | 'onchain_bounty_id' | 'onchain_motion_id' | 'onchain_referendum_id' | 'onchain_tech_committee_proposal_id' | 'onchain_tip_id' | 'onchain_treasury_proposal_id' | 'proposer_address'>
-      & { onchain_proposal: Array<Maybe<(
-        { __typename?: 'Proposal' }
-        & Pick<Proposal, 'id'>
-        & { proposalStatus?: Maybe<Array<(
-          { __typename?: 'ProposalStatus' }
-          & Pick<ProposalStatus, 'id' | 'status'>
-        )>>, preimage?: Maybe<(
-          { __typename?: 'Preimage' }
-          & Pick<Preimage, 'id' | 'method'>
-        )> }
-      )>>, onchain_bounty: Array<Maybe<(
-        { __typename?: 'Bounty' }
-        & Pick<Bounty, 'id'>
-        & { bountyStatus?: Maybe<Array<(
-          { __typename?: 'BountyStatus' }
-          & Pick<BountyStatus, 'id' | 'status'>
-        )>> }
-      )>>, onchain_motion: Array<Maybe<(
-        { __typename?: 'Motion' }
-        & Pick<Motion, 'id'>
-        & { motionStatus?: Maybe<Array<(
-          { __typename?: 'MotionStatus' }
-          & Pick<MotionStatus, 'id' | 'status'>
-        )>>, preimage?: Maybe<(
-          { __typename?: 'Preimage' }
-          & Pick<Preimage, 'id' | 'method'>
-        )> }
-      )>>, onchain_referendum: Array<Maybe<(
-        { __typename?: 'Referendum' }
-        & Pick<Referendum, 'id' | 'end'>
-        & { referendumStatus?: Maybe<Array<(
-          { __typename?: 'ReferendumStatus' }
-          & Pick<ReferendumStatus, 'id' | 'status'>
-        )>>, preimage?: Maybe<(
-          { __typename?: 'Preimage' }
-          & Pick<Preimage, 'id' | 'method'>
-        )> }
-      )>>, onchain_tech_committee_proposal: Array<Maybe<(
-        { __typename?: 'TechCommitteeProposal' }
-        & Pick<TechCommitteeProposal, 'id'>
-        & { status?: Maybe<Array<(
-          { __typename?: 'TechCommitteeProposalStatus' }
-          & Pick<TechCommitteeProposalStatus, 'id' | 'status'>
-        )>>, preimage?: Maybe<(
-          { __typename?: 'Preimage' }
-          & Pick<Preimage, 'id' | 'method'>
-        )> }
-      )>>, onchain_tip: Array<Maybe<(
-        { __typename?: 'Tip' }
-        & Pick<Tip, 'id' | 'reason'>
-        & { tipStatus?: Maybe<Array<(
-          { __typename?: 'TipStatus' }
-          & Pick<TipStatus, 'id' | 'status'>
-        )>> }
-      )>>, onchain_treasury_spend_proposal: Array<Maybe<(
-        { __typename?: 'TreasurySpendProposal' }
-        & Pick<TreasurySpendProposal, 'id'>
-        & { treasuryStatus?: Maybe<Array<(
-          { __typename?: 'TreasuryStatus' }
-          & Pick<TreasuryStatus, 'id' | 'status'>
-        )>> }
-      )>> }
-    )> }
-  )> }
-);
-
-export type GetLatestBountyPostsQueryVariables = Exact<{
-  postType: Scalars['Int'];
-  limit?: Scalars['Int'];
-}>;
-
-
-export type GetLatestBountyPostsQuery = (
-  { __typename?: 'query_root' }
-  & { posts: Array<(
-    { __typename?: 'posts' }
-    & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
-    & { author?: Maybe<(
-      { __typename?: 'User' }
-      & AuthorFieldsFragment
-    )>, comments_aggregate: (
-      { __typename?: 'comments_aggregate' }
-      & { aggregate?: Maybe<(
-        { __typename?: 'comments_aggregate_fields' }
-        & Pick<Comments_Aggregate_Fields, 'count'>
-      )> }
-    ), type: (
-      { __typename?: 'post_types' }
-      & Pick<Post_Types, 'name' | 'id'>
-    ), topic: (
-      { __typename?: 'post_topics' }
-      & Pick<Post_Topics, 'id' | 'name'>
-    ), onchain_link?: Maybe<(
-      { __typename?: 'onchain_links' }
-      & Pick<Onchain_Links, 'id' | 'onchain_bounty_id' | 'proposer_address'>
-      & { onchain_bounty: Array<Maybe<(
-        { __typename?: 'Bounty' }
-        & Pick<Bounty, 'id'>
-        & { bountyStatus?: Maybe<Array<(
-          { __typename?: 'BountyStatus' }
-          & Pick<BountyStatus, 'id' | 'status'>
-        )>> }
-      )>> }
-    )> }
-  )> }
-);
-
-export type GetLatestMotionPostsQueryVariables = Exact<{
-  postType: Scalars['Int'];
-  limit?: Scalars['Int'];
-}>;
-
-
-export type GetLatestMotionPostsQuery = (
-  { __typename?: 'query_root' }
-  & { posts: Array<(
-    { __typename?: 'posts' }
-    & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
-    & { author?: Maybe<(
-      { __typename?: 'User' }
-      & AuthorFieldsFragment
-    )>, comments_aggregate: (
-      { __typename?: 'comments_aggregate' }
-      & { aggregate?: Maybe<(
-        { __typename?: 'comments_aggregate_fields' }
-        & Pick<Comments_Aggregate_Fields, 'count'>
-      )> }
-    ), type: (
-      { __typename?: 'post_types' }
-      & Pick<Post_Types, 'name' | 'id'>
-    ), topic: (
-      { __typename?: 'post_topics' }
-      & Pick<Post_Topics, 'id' | 'name'>
-    ), onchain_link?: Maybe<(
-      { __typename?: 'onchain_links' }
-      & Pick<Onchain_Links, 'id' | 'onchain_motion_id' | 'proposer_address'>
-      & { onchain_motion: Array<Maybe<(
-        { __typename?: 'Motion' }
-        & Pick<Motion, 'id'>
-        & { motionStatus?: Maybe<Array<(
-          { __typename?: 'MotionStatus' }
-          & Pick<MotionStatus, 'id' | 'status'>
-        )>>, preimage?: Maybe<(
-          { __typename?: 'Preimage' }
-          & Pick<Preimage, 'id' | 'method'>
-        )> }
-      )>> }
-    )> }
-  )> }
-);
-
-export type FetchLatestMotionPostsQueryVariables = Exact<{
-  postType: Scalars['Int'];
-  limit?: Scalars['Int'];
-}>;
-
-
-export type FetchLatestMotionPostsQuery = (
-  { __typename?: 'query_root' }
-  & { posts: Array<(
-    { __typename?: 'posts' }
-    & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
-    & { author?: Maybe<(
-      { __typename?: 'User' }
-      & AuthorFieldsFragment
-    )>, comments_aggregate: (
-      { __typename?: 'comments_aggregate' }
-      & { aggregate?: Maybe<(
-        { __typename?: 'comments_aggregate_fields' }
-        & Pick<Comments_Aggregate_Fields, 'count'>
-      )> }
-    ), type: (
-      { __typename?: 'post_types' }
-      & Pick<Post_Types, 'name' | 'id'>
-    ), topic: (
-      { __typename?: 'post_topics' }
-      & Pick<Post_Topics, 'id' | 'name'>
-    ), onchain_link?: Maybe<(
-      { __typename?: 'onchain_links' }
-      & Pick<Onchain_Links, 'id' | 'onchain_motion_id' | 'proposer_address'>
-      & { onchain_motion: Array<Maybe<(
-        { __typename?: 'Motion' }
-        & Pick<Motion, 'id'>
-        & { motionStatus?: Maybe<Array<(
-          { __typename?: 'MotionStatus' }
-          & Pick<MotionStatus, 'id' | 'status'>
-        )>>, preimage?: Maybe<(
-          { __typename?: 'Preimage' }
-          & Pick<Preimage, 'id' | 'method'>
-        )> }
-      )>> }
-    )> }
-  )> }
-);
-
-export type GetLatestDemocracyProposalPostsQueryVariables = Exact<{
-  postType: Scalars['Int'];
-  postTopic: Scalars['Int'];
-  limit?: Scalars['Int'];
-}>;
-
-
-export type GetLatestDemocracyProposalPostsQuery = (
-  { __typename?: 'query_root' }
-  & { posts: Array<(
-    { __typename?: 'posts' }
-    & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
-    & { author?: Maybe<(
-      { __typename?: 'User' }
-      & AuthorFieldsFragment
-    )>, comments_aggregate: (
-      { __typename?: 'comments_aggregate' }
-      & { aggregate?: Maybe<(
-        { __typename?: 'comments_aggregate_fields' }
-        & Pick<Comments_Aggregate_Fields, 'count'>
-      )> }
-    ), type: (
-      { __typename?: 'post_types' }
-      & Pick<Post_Types, 'name' | 'id'>
-    ), topic: (
-      { __typename?: 'post_topics' }
-      & Pick<Post_Topics, 'id' | 'name'>
-    ), onchain_link?: Maybe<(
-      { __typename?: 'onchain_links' }
-      & Pick<Onchain_Links, 'id' | 'onchain_proposal_id' | 'proposer_address'>
-      & { onchain_proposal: Array<Maybe<(
-        { __typename?: 'Proposal' }
-        & Pick<Proposal, 'id'>
-        & { proposalStatus?: Maybe<Array<(
-          { __typename?: 'ProposalStatus' }
-          & Pick<ProposalStatus, 'id' | 'status'>
-        )>>, preimage?: Maybe<(
-          { __typename?: 'Preimage' }
-          & Pick<Preimage, 'id' | 'method'>
-        )> }
-      )>> }
-    )> }
-  )> }
-);
-
-export type GetLatestReferendaPostsQueryVariables = Exact<{
-  postType: Scalars['Int'];
-  limit?: Scalars['Int'];
-}>;
-
-
-export type GetLatestReferendaPostsQuery = (
-  { __typename?: 'query_root' }
-  & { posts: Array<(
-    { __typename?: 'posts' }
-    & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
-    & { author?: Maybe<(
-      { __typename?: 'User' }
-      & AuthorFieldsFragment
-    )>, comments_aggregate: (
-      { __typename?: 'comments_aggregate' }
-      & { aggregate?: Maybe<(
-        { __typename?: 'comments_aggregate_fields' }
-        & Pick<Comments_Aggregate_Fields, 'count'>
-      )> }
-    ), type: (
-      { __typename?: 'post_types' }
-      & Pick<Post_Types, 'name' | 'id'>
-    ), topic: (
-      { __typename?: 'post_topics' }
-      & Pick<Post_Topics, 'id' | 'name'>
-    ), onchain_link?: Maybe<(
-      { __typename?: 'onchain_links' }
-      & Pick<Onchain_Links, 'id' | 'onchain_referendum_id' | 'proposer_address'>
-      & { onchain_referendum: Array<Maybe<(
-        { __typename?: 'Referendum' }
-        & Pick<Referendum, 'id' | 'end'>
-        & { referendumStatus?: Maybe<Array<(
-          { __typename?: 'ReferendumStatus' }
-          & Pick<ReferendumStatus, 'id' | 'status'>
-        )>>, preimage?: Maybe<(
-          { __typename?: 'Preimage' }
-          & Pick<Preimage, 'id' | 'method'>
-        )> }
-      )>> }
-    )> }
-  )> }
-);
-
-export type GetLatestTipPostsQueryVariables = Exact<{
-  postType: Scalars['Int'];
-  postTopic: Scalars['Int'];
-  limit?: Scalars['Int'];
-}>;
-
-
-export type GetLatestTipPostsQuery = (
-  { __typename?: 'query_root' }
-  & { posts: Array<(
-    { __typename?: 'posts' }
-    & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
-    & { author?: Maybe<(
-      { __typename?: 'User' }
-      & AuthorFieldsFragment
-    )>, comments_aggregate: (
-      { __typename?: 'comments_aggregate' }
-      & { aggregate?: Maybe<(
-        { __typename?: 'comments_aggregate_fields' }
-        & Pick<Comments_Aggregate_Fields, 'count'>
-      )> }
-    ), type: (
-      { __typename?: 'post_types' }
-      & Pick<Post_Types, 'name' | 'id'>
-    ), topic: (
-      { __typename?: 'post_topics' }
-      & Pick<Post_Topics, 'id' | 'name'>
-    ), onchain_link?: Maybe<(
-      { __typename?: 'onchain_links' }
-      & Pick<Onchain_Links, 'id' | 'onchain_tip_id' | 'proposer_address'>
-      & { onchain_tip: Array<Maybe<(
-        { __typename?: 'Tip' }
-        & Pick<Tip, 'id' | 'reason'>
-        & { tipStatus?: Maybe<Array<(
-          { __typename?: 'TipStatus' }
-          & Pick<TipStatus, 'id' | 'status'>
-        )>> }
-      )>> }
-    )> }
-  )> }
-);
-
-export type GetLatestDemocracyTreasuryProposalPostsQueryVariables = Exact<{
-  postType: Scalars['Int'];
-  postTopic: Scalars['Int'];
-  limit?: Scalars['Int'];
-}>;
-
-
-export type GetLatestDemocracyTreasuryProposalPostsQuery = (
-  { __typename?: 'query_root' }
-  & { posts: Array<(
-    { __typename?: 'posts' }
-    & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
-    & { author?: Maybe<(
-      { __typename?: 'User' }
-      & AuthorFieldsFragment
-    )>, comments_aggregate: (
-      { __typename?: 'comments_aggregate' }
-      & { aggregate?: Maybe<(
-        { __typename?: 'comments_aggregate_fields' }
-        & Pick<Comments_Aggregate_Fields, 'count'>
-      )> }
-    ), type: (
-      { __typename?: 'post_types' }
-      & Pick<Post_Types, 'name' | 'id'>
-    ), topic: (
-      { __typename?: 'post_topics' }
-      & Pick<Post_Topics, 'id' | 'name'>
-    ), onchain_link?: Maybe<(
-      { __typename?: 'onchain_links' }
-      & Pick<Onchain_Links, 'id' | 'onchain_treasury_proposal_id' | 'proposer_address'>
-      & { onchain_treasury_spend_proposal: Array<Maybe<(
-        { __typename?: 'TreasurySpendProposal' }
-        & Pick<TreasurySpendProposal, 'id'>
-        & { treasuryStatus?: Maybe<Array<(
-          { __typename?: 'TreasuryStatus' }
-          & Pick<TreasuryStatus, 'id' | 'status'>
-        )>> }
-      )>> }
-    )> }
-  )> }
-);
-
-export type MyQueryQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MyQueryQuery = (
-  { __typename?: 'query_root' }
-  & { posts_aggregate: (
-    { __typename?: 'posts_aggregate' }
-    & { aggregate?: Maybe<(
-      { __typename?: 'posts_aggregate_fields' }
-      & Pick<Posts_Aggregate_Fields, 'count'>
-    )> }
-  ) }
-);
-
-export type DiscussionsCountQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type DiscussionsCountQuery = (
-  { __typename?: 'query_root' }
-  & { posts_aggregate: (
-    { __typename?: 'posts_aggregate' }
-    & { aggregate?: Maybe<(
-      { __typename?: 'posts_aggregate_fields' }
-      & Pick<Posts_Aggregate_Fields, 'count'>
-    )> }
-  ) }
 );
 
 export const OptionPollFieldsFragmentDoc = gql`
@@ -21002,6 +21087,47 @@ export function useAddCommentReplyMutation(baseOptions?: ApolloReactHooks.Mutati
 export type AddCommentReplyMutationHookResult = ReturnType<typeof useAddCommentReplyMutation>;
 export type AddCommentReplyMutationResult = ApolloReactCommon.MutationResult<AddCommentReplyMutation>;
 export type AddCommentReplyMutationOptions = ApolloReactCommon.BaseMutationOptions<AddCommentReplyMutation, AddCommentReplyMutationVariables>;
+export const AddPolkassemblyProposalDocument = gql`
+    mutation AddPolkassemblyProposal($authorId: Int!, $proposalId: Int!, $proposalType: Int!, $proposalHash: String!, $title: String!, $content: String!, $proposerAddress: String!) {
+  __typename
+  insert_polkassembly_proposals(
+    objects: {author_id: $authorId, proposal_id: $proposalId, proposal_type: $proposalType, proposal_hash: $proposalHash, content: $content, title: $title, proposer_address: $proposerAddress}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export type AddPolkassemblyProposalMutationFn = ApolloReactCommon.MutationFunction<AddPolkassemblyProposalMutation, AddPolkassemblyProposalMutationVariables>;
+
+/**
+ * __useAddPolkassemblyProposalMutation__
+ *
+ * To run a mutation, you first call `useAddPolkassemblyProposalMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddPolkassemblyProposalMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addPolkassemblyProposalMutation, { data, loading, error }] = useAddPolkassemblyProposalMutation({
+ *   variables: {
+ *      authorId: // value for 'authorId'
+ *      proposalId: // value for 'proposalId'
+ *      proposalType: // value for 'proposalType'
+ *      proposalHash: // value for 'proposalHash'
+ *      title: // value for 'title'
+ *      content: // value for 'content'
+ *      proposerAddress: // value for 'proposerAddress'
+ *   },
+ * });
+ */
+export function useAddPolkassemblyProposalMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddPolkassemblyProposalMutation, AddPolkassemblyProposalMutationVariables>) {
+        return ApolloReactHooks.useMutation<AddPolkassemblyProposalMutation, AddPolkassemblyProposalMutationVariables>(AddPolkassemblyProposalDocument, baseOptions);
+      }
+export type AddPolkassemblyProposalMutationHookResult = ReturnType<typeof useAddPolkassemblyProposalMutation>;
+export type AddPolkassemblyProposalMutationResult = ApolloReactCommon.MutationResult<AddPolkassemblyProposalMutation>;
+export type AddPolkassemblyProposalMutationOptions = ApolloReactCommon.BaseMutationOptions<AddPolkassemblyProposalMutation, AddPolkassemblyProposalMutationVariables>;
 export const LoginDocument = gql`
     mutation LOGIN($password: String!, $username: String!) {
   login(password: $password, username: $username) {
@@ -21473,47 +21599,6 @@ export type AddPollVoteMutationFn = ApolloReactCommon.MutationFunction<AddPollVo
 export function useAddPollVoteMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddPollVoteMutation, AddPollVoteMutationVariables>) {
         return ApolloReactHooks.useMutation<AddPollVoteMutation, AddPollVoteMutationVariables>(AddPollVoteDocument, baseOptions);
       }
-export const AddPolkassemblyProposalDocument = gql`
-    mutation AddPolkassemblyProposal($authorId: Int!, $proposalId: Int!, $proposalType: Int!, $proposalHash: String!, $title: String!, $content: String!, $proposerAddress: String!) {
-  __typename
-  insert_polkassembly_proposals(
-    objects: {author_id: $authorId, proposal_id: $proposalId, proposal_type: $proposalType, proposal_hash: $proposalHash, content: $content, title: $title, proposer_address: $proposerAddress}
-  ) {
-    affected_rows
-  }
-}
-    `;
-export type AddPolkassemblyProposalMutationFn = ApolloReactCommon.MutationFunction<AddPolkassemblyProposalMutation, AddPolkassemblyProposalMutationVariables>;
-
-/**
- * __useAddPolkassemblyProposalMutation__
- *
- * To run a mutation, you first call `useAddPolkassemblyProposalMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAddPolkassemblyProposalMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [addPolkassemblyProposalMutation, { data, loading, error }] = useAddPolkassemblyProposalMutation({
- *   variables: {
- *      authorId: // value for 'authorId'
- *      proposalId: // value for 'proposalId'
- *      proposalType: // value for 'proposalType'
- *      proposalHash: // value for 'proposalHash'
- *      title: // value for 'title'
- *      content: // value for 'content'
- *      proposerAddress: // value for 'proposerAddress'
- *   },
- * });
- */
-export function useAddPolkassemblyProposalMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddPolkassemblyProposalMutation, AddPolkassemblyProposalMutationVariables>) {
-        return ApolloReactHooks.useMutation<AddPolkassemblyProposalMutation, AddPolkassemblyProposalMutationVariables>(AddPolkassemblyProposalDocument, baseOptions);
-      }
-export type AddPolkassemblyProposalMutationHookResult = ReturnType<typeof useAddPolkassemblyProposalMutation>;
-export type AddPolkassemblyProposalMutationResult = ApolloReactCommon.MutationResult<AddPolkassemblyProposalMutation>;
-export type AddPolkassemblyProposalMutationOptions = ApolloReactCommon.BaseMutationOptions<AddPolkassemblyProposalMutation, AddPolkassemblyProposalMutationVariables>;
 export type AddPollVoteMutationHookResult = ReturnType<typeof useAddPollVoteMutation>;
 export type AddPollVoteMutationResult = ApolloReactCommon.MutationResult<AddPollVoteMutation>;
 export type AddPollVoteMutationOptions = ApolloReactCommon.BaseMutationOptions<AddPollVoteMutation, AddPollVoteMutationVariables>;
@@ -22248,6 +22333,161 @@ export function useGet_Refresh_TokenLazyQuery(baseOptions?: ApolloReactHooks.Laz
 export type Get_Refresh_TokenQueryHookResult = ReturnType<typeof useGet_Refresh_TokenQuery>;
 export type Get_Refresh_TokenLazyQueryHookResult = ReturnType<typeof useGet_Refresh_TokenLazyQuery>;
 export type Get_Refresh_TokenQueryResult = ApolloReactCommon.QueryResult<Get_Refresh_TokenQuery, Get_Refresh_TokenQueryVariables>;
+export const GetCalenderEventsDocument = gql`
+    query GetCalenderEvents($network: String!) {
+  calender_events(where: {network: {_ilike: $network}}) {
+    content
+    end_time
+    id
+    module
+    network
+    start_time
+    title
+    url
+  }
+}
+    `;
+
+/**
+ * __useGetCalenderEventsQuery__
+ *
+ * To run a query within a React component, call `useGetCalenderEventsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCalenderEventsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCalenderEventsQuery({
+ *   variables: {
+ *      network: // value for 'network'
+ *   },
+ * });
+ */
+export function useGetCalenderEventsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetCalenderEventsQuery, GetCalenderEventsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetCalenderEventsQuery, GetCalenderEventsQueryVariables>(GetCalenderEventsDocument, baseOptions);
+      }
+export function useGetCalenderEventsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetCalenderEventsQuery, GetCalenderEventsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetCalenderEventsQuery, GetCalenderEventsQueryVariables>(GetCalenderEventsDocument, baseOptions);
+        }
+export type GetCalenderEventsQueryHookResult = ReturnType<typeof useGetCalenderEventsQuery>;
+export type GetCalenderEventsLazyQueryHookResult = ReturnType<typeof useGetCalenderEventsLazyQuery>;
+export type GetCalenderEventsQueryResult = ApolloReactCommon.QueryResult<GetCalenderEventsQuery, GetCalenderEventsQueryVariables>;
+export const EditCalenderEventDocument = gql`
+    mutation EditCalenderEvent($id: Int!, $title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!) {
+  update_calender_events(
+    where: {id: {_eq: $id}}
+    _set: {title: $title, content: $content, start_time: $start_time, end_time: $end_time, url: $url, module: $module, network: $network}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export type EditCalenderEventMutationFn = ApolloReactCommon.MutationFunction<EditCalenderEventMutation, EditCalenderEventMutationVariables>;
+
+/**
+ * __useEditCalenderEventMutation__
+ *
+ * To run a mutation, you first call `useEditCalenderEventMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditCalenderEventMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editCalenderEventMutation, { data, loading, error }] = useEditCalenderEventMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      title: // value for 'title'
+ *      start_time: // value for 'start_time'
+ *      content: // value for 'content'
+ *      end_time: // value for 'end_time'
+ *      url: // value for 'url'
+ *      module: // value for 'module'
+ *      network: // value for 'network'
+ *   },
+ * });
+ */
+export function useEditCalenderEventMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EditCalenderEventMutation, EditCalenderEventMutationVariables>) {
+        return ApolloReactHooks.useMutation<EditCalenderEventMutation, EditCalenderEventMutationVariables>(EditCalenderEventDocument, baseOptions);
+      }
+export type EditCalenderEventMutationHookResult = ReturnType<typeof useEditCalenderEventMutation>;
+export type EditCalenderEventMutationResult = ApolloReactCommon.MutationResult<EditCalenderEventMutation>;
+export type EditCalenderEventMutationOptions = ApolloReactCommon.BaseMutationOptions<EditCalenderEventMutation, EditCalenderEventMutationVariables>;
+export const DeleteCalenderEventDocument = gql`
+    mutation DeleteCalenderEvent($id: Int!) {
+  delete_calender_events(where: {id: {_eq: $id}}) {
+    affected_rows
+  }
+}
+    `;
+export type DeleteCalenderEventMutationFn = ApolloReactCommon.MutationFunction<DeleteCalenderEventMutation, DeleteCalenderEventMutationVariables>;
+
+/**
+ * __useDeleteCalenderEventMutation__
+ *
+ * To run a mutation, you first call `useDeleteCalenderEventMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCalenderEventMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCalenderEventMutation, { data, loading, error }] = useDeleteCalenderEventMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteCalenderEventMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteCalenderEventMutation, DeleteCalenderEventMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteCalenderEventMutation, DeleteCalenderEventMutationVariables>(DeleteCalenderEventDocument, baseOptions);
+      }
+export type DeleteCalenderEventMutationHookResult = ReturnType<typeof useDeleteCalenderEventMutation>;
+export type DeleteCalenderEventMutationResult = ApolloReactCommon.MutationResult<DeleteCalenderEventMutation>;
+export type DeleteCalenderEventMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteCalenderEventMutation, DeleteCalenderEventMutationVariables>;
+export const AddCalenderEventDocument = gql`
+    mutation AddCalenderEvent($title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!) {
+  __typename
+  insert_calender_events(
+    objects: {title: $title, start_time: $start_time, end_time: $end_time, content: $content, url: $url, module: $module, network: $network}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export type AddCalenderEventMutationFn = ApolloReactCommon.MutationFunction<AddCalenderEventMutation, AddCalenderEventMutationVariables>;
+
+/**
+ * __useAddCalenderEventMutation__
+ *
+ * To run a mutation, you first call `useAddCalenderEventMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddCalenderEventMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addCalenderEventMutation, { data, loading, error }] = useAddCalenderEventMutation({
+ *   variables: {
+ *      title: // value for 'title'
+ *      start_time: // value for 'start_time'
+ *      content: // value for 'content'
+ *      end_time: // value for 'end_time'
+ *      url: // value for 'url'
+ *      module: // value for 'module'
+ *      network: // value for 'network'
+ *   },
+ * });
+ */
+export function useAddCalenderEventMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddCalenderEventMutation, AddCalenderEventMutationVariables>) {
+        return ApolloReactHooks.useMutation<AddCalenderEventMutation, AddCalenderEventMutationVariables>(AddCalenderEventDocument, baseOptions);
+      }
+export type AddCalenderEventMutationHookResult = ReturnType<typeof useAddCalenderEventMutation>;
+export type AddCalenderEventMutationResult = ApolloReactCommon.MutationResult<AddCalenderEventMutation>;
+export type AddCalenderEventMutationOptions = ApolloReactCommon.BaseMutationOptions<AddCalenderEventMutation, AddCalenderEventMutationVariables>;
 export const AllBountyPostsDocument = gql`
     query AllBountyPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
   posts(
@@ -22739,8 +22979,8 @@ export function useChangeNotificationPreferenceMutation(baseOptions?: ApolloReac
 export type ChangeNotificationPreferenceMutationHookResult = ReturnType<typeof useChangeNotificationPreferenceMutation>;
 export type ChangeNotificationPreferenceMutationResult = ApolloReactCommon.MutationResult<ChangeNotificationPreferenceMutation>;
 export type ChangeNotificationPreferenceMutationOptions = ApolloReactCommon.BaseMutationOptions<ChangeNotificationPreferenceMutation, ChangeNotificationPreferenceMutationVariables>;
-export const LatestBountyPostsDocument = gql`
-    query LatestBountyPosts($postType: Int!, $limit: Int! = 5) {
+export const GetLatestBountyPostsDocument = gql`
+    query GetLatestBountyPosts($postType: Int!, $limit: Int! = 5) {
   posts(
     limit: $limit
     where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_bounty_id: {_is_null: false}}}
@@ -22769,9 +23009,7 @@ export const LatestBountyPostsDocument = gql`
     onchain_link {
       id
       onchain_bounty_id
-      onchain_bounty(
-        where: {NOT: {bountyStatus_some: {OR: [{status: "BountyCanceled"}, {status: "BountyRejected"}, {status: "BountyAwarded"}, {status: "BountyClaimed"}]}}}
-      ) {
+      onchain_bounty {
         id
         bountyStatus(last: 1) {
           id
@@ -22785,31 +23023,31 @@ export const LatestBountyPostsDocument = gql`
     ${AuthorFieldsFragmentDoc}`;
 
 /**
- * __useLatestBountyPostsQuery__
+ * __useGetLatestBountyPostsQuery__
  *
- * To run a query within a React component, call `useLatestBountyPostsQuery` and pass it any options that fit your needs.
- * When your component renders, `useLatestBountyPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetLatestBountyPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLatestBountyPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useLatestBountyPostsQuery({
+ * const { data, loading, error } = useGetLatestBountyPostsQuery({
  *   variables: {
  *      postType: // value for 'postType'
  *      limit: // value for 'limit'
  *   },
  * });
  */
-export function useLatestBountyPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<LatestBountyPostsQuery, LatestBountyPostsQueryVariables>) {
-        return ApolloReactHooks.useQuery<LatestBountyPostsQuery, LatestBountyPostsQueryVariables>(LatestBountyPostsDocument, baseOptions);
+export function useGetLatestBountyPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLatestBountyPostsQuery, GetLatestBountyPostsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetLatestBountyPostsQuery, GetLatestBountyPostsQueryVariables>(GetLatestBountyPostsDocument, baseOptions);
       }
-export function useLatestBountyPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<LatestBountyPostsQuery, LatestBountyPostsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<LatestBountyPostsQuery, LatestBountyPostsQueryVariables>(LatestBountyPostsDocument, baseOptions);
+export function useGetLatestBountyPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLatestBountyPostsQuery, GetLatestBountyPostsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetLatestBountyPostsQuery, GetLatestBountyPostsQueryVariables>(GetLatestBountyPostsDocument, baseOptions);
         }
-export type LatestBountyPostsQueryHookResult = ReturnType<typeof useLatestBountyPostsQuery>;
-export type LatestBountyPostsLazyQueryHookResult = ReturnType<typeof useLatestBountyPostsLazyQuery>;
-export type LatestBountyPostsQueryResult = ApolloReactCommon.QueryResult<LatestBountyPostsQuery, LatestBountyPostsQueryVariables>;
+export type GetLatestBountyPostsQueryHookResult = ReturnType<typeof useGetLatestBountyPostsQuery>;
+export type GetLatestBountyPostsLazyQueryHookResult = ReturnType<typeof useGetLatestBountyPostsLazyQuery>;
+export type GetLatestBountyPostsQueryResult = ApolloReactCommon.QueryResult<GetLatestBountyPostsQuery, GetLatestBountyPostsQueryVariables>;
 export const BountiesCountDocument = gql`
     query BountiesCount($postType: Int!) {
   posts_aggregate(
@@ -22847,11 +23085,11 @@ export function useBountiesCountLazyQuery(baseOptions?: ApolloReactHooks.LazyQue
 export type BountiesCountQueryHookResult = ReturnType<typeof useBountiesCountQuery>;
 export type BountiesCountLazyQueryHookResult = ReturnType<typeof useBountiesCountLazyQuery>;
 export type BountiesCountQueryResult = ApolloReactCommon.QueryResult<BountiesCountQuery, BountiesCountQueryVariables>;
-export const LatestMotionPostsDocument = gql`
-    query LatestMotionPosts($postType: Int!, $limit: Int! = 5) {
+export const GetLatestMotionPostsDocument = gql`
+    query GetLatestMotionPosts($postType: Int!, $limit: Int! = 5) {
   posts(
     limit: $limit
-    where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_motion_id: {_is_null: false}, onchain_referendum_id: {_is_null: true}}}
+    where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_motion_id: {_is_null: false}}}
     order_by: {onchain_link: {onchain_motion_id: desc}}
   ) {
     id
@@ -22877,9 +23115,7 @@ export const LatestMotionPostsDocument = gql`
     onchain_link {
       id
       onchain_motion_id
-      onchain_motion(
-        where: {NOT: {motionStatus_some: {OR: [{status: "Executed"}, {status: "Disapproved"}]}}}
-      ) {
+      onchain_motion {
         id
         motionStatus(last: 1) {
           id
@@ -22897,35 +23133,35 @@ export const LatestMotionPostsDocument = gql`
     ${AuthorFieldsFragmentDoc}`;
 
 /**
- * __useLatestMotionPostsQuery__
+ * __useGetLatestMotionPostsQuery__
  *
- * To run a query within a React component, call `useLatestMotionPostsQuery` and pass it any options that fit your needs.
- * When your component renders, `useLatestMotionPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetLatestMotionPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLatestMotionPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useLatestMotionPostsQuery({
+ * const { data, loading, error } = useGetLatestMotionPostsQuery({
  *   variables: {
  *      postType: // value for 'postType'
  *      limit: // value for 'limit'
  *   },
  * });
  */
-export function useLatestMotionPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<LatestMotionPostsQuery, LatestMotionPostsQueryVariables>) {
-        return ApolloReactHooks.useQuery<LatestMotionPostsQuery, LatestMotionPostsQueryVariables>(LatestMotionPostsDocument, baseOptions);
+export function useGetLatestMotionPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLatestMotionPostsQuery, GetLatestMotionPostsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetLatestMotionPostsQuery, GetLatestMotionPostsQueryVariables>(GetLatestMotionPostsDocument, baseOptions);
       }
-export function useLatestMotionPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<LatestMotionPostsQuery, LatestMotionPostsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<LatestMotionPostsQuery, LatestMotionPostsQueryVariables>(LatestMotionPostsDocument, baseOptions);
+export function useGetLatestMotionPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLatestMotionPostsQuery, GetLatestMotionPostsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetLatestMotionPostsQuery, GetLatestMotionPostsQueryVariables>(GetLatestMotionPostsDocument, baseOptions);
         }
-export type LatestMotionPostsQueryHookResult = ReturnType<typeof useLatestMotionPostsQuery>;
-export type LatestMotionPostsLazyQueryHookResult = ReturnType<typeof useLatestMotionPostsLazyQuery>;
-export type LatestMotionPostsQueryResult = ApolloReactCommon.QueryResult<LatestMotionPostsQuery, LatestMotionPostsQueryVariables>;
-export const LatestMotionsCountDocument = gql`
-    query LatestMotionsCount($postType: Int!) {
+export type GetLatestMotionPostsQueryHookResult = ReturnType<typeof useGetLatestMotionPostsQuery>;
+export type GetLatestMotionPostsLazyQueryHookResult = ReturnType<typeof useGetLatestMotionPostsLazyQuery>;
+export type GetLatestMotionPostsQueryResult = ApolloReactCommon.QueryResult<GetLatestMotionPostsQuery, GetLatestMotionPostsQueryVariables>;
+export const GetLatestMotionsCountDocument = gql`
+    query GetLatestMotionsCount($postType: Int!) {
   posts_aggregate(
-    where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_referendum_id: {_is_null: true}, onchain_motion_id: {_is_null: false}}}
+    where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_motion_id: {_is_null: false}}}
   ) {
     aggregate {
       count
@@ -22935,32 +23171,32 @@ export const LatestMotionsCountDocument = gql`
     `;
 
 /**
- * __useLatestMotionsCountQuery__
+ * __useGetLatestMotionsCountQuery__
  *
- * To run a query within a React component, call `useLatestMotionsCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useLatestMotionsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetLatestMotionsCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLatestMotionsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useLatestMotionsCountQuery({
+ * const { data, loading, error } = useGetLatestMotionsCountQuery({
  *   variables: {
  *      postType: // value for 'postType'
  *   },
  * });
  */
-export function useLatestMotionsCountQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<LatestMotionsCountQuery, LatestMotionsCountQueryVariables>) {
-        return ApolloReactHooks.useQuery<LatestMotionsCountQuery, LatestMotionsCountQueryVariables>(LatestMotionsCountDocument, baseOptions);
+export function useGetLatestMotionsCountQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLatestMotionsCountQuery, GetLatestMotionsCountQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetLatestMotionsCountQuery, GetLatestMotionsCountQueryVariables>(GetLatestMotionsCountDocument, baseOptions);
       }
-export function useLatestMotionsCountLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<LatestMotionsCountQuery, LatestMotionsCountQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<LatestMotionsCountQuery, LatestMotionsCountQueryVariables>(LatestMotionsCountDocument, baseOptions);
+export function useGetLatestMotionsCountLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLatestMotionsCountQuery, GetLatestMotionsCountQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetLatestMotionsCountQuery, GetLatestMotionsCountQueryVariables>(GetLatestMotionsCountDocument, baseOptions);
         }
-export type LatestMotionsCountQueryHookResult = ReturnType<typeof useLatestMotionsCountQuery>;
-export type LatestMotionsCountLazyQueryHookResult = ReturnType<typeof useLatestMotionsCountLazyQuery>;
-export type LatestMotionsCountQueryResult = ApolloReactCommon.QueryResult<LatestMotionsCountQuery, LatestMotionsCountQueryVariables>;
-export const LatestDemocracyProposalPostsDocument = gql`
-    query LatestDemocracyProposalPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
+export type GetLatestMotionsCountQueryHookResult = ReturnType<typeof useGetLatestMotionsCountQuery>;
+export type GetLatestMotionsCountLazyQueryHookResult = ReturnType<typeof useGetLatestMotionsCountLazyQuery>;
+export type GetLatestMotionsCountQueryResult = ApolloReactCommon.QueryResult<GetLatestMotionsCountQuery, GetLatestMotionsCountQueryVariables>;
+export const GetLatestDemocracyProposalPostsDocument = gql`
+    query GetLatestDemocracyProposalPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
   posts(
     limit: $limit
     where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_proposal_id: {_is_null: false}}}
@@ -22989,9 +23225,7 @@ export const LatestDemocracyProposalPostsDocument = gql`
     onchain_link {
       id
       onchain_proposal_id
-      onchain_proposal(
-        where: {NOT: {proposalStatus_some: {OR: [{status: "Tabled"}, {status: "Cleared"}]}}}
-      ) {
+      onchain_proposal {
         id
         proposalStatus(last: 1) {
           id
@@ -23009,16 +23243,16 @@ export const LatestDemocracyProposalPostsDocument = gql`
     ${AuthorFieldsFragmentDoc}`;
 
 /**
- * __useLatestDemocracyProposalPostsQuery__
+ * __useGetLatestDemocracyProposalPostsQuery__
  *
- * To run a query within a React component, call `useLatestDemocracyProposalPostsQuery` and pass it any options that fit your needs.
- * When your component renders, `useLatestDemocracyProposalPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetLatestDemocracyProposalPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLatestDemocracyProposalPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useLatestDemocracyProposalPostsQuery({
+ * const { data, loading, error } = useGetLatestDemocracyProposalPostsQuery({
  *   variables: {
  *      postType: // value for 'postType'
  *      postTopic: // value for 'postTopic'
@@ -23026,15 +23260,15 @@ export const LatestDemocracyProposalPostsDocument = gql`
  *   },
  * });
  */
-export function useLatestDemocracyProposalPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<LatestDemocracyProposalPostsQuery, LatestDemocracyProposalPostsQueryVariables>) {
-        return ApolloReactHooks.useQuery<LatestDemocracyProposalPostsQuery, LatestDemocracyProposalPostsQueryVariables>(LatestDemocracyProposalPostsDocument, baseOptions);
+export function useGetLatestDemocracyProposalPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLatestDemocracyProposalPostsQuery, GetLatestDemocracyProposalPostsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetLatestDemocracyProposalPostsQuery, GetLatestDemocracyProposalPostsQueryVariables>(GetLatestDemocracyProposalPostsDocument, baseOptions);
       }
-export function useLatestDemocracyProposalPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<LatestDemocracyProposalPostsQuery, LatestDemocracyProposalPostsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<LatestDemocracyProposalPostsQuery, LatestDemocracyProposalPostsQueryVariables>(LatestDemocracyProposalPostsDocument, baseOptions);
+export function useGetLatestDemocracyProposalPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLatestDemocracyProposalPostsQuery, GetLatestDemocracyProposalPostsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetLatestDemocracyProposalPostsQuery, GetLatestDemocracyProposalPostsQueryVariables>(GetLatestDemocracyProposalPostsDocument, baseOptions);
         }
-export type LatestDemocracyProposalPostsQueryHookResult = ReturnType<typeof useLatestDemocracyProposalPostsQuery>;
-export type LatestDemocracyProposalPostsLazyQueryHookResult = ReturnType<typeof useLatestDemocracyProposalPostsLazyQuery>;
-export type LatestDemocracyProposalPostsQueryResult = ApolloReactCommon.QueryResult<LatestDemocracyProposalPostsQuery, LatestDemocracyProposalPostsQueryVariables>;
+export type GetLatestDemocracyProposalPostsQueryHookResult = ReturnType<typeof useGetLatestDemocracyProposalPostsQuery>;
+export type GetLatestDemocracyProposalPostsLazyQueryHookResult = ReturnType<typeof useGetLatestDemocracyProposalPostsLazyQuery>;
+export type GetLatestDemocracyProposalPostsQueryResult = ApolloReactCommon.QueryResult<GetLatestDemocracyProposalPostsQuery, GetLatestDemocracyProposalPostsQueryVariables>;
 export const DemocracyProposalCountDocument = gql`
     query DemocracyProposalCount($postType: Int!, $postTopic: Int!) {
   posts_aggregate(
@@ -23073,8 +23307,8 @@ export function useDemocracyProposalCountLazyQuery(baseOptions?: ApolloReactHook
 export type DemocracyProposalCountQueryHookResult = ReturnType<typeof useDemocracyProposalCountQuery>;
 export type DemocracyProposalCountLazyQueryHookResult = ReturnType<typeof useDemocracyProposalCountLazyQuery>;
 export type DemocracyProposalCountQueryResult = ApolloReactCommon.QueryResult<DemocracyProposalCountQuery, DemocracyProposalCountQueryVariables>;
-export const LatestReferendaPostsDocument = gql`
-    query LatestReferendaPosts($postType: Int!, $limit: Int! = 5) {
+export const GetLatestReferendaPostsDocument = gql`
+    query GetLatestReferendaPosts($postType: Int!, $limit: Int! = 5) {
   posts(
     limit: $limit
     where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_referendum_id: {_is_null: false}}}
@@ -23103,9 +23337,7 @@ export const LatestReferendaPostsDocument = gql`
     onchain_link {
       id
       onchain_referendum_id
-      onchain_referendum(
-        where: {NOT: {referendumStatus_some: {OR: [{status: "Passed"}, {status: "Executed"}, {status: "NotPassed"}, {status: "Cancelled"}, {status: "Vetoed"}]}}}
-      ) {
+      onchain_referendum {
         id
         end
         referendumStatus(last: 1) {
@@ -23124,31 +23356,31 @@ export const LatestReferendaPostsDocument = gql`
     ${AuthorFieldsFragmentDoc}`;
 
 /**
- * __useLatestReferendaPostsQuery__
+ * __useGetLatestReferendaPostsQuery__
  *
- * To run a query within a React component, call `useLatestReferendaPostsQuery` and pass it any options that fit your needs.
- * When your component renders, `useLatestReferendaPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetLatestReferendaPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLatestReferendaPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useLatestReferendaPostsQuery({
+ * const { data, loading, error } = useGetLatestReferendaPostsQuery({
  *   variables: {
  *      postType: // value for 'postType'
  *      limit: // value for 'limit'
  *   },
  * });
  */
-export function useLatestReferendaPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<LatestReferendaPostsQuery, LatestReferendaPostsQueryVariables>) {
-        return ApolloReactHooks.useQuery<LatestReferendaPostsQuery, LatestReferendaPostsQueryVariables>(LatestReferendaPostsDocument, baseOptions);
+export function useGetLatestReferendaPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLatestReferendaPostsQuery, GetLatestReferendaPostsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetLatestReferendaPostsQuery, GetLatestReferendaPostsQueryVariables>(GetLatestReferendaPostsDocument, baseOptions);
       }
-export function useLatestReferendaPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<LatestReferendaPostsQuery, LatestReferendaPostsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<LatestReferendaPostsQuery, LatestReferendaPostsQueryVariables>(LatestReferendaPostsDocument, baseOptions);
+export function useGetLatestReferendaPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLatestReferendaPostsQuery, GetLatestReferendaPostsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetLatestReferendaPostsQuery, GetLatestReferendaPostsQueryVariables>(GetLatestReferendaPostsDocument, baseOptions);
         }
-export type LatestReferendaPostsQueryHookResult = ReturnType<typeof useLatestReferendaPostsQuery>;
-export type LatestReferendaPostsLazyQueryHookResult = ReturnType<typeof useLatestReferendaPostsLazyQuery>;
-export type LatestReferendaPostsQueryResult = ApolloReactCommon.QueryResult<LatestReferendaPostsQuery, LatestReferendaPostsQueryVariables>;
+export type GetLatestReferendaPostsQueryHookResult = ReturnType<typeof useGetLatestReferendaPostsQuery>;
+export type GetLatestReferendaPostsLazyQueryHookResult = ReturnType<typeof useGetLatestReferendaPostsLazyQuery>;
+export type GetLatestReferendaPostsQueryResult = ApolloReactCommon.QueryResult<GetLatestReferendaPostsQuery, GetLatestReferendaPostsQueryVariables>;
 export const ReferundumCountDocument = gql`
     query ReferundumCount($postType: Int!) {
   posts_aggregate(
@@ -23298,8 +23530,8 @@ export function useTechCommitteeProposalCountLazyQuery(baseOptions?: ApolloReact
 export type TechCommitteeProposalCountQueryHookResult = ReturnType<typeof useTechCommitteeProposalCountQuery>;
 export type TechCommitteeProposalCountLazyQueryHookResult = ReturnType<typeof useTechCommitteeProposalCountLazyQuery>;
 export type TechCommitteeProposalCountQueryResult = ApolloReactCommon.QueryResult<TechCommitteeProposalCountQuery, TechCommitteeProposalCountQueryVariables>;
-export const LatestTipPostsDocument = gql`
-    query LatestTipPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
+export const GetLatestTipPostsDocument = gql`
+    query GetLatestTipPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
   posts(
     limit: $limit
     where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_tip_id: {_is_null: false}}}
@@ -23328,9 +23560,7 @@ export const LatestTipPostsDocument = gql`
     onchain_link {
       id
       onchain_tip_id
-      onchain_tip(
-        where: {NOT: {tipStatus_some: {OR: [{status: "TipClosed"}, {status: "TipClosing"}, {status: "TipRetracted"}]}}}
-      ) {
+      onchain_tip {
         id
         reason
         tipStatus(last: 1) {
@@ -23345,16 +23575,16 @@ export const LatestTipPostsDocument = gql`
     ${AuthorFieldsFragmentDoc}`;
 
 /**
- * __useLatestTipPostsQuery__
+ * __useGetLatestTipPostsQuery__
  *
- * To run a query within a React component, call `useLatestTipPostsQuery` and pass it any options that fit your needs.
- * When your component renders, `useLatestTipPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetLatestTipPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLatestTipPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useLatestTipPostsQuery({
+ * const { data, loading, error } = useGetLatestTipPostsQuery({
  *   variables: {
  *      postType: // value for 'postType'
  *      postTopic: // value for 'postTopic'
@@ -23362,15 +23592,15 @@ export const LatestTipPostsDocument = gql`
  *   },
  * });
  */
-export function useLatestTipPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<LatestTipPostsQuery, LatestTipPostsQueryVariables>) {
-        return ApolloReactHooks.useQuery<LatestTipPostsQuery, LatestTipPostsQueryVariables>(LatestTipPostsDocument, baseOptions);
+export function useGetLatestTipPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLatestTipPostsQuery, GetLatestTipPostsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetLatestTipPostsQuery, GetLatestTipPostsQueryVariables>(GetLatestTipPostsDocument, baseOptions);
       }
-export function useLatestTipPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<LatestTipPostsQuery, LatestTipPostsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<LatestTipPostsQuery, LatestTipPostsQueryVariables>(LatestTipPostsDocument, baseOptions);
+export function useGetLatestTipPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLatestTipPostsQuery, GetLatestTipPostsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetLatestTipPostsQuery, GetLatestTipPostsQueryVariables>(GetLatestTipPostsDocument, baseOptions);
         }
-export type LatestTipPostsQueryHookResult = ReturnType<typeof useLatestTipPostsQuery>;
-export type LatestTipPostsLazyQueryHookResult = ReturnType<typeof useLatestTipPostsLazyQuery>;
-export type LatestTipPostsQueryResult = ApolloReactCommon.QueryResult<LatestTipPostsQuery, LatestTipPostsQueryVariables>;
+export type GetLatestTipPostsQueryHookResult = ReturnType<typeof useGetLatestTipPostsQuery>;
+export type GetLatestTipPostsLazyQueryHookResult = ReturnType<typeof useGetLatestTipPostsLazyQuery>;
+export type GetLatestTipPostsQueryResult = ApolloReactCommon.QueryResult<GetLatestTipPostsQuery, GetLatestTipPostsQueryVariables>;
 export const TipProposalCountDocument = gql`
     query TipProposalCount($postType: Int!, $postTopic: Int!) {
   posts_aggregate(
@@ -23409,8 +23639,8 @@ export function useTipProposalCountLazyQuery(baseOptions?: ApolloReactHooks.Lazy
 export type TipProposalCountQueryHookResult = ReturnType<typeof useTipProposalCountQuery>;
 export type TipProposalCountLazyQueryHookResult = ReturnType<typeof useTipProposalCountLazyQuery>;
 export type TipProposalCountQueryResult = ApolloReactCommon.QueryResult<TipProposalCountQuery, TipProposalCountQueryVariables>;
-export const LatestDemocracyTreasuryProposalPostsDocument = gql`
-    query LatestDemocracyTreasuryProposalPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
+export const GetLatestDemocracyTreasuryProposalPostsDocument = gql`
+    query GetLatestDemocracyTreasuryProposalPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
   posts(
     limit: $limit
     where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_treasury_proposal_id: {_is_null: false}}}
@@ -23439,7 +23669,7 @@ export const LatestDemocracyTreasuryProposalPostsDocument = gql`
     onchain_link {
       id
       onchain_treasury_proposal_id
-      onchain_treasury_spend_proposal(where: {}) {
+      onchain_treasury_spend_proposal {
         id
         treasuryStatus(last: 1) {
           id
@@ -23453,16 +23683,16 @@ export const LatestDemocracyTreasuryProposalPostsDocument = gql`
     ${AuthorFieldsFragmentDoc}`;
 
 /**
- * __useLatestDemocracyTreasuryProposalPostsQuery__
+ * __useGetLatestDemocracyTreasuryProposalPostsQuery__
  *
- * To run a query within a React component, call `useLatestDemocracyTreasuryProposalPostsQuery` and pass it any options that fit your needs.
- * When your component renders, `useLatestDemocracyTreasuryProposalPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetLatestDemocracyTreasuryProposalPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLatestDemocracyTreasuryProposalPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useLatestDemocracyTreasuryProposalPostsQuery({
+ * const { data, loading, error } = useGetLatestDemocracyTreasuryProposalPostsQuery({
  *   variables: {
  *      postType: // value for 'postType'
  *      postTopic: // value for 'postTopic'
@@ -23470,15 +23700,15 @@ export const LatestDemocracyTreasuryProposalPostsDocument = gql`
  *   },
  * });
  */
-export function useLatestDemocracyTreasuryProposalPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<LatestDemocracyTreasuryProposalPostsQuery, LatestDemocracyTreasuryProposalPostsQueryVariables>) {
-        return ApolloReactHooks.useQuery<LatestDemocracyTreasuryProposalPostsQuery, LatestDemocracyTreasuryProposalPostsQueryVariables>(LatestDemocracyTreasuryProposalPostsDocument, baseOptions);
+export function useGetLatestDemocracyTreasuryProposalPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLatestDemocracyTreasuryProposalPostsQuery, GetLatestDemocracyTreasuryProposalPostsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetLatestDemocracyTreasuryProposalPostsQuery, GetLatestDemocracyTreasuryProposalPostsQueryVariables>(GetLatestDemocracyTreasuryProposalPostsDocument, baseOptions);
       }
-export function useLatestDemocracyTreasuryProposalPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<LatestDemocracyTreasuryProposalPostsQuery, LatestDemocracyTreasuryProposalPostsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<LatestDemocracyTreasuryProposalPostsQuery, LatestDemocracyTreasuryProposalPostsQueryVariables>(LatestDemocracyTreasuryProposalPostsDocument, baseOptions);
+export function useGetLatestDemocracyTreasuryProposalPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLatestDemocracyTreasuryProposalPostsQuery, GetLatestDemocracyTreasuryProposalPostsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetLatestDemocracyTreasuryProposalPostsQuery, GetLatestDemocracyTreasuryProposalPostsQueryVariables>(GetLatestDemocracyTreasuryProposalPostsDocument, baseOptions);
         }
-export type LatestDemocracyTreasuryProposalPostsQueryHookResult = ReturnType<typeof useLatestDemocracyTreasuryProposalPostsQuery>;
-export type LatestDemocracyTreasuryProposalPostsLazyQueryHookResult = ReturnType<typeof useLatestDemocracyTreasuryProposalPostsLazyQuery>;
-export type LatestDemocracyTreasuryProposalPostsQueryResult = ApolloReactCommon.QueryResult<LatestDemocracyTreasuryProposalPostsQuery, LatestDemocracyTreasuryProposalPostsQueryVariables>;
+export type GetLatestDemocracyTreasuryProposalPostsQueryHookResult = ReturnType<typeof useGetLatestDemocracyTreasuryProposalPostsQuery>;
+export type GetLatestDemocracyTreasuryProposalPostsLazyQueryHookResult = ReturnType<typeof useGetLatestDemocracyTreasuryProposalPostsLazyQuery>;
+export type GetLatestDemocracyTreasuryProposalPostsQueryResult = ApolloReactCommon.QueryResult<GetLatestDemocracyTreasuryProposalPostsQuery, GetLatestDemocracyTreasuryProposalPostsQueryVariables>;
 export const DemocracyTreasuryProposalCountDocument = gql`
     query DemocracyTreasuryProposalCount($postType: Int!, $postTopic: Int!) {
   posts_aggregate(
@@ -23517,8 +23747,8 @@ export function useDemocracyTreasuryProposalCountLazyQuery(baseOptions?: ApolloR
 export type DemocracyTreasuryProposalCountQueryHookResult = ReturnType<typeof useDemocracyTreasuryProposalCountQuery>;
 export type DemocracyTreasuryProposalCountLazyQueryHookResult = ReturnType<typeof useDemocracyTreasuryProposalCountLazyQuery>;
 export type DemocracyTreasuryProposalCountQueryResult = ApolloReactCommon.QueryResult<DemocracyTreasuryProposalCountQuery, DemocracyTreasuryProposalCountQueryVariables>;
-export const LatestPostsDocument = gql`
-    query LatestPosts($limit: Int! = 10) {
+export const GetLatestPostsDocument = gql`
+    query GetLatestPosts($limit: Int! = 10) {
   posts(limit: $limit, order_by: {id: desc}) {
     id
     title
@@ -23543,9 +23773,7 @@ export const LatestPostsDocument = gql`
     onchain_link {
       id
       onchain_proposal_id
-      onchain_proposal(
-        where: {NOT: {proposalStatus_some: {OR: [{status: "Tabled"}, {status: "Cleared"}]}}}
-      ) {
+      onchain_proposal {
         id
         proposalStatus(last: 1) {
           id
@@ -23557,9 +23785,7 @@ export const LatestPostsDocument = gql`
         }
       }
       onchain_bounty_id
-      onchain_bounty(
-        where: {NOT: {bountyStatus_some: {OR: [{status: "BountyCanceled"}, {status: "BountyRejected"}, {status: "BountyAwarded"}, {status: "BountyClaimed"}]}}}
-      ) {
+      onchain_bounty {
         id
         bountyStatus(last: 1) {
           id
@@ -23567,9 +23793,7 @@ export const LatestPostsDocument = gql`
         }
       }
       onchain_motion_id
-      onchain_motion(
-        where: {NOT: {motionStatus_some: {OR: [{status: "Executed"}, {status: "Disapproved"}]}}}
-      ) {
+      onchain_motion {
         id
         motionStatus(last: 1) {
           id
@@ -23581,9 +23805,7 @@ export const LatestPostsDocument = gql`
         }
       }
       onchain_referendum_id
-      onchain_referendum(
-        where: {NOT: {referendumStatus_some: {OR: [{status: "Passed"}, {status: "Executed"}, {status: "NotPassed"}, {status: "Cancelled"}, {status: "Vetoed"}]}}}
-      ) {
+      onchain_referendum {
         id
         end
         referendumStatus(last: 1) {
@@ -23596,9 +23818,7 @@ export const LatestPostsDocument = gql`
         }
       }
       onchain_tech_committee_proposal_id
-      onchain_tech_committee_proposal(
-        where: {NOT: {status_some: {OR: [{status: "Closed"}, {status: "Approved"}, {status: "Executed"}, {status: "Disapproved"}]}}}
-      ) {
+      onchain_tech_committee_proposal {
         id
         status(last: 1) {
           id
@@ -23610,9 +23830,7 @@ export const LatestPostsDocument = gql`
         }
       }
       onchain_tip_id
-      onchain_tip(
-        where: {NOT: {tipStatus_some: {OR: [{status: "TipClosed"}, {status: "TipClosing"}, {status: "TipRetracted"}]}}}
-      ) {
+      onchain_tip {
         id
         reason
         tipStatus(last: 1) {
@@ -23621,7 +23839,7 @@ export const LatestPostsDocument = gql`
         }
       }
       onchain_treasury_proposal_id
-      onchain_treasury_spend_proposal(where: {}) {
+      onchain_treasury_spend_proposal {
         id
         treasuryStatus(last: 1) {
           id
@@ -23635,30 +23853,30 @@ export const LatestPostsDocument = gql`
     ${AuthorFieldsFragmentDoc}`;
 
 /**
- * __useLatestPostsQuery__
+ * __useGetLatestPostsQuery__
  *
- * To run a query within a React component, call `useLatestPostsQuery` and pass it any options that fit your needs.
- * When your component renders, `useLatestPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetLatestPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLatestPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useLatestPostsQuery({
+ * const { data, loading, error } = useGetLatestPostsQuery({
  *   variables: {
  *      limit: // value for 'limit'
  *   },
  * });
  */
-export function useLatestPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<LatestPostsQuery, LatestPostsQueryVariables>) {
-        return ApolloReactHooks.useQuery<LatestPostsQuery, LatestPostsQueryVariables>(LatestPostsDocument, baseOptions);
+export function useGetLatestPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLatestPostsQuery, GetLatestPostsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetLatestPostsQuery, GetLatestPostsQueryVariables>(GetLatestPostsDocument, baseOptions);
       }
-export function useLatestPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<LatestPostsQuery, LatestPostsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<LatestPostsQuery, LatestPostsQueryVariables>(LatestPostsDocument, baseOptions);
+export function useGetLatestPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLatestPostsQuery, GetLatestPostsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetLatestPostsQuery, GetLatestPostsQueryVariables>(GetLatestPostsDocument, baseOptions);
         }
-export type LatestPostsQueryHookResult = ReturnType<typeof useLatestPostsQuery>;
-export type LatestPostsLazyQueryHookResult = ReturnType<typeof useLatestPostsLazyQuery>;
-export type LatestPostsQueryResult = ApolloReactCommon.QueryResult<LatestPostsQuery, LatestPostsQueryVariables>;
+export type GetLatestPostsQueryHookResult = ReturnType<typeof useGetLatestPostsQuery>;
+export type GetLatestPostsLazyQueryHookResult = ReturnType<typeof useGetLatestPostsLazyQuery>;
+export type GetLatestPostsQueryResult = ApolloReactCommon.QueryResult<GetLatestPostsQuery, GetLatestPostsQueryVariables>;
 export const PostsCountDocument = gql`
     query PostsCount {
   posts_aggregate {
@@ -23735,6 +23953,40 @@ export function useNetworkSocialsLazyQuery(baseOptions?: ApolloReactHooks.LazyQu
 export type NetworkSocialsQueryHookResult = ReturnType<typeof useNetworkSocialsQuery>;
 export type NetworkSocialsLazyQueryHookResult = ReturnType<typeof useNetworkSocialsLazyQuery>;
 export type NetworkSocialsQueryResult = ApolloReactCommon.QueryResult<NetworkSocialsQuery, NetworkSocialsQueryVariables>;
+export const DiscussionsCountDocument = gql`
+    query DiscussionsCount {
+  posts_aggregate(where: {type: {id: {_eq: 1}}}) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useDiscussionsCountQuery__
+ *
+ * To run a query within a React component, call `useDiscussionsCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDiscussionsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDiscussionsCountQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDiscussionsCountQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<DiscussionsCountQuery, DiscussionsCountQueryVariables>) {
+        return ApolloReactHooks.useQuery<DiscussionsCountQuery, DiscussionsCountQueryVariables>(DiscussionsCountDocument, baseOptions);
+      }
+export function useDiscussionsCountLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<DiscussionsCountQuery, DiscussionsCountQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<DiscussionsCountQuery, DiscussionsCountQueryVariables>(DiscussionsCountDocument, baseOptions);
+        }
+export type DiscussionsCountQueryHookResult = ReturnType<typeof useDiscussionsCountQuery>;
+export type DiscussionsCountLazyQueryHookResult = ReturnType<typeof useDiscussionsCountLazyQuery>;
+export type DiscussionsCountQueryResult = ApolloReactCommon.QueryResult<DiscussionsCountQuery, DiscussionsCountQueryVariables>;
 export const AboutDocument = gql`
     query ABOUT($network: String!, $address: String!) {
   about(network: $network, address: $address) {
@@ -25500,742 +25752,3 @@ export function useVerifyEmailMutation(baseOptions?: ApolloReactHooks.MutationHo
 export type VerifyEmailMutationHookResult = ReturnType<typeof useVerifyEmailMutation>;
 export type VerifyEmailMutationResult = ApolloReactCommon.MutationResult<VerifyEmailMutation>;
 export type VerifyEmailMutationOptions = ApolloReactCommon.BaseMutationOptions<VerifyEmailMutation, VerifyEmailMutationVariables>;
-export const GetLatestMotionsCountDocument = gql`
-    query GetLatestMotionsCount($postType: Int!) {
-  posts_aggregate(
-    where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_motion_id: {_is_null: false}}}
-  ) {
-    aggregate {
-      count
-    }
-  }
-}
-    `;
-
-/**
- * __useGetLatestMotionsCountQuery__
- *
- * To run a query within a React component, call `useGetLatestMotionsCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetLatestMotionsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetLatestMotionsCountQuery({
- *   variables: {
- *      postType: // value for 'postType'
- *   },
- * });
- */
-export function useGetLatestMotionsCountQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLatestMotionsCountQuery, GetLatestMotionsCountQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetLatestMotionsCountQuery, GetLatestMotionsCountQueryVariables>(GetLatestMotionsCountDocument, baseOptions);
-      }
-export function useGetLatestMotionsCountLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLatestMotionsCountQuery, GetLatestMotionsCountQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetLatestMotionsCountQuery, GetLatestMotionsCountQueryVariables>(GetLatestMotionsCountDocument, baseOptions);
-        }
-export type GetLatestMotionsCountQueryHookResult = ReturnType<typeof useGetLatestMotionsCountQuery>;
-export type GetLatestMotionsCountLazyQueryHookResult = ReturnType<typeof useGetLatestMotionsCountLazyQuery>;
-export type GetLatestMotionsCountQueryResult = ApolloReactCommon.QueryResult<GetLatestMotionsCountQuery, GetLatestMotionsCountQueryVariables>;
-export const GetLatestPostsDocument = gql`
-    query GetLatestPosts($limit: Int! = 10) {
-  posts(limit: $limit, order_by: {id: desc}) {
-    id
-    title
-    author {
-      ...authorFields
-    }
-    created_at
-    updated_at
-    comments_aggregate {
-      aggregate {
-        count
-      }
-    }
-    type {
-      name
-      id
-    }
-    topic {
-      id
-      name
-    }
-    onchain_link {
-      id
-      onchain_proposal_id
-      onchain_proposal {
-        id
-        proposalStatus(last: 1) {
-          id
-          status
-        }
-        preimage {
-          id
-          method
-        }
-      }
-      onchain_bounty_id
-      onchain_bounty {
-        id
-        bountyStatus(last: 1) {
-          id
-          status
-        }
-      }
-      onchain_motion_id
-      onchain_motion {
-        id
-        motionStatus(last: 1) {
-          id
-          status
-        }
-        preimage {
-          id
-          method
-        }
-      }
-      onchain_referendum_id
-      onchain_referendum {
-        id
-        end
-        referendumStatus(last: 1) {
-          id
-          status
-        }
-        preimage {
-          id
-          method
-        }
-      }
-      onchain_tech_committee_proposal_id
-      onchain_tech_committee_proposal {
-        id
-        status(last: 1) {
-          id
-          status
-        }
-        preimage {
-          id
-          method
-        }
-      }
-      onchain_tip_id
-      onchain_tip {
-        id
-        reason
-        tipStatus(last: 1) {
-          id
-          status
-        }
-      }
-      onchain_treasury_proposal_id
-      onchain_treasury_spend_proposal {
-        id
-        treasuryStatus(last: 1) {
-          id
-          status
-        }
-      }
-      proposer_address
-    }
-  }
-}
-    ${AuthorFieldsFragmentDoc}`;
-
-/**
- * __useGetLatestPostsQuery__
- *
- * To run a query within a React component, call `useGetLatestPostsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetLatestPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetLatestPostsQuery({
- *   variables: {
- *      limit: // value for 'limit'
- *   },
- * });
- */
-export function useGetLatestPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLatestPostsQuery, GetLatestPostsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetLatestPostsQuery, GetLatestPostsQueryVariables>(GetLatestPostsDocument, baseOptions);
-      }
-export function useGetLatestPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLatestPostsQuery, GetLatestPostsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetLatestPostsQuery, GetLatestPostsQueryVariables>(GetLatestPostsDocument, baseOptions);
-        }
-export type GetLatestPostsQueryHookResult = ReturnType<typeof useGetLatestPostsQuery>;
-export type GetLatestPostsLazyQueryHookResult = ReturnType<typeof useGetLatestPostsLazyQuery>;
-export type GetLatestPostsQueryResult = ApolloReactCommon.QueryResult<GetLatestPostsQuery, GetLatestPostsQueryVariables>;
-export const GetLatestBountyPostsDocument = gql`
-    query GetLatestBountyPosts($postType: Int!, $limit: Int! = 5) {
-  posts(
-    limit: $limit
-    where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_bounty_id: {_is_null: false}}}
-    order_by: {onchain_link: {onchain_bounty_id: desc}}
-  ) {
-    id
-    title
-    author {
-      ...authorFields
-    }
-    created_at
-    updated_at
-    comments_aggregate {
-      aggregate {
-        count
-      }
-    }
-    type {
-      name
-      id
-    }
-    topic {
-      id
-      name
-    }
-    onchain_link {
-      id
-      onchain_bounty_id
-      onchain_bounty {
-        id
-        bountyStatus(last: 1) {
-          id
-          status
-        }
-      }
-      proposer_address
-    }
-  }
-}
-    ${AuthorFieldsFragmentDoc}`;
-
-/**
- * __useGetLatestBountyPostsQuery__
- *
- * To run a query within a React component, call `useGetLatestBountyPostsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetLatestBountyPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetLatestBountyPostsQuery({
- *   variables: {
- *      postType: // value for 'postType'
- *      limit: // value for 'limit'
- *   },
- * });
- */
-export function useGetLatestBountyPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLatestBountyPostsQuery, GetLatestBountyPostsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetLatestBountyPostsQuery, GetLatestBountyPostsQueryVariables>(GetLatestBountyPostsDocument, baseOptions);
-      }
-export function useGetLatestBountyPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLatestBountyPostsQuery, GetLatestBountyPostsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetLatestBountyPostsQuery, GetLatestBountyPostsQueryVariables>(GetLatestBountyPostsDocument, baseOptions);
-        }
-export type GetLatestBountyPostsQueryHookResult = ReturnType<typeof useGetLatestBountyPostsQuery>;
-export type GetLatestBountyPostsLazyQueryHookResult = ReturnType<typeof useGetLatestBountyPostsLazyQuery>;
-export type GetLatestBountyPostsQueryResult = ApolloReactCommon.QueryResult<GetLatestBountyPostsQuery, GetLatestBountyPostsQueryVariables>;
-export const GetLatestMotionPostsDocument = gql`
-    query GetLatestMotionPosts($postType: Int!, $limit: Int! = 5) {
-  posts(
-    limit: $limit
-    where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_motion_id: {_is_null: false}, onchain_referendum_id: {_is_null: true}}}
-    order_by: {onchain_link: {onchain_motion_id: desc}}
-  ) {
-    id
-    title
-    author {
-      ...authorFields
-    }
-    created_at
-    updated_at
-    comments_aggregate {
-      aggregate {
-        count
-      }
-    }
-    type {
-      name
-      id
-    }
-    topic {
-      id
-      name
-    }
-    onchain_link {
-      id
-      onchain_motion_id
-      onchain_motion {
-        id
-        motionStatus(last: 1) {
-          id
-          status
-        }
-        preimage {
-          id
-          method
-        }
-      }
-      proposer_address
-    }
-  }
-}
-    ${AuthorFieldsFragmentDoc}`;
-
-/**
- * __useGetLatestMotionPostsQuery__
- *
- * To run a query within a React component, call `useGetLatestMotionPostsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetLatestMotionPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetLatestMotionPostsQuery({
- *   variables: {
- *      postType: // value for 'postType'
- *      limit: // value for 'limit'
- *   },
- * });
- */
-export function useGetLatestMotionPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLatestMotionPostsQuery, GetLatestMotionPostsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetLatestMotionPostsQuery, GetLatestMotionPostsQueryVariables>(GetLatestMotionPostsDocument, baseOptions);
-      }
-export function useGetLatestMotionPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLatestMotionPostsQuery, GetLatestMotionPostsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetLatestMotionPostsQuery, GetLatestMotionPostsQueryVariables>(GetLatestMotionPostsDocument, baseOptions);
-        }
-export type GetLatestMotionPostsQueryHookResult = ReturnType<typeof useGetLatestMotionPostsQuery>;
-export type GetLatestMotionPostsLazyQueryHookResult = ReturnType<typeof useGetLatestMotionPostsLazyQuery>;
-export type GetLatestMotionPostsQueryResult = ApolloReactCommon.QueryResult<GetLatestMotionPostsQuery, GetLatestMotionPostsQueryVariables>;
-export const FetchLatestMotionPostsDocument = gql`
-    query FetchLatestMotionPosts($postType: Int!, $limit: Int! = 5) {
-  posts(
-    limit: $limit
-    where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_motion_id: {_is_null: false}}}
-    order_by: {onchain_link: {onchain_motion_id: desc}}
-  ) {
-    id
-    title
-    author {
-      ...authorFields
-    }
-    created_at
-    updated_at
-    comments_aggregate {
-      aggregate {
-        count
-      }
-    }
-    type {
-      name
-      id
-    }
-    topic {
-      id
-      name
-    }
-    onchain_link {
-      id
-      onchain_motion_id
-      onchain_motion {
-        id
-        motionStatus(last: 1) {
-          id
-          status
-        }
-        preimage {
-          id
-          method
-        }
-      }
-      proposer_address
-    }
-  }
-}
-    ${AuthorFieldsFragmentDoc}`;
-
-/**
- * __useFetchLatestMotionPostsQuery__
- *
- * To run a query within a React component, call `useFetchLatestMotionPostsQuery` and pass it any options that fit your needs.
- * When your component renders, `useFetchLatestMotionPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFetchLatestMotionPostsQuery({
- *   variables: {
- *      postType: // value for 'postType'
- *      limit: // value for 'limit'
- *   },
- * });
- */
-export function useFetchLatestMotionPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<FetchLatestMotionPostsQuery, FetchLatestMotionPostsQueryVariables>) {
-        return ApolloReactHooks.useQuery<FetchLatestMotionPostsQuery, FetchLatestMotionPostsQueryVariables>(FetchLatestMotionPostsDocument, baseOptions);
-      }
-export function useFetchLatestMotionPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<FetchLatestMotionPostsQuery, FetchLatestMotionPostsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<FetchLatestMotionPostsQuery, FetchLatestMotionPostsQueryVariables>(FetchLatestMotionPostsDocument, baseOptions);
-        }
-export type FetchLatestMotionPostsQueryHookResult = ReturnType<typeof useFetchLatestMotionPostsQuery>;
-export type FetchLatestMotionPostsLazyQueryHookResult = ReturnType<typeof useFetchLatestMotionPostsLazyQuery>;
-export type FetchLatestMotionPostsQueryResult = ApolloReactCommon.QueryResult<FetchLatestMotionPostsQuery, FetchLatestMotionPostsQueryVariables>;
-export const GetLatestDemocracyProposalPostsDocument = gql`
-    query GetLatestDemocracyProposalPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
-  posts(
-    limit: $limit
-    where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_proposal_id: {_is_null: false}}}
-    order_by: {onchain_link: {onchain_proposal_id: desc}}
-  ) {
-    id
-    title
-    author {
-      ...authorFields
-    }
-    created_at
-    updated_at
-    comments_aggregate {
-      aggregate {
-        count
-      }
-    }
-    type {
-      name
-      id
-    }
-    topic {
-      id
-      name
-    }
-    onchain_link {
-      id
-      onchain_proposal_id
-      onchain_proposal {
-        id
-        proposalStatus(last: 1) {
-          id
-          status
-        }
-        preimage {
-          id
-          method
-        }
-      }
-      proposer_address
-    }
-  }
-}
-    ${AuthorFieldsFragmentDoc}`;
-
-/**
- * __useGetLatestDemocracyProposalPostsQuery__
- *
- * To run a query within a React component, call `useGetLatestDemocracyProposalPostsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetLatestDemocracyProposalPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetLatestDemocracyProposalPostsQuery({
- *   variables: {
- *      postType: // value for 'postType'
- *      postTopic: // value for 'postTopic'
- *      limit: // value for 'limit'
- *   },
- * });
- */
-export function useGetLatestDemocracyProposalPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLatestDemocracyProposalPostsQuery, GetLatestDemocracyProposalPostsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetLatestDemocracyProposalPostsQuery, GetLatestDemocracyProposalPostsQueryVariables>(GetLatestDemocracyProposalPostsDocument, baseOptions);
-      }
-export function useGetLatestDemocracyProposalPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLatestDemocracyProposalPostsQuery, GetLatestDemocracyProposalPostsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetLatestDemocracyProposalPostsQuery, GetLatestDemocracyProposalPostsQueryVariables>(GetLatestDemocracyProposalPostsDocument, baseOptions);
-        }
-export type GetLatestDemocracyProposalPostsQueryHookResult = ReturnType<typeof useGetLatestDemocracyProposalPostsQuery>;
-export type GetLatestDemocracyProposalPostsLazyQueryHookResult = ReturnType<typeof useGetLatestDemocracyProposalPostsLazyQuery>;
-export type GetLatestDemocracyProposalPostsQueryResult = ApolloReactCommon.QueryResult<GetLatestDemocracyProposalPostsQuery, GetLatestDemocracyProposalPostsQueryVariables>;
-export const GetLatestReferendaPostsDocument = gql`
-    query GetLatestReferendaPosts($postType: Int!, $limit: Int! = 5) {
-  posts(
-    limit: $limit
-    where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_referendum_id: {_is_null: false}}}
-    order_by: {onchain_link: {onchain_referendum_id: desc}}
-  ) {
-    id
-    title
-    author {
-      ...authorFields
-    }
-    created_at
-    updated_at
-    comments_aggregate {
-      aggregate {
-        count
-      }
-    }
-    type {
-      name
-      id
-    }
-    topic {
-      id
-      name
-    }
-    onchain_link {
-      id
-      onchain_referendum_id
-      onchain_referendum {
-        id
-        end
-        referendumStatus(last: 1) {
-          id
-          status
-        }
-        preimage {
-          id
-          method
-        }
-      }
-      proposer_address
-    }
-  }
-}
-    ${AuthorFieldsFragmentDoc}`;
-
-/**
- * __useGetLatestReferendaPostsQuery__
- *
- * To run a query within a React component, call `useGetLatestReferendaPostsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetLatestReferendaPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetLatestReferendaPostsQuery({
- *   variables: {
- *      postType: // value for 'postType'
- *      limit: // value for 'limit'
- *   },
- * });
- */
-export function useGetLatestReferendaPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLatestReferendaPostsQuery, GetLatestReferendaPostsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetLatestReferendaPostsQuery, GetLatestReferendaPostsQueryVariables>(GetLatestReferendaPostsDocument, baseOptions);
-      }
-export function useGetLatestReferendaPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLatestReferendaPostsQuery, GetLatestReferendaPostsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetLatestReferendaPostsQuery, GetLatestReferendaPostsQueryVariables>(GetLatestReferendaPostsDocument, baseOptions);
-        }
-export type GetLatestReferendaPostsQueryHookResult = ReturnType<typeof useGetLatestReferendaPostsQuery>;
-export type GetLatestReferendaPostsLazyQueryHookResult = ReturnType<typeof useGetLatestReferendaPostsLazyQuery>;
-export type GetLatestReferendaPostsQueryResult = ApolloReactCommon.QueryResult<GetLatestReferendaPostsQuery, GetLatestReferendaPostsQueryVariables>;
-export const GetLatestTipPostsDocument = gql`
-    query GetLatestTipPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
-  posts(
-    limit: $limit
-    where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_tip_id: {_is_null: false}}}
-    order_by: {onchain_link: {id: desc}}
-  ) {
-    id
-    title
-    author {
-      ...authorFields
-    }
-    created_at
-    updated_at
-    comments_aggregate {
-      aggregate {
-        count
-      }
-    }
-    type {
-      name
-      id
-    }
-    topic {
-      id
-      name
-    }
-    onchain_link {
-      id
-      onchain_tip_id
-      onchain_tip {
-        id
-        reason
-        tipStatus(last: 1) {
-          id
-          status
-        }
-      }
-      proposer_address
-    }
-  }
-}
-    ${AuthorFieldsFragmentDoc}`;
-
-/**
- * __useGetLatestTipPostsQuery__
- *
- * To run a query within a React component, call `useGetLatestTipPostsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetLatestTipPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetLatestTipPostsQuery({
- *   variables: {
- *      postType: // value for 'postType'
- *      postTopic: // value for 'postTopic'
- *      limit: // value for 'limit'
- *   },
- * });
- */
-export function useGetLatestTipPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLatestTipPostsQuery, GetLatestTipPostsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetLatestTipPostsQuery, GetLatestTipPostsQueryVariables>(GetLatestTipPostsDocument, baseOptions);
-      }
-export function useGetLatestTipPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLatestTipPostsQuery, GetLatestTipPostsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetLatestTipPostsQuery, GetLatestTipPostsQueryVariables>(GetLatestTipPostsDocument, baseOptions);
-        }
-export type GetLatestTipPostsQueryHookResult = ReturnType<typeof useGetLatestTipPostsQuery>;
-export type GetLatestTipPostsLazyQueryHookResult = ReturnType<typeof useGetLatestTipPostsLazyQuery>;
-export type GetLatestTipPostsQueryResult = ApolloReactCommon.QueryResult<GetLatestTipPostsQuery, GetLatestTipPostsQueryVariables>;
-export const GetLatestDemocracyTreasuryProposalPostsDocument = gql`
-    query GetLatestDemocracyTreasuryProposalPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
-  posts(
-    limit: $limit
-    where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_treasury_proposal_id: {_is_null: false}}}
-    order_by: {onchain_link: {onchain_treasury_proposal_id: desc}}
-  ) {
-    id
-    title
-    author {
-      ...authorFields
-    }
-    created_at
-    updated_at
-    comments_aggregate {
-      aggregate {
-        count
-      }
-    }
-    type {
-      name
-      id
-    }
-    topic {
-      id
-      name
-    }
-    onchain_link {
-      id
-      onchain_treasury_proposal_id
-      onchain_treasury_spend_proposal {
-        id
-        treasuryStatus(last: 1) {
-          id
-          status
-        }
-      }
-      proposer_address
-    }
-  }
-}
-    ${AuthorFieldsFragmentDoc}`;
-
-/**
- * __useGetLatestDemocracyTreasuryProposalPostsQuery__
- *
- * To run a query within a React component, call `useGetLatestDemocracyTreasuryProposalPostsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetLatestDemocracyTreasuryProposalPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetLatestDemocracyTreasuryProposalPostsQuery({
- *   variables: {
- *      postType: // value for 'postType'
- *      postTopic: // value for 'postTopic'
- *      limit: // value for 'limit'
- *   },
- * });
- */
-export function useGetLatestDemocracyTreasuryProposalPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLatestDemocracyTreasuryProposalPostsQuery, GetLatestDemocracyTreasuryProposalPostsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetLatestDemocracyTreasuryProposalPostsQuery, GetLatestDemocracyTreasuryProposalPostsQueryVariables>(GetLatestDemocracyTreasuryProposalPostsDocument, baseOptions);
-      }
-export function useGetLatestDemocracyTreasuryProposalPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLatestDemocracyTreasuryProposalPostsQuery, GetLatestDemocracyTreasuryProposalPostsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetLatestDemocracyTreasuryProposalPostsQuery, GetLatestDemocracyTreasuryProposalPostsQueryVariables>(GetLatestDemocracyTreasuryProposalPostsDocument, baseOptions);
-        }
-export type GetLatestDemocracyTreasuryProposalPostsQueryHookResult = ReturnType<typeof useGetLatestDemocracyTreasuryProposalPostsQuery>;
-export type GetLatestDemocracyTreasuryProposalPostsLazyQueryHookResult = ReturnType<typeof useGetLatestDemocracyTreasuryProposalPostsLazyQuery>;
-export type GetLatestDemocracyTreasuryProposalPostsQueryResult = ApolloReactCommon.QueryResult<GetLatestDemocracyTreasuryProposalPostsQuery, GetLatestDemocracyTreasuryProposalPostsQueryVariables>;
-export const MyQueryDocument = gql`
-    query MyQuery {
-  posts_aggregate(where: {type: {id: {_eq: 1}}}) {
-    aggregate {
-      count
-    }
-  }
-}
-    `;
-
-/**
- * __useMyQueryQuery__
- *
- * To run a query within a React component, call `useMyQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useMyQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useMyQueryQuery({
- *   variables: {
- *   },
- * });
- */
-export function useMyQueryQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MyQueryQuery, MyQueryQueryVariables>) {
-        return ApolloReactHooks.useQuery<MyQueryQuery, MyQueryQueryVariables>(MyQueryDocument, baseOptions);
-      }
-export function useMyQueryLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MyQueryQuery, MyQueryQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<MyQueryQuery, MyQueryQueryVariables>(MyQueryDocument, baseOptions);
-        }
-export type MyQueryQueryHookResult = ReturnType<typeof useMyQueryQuery>;
-export type MyQueryLazyQueryHookResult = ReturnType<typeof useMyQueryLazyQuery>;
-export type MyQueryQueryResult = ApolloReactCommon.QueryResult<MyQueryQuery, MyQueryQueryVariables>;
-export const DiscussionsCountDocument = gql`
-    query DiscussionsCount {
-  posts_aggregate(where: {type: {id: {_eq: 1}}}) {
-    aggregate {
-      count
-    }
-  }
-}
-    `;
-
-/**
- * __useDiscussionsCountQuery__
- *
- * To run a query within a React component, call `useDiscussionsCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useDiscussionsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useDiscussionsCountQuery({
- *   variables: {
- *   },
- * });
- */
-export function useDiscussionsCountQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<DiscussionsCountQuery, DiscussionsCountQueryVariables>) {
-        return ApolloReactHooks.useQuery<DiscussionsCountQuery, DiscussionsCountQueryVariables>(DiscussionsCountDocument, baseOptions);
-      }
-export function useDiscussionsCountLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<DiscussionsCountQuery, DiscussionsCountQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<DiscussionsCountQuery, DiscussionsCountQueryVariables>(DiscussionsCountDocument, baseOptions);
-        }
-export type DiscussionsCountQueryHookResult = ReturnType<typeof useDiscussionsCountQuery>;
-export type DiscussionsCountLazyQueryHookResult = ReturnType<typeof useDiscussionsCountLazyQuery>;
-export type DiscussionsCountQueryResult = ApolloReactCommon.QueryResult<DiscussionsCountQuery, DiscussionsCountQueryVariables>;
