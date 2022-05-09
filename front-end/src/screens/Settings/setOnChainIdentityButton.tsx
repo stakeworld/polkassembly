@@ -15,7 +15,7 @@ import { Button, Form, Grid, Icon, Input, Modal, Popup } from 'semantic-ui-react
 import { ApiContext } from 'src/context/ApiContext';
 import { NotificationContext } from 'src/context/NotificationContext';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
-import { addressPrefix } from 'src/global/addressPrefix';
+import { addressPrefix } from 'src/global/networkConstants';
 import { APPNAME } from 'src/global/appName';
 import { chainProperties } from 'src/global/networkConstants';
 import { LoadingStatusType, NotificationStatus } from 'src/types';
