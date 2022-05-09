@@ -2,6 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import styled from '@xstyled/styled-components';
 import React, { useEffect } from 'react';
 import { Icon } from 'semantic-ui-react';
@@ -19,9 +21,9 @@ const NetworkInfo = ({ className }: Props) => {
 		network
 	} });
 
-	useEffect(() => {
-		refetch();
-	}, [refetch]);
+	// useEffect(() => {
+	// refetch();
+	// }, [refetch]);
 
 	return (
 		<div className={className}>
@@ -32,30 +34,37 @@ const NetworkInfo = ({ className }: Props) => {
 						<Icon name='home'/>
 					</a>
 					}
+					<span className="v-divider">|</span>
 					{data.blockchain_socials[0].twitter && <a href={data.blockchain_socials[0].twitter} target='_blank' rel='noreferrer'>
 						<Icon name='twitter'/>
 					</a>
 					}
+					<span className="v-divider">|</span>
 					{data.blockchain_socials[0].discord && <a href={data.blockchain_socials[0].discord} target='_blank' rel='noreferrer'>
 						<Icon name='discord'/>
 					</a>
 					}
+					<span className="v-divider">|</span>
 					{data.blockchain_socials[0].github && <a href={data.blockchain_socials[0].github} target='_blank' rel='noreferrer'>
 						<Icon name='github'/>
 					</a>
 					}
+					<span className="v-divider">|</span>
 					{data.blockchain_socials[0].youtube && <a href={data.blockchain_socials[0].youtube} target='_blank' rel='noreferrer'>
 						<Icon name='youtube'/>
 					</a>
 					}
+					<span className="v-divider">|</span>
 					{data.blockchain_socials[0].reddit && <a href={data.blockchain_socials[0].reddit} target='_blank' rel='noreferrer'>
 						<Icon name='reddit alien'/>
 					</a>
 					}
+					<span className="v-divider">|</span>
 					{data.blockchain_socials[0].telegram && <a href={data.blockchain_socials[0].telegram} target='_blank' rel='noreferrer'>
 						<Icon name='telegram plane'/>
 					</a>
 					}
+					<span className="v-divider">|</span>
 					{data.blockchain_socials[0].block_explorer && <a href={data.blockchain_socials[0].block_explorer} target='_blank' rel='noreferrer'>
 						<Icon name='cube'/>
 					</a>
@@ -79,21 +88,27 @@ export default styled(NetworkInfo)`
 	font-size: 16px;
 	width: 98%;
 	justify-content: space-between;
+	align-items: center;
 
 	.networkInfo-icons{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width:25%;
+		/* max-width: 125px; */
+
 		a {
 			margin-top: 0.5em;
 			margin-bottom: 0.5em;
-			padding-right: 0.6em;
-
-			&:not(:first-child) {
-				padding-left: 0.6em;
-				border-left: 1px solid rgba(226, 226, 226, 0.25);
-			}
 		}
 
 		.icon {
 			color: #fff;
+			margin-right: 0 !important;
+		}
+
+		.v-divider {
+			color: rgba(226, 226, 226, 0.25);
 		}
 		
 	}
@@ -106,13 +121,10 @@ export default styled(NetworkInfo)`
 
 		.networkInfo-icons {
 			margin-top: 20px;
-			
-			a {
-				padding-right: 0.4em !important;
-				&:not(:first-child) {
-					padding-left: 0.4em;
-				}
-			}
+			margin-left: auto;
+			margin-right: auto;
+			width: 100% !important;
+			max-width: 425px !important;
 
 			.icon {
 				font-size: 13.98px !important;
