@@ -61,7 +61,7 @@ const LatestActivityTableRow = function ({
 
 		switch (postType){
 		case 'discussion':
-			icon = <DiscussionsIcon className='discusssion-icon' />;
+			icon = <DiscussionsIcon className='discussion-icon' />;
 			serialID = onchainId;
 			break;
 		case 'referenda':
@@ -254,7 +254,7 @@ export default styled(LatestActivityTableRow)`
 			svg {
 				margin-right: 6px;
 
-				&.discusssion-icon {
+				&.discussion-icon {
 					margin-top: 5px;
 				}
 			}
