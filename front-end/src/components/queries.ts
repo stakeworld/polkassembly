@@ -13,7 +13,7 @@ query GET_REFRESH_TOKEN {
 `;
 
 export const GET_CALENDER_EVENTS = gql`
-query GET_CALENDER_EVENTS($network: String!) {
+query GetCalenderEvents($network: String!) {
     calender_events(where: {network: {_ilike: $network}}) {
         content
         end_time
@@ -28,7 +28,7 @@ query GET_CALENDER_EVENTS($network: String!) {
 `;
 
 export const EDIT_CALENDER_EVENT= gql`
-    mutation EditCalenderEvents ($id: Int!, $title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!) {
+    mutation EditCalenderEvent ($id: Int!, $title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!) {
         update_calender_events(where: {id: {_eq: $id}}, _set: {title: $title, content: $content, start_time: $start_time, end_time: $end_time, url: $url, module: $module, network: $network}) {
             affected_rows
         }
