@@ -193,10 +193,6 @@ export default styled(MenuBar)`
 			}
 		}
 
-		&.pushable {
-			position: relative;
-		}
-
 		&.ui.menu, .ui.inverted.menu {
 			min-height: 5rem;
 			border-bottom-style: solid;
@@ -227,7 +223,6 @@ export default styled(MenuBar)`
 
 			.item {
 				font-size: md;
-				display: inline-block;
 				&:before {
 					width: 0rem;
 				}
