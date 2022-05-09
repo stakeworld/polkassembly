@@ -159,7 +159,7 @@ const LatestActivityCard = function ({
 						/>
 					}
 					<span className="dot-divider"></span>
-					<span> { relativeCreatedAt } </span>
+					<span className='created-at-text'> { relativeCreatedAt } </span>
 				</div>
 			</div>
 
@@ -174,7 +174,6 @@ const LatestActivityCard = function ({
 
 export default styled(LatestActivityCard)`
 	cursor: pointer !important;
-
 	background: #fff;
 	width: 98%;
 	height: 100%;
@@ -228,6 +227,10 @@ export default styled(LatestActivityCard)`
 
 			& > * {
 				margin-right: 10px;
+			}
+
+			.created-at-text {
+				white-space: nowrap;
 			}
 		}
 	}

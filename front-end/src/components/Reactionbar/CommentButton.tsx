@@ -3,7 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from '@xstyled/styled-components';
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserDetailsContext } from 'src/context/UserDetailsContext';
 
 import commentImg from '../../assets/latest-activity-comment.png';
 import Button from '../../ui-components/Button';
@@ -12,20 +13,22 @@ export interface CommentButtonProps {
 	className?: string
 	postId?: number
 	gotoPost: () => void
+	reactionsDisabled: boolean
 }
 
 const CommentButton = function ({
 	className,
-	gotoPost
-	// postId,
+	gotoPost,
+	reactionsDisabled
 }: CommentButtonProps) {
-	// const { id } = useContext(UserDetailsContext);
+	const { id } = useContext(UserDetailsContext);
 
 	const button =  <span className={className}>
 		{
 			<Button
 				className='social'
 				onClick={gotoPost}
+				disabled={!id || reactionsDisabled}
 			>
 				<img width='20px' height='20px' src={commentImg} alt="Comment" />
 			</Button>

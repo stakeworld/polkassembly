@@ -479,6 +479,7 @@ export default styled(TreasuryOverviewCards)`
 			@media only screen and (max-width: 767px) {
 				padding-bottom: 12px;
 				min-width: 14px;
+				max-height: 120px;
 
 				.mobile-text {
 					display: block;
