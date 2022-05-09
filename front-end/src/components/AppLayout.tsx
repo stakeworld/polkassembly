@@ -19,14 +19,18 @@ function AppLayout() {
 		setSidebarHidden(!sidebarHidden);
 	};
 
+	const closeSidebar = () => {
+		setSidebarHidden(true);
+	};
+
 	return (
 		<>
 			{!apiReady && <div style={ { left: '50vw', position: 'fixed', top: '50vh', transform: 'translate(-50%, 0)', width: '100%', zIndex: 500 } } ><Loader text='Waiting to make a connection to the remote endpoint and finishing API initialization.' size="big" /></div>}
 			<div style={!apiReady ? { opacity: 0.1 } : {}}>
-				<MenuBar toggleSidebarHidden={toggleSidebarHidden} />
+				<MenuBar toggleSidebarHidden={toggleSidebarHidden} setSidebarHidden={setSidebarHidden} />
 				<div className='d-flex'>
 					<CustomSidebar sidebarHidden={sidebarHidden} setIsCollapsed={setSidebarCollapsed} setSidebarHidden={setSidebarHidden} />
-					<div className={`route-wrapper ${sidebarCollapsed ? 'collapsed' : ''}`}>
+					<div onClick={closeSidebar} className={`route-wrapper ${sidebarCollapsed ? 'collapsed' : ''}`}>
 						<SwitchRoutes />
 					</div>
 				</div>

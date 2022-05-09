@@ -89,7 +89,7 @@ export default styled(UpcomingEvents)`
 		justify-content: center;
 
 		.coming-soon-text {
-			font-size: 3em;
+			font-size: 3rem;
 		}
 		
 		@media only screen and (max-width: 991.5px) {
