@@ -1174,13 +1174,20 @@ export default class AuthService {
 
 		const token = await this.getSignedToken(user);
 
-		const fetchPostQuery = `
+		let fetchPostQuery = `
 			query MyQuery($proposal_id: Int!) {
 				onchain_links(where: {onchain_${proposalType}_id: {_eq: $proposal_id}}) {
 					post_id
 			}
+		}`;
+
+		if (proposalType === 'tip') {
+			fetchPostQuery = `query MyQuery($proposal_id: String!) {
+				onchain_links(where: {onchain_${proposalType}_id: {_eq: $proposal_id}}) {
+					post_id
+				}
+			}`;
 		}
-	  `;
 
 		const getPost = {
 			body: JSON.stringify({
