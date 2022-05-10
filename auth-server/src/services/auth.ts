@@ -1105,7 +1105,7 @@ export default class AuthService {
 			method: 'POST'
 		};
 
-		let api = `https://${network}.${process.env.DOMAIN_NAME}/v1/graphql`;
+		let api = `https://${process.env.DOMAIN_NAME}/v1/graphql`;
 
 		if (process.env.DOMAIN_NAME === 'test.polkassembly.io') {
 			api = 'https://test.polkassembly.io/v1/graphql';
@@ -1196,7 +1196,7 @@ export default class AuthService {
 			method: 'POST'
 		};
 
-		let api = `https://${network}.${process.env.DOMAIN_NAME}/v1/graphql`;
+		let api = `https://${process.env.DOMAIN_NAME}/v1/graphql`;
 
 		if (process.env.DOMAIN_NAME === 'test.polkassembly.io') {
 			api = 'https://test.polkassembly.io/v1/graphql';
