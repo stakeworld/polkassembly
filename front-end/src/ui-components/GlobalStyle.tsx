@@ -64,6 +64,13 @@ export const GlobalStyle = createGlobalStyle`
     .route-wrapper {
         flex: 1;
 
+        &.no-margin-sm {
+            @media screen and (max-width:576px) {
+                margin: 60px auto 6em auto;
+                max-width: 100% !important;
+            }
+        }
+
         @media screen and (max-width:992px) {
             margin: 60px auto 6em auto;
             max-width: 95% !important;

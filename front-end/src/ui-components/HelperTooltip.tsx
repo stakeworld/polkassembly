@@ -11,6 +11,7 @@ import infoCircleIcon from '../assets/InfoCircle.png';
 interface Props {
 	content: string
 	position?: 'top left' | 'top right' | 'bottom right' | 'bottom left' | 'right center' | 'left center' | 'top center' | 'bottom center' | undefined
+	basic?: boolean
 }
 
 const popupStyle = {
@@ -25,13 +26,15 @@ export const StyledIcon = styled(myIcon)`
 	margin-left: 0.25em !important;
 `;
 
-const HelperTooltip = ({ content, position }:Props) =>
+const HelperTooltip = ({ content, position, basic = false }:Props) =>
 	<Popup
 		trigger={<span><StyledIcon /></span>}
 		content={content}
 		style={popupStyle}
 		hoverable={true}
 		position={position}
+		basic={basic}
+		hideOnScroll
 	/>;
 
 export default HelperTooltip;
