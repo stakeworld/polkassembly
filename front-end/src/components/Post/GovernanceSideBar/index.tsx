@@ -43,7 +43,7 @@ const GovenanceSideBar = ({ className, isMotion, isProposal, isReferendum, isTip
 	const [extensionNotFound, setExtensionNotFound] = useState(false);
 	const [accountsNotFound, setAccountsNotFound] = useState(false);
 	const { api, apiReady } = useContext(ApiContext);
-	const [lastVote, setLastVote] = useState<string | null>(null);
+	const [lastVote, setLastVote] = useState<string | null | undefined>(undefined);
 
 	const canVote = !!status && !![proposalStatus.PROPOSED, referendumStatus.STARTED, motionStatus.PROPOSED, tipStatus.OPENED].includes(status);
 
@@ -155,16 +155,18 @@ const GovenanceSideBar = ({ className, isMotion, isProposal, isReferendum, isTip
 								}
 
 								<div className='vote-div vote-card'>
-									{lastVote == null ?
+									{lastVote != undefined ? lastVote == null ?
 										<div className='vote-reminder-text'>You haven&apos;t voted yet, vote now and do your bit for the community</div>
 										:
 										<div className='last-vote-text-cont'>
 											You Voted: { lastVote == 'aye' ? <Icon name='thumbs up' className='green-text' /> : <Icon name='thumbs down' className='red-text' /> }
 											<span className={`last-vote-text ${lastVote == 'aye' ? 'green-text' : 'red-text'}`}>{lastVote}</span>
 										</div>
+										: <div className="spacer"></div>
 									}
 
 									{canVote && <VoteReferendum
+										lastVote={lastVote}
 										setLastVote={setLastVote}
 										accounts={accounts}
 										address={address}
@@ -244,6 +246,10 @@ export default styled(GovenanceSideBar)`
 				color: #909090;
 				margin-left: 6px;
 			}
+		}
+
+		.spacer {
+			margin-top: 9px;
 		}
 	}
 `;
