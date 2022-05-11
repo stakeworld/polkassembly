@@ -28,10 +28,9 @@ const CalendarView = ({ className }: Props) => {
 
 	const [calendarEvents, setCalendarEvents] = useState<any[]>([]);
 
-	// TODO: ENABLE
-	// useEffect(() => {
-	// refetch();
-	// }, [refetch]);
+	useEffect(() => {
+		refetch();
+	}, [refetch]);
 
 	useEffect(() =>  {
 		const eventsArr:any[] = [];

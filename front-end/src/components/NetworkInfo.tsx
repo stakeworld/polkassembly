@@ -105,7 +105,7 @@ export default styled(NetworkInfo)`
 	box-shadow: 0px 5px 10px 1px rgba(186,182,186,1);
 	background: #E5007A !important;
 	display: flex;
-	padding: 24px 24px;
+	padding: 20px 24px;
 	color: #fff;
 	font-size: 16px;
 	width: 98%;
