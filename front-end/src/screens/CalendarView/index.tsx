@@ -2,25 +2,26 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import styled from '@xstyled/styled-components';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
-import { Button, Grid, Popup } from 'semantic-ui-react';
+import { Grid, Popup } from 'semantic-ui-react';
 import { useGetCalenderEventsQuery } from 'src/generated/graphql';
 
 import CustomToolbar from './CustomToolbar';
 
 interface Props {
   className?: string
+	small?: boolean
+	emitCalendarEvents?: React.Dispatch<React.SetStateAction<any[]>> | undefined
 }
 
 const localizer = momentLocalizer(moment);
 
-const CalendarView = ({ className }: Props) => {
+const CalendarView = ({ className, small = false, emitCalendarEvents = undefined }: Props) => {
 
 	const { data, refetch } = useGetCalenderEventsQuery({ variables: {
 		network: 'polkadot'
@@ -37,12 +38,17 @@ const CalendarView = ({ className }: Props) => {
 		data?.calender_events.forEach(eventObj => {
 			eventsArr.push({
 				end_time: moment(eventObj.end_time).toDate(),
+				id: eventObj.id,
 				start_time: moment(eventObj.start_time).toDate(),
 				title: eventObj.title
 			});
 		});
 		setCalendarEvents(eventsArr);
-	}, [data]);
+
+		if(emitCalendarEvents) {
+			emitCalendarEvents(eventsArr);
+		}
+	}, [data, emitCalendarEvents]);
 
 	function Event({ event } : {event: any}) {
 		return (
@@ -52,7 +58,7 @@ const CalendarView = ({ className }: Props) => {
 
 	return (
 		<div className={className}>
-			<h1>Calendar</h1>
+			{ !small && <h1>Calendar</h1>}
 			<Grid stackable>
 				{data && data.calender_events ?
 					<Grid.Row>
@@ -126,6 +132,10 @@ h1 {
 	.custom-calendar-toolbar {
 		margin: 0 0 1.5em 1em;
 
+		@media only screen and (max-width: 576px) {
+			margin: 0 0 1.5em 0.1em;
+		}
+
 		.action-div {
 			margin-top: 0.5em;
 			display: flex;
@@ -138,6 +148,9 @@ h1 {
 				.today-btn-img {
 					cursor: pointer;
 					margin-right: 16px;
+					@media only screen and (max-width: 576px) {
+						margin-right: 8px;
+					}
 				}
 			}
 
