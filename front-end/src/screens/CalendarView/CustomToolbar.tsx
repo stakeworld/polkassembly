@@ -3,12 +3,14 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 /* eslint-disable no-tabs */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// TODO: Implement
+// TODO: Implement no-tabs
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { DropdownProps, Select } from 'semantic-ui-react';
+
+import calendar_today from '../../assets/calendar_today.png';
 
 function CustomToolbar(props: any) {
 	const months = [
@@ -26,44 +28,51 @@ function CustomToolbar(props: any) {
 		{ key: '11', text: 'December', value: 11 }
 	];
 
-	const [viewState, setViewState] = useState('month');
+	const viewStateOptions = [
+		{ key: 'month', text: 'Month', value: 'month' },
+		{ key: 'week', text: 'Week', value: 'week' },
+		{ key: 'day', text: 'Day', value: 'day' },
+		{ key: 'agenda', text: 'Agenda', value: 'agenda' }
+	];
+
+	const [viewState, setViewState] = useState<string>('month');
 	const [selectedMonth, setSelectedMonth] = useState<number>(props.date.getMonth());
 
-	function addMonths(date:any, months: any) {
-		const d = date.getDate();
-		date.setMonth(date.getMonth() + months);
-		if (date.getDate() != d) {
-			date.setDate(0);
-		}
-		console.log(date);
-		return date;
-	}
+	// function addMonths(date:any, months: any) {
+	// 	const d = date.getDate();
+	// 	date.setMonth(date.getMonth() + months);
+	// 	if (date.getDate() != d) {
+	// 		date.setDate(0);
+	// 	}
+	// 	console.log(date);
+	// 	return date;
+	// }
 
-	function addWeeks(date: any, weeks: any) {
-		date.setDate(date.getDate() + 7 * weeks);
-		return date;
-	}
+	// function addWeeks(date: any, weeks: any) {
+	// 	date.setDate(date.getDate() + 7 * weeks);
+	// 	return date;
+	// }
 
-	function addDays(date: any, days: any) {
-		date.setDate(date.getDate() + days);
-		console.log(date);
-		return date;
-	}
+	// function addDays(date: any, days: any) {
+	// 	date.setDate(date.getDate() + days);
+	// 	console.log(date);
+	// 	return date;
+	// }
 
-	const goToDayView = () => {
-		props.onView('day');
-		setViewState('day');
-	};
-
-	// const goToWeekView = () => {
-	// props.onView('week');
-	// setViewState('week');
+	// const goToDayView = () => {
+	// 	props.onView('day');
+	// 	setViewState('day');
 	// };
 
-	const goToMonthView = () => {
-		props.onView('month');
-		setViewState('month');
-	};
+	// const goToWeekView = () => {
+	// 	props.onView('week');
+	// 	setViewState('week');
+	// };
+
+	// const goToMonthView = () => {
+	// 	props.onView('month');
+	// 	setViewState('month');
+	// };
 
 	// const goToBack = () => {
 	// 	if (viewState === 'month') {
@@ -102,6 +111,11 @@ function CustomToolbar(props: any) {
 		props.onNavigate('current');
 	};
 
+	const onViewStateChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+		setViewState(`${data.value}`);
+		props.onView(`${data.value}`);
+	};
+
 	useEffect(() => {
 		setSelectedMonth(props.date.getMonth());
 		const now = new Date();
@@ -112,15 +126,19 @@ function CustomToolbar(props: any) {
 	}, []);
 
 	return (
-		<div className='custom-calendar-toolbar'>
+		props.date && <div className='custom-calendar-toolbar'>
 			<div className='action-div'>
 				<Select compact value={selectedMonth} onChange={onSelectMonthChange} options={months} />
+				<span>{moment(props.date).format('MMMM YYYY')}</span>
+				<div className='actions-right'>
+					<img className='today-btn-img' onClick={goToToday} src={calendar_today} height={16} width={16} title='Today' alt='Today' />
+					<Select compact value={viewState} onChange={onViewStateChange} options={viewStateOptions} />
+				</div>
+				{/* <button onClick={goToMonthView}>month</button>
+					<button onClick={goToWeekView}>week</button>
+					<button onClick={goToDayView}>day</button> */}
 				{/* <button onClick={goToBack}>&#8249;</button> */}
-				<button onClick={goToToday}>today</button>
 				{/* <button onClick={goToNext}>&#8250;</button> */}
-				<button onClick={goToMonthView}>month</button>
-				{/* <button onClick={goToWeekView}>week</button> */}
-				<button onClick={goToDayView}>day</button>
 			</div>
 		</div>
 	);

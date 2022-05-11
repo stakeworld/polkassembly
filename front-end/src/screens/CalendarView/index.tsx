@@ -7,7 +7,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import styled from '@xstyled/styled-components';
 import moment from 'moment';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import { Button, Grid, Popup } from 'semantic-ui-react';
 import { useGetCalenderEventsQuery } from 'src/generated/graphql';
@@ -26,10 +26,24 @@ const CalendarView = ({ className }: Props) => {
 		network: 'polkadot'
 	} });
 
+	const [calendarEvents, setCalendarEvents] = useState<any[]>([]);
+
 	// TODO: ENABLE
 	// useEffect(() => {
 	// refetch();
 	// }, [refetch]);
+
+	useEffect(() =>  {
+		const eventsArr:any[] = [];
+		data?.calender_events.forEach(eventObj => {
+			eventsArr.push({
+				end_time: moment(eventObj.end_time).toDate(),
+				start_time: moment(eventObj.start_time).toDate(),
+				title: eventObj.title
+			});
+		});
+		setCalendarEvents(eventsArr);
+	}, [data]);
 
 	function Event({ event } : {event: any}) {
 		return (
@@ -41,18 +55,18 @@ const CalendarView = ({ className }: Props) => {
 		<div className={className}>
 			<h1>Calendar</h1>
 			<Grid stackable>
-				{data && data.calender_events && data.calender_events.length > 0 ?
+				{data && data.calender_events ?
 					<Grid.Row>
 						<Calendar
 							className='events-calendar'
 							localizer={localizer}
-							events={data.calender_events}
+							events={calendarEvents}
 							startAccessor='start_time'
 							endAccessor='end_time'
 							popup={true}
 							components={{
-								event: Event
-								// toolbar: CustomToolbar
+								event: Event,
+								toolbar: CustomToolbar
 							}}
 							// onSelectEvent={}
 						/>
@@ -110,13 +124,26 @@ h1 {
 		}
 	}
 
-	/* .custom-calendar-toolbar {
+	.custom-calendar-toolbar {
 		margin: 0 0 1.5em 1em;
 
 		.action-div {
 			margin-top: 0.5em;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			.actions-right {
+				display: flex;
+				align-items: center;
+				.today-btn-img {
+					cursor: pointer;
+					margin-right: 16px;
+				}
+			}
+
 		}
-	} */
+	}
 
 	.rbc-day-bg.rbc-today {
 		background-color: rgba(230, 0, 123, 0.04);
