@@ -169,16 +169,6 @@ const LatestActivity = ({ className }: Props) => {
 		// menuItem: <Menu.Item className='menu-right no-label-item' key='search'> <Icon name='search' /> </Menu.Item>,
 		// render: () => <LatestActivitySearchPage className='tab-panel' />
 		// }
-	// {
-	// menuItem: <Menu.Item className='no-border' key='filter'>
-	// <img style={ { height:'auto', width:'1.2em' } } src={filterIMG} alt="Filter" />
-	// </Menu.Item>,
-	// render: () => <LatestActivitySearchPage className='tab-panel' /> //TODO: Change to button
-	// },
-	// {
-	// menuItem: <Menu.Item className='no-border' key='th'> <Icon name='th' /> </Menu.Item>,
-	// render: () => <LatestActivitySearchPage className='tab-panel' /> //TODO: Change to button
-	// }
 	];
 
 	const [activeTabIndex, setActiveIndex] = useState<number>(0);

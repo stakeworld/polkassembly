@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import { Grid, Popup } from 'semantic-ui-react';
 import { useGetCalenderEventsQuery } from 'src/generated/graphql';
+import getNetwork from 'src/util/getNetwork';
 
 import CustomToolbar from './CustomToolbar';
 
@@ -21,10 +22,12 @@ interface Props {
 
 const localizer = momentLocalizer(moment);
 
+const NETWORK = getNetwork();
+
 const CalendarView = ({ className, small = false, emitCalendarEvents = undefined }: Props) => {
 
 	const { data, refetch } = useGetCalenderEventsQuery({ variables: {
-		network: 'polkadot'
+		network: NETWORK
 	} });
 
 	const [calendarEvents, setCalendarEvents] = useState<any[]>([]);
