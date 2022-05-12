@@ -26,10 +26,11 @@ interface Props {
 	accounts: InjectedAccountWithMeta[]
 	onAccountChange: (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => void
 	getAccounts: () => Promise<undefined>
-	setLastVote: React.Dispatch<React.SetStateAction<string | null>>
+	lastVote: string | null | undefined
+	setLastVote: React.Dispatch<React.SetStateAction<string | null | undefined>>
 }
 
-const VoteRefrendum = ({ className, referendumId, address, accounts, onAccountChange, getAccounts, setLastVote }: Props) => {
+const VoteRefrendum = ({ className, referendumId, address, accounts, onAccountChange, getAccounts, lastVote, setLastVote }: Props) => {
 	const { queueNotification } = useContext(NotificationContext);
 	const [lockedBalance, setLockedBalance] = useState<BN | undefined>(undefined);
 	const { api, apiReady } = useContext(ApiContext);
@@ -103,7 +104,7 @@ const VoteRefrendum = ({ className, referendumId, address, accounts, onAccountCh
 					primary
 					onClick={getAccounts}
 				>
-					Vote Now!
+					{lastVote == null || lastVote == undefined  ? 'Vote Now!' : 'Vote Again!' }
 				</Button>
 			</Form.Field>
 		</Form.Group>;

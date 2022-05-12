@@ -43,7 +43,7 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 			name: 'News'
 		},
 		{
-			icon: <Icon name='chain' />,
+			icon: <Icon name='chain' size='small' />,
 			link: 'https://parachains.polkassembly.io/',
 			name: 'Parachains'
 		}
@@ -336,6 +336,11 @@ export default styled(CustomSidebar)`
 
 		.content {
 			padding-left: 0.5em;
+		}
+
+		.icon {
+			color: #778192 !important;
+			margin-left: 5px !important;
 		}
 		
 		&:hover {

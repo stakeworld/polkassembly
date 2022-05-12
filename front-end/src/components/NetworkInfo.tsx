@@ -28,37 +28,68 @@ const NetworkInfo = ({ className }: Props) => {
 			<div className="text">Join our Community to discuss, contribute and get regular updates from us!</div>
 			{!error && data && data.blockchain_socials[0] &&
 				<div className="networkInfo-icons">
-					{data.blockchain_socials[0].homepage && <a href={data.blockchain_socials[0].homepage} target='_blank' rel='noreferrer'>
-						<Icon name='home'/>
-					</a>
+					{data.blockchain_socials[0].homepage &&
+					<>
+						<a href={data.blockchain_socials[0].homepage} target='_blank' rel='noreferrer'>
+							<Icon name='home'/>
+						</a>
+					</>
 					}
-					{data.blockchain_socials[0].twitter && <a href={data.blockchain_socials[0].twitter} target='_blank' rel='noreferrer'>
-						<Icon name='twitter'/>
-					</a>
+					{data.blockchain_socials[0].twitter &&
+					<>
+						<span className="v-divider">|</span>
+						<a href={data.blockchain_socials[0].twitter} target='_blank' rel='noreferrer'>
+							<Icon name='twitter'/>
+						</a>
+					</>
 					}
-					{data.blockchain_socials[0].discord && <a href={data.blockchain_socials[0].discord} target='_blank' rel='noreferrer'>
-						<Icon name='discord'/>
-					</a>
+					{data.blockchain_socials[0].discord &&
+					<>
+						<span className="v-divider">|</span>
+						<a href={data.blockchain_socials[0].discord} target='_blank' rel='noreferrer'>
+							<Icon name='discord'/>
+						</a>
+					</>
 					}
-					{data.blockchain_socials[0].github && <a href={data.blockchain_socials[0].github} target='_blank' rel='noreferrer'>
-						<Icon name='github'/>
-					</a>
+					{data.blockchain_socials[0].github &&
+					<>
+						<span className="v-divider">|</span>
+						<a href={data.blockchain_socials[0].github} target='_blank' rel='noreferrer'>
+							<Icon name='github'/>
+						</a>
+					</>
 					}
-					{data.blockchain_socials[0].youtube && <a href={data.blockchain_socials[0].youtube} target='_blank' rel='noreferrer'>
-						<Icon name='youtube'/>
-					</a>
+					{data.blockchain_socials[0].youtube &&
+					<>
+						<span className="v-divider">|</span>
+						<a href={data.blockchain_socials[0].youtube} target='_blank' rel='noreferrer'>
+							<Icon name='youtube'/>
+						</a>
+					</>
 					}
-					{data.blockchain_socials[0].reddit && <a href={data.blockchain_socials[0].reddit} target='_blank' rel='noreferrer'>
-						<Icon name='reddit alien'/>
-					</a>
+					{data.blockchain_socials[0].reddit &&
+					<>
+						<span className="v-divider">|</span>
+						<a href={data.blockchain_socials[0].reddit} target='_blank' rel='noreferrer'>
+							<Icon name='reddit alien'/>
+						</a>
+					</>
 					}
-					{data.blockchain_socials[0].telegram && <a href={data.blockchain_socials[0].telegram} target='_blank' rel='noreferrer'>
-						<Icon name='telegram plane'/>
-					</a>
+					{data.blockchain_socials[0].telegram &&
+					<>
+						<span className="v-divider">|</span>
+						<a href={data.blockchain_socials[0].telegram} target='_blank' rel='noreferrer'>
+							<Icon name='telegram plane'/>
+						</a>
+					</>
 					}
-					{data.blockchain_socials[0].block_explorer && <a href={data.blockchain_socials[0].block_explorer} target='_blank' rel='noreferrer'>
-						<Icon name='cube'/>
-					</a>
+					{data.blockchain_socials[0].block_explorer &&
+					<>
+						<span className="v-divider">|</span>
+						<a href={data.blockchain_socials[0].block_explorer} target='_blank' rel='noreferrer'>
+							<Icon name='cube'/>
+						</a>
+					</>
 					}
 
 				</div>
@@ -74,26 +105,32 @@ export default styled(NetworkInfo)`
 	box-shadow: 0px 5px 10px 1px rgba(186,182,186,1);
 	background: #E5007A !important;
 	display: flex;
-	padding: 24px 24px;
+	padding: 20px 24px;
 	color: #fff;
 	font-size: 16px;
 	width: 98%;
 	justify-content: space-between;
+	align-items: center;
 
 	.networkInfo-icons{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width:25%;
+		/* max-width: 125px; */
+
 		a {
 			margin-top: 0.5em;
 			margin-bottom: 0.5em;
-			padding-right: 0.6em;
-
-			&:not(:first-child) {
-				padding-left: 0.6em;
-				border-left: 1px solid rgba(226, 226, 226, 0.25);
-			}
 		}
 
 		.icon {
 			color: #fff;
+			margin-right: 0 !important;
+		}
+
+		.v-divider {
+			color: rgba(226, 226, 226, 0.25);
 		}
 		
 	}
@@ -106,13 +143,10 @@ export default styled(NetworkInfo)`
 
 		.networkInfo-icons {
 			margin-top: 20px;
-			
-			a {
-				padding-right: 0.4em !important;
-				&:not(:first-child) {
-					padding-left: 0.4em;
-				}
-			}
+			margin-left: auto;
+			margin-right: auto;
+			width: 100% !important;
+			max-width: 425px !important;
 
 			.icon {
 				font-size: 13.98px !important;

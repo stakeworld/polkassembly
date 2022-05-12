@@ -21,9 +21,10 @@ interface Props {
 	children?: ReactNode
 	className?: string
 	toggleSidebarHidden: () => void
+	setSidebarHidden: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const MenuBar = ({ className, toggleSidebarHidden } : Props): JSX.Element => {
+const MenuBar = ({ className, toggleSidebarHidden, setSidebarHidden } : Props): JSX.Element => {
 	const currentUser = useContext(UserDetailsContext);
 	const [logoutMutation] = useLogoutMutation();
 	const { history } = useRouter();
@@ -55,6 +56,10 @@ const MenuBar = ({ className, toggleSidebarHidden } : Props): JSX.Element => {
 		toggleSidebarHidden();
 	};
 
+	const setSidebarHiddenFunc = () => {
+		setSidebarHidden(true);
+	};
+
 	const userMenu = currentUser.web3signup && currentUser.defaultAddress
 		? <><AddressComponent address={currentUser.defaultAddress} /></>
 		: <><Icon size='big' name='user circle' inverted />{username}</>;
@@ -70,7 +75,7 @@ const MenuBar = ({ className, toggleSidebarHidden } : Props): JSX.Element => {
 					</Menu.Menu>
 					<Menu.Item as={NavLink} to="/" className='logo' id='title'><img alt='Polkassembly Logo' src={logo} /></Menu.Item>
 					<Menu.Menu position="right">
-						<NetworkDropdown />
+						<NetworkDropdown setSidebarHiddenFunc={setSidebarHiddenFunc} />
 					</Menu.Menu>
 				</Menu>
 			</Responsive>
@@ -193,10 +198,6 @@ export default styled(MenuBar)`
 			}
 		}
 
-		&.pushable {
-			position: relative;
-		}
-
 		&.ui.menu, .ui.inverted.menu {
 			min-height: 5rem;
 			border-bottom-style: solid;
@@ -227,7 +228,6 @@ export default styled(MenuBar)`
 
 			.item {
 				font-size: md;
-				display: inline-block;
 				&:before {
 					width: 0rem;
 				}

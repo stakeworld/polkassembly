@@ -313,7 +313,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			<Card className='treasury-card'>
 				<Card.Content>
 					<Card.Meta className='treasury-card-meta'>
-						Available <HelperTooltip content='Available funds collected through a portion of block production rewards, transaction fees, slashing, staking inefficiencies, etc.' />
+						Available <HelperTooltip basic={true} position='top left' content='Funds collected through a portion of block production rewards, transaction fees, slashing, staking inefficiencies, etc.' />
 					</Card.Meta>
 					<Card.Header className='treasury-card-header'>
 						{result.value ? (
@@ -382,7 +382,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 				<Card.Content>
 					<Card.Meta className='treasury-card-meta'>
 						<span className='desktop-text'>
-							Spend Period Elapsed <HelperTooltip content={'Funds held in the treasury can be spent by making a spending proposal that, if approved by the Council, will enter a spend period before distribution, it is subject to governance, with the current default set to '+ blockToDays(result.spendPeriod.toNumber(), blocktime) + ' days.'} />
+							Spend Period Elapsed <HelperTooltip basic={true} content={'Funds held in the treasury can be spent by making a spending proposal that, if approved by the Council, will enter a spend period before distribution, it is subject to governance, with the current default set to '+ blockToDays(result.spendPeriod.toNumber(), blocktime) + ' days.'} />
 						</span>
 						<span className='mobile-text'>
 						Spend Period
@@ -403,7 +403,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			<Card className='treasury-card'>
 				<Card.Content>
 					<Card.Meta className='treasury-card-meta'>
-						Next Burn <HelperTooltip content='If the Treasury ends a spend period without spending all of its funds, it suffers a burn of a percentage of its funds.' />
+						Next Burn <HelperTooltip basic={true} position='right center' content='If the Treasury ends a spend period without spending all of its funds, it suffers a burn of a percentage of its funds.' />
 					</Card.Meta>
 					<Card.Header className='treasury-card-header'>
 						{result.burn ? (
@@ -479,6 +479,7 @@ export default styled(TreasuryOverviewCards)`
 			@media only screen and (max-width: 767px) {
 				padding-bottom: 12px;
 				min-width: 14px;
+				max-height: 120px;
 
 				.mobile-text {
 					display: block;

@@ -85,9 +85,10 @@ const NetworkOptions: DropdownItemProps[] = [
 
 interface Props {
     className?: string
+		setSidebarHiddenFunc?: () => void
 }
 
-const NetworkDropdown = ({ className }: Props) =>  {
+const NetworkDropdown = ({ className, setSidebarHiddenFunc }: Props) =>  {
 
 	const navigate = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
 		if (data.value === NETWORK){
@@ -102,6 +103,7 @@ const NetworkDropdown = ({ className }: Props) =>  {
 	};
 
 	return <Dropdown
+		onClick={setSidebarHiddenFunc}
 		className={className}
 		pointing='top'
 		onChange={navigate}
@@ -116,6 +118,7 @@ export default styled(NetworkDropdown)`
     display: flex !important;
     align-items: center;
 		margin: 0 1.2rem;
+		font-size: 13px;
 
 		i.icon {
 			color: #fff !important;

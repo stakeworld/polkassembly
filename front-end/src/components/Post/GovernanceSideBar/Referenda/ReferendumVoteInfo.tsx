@@ -23,7 +23,7 @@ interface Props {
 	className?: string
 	referendumId: number
 	threshold?: VoteThreshold
-	setLastVote: React.Dispatch<React.SetStateAction<string | null>>
+	setLastVote: React.Dispatch<React.SetStateAction<string | null | undefined>>
 }
 
 const ZERO = new BN(0);
@@ -237,7 +237,7 @@ export default styled(ReferendumVoteInfo)`
 		position: inherit;
 		height: 10rem;
 		.loader {
-			margin-top: -8rem !important;
+			margin-top: -4.5rem !important;
 		}
 	}
 `;
