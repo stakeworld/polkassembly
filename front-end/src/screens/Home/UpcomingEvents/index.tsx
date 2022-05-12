@@ -98,6 +98,8 @@ export default styled(UpcomingEvents)`
 		@media only screen and (max-width: 991.5px) {
 			height: fit-content;
 			max-height: fit-content;
+			padding-left: 1rem;
+			padding-right: 1rem;
 		}
 
 		.coming-soon-text {
@@ -137,8 +139,6 @@ export default styled(UpcomingEvents)`
 
 		.event-content-row {
 			justify-content: center;
-			padding-left: 0;
-			padding-right: 0;
 		}
 		
 		.event-filter-bar {
@@ -186,8 +186,20 @@ export default styled(UpcomingEvents)`
 					overflow-y: auto;
 				}
 
+				@media only screen and (max-width: 767px) {
+					overflow-y: auto;
+					overflow-x: auto;
+					background: transparent !important;
+					-ms-overflow-style: none;  /* Internet Explorer 10+ */
+					scrollbar-width: none;  /* Firefox */
+
+					&::-webkit-scrollbar {
+						display: none;  /* Safari and Chrome */
+					}
+				}
+
 				.events-calendar {
-					margin-left: 12px;
+					margin-left: 16px;
 					padding: 0;
 					height: auto;
 					width: 100%;

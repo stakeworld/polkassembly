@@ -74,9 +74,8 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 							popup={true}
 							components={{
 								event: Event,
-								toolbar: CustomToolbar
+								toolbar: props => <CustomToolbar {...props} small={small} />
 							}}
-							// onSelectEvent={}
 						/>
 					</Grid.Row>
 					:

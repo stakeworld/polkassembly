@@ -28,12 +28,22 @@ function CustomToolbar(props: any) {
 		{ key: '11', text: 'December', value: 11 }
 	];
 
-	const viewStateOptions = [
-		{ key: 'month', text: 'Month', value: 'month' },
-		{ key: 'week', text: 'Week', value: 'week' },
-		{ key: 'day', text: 'Day', value: 'day' },
-		{ key: 'agenda', text: 'Agenda', value: 'agenda' }
-	];
+	let viewStateOptions = [];
+
+	if(props.small) {
+		viewStateOptions = [
+			{ key: 'month', text: 'Month', value: 'month' },
+			{ key: 'day', text: 'Day', value: 'day' },
+			{ key: 'agenda', text: 'Agenda', value: 'agenda' }
+		];
+	}else{
+		viewStateOptions = [
+			{ key: 'month', text: 'Month', value: 'month' },
+			{ key: 'week', text: 'Week', value: 'week' },
+			{ key: 'day', text: 'Day', value: 'day' },
+			{ key: 'agenda', text: 'Agenda', value: 'agenda' }
+		];
+	}
 
 	const [viewState, setViewState] = useState<string>('month');
 	const [selectedMonth, setSelectedMonth] = useState<number>(props.date.getMonth());
