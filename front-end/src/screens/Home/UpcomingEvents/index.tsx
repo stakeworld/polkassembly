@@ -164,7 +164,6 @@ export default styled(UpcomingEvents)`
 
 		.event-list-col {
 			overflow-y: auto;
-			/* max-height: 402px; */
 			height: 460px;
 			max-height: 460px;
 			border-right: 2px #eee solid;
@@ -179,8 +178,6 @@ export default styled(UpcomingEvents)`
 		}
 
 		.event-calendar-col{
-			/* height: 402px; */
-			/* max-height: 402px; */
 			height: 490px;
 			max-height: 490px;
 
@@ -194,27 +191,11 @@ export default styled(UpcomingEvents)`
 				overflow-y: hidden;
 				overflow-x: hidden;
 
-				&:hover {
-					overflow-y: auto;
-				}
-
-				@media only screen and (max-width: 767px) {
-					overflow-y: auto;
-					overflow-x: auto;
-					background: transparent !important;
-					-ms-overflow-style: none;  /* Internet Explorer 10+ */
-					scrollbar-width: none;  /* Firefox */
-
-					&::-webkit-scrollbar {
-						display: none;  /* Safari and Chrome */
-					}
-				}
-
 				.events-calendar {
 					margin-left: 16px;
 					padding: 0;
 					height: 460px;
-					width: 100%;
+					width: 98.6%;
 
 					@media only screen and (max-width: 991.5px) {
 						height: 410px;
