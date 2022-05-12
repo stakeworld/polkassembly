@@ -99,6 +99,7 @@ function CustomToolbar(props: any) {
 		props.date.setMonth(now.getMonth());
 		props.date.setYear(now.getFullYear());
 		props.date.setDate(now.getDate());
+		setSelectedMonth(now.getMonth());
 		props.onNavigate('current');
 	};
 
@@ -124,6 +125,10 @@ function CustomToolbar(props: any) {
 		props.onNavigate('current');
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	useEffect(() => {
+		setViewState(`${props.view}`);
+	},[props.view]);
 
 	return (
 		props.date && <div className='custom-calendar-toolbar'>
