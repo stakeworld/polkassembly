@@ -86,8 +86,6 @@ const UpcomingEvents = ({ className }: Props) => {
 export default styled(UpcomingEvents)`
 	.card {
 		background: #fff;
-		padding-left: 1rem;
-		padding-right: 1rem;
 		border-radius: 10px;
 		height: 500px;
 		max-height: 500px;
@@ -139,6 +137,8 @@ export default styled(UpcomingEvents)`
 
 		.event-content-row {
 			justify-content: center;
+			padding-left: 0;
+			padding-right: 0;
 		}
 		
 		.event-filter-bar {
@@ -179,8 +179,15 @@ export default styled(UpcomingEvents)`
 			}
 
 			.event-calendar-small {
+				overflow-y: hidden;
+				overflow-x: hidden;
+
+				&:hover {
+					overflow-y: auto;
+				}
+
 				.events-calendar {
-					margin-left: 16px;
+					margin-left: 12px;
 					padding: 0;
 					height: auto;
 					width: 100%;
