@@ -12,7 +12,6 @@ import { NotificationContext } from 'src/context/NotificationContext';
 import { LoadingStatusType,NotificationStatus } from 'src/types';
 import BalanceInput from 'src/ui-components/BalanceInput';
 import Button from 'src/ui-components/Button';
-import Card from 'src/ui-components/Card';
 import { Form } from 'src/ui-components/Form';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
 import Loader from 'src/ui-components/Loader';
@@ -27,9 +26,11 @@ interface Props {
 	accounts: InjectedAccountWithMeta[]
 	onAccountChange: (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => void
 	getAccounts: () => Promise<undefined>
+	lastVote: string | null | undefined
+	setLastVote: React.Dispatch<React.SetStateAction<string | null | undefined>>
 }
 
-const VoteRefrendum = ({ className, referendumId, address, accounts, onAccountChange, getAccounts }: Props) => {
+const VoteRefrendum = ({ className, referendumId, address, accounts, onAccountChange, getAccounts, lastVote, setLastVote }: Props) => {
 	const { queueNotification } = useContext(NotificationContext);
 	const [lockedBalance, setLockedBalance] = useState<BN | undefined>(undefined);
 	const { api, apiReady } = useContext(ApiContext);
@@ -76,6 +77,7 @@ const VoteRefrendum = ({ className, referendumId, address, accounts, onAccountCh
 					message: `Vote on referendum #${referendumId} successful.`,
 					status: NotificationStatus.SUCCESS
 				});
+				setLastVote(aye ? 'aye' : 'nay');
 				console.log(`Completed at block hash #${status.asInBlock.toString()}`);
 			} else {
 				if (status.isBroadcast){
@@ -101,9 +103,8 @@ const VoteRefrendum = ({ className, referendumId, address, accounts, onAccountCh
 				<Button
 					primary
 					onClick={getAccounts}
-					size={'large'}
 				>
-					Vote
+					{lastVote == null || lastVote == undefined  ? 'Vote Now!' : 'Vote Again!' }
 				</Button>
 			</Form.Field>
 		</Form.Group>;
@@ -130,10 +131,10 @@ const VoteRefrendum = ({ className, referendumId, address, accounts, onAccountCh
 			{ noAccount
 				? <GetAccountsButton />
 				: loadingStatus.isLoading
-					? <Card className={'LoaderWrapper'}>
+					? <div className={'LoaderWrapper'}>
 						<Loader text={loadingStatus.message}/>
-					</Card>
-					: <Card>
+					</div>
+					: <div className='vote-form-cont'>
 						<AccountSelectionForm
 							title='Vote with account'
 							accounts={accounts}
@@ -153,7 +154,7 @@ const VoteRefrendum = ({ className, referendumId, address, accounts, onAccountCh
 							onClickAye={() => voteRefrendum(true)}
 							onClickNay={() => voteRefrendum(false)}
 						/>
-					</Card>
+					</div>
 			}
 		</div>
 	);
@@ -164,5 +165,9 @@ export default styled(VoteRefrendum)`
 		height: 40rem;
 		position: absolute;
 		width: 100%;
+	}
+
+	.vote-form-cont {
+		padding: 12px;
 	}
 `;

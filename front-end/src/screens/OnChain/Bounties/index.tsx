@@ -5,7 +5,7 @@
 import React, { useEffect } from 'react';
 
 import BountiesListing from '../../../components/Listings/BountiesListing';
-import { useLatestBountyPostsQuery } from '../../../generated/graphql';
+import { useGetLatestBountyPostsQuery } from '../../../generated/graphql';
 import { post_type } from '../../../global/post_types';
 import FilteredError from '../../../ui-components/FilteredError';
 import Loader from '../../../ui-components/Loader';
@@ -17,7 +17,7 @@ interface Props {
 
 const BountiesContainer = ({ className, limit }:Props) => {
 
-	const { data, error, refetch } = useLatestBountyPostsQuery({ variables: {
+	const { data, error, refetch } = useGetLatestBountyPostsQuery({ variables: {
 		limit,
 		postType: post_type.ON_CHAIN
 	} });

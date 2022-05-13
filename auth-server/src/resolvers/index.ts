@@ -2,6 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import addProfile from './mutation/addProfile';
 import addressLinkConfirm from './mutation/addressLinkConfirm';
 import addressLinkStart from './mutation/addressLinkStart';
 import addressLogin from './mutation/addressLogin';
@@ -40,9 +41,11 @@ import profile from './query/profile';
 import subscription from './query/subscription';
 import token from './query/token';
 import user from './query/user';
+import userDetails from './query/userDetails';
 
 export default {
 	Mutation: {
+		addProfile,
 		addressLinkConfirm,
 		addressLinkStart,
 		addressLogin,
@@ -82,6 +85,7 @@ export default {
 		profile,
 		subscription,
 		token,
-		user
+		user,
+		userDetails
 	}
 };

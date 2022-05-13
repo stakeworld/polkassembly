@@ -7,12 +7,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import NothingFoundCard from 'src/ui-components/NothingFoundCard';
 
-import { LatestReferendaPostsQuery } from '../../generated/graphql';
+import { GetLatestReferendaPostsQuery } from '../../generated/graphql';
 import GovernanceCard from '../GovernanceCard';
 
 interface Props {
   className?: string
-  data: LatestReferendaPostsQuery
+  data: GetLatestReferendaPostsQuery
 }
 
 const Referenda = ({ className, data }: Props) => {

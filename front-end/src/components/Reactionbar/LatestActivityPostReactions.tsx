@@ -61,6 +61,7 @@ const LatestActivityPostReactions = function ({ className, postId, gotoPost }: P
 			<CommentButton
 				postId={postId}
 				gotoPost={gotoPost}
+				reactionsDisabled={reactionsDisabled}
 			/>
 		</div>
 	);

@@ -7,7 +7,7 @@ import { authorFields } from 'src/fragments/author';
 
 // for bounties postType should be 2, postTopic should be 4
 export const QUERY_LATEST_BOUNTIES = gql`
-    query LatestBountyPosts($postType: Int!, $limit: Int! = 5 ) {
+    query GetLatestBountyPosts($postType: Int!, $limit: Int! = 5 ) {
         posts(limit: $limit, where: {
             type: {
                 id: {
@@ -47,7 +47,7 @@ export const QUERY_LATEST_BOUNTIES = gql`
             onchain_link {
                 id
                 onchain_bounty_id
-                onchain_bounty(where: {NOT: {bountyStatus_some: {OR: [{status: "BountyCanceled"}, {status: "BountyRejected"}, {status: "BountyAwarded"}, {status: "BountyClaimed"}]}}}) {
+                onchain_bounty {
                     id
                     bountyStatus(last: 1) {
                         id

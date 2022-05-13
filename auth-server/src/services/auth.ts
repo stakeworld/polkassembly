@@ -966,6 +966,11 @@ export default class AuthService {
 			currentRole = Role.PROPOSAL_BOT;
 		}
 
+		if (id === Number(process.env.EVENT_BOT_USER_ID)) {
+			allowedRoles.push(Role.EVENT_BOT);
+			currentRole = Role.EVENT_BOT;
+		}
+
 		const tokenContent: JWTPayploadType = {
 			email,
 			email_verified: email_verified || false,
@@ -1100,7 +1105,7 @@ export default class AuthService {
 			method: 'POST'
 		};
 
-		let api = `https://${network}.${process.env.DOMAIN_NAME}/v1/graphql`;
+		let api = `https://${process.env.DOMAIN_NAME}/v1/graphql`;
 
 		if (process.env.DOMAIN_NAME === 'test.polkassembly.io') {
 			api = 'https://test.polkassembly.io/v1/graphql';
@@ -1169,13 +1174,20 @@ export default class AuthService {
 
 		const token = await this.getSignedToken(user);
 
-		const fetchPostQuery = `
+		let fetchPostQuery = `
 			query MyQuery($proposal_id: Int!) {
 				onchain_links(where: {onchain_${proposalType}_id: {_eq: $proposal_id}}) {
 					post_id
 			}
+		}`;
+
+		if (proposalType === 'tip') {
+			fetchPostQuery = `query MyQuery($proposal_id: String!) {
+				onchain_links(where: {onchain_${proposalType}_id: {_eq: $proposal_id}}) {
+					post_id
+				}
+			}`;
 		}
-	  `;
 
 		const getPost = {
 			body: JSON.stringify({
@@ -1191,7 +1203,7 @@ export default class AuthService {
 			method: 'POST'
 		};
 
-		let api = `https://${network}.${process.env.DOMAIN_NAME}/v1/graphql`;
+		let api = `https://${process.env.DOMAIN_NAME}/v1/graphql`;
 
 		if (process.env.DOMAIN_NAME === 'test.polkassembly.io') {
 			api = 'https://test.polkassembly.io/v1/graphql';
@@ -1202,16 +1214,21 @@ export default class AuthService {
 		const { errors, data } = await post.json();
 
 		if (errors) {
+			console.log(errors);
 			throw new ForbiddenError(messages.ERROR_IN_POST_EDIT);
 		}
 
 		if (!data?.onchain_links?.length) {
+			console.log('onchain link not found');
+			console.log(data?.onchain_links);
 			throw new ForbiddenError(messages.ERROR_IN_POST_EDIT);
 		}
 
 		const post_id = data?.onchain_links[0]?.post_id;
 
 		if (!post_id) {
+			console.log('post_id not found');
+			console.log(data);
 			throw new ForbiddenError(messages.ERROR_IN_POST_EDIT);
 		}
 
@@ -1241,11 +1258,15 @@ export default class AuthService {
 			method: 'POST'
 		};
 
+		console.log(api, request);
+
 		const result = await fetch(api, request);
 
 		const json = await result.json();
 
 		if (json.errors) {
+			console.log('error in edit post');
+			console.log(json.errors);
 			throw new ForbiddenError(messages.ERROR_IN_POST_EDIT);
 		}
 	}

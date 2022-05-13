@@ -5,8 +5,8 @@
 import styled from '@xstyled/styled-components';
 import React from 'react';
 import { Grid } from 'semantic-ui-react';
+import NetworkInfo from 'src/components/NetworkInfo';
 
-import NetworkInfo from '../../components/NetworkInfo';
 import LatestActivity from './LatestActivity';
 import News from './News';
 import TreasuryOverviewCards from './TreasuryOverviewCards';
@@ -20,15 +20,11 @@ const Home = ({ className }: Props) => {
 	return (
 		<div className={className}>
 			<Grid stackable>
-				<Grid.Row>
-					<Grid.Column width={16}>
-						<h1 style={ { fontSize: '4.4rem', fontWeight: 500 } }>Dashboard</h1>
-						<NetworkInfo />
-						<br/><br/>
-						<TreasuryOverviewCards />
-						<br/><br/><br/>
+				<Grid.Row className='margin-bottom-48'>
+					<Grid.Column className='px-0'>
+						<NetworkInfo className='margin-bottom-48 mb-sm-32' />
+						<TreasuryOverviewCards className='margin-bottom-36' />
 						<LatestActivity />
-						<br/><br/>
 					</Grid.Column>
 				</Grid.Row>
 
@@ -46,70 +42,32 @@ const Home = ({ className }: Props) => {
 };
 
 export default styled(Home)`
-
-	.referendumContainer, .proposalContainer, .discussionContainer, .motionContainer, .treasuryContainer, .tipContainer, .bountyContainer, .techCommitteeProposalContainer {
-		margin-bottom: 3rem;
+	.margin-bottom-48{
+		margin-bottom: 48px;
+	}
+	
+	.margin-bottom-36{
+		margin-bottom: 36px;
 	}
 
-	h1 {
-		@media only screen and (max-width: 576px) {
-			margin: 3rem 1rem 1rem 1rem;
-		}
-
-		@media only screen and (max-width: 768px) and (min-width: 576px) {
-			margin-left: 1rem;
-		}
-
-		@media only screen and (max-width: 991px) and (min-width: 768px) {
-			margin-left: 1rem;
-		}
+	.px-0 {
+		padding-left: 0 !important;
+		padding-right: 0 !important;
 	}
 
-	@media only screen and (max-width: 992px) {
-		.default-address-infobox {
-			display: none;
-		}
-	}
-
-	@media only screen and (max-width: 768px) {
-
-		.mainButtonContainer {
-			margin: 0rem;
-		}
-	}
-
-	@media only screen and (max-width: 991px) and (min-width: 768px) {
-		.ui[class*="tablet reversed"].grid {
-			flex-direction: column-reverse;
+	@media only screen and (max-width: 768px){
+		.px-sm-1 {
+			padding-left: 1em !important;
+			padding-right: 1em !important;
 		}
 
-		.mainButtonContainer {
-			margin-top: 1rem!important;
+		.mb-sm-32 {
+			margin-bottom: 32px !important;
 		}
-	}
 
-	@media only screen and (max-width: 576px) {
-
-		.mainButtonContainer {
-			align-items: stretch!important;
-			margin: 1rem!important;
-
-			.newPostButton {
-				padding: 0.8rem 1rem;
-				border-radius: 0.5rem;
-			}
+		.stackable.grid>.row>.column {
+			padding-left: 0 !important;
+			padding-right: 0 !important;
 		}
-	}
-
-	li {
-        list-style-type: none;
-    }
-
-	.mainButtonContainer {
-		align-items: flex-start;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		margin-bottom: 2rem;
 	}
 `;

@@ -34,7 +34,7 @@ const ProposalVoteInfo = ({ className, deposit, loadingStatus, seconds }:  Props
 							<div>{deposit}</div>
 						</Grid.Column>
 						<Grid.Column>
-							<h6>Seconded by</h6>
+							<h6>Endorsed by</h6>
 							{seconds ? <div>{seconds} addresses</div> : null}
 						</Grid.Column>
 						<Grid.Column>

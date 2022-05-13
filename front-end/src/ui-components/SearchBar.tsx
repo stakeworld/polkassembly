@@ -73,6 +73,7 @@ const SearchBar = ({ className, placeholder, size }: Props) => {
 			value={value}
 			resultRenderer={resultRenderer}
 			placeholder={placeholder ? placeholder : 'Search By Proposal Keyword'}
+			input={{ icon: 'search', iconPosition: 'left' }}
 		/>
 	);
 };

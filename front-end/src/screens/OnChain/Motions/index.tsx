@@ -5,7 +5,7 @@
 import React, { useEffect } from 'react';
 
 import MotionsListing from '../../../components/Listings/MotionsListing';
-import { useLatestMotionPostsQuery } from '../../../generated/graphql';
+import { useGetLatestMotionPostsQuery } from '../../../generated/graphql';
 import { post_type } from '../../../global/post_types';
 import FilteredError from '../../../ui-components/FilteredError';
 import Loader from '../../../ui-components/Loader';
@@ -17,7 +17,7 @@ interface Props {
 
 const MotionsContainer = ({ className, limit }:Props) => {
 
-	const { data, error, refetch } = useLatestMotionPostsQuery({ variables: {
+	const { data, error, refetch } = useGetLatestMotionPostsQuery({ variables: {
 		limit,
 		postType: post_type.ON_CHAIN
 	} });

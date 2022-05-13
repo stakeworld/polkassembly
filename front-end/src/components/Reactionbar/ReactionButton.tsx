@@ -167,14 +167,6 @@ const ReactionButton = function ({
 		}
 	};
 
-	let popupContent = '';
-
-	if (userNames.length > 5) {
-		popupContent = `${userNames.slice(0, 5).join(', ')} and ${userNames.length - 5} others`;
-	} else {
-		popupContent = userNames.join(', ');
-	}
-
 	const button =  <span className={className}>
 		{
 			isLatestActivity ?
@@ -200,6 +192,14 @@ const ReactionButton = function ({
 		}
 
 	</span>;
+
+	let popupContent = '';
+
+	if (userNames.length > 10) {
+		popupContent = `${userNames.slice(0, 10).join(', ')} and ${userNames.length - 10} others`;
+	} else {
+		popupContent = userNames.join(', ');
+	}
 
 	return userNames.length > 0 ?
 		<Popup

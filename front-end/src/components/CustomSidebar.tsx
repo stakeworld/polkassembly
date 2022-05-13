@@ -8,43 +8,60 @@ import { useLocation } from 'react-router-dom';
 import { Icon, List } from 'semantic-ui-react';
 import { useRouter } from 'src/hooks';
 
-const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
+import { ReactComponent as BountyIcon } from '../assets/sidebar/bounties.svg';
+import { ReactComponent as CalendarIcon } from '../assets/sidebar/calendar.svg';
+import { ReactComponent as DiscussionsIcon } from '../assets/sidebar/discussions.svg';
+import { ReactComponent as MembersIcon } from '../assets/sidebar/members.svg';
+import { ReactComponent as MotionIcon } from '../assets/sidebar/motion.svg';
+import { ReactComponent as NewsIcon } from '../assets/sidebar/news.svg';
+import { ReactComponent as OverviewIcon } from '../assets/sidebar/overview_white.svg';
+import { ReactComponent as ProposalIcon } from '../assets/sidebar/proposals.svg';
+import { ReactComponent as ReferendaIcon } from '../assets/sidebar/referenda.svg';
+import { ReactComponent as TipIcon } from '../assets/sidebar/tips.svg';
+import { ReactComponent as TreasuryProposalIcon } from '../assets/sidebar/treasury_proposals.svg';
+
+const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHidden } : { className?: string, setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>, sidebarHidden: boolean, setSidebarHidden: React.Dispatch<React.SetStateAction<boolean>> }): JSX.Element => {
 	const SidebarItems = [
 		{
-			icon: <Icon name='th' />,
+			icon: <OverviewIcon />,
 			link: '/',
 			name: 'Overview'
 		},
 		{
-			icon: <Icon name='comments outline' />,
+			icon: <DiscussionsIcon />,
 			link: '/discussions',
 			name: 'Discussions'
 		},
 		{
-			icon: <Icon name='calendar alternate outline' />,
+			icon: <CalendarIcon />,
 			link: '/calendar',
 			name: 'Calendar'
 		},
 		{
-			icon: <Icon name='newspaper outline' />,
+			icon: <NewsIcon />,
 			link: '/news',
 			name: 'News'
+		},
+		{
+			icon: <Icon name='chain' size='small' />,
+			link: 'https://parachains.polkassembly.io/',
+			name: 'Parachains'
 		}
 	];
 
 	const TreasuryItems = [
 		{
-			icon: <Icon name='diamond' />,
+			icon: <TreasuryProposalIcon />,
 			link: '/treasury-proposals',
 			name: 'Proposals'
 		},
 		{
-			icon: <Icon name='dollar sign' />,
+			icon: <BountyIcon />,
 			link: '/bounties',
 			name: 'Bounties'
 		},
 		{
-			icon: <Icon name='lightbulb outline' />,
+			icon: <TipIcon />,
 			link: '/tips',
 			name: 'Tips'
 		}
@@ -52,12 +69,12 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 
 	const DemocracyItems = [
 		{
-			icon: <Icon name='file alternate outline' />,
+			icon: <ProposalIcon />,
 			link: '/proposals',
 			name: 'Proposals'
 		},
 		{
-			icon: <Icon name='clipboard check' />,
+			icon: <ReferendaIcon className='motion-icon' />,
 			link: '/referenda',
 			name: 'Referenda'
 		}
@@ -65,12 +82,12 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 
 	const CouncilItems = [
 		{
-			icon: <Icon name='forward' />,
+			icon: <MotionIcon className='motion-icon' />,
 			link: '/motions',
 			name: 'Motions'
 		},
 		{
-			icon: <Icon name='users' />,
+			icon: <MembersIcon />,
 			link: '/council',
 			name: 'Members'
 		}
@@ -78,7 +95,7 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 
 	const TechCommItems = [
 		{
-			icon: <Icon name='file alternate outline' />,
+			icon: <ProposalIcon />,
 			link: '/tech-comm-proposals',
 			name: 'Proposals'
 		}
@@ -97,6 +114,7 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 
 	const toggleSidebarCollapse = () => {
 		setSidebarCollapsed(!sidebarCollapsed);
+		setIsCollapsed(!sidebarCollapsed);
 	};
 
 	function toggleOptionCollapse (optionTitle:string) {
@@ -114,45 +132,34 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 		}
 	}
 
+	function gotoRoute(link: string){
+		if(link == 'https://parachains.polkassembly.io/'){
+			window.location.href = link;
+		}else{
+			history.push(link);
+			setSidebarHidden(true);
+		}
+	}
+
 	return (
 		<>
-			<div className={className} style={ sidebarCollapsed ? { minWidth: '47px', padding: '1.5em 0.2em 0 0.2em', width:'47px' } : {} }>
+			<div className={`${className} ${sidebarHidden ? 'hidden-sm' : ''}`} style={ sidebarCollapsed ? { minWidth: '47px', padding: '1.5em 0.2em 0 0.2em', width:'47px' } : {} }>
 				<div className='sidebar-parent'>
-					<div onClick={ toggleSidebarCollapse } className='sidebar-collapse-btn' style={ sidebarCollapsed ? { left: '47px' } : {} }>
-						<Icon size='small' name={sidebarCollapsed ? 'chevron right': 'chevron left' } />
+					<div onClick={ toggleSidebarCollapse } className='sidebar-collapse-btn' style={ sidebarCollapsed ? { left: '20px' } : {} }>
+						<Icon size='small' name={sidebarCollapsed ? 'chevron up': 'chevron down' } />
 					</div>
 
 					<List size='large' verticalAlign='middle'>
 						{/* Uncategorized */}
 						{
 							SidebarItems.map(item => (
-								<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+								<List.Item key={item.name} onClick={() => gotoRoute(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
 									{item.icon}
 									<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
 										<List.Header>{item.name}</List.Header>
 									</List.Content>
 								</List.Item>
 							))
-						}
-
-						{/* Treasury */}
-						<List.Item className='sidebar-heading'>
-							<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
-								<List.Header> <div>Treasury</div> {collapsedOptions.includes('treasury') ? <Icon onClick={() => toggleOptionCollapse('treasury')} name='chevron down' /> : <Icon onClick={() => toggleOptionCollapse('treasury')} name='chevron up' />} </List.Header>
-							</List.Content>
-						</List.Item>
-						{
-							!collapsedOptions.includes('treasury') || sidebarCollapsed ?
-								TreasuryItems.map(item => (
-									<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
-										{item.icon}
-										<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
-											<List.Header>{item.name}</List.Header>
-										</List.Content>
-									</List.Item>
-								))
-								:
-								null
 						}
 
 						{/* Democracy */}
@@ -163,7 +170,7 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 						</List.Item>
 						{!collapsedOptions.includes('democracy') || sidebarCollapsed ?
 							DemocracyItems.map(item => (
-								<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+								<List.Item key={item.name} onClick={() => gotoRoute(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
 									{item.icon}
 									<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
 										<List.Header>{item.name}</List.Header>
@@ -183,7 +190,27 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 						{
 							!collapsedOptions.includes('council') || sidebarCollapsed ?
 								CouncilItems.map(item => (
-									<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+									<List.Item key={item.name} onClick={() => gotoRoute(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+										{item.icon}
+										<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
+											<List.Header>{item.name}</List.Header>
+										</List.Content>
+									</List.Item>
+								))
+								:
+								null
+						}
+
+						{/* Treasury */}
+						<List.Item className='sidebar-heading'>
+							<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
+								<List.Header> <div>Treasury</div> {collapsedOptions.includes('treasury') ? <Icon onClick={() => toggleOptionCollapse('treasury')} name='chevron down' /> : <Icon onClick={() => toggleOptionCollapse('treasury')} name='chevron up' />} </List.Header>
+							</List.Content>
+						</List.Item>
+						{
+							!collapsedOptions.includes('treasury') || sidebarCollapsed ?
+								TreasuryItems.map(item => (
+									<List.Item key={item.name} onClick={() => gotoRoute(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
 										{item.icon}
 										<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
 											<List.Header>{item.name}</List.Header>
@@ -203,7 +230,7 @@ const CustomSidebar = ({ className } : { className?: string }): JSX.Element => {
 						{
 							!collapsedOptions.includes('techComm') || sidebarCollapsed ?
 								TechCommItems.map(item => (
-									<List.Item key={item.name} onClick={() => history.push(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+									<List.Item key={item.name} onClick={() => gotoRoute(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
 										{item.icon}
 										<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
 											<List.Header>{item.name}</List.Header>
@@ -225,24 +252,49 @@ export default styled(CustomSidebar)`
 	min-width: 230px;
 	padding: 1.5em 0.8em 0 0.8em;
 	box-shadow: 0.5px 0 5px -2px #888;
+	
+	.header { 
+		font-family: 'Roboto' !important;
+	}
 
 	@media only screen and (max-width: 992px) {
-		display: none;
+		position: fixed;
+		z-index: 300;
+		top: 25px;
+		height: 100vh;
+		width: 60%;
+		padding-right: 0;
+		max-width: 250px;
+
+		&.hidden-sm {
+			display: none;
+		}
 	}
 
 	.sidebar-collapse-btn{
 		position: absolute;
-		top: 500px;
-		left: 229px;
-		background: #fff;
-		height: 4em;
-		width: 1em;
+		top: 439px;
+		left: 194px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		cursor: pointer;
 		z-index: 100;
-		border-radius: 0 30px 30px 0;
+		border-bottom: 14px solid #fff;
+		border-left: 12px solid transparent;
+		border-right: 12px solid transparent;
+		height: 0;
+		width: 63px;
+    transform : rotate(90deg);
+    filter: drop-shadow(3px -1px 1px #88888860);
+
+		.icon {
+			margin-bottom: -17px;
+		}
+
+		@media only screen and (max-width: 992px) {
+			display: none;
+		}
 	}
 
 	.sidebar-item {
@@ -250,23 +302,62 @@ export default styled(CustomSidebar)`
 		margin: 0 0;
 		padding: 0.8em !important;
 		cursor: pointer;
+		display: flex !important;
+		align-items: center;
 		
 		&.active {
 			background: #E5007A !important;
 			color: #fff;
 			margin: 0.6em 0;
 			
-			.header, .icon {
+			.header{
 				color: #fff !important;
 			}
+
+			svg {
+				&:not(.motion-icon) {
+					path {
+						fill: #fff;
+					}
+				}
+
+				&.motion-icon {
+					path {
+						stroke: #fff;
+
+						&:nth-of-type(2) {
+							fill: #fff;
+						}
+						
+					}
+				}
+			}
+		}
+
+		.content {
+			padding-left: 0.5em;
+		}
+
+		.icon {
+			color: #778192 !important;
+			margin-left: 5px !important;
 		}
 		
 		&:hover {
 			background: #eee;
 		}
 
-		.icon {
-			color: #778192 !important;
+		svg {
+			min-width: 20px !important;
+			max-width: 20px !important;
+			width: 20px !important;
+
+			&:not(.motion-icon) {
+				path {
+					fill: #778192;
+				}
+			}
+
 		}
 
 		.header {
@@ -288,10 +379,23 @@ export default styled(CustomSidebar)`
 			text-transform: uppercase;
 			display: flex !important;
 			justify-content: space-between;
+			font-family: 'Roboto' !important;
 
 			.icon {
 				cursor: pointer;
 			}
+		}
+	}
+
+	.sidebar-parent {
+		position: sticky;
+		top: -167px;
+
+		@media only screen and (max-width: 992px) {
+			overflow-y: auto;
+			position: static;
+			height: 93.8vh;
+			padding-right: 1rem;
 		}
 	}
 `;

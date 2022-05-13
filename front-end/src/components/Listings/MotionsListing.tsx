@@ -7,12 +7,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import NothingFoundCard from 'src/ui-components/NothingFoundCard';
 
-import { LatestMotionPostsQuery } from '../../generated/graphql';
+import { GetLatestMotionPostsQuery } from '../../generated/graphql';
 import GovernanceCard from '../GovernanceCard';
 
 interface Props {
   className?: string
-  data: LatestMotionPostsQuery
+  data: GetLatestMotionPostsQuery
 }
 
 const Motions = ({ className, data }: Props) => {

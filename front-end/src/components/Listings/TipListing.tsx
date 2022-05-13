@@ -7,12 +7,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import NothingFoundCard from 'src/ui-components/NothingFoundCard';
 
-import { LatestTipPostsQuery } from '../../generated/graphql';
+import { GetLatestTipPostsQuery } from '../../generated/graphql';
 import GovernanceCard from '../GovernanceCard';
 
 interface Props {
   className?: string
-  data: LatestTipPostsQuery
+  data: GetLatestTipPostsQuery
 }
 
 const TipProposals = ({ className, data }: Props) => {

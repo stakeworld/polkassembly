@@ -2,97 +2,97 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-// import 'react-big-calendar/lib/css/react-big-calendar.css';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import styled from '@xstyled/styled-components';
-// import moment from 'moment';
-import React from 'react';
-// import { Calendar, momentLocalizer } from 'react-big-calendar';
-import { Grid } from 'semantic-ui-react';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import { Grid, Popup } from 'semantic-ui-react';
+import { useGetCalenderEventsQuery } from 'src/generated/graphql';
+import getNetwork from 'src/util/getNetwork';
 
-// declare global {
-// interface Window { gapi: any; }
-// }
-// window.gapi = window.gapi || {};
+import CustomToolbar from './CustomToolbar';
 
 interface Props {
   className?: string
+	small?: boolean
+	emitCalendarEvents?: React.Dispatch<React.SetStateAction<any[]>> | undefined
 }
 
-// const localizer = momentLocalizer(moment);
+const localizer = momentLocalizer(moment);
 
-const iframe = '<iframe src="https://calendar.google.com/calendar/embed?src=events%40polkassembly.io&ctz=Asia%2FKolkata" style="border: 0" frameborder="0" scrolling="no"></iframe>';
+const NETWORK = getNetwork();
 
-function Iframe(props: any) {
-	return (<div dangerouslySetInnerHTML={ { __html:  props.iframe?props.iframe:'' } } />);
-}
+const CalendarView = ({ className, small = false, emitCalendarEvents = undefined }: Props) => {
 
-const CalendarView = ({ className }: Props) => {
-	// const myEventsList = [
-	// { end: new Date(), start: new Date(), title: 'Test Event' }
-	// ];
+	const { data, refetch } = useGetCalenderEventsQuery({ variables: {
+		network: NETWORK
+	} });
 
-	// const [events, setEvents] = useState(null);
+	const [calendarEvents, setCalendarEvents] = useState<any[]>([]);
 
-	// useEffect(() => {
-	// function getEvents(){
-	// function start() {
-	// window.gapi.client.init({
-	// 'apiKey': 'AIzaSyDTTeR90xmQUC3xQcrqnghpg5s46MFsfpg'
-	// }).then(function() {
-	// return window.gapi.client.request({
-	// 'path': 'https://www.googleapis.com/calendar/v3/calendars/events@polkassembly.io/events'
-	// });
-	// }).then( (response: any) => {
-	// const events = response.result.items;
-	// setEvents(events);
-	// }, function(reason: any) {
-	// console.log(reason);
-	// });
-	// }
-	// window.gapi.load('client', start);
-	// }
+	useEffect(() => {
+		refetch();
+	}, [refetch]);
 
-	// const script = document.createElement('script');
-	// script.async = true;
-	// script.defer = true;
-	// script.src = 'https://apis.google.com/js/api.js';
+	useEffect(() =>  {
+		const eventsArr:any[] = [];
+		data?.calender_events.forEach(eventObj => {
+			eventsArr.push({
+				end_time: moment(eventObj.end_time).toDate(),
+				id: eventObj.id,
+				start_time: moment(eventObj.start_time).toDate(),
+				title: eventObj.title
+			});
+		});
+		setCalendarEvents(eventsArr);
 
-	// document.body.appendChild(script);
+		if(emitCalendarEvents) {
+			emitCalendarEvents(eventsArr);
+		}
+	}, [data, emitCalendarEvents]);
 
-	// script.addEventListener('load', () => {
-	// if (window.gapi) getEvents();
-	// });
-	// });
+	function Event({ event } : {event: any}) {
+		return (
+			<Popup size='huge' basic content={event.title} on='click' hideOnScroll trigger={<span>{event.title}</span>} />
+		);
+	}
 
 	return (
 		<div className={className}>
-			<h1>Calendar</h1>
+			{ !small && <h1>Calendar</h1>}
 			<Grid stackable>
-				{/* <Grid.Row>
-					<Grid.Column mobile={16} tablet={16} computer={14} className='calendar-col'>
+				{data && data.calender_events ?
+					<Grid.Row>
 						<Calendar
+							className='events-calendar'
 							localizer={localizer}
-							events={myEventsList}
-							startAccessor='start'
-							endAccessor='end'
-							style={{ height: 500 }}
+							events={calendarEvents}
+							startAccessor='start_time'
+							endAccessor='end_time'
+							popup={true}
+							components={{
+								event: Event,
+								toolbar: CustomToolbar
+							}}
+							// onSelectEvent={}
 						/>
-					</Grid.Column>
-				</Grid.Row> */}
-				<Grid.Row>
-					<Grid.Column mobile={16} tablet={16} computer={14} className='calendar-col'>
-						<div className="iframe-wrapper">
-							<Iframe iframe={iframe} />
-						</div>
-					</Grid.Column>
-				</Grid.Row>
+					</Grid.Row>
+					:
+					null
+				}
 			</Grid>
 		</div>
 	);
 };
 
 export default styled(CalendarView)`
+
+.coming-soon-text {
+	font-size: 3em;
+	text-align: center;
+}
 
 h1 {
 	@media only screen and (max-width: 576px) {
@@ -108,23 +108,70 @@ h1 {
 	}
 }
 
-.calendar-col {
+.events-calendar {
 	background: #fff;
 	padding: 1em;
 	border-radius: 5px;
+	height: 600px;
+	width: 100%;
+	max-width: 1024px;
+	
+	@media only screen and (max-width: 768px) {
+		width: 100%;
+		max-width: 100%;
+		padding: 1em 0 1em 0;
+	}
+
+	.rbc-toolbar {
+		@media only screen and (max-width: 576px) {
+			flex-direction: column;
+
+			span {
+				margin-bottom: 1em;
+			}
+		}
+	}
+
+	.custom-calendar-toolbar {
+		margin: 0 0 1.5em 1em;
+
+		@media only screen and (max-width: 576px) {
+			margin: 0 0 1.5em 0.1em;
+		}
+
+		.action-div {
+			margin-top: 0.5em;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			.actions-right {
+				display: flex;
+				align-items: center;
+				.today-btn-img {
+					cursor: pointer;
+					margin-right: 16px;
+					@media only screen and (max-width: 576px) {
+						margin-right: 8px;
+					}
+				}
+			}
+
+		}
+	}
+
+	.rbc-day-bg.rbc-today {
+		background-color: rgba(230, 0, 123, 0.04);
+	}
+
+	.rbc-event {
+		background-color: #E6007A;
+		border-radius: 3px;
+
+		&:focus {
+			outline: none;
+		}
+	}
 }
 
-.iframe-wrapper {
-	position: relative;
-	padding-bottom: 56.25%; /* 16:9 */
-	padding-top: 25px;
-	height: 0;
-}
-.iframe-wrapper iframe {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-}
 `;

@@ -7,12 +7,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import NothingFoundCard from 'src/ui-components/NothingFoundCard';
 
-import { LatestDemocracyTreasuryProposalPostsQuery } from '../../generated/graphql';
+import { GetLatestDemocracyTreasuryProposalPostsQuery } from '../../generated/graphql';
 import GovernanceCard from '../GovernanceCard';
 
 interface Props {
   className?: string
-  data: LatestDemocracyTreasuryProposalPostsQuery
+  data: GetLatestDemocracyTreasuryProposalPostsQuery
 }
 
 const TreasuryProposals = ({ className, data }: Props) => {

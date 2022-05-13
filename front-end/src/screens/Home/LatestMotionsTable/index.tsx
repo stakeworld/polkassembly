@@ -8,9 +8,11 @@ import React, { useEffect } from 'react';
 import { Tab, Table } from 'semantic-ui-react';
 import NothingFoundCard from 'src/ui-components/NothingFoundCard';
 
-import { useLatestMotionPostsQuery } from '../../../generated/graphql';
+import { useGetLatestMotionPostsQuery } from '../../../generated/graphql';
 import { post_type } from '../../../global/post_types';
 import FilteredError from '../../../ui-components/FilteredError';
+import LatestActivityCard from '../LatestActivityCard';
+import LatestActivityTableHeader from '../LatestActivityTableHeader';
 import LatestActivityTableRow from '../LatestActivityTableRow';
 
 interface Props {
@@ -19,7 +21,7 @@ interface Props {
 
 const LatestMotionsTable = ({ className }:Props) => {
 
-	const { data, error, refetch } = useLatestMotionPostsQuery({ variables: { limit: 10, postType: post_type.ON_CHAIN } });
+	const { data, error, refetch } = useGetLatestMotionPostsQuery({ variables: { limit: 10, postType: post_type.ON_CHAIN } });
 
 	useEffect(() => {
 		refetch();
@@ -42,18 +44,9 @@ const LatestMotionsTable = ({ className }:Props) => {
 			return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
 				<NothingFoundCard className={className} text='There are currently no active motions.'/>
 			</Tab.Pane>;
-
 		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
-			<Table basic='very' striped unstackable selectable>
-				<Table.Header className='table-header'>
-					<Table.Row>
-						<Table.HeaderCell width={7}><span>Title</span></Table.HeaderCell>
-						<Table.HeaderCell width={3}><span>Posted By</span></Table.HeaderCell>
-						<Table.HeaderCell width={2}><span>Type</span></Table.HeaderCell>
-						<Table.HeaderCell width={2}><span>Status</span></Table.HeaderCell>
-						<Table.HeaderCell width={2}><span>Actions</span></Table.HeaderCell>
-					</Table.Row>
-				</Table.Header>
+			<Table className='hidden-mobile' basic='very' striped unstackable selectable>
+				<LatestActivityTableHeader className={className} />
 
 				<Table.Body>
 					{data.posts.map(
@@ -75,6 +68,26 @@ const LatestMotionsTable = ({ className }:Props) => {
 					)}
 				</Table.Body>
 			</Table>
+
+			<div className='hidden-desktop cards-container'>
+				{data.posts.map(
+					(post) => {
+						return !!post?.author?.username && (!!post.onchain_link?.onchain_motion.length || post.onchain_link?.onchain_motion_id) &&
+							<LatestActivityCard
+								key={post.id}
+								postId={post.id}
+								address={post.onchain_link.proposer_address}
+								method={post.onchain_link.onchain_motion[0]?.preimage?.method}
+								onchainId={post.onchain_link?.onchain_motion_id}
+								status={post.onchain_link.onchain_motion[0]?.motionStatus?.[0].status}
+								title={post.title}
+								postType='motion'
+								created_at={post.created_at}
+							/>
+						;
+					}
+				)}
+			</div>
 		</Tab.Pane>;
 	}
 
@@ -130,7 +143,7 @@ export default styled(LatestMotionsTable)`
         :not(:first-child){
           span {
             border-left: 1px solid #ddd;
-            padding 0.3em 0 0.3em 1em;
+            padding: 0.3em 0 0.3em 1em;
             margin-left: -1em;
           }
         }

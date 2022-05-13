@@ -8,10 +8,12 @@ import React, { useEffect } from 'react';
 import { Tab, Table } from 'semantic-ui-react';
 import NothingFoundCard from 'src/ui-components/NothingFoundCard';
 
-import { useLatestDemocracyTreasuryProposalPostsQuery } from '../../../generated/graphql';
+import { useGetLatestDemocracyTreasuryProposalPostsQuery } from '../../../generated/graphql';
 import { post_topic } from '../../../global/post_topics';
 import { post_type } from '../../../global/post_types';
 import FilteredError from '../../../ui-components/FilteredError';
+import LatestActivityCard from '../LatestActivityCard';
+import LatestActivityTableHeader from '../LatestActivityTableHeader';
 import LatestActivityTableRow from '../LatestActivityTableRow';
 
 interface Props {
@@ -19,7 +21,7 @@ interface Props {
 }
 
 const LatestTreasuryTable = ({ className }:Props) => {
-	const { data, error, refetch } = useLatestDemocracyTreasuryProposalPostsQuery({ variables: {
+	const { data, error, refetch } = useGetLatestDemocracyTreasuryProposalPostsQuery({ variables: {
 		limit: 10,
 		postTopic: post_topic.TREASURY,
 		postType: post_type.ON_CHAIN
@@ -50,16 +52,8 @@ const LatestTreasuryTable = ({ className }:Props) => {
 			</Tab.Pane>;
 
 		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
-			<Table basic='very' striped unstackable selectable>
-				<Table.Header className='table-header'>
-					<Table.Row>
-						<Table.HeaderCell width={6}><span>Title</span></Table.HeaderCell>
-						<Table.HeaderCell width={3}><span>Posted By</span></Table.HeaderCell>
-						<Table.HeaderCell width={3}><span>Type</span></Table.HeaderCell>
-						<Table.HeaderCell width={2}><span>Status</span></Table.HeaderCell>
-						<Table.HeaderCell width={2}><span>Actions</span></Table.HeaderCell>
-					</Table.Row>
-				</Table.Header>
+			<Table className='hidden-mobile' basic='very' striped unstackable selectable>
+				<LatestActivityTableHeader className={className} />
 
 				<Table.Body>
 					{data.posts.map(
@@ -80,6 +74,25 @@ const LatestTreasuryTable = ({ className }:Props) => {
 					)}
 				</Table.Body>
 			</Table>
+
+			<div className='hidden-desktop cards-container'>
+				{data.posts.map(
+					(post) => {
+						return !!post?.author?.username && (!!post.onchain_link?.onchain_treasury_spend_proposal.length || post.onchain_link?.onchain_treasury_proposal_id) &&
+							<LatestActivityCard
+								key={post.id}
+								postId={post.id}
+								address={post.onchain_link.proposer_address}
+								onchainId={post.onchain_link?.onchain_treasury_proposal_id}
+								status={post.onchain_link.onchain_treasury_spend_proposal?.[0]?.treasuryStatus?.[0].status}
+								title={post.title}
+								postType='treasury proposal'
+								created_at={post.created_at}
+							/>
+						;
+					}
+				)}
+			</div>
 		</Tab.Pane>;
 	}
 
@@ -135,7 +148,7 @@ export default styled(LatestTreasuryTable)`
         :not(:first-child){
           span {
             border-left: 1px solid #ddd;
-            padding 0.3em 0 0.3em 1em;
+            padding: 0.3em 0 0.3em 1em;
             margin-left: -1em;
           }
         }

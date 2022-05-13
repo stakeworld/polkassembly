@@ -8,10 +8,12 @@ import React, { useEffect } from 'react';
 import { Tab, Table } from 'semantic-ui-react';
 import NothingFoundCard from 'src/ui-components/NothingFoundCard';
 
-import { useLatestDemocracyProposalPostsQuery } from '../../../generated/graphql';
+import { useGetLatestDemocracyProposalPostsQuery } from '../../../generated/graphql';
 import { post_topic } from '../../../global/post_topics';
 import { post_type } from '../../../global/post_types';
 import FilteredError from '../../../ui-components/FilteredError';
+import LatestActivityCard from '../LatestActivityCard';
+import LatestActivityTableHeader from '../LatestActivityTableHeader';
 import LatestActivityTableRow from '../LatestActivityTableRow';
 
 interface Props {
@@ -20,7 +22,7 @@ interface Props {
 
 const LatestProposalsTable = ({ className }:Props) => {
 
-	const { data, error, refetch } = useLatestDemocracyProposalPostsQuery({ variables: {
+	const { data, error, refetch } = useGetLatestDemocracyProposalPostsQuery({ variables: {
 		limit: 10,
 		postTopic: post_topic.DEMOCRACY,
 		postType: post_type.ON_CHAIN
@@ -49,16 +51,8 @@ const LatestProposalsTable = ({ className }:Props) => {
 			</Tab.Pane>;
 
 		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
-			<Table basic='very' striped unstackable selectable>
-				<Table.Header className='table-header'>
-					<Table.Row>
-						<Table.HeaderCell width={7}><span>Title</span></Table.HeaderCell>
-						<Table.HeaderCell width={3}><span>Posted By</span></Table.HeaderCell>
-						<Table.HeaderCell width={2}><span>Type</span></Table.HeaderCell>
-						<Table.HeaderCell width={2}><span>Status</span></Table.HeaderCell>
-						<Table.HeaderCell width={2}><span>Actions</span></Table.HeaderCell>
-					</Table.Row>
-				</Table.Header>
+			<Table className='hidden-mobile' basic='very' striped unstackable selectable>
+				<LatestActivityTableHeader className={className} />
 
 				<Table.Body>
 					{data.posts.map(
@@ -80,6 +74,26 @@ const LatestProposalsTable = ({ className }:Props) => {
 					)}
 				</Table.Body>
 			</Table>
+
+			<div className='hidden-desktop cards-container'>
+				{data.posts.map(
+					(post) => {
+						return !!post?.author?.username && (!!post.onchain_link?.onchain_proposal.length || post.onchain_link?.onchain_proposal_id) &&
+							<LatestActivityCard
+								key={post.id}
+								postId={post.id}
+								address={post.onchain_link.proposer_address}
+								method={post.onchain_link.onchain_proposal[0]?.preimage?.method}
+								onchainId={post.onchain_link?.onchain_proposal_id}
+								status={post.onchain_link.onchain_proposal[0]?.proposalStatus?.[0].status}
+								title={post.title}
+								postType='proposal'
+								created_at={post.created_at}
+							/>
+						;
+					}
+				)}
+			</div>
 		</Tab.Pane>;
 	}
 
@@ -135,7 +149,7 @@ export default styled(LatestProposalsTable)`
         :not(:first-child){
           span {
             border-left: 1px solid #ddd;
-            padding 0.3em 0 0.3em 1em;
+            padding: 0.3em 0 0.3em 1em;
             margin-left: -1em;
           }
         }

@@ -28,6 +28,7 @@ export default styled(LatestActivitySearchPage)`
 
 			.search-bar {
 				margin-right: 1em;
+				margin-top: 2em;
 	
 				input {
 					color: #333;

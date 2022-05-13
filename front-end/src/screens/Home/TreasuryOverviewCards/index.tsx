@@ -10,6 +10,8 @@ import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
 import { Card, Icon, Progress } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
+import { REACT_APP_SUBSCAN_API_KEY } from 'src/global/apiKeys';
+import { chainProperties } from 'src/global/networkConstants';
 import { useBlockTime } from 'src/hooks';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
 import blockToDays from 'src/util/blockToDays';
@@ -37,20 +39,6 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 
 	const { blocktime } = useBlockTime();
 
-	function getNetworkTokenSymbol(network:string){
-		let symbol = 'DOT';
-
-		switch (network){
-		case 'kusama':
-			symbol = 'KSM';
-			break;
-		default:
-			symbol = 'DOT';
-		}
-
-		return symbol;
-	}
-
 	const [result, setResult] = useState<Result>(() => ({
 		spendPeriod: BN_ZERO,
 		treasuryAccount: u8aConcat('modl', 'py/trsry', EMPTY_U8A_32).subarray(
@@ -65,7 +53,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 	const [nextBurnUSD, setNextBurnUSD] = useState<string>('');
 	const [currentTokenPrice, setCurrentTokenPrice] = useState<string>('');
 	const [priceWeeklyChange, setPriceWeeklyChange] = useState<number>();
-	const [spendPeriodRemaining, setSpendPeriodRemaining] = useState<number>();
+	const [spendPeriodElapsed, setSpendPeriodElapsed] = useState<number>();
 	const [spendPeriodPercentage, setSpendPeriodPercentage] = useState<number>();
 
 	useEffect(() => {
@@ -160,17 +148,17 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 		async function fetchAvailableUSDCPrice(token: number) {
 			if (cancel) return;
 			const response = await fetch(
-				'https://'+NETWORK+'.api.subscan.io/api/open/price_converter',
+				`https://${NETWORK}.api.subscan.io/api/open/price_converter`,
 				{
 					body: JSON.stringify({
-						from: getNetworkTokenSymbol(NETWORK),
+						from: chainProperties[NETWORK].tokenSymbol,
 						quote: 'USD',
 						value: token
 					}),
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-Key': 'cf41f0b0e400974bc0a3db0455ce9e11'
+						'X-API-Key': REACT_APP_SUBSCAN_API_KEY || ''
 					},
 					method: 'POST'
 				}
@@ -191,28 +179,29 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 		let cancel = false;
 
 		// replace spaces returned in string by format function
-		const token_burn: number = parseFloat(formatBnBalance(
+		const tokenBurn: number = parseFloat(formatBnBalance(
 			resultBurn.toString(),
 			{
 				numberAfterComma: 2,
+				withThousandDelimitor: false,
 				withUnit: false
 			}
-		).replaceAll(/\s/g,''));
+		));
 
 		async function fetchNextBurnUSDCPrice(token: number) {
 			if (cancel) return;
 			const response = await fetch(
-				'https://'+NETWORK+'.api.subscan.io/api/open/price_converter',
+				`https://${NETWORK}.api.subscan.io/api/open/price_converter`,
 				{
 					body: JSON.stringify({
-						from: getNetworkTokenSymbol(NETWORK),
+						from: chainProperties[NETWORK].tokenSymbol,
 						quote: 'USD',
 						value: token
 					}),
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-Key': 'cf41f0b0e400974bc0a3db0455ce9e11'
+						'X-API-Key': REACT_APP_SUBSCAN_API_KEY || ''
 					},
 					method: 'POST'
 				}
@@ -224,7 +213,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			}
 		}
 
-		fetchNextBurnUSDCPrice(token_burn);
+		fetchNextBurnUSDCPrice(tokenBurn);
 
 		return () => {cancel = true;};
 	}, [resultBurn]);
@@ -240,23 +229,24 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			today = new Date(today.getTime() - (offset*60*1000));
 
 			const response = await fetch(
-				'https://'+NETWORK+'.api.subscan.io/api/scan/price/history',
+				`https://${NETWORK}.api.subscan.io/api/open/price_converter`,
 				{
 					body: JSON.stringify({
-						end: `${today.toISOString().split('T')[0]}`,
-						start: `${today.toISOString().split('T')[0]}`
+						from: chainProperties[NETWORK].tokenSymbol,
+						quote: 'USD',
+						value: 1
 					}),
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-Key': 'cf41f0b0e400974bc0a3db0455ce9e11'
+						'X-API-Key': REACT_APP_SUBSCAN_API_KEY || ''
 					},
 					method: 'POST'
 				}
 			);
 			const responseJSON = await response.json();
 			if (responseJSON['message'] == 'Success') {
-				setCurrentTokenPrice(parseFloat(responseJSON['data']['average']).toFixed(2));
+				setCurrentTokenPrice(parseFloat(responseJSON['data']['output']).toFixed(2));
 			}
 		}
 
@@ -274,7 +264,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			const weekAgoDate = moment().subtract(7,'d').format('YYYY-MM-DD');
 
 			const response = await fetch(
-				'https://'+NETWORK+'.api.subscan.io/api/scan/price/history',
+				`https://${NETWORK}.api.subscan.io/api/scan/price/history`,
 				{
 					body: JSON.stringify({
 						end: weekAgoDate,
@@ -283,7 +273,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
-						'X-API-Key': 'cf41f0b0e400974bc0a3db0455ce9e11'
+						'X-API-Key': REACT_APP_SUBSCAN_API_KEY || ''
 					},
 					method: 'POST'
 				}
@@ -309,31 +299,33 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 
 		const totalSpendPeriod: number = blockToDays(result.spendPeriod.toNumber(), blocktime);
 		const spendPeriodElapsed: number = blockToDays(currentBlock.toNumber() % (result.spendPeriod.toNumber()), blocktime);
-		const spendPeriodRemaining: number = totalSpendPeriod - spendPeriodElapsed;
-		setSpendPeriodRemaining(spendPeriodRemaining);
+		// const spendPeriodRemaining: number = totalSpendPeriod - spendPeriodElapsed;
+		setSpendPeriodElapsed(spendPeriodElapsed);
 
-		const percentage = ((spendPeriodRemaining/totalSpendPeriod) * 100).toFixed(0);
+		// spendPeriodElapsed/totalSpendPeriod for opposite
+		const percentage = ((spendPeriodElapsed/totalSpendPeriod) * 100).toFixed(0);
 		setSpendPeriodPercentage(parseFloat(percentage));
 	}, [api, apiReady, currentBlock, blocktime, result.spendPeriod]);
 
 	return (
-		<Card.Group className={className}>
+		<Card.Group id='card-group' className={className}>
 			{/* Available Card */}
 			<Card className='treasury-card'>
 				<Card.Content>
 					<Card.Meta className='treasury-card-meta'>
-						Available <HelperTooltip content='Available funds collected through a portion of block production rewards, transaction fees, slashing, staking inefficiencies, etc.' />
+						Available <HelperTooltip basic={true} position='top left' content='Funds collected through a portion of block production rewards, transaction fees, slashing, staking inefficiencies, etc.' />
 					</Card.Meta>
 					<Card.Header className='treasury-card-header'>
 						{result.value ? (
 							<span>
-								{formatBnBalance(
+								{formatUSDWithUnits(formatBnBalance(
 									result.value.toString(),
 									{
-										numberAfterComma: 2,
-										withUnit: true
+										numberAfterComma: 0,
+										withThousandDelimitor: false,
+										withUnit: false
 									}
-								)}
+								))} {chainProperties[NETWORK].tokenSymbol}
 							</span>
 						) : (
 							<div>
@@ -354,7 +346,13 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			<Card className='treasury-card'>
 				<Card.Content>
 					<Card.Meta className='treasury-card-meta'>
-						Current Price of DOT
+						<span className='desktop-text'>
+							Current Price of {chainProperties[NETWORK].tokenSymbol}
+						</span>
+
+						<span className='mobile-text'>
+							{chainProperties[NETWORK].tokenSymbol} Price
+						</span>
 					</Card.Meta>
 					<Card.Header className='treasury-card-header'>
 						{currentTokenPrice ?
@@ -366,8 +364,12 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 					<Card.Description className='treasury-card-desc'>
 						{priceWeeklyChange ?
 							<div>
-								Weekly Change &nbsp;{Math.abs(priceWeeklyChange)}%
-								{priceWeeklyChange < 0 ? <Icon color='red' name='caret down' /> : <Icon color='green' name='caret up' /> }
+								<span className='desktop-text'>
+									Weekly Change &nbsp;{Math.abs(priceWeeklyChange)}% {priceWeeklyChange < 0 ? <Icon color='red' name='caret down' /> : <Icon color='green' name='caret up' /> }
+								</span>
+								<span className='mobile-text'>
+								Weekly &nbsp;{Math.abs(Number(priceWeeklyChange.toFixed(0)))}% {priceWeeklyChange < 0 ? <Icon color='red' name='caret down' /> : <Icon color='green' name='caret up' /> }
+								</span>
 							</div> :
 							'Fetching...'
 						}
@@ -379,10 +381,15 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			<Card className='treasury-card'>
 				<Card.Content>
 					<Card.Meta className='treasury-card-meta'>
-						Spend Period Remaining <HelperTooltip content={'Funds held in the treasury can be spent by making a spending proposal that, if approved by the Council, will enter a spend period before distribution, it is subject to governance, with the current default set to '+ blockToDays(result.spendPeriod.toNumber(), blocktime) + ' days.'} />
+						<span className='desktop-text'>
+							Spend Period Elapsed <HelperTooltip basic={true} content={'Funds held in the treasury can be spent by making a spending proposal that, if approved by the Council, will enter a spend period before distribution, it is subject to governance, with the current default set to '+ blockToDays(result.spendPeriod.toNumber(), blocktime) + ' days.'} />
+						</span>
+						<span className='mobile-text'>
+						Spend Period
+						</span>
 					</Card.Meta>
 					<Card.Header className='treasury-card-header'>
-						{spendPeriodRemaining && `${spendPeriodRemaining} days` }
+						{spendPeriodElapsed && `${spendPeriodElapsed} days` }
 					</Card.Header>
 
 					<Card.Description className='treasury-card-desc progress-desc'>
@@ -396,18 +403,19 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 			<Card className='treasury-card'>
 				<Card.Content>
 					<Card.Meta className='treasury-card-meta'>
-						Next Burn <HelperTooltip content='If the Treasury ends a spend period without spending all of its funds, it suffers a burn of a percentage of its funds.' />
+						Next Burn <HelperTooltip basic={true} position='right center' content='If the Treasury ends a spend period without spending all of its funds, it suffers a burn of a percentage of its funds.' />
 					</Card.Meta>
 					<Card.Header className='treasury-card-header'>
 						{result.burn ? (
 							<span>
-								{formatBnBalance(
+								{formatUSDWithUnits(formatBnBalance(
 									result.burn.toString(),
 									{
-										numberAfterComma: 2,
-										withUnit: true
+										numberAfterComma: 0,
+										withThousandDelimitor: false,
+										withUnit: false
 									}
-								)}
+								))} {chainProperties[NETWORK].tokenSymbol}
 							</span>
 						) : (
 							<div>
@@ -429,56 +437,107 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 
 export default styled(TreasuryOverviewCards)`
 	&&& {
-		@media only screen and (max-width: 1024px) {
-			justify-content: center;
+		overflow-x: hidden !important;
+		flex-wrap: nowrap;
+		max-width: 99.9%;
+		margin-left: 0 !important;
+
+		@media only screen and (min-width: 767px) {
+			&:hover {
+				overflow-x: auto !important;
+			}
+		}
+
+		@media only screen and (max-width: 767px) {
+			max-width: 98%;
+			display: grid;
+			column-gap: 16px;
+			grid-template-columns: auto auto;
+			overflow-x: visible !important;
+			margin-left: auto !important;
+			margin-right: auto !important;
 		}
 
 		.treasury-card{
+			display: inline-block;
 			border-radius: 0.5em;
-			
-			@media only screen and (min-width: 945px) {
-				// width: 170px;
-				width: 254px;
+
+			width: 98%;
+			min-width: min-content;
+			white-space: nowrap;
+			margin-right: 16px !important;
+			margin-left: 0 !important;
+
+			&:first-child{
+				margin-left: 1px !important;
+			}
+
+			.mobile-text {
+				display: none;
+			}
+
+			@media only screen and (max-width: 767px) {
+				padding-bottom: 12px;
+				min-width: 14px;
+				max-height: 120px;
+
+				.mobile-text {
+					display: block;
+				}
+				
+				.desktop-text {
+					display: none;
+				}
 			}
 			
+			@media only screen and (min-width: 945px) {
+				width: 23%;
+				max-width: 320px;
+			}
 			.content{
 				padding-bottom: 0 !important;
 			}
+			
+			.treasury-card-meta {
+				color: #333 !important;
+				font-size: 15px;
+			}
+	
+			.treasury-card-header {
+				margin-top: 0.4em !important;
+				font-size: 24px !important;
+				font-family: 'Roboto';
+				font-weight: 500 !important;
+
+				@media only screen and (max-width: 767px) {
+					font-size: 18px !important;
+				}
+			}
+	
+			.treasury-card-desc{
+				&:not(.progress-desc){
+					margin-top: 0.9em !important;
+					border-top: 1px solid #eee;
+					padding-top: 0.7em;
+				}
+				
+				color: #000 !important;
+	
+				.bar {
+					background-color: #E5007A !important;
+					border-radius: 1em;
+					height: 8px;
+					margin-top: 0.5em;
+				}
+
+				.progressNumber{
+					float: right;
+					color: #787878;
+					font-size: 14px;
+				}
+	
+			}
 		}
 		
-		.treasury-card-meta {
-			color: #333 !important;
-			font-size: 1.5rem;
-		}
-
-		.treasury-card-header {
-			margin-top: 0.4em !important;
-			font-size: 24px !important;
-		}
-
-		.treasury-card-desc{
-			&:not(.progress-desc){
-				margin-top: 0.9em !important;
-				border-top: 1px solid #eee;
-				padding-top: 0.7em;
-			}
-			
-			color: #000 !important;
-
-			.bar {
-				background-color: #E5007A !important;
-				border-radius: 1em;
-				height: 8px;
-				margin-top: 0.5em;
-			}
-
-
-			.progressNumber{
-				float: right;
-				color: #787878;
-				font-size: 14px;
-			}
-
-		}
 	}
 `;

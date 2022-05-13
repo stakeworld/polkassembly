@@ -44,6 +44,7 @@ export enum Role {
     ADMIN = 'admin',
     PROPOSAL_BOT = 'proposal_bot',
     USER = 'user',
+    EVENT_BOT = 'event_bot',
 }
 
 // these are enforced by Hasura
@@ -354,4 +355,21 @@ export interface EditPostArgs {
     signature: string;
     proposalType: string;
     proposalId: string;
+}
+
+export interface AddProfileArgs {
+    bio?: string;
+    image?: string;
+}
+
+export interface GetProfileArgs {
+    user_id: number;
+}
+
+export interface ProfileDetails {
+    id: number;
+    user_id: number;
+    bio?: string;
+    username?: string;
+    image?: string;
 }

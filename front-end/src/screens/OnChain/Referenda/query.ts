@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import { authorFields } from 'src/fragments/author';
 
 export const QUERY_LATEST_REFERENDA = gql`
-    query LatestReferendaPosts($postType: Int!, $limit: Int! = 5) {
+    query GetLatestReferendaPosts($postType: Int!, $limit: Int! = 5) {
         posts(limit: $limit, where: {
             type: {
                 id: {
@@ -46,7 +46,7 @@ export const QUERY_LATEST_REFERENDA = gql`
             onchain_link {
                 id
                 onchain_referendum_id
-                onchain_referendum(where: {NOT: {referendumStatus_some: {OR: [{status: "Passed"}, {status: "Executed"}, {status: "NotPassed"}, {status: "Cancelled"}, {status: "Vetoed"}]}}}) {
+                onchain_referendum {
                     id
                     end
                     referendumStatus(last: 1) {

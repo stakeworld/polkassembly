@@ -9,7 +9,7 @@ import { stringToHex } from '@polkadot/util';
 import styled from '@xstyled/styled-components';
 import React, { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Grid, Icon, Table } from 'semantic-ui-react';
+import { Divider, Grid, Icon, Table } from 'semantic-ui-react';
 
 import Balance from '../../components/Balance';
 import ContentForm from '../../components/ContentForm';
@@ -28,6 +28,7 @@ import Loader from '../../ui-components/Loader';
 import Markdown from '../../ui-components/Markdown';
 import getEncodedAddress from '../../util/getEncodedAddress';
 import getNetwork from '../../util/getNetwork';
+import SetOnChainIdentityButton from '../Settings/setOnChainIdentityButton';
 import CouncilVotes from './CouncilVotes';
 
 interface Props {
@@ -207,7 +208,7 @@ const Profile = ({ className }: Props): JSX.Element => {
 
 		const signMessage = `<Bytes>about::network:${network}|address:${address}|title:${title || ''}|description:${description || ''}|image:</Bytes>`;
 
-		console.log(signMessage);
+		// console.log(signMessage);
 
 		const { signature } = await signRaw({
 			address,
@@ -301,6 +302,11 @@ const Profile = ({ className }: Props): JSX.Element => {
 				{council ? <CouncilVotes address={address} /> : null}
 			</Grid.Column>
 			<Grid.Column mobile={16} tablet={16} computer={6} largeScreen={6} widescreen={6}>
+				<div className='card-right'>
+					<h4>Identity </h4>
+					<SetOnChainIdentityButton />
+					<Divider className='divider' />
+				</div>
 				<div className='info-box'>
 					<h2>{router.query.username}</h2>
 					{address ? <>
@@ -358,6 +364,27 @@ export default styled(Profile)`
 		box-shadow: box_shadow_card;
 		padding: 3rem 3rem 0.8rem 3rem;
 		margin-bottom: 1rem;
+	}
+
+	.card-right {
+		background-color: white;
+		padding: 2rem 3rem 3rem 3rem!important;
+		border-radius: 3px;
+		box-shadow: box_shadow_card;
+		display: flex;
+		width: calc(100% - 60px);
+		justify-content: center;
+		flex-direction: column;
+
+		.divider {
+			margin-top: 3em;
+			margin-bottom: 2em;
+		}
+
+		@media only screen and (max-width: 576px) {
+			width: 100%;
+			border-radius: 0px;
+		}
 	}
 
 	.info-box {

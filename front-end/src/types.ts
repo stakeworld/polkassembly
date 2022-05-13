@@ -161,6 +161,11 @@ export enum Vote {
 	NAY = 'NAY'
 }
 
+export enum PolkassemblyProposalTypes {
+	TreasurySpendProposal,
+	TipProposal
+}
+
 export interface CouncilVote {
 	address: string;
 	vote: Vote;

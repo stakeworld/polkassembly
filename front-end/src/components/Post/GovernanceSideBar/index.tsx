@@ -6,7 +6,7 @@ import { web3Accounts, web3Enable,web3FromSource } from '@polkadot/extension-dap
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import styled from '@xstyled/styled-components';
 import React, { useContext, useState } from 'react';
-import { DropdownProps } from 'semantic-ui-react';
+import { DropdownProps, Icon } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
 import { OnchainLinkBountyFragment, OnchainLinkMotionFragment, OnchainLinkProposalFragment, OnchainLinkReferendumFragment, OnchainLinkTechCommitteeProposalFragment, OnchainLinkTipFragment, OnchainLinkTreasuryProposalFragment } from 'src/generated/graphql';
 import { APPNAME } from 'src/global/appName';
@@ -43,6 +43,7 @@ const GovenanceSideBar = ({ className, isMotion, isProposal, isReferendum, isTip
 	const [extensionNotFound, setExtensionNotFound] = useState(false);
 	const [accountsNotFound, setAccountsNotFound] = useState(false);
 	const { api, apiReady } = useContext(ApiContext);
+	const [lastVote, setLastVote] = useState<string | null | undefined>(undefined);
 
 	const canVote = !!status && !![proposalStatus.PROPOSED, referendumStatus.STARTED, motionStatus.PROPOSED, tipStatus.OPENED].includes(status);
 
@@ -147,18 +148,34 @@ const GovenanceSideBar = ({ className, isMotion, isProposal, isReferendum, isTip
 							<>
 								{(onchainId || onchainId === 0) &&
 									<ReferendumVoteInfo
-										referendumId={onchainId  as number}
+										referendumId={onchainId as number}
 										threshold={((onchainLink as OnchainLinkReferendumFragment).onchain_referendum[0]?.voteThreshold) as VoteThreshold}
+										setLastVote={setLastVote}
 									/>
 								}
-								{canVote && <VoteReferendum
-									accounts={accounts}
-									address={address}
-									getAccounts={getAccounts}
-									onAccountChange={onAccountChange}
-									referendumId={onchainId  as number}
-								/>
-								}
+
+								<div className='vote-div vote-card'>
+									{lastVote != undefined ? lastVote == null ?
+										<div className='vote-reminder-text'>You haven&apos;t voted yet, vote now and do your bit for the community</div>
+										:
+										<div className='last-vote-text-cont'>
+											You Voted: { lastVote == 'aye' ? <Icon name='thumbs up' className='green-text' /> : <Icon name='thumbs down' className='red-text' /> }
+											<span className={`last-vote-text ${lastVote == 'aye' ? 'green-text' : 'red-text'}`}>{lastVote}</span>
+										</div>
+										: <div className="spacer"></div>
+									}
+
+									{canVote && <VoteReferendum
+										lastVote={lastVote}
+										setLastVote={setLastVote}
+										accounts={accounts}
+										address={address}
+										getAccounts={getAccounts}
+										onAccountChange={onAccountChange}
+										referendumId={onchainId  as number}
+									/>
+									}
+								</div>
 							</>
 						}
 						{isTipProposal && canVote &&
@@ -186,6 +203,53 @@ export default styled(GovenanceSideBar)`
 	@media only screen and (max-width: 768px) {
 		.ui.form {
 			padding: 0rem;
+		}
+	}
+
+	.vote-div {
+
+		&.vote-card {
+			background: #fff;
+			padding: 14px 28px;
+			box-shadow: rgba(83, 89, 92, 0.15) 0px 2px 4px 0px;
+		}
+		
+		.vote-reminder-text, .last-vote-text-cont {
+			color: #000000;
+			font-size: 16px;
+			margin-bottom: 16px;
+			display: flex;
+			align-items: center;
+
+			.green-text {
+				color: #4DD18F;
+			}
+
+			.red-text {
+				color: #D94C3D;
+			}
+			
+			.icon {
+				margin-left: 12px;
+				margin-right: 4px;
+				margin-top: -4px;
+			}
+
+			.last-vote-text {
+				text-transform: capitalize;
+				font-weight: 500;
+			}
+
+			.last-vote-date {
+				font-size: 14px;
+				font-weight: 400;
+				color: #909090;
+				margin-left: 6px;
+			}
+		}
+
+		.spacer {
+			margin-top: 9px;
 		}
 	}
 `;

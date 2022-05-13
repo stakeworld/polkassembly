@@ -7,7 +7,7 @@ import { authorFields } from 'src/fragments/author';
 
 // for motions postType shoud be 2, postTopic should be 2
 export const QUERY_LATEST_MOTIONS = gql`
-    query LatestMotionPosts($postType: Int!, $limit: Int! = 5 ) {
+    query GetLatestMotionPosts($postType: Int!, $limit: Int! = 5 ) {
         posts(limit: $limit, where: {
             type: {
                 id: {
@@ -18,9 +18,6 @@ export const QUERY_LATEST_MOTIONS = gql`
                 onchain_motion_id: {
                     _is_null: false
                 },
-                onchain_referendum_id: {
-                    _is_null: true
-                }
             }
         }, order_by: {
             onchain_link: {
@@ -50,7 +47,7 @@ export const QUERY_LATEST_MOTIONS = gql`
             onchain_link {
                 id
                 onchain_motion_id
-                onchain_motion(where: {NOT: {motionStatus_some: {OR: [{status: "Executed"}, {status: "Disapproved"}]}}}) {
+                onchain_motion {
                     id
                     motionStatus(last: 1) {
                         id
@@ -69,8 +66,8 @@ export const QUERY_LATEST_MOTIONS = gql`
 `;
 
 export const QUERY_COUNT_MOTIONS = gql`
-    query LatestMotionsCount($postType: Int!) {
-        posts_aggregate(where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_referendum_id: {_is_null: true}, onchain_motion_id: {_is_null: false}}}) {
+    query GetLatestMotionsCount($postType: Int!) {
+        posts_aggregate(where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_motion_id: {_is_null: false}}}) {
             aggregate {
                 count
             }

@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import { authorFields } from 'src/fragments/author';
 
 export const QUERY_LATEST_PROPOSALS = gql`
-    query LatestDemocracyProposalPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5 ) {
+    query GetLatestDemocracyProposalPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5 ) {
         posts(limit: $limit, where: {
             type: {
                 id: {
@@ -21,9 +21,6 @@ export const QUERY_LATEST_PROPOSALS = gql`
             onchain_link: {
                 onchain_proposal_id: {
                     _is_null: false
-                },
-                onchain_referendum_id: {
-                    _is_null: true
                 }
             }
         }, order_by: {
@@ -54,7 +51,7 @@ export const QUERY_LATEST_PROPOSALS = gql`
             onchain_link {
                 id
                 onchain_proposal_id
-                onchain_proposal(where: {NOT: {proposalStatus_some: {OR: [{status: "Tabled"}, {status: "Cleared"}]}}}) {
+                onchain_proposal {
                     id
                     proposalStatus(last: 1) {
                         id
@@ -74,7 +71,7 @@ export const QUERY_LATEST_PROPOSALS = gql`
 
 export const QUERY_COUNT_DEMOCRACY_PROPOSALS = gql`
     query DemocracyProposalCount($postType: Int!, $postTopic: Int!) {
-        posts_aggregate(where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_proposal_id: {_is_null: false}, onchain_referendum_id: {_is_null: true}}}) {
+        posts_aggregate(where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_proposal_id: {_is_null: false}}}) {
             aggregate {
             count
             }
