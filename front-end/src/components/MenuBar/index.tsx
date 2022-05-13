@@ -48,6 +48,7 @@ const MenuBar = ({ className, toggleSidebarHidden, setSidebarHidden } : Props): 
 	const loggedInItems = [
 		{ content:'Notifications', icon:'bell', to:'/notification-settings' },
 		{ content:'Settings', icon:'cog', to:'/settings' },
+		{ content:'Profile', icon:'user circle', to:`/user/${currentUser.username}` },
 		{ content:'Tracker', icon:'bookmark', to:'/tracker' },
 		{ content:'Logout', icon:'sign-out', onClick: handleLogout, to:'/' }
 	];

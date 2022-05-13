@@ -14,31 +14,30 @@ interface Props {
 const UserProfile = ({ className }: Props): JSX.Element => {
 
 	return (
-		<Grid stackable>
-			<Grid.Column width={15}>
-				<h1 style={ { fontSize: '4.4rem', fontWeight: 500 } }>Profile</h1>
+		<Grid stackable className={className}>
+			<Grid.Column width={16}>
+				<h1>Profile</h1>
 			</Grid.Column>
-			<Grid.Column className={className} mobile={16} tablet={16} computer={15} largeScreen={15} widescreen={15}>
-				{/* First Row */}
+			<Grid.Column className='profile-card' mobile={16} tablet={16} computer={15} largeScreen={15} widescreen={15}>
 				<Grid stackable>
-					<Grid.Column className='profile-photo-col' mobile={16} tablet={16} computer={16} largeScreen={2} widescreen={2}>
-						<img width={130} height={130} className='profile-img' src='https://image.shutterstock.com/image-vector/august-20-2014-illustration-robocop-600w-216216121.jpg' />
-					</Grid.Column>
-					<Grid.Column className='profile-text-col' mobile={16} tablet={12} computer={12} largeScreen={10} widescreen={10}>
-						<h3 className='display-name'>Display Name</h3>
-						<h3 className='display-title'>Display Title</h3>
-						<Label.Group className='display-badges' size='big'>
-							<Label>Fun</Label>
-							<Label>Happy</Label>
-							<Label>Smart</Label>
-							<Label>Witty</Label>
-						</Label.Group>
-					</Grid.Column>
-					<Grid.Column className='profile-edit-col' mobile={16} tablet={3} computer={3} largeScreen={2} widescreen={2}>
+					<Grid.Column className='profile-col' width={16}>
+						<div className='profile-div'>
+							<img width={130} height={130} className='profile-img' src='https://image.shutterstock.com/image-vector/august-20-2014-illustration-robocop-600w-216216121.jpg' />
+							<div className='profile-text-div'>
+								<h3 className='display-name'>Display Name</h3>
+								<h3 className='display-title'>Display Title</h3>
+								<Label.Group className='display-badges' size='big'>
+									<Label>Fun</Label>
+									<Label>Happy</Label>
+									<Label>Smart</Label>
+									<Label>Witty</Label>
+								</Label.Group>
+							</div>
+						</div>
 						<Button basic size='large' className='edit-profile-btn'> <Icon name='pencil' /> Edit Profile</Button>
 					</Grid.Column>
 				</Grid>
-				{/* End First Row */}
+
 				<Divider className='profile-divider' />
 				<div className='about-div'>
 					<h2>About</h2>
@@ -53,80 +52,102 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 };
 
 export default styled(UserProfile)`
-	background-color: white;
-	padding: 2rem 3rem 3rem 3rem!important;
-	border-radius: 0.3rem;
-	box-shadow: box_shadow_card;
-	margin-top: 1em;
-	
-	.profile-photo-col, .profile-edit-col {
-		display: flex !important;
-		justify-content: center;
-		align-items: start;
+
+	h1 {
+		font-size: 48px;
+		font-weight: 400;
+		margin-bottom: 36px;
+	}
+
+	.profile-card {
+		background-color: white;
+		padding: 24px !important;
+		border-radius: 10px;
+		box-shadow: box_shadow_card;
+		
+		.profile-div {
+			@media only screen and (min-width: 767px) {
+				display: flex;
+			}
+		}
+
 		.profile-img {
 			border-radius: 50%;
 		}
-	}
 
-	.profile-text-col {
-		margin-left: 1.5em;
-
-		@media only screen and (max-width: 767px) {
-			text-align: center;
-		}
-
-		h3 {
-			font-weight: 500;
-		}
-		
-		h3.display-name {
-			margin-top: 1rem;
-			font-size: 22px;
-		}
-
-		h3.display-title {
-			font-size: 18px;
-			color: #7D7D7D;
-			margin-top: 1em;
-		}
-
-		.display-badges {
-			margin-top: 1.6em;
-
-			.label {
-				border-radius: 48px;
-				background: #E5007A;
-				color: #fff;
-				font-size: 14px;
-				font-weight: 500;
+		.profile-text-div {
+			@media only screen and (min-width: 767px) {
+				margin-left: 24px;
 			}
 		}
-	}
 
-	.profile-edit-col {
-		.edit-profile-btn {
-			border-radius: 5px;
-			border: 1px solid #8D8D8D;
+		.profile-col {
+			display: flex !important;
+			justify-content: space-between;
+
+			@media only screen and (max-width: 767px) {
+				text-align: center;
+				flex-direction: column;
+				margin-left: 0;
+			}
+
+			h3 {
+				font-weight: 500;
+			}
+			
+			h3.display-name {
+				margin-top: 1rem;
+				font-size: 22px;
+			}
+
+			h3.display-title {
+				font-size: 18px;
+				color: #7D7D7D;
+				margin-top: 16px;
+			}
+
+			.display-badges {
+				margin-top: 26px;
+
+				.label {
+					border-radius: 48px;
+					background: #E5007A;
+					color: #fff;
+					font-size: 14px;
+					font-weight: 500;
+				}
+			}
+
+			.edit-profile-btn {
+				border-radius: 5px;
+				border: 1px solid #8D8D8D;
+				height: 40px;
+
+				@media only screen and (max-width: 767px) {
+					margin-top: 16px;
+				}
+			}
 		}
-	}
+		
 
-	.profile-divider {
-		margin-top: 3.5em;
-	}
-
-	.about-div {
-		margin: 1.4em 0.5em;
-
-		h2 {
-			font-weight: 500;
-			font-size: 22px;
+		.profile-divider {
+			margin-top: 3.5em;
 		}
 
-		p {
-			font-weight: 400;
-			font-size: 16px;
-			line-height: 24px;
-			color: #7D7D7D !important;
+		.about-div {
+			margin: 1.4em 0.5em;
+
+			h2 {
+				font-weight: 500;
+				font-size: 22px;
+			}
+
+			p {
+				font-weight: 400;
+				font-size: 16px;
+				line-height: 24px;
+				color: #7D7D7D !important;
+			}
 		}
-	}
+}
 `;
