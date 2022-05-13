@@ -1214,16 +1214,21 @@ export default class AuthService {
 		const { errors, data } = await post.json();
 
 		if (errors) {
+			console.log(errors);
 			throw new ForbiddenError(messages.ERROR_IN_POST_EDIT);
 		}
 
 		if (!data?.onchain_links?.length) {
+			console.log('onchain link not found');
+			console.log(data?.onchain_links);
 			throw new ForbiddenError(messages.ERROR_IN_POST_EDIT);
 		}
 
 		const post_id = data?.onchain_links[0]?.post_id;
 
 		if (!post_id) {
+			console.log('post_id not found');
+			console.log(data);
 			throw new ForbiddenError(messages.ERROR_IN_POST_EDIT);
 		}
 
@@ -1253,11 +1258,15 @@ export default class AuthService {
 			method: 'POST'
 		};
 
+		console.log(api, request);
+
 		const result = await fetch(api, request);
 
 		const json = await result.json();
 
 		if (json.errors) {
+			console.log('error in edit post');
+			console.log(json.errors);
 			throw new ForbiddenError(messages.ERROR_IN_POST_EDIT);
 		}
 	}
