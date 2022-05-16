@@ -57,6 +57,7 @@ export const ADD_BIO_IMAGE=gql`
         __typename
         addProfile(objects: {image: $image, bio: $bio, user_id: $user_id}) {
         }
+        Message
     }
 `;
 
