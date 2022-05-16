@@ -2831,6 +2831,7 @@ export type MotionWhereUniqueInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addProfile?: Maybe<Message>;
   addressLinkConfirm?: Maybe<ChangeResponse>;
   addressLinkStart?: Maybe<AddressLinkType>;
   addressLogin?: Maybe<LoginResponse>;
@@ -2864,6 +2865,13 @@ export type Mutation = {
   signup?: Maybe<LoginResponse>;
   undoEmailChange?: Maybe<UndoEmailChangeResponse>;
   verifyEmail?: Maybe<ChangeResponse>;
+};
+
+
+export type MutationAddProfileArgs = {
+  bio?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  user_id: Scalars['Int'];
 };
 
 
@@ -4178,6 +4186,14 @@ export type PreimageWhereUniqueInput = {
   id?: Maybe<Scalars['ID']>;
 };
 
+export type Profile = {
+  __typename?: 'Profile';
+  bio?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  image?: Maybe<Scalars['String']>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
 export type Proposal = {
   __typename?: 'Proposal';
   author: Scalars['String'];
@@ -4699,6 +4715,7 @@ export type Query = {
   subscription?: Maybe<Subscription>;
   token?: Maybe<Token>;
   user?: Maybe<User>;
+  userDetails?: Maybe<Profile>;
 };
 
 
@@ -4720,6 +4737,11 @@ export type QuerySubscriptionArgs = {
 
 export type QueryUserArgs = {
   id: Scalars['Int'];
+};
+
+
+export type QueryUserDetailsArgs = {
+  user_id: Scalars['Int'];
 };
 
 export type Referendum = {
@@ -9701,6 +9723,7 @@ export type Comments_Variance_Order_By = {
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
+  addProfile?: Maybe<Message>;
   addressLinkConfirm?: Maybe<ChangeResponse>;
   addressLinkStart?: Maybe<AddressLinkType>;
   addressLogin?: Maybe<LoginResponse>;
@@ -9914,6 +9937,14 @@ export type Mutation_Root = {
   /** update single row of the table: "replies" */
   update_replies_by_pk?: Maybe<Replies>;
   verifyEmail?: Maybe<ChangeResponse>;
+};
+
+
+/** mutation root */
+export type Mutation_RootAddProfileArgs = {
+  bio?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  user_id: Scalars['Int'];
 };
 
 
@@ -15112,6 +15143,7 @@ export type Query_Root = {
   treasuryStatuses: Array<Maybe<TreasuryStatus>>;
   treasuryStatusesConnection: TreasuryStatusConnection;
   user?: Maybe<User>;
+  userDetails?: Maybe<Profile>;
   validator?: Maybe<Validator>;
   validators: Array<Maybe<Validator>>;
   validatorsConnection: ValidatorConnection;
@@ -16516,6 +16548,12 @@ export type Query_RootTreasuryStatusesConnectionArgs = {
 /** query root */
 export type Query_RootUserArgs = {
   id: Scalars['Int'];
+};
+
+
+/** query root */
+export type Query_RootUserDetailsArgs = {
+  user_id: Scalars['Int'];
 };
 
 
@@ -18298,6 +18336,34 @@ export type AddCalenderEventMutation = (
   & { insert_calender_events?: Maybe<(
     { __typename?: 'calender_events_mutation_response' }
     & Pick<Calender_Events_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
+export type AddProfileMutationVariables = Exact<{
+  image: Scalars['String'];
+  bio: Scalars['String'];
+  user_id: Scalars['Int'];
+}>;
+
+
+export type AddProfileMutation = (
+  { __typename: 'mutation_root' }
+  & { addProfile?: Maybe<(
+    { __typename?: 'Message' }
+    & Pick<Message, 'message'>
+  )> }
+);
+
+export type GetUserDetailsQueryVariables = Exact<{
+  user_id: Scalars['Int'];
+}>;
+
+
+export type GetUserDetailsQuery = (
+  { __typename?: 'query_root' }
+  & { userDetails?: Maybe<(
+    { __typename?: 'Profile' }
+    & Pick<Profile, 'bio' | 'image' | 'user_id'>
   )> }
 );
 
@@ -22488,6 +22554,76 @@ export function useAddCalenderEventMutation(baseOptions?: ApolloReactHooks.Mutat
 export type AddCalenderEventMutationHookResult = ReturnType<typeof useAddCalenderEventMutation>;
 export type AddCalenderEventMutationResult = ApolloReactCommon.MutationResult<AddCalenderEventMutation>;
 export type AddCalenderEventMutationOptions = ApolloReactCommon.BaseMutationOptions<AddCalenderEventMutation, AddCalenderEventMutationVariables>;
+export const AddProfileDocument = gql`
+    mutation addProfile($image: String!, $bio: String!, $user_id: Int!) {
+  __typename
+  addProfile(image: $image, bio: $bio, user_id: $user_id) {
+    message
+  }
+}
+    `;
+export type AddProfileMutationFn = ApolloReactCommon.MutationFunction<AddProfileMutation, AddProfileMutationVariables>;
+
+/**
+ * __useAddProfileMutation__
+ *
+ * To run a mutation, you first call `useAddProfileMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddProfileMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addProfileMutation, { data, loading, error }] = useAddProfileMutation({
+ *   variables: {
+ *      image: // value for 'image'
+ *      bio: // value for 'bio'
+ *      user_id: // value for 'user_id'
+ *   },
+ * });
+ */
+export function useAddProfileMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddProfileMutation, AddProfileMutationVariables>) {
+        return ApolloReactHooks.useMutation<AddProfileMutation, AddProfileMutationVariables>(AddProfileDocument, baseOptions);
+      }
+export type AddProfileMutationHookResult = ReturnType<typeof useAddProfileMutation>;
+export type AddProfileMutationResult = ApolloReactCommon.MutationResult<AddProfileMutation>;
+export type AddProfileMutationOptions = ApolloReactCommon.BaseMutationOptions<AddProfileMutation, AddProfileMutationVariables>;
+export const GetUserDetailsDocument = gql`
+    query GetUserDetails($user_id: Int!) {
+  userDetails(user_id: $user_id) {
+    bio
+    image
+    user_id
+  }
+}
+    `;
+
+/**
+ * __useGetUserDetailsQuery__
+ *
+ * To run a query within a React component, call `useGetUserDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserDetailsQuery({
+ *   variables: {
+ *      user_id: // value for 'user_id'
+ *   },
+ * });
+ */
+export function useGetUserDetailsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetUserDetailsQuery, GetUserDetailsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetUserDetailsQuery, GetUserDetailsQueryVariables>(GetUserDetailsDocument, baseOptions);
+      }
+export function useGetUserDetailsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetUserDetailsQuery, GetUserDetailsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetUserDetailsQuery, GetUserDetailsQueryVariables>(GetUserDetailsDocument, baseOptions);
+        }
+export type GetUserDetailsQueryHookResult = ReturnType<typeof useGetUserDetailsQuery>;
+export type GetUserDetailsLazyQueryHookResult = ReturnType<typeof useGetUserDetailsLazyQuery>;
+export type GetUserDetailsQueryResult = ApolloReactCommon.QueryResult<GetUserDetailsQuery, GetUserDetailsQueryVariables>;
 export const AllBountyPostsDocument = gql`
     query AllBountyPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
   posts(

@@ -55,18 +55,18 @@ export const ADD_CALENDER_EVENT=gql`
 export const ADD_BIO_IMAGE=gql`
     mutation addProfile ($image: String!, $bio: String!, $user_id: Int!) {
         __typename
-        addProfile(objects: {image: $image, bio: $bio, user_id: $user_id}) {
+        addProfile(image: $image, bio: $bio, user_id: $user_id) {
             message
         }
     }
 `;
 
 export const GET_USER_DETAILS = gql`
-query GetUserDetails($user_id: Int!) {
-  userDetails(user_id: $user_id) {
-    bio
-    image
-    user_id
-  }
-}
+    query GetUserDetails($user_id: Int!) {
+        userDetails(user_id: $user_id) {
+            bio
+            image
+            user_id
+        }
+    }
 `;
