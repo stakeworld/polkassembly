@@ -118,7 +118,10 @@ export default styled(NetworkDropdown)`
     display: flex !important;
     align-items: center;
 		margin: 0 1.2rem;
-		font-size: 13px;
+		
+		@media only screen and (max-width: 768px) {
+			font-size: 13px;
+		}
 
 		i.icon {
 			color: #fff !important;
