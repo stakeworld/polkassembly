@@ -56,8 +56,8 @@ export const ADD_BIO_IMAGE=gql`
     mutation addProfile ($image: String!, $bio: String!, $user_id: Int!) {
         __typename
         addProfile(objects: {image: $image, bio: $bio, user_id: $user_id}) {
+            message
         }
-        Message
     }
 `;
 
