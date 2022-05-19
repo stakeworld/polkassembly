@@ -3,51 +3,91 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from '@xstyled/styled-components';
-import React from 'react';
-import { Button, Divider, Grid, Icon, Label } from 'semantic-ui-react';
-// import CouncilVotes from '././CouncilVotes';
+import React, { useContext, useEffect, useState } from 'react';
+import { Button, Card, Divider, Grid, Icon } from 'semantic-ui-react';
+import { UserDetailsContext } from 'src/context/UserDetailsContext';
+import { useGetUserDetailsQuery } from 'src/generated/graphql';
+import Loader from 'src/ui-components/Loader';
 
 interface Props {
 	className?: string
 }
 
 const UserProfile = ({ className }: Props): JSX.Element => {
+	const { id, username } = useContext(UserDetailsContext);
+	const [displayName, setDisplayName] = useState<string>('displayName');
+	const [bio, setBio] = useState<string>('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisi parturient diam, gravida vitae lobortis. Facilisis nisl enim pellentesque pellentesque sed tristique. Ullamcorper dapibus pharetra, libero aliquet id viverra adipiscing odio viverra. Turpis orci id nec, auctor ac venenatis sed mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisi parturient diam, gravida vitae lobortis. Facilisis nisl enim pellentesque pellentesque sed tristique. Ullamcorper dapibus pharetra, libero aliquet id viverra adipiscing odio viverra. Turpis orci id nec, auctor ac venenatis sed mauris.');
+
+	const { data, error } = useGetUserDetailsQuery({
+		variables: {
+			user_id: Number(id)
+		}
+	});
+
+	console.log('data : ', data);
+	console.log('error : ', error);
+
+	// TODO: Enable
+	// useEffect(() => {
+	// refetch();
+	// }, [refetch]);
+
+	useEffect(() => {
+		if(data?.userDetails) {
+			setDisplayName(`${data.userDetails.user_id}`);
+			setBio(`${data.userDetails.bio}`);
+		}
+	}, [data]);
+
+	useEffect(() => {
+		if(username) {
+			setDisplayName(username);
+		}
+	}, [username]);
 
 	return (
-		<Grid stackable className={className}>
+		id ? <Grid stackable className={className}>
 			<Grid.Column width={16}>
 				<h1>Profile</h1>
 			</Grid.Column>
-			<Grid.Column className='profile-card' mobile={16} tablet={16} computer={15} largeScreen={15} widescreen={15}>
-				<Grid stackable>
-					<Grid.Column className='profile-col' width={16}>
-						<div className='profile-div'>
-							<img width={130} height={130} className='profile-img' src='https://image.shutterstock.com/image-vector/august-20-2014-illustration-robocop-600w-216216121.jpg' />
-							<div className='profile-text-div'>
-								<h3 className='display-name'>Display Name</h3>
-								<h3 className='display-title'>Display Title</h3>
-								<Label.Group className='display-badges' size='big'>
-									<Label>Fun</Label>
-									<Label>Happy</Label>
-									<Label>Smart</Label>
-									<Label>Witty</Label>
-								</Label.Group>
+			{ data && !error ?
+				<Grid.Column className='profile-card' mobile={16} tablet={16} computer={15} largeScreen={15} widescreen={15}>
+					<Grid stackable>
+						<Grid.Column className='profile-col' width={16}>
+							<div className='profile-div'>
+								<img width={130} height={130} className='profile-img' src='https://image.shutterstock.com/image-vector/august-20-2014-illustration-robocop-600w-216216121.jpg' />
+								<div className='profile-text-div'>
+									<h3 className='display-name'>{displayName}</h3>
+									{/* <h3 className='display-title'>Display Title</h3> */}
+									{/* <Label.Group className='display-badges' size='big'>
+										<Label>Fun</Label>
+										<Label>Happy</Label>
+										<Label>Smart</Label>
+										<Label>Witty</Label>
+									</Label.Group> */}
+								</div>
 							</div>
-						</div>
-						<Button basic size='large' className='edit-profile-btn'> <Icon name='pencil' /> Edit Profile</Button>
-					</Grid.Column>
-				</Grid>
+							<Button basic size='large' className='edit-profile-btn'> <Icon name='pencil' /> Edit Profile</Button>
+						</Grid.Column>
+					</Grid>
 
-				<Divider className='profile-divider' />
-				<div className='about-div'>
-					<h2>About</h2>
+					<Divider className='profile-divider' />
+					<div className='about-div'>
+						<h2>About</h2>
 
-					<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisi parturient diam, gravida vitae lobortis. Facilisis nisl enim pellentesque pellentesque sed tristique. Ullamcorper dapibus pharetra, libero aliquet id viverra adipiscing odio viverra. Turpis orci id nec, auctor ac venenatis sed mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisi parturient diam, gravida vitae lobortis. Facilisis nisl enim pellentesque pellentesque sed tristique. Ullamcorper dapibus pharetra, libero aliquet id viverra adipiscing odio viverra. Turpis orci id nec, auctor ac venenatis sed mauris.
-					</p>
-				</div>
-			</Grid.Column>
+						<p>{bio}</p>
+					</div>
+				</Grid.Column>
+				:
+				<Loader />
+			}
 		</Grid>
+			:
+			<Grid stackable className={className}>
+				<Grid.Column width={16}>
+					<Card fluid header='Please login to access profile.' />
+				</Grid.Column>
+			</Grid>
 	);
 };
 
@@ -64,26 +104,21 @@ export default styled(UserProfile)`
 		padding: 24px !important;
 		border-radius: 10px;
 		box-shadow: box_shadow_card;
-		
-		.profile-div {
-			@media only screen and (min-width: 767px) {
-				display: flex;
-			}
-		}
 
 		.profile-img {
 			border-radius: 50%;
 		}
 
 		.profile-text-div {
-			@media only screen and (min-width: 767px) {
-				margin-left: 24px;
-			}
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			text-align: center;
 		}
 
 		.profile-col {
 			display: flex !important;
-			justify-content: space-between;
+			justify-content: center;
 
 			@media only screen and (max-width: 767px) {
 				text-align: center;
@@ -122,13 +157,14 @@ export default styled(UserProfile)`
 				border-radius: 5px;
 				border: 1px solid #8D8D8D;
 				height: 40px;
+				position: absolute;
+				right: 0;
 
 				@media only screen and (max-width: 767px) {
 					margin-top: 16px;
 				}
 			}
 		}
-		
 
 		.profile-divider {
 			margin-top: 3.5em;
