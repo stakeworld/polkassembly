@@ -4,7 +4,7 @@
 
 import styled from '@xstyled/styled-components';
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Card, Divider, Grid, Icon } from 'semantic-ui-react';
+import { Button, Card, Divider, Form, Grid, Icon, TextArea } from 'semantic-ui-react';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { useGetUserDetailsQuery } from 'src/generated/graphql';
 import Loader from 'src/ui-components/Loader';
@@ -15,9 +15,9 @@ interface Props {
 
 const UserProfile = ({ className }: Props): JSX.Element => {
 	const { id, username } = useContext(UserDetailsContext);
-	const [displayName, setDisplayName] = useState<string>('');
 	const [bio, setBio] = useState<string>('');
 	const [userImage, setUserImage] = useState<string>('');
+	const [editProfile, setEditProfile] = useState<boolean>(false);
 
 	const { data, error } = useGetUserDetailsQuery({
 		variables: {
@@ -40,12 +40,6 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 		}
 	}, [data]);
 
-	useEffect(() => {
-		if(username) {
-			setDisplayName(username);
-		}
-	}, [username]);
-
 	return (
 		id ? <Grid stackable className={className}>
 			<Grid.Column width={16}>
@@ -53,43 +47,58 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 			</Grid.Column>
 			{ data && !error ?
 				<Grid.Column className='profile-card' mobile={16} tablet={16} computer={15} largeScreen={15} widescreen={15}>
+
 					<Grid stackable>
 						<Grid.Column className='profile-col' width={16}>
 							<div className='profile-div'>
 								{userImage ?
-									<img width={130} height={130} className='profile-img' src='https://image.shutterstock.com/image-vector/august-20-2014-illustration-robocop-600w-216216121.jpg' />
+									<img width={130} height={130} className='profile-img' src={`data:image/png;base64,${userImage}`} />
 									: <Icon name='user circle' />
 								}
 								<div className='profile-text-div'>
-									<h3 className='display-name'>{displayName}</h3>
+									{ username && <h3 className='display-name'>{username}</h3>}
 									{/* <h3 className='display-title'>Display Title</h3> */}
 									{/* <Label.Group className='display-badges' size='big'>
-										<Label>Fun</Label>
-										<Label>Happy</Label>
-										<Label>Smart</Label>
-										<Label>Witty</Label>
-									</Label.Group> */}
+											<Label>Fun</Label>
+											<Label>Happy</Label>
+											<Label>Smart</Label>
+											<Label>Witty</Label>
+										</Label.Group> */}
 								</div>
 							</div>
-							<Button basic size='large' className='edit-profile-btn'> <Icon name='pencil' /> Edit Profile</Button>
+							<Button basic size='large' className='edit-profile-btn' onClick={() => { setEditProfile(!editProfile);} }> <Icon name={`${ editProfile ? 'close' : 'pencil'}`} /> {`${ editProfile ? 'Cancel Edit' : 'Edit Profile'}`}</Button>
 						</Grid.Column>
 					</Grid>
 
-					{bio ?
+					{editProfile ?
 						<>
 							<Divider className='profile-divider' />
 							<div className='about-div'>
 								<h2>About</h2>
-								<p>{bio}</p>
+								<Form>
+									<TextArea rows={6} placeholder='Please add your bio here...' />
+								</Form>
+
+								<Button className='update-button' size='big'>
+									Update
+								</Button>
 							</div>
 						</>
-						:
-						<>
-							<Divider className='profile-divider' />
-							<div className='no-about-div'>
-								<p>Please click on &apos;Edit Profile&apos; to add a bio.</p>
-							</div>
-						</>
+						:bio ?
+							<>
+								<Divider className='profile-divider' />
+								<div className='about-div'>
+									<h2>About</h2>
+									<p>{bio}</p>
+								</div>
+							</>
+							:
+							<>
+								<Divider className='profile-divider' />
+								<div className='no-about-div'>
+									<p>Please click on &apos;Edit Profile&apos; to add a bio.</p>
+								</div>
+							</>
 					}
 				</Grid.Column>
 				:
@@ -183,6 +192,7 @@ export default styled(UserProfile)`
 				height: 40px;
 				position: absolute;
 				right: 0;
+				font-size: 14px;
 
 				@media only screen and (max-width: 767px) {
 					margin-top: 16px;
@@ -202,11 +212,18 @@ export default styled(UserProfile)`
 				font-size: 22px;
 			}
 
-			p {
+			p, textarea {
 				font-weight: 400;
 				font-size: 16px;
 				line-height: 24px;
 				color: #7D7D7D !important;
+			}
+
+			.update-button {
+				background-color: #E5007A;
+				color: #fff;
+				margin-top: 16px;
+				float: right;
 			}
 		}
 
