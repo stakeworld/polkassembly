@@ -15,8 +15,9 @@ interface Props {
 
 const UserProfile = ({ className }: Props): JSX.Element => {
 	const { id, username } = useContext(UserDetailsContext);
-	const [displayName, setDisplayName] = useState<string>('displayName');
-	const [bio, setBio] = useState<string>('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisi parturient diam, gravida vitae lobortis. Facilisis nisl enim pellentesque pellentesque sed tristique. Ullamcorper dapibus pharetra, libero aliquet id viverra adipiscing odio viverra. Turpis orci id nec, auctor ac venenatis sed mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisi parturient diam, gravida vitae lobortis. Facilisis nisl enim pellentesque pellentesque sed tristique. Ullamcorper dapibus pharetra, libero aliquet id viverra adipiscing odio viverra. Turpis orci id nec, auctor ac venenatis sed mauris.');
+	const [displayName, setDisplayName] = useState<string>('');
+	const [bio, setBio] = useState<string>('');
+	const [userImage, setUserImage] = useState<string>('');
 
 	const { data, error } = useGetUserDetailsQuery({
 		variables: {
@@ -34,8 +35,8 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 
 	useEffect(() => {
 		if(data?.userDetails) {
-			setDisplayName(`${data.userDetails.user_id}`);
 			setBio(`${data.userDetails.bio}`);
+			setUserImage(`${data.userDetails.image}`);
 		}
 	}, [data]);
 
@@ -55,7 +56,10 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 					<Grid stackable>
 						<Grid.Column className='profile-col' width={16}>
 							<div className='profile-div'>
-								<img width={130} height={130} className='profile-img' src='https://image.shutterstock.com/image-vector/august-20-2014-illustration-robocop-600w-216216121.jpg' />
+								{userImage ?
+									<img width={130} height={130} className='profile-img' src='https://image.shutterstock.com/image-vector/august-20-2014-illustration-robocop-600w-216216121.jpg' />
+									: <Icon name='user circle' />
+								}
 								<div className='profile-text-div'>
 									<h3 className='display-name'>{displayName}</h3>
 									{/* <h3 className='display-title'>Display Title</h3> */}
@@ -71,12 +75,22 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 						</Grid.Column>
 					</Grid>
 
-					<Divider className='profile-divider' />
-					<div className='about-div'>
-						<h2>About</h2>
-
-						<p>{bio}</p>
-					</div>
+					{bio ?
+						<>
+							<Divider className='profile-divider' />
+							<div className='about-div'>
+								<h2>About</h2>
+								<p>{bio}</p>
+							</div>
+						</>
+						:
+						<>
+							<Divider className='profile-divider' />
+							<div className='no-about-div'>
+								<p>Please click on &apos;Edit Profile&apos; to add a bio.</p>
+							</div>
+						</>
+					}
 				</Grid.Column>
 				:
 				<Loader />
@@ -105,9 +119,19 @@ export default styled(UserProfile)`
 		border-radius: 10px;
 		box-shadow: box_shadow_card;
 
-		.profile-img {
-			border-radius: 50%;
+		.profile-div {
+			.profile-img {
+				border-radius: 50%;
+			}
+
+			.icon {
+				font-size: 130px !important;
+				margin-top: 50px;
+				margin-bottom: -48px;
+				color: #778192;
+			}
 		}
+
 
 		.profile-text-div {
 			display: flex;
@@ -170,7 +194,7 @@ export default styled(UserProfile)`
 			margin-top: 3.5em;
 		}
 
-		.about-div {
+		.about-div, .no-about-div {
 			margin: 1.4em 0.5em;
 
 			h2 {
@@ -184,6 +208,11 @@ export default styled(UserProfile)`
 				line-height: 24px;
 				color: #7D7D7D !important;
 			}
+		}
+
+		.no-about-div {
+			text-align: center;
+			margin-bottom: -4px;
 		}
 }
 `;
