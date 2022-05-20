@@ -31,9 +31,11 @@ export default async (parent: void, { user_id }: GetProfileArgs): Promise<Profil
 	}
 
 	return {
+		badges: profile.badges,
 		bio: profile.bio,
 		id: profile.id,
 		image: profile.image,
+		title: profile.title,
 		user_id: profile.user_id,
 		username: user.username
 

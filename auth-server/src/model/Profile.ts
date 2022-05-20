@@ -12,8 +12,10 @@ Model.knex(connection);
 export default class Profile extends Model {
 	readonly id!: number
 	user_id!: number
+	badges: string | undefined
 	bio: string | undefined
 	image: string | undefined
+	title: string | undefined
 
 	static get tableName (): string {
 		return 'profile';
@@ -22,9 +24,11 @@ export default class Profile extends Model {
 	static get jsonSchema (): JsonSchema {
 		return {
 			properties: {
+				badges: { type: 'string' },
 				bio: { type: 'string' },
 				id: { type: 'integer' },
 				image: { type: 'string' },
+				title: { type: 'string' },
 				user_id: { type: 'integer' }
 			},
 			required: ['user_id'],

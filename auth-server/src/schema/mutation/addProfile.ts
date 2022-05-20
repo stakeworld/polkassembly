@@ -7,5 +7,7 @@ export default `
         user_id: Int!
 		bio: String
 		image: String
+        title: String
+        badges: String
     ): Message
 `;
