@@ -18,8 +18,9 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 	const [bio, setBio] = useState<string>('');
 	const [userImage, setUserImage] = useState<string>('');
 	const [editProfile, setEditProfile] = useState<boolean>(false);
-	const [title, setTitle] = useState<string>('');
+	const [title, setTitle] = useState<string>('aaa');
 	const [badges, setBadges] = useState<string[]>(['star', 'tsar', 'arts', 'rats', 'sart']);
+	const [newBadge, setNewBadge] = useState<string>('');
 
 	const { data, error } = useGetUserDetailsQuery({
 		variables: {
@@ -44,6 +45,11 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 		}
 	}, [data]);
 
+	const addNewBadge = () => {
+		setBadges([...badges, newBadge]);
+		setNewBadge('');
+	};
+
 	return (
 		id ? <Grid stackable className={className}>
 			<Grid.Column width={16}>
@@ -63,12 +69,12 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 								<div className={`profile-text-div ${editProfile ? 'editing' : ''}`}>
 									{ username && <h3 className='display-name'>{username}</h3>}
 
-									{editProfile ? <Input placeholder='Title' /> :
+									{editProfile ? <Input placeholder='Title' onChange={(e) => setTitle(e.target.value)} value={title} /> :
 										title ? <h3 className='display-title'>{title}</h3> :
 											<h3 className='no-display-title'>No title added</h3>
 									}
 
-									{ editProfile && <Input placeholder='New Badge' action={{ icon: 'add' }} /> }
+									{ editProfile && <Input placeholder='New Badge' onChange={(e) => setNewBadge(e.target.value)} value={newBadge} action={{ icon: 'add', onClick: addNewBadge }} /> }
 									{ badges.length > 0 ?
 										<Label.Group className={`display-badges ${editProfile ? 'editing' : ''}`} size='big'>
 											{badges.map((badge, i) => (<Label key={i}>{badge}{editProfile ? <Icon name='delete' /> : null}</Label>))}
@@ -87,7 +93,7 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 							<div className='about-div'>
 								<h2>About</h2>
 								<Form>
-									<TextArea rows={6} placeholder='Please add your bio here...' />
+									<TextArea rows={6} placeholder='Please add your bio here...' onChange={(e) => setBio((e.target as HTMLInputElement).value)} value={bio} />
 								</Form>
 
 								<Button className='update-button' size='big'>
@@ -168,6 +174,13 @@ export default styled(UserProfile)`
 
 				.input {
 					margin-bottom: 16px;
+					width: 100%;
+					max-width: 400px;
+
+					@media only screen and (max-width: 767px) {
+						margin-left: auto;
+						margin-right: auto;
+					}
 
 					.button {
 						padding: 0 16px;
@@ -228,6 +241,7 @@ export default styled(UserProfile)`
 				border: 1px solid #8D8D8D;
 				height: 40px;
 				font-size: 14px;
+    		white-space: nowrap;
 
 				@media only screen and (max-width: 767px) {
 					margin-top: 16px;
