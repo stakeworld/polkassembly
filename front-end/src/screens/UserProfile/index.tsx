@@ -4,7 +4,7 @@
 
 import styled from '@xstyled/styled-components';
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Card, Divider, Form, Grid, Icon, TextArea } from 'semantic-ui-react';
+import { Button, Card, Divider, Form, Grid, Icon, Input, Label, TextArea } from 'semantic-ui-react';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { useGetUserDetailsQuery } from 'src/generated/graphql';
 import Loader from 'src/ui-components/Loader';
@@ -18,6 +18,8 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 	const [bio, setBio] = useState<string>('');
 	const [userImage, setUserImage] = useState<string>('');
 	const [editProfile, setEditProfile] = useState<boolean>(false);
+	const [title, setTitle] = useState<string>('');
+	const [badges, setBadges] = useState<string[]>(['star', 'tsar', 'arts', 'rats', 'sart']);
 
 	const { data, error } = useGetUserDetailsQuery({
 		variables: {
@@ -37,6 +39,8 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 		if(data?.userDetails) {
 			setBio(`${data.userDetails.bio}`);
 			setUserImage(`${data.userDetails.image}`);
+			setTitle('data.userDetails.title');
+			setBadges(['data.userDetails.badges']);
 		}
 	}, [data]);
 
@@ -53,17 +57,24 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 							<div className='profile-div'>
 								{userImage ?
 									<img width={130} height={130} className='profile-img' src={`data:image/png;base64,${userImage}`} />
-									: <Icon name='user circle' />
+									: <Icon className='no-image-icon' name='user circle' />
 								}
-								<div className='profile-text-div'>
+
+								<div className={`profile-text-div ${editProfile ? 'editing' : ''}`}>
 									{ username && <h3 className='display-name'>{username}</h3>}
-									{/* <h3 className='display-title'>Display Title</h3> */}
-									{/* <Label.Group className='display-badges' size='big'>
-											<Label>Fun</Label>
-											<Label>Happy</Label>
-											<Label>Smart</Label>
-											<Label>Witty</Label>
-										</Label.Group> */}
+
+									{editProfile ? <Input placeholder='Title' /> :
+										title ? <h3 className='display-title'>{title}</h3> :
+											<h3 className='no-display-title'>No title added</h3>
+									}
+
+									{ editProfile && <Input placeholder='New Badge' action={{ icon: 'add' }} /> }
+									{ badges.length > 0 ?
+										<Label.Group className={`display-badges ${editProfile ? 'editing' : ''}`} size='big'>
+											{badges.map((badge, i) => (<Label key={i}>{badge}{editProfile ? <Icon name='delete' /> : null}</Label>))}
+										</Label.Group> :
+										<h3 className='no-display-title'>No badges added</h3>
+									}
 								</div>
 							</div>
 							<Button basic size='large' className='edit-profile-btn' onClick={() => { setEditProfile(!editProfile);} }> <Icon name={`${ editProfile ? 'close' : 'pencil'}`} /> {`${ editProfile ? 'Cancel Edit' : 'Edit Profile'}`}</Button>
@@ -129,11 +140,15 @@ export default styled(UserProfile)`
 		box-shadow: box_shadow_card;
 
 		.profile-div {
+			@media only screen and (min-width: 767px) {
+				display: flex;
+			}
+
 			.profile-img {
 				border-radius: 50%;
 			}
 
-			.icon {
+			.no-image-icon {
 				font-size: 130px !important;
 				margin-top: 50px;
 				margin-bottom: -48px;
@@ -143,15 +158,27 @@ export default styled(UserProfile)`
 
 
 		.profile-text-div {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			text-align: center;
+			@media only screen and (min-width: 767px) {
+				margin-left: 24px;
+			}
+
+			&.editing {
+				display: flex;
+				flex-direction: column;
+
+				.input {
+					margin-bottom: 16px;
+
+					.button {
+						padding: 0 16px;
+					}
+				}
+			}
 		}
 
 		.profile-col {
 			display: flex !important;
-			justify-content: center;
+			justify-content: space-between;
 
 			@media only screen and (max-width: 767px) {
 				text-align: center;
@@ -168,14 +195,24 @@ export default styled(UserProfile)`
 				font-size: 22px;
 			}
 
-			h3.display-title {
+			h3.display-title, h3.no-display-title {
 				font-size: 18px;
 				color: #7D7D7D;
 				margin-top: 16px;
+				text-transform: capitalize;
+			}
+
+			h3.no-display-title {
+				font-size: 16px;
+				text-transform: none;
 			}
 
 			.display-badges {
 				margin-top: 26px;
+
+				&.editing {
+					margin-top: 0;
+				}
 
 				.label {
 					border-radius: 48px;
@@ -190,8 +227,6 @@ export default styled(UserProfile)`
 				border-radius: 5px;
 				border: 1px solid #8D8D8D;
 				height: 40px;
-				position: absolute;
-				right: 0;
 				font-size: 14px;
 
 				@media only screen and (max-width: 767px) {
