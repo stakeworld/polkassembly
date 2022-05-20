@@ -53,9 +53,9 @@ export const ADD_CALENDER_EVENT=gql`
 `;
 
 export const ADD_BIO_IMAGE=gql`
-    mutation addProfile ($image: String!, $bio: String!, $user_id: Int!) {
+    mutation addProfile ($image: String!, $bio: String!, $user_id: Int!, $title: String, $badges: String) {
         __typename
-        addProfile(image: $image, bio: $bio, user_id: $user_id) {
+        addProfile(image: $image, bio: $bio, user_id: $user_id, title: $title, badges: $badges) {
             message
         }
     }
@@ -67,6 +67,8 @@ export const GET_USER_DETAILS = gql`
             bio
             image
             user_id
+            title
+            badges
         }
     }
 `;

@@ -360,6 +360,8 @@ export interface EditPostArgs {
 export interface AddProfileArgs {
     bio?: string;
     image?: string;
+    title?: string;
+    badges?: string;
 }
 
 export interface GetProfileArgs {
@@ -370,6 +372,8 @@ export interface ProfileDetails {
     id: number;
     user_id: number;
     bio?: string;
+    badges?: string;
+    title?: string;
     username?: string;
     image?: string;
 }
