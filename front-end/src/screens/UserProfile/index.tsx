@@ -12,9 +12,9 @@ import ReactCrop, {
 	makeAspectCrop,
 	PixelCrop
 } from 'react-image-crop';
-import { Button, Card, Divider, Form, Grid, Icon, Input, Label, Modal, TextArea } from 'semantic-ui-react';
+import { Button, Card, Divider, Form, Grid, Icon, Input, Label, Message, Modal, TextArea } from 'semantic-ui-react';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
-import { GetUserDetailsQuery, useGetUserDetailsQuery } from 'src/generated/graphql';
+import { GetUserDetailsQuery, useAddProfileMutation, useGetUserDetailsQuery } from 'src/generated/graphql';
 import Loader from 'src/ui-components/Loader';
 
 import { canvasPreview } from './canvasPreview';
@@ -43,16 +43,15 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 	const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
-	const { data, error } = useGetUserDetailsQuery({
+	const { data, error, refetch } = useGetUserDetailsQuery({
 		variables: {
 			user_id: Number(id)
 		}
 	});
 
-	// TODO: Enable
-	// useEffect(() => {
-	// refetch();
-	// }, [refetch]);
+	useEffect(() => {
+		refetch();
+	}, [refetch]);
 
 	function populateState(data: GetUserDetailsQuery) {
 		if(data?.userDetails) {
@@ -94,8 +93,12 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 	}, [editProfile]);
 
 	const addNewBadge = () => {
-		if(!(badges.includes(newBadge))) {
-			setBadges([...badges, newBadge]);
+		if(!newBadge || loadingUpdate){
+			return;
+		}
+
+		if(!(badges.includes(newBadge.toLowerCase()))) {
+			setBadges([...badges, newBadge.toLowerCase()]);
 			setNewBadge('');
 			setNewBadgeError(false);
 		}else {
@@ -180,6 +183,29 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 		}
 	};
 
+	const [addProfileMutation, { error: errorUpdate, loading: loadingUpdate }] = useAddProfileMutation({
+		variables: {
+			badges: JSON.stringify(badges),
+			bio: bio,
+			image: profilePhotoDataUrl,
+			title: title,
+			user_id: Number(id)
+		}
+	});
+
+	const updateProfileData = () => {
+		console.log('updateProfileData called');
+		addProfileMutation({
+			variables: {
+				badges: JSON.stringify(badges),
+				bio: bio,
+				image: profilePhotoDataUrl,
+				title: title,
+				user_id: Number(id)
+			}
+		});
+	};
+
 	return (
 		id ? <Grid stackable className={className}>
 
@@ -252,23 +278,29 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 				<Grid.Column className='profile-card' mobile={16} tablet={16} computer={15} largeScreen={15} widescreen={15}>
 
 					<Grid stackable>
+						{(errorUpdate && editProfile) && <Grid.Column className='profile-col' width={16}>
+							<Message negative>
+								<p>{errorUpdate.message}</p>
+							</Message>
+						</Grid.Column>}
+
 						<Grid.Column className='profile-col' width={16}>
 							<div className='profile-div'>
 								{userImage || profilePhotoDataUrl ?
 									<div className='image-div'>
 										<img width={130} height={130} className='profile-img' src={profilePhotoDataUrl ? profilePhotoDataUrl : userImage} />
-										{fileInputButton}
+										{!loadingUpdate ? fileInputButton : <Button basic loading>Loading</Button>}
 									</div>
 									: <div className='no-image-div'>
 										<Icon className='no-image-icon' name='user circle' />
-										{fileInputButton}
+										{!loadingUpdate ? fileInputButton : <Button basic loading>Loading</Button>}
 									</div>
 								}
 
 								<div className={`profile-text-div ${editProfile ? 'editing' : ''}`}>
 									{ username && <h3 className='display-name'>{username}</h3>}
 
-									{editProfile ? <Input placeholder='Title' onChange={(e) => setTitle(e.target.value)} value={title} /> :
+									{editProfile ? <Input placeholder='Title' onChange={(e) => setTitle(e.target.value)} value={title} disabled={loadingUpdate} /> :
 										title ? <h3 className='display-title'>{title}</h3> :
 											<h3 className='no-display-title'>No title added</h3>
 									}
@@ -276,18 +308,18 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 									{ editProfile &&
 										<>
 											{ newBadgeError && <span className='error-text'>This badge already exists.</span> }
-											<Input placeholder='New Badge' onChange={(e) => setNewBadge(e.target.value)} value={newBadge} action={{ icon: 'add', onClick: addNewBadge }} error={newBadgeError} />
+											<Input placeholder='New Badge' onChange={(e) => setNewBadge(e.target.value)} value={newBadge} disabled={loadingUpdate} action={{ icon: 'add', onClick: addNewBadge }} error={newBadgeError} />
 										</>
 									}
 									{ badges.length > 0 ?
 										<Label.Group className={`display-badges ${editProfile ? 'editing' : ''}`} size='big'>
-											{badges.map((badge, i) => (<Label key={i}>{badge}{editProfile ? <Icon onClick={() => removeBadge(badge)} name='delete' /> : null}</Label>))}
+											{badges.map((badge, i) => (<Label key={i}>{badge}{editProfile ? <Icon disabled={loadingUpdate} onClick={() => removeBadge(badge)} name='delete' /> : null}</Label>))}
 										</Label.Group> :
 										<h3 className='no-display-title'>No badges added</h3>
 									}
 								</div>
 							</div>
-							<Button basic size='large' className='edit-profile-btn' onClick={() => { setEditProfile(!editProfile);} }> <Icon name={`${ editProfile ? 'close' : 'pencil'}`} /> {`${ editProfile ? 'Cancel Edit' : 'Edit Profile'}`}</Button>
+							<Button basic size='large' className='edit-profile-btn' disabled={loadingUpdate} onClick={() => { setEditProfile(!editProfile);} }> <Icon name={`${ editProfile ? 'close' : 'pencil'}`} /> {`${ editProfile ? 'Cancel Edit' : 'Edit Profile'}`}</Button>
 						</Grid.Column>
 					</Grid>
 
@@ -297,10 +329,10 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 							<div className='about-div'>
 								<h2>About</h2>
 								<Form>
-									<TextArea rows={6} placeholder='Please add your bio here...' onChange={(e) => setBio((e.target as HTMLInputElement).value)} value={bio} />
+									<TextArea rows={6} placeholder='Please add your bio here...' disabled={loadingUpdate} onChange={(e) => setBio((e.target as HTMLInputElement).value)} value={bio} />
 								</Form>
 
-								<Button className='update-button' size='big'>
+								<Button className='update-button' size='big' disabled={loadingUpdate} loading={loadingUpdate} onClick={updateProfileData}>
 									Update
 								</Button>
 							</div>
@@ -340,7 +372,13 @@ export default styled(UserProfile)`
 	h1 {
 		font-size: 48px;
 		font-weight: 400;
-		margin-bottom: 36px;
+		margin-bottom: 16px !important;
+	}
+
+
+	.message {
+		width: 100%;
+		margin-bottom: 16px;
 	}
 
 	.modal-content-div{
@@ -384,7 +422,7 @@ export default styled(UserProfile)`
 			}
 
 			.image-div {
-				.custom-file-input {
+				.custom-file-input, button {
 					margin-top: 12px;
 				}
 			}
@@ -498,7 +536,7 @@ export default styled(UserProfile)`
 
 			.display-badges {
 				margin-top: 26px;
-				text-transform: capitalize;
+				text-transform: capitalize !important;
 
 				&.editing {
 					margin-top: 0;
@@ -510,6 +548,7 @@ export default styled(UserProfile)`
 					color: #fff;
 					font-size: 14px;
 					font-weight: 500;
+					text-transform: capitalize !important;
 				}
 			}
 
