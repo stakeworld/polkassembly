@@ -2869,8 +2869,10 @@ export type Mutation = {
 
 
 export type MutationAddProfileArgs = {
+  badges?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
   user_id: Scalars['Int'];
 };
 
@@ -4188,9 +4190,11 @@ export type PreimageWhereUniqueInput = {
 
 export type Profile = {
   __typename?: 'Profile';
+  badges?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   image?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
   user_id?: Maybe<Scalars['Int']>;
 };
 
@@ -9942,8 +9946,10 @@ export type Mutation_Root = {
 
 /** mutation root */
 export type Mutation_RootAddProfileArgs = {
+  badges?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
   user_id: Scalars['Int'];
 };
 
@@ -18343,6 +18349,8 @@ export type AddProfileMutationVariables = Exact<{
   image: Scalars['String'];
   bio: Scalars['String'];
   user_id: Scalars['Int'];
+  title?: Maybe<Scalars['String']>;
+  badges?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -18363,7 +18371,7 @@ export type GetUserDetailsQuery = (
   { __typename?: 'query_root' }
   & { userDetails?: Maybe<(
     { __typename?: 'Profile' }
-    & Pick<Profile, 'bio' | 'image' | 'user_id'>
+    & Pick<Profile, 'bio' | 'image' | 'user_id' | 'title' | 'badges'>
   )> }
 );
 
@@ -22555,9 +22563,15 @@ export type AddCalenderEventMutationHookResult = ReturnType<typeof useAddCalende
 export type AddCalenderEventMutationResult = ApolloReactCommon.MutationResult<AddCalenderEventMutation>;
 export type AddCalenderEventMutationOptions = ApolloReactCommon.BaseMutationOptions<AddCalenderEventMutation, AddCalenderEventMutationVariables>;
 export const AddProfileDocument = gql`
-    mutation addProfile($image: String!, $bio: String!, $user_id: Int!) {
+    mutation addProfile($image: String!, $bio: String!, $user_id: Int!, $title: String, $badges: String) {
   __typename
-  addProfile(image: $image, bio: $bio, user_id: $user_id) {
+  addProfile(
+    image: $image
+    bio: $bio
+    user_id: $user_id
+    title: $title
+    badges: $badges
+  ) {
     message
   }
 }
@@ -22580,6 +22594,8 @@ export type AddProfileMutationFn = ApolloReactCommon.MutationFunction<AddProfile
  *      image: // value for 'image'
  *      bio: // value for 'bio'
  *      user_id: // value for 'user_id'
+ *      title: // value for 'title'
+ *      badges: // value for 'badges'
  *   },
  * });
  */
@@ -22595,6 +22611,8 @@ export const GetUserDetailsDocument = gql`
     bio
     image
     user_id
+    title
+    badges
   }
 }
     `;
