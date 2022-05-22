@@ -13,8 +13,10 @@ import ReactCrop, {
 	PixelCrop
 } from 'react-image-crop';
 import { Button, Card, Divider, Form, Grid, Icon, Input, Label, Message, Modal, TextArea } from 'semantic-ui-react';
+import { NotificationContext } from 'src/context/NotificationContext';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { GetUserDetailsQuery, useAddProfileMutation, useGetUserDetailsQuery } from 'src/generated/graphql';
+import { NotificationStatus } from 'src/types';
 import Loader from 'src/ui-components/Loader';
 
 import { canvasPreview } from './canvasPreview';
@@ -25,6 +27,8 @@ interface Props {
 
 const UserProfile = ({ className }: Props): JSX.Element => {
 	const { id, username } = useContext(UserDetailsContext);
+	const { queueNotification } = useContext(NotificationContext);
+
 	const [bio, setBio] = useState<string>('');
 	const [userImage, setUserImage] = useState<string>('');
 	const [editProfile, setEditProfile] = useState<boolean>(false);
@@ -194,7 +198,6 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 	});
 
 	const updateProfileData = () => {
-		console.log('updateProfileData called');
 		addProfileMutation({
 			variables: {
 				badges: JSON.stringify(badges),
@@ -203,7 +206,18 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 				title: title,
 				user_id: Number(id)
 			}
-		});
+		}).then(({ data }) => {
+			if (data?.addProfile && data?.addProfile?.message){
+				setEditProfile(false);
+				refetch();
+				queueNotification({
+					header: 'Success!',
+					message: 'Your profile was updated.',
+					status: NotificationStatus.SUCCESS
+				});
+			}
+		})
+			.catch((e) => console.error('Error updating profile: ',e));
 	};
 
 	return (
