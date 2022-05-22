@@ -2,12 +2,22 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import 'react-image-crop/dist/ReactCrop.css';
+
 import styled from '@xstyled/styled-components';
-import React, { useContext, useEffect, useState } from 'react';
-import { Button, Card, Divider, Form, Grid, Icon, Input, Label, TextArea } from 'semantic-ui-react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import ReactCrop, {
+	centerCrop,
+	Crop,
+	makeAspectCrop,
+	PixelCrop
+} from 'react-image-crop';
+import { Button, Card, Divider, Form, Grid, Icon, Input, Label, Modal, TextArea } from 'semantic-ui-react';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { useGetUserDetailsQuery } from 'src/generated/graphql';
 import Loader from 'src/ui-components/Loader';
+
+import { canvasPreview } from './canvasPreview';
 
 interface Props {
 	className?: string
@@ -19,17 +29,25 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 	const [userImage, setUserImage] = useState<string>('');
 	const [editProfile, setEditProfile] = useState<boolean>(false);
 	const [title, setTitle] = useState<string>('aaa');
-	const [badges, setBadges] = useState<string[]>(['star', 'tsar', 'arts', 'rats', 'sart']);
+	const [badges, setBadges] = useState<string[]>([]);
 	const [newBadge, setNewBadge] = useState<string>('');
+	const [profilePhoto, setProfilePhoto] = useState<string>('');
+
+	const [newBadgeError, setNewBadgeError] = useState<boolean>(false);
+
+	const [openModal, setOpenModal] = useState<boolean>(false);
+	const [imgSrc, setImgSrc] = useState('');
+	const previewCanvasRef = useRef<HTMLCanvasElement>(null);
+	const imgRef = useRef<HTMLImageElement>(null);
+	const [crop, setCrop] = useState<Crop>();
+	const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
+	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const { data, error } = useGetUserDetailsQuery({
 		variables: {
 			user_id: Number(id)
 		}
 	});
-
-	console.log('data : ', data);
-	console.log('error : ', error);
 
 	// TODO: Enable
 	// useEffect(() => {
@@ -40,18 +58,165 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 		if(data?.userDetails) {
 			setBio(`${data.userDetails.bio}`);
 			setUserImage(`${data.userDetails.image}`);
-			setTitle('data.userDetails.title');
-			setBadges(['data.userDetails.badges']);
+			setTitle(`${data.userDetails.title}`);
+			if (data.userDetails.badges) {
+				setBadges(JSON.parse(data.userDetails.badges));
+			}
 		}
 	}, [data]);
 
 	const addNewBadge = () => {
-		setBadges([...badges, newBadge]);
-		setNewBadge('');
+		if(!(badges.includes(newBadge))) {
+			setBadges([...badges, newBadge]);
+			setNewBadge('');
+			setNewBadgeError(false);
+		}else {
+			setNewBadgeError(true);
+		}
+	};
+
+	function removeBadge(badge:string){
+		const badgesArr = [...badges];
+		const index = badgesArr.indexOf(badge);
+		if (index !== -1) {
+			badgesArr.splice(index, 1);
+			setBadges(badgesArr);
+		}
+	}
+
+	function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
+		if (e.target.files && e.target.files.length > 0) {
+			setCompletedCrop(undefined); // Makes crop preview update between images.
+			const reader = new FileReader();
+			reader.addEventListener('load', () =>
+				setImgSrc(reader.result?.toString() || '')
+			);
+			reader.readAsDataURL(e.target.files[0]);
+			setOpenModal(true);
+		}
+	}
+
+	useEffect(() => {
+		if(openModal == false && fileInputRef.current) {
+			fileInputRef.current.value = '';
+		}
+	}, [openModal]);
+
+	const fileInputButton = editProfile && <input id='hello' ref={fileInputRef} type="file" className="custom-file-input" onChange={onSelectFile}></input>;
+
+	function centerAspectCrop(
+		mediaWidth: number,
+		mediaHeight: number,
+		aspect: number
+	) {
+		return centerCrop(
+			makeAspectCrop(
+				{
+					unit: '%',
+					width: 90
+				},
+				aspect,
+				mediaWidth,
+				mediaHeight
+			),
+			mediaWidth,
+			mediaHeight
+		);
+	}
+
+	function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
+		const { width, height } = e.currentTarget;
+		setCrop(centerAspectCrop(width, height, 1));
+	}
+
+	useEffect(() => {
+		if (
+			completedCrop?.width &&
+        completedCrop?.height &&
+        imgRef.current &&
+        previewCanvasRef.current
+		) {
+			// We use canvasPreview as it's much faster than imgPreview.
+			canvasPreview(
+				imgRef.current,
+				previewCanvasRef.current,
+				completedCrop
+			);
+		}
+	}, [completedCrop]);
+
+	const updateProfileImage = () => {
+		if(previewCanvasRef.current) {
+			setProfilePhoto(previewCanvasRef.current.toDataURL('image/jpeg', 0.8));
+			setOpenModal(false);
+		}
 	};
 
 	return (
 		id ? <Grid stackable className={className}>
+
+			<Modal
+				open={openModal}
+				className={className}
+			>
+				<Modal.Header>Please crop your photo</Modal.Header>
+				<Modal.Content>
+
+					<div className='modal-content-div'>
+						<div className='cropper-div'>
+							<ReactCrop
+								crop={crop}
+								onChange={(_, percentCrop) => setCrop(percentCrop)}
+								onComplete={(c) => setCompletedCrop(c)}
+								aspect={1}
+								minHeight={130}
+								minWidth={130}
+							>
+								<img
+									ref={imgRef}
+									alt="Crop image"
+									src={imgSrc}
+									onLoad={onImageLoad}
+								/>
+							</ReactCrop>
+
+						</div>
+
+						<div className='img-preview-div'>
+							<h6 style={ { marginBottom: '12px' } }>Preview :</h6>
+							{Boolean(completedCrop) && (
+								<canvas
+									ref={previewCanvasRef}
+									style={{
+										border: '1px solid black',
+										borderRadius: '50%',
+										height: '130px',
+										objectFit: 'contain',
+										width: '130px'
+									}}
+								/>
+							)}
+						</div>
+					</div>
+
+				</Modal.Content>
+				<Modal.Actions>
+					<Button
+						onClick={() => setOpenModal(false)}
+					>
+							Cancel
+					</Button>
+					<Button
+						content="Crop"
+						labelPosition='right'
+						icon='expand'
+						onClick={updateProfileImage}
+						positive
+						disabled={!previewCanvasRef.current}
+					/>
+				</Modal.Actions>
+			</Modal>
+
 			<Grid.Column width={16}>
 				<h1>Profile</h1>
 			</Grid.Column>
@@ -61,9 +226,15 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 					<Grid stackable>
 						<Grid.Column className='profile-col' width={16}>
 							<div className='profile-div'>
-								{userImage ?
-									<img width={130} height={130} className='profile-img' src={`data:image/png;base64,${userImage}`} />
-									: <Icon className='no-image-icon' name='user circle' />
+								{userImage || profilePhoto ?
+									<div className='image-div'>
+										<img width={130} height={130} className='profile-img' src={profilePhoto ? profilePhoto : userImage} />
+										{fileInputButton}
+									</div>
+									: <div className='no-image-div'>
+										<Icon className='no-image-icon' name='user circle' />
+										{fileInputButton}
+									</div>
 								}
 
 								<div className={`profile-text-div ${editProfile ? 'editing' : ''}`}>
@@ -74,10 +245,15 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 											<h3 className='no-display-title'>No title added</h3>
 									}
 
-									{ editProfile && <Input placeholder='New Badge' onChange={(e) => setNewBadge(e.target.value)} value={newBadge} action={{ icon: 'add', onClick: addNewBadge }} /> }
+									{ editProfile &&
+										<>
+											{ newBadgeError && <span className='error-text'>This badge already exists.</span> }
+											<Input placeholder='New Badge' onChange={(e) => setNewBadge(e.target.value)} value={newBadge} action={{ icon: 'add', onClick: addNewBadge }} error={newBadgeError} />
+										</>
+									}
 									{ badges.length > 0 ?
 										<Label.Group className={`display-badges ${editProfile ? 'editing' : ''}`} size='big'>
-											{badges.map((badge, i) => (<Label key={i}>{badge}{editProfile ? <Icon name='delete' /> : null}</Label>))}
+											{badges.map((badge, i) => (<Label key={i}>{badge}{editProfile ? <Icon onClick={() => removeBadge(badge)} name='delete' /> : null}</Label>))}
 										</Label.Group> :
 										<h3 className='no-display-title'>No badges added</h3>
 									}
@@ -139,6 +315,31 @@ export default styled(UserProfile)`
 		margin-bottom: 36px;
 	}
 
+	.modal-content-div{
+		display: flex;
+
+		@media only screen and (max-width: 767px) {
+			flex-direction: column;
+		}
+
+		.cropper-div {
+			width: 80%;
+
+			@media only screen and (max-width: 767px) {
+				width: 100%;
+			}
+		}
+
+		.img-preview-div {
+			margin-left: 16px;
+
+			@media only screen and (max-width: 767px) {
+				margin-top: 16px;
+				text-align: center;
+			}
+		}
+	}
+
 	.profile-card {
 		background-color: white;
 		padding: 24px !important;
@@ -154,12 +355,54 @@ export default styled(UserProfile)`
 				border-radius: 50%;
 			}
 
-			.no-image-icon {
-				font-size: 130px !important;
-				margin-top: 50px;
-				margin-bottom: -48px;
-				color: #778192;
+			.image-div {
+				.custom-file-input {
+					margin-top: 12px;
+				}
 			}
+
+			.no-image-div, .image-div {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+
+				.no-image-icon {
+					font-size: 130px !important;
+					margin-top: 50px;
+					margin-bottom: -48px;
+					color: #778192;
+				}
+			}
+
+			.custom-file-input {
+				z-index: 50;
+				width: 137px;
+				overflow: none;
+			}
+
+			.custom-file-input::-webkit-file-upload-button {
+				visibility: hidden;
+			}
+			.custom-file-input::before {
+				content: 'Update Profile Photo';
+				display: inline-block;
+				background: #fff;
+				border: 1px solid #999;
+				border-radius: 3px;
+				padding: 5px 8px;
+				outline: none;
+				white-space: nowrap;
+				-webkit-user-select: none;
+				user-select: none;
+				cursor: pointer;
+				text-shadow: 1px 1px #fff;
+				font-weight: 700;
+				font-size: 12px;
+			}
+			.custom-file-input:hover::before {
+				border-color: black;
+			}
+
 		}
 
 
@@ -185,6 +428,11 @@ export default styled(UserProfile)`
 					.button {
 						padding: 0 16px;
 					}
+				}
+
+				.error-text {
+					color: #B83A38;
+					font-size: 12px;
 				}
 			}
 		}
@@ -222,6 +470,7 @@ export default styled(UserProfile)`
 
 			.display-badges {
 				margin-top: 26px;
+				text-transform: capitalize;
 
 				&.editing {
 					margin-top: 0;
