@@ -52,13 +52,36 @@ const TopicsRadio = ({ className, onTopicSelection }: Props) => {
 };
 
 export default styled(TopicsRadio)`
+	overflow-x: hidden;
+
+	&:hover {
+		overflow-x: auto;
+	}
+
+	@media only screen and (max-width: 767px) {
+		overflow-x: auto;
+		background: transparent !important;
+		-ms-overflow-style: none;  /* Internet Explorer 10+ */
+		scrollbar-width: none;  /* Firefox */
+
+		&::-webkit-scrollbar {
+			display: none;  /* Safari and Chrome */
+		}
+	}
+	
 	.topic-container {
 		display: flex;
 		margin-top: 3rem;
+		margin-bottom: 8px;
 	}
 
     .ui.checkbox {
 		display: block;
+		white-space: nowrap;
+		
+		&:not(:last-of-type){
+			margin-right: 2px;
+		}
 
 		& label:before, & label:after {
 			opacity: 0;

@@ -77,6 +77,12 @@ const UpcomingEvents = ({ className }: Props) => {
 							</Grid.Column>
 						</Grid>
 					</Grid.Row>
+
+					<Grid.Row className='info-bar-row'>
+						<Grid.Column className='info-bar-col' width={16}>
+							<p>*Time in UTC</p>
+						</Grid.Column>
+					</Grid.Row>
 				</Grid>
 			</div>
 		</div>
@@ -92,13 +98,9 @@ export default styled(UpcomingEvents)`
 
 	.card {
 		background: #fff;
-		padding-left: 1rem;
-		padding-right: 1rem;
 		border-radius: 10px;
 		height: 500px;
 		max-height: 500px;
-
-		// for coming soon text
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -106,10 +108,15 @@ export default styled(UpcomingEvents)`
 		@media only screen and (max-width: 991.5px) {
 			height: fit-content;
 			max-height: fit-content;
+			padding-left: 1rem;
+			padding-right: 1rem;
 		}
 
-		.coming-soon-text {
-			font-size: 3rem;
+		.info-bar-row {
+			color: #75767C;
+			@media only screen and (min-width: 991.5px) {
+				margin-left: 16px;
+			}
 		}
 		
 		.grid {
@@ -145,6 +152,10 @@ export default styled(UpcomingEvents)`
 
 		.event-content-row {
 			justify-content: center;
+			height: 460px;
+			@media only screen and (max-width: 991.5px) {
+				height: 400px;
+			}
 		}
 		
 		.event-filter-bar {
@@ -159,12 +170,12 @@ export default styled(UpcomingEvents)`
 
 		.event-list-col {
 			overflow-y: auto;
-			/* max-height: 402px; */
-			max-height: 490px;
+			height: 460px;
+			max-height: 460px;
 			border-right: 2px #eee solid;
 
 			@media only screen and (max-width: 991.5px) {
-				max-height: 420px !important;
+				max-height: 400px !important;
 			}
 		}
 		
@@ -173,8 +184,6 @@ export default styled(UpcomingEvents)`
 		}
 
 		.event-calendar-col{
-			/* height: 402px; */
-			/* max-height: 402px; */
 			height: 490px;
 			max-height: 490px;
 
@@ -185,15 +194,18 @@ export default styled(UpcomingEvents)`
 			}
 
 			.event-calendar-small {
+				overflow-y: hidden;
+				overflow-x: hidden;
+
 				.events-calendar {
 					margin-left: 16px;
 					padding: 0;
-					height: auto;
-					width: 100%;
+					height: 460px;
+					width: 98.6%;
 
 					@media only screen and (max-width: 991.5px) {
-						height: 420px;
-						max-height: 420px !important;
+						height: 410px;
+						max-height: 400px !important;
 						margin-left: 8px;
 					}
 

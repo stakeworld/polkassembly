@@ -9,8 +9,10 @@ import getTokenFromReq from '../../utils/getTokenFromReq';
 import messages from '../../utils/messages';
 
 export default async (parent: void, {
+	badges,
 	bio,
-	image
+	image,
+	title
 }: AddProfileArgs, ctx: Context): Promise<MessageType> => {
 	const token = getTokenFromReq(ctx.req);
 	const authServiceInstance = new AuthService();
@@ -26,7 +28,7 @@ export default async (parent: void, {
 	if (!profile) {
 		await Profile
 			.query()
-			.allowInsert('[user_id, bio, image]')
+			.allowInsert('[user_id, bio, image, badges, title]')
 			.insert({
 				bio,
 				image,
@@ -36,8 +38,10 @@ export default async (parent: void, {
 		await Profile
 			.query()
 			.patch({
+				badges,
 				bio,
-				image
+				image,
+				title
 			})
 			.findById(profile.id);
 	}
