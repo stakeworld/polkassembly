@@ -14,7 +14,7 @@ import ReactCrop, {
 } from 'react-image-crop';
 import { Button, Card, Divider, Form, Grid, Icon, Input, Label, Modal, TextArea } from 'semantic-ui-react';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
-import { useGetUserDetailsQuery } from 'src/generated/graphql';
+import { GetUserDetailsQuery, useGetUserDetailsQuery } from 'src/generated/graphql';
 import Loader from 'src/ui-components/Loader';
 
 import { canvasPreview } from './canvasPreview';
@@ -31,7 +31,7 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 	const [title, setTitle] = useState<string>('aaa');
 	const [badges, setBadges] = useState<string[]>([]);
 	const [newBadge, setNewBadge] = useState<string>('');
-	const [profilePhoto, setProfilePhoto] = useState<string>('');
+	const [profilePhotoDataUrl, setProfilePhotoDataUrl] = useState<string>('');
 
 	const [newBadgeError, setNewBadgeError] = useState<boolean>(false);
 
@@ -54,7 +54,7 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 	// refetch();
 	// }, [refetch]);
 
-	useEffect(() => {
+	function populateState(data: GetUserDetailsQuery) {
 		if(data?.userDetails) {
 			setBio(`${data.userDetails.bio}`);
 			setUserImage(`${data.userDetails.image}`);
@@ -63,7 +63,35 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 				setBadges(JSON.parse(data.userDetails.badges));
 			}
 		}
+	}
+
+	useEffect(() => {
+		if(data?.userDetails) {
+			populateState(data);
+		}
 	}, [data]);
+
+	// reset edit form on cancel edit
+	useEffect(() => {
+		if(!editProfile){
+			if(data?.userDetails) {
+				populateState(data);
+			}else{
+				setBio('');
+				setUserImage('');
+				setTitle('');
+				setBadges([]);
+			}
+
+			//reset form
+			setNewBadge('');
+			setProfilePhotoDataUrl('');
+			setNewBadgeError(false);
+			setOpenModal(false);
+			setImgSrc('');
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [editProfile]);
 
 	const addNewBadge = () => {
 		if(!(badges.includes(newBadge))) {
@@ -147,7 +175,7 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 
 	const updateProfileImage = () => {
 		if(previewCanvasRef.current) {
-			setProfilePhoto(previewCanvasRef.current.toDataURL('image/jpeg', 0.8));
+			setProfilePhotoDataUrl(previewCanvasRef.current.toDataURL('image/jpeg', 0.8));
 			setOpenModal(false);
 		}
 	};
@@ -226,9 +254,9 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 					<Grid stackable>
 						<Grid.Column className='profile-col' width={16}>
 							<div className='profile-div'>
-								{userImage || profilePhoto ?
+								{userImage || profilePhotoDataUrl ?
 									<div className='image-div'>
-										<img width={130} height={130} className='profile-img' src={profilePhoto ? profilePhoto : userImage} />
+										<img width={130} height={130} className='profile-img' src={profilePhotoDataUrl ? profilePhotoDataUrl : userImage} />
 										{fileInputButton}
 									</div>
 									: <div className='no-image-div'>
