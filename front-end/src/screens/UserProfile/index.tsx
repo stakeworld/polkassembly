@@ -182,7 +182,7 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 
 	const updateProfileImage = () => {
 		if(previewCanvasRef.current) {
-			setProfilePhotoDataUrl(previewCanvasRef.current.toDataURL('image/jpeg', 0.8));
+			setProfilePhotoDataUrl(previewCanvasRef.current.toDataURL('image/jpeg', 0.5));
 			setOpenModal(false);
 		}
 	};
@@ -198,18 +198,19 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 	});
 
 	const updateProfileData = () => {
+		console.log('profilePhotoDataUrl : ', profilePhotoDataUrl);
 		addProfileMutation({
 			variables: {
 				badges: JSON.stringify(badges),
 				bio: bio,
-				image: profilePhotoDataUrl,
+				image: profilePhotoDataUrl.length > 1 ? profilePhotoDataUrl : `${data?.userDetails?.image}`,
 				title: title,
 				user_id: Number(id)
 			}
 		}).then(({ data }) => {
 			if (data?.addProfile && data?.addProfile?.message){
-				setEditProfile(false);
 				refetch();
+				setEditProfile(false);
 				queueNotification({
 					header: 'Success!',
 					message: 'Your profile was updated.',

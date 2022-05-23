@@ -18338,7 +18338,7 @@ export type AddCalenderEventMutationVariables = Exact<{
 
 
 export type AddCalenderEventMutation = (
-  { __typename: 'mutation_root' }
+  { __typename?: 'mutation_root' }
   & { insert_calender_events?: Maybe<(
     { __typename?: 'calender_events_mutation_response' }
     & Pick<Calender_Events_Mutation_Response, 'affected_rows'>
@@ -18346,8 +18346,8 @@ export type AddCalenderEventMutation = (
 );
 
 export type AddProfileMutationVariables = Exact<{
-  image: Scalars['String'];
-  bio: Scalars['String'];
+  image?: Maybe<Scalars['String']>;
+  bio?: Maybe<Scalars['String']>;
   user_id: Scalars['Int'];
   title?: Maybe<Scalars['String']>;
   badges?: Maybe<Scalars['String']>;
@@ -18355,7 +18355,7 @@ export type AddProfileMutationVariables = Exact<{
 
 
 export type AddProfileMutation = (
-  { __typename: 'mutation_root' }
+  { __typename?: 'mutation_root' }
   & { addProfile?: Maybe<(
     { __typename?: 'Message' }
     & Pick<Message, 'message'>
@@ -22523,7 +22523,6 @@ export type DeleteCalenderEventMutationResult = ApolloReactCommon.MutationResult
 export type DeleteCalenderEventMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteCalenderEventMutation, DeleteCalenderEventMutationVariables>;
 export const AddCalenderEventDocument = gql`
     mutation AddCalenderEvent($title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!) {
-  __typename
   insert_calender_events(
     objects: {title: $title, start_time: $start_time, end_time: $end_time, content: $content, url: $url, module: $module, network: $network}
   ) {
@@ -22563,8 +22562,7 @@ export type AddCalenderEventMutationHookResult = ReturnType<typeof useAddCalende
 export type AddCalenderEventMutationResult = ApolloReactCommon.MutationResult<AddCalenderEventMutation>;
 export type AddCalenderEventMutationOptions = ApolloReactCommon.BaseMutationOptions<AddCalenderEventMutation, AddCalenderEventMutationVariables>;
 export const AddProfileDocument = gql`
-    mutation addProfile($image: String!, $bio: String!, $user_id: Int!, $title: String, $badges: String) {
-  __typename
+    mutation addProfile($image: String, $bio: String, $user_id: Int!, $title: String, $badges: String) {
   addProfile(
     image: $image
     bio: $bio
