@@ -38,6 +38,7 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 	const [profilePhotoDataUrl, setProfilePhotoDataUrl] = useState<string>('');
 
 	const [newBadgeError, setNewBadgeError] = useState<boolean>(false);
+	const [imageSizeError, setImageSizeError] = useState<boolean>(false);
 
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [imgSrc, setImgSrc] = useState('');
@@ -92,6 +93,7 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 			setNewBadgeError(false);
 			setOpenModal(false);
 			setImgSrc('');
+			setImageSizeError(false);
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [editProfile]);
@@ -120,8 +122,17 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 	}
 
 	function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
+		setImageSizeError(false);
+
 		if (e.target.files && e.target.files.length > 0) {
 			setCompletedCrop(undefined); // Makes crop preview update between images.
+			const file_size = e.target.files[0].size;
+			// do not files more than 2mb
+			if(file_size > 2000000) {
+				setImageSizeError(true);
+				return;
+			}
+
 			const reader = new FileReader();
 			reader.addEventListener('load', () =>
 				setImgSrc(reader.result?.toString() || '')
@@ -137,7 +148,7 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 		}
 	}, [openModal]);
 
-	const fileInputButton = editProfile && <input id='hello' ref={fileInputRef} type="file" className="custom-file-input" onChange={onSelectFile}></input>;
+	const fileInputButton = editProfile && <input id='hello' ref={fileInputRef} type="file" className="custom-file-input" accept="image/png, image/jpeg" onChange={onSelectFile}></input>;
 
 	function centerAspectCrop(
 		mediaWidth: number,
@@ -296,6 +307,12 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 						{(errorUpdate && editProfile) && <Grid.Column className='profile-col' width={16}>
 							<Message negative>
 								<p>{errorUpdate.message}</p>
+							</Message>
+						</Grid.Column>}
+
+						{(imageSizeError && editProfile) && <Grid.Column className='profile-col' width={16}>
+							<Message negative>
+								<p>Please ensure the image file is less than 2 MB.</p>
 							</Message>
 						</Grid.Column>}
 
