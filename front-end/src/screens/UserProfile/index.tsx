@@ -127,7 +127,7 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 		if (e.target.files && e.target.files.length > 0) {
 			setCompletedCrop(undefined); // Makes crop preview update between images.
 			const file_size = e.target.files[0].size;
-			// do not files more than 2mb
+			// do not accept files more than 2mb
 			if(file_size > 2000000) {
 				setImageSizeError(true);
 				return;
