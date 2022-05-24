@@ -115,6 +115,12 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 		}
 	};
 
+	function handleNewBadgeKeyPress(e:any) {
+		if(e.key === 'Enter'){
+			addNewBadge();
+		}
+	}
+
 	function removeBadge(badge:string){
 		const badgesArr = [...badges];
 		const index = badgesArr.indexOf(badge);
@@ -357,7 +363,7 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 									{ editProfile &&
 										<>
 											{ newBadgeError && <span className='error-text'>This badge already exists.</span> }
-											<Input placeholder='New Badge' onChange={(e) => setNewBadge(e.target.value)} value={newBadge} disabled={loadingUpdate || loading} action={{ icon: 'add', onClick: addNewBadge }} error={newBadgeError} />
+											<Input placeholder='New Badge' onChange={(e) => setNewBadge(e.target.value)} value={newBadge} disabled={loadingUpdate || loading} onKeyPress={(e: any) => handleNewBadgeKeyPress(e)} action={{ icon: 'add', onClick: addNewBadge }} error={newBadgeError} />
 										</>
 									}
 									{ badges.length > 0 ?
