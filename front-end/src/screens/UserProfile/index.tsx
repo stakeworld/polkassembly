@@ -2,26 +2,14 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import 'react-image-crop/dist/ReactCrop.css';
-
 import styled from '@xstyled/styled-components';
-import { getDownloadURL, ref, uploadString } from 'firebase/storage';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import ReactCrop, {
-	centerCrop,
-	Crop,
-	makeAspectCrop,
-	PixelCrop
-} from 'react-image-crop';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Card, Divider, Form, Grid, Icon, Input, Label, Message, Modal, TextArea } from 'semantic-ui-react';
 import { NotificationContext } from 'src/context/NotificationContext';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { GetUserDetailsQuery, useAddProfileMutation, useGetUserDetailsQuery } from 'src/generated/graphql';
 import { NotificationStatus } from 'src/types';
 import Loader from 'src/ui-components/Loader';
-
-import { storage } from '../../../src/firebase-config';
-import { canvasPreview } from './canvasPreview';
 
 interface Props {
 	className?: string
@@ -37,19 +25,13 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 	const [title, setTitle] = useState<string>('aaa');
 	const [badges, setBadges] = useState<string[]>([]);
 	const [newBadge, setNewBadge] = useState<string>('');
-	const [profilePhotoDataUrl, setProfilePhotoDataUrl] = useState<string>('');
 
 	const [newBadgeError, setNewBadgeError] = useState<boolean>(false);
-	const [imageSizeError, setImageSizeError] = useState<boolean>(false);
-	const [loading, setLoading] = useState<boolean>(false);
+	const [imageUrlError, setImageUrlError] = useState<boolean>(false);
 
 	const [openModal, setOpenModal] = useState<boolean>(false);
-	const [imgSrc, setImgSrc] = useState('');
-	const previewCanvasRef = useRef<HTMLCanvasElement>(null);
-	const imgRef = useRef<HTMLImageElement>(null);
-	const [crop, setCrop] = useState<Crop>();
-	const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
-	const fileInputRef = useRef<HTMLInputElement>(null);
+	const [imgUrl, setImgUrl] = useState<string>('');
+	const [finalImgUrl, setFinalImgUrl] = useState<string>('');
 
 	const { data, error, refetch } = useGetUserDetailsQuery({
 		variables: {
@@ -65,6 +47,8 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 		if(data?.userDetails) {
 			setBio(`${data.userDetails.bio}`);
 			setUserImage(`${data.userDetails.image}`);
+			setImgUrl(`${data.userDetails.image}`);
+			setFinalImgUrl(`${data.userDetails.image}`);
 			setTitle(`${data.userDetails.title}`);
 			if (data.userDetails.badges) {
 				setBadges(JSON.parse(data.userDetails.badges));
@@ -92,17 +76,17 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 
 			//reset form
 			setNewBadge('');
-			setProfilePhotoDataUrl('');
+
 			setNewBadgeError(false);
 			setOpenModal(false);
-			setImgSrc('');
-			setImageSizeError(false);
+			setImgUrl('');
+			setImageUrlError(false);
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [editProfile]);
 
 	const addNewBadge = () => {
-		if(!newBadge || loadingUpdate || loading){
+		if(!newBadge || loadingUpdate){
 			return;
 		}
 
@@ -130,80 +114,20 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 		}
 	}
 
-	function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
-		setImageSizeError(false);
+	const updatePhotoButton = editProfile && <Button basic className='upload-photo-btn' onClick={() => { setImageUrlError(false); setOpenModal(true);}}> <Icon name='photo' /> Update Profile Photo</Button>;
 
-		if (e.target.files && e.target.files.length > 0) {
-			setCompletedCrop(undefined); // Makes crop preview update between images.
-			const file_size = e.target.files[0].size;
-			// do not accept files more than 2mb
-			if(file_size > 2000000) {
-				setImageSizeError(true);
-				return;
-			}
-
-			const reader = new FileReader();
-			reader.addEventListener('load', () =>
-				setImgSrc(reader.result?.toString() || '')
-			);
-			reader.readAsDataURL(e.target.files[0]);
-			setOpenModal(true);
-		}
+	function handleImgURLChange(value: string){
+		setImgUrl(value);
 	}
 
-	useEffect(() => {
-		if(openModal == false && fileInputRef.current) {
-			fileInputRef.current.value = '';
-		}
-	}, [openModal]);
-
-	const fileInputButton = editProfile && <input id='hello' ref={fileInputRef} type="file" className="custom-file-input" accept="image/png, image/jpeg" onChange={onSelectFile}></input>;
-
-	function centerAspectCrop(
-		mediaWidth: number,
-		mediaHeight: number,
-		aspect: number
-	) {
-		return centerCrop(
-			makeAspectCrop(
-				{
-					unit: '%',
-					width: 90
-				},
-				aspect,
-				mediaWidth,
-				mediaHeight
-			),
-			mediaWidth,
-			mediaHeight
-		);
-	}
-
-	function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
-		const { width, height } = e.currentTarget;
-		setCrop(centerAspectCrop(width, height, 1));
-	}
-
-	useEffect(() => {
-		if (
-			completedCrop?.width &&
-        completedCrop?.height &&
-        imgRef.current &&
-        previewCanvasRef.current
-		) {
-			// We use canvasPreview as it's much faster than imgPreview.
-			canvasPreview(
-				imgRef.current,
-				previewCanvasRef.current,
-				completedCrop
-			);
-		}
-	}, [completedCrop]);
-
-	const updateProfileImage = () => {
-		if(previewCanvasRef.current) {
-			setProfilePhotoDataUrl(previewCanvasRef.current.toDataURL('image/jpeg', 0.6));
+	const confirmProfileImage = () => {
+		// eslint-disable-next-line no-useless-escape
+		const regex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi);
+		if(imgUrl.match(regex)) {
+			setFinalImgUrl(imgUrl);
 			setOpenModal(false);
+		}else {
+			setImageUrlError(true);
 		}
 	};
 
@@ -211,48 +135,32 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 		variables: {
 			badges: JSON.stringify(badges),
 			bio: bio,
-			image: profilePhotoDataUrl,
+			image: finalImgUrl,
 			title: title,
 			user_id: Number(id)
 		}
 	});
 
 	const updateProfileData = () => {
-		function updateProfileMutation(url:string){
-			addProfileMutation({
-				variables: {
-					badges: JSON.stringify(badges),
-					bio: bio,
-					image: url,
-					title: title,
-					user_id: Number(id)
-				}
-			}).then(({ data }) => {
-				if (data?.addProfile && data?.addProfile?.message){
-					refetch();
-					setEditProfile(false);
-					queueNotification({
-						header: 'Success!',
-						message: 'Your profile was updated.',
-						status: NotificationStatus.SUCCESS
-					});
-					setLoading(false);
-				}
-			}).catch((e) => {setLoading(true); console.error('Error updating profile: ',e);});
-		}
-
-		if(profilePhotoDataUrl.length > 1) {
-			setLoading(true);
-			const storageRef = ref(storage, `profile-photos/${id}.jpeg`);
-
-			uploadString(storageRef, profilePhotoDataUrl.split(';base64,')[1], 'base64').then((snapshot) => {
-				getDownloadURL(snapshot.ref).then(async (url) => {
-					updateProfileMutation(url);
+		addProfileMutation({
+			variables: {
+				badges: JSON.stringify(badges),
+				bio: bio,
+				image: finalImgUrl,
+				title: title,
+				user_id: Number(id)
+			}
+		}).then(({ data }) => {
+			if (data?.addProfile && data?.addProfile?.message){
+				refetch();
+				setEditProfile(false);
+				queueNotification({
+					header: 'Success!',
+					message: 'Your profile was updated.',
+					status: NotificationStatus.SUCCESS
 				});
-			});
-		} else {
-			updateProfileMutation(`${data?.userDetails?.image}`);
-		}
+			}
+		}).catch((e) => console.error('Error updating profile: ',e));
 	};
 
 	return (
@@ -261,61 +169,29 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 			<Modal
 				open={openModal}
 				className={className}
+				size='tiny'
 			>
-				<Modal.Header>Please crop your photo</Modal.Header>
+				<Modal.Header>Please input the URL for your photo</Modal.Header>
 				<Modal.Content>
-
-					<div className='modal-content-div'>
-						<div className='cropper-div'>
-							<ReactCrop
-								crop={crop}
-								onChange={(_, percentCrop) => setCrop(percentCrop)}
-								onComplete={(c) => setCompletedCrop(c)}
-								aspect={1}
-								minHeight={130}
-								minWidth={130}
-							>
-								<img
-									ref={imgRef}
-									alt="Crop image"
-									src={imgSrc}
-									onLoad={onImageLoad}
-								/>
-							</ReactCrop>
-
-						</div>
-
-						<div className='img-preview-div'>
-							<h6 style={ { marginBottom: '12px' } }>Preview :</h6>
-							{Boolean(completedCrop) && (
-								<canvas
-									ref={previewCanvasRef}
-									style={{
-										border: '1px solid black',
-										borderRadius: '50%',
-										height: '130px',
-										objectFit: 'contain',
-										width: '130px'
-									}}
-								/>
-							)}
-						</div>
-					</div>
-
+					<p><b>Instructions : </b> Please provide a valid url of your profile photo. You can use a service such as <a href='https://imgbb.com/' target='_blank' rel="noreferrer">imgbb.com</a> to upload and generate a public link.</p>
+					<Input className='profile-link-input' size='large' type='url' icon='linkify' iconPosition='left' placeholder='Profile Picture URL' onChange={(e) => handleImgURLChange(e.target.value)} value={imgUrl} disabled={loadingUpdate} />
+					{(imageUrlError) &&
+					<Message negative>
+						<p>Please ensure the input is a valid link.</p>
+					</Message>
+					}
 				</Modal.Content>
 				<Modal.Actions>
 					<Button
-						onClick={() => setOpenModal(false)}
+						onClick={() => { setImgUrl(`${data?.userDetails?.image}`); setOpenModal(false);}}
 					>
 							Cancel
 					</Button>
 					<Button
-						content="Crop"
+						content="Confirm"
 						labelPosition='right'
-						icon='expand'
-						onClick={updateProfileImage}
-						positive
-						disabled={!previewCanvasRef.current}
+						icon='photo'
+						onClick={confirmProfileImage}
 					/>
 				</Modal.Actions>
 			</Modal>
@@ -333,29 +209,23 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 							</Message>
 						</Grid.Column>}
 
-						{(imageSizeError && editProfile) && <Grid.Column className='profile-col' width={16}>
-							<Message negative>
-								<p>Please ensure the image file is less than 2 MB.</p>
-							</Message>
-						</Grid.Column>}
-
 						<Grid.Column className='profile-col' width={16}>
 							<div className='profile-div'>
-								{userImage || profilePhotoDataUrl ?
+								{userImage || finalImgUrl ?
 									<div className='image-div'>
-										<img width={130} height={130} className='profile-img' src={profilePhotoDataUrl ? profilePhotoDataUrl : userImage} />
-										{!(loadingUpdate || loading) ? fileInputButton : <Button basic loading>Loading</Button>}
+										<img width={130} height={130} className='profile-img' src={finalImgUrl ? finalImgUrl : userImage} />
+										{!(loadingUpdate) ? updatePhotoButton : <Button basic loading>Loading</Button>}
 									</div>
 									: <div className='no-image-div'>
 										<Icon className='no-image-icon' name='user circle' />
-										{!(loadingUpdate || loading) ? fileInputButton : <Button basic loading>Loading</Button>}
+										{!(loadingUpdate) ? updatePhotoButton : <Button basic loading>Loading</Button>}
 									</div>
 								}
 
 								<div className={`profile-text-div ${editProfile ? 'editing' : ''}`}>
 									{ username && <h3 className='display-name'>{username}</h3>}
 
-									{editProfile ? <Input placeholder='Title' onChange={(e) => setTitle(e.target.value)} value={title} disabled={loadingUpdate || loading} /> :
+									{editProfile ? <Input placeholder='Title' onChange={(e) => setTitle(e.target.value)} value={title} disabled={loadingUpdate} /> :
 										title ? <h3 className='display-title'>{title}</h3> :
 											<h3 className='no-display-title'>No title added</h3>
 									}
@@ -363,18 +233,18 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 									{ editProfile &&
 										<>
 											{ newBadgeError && <span className='error-text'>This badge already exists.</span> }
-											<Input placeholder='New Badge' onChange={(e) => setNewBadge(e.target.value)} value={newBadge} disabled={loadingUpdate || loading} onKeyPress={(e: any) => handleNewBadgeKeyPress(e)} action={{ icon: 'add', onClick: addNewBadge }} error={newBadgeError} />
+											<Input placeholder='New Badge' onChange={(e) => setNewBadge(e.target.value)} value={newBadge} disabled={loadingUpdate} onKeyPress={(e: any) => handleNewBadgeKeyPress(e)} action={{ icon: 'add', onClick: addNewBadge }} error={newBadgeError} />
 										</>
 									}
 									{ badges.length > 0 ?
 										<Label.Group className={`display-badges ${editProfile ? 'editing' : ''}`} size='big'>
-											{badges.map((badge, i) => (<Label key={i}>{badge}{editProfile ? <Icon disabled={loadingUpdate || loading} onClick={() => removeBadge(badge)} name='delete' /> : null}</Label>))}
+											{badges.map((badge, i) => (<Label key={i}>{badge}{editProfile ? <Icon disabled={loadingUpdate} onClick={() => removeBadge(badge)} name='delete' /> : null}</Label>))}
 										</Label.Group> :
 										<h3 className='no-display-title'>No badges added</h3>
 									}
 								</div>
 							</div>
-							<Button basic size='large' className='edit-profile-btn' disabled={loadingUpdate || loading} onClick={() => { setEditProfile(!editProfile);} }> <Icon name={`${ editProfile ? 'close' : 'pencil'}`} /> {`${ editProfile ? 'Cancel Edit' : 'Edit Profile'}`}</Button>
+							<Button basic size='large' className='edit-profile-btn' disabled={loadingUpdate} onClick={() => { setEditProfile(!editProfile);} }> <Icon name={`${ editProfile ? 'close' : 'pencil'}`} /> {`${ editProfile ? 'Cancel Edit' : 'Edit Profile'}`}</Button>
 						</Grid.Column>
 					</Grid>
 
@@ -384,10 +254,10 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 							<div className='about-div'>
 								<h2>About</h2>
 								<Form>
-									<TextArea rows={6} placeholder='Please add your bio here...' disabled={loadingUpdate || loading} onChange={(e) => setBio((e.target as HTMLInputElement).value)} value={bio} />
+									<TextArea rows={6} placeholder='Please add your bio here...' disabled={loadingUpdate} onChange={(e) => setBio((e.target as HTMLInputElement).value)} value={bio} />
 								</Form>
 
-								<Button className='update-button' size='big' disabled={loadingUpdate || loading} loading={loadingUpdate || loading} onClick={updateProfileData}>
+								<Button className='update-button' size='big' disabled={loadingUpdate} loading={loadingUpdate} onClick={updateProfileData}>
 									Update
 								</Button>
 							</div>
@@ -430,35 +300,13 @@ export default styled(UserProfile)`
 		margin-bottom: 16px !important;
 	}
 
-
 	.message {
 		width: 100%;
 		margin-bottom: 16px;
 	}
 
-	.modal-content-div{
-		display: flex;
-
-		@media only screen and (max-width: 767px) {
-			flex-direction: column;
-		}
-
-		.cropper-div {
-			width: 80%;
-
-			@media only screen and (max-width: 767px) {
-				width: 100%;
-			}
-		}
-
-		.img-preview-div {
-			margin-left: 16px;
-
-			@media only screen and (max-width: 767px) {
-				margin-top: 16px;
-				text-align: center;
-			}
-		}
+	.profile-link-input {
+		width: 100%;
 	}
 
 	.profile-card {
@@ -495,10 +343,8 @@ export default styled(UserProfile)`
 				}
 			}
 
-			.custom-file-input {
+			.upload-photo-btn {
 				z-index: 50;
-				width: 137px;
-				overflow: none;
 			}
 
 			.custom-file-input::-webkit-file-upload-button {
