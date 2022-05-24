@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from '@xstyled/styled-components';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ReactNode, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Dropdown, Icon, Menu, Responsive } from 'semantic-ui-react';
@@ -12,7 +12,7 @@ import SearchBar from 'src/ui-components/SearchBar';
 
 import logo from '../../assets/polkassembly-logo.png';
 import { UserDetailsContext } from '../../context/UserDetailsContext';
-import { useLogoutMutation } from '../../generated/graphql';
+import { useGetUserDetailsQuery, useLogoutMutation } from '../../generated/graphql';
 import { useRouter } from '../../hooks';
 import { logout } from '../../services/auth.service';
 import AddressComponent from '../../ui-components/Address';
@@ -28,7 +28,17 @@ const MenuBar = ({ className, toggleSidebarHidden, setSidebarHidden } : Props): 
 	const currentUser = useContext(UserDetailsContext);
 	const [logoutMutation] = useLogoutMutation();
 	const { history } = useRouter();
-	const { setUserDetailsContextState, username } = currentUser;
+	const { id, setUserDetailsContextState, username } = currentUser;
+
+	const { data, refetch } = useGetUserDetailsQuery({
+		variables: {
+			user_id: Number(id)
+		}
+	});
+
+	useEffect(() => {
+		refetch();
+	}, [refetch]);
 
 	const handleLogout = async () => {
 		try {
@@ -63,7 +73,9 @@ const MenuBar = ({ className, toggleSidebarHidden, setSidebarHidden } : Props): 
 
 	const userMenu = currentUser.web3signup && currentUser.defaultAddress
 		? <><AddressComponent address={currentUser.defaultAddress} /></>
-		: <><Icon size='big' name='user circle' inverted />{username}</>;
+		: data?.userDetails?.image ?
+			<><img src={data.userDetails.image} alt='User Avatar' style={ { borderRadius:'50%', marginRight: '5px' } } /> {username} </>
+			: <><Icon size='big' name='user circle' inverted /> {username} </>;
 
 	const caretIcon = <Icon name='caret down' inverted />;
 
