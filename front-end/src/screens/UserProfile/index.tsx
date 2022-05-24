@@ -5,6 +5,7 @@
 import 'react-image-crop/dist/ReactCrop.css';
 
 import styled from '@xstyled/styled-components';
+import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import ReactCrop, {
 	centerCrop,
@@ -19,6 +20,7 @@ import { GetUserDetailsQuery, useAddProfileMutation, useGetUserDetailsQuery } fr
 import { NotificationStatus } from 'src/types';
 import Loader from 'src/ui-components/Loader';
 
+import { storage } from '../../../src/firebase-config';
 import { canvasPreview } from './canvasPreview';
 
 interface Props {
@@ -39,6 +41,7 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 
 	const [newBadgeError, setNewBadgeError] = useState<boolean>(false);
 	const [imageSizeError, setImageSizeError] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(false);
 
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [imgSrc, setImgSrc] = useState('');
@@ -99,7 +102,7 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 	}, [editProfile]);
 
 	const addNewBadge = () => {
-		if(!newBadge || loadingUpdate){
+		if(!newBadge || loadingUpdate || loading){
 			return;
 		}
 
@@ -193,7 +196,7 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 
 	const updateProfileImage = () => {
 		if(previewCanvasRef.current) {
-			setProfilePhotoDataUrl(previewCanvasRef.current.toDataURL('image/jpeg', 0.5));
+			setProfilePhotoDataUrl(previewCanvasRef.current.toDataURL('image/jpeg', 0.6));
 			setOpenModal(false);
 		}
 	};
@@ -209,27 +212,41 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 	});
 
 	const updateProfileData = () => {
-		console.log('profilePhotoDataUrl : ', profilePhotoDataUrl);
-		addProfileMutation({
-			variables: {
-				badges: JSON.stringify(badges),
-				bio: bio,
-				image: profilePhotoDataUrl.length > 1 ? profilePhotoDataUrl : `${data?.userDetails?.image}`,
-				title: title,
-				user_id: Number(id)
-			}
-		}).then(({ data }) => {
-			if (data?.addProfile && data?.addProfile?.message){
-				refetch();
-				setEditProfile(false);
-				queueNotification({
-					header: 'Success!',
-					message: 'Your profile was updated.',
-					status: NotificationStatus.SUCCESS
+		function updateProfileMutation(url:string){
+			addProfileMutation({
+				variables: {
+					badges: JSON.stringify(badges),
+					bio: bio,
+					image: url,
+					title: title,
+					user_id: Number(id)
+				}
+			}).then(({ data }) => {
+				if (data?.addProfile && data?.addProfile?.message){
+					refetch();
+					setEditProfile(false);
+					queueNotification({
+						header: 'Success!',
+						message: 'Your profile was updated.',
+						status: NotificationStatus.SUCCESS
+					});
+					setLoading(false);
+				}
+			}).catch((e) => {setLoading(true); console.error('Error updating profile: ',e);});
+		}
+
+		if(profilePhotoDataUrl.length > 1) {
+			setLoading(true);
+			const storageRef = ref(storage, `profile-photos/${id}.jpeg`);
+
+			uploadString(storageRef, profilePhotoDataUrl.split(';base64,')[1], 'base64').then((snapshot) => {
+				getDownloadURL(snapshot.ref).then(async (url) => {
+					updateProfileMutation(url);
 				});
-			}
-		})
-			.catch((e) => console.error('Error updating profile: ',e));
+			});
+		} else {
+			updateProfileMutation(`${data?.userDetails?.image}`);
+		}
 	};
 
 	return (
@@ -321,18 +338,18 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 								{userImage || profilePhotoDataUrl ?
 									<div className='image-div'>
 										<img width={130} height={130} className='profile-img' src={profilePhotoDataUrl ? profilePhotoDataUrl : userImage} />
-										{!loadingUpdate ? fileInputButton : <Button basic loading>Loading</Button>}
+										{!(loadingUpdate || loading) ? fileInputButton : <Button basic loading>Loading</Button>}
 									</div>
 									: <div className='no-image-div'>
 										<Icon className='no-image-icon' name='user circle' />
-										{!loadingUpdate ? fileInputButton : <Button basic loading>Loading</Button>}
+										{!(loadingUpdate || loading) ? fileInputButton : <Button basic loading>Loading</Button>}
 									</div>
 								}
 
 								<div className={`profile-text-div ${editProfile ? 'editing' : ''}`}>
 									{ username && <h3 className='display-name'>{username}</h3>}
 
-									{editProfile ? <Input placeholder='Title' onChange={(e) => setTitle(e.target.value)} value={title} disabled={loadingUpdate} /> :
+									{editProfile ? <Input placeholder='Title' onChange={(e) => setTitle(e.target.value)} value={title} disabled={loadingUpdate || loading} /> :
 										title ? <h3 className='display-title'>{title}</h3> :
 											<h3 className='no-display-title'>No title added</h3>
 									}
@@ -340,18 +357,18 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 									{ editProfile &&
 										<>
 											{ newBadgeError && <span className='error-text'>This badge already exists.</span> }
-											<Input placeholder='New Badge' onChange={(e) => setNewBadge(e.target.value)} value={newBadge} disabled={loadingUpdate} action={{ icon: 'add', onClick: addNewBadge }} error={newBadgeError} />
+											<Input placeholder='New Badge' onChange={(e) => setNewBadge(e.target.value)} value={newBadge} disabled={loadingUpdate || loading} action={{ icon: 'add', onClick: addNewBadge }} error={newBadgeError} />
 										</>
 									}
 									{ badges.length > 0 ?
 										<Label.Group className={`display-badges ${editProfile ? 'editing' : ''}`} size='big'>
-											{badges.map((badge, i) => (<Label key={i}>{badge}{editProfile ? <Icon disabled={loadingUpdate} onClick={() => removeBadge(badge)} name='delete' /> : null}</Label>))}
+											{badges.map((badge, i) => (<Label key={i}>{badge}{editProfile ? <Icon disabled={loadingUpdate || loading} onClick={() => removeBadge(badge)} name='delete' /> : null}</Label>))}
 										</Label.Group> :
 										<h3 className='no-display-title'>No badges added</h3>
 									}
 								</div>
 							</div>
-							<Button basic size='large' className='edit-profile-btn' disabled={loadingUpdate} onClick={() => { setEditProfile(!editProfile);} }> <Icon name={`${ editProfile ? 'close' : 'pencil'}`} /> {`${ editProfile ? 'Cancel Edit' : 'Edit Profile'}`}</Button>
+							<Button basic size='large' className='edit-profile-btn' disabled={loadingUpdate || loading} onClick={() => { setEditProfile(!editProfile);} }> <Icon name={`${ editProfile ? 'close' : 'pencil'}`} /> {`${ editProfile ? 'Cancel Edit' : 'Edit Profile'}`}</Button>
 						</Grid.Column>
 					</Grid>
 
@@ -361,10 +378,10 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 							<div className='about-div'>
 								<h2>About</h2>
 								<Form>
-									<TextArea rows={6} placeholder='Please add your bio here...' disabled={loadingUpdate} onChange={(e) => setBio((e.target as HTMLInputElement).value)} value={bio} />
+									<TextArea rows={6} placeholder='Please add your bio here...' disabled={loadingUpdate || loading} onChange={(e) => setBio((e.target as HTMLInputElement).value)} value={bio} />
 								</Form>
 
-								<Button className='update-button' size='big' disabled={loadingUpdate} loading={loadingUpdate} onClick={updateProfileData}>
+								<Button className='update-button' size='big' disabled={loadingUpdate || loading} loading={loadingUpdate || loading} onClick={updateProfileData}>
 									Update
 								</Button>
 							</div>
