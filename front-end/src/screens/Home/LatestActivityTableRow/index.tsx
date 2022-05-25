@@ -234,7 +234,7 @@ export default styled(LatestActivityTableRow)`
 	.action-btn-cell {
 		display: flex;
 		cursor: default !important;
-		padding-top: 0.9em !important;
+		padding-top: 1.3em !important;
 		white-space: nowrap;
 	}
 

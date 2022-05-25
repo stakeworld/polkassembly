@@ -90,6 +90,12 @@ const UpcomingEvents = ({ className }: Props) => {
 };
 
 export default styled(UpcomingEvents)`
+	h1 {
+		@media only screen and (max-width: 576px) {
+			margin-top: 42px;
+		}
+	}
+
 	.card {
 		background: #fff;
 		border-radius: 10px;
