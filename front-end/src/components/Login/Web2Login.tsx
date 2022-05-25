@@ -20,10 +20,10 @@ import * as validation from '../../util/validation';
 
 interface Props {
 	className?: string
-	toggleWeb2Login: () => void
+	setDisplayWeb3: () => void
 }
 
-const LoginForm = ({ className, toggleWeb2Login }:Props): JSX.Element => {
+const LoginForm = ({ className, setDisplayWeb3 }:Props): JSX.Element => {
 	const currentUser = useContext(UserDetailsContext);
 	const { history } = useRouter();
 	const [loginMutation, { loading, error }] = useLoginMutation();
@@ -49,7 +49,7 @@ const LoginForm = ({ className, toggleWeb2Login }:Props): JSX.Element => {
 		}
 	};
 
-	const handleToggle = () => toggleWeb2Login();
+	const handleToggle = () => setDisplayWeb3();
 
 	return (
 		<Form className={className} onSubmit={handleSubmit(handleSubmitForm)}>

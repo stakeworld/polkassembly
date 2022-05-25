@@ -11,6 +11,7 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { Divider, DropdownProps } from 'semantic-ui-react';
 import { APPNAME } from 'src/global/appName';
+import { Wallet } from 'src/types';
 import getNetwork from 'src/util/getNetwork';
 
 import ExtensionNotDetected from '../../components/ExtensionNotDetected';
@@ -28,12 +29,13 @@ import getEncodedAddress from '../../util/getEncodedAddress';
 
 interface Props {
 	className?: string
-	toggleWeb2Signup: () => void
+	chosenWallet: Wallet
+	setDisplayWeb2: () => void
 }
 
 const NETWORK = getNetwork();
 
-const SignupForm = ({ className, toggleWeb2Signup }:Props): JSX.Element => {
+const SignupForm = ({ className, setDisplayWeb2, chosenWallet }:Props): JSX.Element => {
 	const [error, setErr] = useState<Error | null>(null);
 	const [address, setAddress] = useState<string>('');
 	const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
@@ -48,10 +50,11 @@ const SignupForm = ({ className, toggleWeb2Signup }:Props): JSX.Element => {
 	const { setModal } = useContext(ModalContext);
 
 	useEffect(() => {
+		console.log(chosenWallet);
 		if (!accounts.length) {
 			getAccounts();
 		}
-	}, [accounts.length]);
+	}, [accounts.length, chosenWallet]);
 
 	const getAccounts = async (): Promise<undefined> => {
 		const extensions = await web3Enable(APPNAME);
@@ -146,7 +149,7 @@ const SignupForm = ({ className, toggleWeb2Signup }:Props): JSX.Element => {
 		}
 	};
 
-	const handleToggle = () => toggleWeb2Signup();
+	const handleToggle = () => setDisplayWeb2();
 
 	return (
 		<Form className={className} onSubmit={handleSubmit(handleSignup)}>

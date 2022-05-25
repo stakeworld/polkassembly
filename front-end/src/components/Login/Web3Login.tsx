@@ -9,6 +9,7 @@ import styled from '@xstyled/styled-components';
 import React, { useContext, useEffect, useState } from 'react';
 import { Divider, DropdownProps } from 'semantic-ui-react';
 import { APPNAME } from 'src/global/appName';
+import { Wallet } from 'src/types';
 
 import ExtensionNotDetected from '../../components/ExtensionNotDetected';
 import { UserDetailsContext } from '../../context/UserDetailsContext';
@@ -24,10 +25,11 @@ import getEncodedAddress from '../../util/getEncodedAddress';
 
 interface Props {
 	className?: string
-	toggleWeb2Login: () => void
+	chosenWallet: Wallet
+	setDisplayWeb2: () => void
 }
 
-const LoginForm = ({ className, toggleWeb2Login }:Props): JSX.Element => {
+const LoginForm = ({ className, setDisplayWeb2 }:Props): JSX.Element => {
 	const [error, setErr] = useState<Error | null>(null);
 	const [address, setAddress] = useState<string>('');
 	const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
@@ -133,7 +135,7 @@ const LoginForm = ({ className, toggleWeb2Login }:Props): JSX.Element => {
 		}
 	};
 
-	const handleToggle = () => toggleWeb2Login();
+	const handleToggle = () => setDisplayWeb2();
 
 	return (
 		<Form className={className} onSubmit={handleLogin}>

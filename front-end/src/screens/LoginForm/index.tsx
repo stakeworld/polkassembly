@@ -4,6 +4,11 @@
 
 import React, { useContext, useEffect,useState } from 'react';
 import { Grid } from 'semantic-ui-react';
+import NovaButton from 'src/components/WalletButton/NovaButton';
+import OtherButton from 'src/components/WalletButton/OtherButton';
+import TalismanButton from 'src/components/WalletButton/TalismanButton';
+import { Wallet } from 'src/types';
+import Modal from 'src/ui-components/Modal';
 
 import Web2Login from '../../components/Login/Web2Login';
 import Web3Login from '../../components/Login/Web3Login';
@@ -17,6 +22,23 @@ interface Props {
 const Login = ({ className }: Props) => {
 	const currentUser = useContext(UserDetailsContext);
 	const { history } = useRouter();
+	const [displayWeb, setDisplayWeb] = useState(2);
+	const [chosenWallet, setChosenWallet] = useState<Wallet>();
+	const [showWalletModal, setShowWalletModal] = useState(false);
+
+	const setDisplayWeb2 = () => setDisplayWeb(2);
+
+	const setDisplayWeb3 = () => {
+		setShowWalletModal(true);
+	};
+
+	const onWalletSelect = (wallet: Wallet) => {
+		setChosenWallet(wallet);
+
+		setDisplayWeb(3);
+
+		setShowWalletModal(false);
+	};
 
 	useEffect(() => {
 		if (currentUser?.id) {
@@ -24,18 +46,23 @@ const Login = ({ className }: Props) => {
 		}
 	}, [history, currentUser, currentUser?.id]);
 
-	const [displayWeb2, setDisplayWeb2] = useState(true);
-	const toggleWeb2Login = () => setDisplayWeb2(!displayWeb2);
-
 	return (
-		<Grid centered className={className}>
-			<Grid.Column width={10}>
-				{ displayWeb2
-					? <Web2Login toggleWeb2Login={toggleWeb2Login}/>
-					: <Web3Login toggleWeb2Login={toggleWeb2Login}/>
-				}
-			</Grid.Column>
-		</Grid>
+		<>
+			<Grid centered className={className}>
+				<Grid.Column width={10}>
+					{ displayWeb === 2
+						? <Web2Login setDisplayWeb3={setDisplayWeb3}/> : null}
+
+					{displayWeb === 3 && chosenWallet ? <Web3Login chosenWallet={chosenWallet} setDisplayWeb2={setDisplayWeb2}/> : null}
+				</Grid.Column>
+			</Grid>
+
+			<Modal size="mini" open={showWalletModal} onClose={() => setShowWalletModal(false)}>
+				<TalismanButton handleClick={() => onWalletSelect(Wallet.TALISMAN)}/>
+				<NovaButton handleClick={() => onWalletSelect(Wallet.TALISMAN)}/>
+				<OtherButton handleClick={() => onWalletSelect(Wallet.OTHER)}/>
+			</Modal>
+		</>
 	);
 };
 
