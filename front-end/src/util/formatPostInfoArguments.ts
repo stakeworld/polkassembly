@@ -7,6 +7,9 @@ export default function (rawArguments: any): any[] {
 	rawArguments?.forEach((obj: any) => {
 		const argumentsObj: any = {};
 		delete obj.__typename;
+		if (obj.id) {
+			argumentsObj['id'] = obj.id;
+		}
 		argumentsObj['name'] = obj.name;
 		try {
 			argumentsObj['value'] = JSON.parse(obj.value);
