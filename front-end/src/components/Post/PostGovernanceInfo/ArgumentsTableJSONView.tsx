@@ -24,7 +24,7 @@ const ArgumentsTableJSONView = ({ className, postArguments, showAccountArguments
 	if(argumentsArr.length > 0) {
 		return (
 			<div className={className}>
-				<h6 className='arguments-heading'> Arguments :
+				<h6 className='arguments-heading mt'> Arguments :
 					<Button.Group size='tiny'>
 						<Button className={dataViewMode == 'table' ? 'active-btn' : ''} onClick={() => setDataViewMode('table')}>Table</Button>
 						<Button className={dataViewMode == 'json' ? 'active-btn' : ''} onClick={() => setDataViewMode('json')}>JSON</Button>

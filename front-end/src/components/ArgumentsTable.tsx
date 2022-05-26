@@ -26,7 +26,7 @@ const ArgumentsTable = ({ argumentsJSON, className } : Props) => {
 
 						return (
 							<td className='direct-data data-2'>
-								<span dangerouslySetInnerHTML={{ __html: argumentsJSON[k] }} />
+								<span>{argumentsJSON[k]}</span>
 							</td>
 						);
 					})()}

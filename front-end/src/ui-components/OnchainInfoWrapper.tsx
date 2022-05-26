@@ -79,7 +79,7 @@ export default styled(OnchainInfoWrapper)`
 		align-items: center;
 
 		&.mt {
-			margin-top: 20px;
+			margin-top: 16px;
 		}
 
 		.buttons {
