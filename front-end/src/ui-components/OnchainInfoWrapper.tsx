@@ -53,9 +53,85 @@ export default styled(OnchainInfoWrapper)`
 		.row {
 			width: 100%;
 		}
+
+		&.with-table {
+			background-color: #fff;
+
+			.arguments-col {
+				margin-top: 16px;
+				margin-bottom: 20px;
+			}
+		}
+
+		&.treasury-info {
+			margin: 12px 9px 6px 9px;
+		}
 	}
 
 	@media only screen and (max-width: 576px) {
 		padding: 2rem;
+	}
+
+	/* Arguments Style */
+	.arguments-heading {
+		margin-bottom: 12px;
+		display: flex;
+		align-items: center;
+
+		&.mt {
+			margin-top: 16px;
+		}
+
+		.buttons {
+			margin-left: 12px;
+
+			.active-btn {
+				background: #E5007A !important;
+				color: #fff;
+			}
+		}
+	}
+
+	.json-view, .table-view {
+		width: 100%;
+		max-width: 100%;
+		overflow-x: auto;
+		background: #EBF0F5;
+		padding: 16px;
+	}
+
+	.react-json-view {
+		background: #fff !important;
+		padding: 8px;
+		width: 100%;
+		overflow-x: auto;
+	}
+
+	.table-view {
+		max-height: 500px;
+		overflow-y: auto;
+
+		table {
+			width: 100%;
+			border-spacing: 0px;
+		}
+
+		td.indirect-data {
+			background: #fff;
+		}
+
+		td.direct-data {
+			font-style: normal;
+			font-weight: normal;
+			font-size: 14px;
+			line-height: 20px;
+			height: 40px;
+			border-style: solid;
+			border-width: 1px 1px 0px 1px;
+			border-color: rgb(238, 238, 238);
+			min-width: 160px;
+    	padding: 10px 24px;
+			background: #fff;
+		}
 	}
 `;

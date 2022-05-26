@@ -12,6 +12,7 @@ import { OnchainLinkReferendumFragment } from '../../../generated/graphql';
 import AddressComponent from '../../../ui-components/Address';
 import OnchainInfoWrapper from '../../../ui-components/OnchainInfoWrapper';
 import ExternalLinks from '../../ExternalLinks';
+import ArgumentsTableJSONView from './ArgumentsTableJSONView';
 
 interface Props{
 	onchainLink: OnchainLinkReferendumFragment
@@ -72,20 +73,9 @@ const PostReferendumInfo = ({ onchainLink }: Props) => {
 						<h6>Method</h6>
 						{method}
 					</Grid.Column>
-					<Grid.Column mobile={16} tablet={8} computer={8}>
+					<Grid.Column mobile={16} tablet={16} computer={16}>
 						{preimageArguments && preimageArguments.length
-							? <>
-								<h6>Arguments</h6>
-								{preimageArguments.map((element, index) => {
-									const isAccountArgument = element.name === 'account';
-									return <div className={isAccountArgument ? '' : 'methodArguments'} key={index}>
-										{isAccountArgument
-											? <AddressComponent address={element.value} key={index}/>
-											: <span key={index}>{element.name}: {element.value}</span>
-										}
-									</div>;
-								})}
-							</>
+							? <ArgumentsTableJSONView postArguments={preimageArguments} showAccountArguments={true}  />
 							: null}
 					</Grid.Column>
 				</Grid.Row>}
