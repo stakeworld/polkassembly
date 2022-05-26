@@ -4,16 +4,13 @@
 
 import styled from '@xstyled/styled-components';
 import * as React from 'react';
-import { useState } from 'react';
-import ReactJson from 'react-json-view';
-import { Button, Grid } from 'semantic-ui-react';
-import ArgumentsTable from 'src/components/ArgumentsTable';
-import formatPostInfoArguments from 'src/util/formatPostInfoArguments';
+import { Grid } from 'semantic-ui-react';
 
 import { OnchainLinkMotionPreimageFragment, OnchainLinkTechCommitteeProposalFragment } from '../../../generated/graphql';
 import AddressComponent from '../../../ui-components/Address';
 import OnchainInfoWrapper from '../../../ui-components/OnchainInfoWrapper';
 import ExternalLinks from '../../ExternalLinks';
+import ArgumentsTableJSONView from './ArgumentsTableJSONView';
 
 interface Props {
 	className?: string;
@@ -21,8 +18,6 @@ interface Props {
 }
 
 const PostTechCommitteeProposalInfo = ({ className, onchainLink }: Props) => {
-	const [dataViewMode, setDataViewMode] = useState<'table' | 'json'>('table');
-
 	if (!onchainLink) return null;
 
 	const {
@@ -35,8 +30,6 @@ const PostTechCommitteeProposalInfo = ({ className, onchainLink }: Props) => {
 	}
 
 	const { metaDescription, memberCount, method, proposalArguments, proposalHash, preimage } = onchainTechCommitteeProposal[0];
-
-	const argumentsArr = formatPostInfoArguments(proposalArguments);
 
 	return (
 		<OnchainInfoWrapper className={className}>
@@ -61,34 +54,7 @@ const PostTechCommitteeProposalInfo = ({ className, onchainLink }: Props) => {
 				<Grid.Row>
 					<Grid.Column mobile={16} tablet={16} computer={16}>
 						{proposalArguments && proposalArguments.length
-							? <>
-								<h6 className='arguments-heading mt'> Arguments :
-									<Button.Group size='tiny'>
-										<Button className={dataViewMode == 'table' ? 'active-btn' : ''} onClick={() => setDataViewMode('table')}>Table</Button>
-										<Button className={dataViewMode == 'json' ? 'active-btn' : ''} onClick={() => setDataViewMode('json')}>JSON</Button>
-									</Button.Group>
-								</h6>
-
-								{
-									dataViewMode == 'table' ?
-										<div className="table-view">
-											<table cellSpacing={0} cellPadding={0}>
-												<tbody>
-													<ArgumentsTable argumentsJSON={argumentsArr} />
-												</tbody>
-											</table>
-										</div>
-										:
-										<div className="json-view">
-											<ReactJson
-												src={argumentsArr}
-												iconStyle='circle'
-												enableClipboard={false}
-												displayDataTypes={false}
-											/>
-										</div>
-								}
-							</>
+							? <ArgumentsTableJSONView postArguments={proposalArguments} showAccountArguments={false} />
 							: null}
 					</Grid.Column>
 				</Grid.Row>
@@ -112,15 +78,11 @@ const PostTechCommitteeProposalInfo = ({ className, onchainLink }: Props) => {
 };
 
 const ProposalInfo = ({ preimage } : {preimage?: OnchainLinkMotionPreimageFragment | null}) => {
-	const [dataViewMode, setDataViewMode] = useState<'table' | 'json'>('table');
-
 	if (!preimage) {
 		return null;
 	}
 
 	const { metaDescription, method: preimageMethod, preimageArguments } = preimage;
-
-	const argumentsArr = formatPostInfoArguments(preimageArguments);
 
 	return (
 		<Grid.Row className='motion-sub-info with-table'>
@@ -132,40 +94,7 @@ const ProposalInfo = ({ preimage } : {preimage?: OnchainLinkMotionPreimageFragme
 					</Grid.Column>
 					<Grid.Column className='arguments-col' mobile={16} tablet={16} computer={16}>
 						{preimageArguments && preimageArguments.length
-							? <>
-								<h6 className='arguments-heading'> Arguments :
-									<Button.Group size='tiny'>
-										<Button className={dataViewMode == 'table' ? 'active-btn' : ''} onClick={() => setDataViewMode('table')}>Table</Button>
-										<Button className={dataViewMode == 'json' ? 'active-btn' : ''} onClick={() => setDataViewMode('json')}>JSON</Button>
-									</Button.Group>
-								</h6>
-
-								{
-									dataViewMode == 'table' ?
-										<div className="table-view">
-											<table cellSpacing={0} cellPadding={0}>
-												<tbody>
-													<ArgumentsTable argumentsJSON={argumentsArr} />
-												</tbody>
-											</table>
-										</div>
-										:
-										<div className="json-view">
-											<ReactJson
-												src={argumentsArr}
-												iconStyle='circle'
-												enableClipboard={false}
-												displayDataTypes={false}
-											/>
-										</div>
-								}
-
-								{preimageArguments.map((element, index) => {
-									return element.name === 'account' && <div key={index}>
-										<AddressComponent address={element.value} key={index}/>
-									</div>;
-								})}
-							</>
+							? <ArgumentsTableJSONView postArguments={preimageArguments} showAccountArguments={true} />
 							: null}
 					</Grid.Column>
 				</>

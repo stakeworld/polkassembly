@@ -3,11 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import * as React from 'react';
-import { useState } from 'react';
-import ReactJson from 'react-json-view';
-import { Button, Grid } from 'semantic-ui-react';
-import ArgumentsTable from 'src/components/ArgumentsTable';
-import formatPostInfoArguments from 'src/util/formatPostInfoArguments';
+import { Grid } from 'semantic-ui-react';
 
 import { OnchainLinkProposalFragment } from '../../../generated/graphql';
 import { chainProperties } from '../../../global/networkConstants';
@@ -15,6 +11,7 @@ import AddressComponent from '../../../ui-components/Address';
 import OnchainInfoWrapper from '../../../ui-components/OnchainInfoWrapper';
 import getNetwork from '../../../util/getNetwork';
 import ExternalLinks from '../../ExternalLinks';
+import ArgumentsTableJSONView from './ArgumentsTableJSONView';
 
 interface Props{
 	onchainLink: OnchainLinkProposalFragment
@@ -23,8 +20,6 @@ interface Props{
 const currentNetwork = getNetwork();
 
 const PostProposalInfo = ({ onchainLink }: Props) => {
-	const [dataViewMode, setDataViewMode] = useState<'table' | 'json'>('table');
-
 	if (!onchainLink) return null;
 
 	const {
@@ -35,8 +30,6 @@ const PostProposalInfo = ({ onchainLink }: Props) => {
 	const depositAmount = onchainProposal?.[0]?.depositAmount;
 
 	const { metaDescription, method, preimageArguments } = preimage || {};
-
-	const argumentsArr = formatPostInfoArguments(preimageArguments);
 
 	return (
 		<OnchainInfoWrapper>
@@ -59,40 +52,7 @@ const PostProposalInfo = ({ onchainLink }: Props) => {
 					</Grid.Column>
 					<Grid.Column mobile={16} tablet={16} computer={16}>
 						{preimageArguments && preimageArguments.length
-							? <>
-								<h6 className='arguments-heading mt'> Arguments :
-									<Button.Group size='tiny'>
-										<Button className={dataViewMode == 'table' ? 'active-btn' : ''} onClick={() => setDataViewMode('table')}>Table</Button>
-										<Button className={dataViewMode == 'json' ? 'active-btn' : ''} onClick={() => setDataViewMode('json')}>JSON</Button>
-									</Button.Group>
-								</h6>
-
-								{
-									dataViewMode == 'table' ?
-										<div className="table-view">
-											<table cellSpacing={0} cellPadding={0}>
-												<tbody>
-													<ArgumentsTable argumentsJSON={argumentsArr} />
-												</tbody>
-											</table>
-										</div>
-										:
-										<div className="json-view">
-											<ReactJson
-												src={argumentsArr}
-												iconStyle='circle'
-												enableClipboard={false}
-												displayDataTypes={false}
-											/>
-										</div>
-								}
-
-								{preimageArguments.map((element, index) => {
-									return element.name === 'account' && <div key={index}>
-										<AddressComponent address={element.value} key={index}/>
-									</div>;
-								})}
-							</>
+							? <ArgumentsTableJSONView postArguments={preimageArguments} showAccountArguments={true}  />
 							: null}
 					</Grid.Column>
 				</Grid.Row>}
