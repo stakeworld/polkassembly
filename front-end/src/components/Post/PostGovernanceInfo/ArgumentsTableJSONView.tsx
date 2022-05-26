@@ -21,44 +21,49 @@ const ArgumentsTableJSONView = ({ className, postArguments, showAccountArguments
 	const [dataViewMode, setDataViewMode] = useState<'table' | 'json'>('table');
 	const argumentsArr = formatPostInfoArguments(postArguments);
 
-	return (
-		<div className={className}>
-			<h6 className='arguments-heading'> Arguments :
-				<Button.Group size='tiny'>
-					<Button className={dataViewMode == 'table' ? 'active-btn' : ''} onClick={() => setDataViewMode('table')}>Table</Button>
-					<Button className={dataViewMode == 'json' ? 'active-btn' : ''} onClick={() => setDataViewMode('json')}>JSON</Button>
-				</Button.Group>
-			</h6>
+	if(argumentsArr.length > 0) {
+		return (
+			<div className={className}>
+				<h6 className='arguments-heading'> Arguments :
+					<Button.Group size='tiny'>
+						<Button className={dataViewMode == 'table' ? 'active-btn' : ''} onClick={() => setDataViewMode('table')}>Table</Button>
+						<Button className={dataViewMode == 'json' ? 'active-btn' : ''} onClick={() => setDataViewMode('json')}>JSON</Button>
+					</Button.Group>
+				</h6>
 
-			{
-				dataViewMode == 'table' ?
-					<div className="table-view">
-						<table cellSpacing={0} cellPadding={0}>
-							<tbody>
-								<ArgumentsTable argumentsJSON={argumentsArr} />
-							</tbody>
-						</table>
-					</div>
-					:
-					<div className="json-view">
-						<ReactJson
-							src={argumentsArr}
-							iconStyle='circle'
-							enableClipboard={false}
-							displayDataTypes={false}
-						/>
-					</div>
-			}
+				{
+					dataViewMode == 'table' ?
+						<div className="table-view">
+							<table cellSpacing={0} cellPadding={0}>
+								<tbody>
+									<ArgumentsTable argumentsJSON={argumentsArr} />
+								</tbody>
+							</table>
+						</div>
+						:
+						<div className="json-view">
+							<ReactJson
+								src={argumentsArr}
+								iconStyle='circle'
+								enableClipboard={false}
+								displayDataTypes={false}
+							/>
+						</div>
+				}
 
-			{
-				showAccountArguments && postArguments.map((element:any, index:any) => {
-					return element.name === 'account' && <div key={index}>
-						<AddressComponent address={element.value} key={index}/>
-					</div>;
-				})
-			}
-		</div>
-	);
+				{
+					showAccountArguments && postArguments.map((element:any, index:any) => {
+						return element.name === 'account' && <div key={index}>
+							<AddressComponent address={element.value} key={index}/>
+						</div>;
+					})
+				}
+			</div>
+		);
+	} else {
+		return (<div></div>);
+	}
+
 };
 
 export default ArgumentsTableJSONView;

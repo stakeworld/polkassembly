@@ -5,6 +5,11 @@
 export default function (rawArguments: any): any[] {
 	const argumentsArr: any[] = [];
 	rawArguments?.forEach((obj: any) => {
+
+		if(obj.name == 'code') {
+			return false;
+		}
+
 		const argumentsObj: any = {};
 		delete obj.__typename;
 		argumentsObj['name'] = obj.name;
