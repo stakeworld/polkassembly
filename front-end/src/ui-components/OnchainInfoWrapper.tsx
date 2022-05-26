@@ -95,6 +95,9 @@ export default styled(OnchainInfoWrapper)`
 	}
 
 	.table-view {
+		max-height: 500px;
+		overflow-y: auto;
+
 		table {
 			width: 100%;
 			border-spacing: 0px;
