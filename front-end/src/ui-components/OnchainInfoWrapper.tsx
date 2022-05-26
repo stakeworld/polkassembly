@@ -53,6 +53,19 @@ export default styled(OnchainInfoWrapper)`
 		.row {
 			width: 100%;
 		}
+
+		&.with-table {
+			background-color: #fff;
+
+			.arguments-col {
+				margin-top: 16px;
+				margin-bottom: 20px;
+			}
+		}
+
+		&.treasury-info {
+			margin: 12px 9px 6px 9px;
+		}
 	}
 
 	@media only screen and (max-width: 576px) {
@@ -83,7 +96,7 @@ export default styled(OnchainInfoWrapper)`
 		width: 100%;
 		max-width: 100%;
 		overflow-x: auto;
-		background: #eee;
+		background: #EBF0F5;
 		padding: 16px;
 	}
 

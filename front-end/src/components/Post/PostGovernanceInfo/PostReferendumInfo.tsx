@@ -10,6 +10,7 @@ import { Button, Grid } from 'semantic-ui-react';
 import ArgumentsTable from 'src/components/ArgumentsTable';
 import BlockCountdown from 'src/components/BlockCountdown';
 import BlocksToTime from 'src/components/BlocksToTime';
+import formatPostInfoArguments from 'src/util/formatPostInfoArguments';
 
 import { OnchainLinkReferendumFragment } from '../../../generated/graphql';
 import AddressComponent from '../../../ui-components/Address';
@@ -38,19 +39,7 @@ const PostReferendumInfo = ({ onchainLink }: Props) => {
 	const { metaDescription, method, preimageArguments } = preimage || {};
 	const { blockNumber, status } = referendumStatus?.[0] || {};
 
-	const argumentsArr: any[] = [];
-	preimageArguments?.forEach(obj => {
-		delete obj.__typename;
-		const argumentsObj: any = {};
-		argumentsObj['id'] = obj.id;
-		argumentsObj['name'] = obj.name;
-		try {
-			argumentsObj['value'] = JSON.parse(obj.value);
-		} catch {
-			argumentsObj['value'] = obj.value;
-		}
-		argumentsArr.push(argumentsObj);
-	});
+	const argumentsArr = formatPostInfoArguments(preimageArguments);
 
 	return (
 		<OnchainInfoWrapper>
@@ -121,15 +110,11 @@ const PostReferendumInfo = ({ onchainLink }: Props) => {
 										</div>
 								}
 
-								{/* {preimageArguments.map((element, index) => {
-									const isAccountArgument = element.name === 'account';
-									return <div className={isAccountArgument ? '' : 'methodArguments'} key={index}>
-										{isAccountArgument
-											? <AddressComponent address={element.value} key={index}/>
-											: <span key={index}>{element.name}: {element.value}</span>
-										}
+								{preimageArguments.map((element, index) => {
+									return element.name === 'account' && <div key={index}>
+										<AddressComponent address={element.value} key={index}/>
 									</div>;
-								})} */}
+								})}
 							</>
 							: null}
 					</Grid.Column>

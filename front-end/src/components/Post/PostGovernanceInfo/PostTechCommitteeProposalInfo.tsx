@@ -8,6 +8,7 @@ import { useState } from 'react';
 import ReactJson from 'react-json-view';
 import { Button, Grid } from 'semantic-ui-react';
 import ArgumentsTable from 'src/components/ArgumentsTable';
+import formatPostInfoArguments from 'src/util/formatPostInfoArguments';
 
 import { OnchainLinkMotionPreimageFragment, OnchainLinkTechCommitteeProposalFragment } from '../../../generated/graphql';
 import AddressComponent from '../../../ui-components/Address';
@@ -35,18 +36,8 @@ const PostTechCommitteeProposalInfo = ({ className, onchainLink }: Props) => {
 
 	const { metaDescription, memberCount, method, proposalArguments, proposalHash, preimage } = onchainTechCommitteeProposal[0];
 
-	const argumentsArr: any[] = [];
-	proposalArguments?.forEach(obj => {
-		delete obj.__typename;
-		const argumentsObj: any = {};
-		argumentsObj['name'] = obj.name;
-		try {
-			argumentsObj['value'] = JSON.parse(obj.value);
-		} catch {
-			argumentsObj['value'] = obj.value;
-		}
-		argumentsArr.push(argumentsObj);
-	});
+	const argumentsArr = formatPostInfoArguments(proposalArguments);
+
 	return (
 		<OnchainInfoWrapper className={className}>
 			<h4>On-chain info</h4>
@@ -59,15 +50,15 @@ const PostTechCommitteeProposalInfo = ({ className, onchainLink }: Props) => {
 					<h6>Member count</h6>
 					{memberCount}
 				</Grid.Column>
-				<Grid.Column mobile={16} tablet={16} computer={16}>
+				<Grid.Column mobile={16} tablet={8} computer={8}>
 					<h6>Proposal hash</h6>
 					{proposalHash}
 				</Grid.Column>
+				<Grid.Column mobile={16} tablet={8} computer={8}>
+					<h6>Motion&apos;s method</h6>
+					<span className={method === 'rejectProposal' ? 'bold-red-text' : ''}>{method}</span>
+				</Grid.Column>
 				<Grid.Row>
-					<Grid.Column mobile={16} tablet={8} computer={8}>
-						<h6>Motion&apos;s method</h6>
-						<span className={method === 'rejectProposal' ? 'bold-red-text' : ''}>{method}</span>
-					</Grid.Column>
 					<Grid.Column mobile={16} tablet={16} computer={16}>
 						{proposalArguments && proposalArguments.length
 							? <>
@@ -97,12 +88,6 @@ const PostTechCommitteeProposalInfo = ({ className, onchainLink }: Props) => {
 											/>
 										</div>
 								}
-
-								{/* {proposalArguments.map((element, index) => {
-									return <div className={'methodArguments'} key={index}>
-										<span key={index}>{element.name}: {element.value}</span>
-									</div>;
-								})} */}
 							</>
 							: null}
 					</Grid.Column>
@@ -127,6 +112,7 @@ const PostTechCommitteeProposalInfo = ({ className, onchainLink }: Props) => {
 };
 
 const ProposalInfo = ({ preimage } : {preimage?: OnchainLinkMotionPreimageFragment | null}) => {
+	const [dataViewMode, setDataViewMode] = useState<'table' | 'json'>('table');
 
 	if (!preimage) {
 		return null;
@@ -134,25 +120,49 @@ const ProposalInfo = ({ preimage } : {preimage?: OnchainLinkMotionPreimageFragme
 
 	const { metaDescription, method: preimageMethod, preimageArguments } = preimage;
 
+	const argumentsArr = formatPostInfoArguments(preimageArguments);
+
 	return (
-		<Grid.Row className='motion-sub-info'>
+		<Grid.Row className='motion-sub-info with-table'>
 			{preimageMethod &&
 				<>
-					<Grid.Column mobile={16} tablet={8} computer={8}>
+					<Grid.Column mobile={16} tablet={16} computer={16}>
 						<h6>Method</h6>
 						{preimageMethod}
 					</Grid.Column>
-					<Grid.Column mobile={16} tablet={8} computer={8}>
+					<Grid.Column className='arguments-col' mobile={16} tablet={16} computer={16}>
 						{preimageArguments && preimageArguments.length
 							? <>
-								<h6>Arguments</h6>
+								<h6 className='arguments-heading'> Arguments :
+									<Button.Group size='tiny'>
+										<Button className={dataViewMode == 'table' ? 'active-btn' : ''} onClick={() => setDataViewMode('table')}>Table</Button>
+										<Button className={dataViewMode == 'json' ? 'active-btn' : ''} onClick={() => setDataViewMode('json')}>JSON</Button>
+									</Button.Group>
+								</h6>
+
+								{
+									dataViewMode == 'table' ?
+										<div className="table-view">
+											<table cellSpacing={0} cellPadding={0}>
+												<tbody>
+													<ArgumentsTable argumentsJSON={argumentsArr} />
+												</tbody>
+											</table>
+										</div>
+										:
+										<div className="json-view">
+											<ReactJson
+												src={argumentsArr}
+												iconStyle='circle'
+												enableClipboard={false}
+												displayDataTypes={false}
+											/>
+										</div>
+								}
+
 								{preimageArguments.map((element, index) => {
-									const isAccountArgument = element.name === 'account';
-									return <div className={isAccountArgument ? '' : 'methodArguments'} key={index}>
-										{isAccountArgument
-											? <AddressComponent address={element.value} key={index}/>
-											: <span key={index}>{element.name}: {element.value}</span>
-										}
+									return element.name === 'account' && <div key={index}>
+										<AddressComponent address={element.value} key={index}/>
 									</div>;
 								})}
 							</>
