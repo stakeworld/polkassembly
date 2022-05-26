@@ -35,13 +35,18 @@ const PostTechCommitteeProposalInfo = ({ className, onchainLink }: Props) => {
 
 	const { metaDescription, memberCount, method, proposalArguments, proposalHash, preimage } = onchainTechCommitteeProposal[0];
 
-	const argumentsJSON: any[] = [];
+	const argumentsArr: any[] = [];
 	proposalArguments?.forEach(obj => {
-		const objCopy = obj;
-		delete objCopy.__typename;
-		argumentsJSON.push(objCopy);
+		delete obj.__typename;
+		const argumentsObj: any = {};
+		argumentsObj['name'] = obj.name;
+		try {
+			argumentsObj['value'] = JSON.parse(obj.value);
+		} catch {
+			argumentsObj['value'] = obj.value;
+		}
+		argumentsArr.push(argumentsObj);
 	});
-
 	return (
 		<OnchainInfoWrapper className={className}>
 			<h4>On-chain info</h4>
@@ -78,14 +83,14 @@ const PostTechCommitteeProposalInfo = ({ className, onchainLink }: Props) => {
 										<div className="table-view">
 											<table cellSpacing={0} cellPadding={0}>
 												<tbody>
-													<ArgumentsTable argumentsJSON={proposalArguments} />
+													<ArgumentsTable argumentsJSON={argumentsArr} />
 												</tbody>
 											</table>
 										</div>
 										:
 										<div className="json-view">
 											<ReactJson
-												src={argumentsJSON}
+												src={argumentsArr}
 												iconStyle='circle'
 												enableClipboard={false}
 												displayDataTypes={false}

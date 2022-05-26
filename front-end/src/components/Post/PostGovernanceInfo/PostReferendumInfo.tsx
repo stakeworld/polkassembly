@@ -38,11 +38,18 @@ const PostReferendumInfo = ({ onchainLink }: Props) => {
 	const { metaDescription, method, preimageArguments } = preimage || {};
 	const { blockNumber, status } = referendumStatus?.[0] || {};
 
-	const argumentsJSON: any[] = [];
+	const argumentsArr: any[] = [];
 	preimageArguments?.forEach(obj => {
-		const objCopy = obj;
-		delete objCopy.__typename;
-		argumentsJSON.push(objCopy);
+		delete obj.__typename;
+		const argumentsObj: any = {};
+		argumentsObj['id'] = obj.id;
+		argumentsObj['name'] = obj.name;
+		try {
+			argumentsObj['value'] = JSON.parse(obj.value);
+		} catch {
+			argumentsObj['value'] = obj.value;
+		}
+		argumentsArr.push(argumentsObj);
 	});
 
 	return (
@@ -99,14 +106,14 @@ const PostReferendumInfo = ({ onchainLink }: Props) => {
 										<div className="table-view">
 											<table cellSpacing={0} cellPadding={0}>
 												<tbody>
-													<ArgumentsTable argumentsJSON={preimageArguments} />
+													<ArgumentsTable argumentsJSON={argumentsArr} />
 												</tbody>
 											</table>
 										</div>
 										:
 										<div className="json-view">
 											<ReactJson
-												src={argumentsJSON}
+												src={argumentsArr}
 												iconStyle='circle'
 												enableClipboard={false}
 												displayDataTypes={false}

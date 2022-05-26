@@ -38,11 +38,17 @@ const PostMotionInfo = ({ className, onchainLink }: Props) => {
 
 	const { memberCount, method, motionProposalArguments, motionProposalHash, preimage, treasurySpendProposal } = onchainMotion[0];
 
-	const argumentsJSON: any[] = [];
+	const argumentsArr: any[] = [];
 	motionProposalArguments?.forEach(obj => {
-		const objCopy = obj;
-		delete objCopy.__typename;
-		argumentsJSON.push(objCopy);
+		const argumentsObj: any = {};
+		delete obj.__typename;
+		argumentsObj['name'] = obj.name;
+		try {
+			argumentsObj['value'] = JSON.parse(obj.value);
+		} catch {
+			argumentsObj['value'] = obj.value;
+		}
+		argumentsArr.push(argumentsObj);
 	});
 
 	return (
@@ -80,15 +86,17 @@ const PostMotionInfo = ({ className, onchainLink }: Props) => {
 									dataViewMode == 'table' ?
 										<div className="table-view">
 											<table cellSpacing={0} cellPadding={0}>
+												{console.log('tableview', argumentsArr)}
 												<tbody>
-													<ArgumentsTable argumentsJSON={motionProposalArguments} />
+													<ArgumentsTable argumentsJSON={argumentsArr} />
 												</tbody>
 											</table>
 										</div>
 										:
 										<div className="json-view">
+											{console.log('jsonview', argumentsArr)}
 											<ReactJson
-												src={argumentsJSON}
+												src={argumentsArr}
 												iconStyle='circle'
 												enableClipboard={false}
 												displayDataTypes={false}
