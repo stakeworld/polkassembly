@@ -58,4 +58,64 @@ export default styled(OnchainInfoWrapper)`
 	@media only screen and (max-width: 576px) {
 		padding: 2rem;
 	}
+
+	/* Arguments Style */
+	.arguments-heading {
+		margin-bottom: 12px;
+		display: flex;
+		align-items: center;
+
+		&.mt {
+			margin-top: 20px;
+		}
+
+		.buttons {
+			margin-left: 12px;
+
+			.active-btn {
+				background: #E5007A !important;
+				color: #fff;
+			}
+		}
+	}
+
+	.json-view, .table-view {
+		width: 100%;
+		max-width: 100%;
+		overflow-x: auto;
+		background: #eee;
+		padding: 16px;
+	}
+
+	.react-json-view {
+		background: #fff !important;
+		padding: 8px;
+		width: 100%;
+		overflow-x: auto;
+	}
+
+	.table-view {
+		table {
+			width: 100%;
+			border-spacing: 0px;
+		}
+
+		td.indirect-data {
+			background: #fff;
+		}
+
+		td.direct-data {
+			font-style: normal;
+			font-weight: normal;
+			font-size: 14px;
+			line-height: 20px;
+			height: 40px;
+			border-style: solid;
+			border-width: 1px 1px 0px 1px;
+			border-color: rgb(238, 238, 238);
+			min-width: 160px;
+    	padding: 10px 24px;
+			background: #fff;
+		}
+	}
 `;

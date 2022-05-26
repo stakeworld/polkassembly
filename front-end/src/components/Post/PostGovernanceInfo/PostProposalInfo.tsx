@@ -3,7 +3,10 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import * as React from 'react';
-import { Grid } from 'semantic-ui-react';
+import { useState } from 'react';
+import ReactJson from 'react-json-view';
+import { Button, Grid } from 'semantic-ui-react';
+import ArgumentsTable from 'src/components/ArgumentsTable';
 
 import { OnchainLinkProposalFragment } from '../../../generated/graphql';
 import { chainProperties } from '../../../global/networkConstants';
@@ -19,6 +22,8 @@ interface Props{
 const currentNetwork = getNetwork();
 
 const PostProposalInfo = ({ onchainLink }: Props) => {
+	const [dataViewMode, setDataViewMode] = useState<'table' | 'json'>('table');
+
 	if (!onchainLink) return null;
 
 	const {
@@ -29,6 +34,13 @@ const PostProposalInfo = ({ onchainLink }: Props) => {
 	const depositAmount = onchainProposal?.[0]?.depositAmount;
 
 	const { metaDescription, method, preimageArguments } = preimage || {};
+
+	const argumentsJSON: any[] = [];
+	preimageArguments?.forEach(obj => {
+		const objCopy = obj;
+		delete objCopy.__typename;
+		argumentsJSON.push(objCopy);
+	});
 
 	return (
 		<OnchainInfoWrapper>
@@ -49,11 +61,37 @@ const PostProposalInfo = ({ onchainLink }: Props) => {
 						<h6>Method</h6>
 						{method}
 					</Grid.Column>
-					<Grid.Column mobile={16} tablet={8} computer={8}>
+					<Grid.Column mobile={16} tablet={16} computer={16}>
 						{preimageArguments && preimageArguments.length
 							? <>
-								<h6>Arguments</h6>
-								{preimageArguments.map((element, index) => {
+								<h6 className='arguments-heading mt'> Arguments :
+									<Button.Group size='tiny'>
+										<Button className={dataViewMode == 'table' ? 'active-btn' : ''} onClick={() => setDataViewMode('table')}>Table</Button>
+										<Button className={dataViewMode == 'json' ? 'active-btn' : ''} onClick={() => setDataViewMode('json')}>JSON</Button>
+									</Button.Group>
+								</h6>
+
+								{
+									dataViewMode == 'table' ?
+										<div className="table-view">
+											<table cellSpacing={0} cellPadding={0}>
+												<tbody>
+													<ArgumentsTable argumentsJSON={preimageArguments} />
+												</tbody>
+											</table>
+										</div>
+										:
+										<div className="json-view">
+											<ReactJson
+												src={argumentsJSON}
+												iconStyle='circle'
+												enableClipboard={false}
+												displayDataTypes={false}
+											/>
+										</div>
+								}
+
+								{/* {preimageArguments.map((element, index) => {
 									const isAccountArgument = element.name === 'account';
 									return <div className={isAccountArgument ? '' : 'methodArguments'} key={index}>
 										{isAccountArgument
@@ -61,7 +99,7 @@ const PostProposalInfo = ({ onchainLink }: Props) => {
 											: <span key={index}>{element.name}: {element.value}</span>
 										}
 									</div>;
-								})}
+								})} */}
 							</>
 							: null}
 					</Grid.Column>

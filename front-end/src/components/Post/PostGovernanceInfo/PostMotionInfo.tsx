@@ -2,9 +2,13 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+/* eslint-disable sort-keys */
 import styled from '@xstyled/styled-components';
 import * as React from 'react';
-import { Grid } from 'semantic-ui-react';
+import { useState } from 'react';
+import ReactJson from 'react-json-view';
+import { Button, Grid } from 'semantic-ui-react';
+import ArgumentsTable from 'src/components/ArgumentsTable';
 
 import { OnchainLinkMotionFragment, OnchainLinkMotionPreimageFragment, OnchainLinkMotionTreasuryFragment } from '../../../generated/graphql';
 import { chainProperties } from '../../../global/networkConstants';
@@ -19,6 +23,8 @@ interface Props {
 }
 
 const PostMotionInfo = ({ className, onchainLink }: Props) => {
+	const [dataViewMode, setDataViewMode] = useState<'table' | 'json'>('table');
+
 	if (!onchainLink) return null;
 
 	const {
@@ -32,6 +38,13 @@ const PostMotionInfo = ({ className, onchainLink }: Props) => {
 
 	const { memberCount, method, motionProposalArguments, motionProposalHash, preimage, treasurySpendProposal } = onchainMotion[0];
 
+	const argumentsJSON: any[] = [];
+	motionProposalArguments?.forEach(obj => {
+		const objCopy = obj;
+		delete objCopy.__typename;
+		argumentsJSON.push(objCopy);
+	});
+
 	return (
 		<OnchainInfoWrapper className={className}>
 			<h4>On-chain info</h4>
@@ -44,24 +57,50 @@ const PostMotionInfo = ({ className, onchainLink }: Props) => {
 					<h6>Member count</h6>
 					{memberCount}
 				</Grid.Column>
-				<Grid.Column mobile={16} tablet={16} computer={16}>
+				<Grid.Column mobile={16} tablet={8} computer={8}>
 					<h6>Motion hash</h6>
 					{motionProposalHash}
 				</Grid.Column>
+				<Grid.Column mobile={16} tablet={8} computer={8}>
+					<h6>Motion&apos;s method</h6>
+					<span className={method === 'rejectProposal' ? 'bold-red-text' : ''}>{method}</span>
+				</Grid.Column>
 				<Grid.Row>
-					<Grid.Column mobile={16} tablet={8} computer={8}>
-						<h6>Motion&apos;s method</h6>
-						<span className={method === 'rejectProposal' ? 'bold-red-text' : ''}>{method}</span>
-					</Grid.Column>
-					<Grid.Column mobile={16} tablet={8} computer={8}>
+					<Grid.Column mobile={16} tablet={16} computer={16}>
 						{motionProposalArguments && motionProposalArguments.length
 							? <>
-								<h6>Arguments</h6>
-								{motionProposalArguments.map((element, index) => {
+								<h6 className='arguments-heading'> Arguments :
+									<Button.Group size='tiny'>
+										<Button className={dataViewMode == 'table' ? 'active-btn' : ''} onClick={() => setDataViewMode('table')}>Table</Button>
+										<Button className={dataViewMode == 'json' ? 'active-btn' : ''} onClick={() => setDataViewMode('json')}>JSON</Button>
+									</Button.Group>
+								</h6>
+
+								{
+									dataViewMode == 'table' ?
+										<div className="table-view">
+											<table cellSpacing={0} cellPadding={0}>
+												<tbody>
+													<ArgumentsTable argumentsJSON={motionProposalArguments} />
+												</tbody>
+											</table>
+										</div>
+										:
+										<div className="json-view">
+											<ReactJson
+												src={argumentsJSON}
+												iconStyle='circle'
+												enableClipboard={false}
+												displayDataTypes={false}
+											/>
+										</div>
+								}
+
+								{/* {motionProposalArguments.map((element, index) => {
 									return <div className={'methodArguments'} key={index}>
 										<span key={index}>{element.name}: {element.value}</span>
 									</div>;
-								})}
+								})} */}
 							</>
 							: null}
 					</Grid.Column>
