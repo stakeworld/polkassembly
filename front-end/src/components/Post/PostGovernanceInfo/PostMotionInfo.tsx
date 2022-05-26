@@ -75,7 +75,6 @@ const PostMotionInfo = ({ className, onchainLink }: Props) => {
 									dataViewMode == 'table' ?
 										<div className="table-view">
 											<table cellSpacing={0} cellPadding={0}>
-												{console.log('tableview', argumentsArr)}
 												<tbody>
 													<ArgumentsTable argumentsJSON={argumentsArr} />
 												</tbody>
@@ -83,7 +82,6 @@ const PostMotionInfo = ({ className, onchainLink }: Props) => {
 										</div>
 										:
 										<div className="json-view">
-											{console.log('jsonview', argumentsArr)}
 											<ReactJson
 												src={argumentsArr}
 												iconStyle='circle'
