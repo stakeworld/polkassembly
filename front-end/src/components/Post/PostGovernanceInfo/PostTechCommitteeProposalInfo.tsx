@@ -10,7 +10,6 @@ import { OnchainLinkMotionPreimageFragment, OnchainLinkTechCommitteeProposalFrag
 import AddressComponent from '../../../ui-components/Address';
 import OnchainInfoWrapper from '../../../ui-components/OnchainInfoWrapper';
 import ExternalLinks from '../../ExternalLinks';
-import ArgumentsTableJSONView from './ArgumentsTableJSONView';
 
 interface Props {
 	className?: string;
@@ -43,18 +42,25 @@ const PostTechCommitteeProposalInfo = ({ className, onchainLink }: Props) => {
 					<h6>Member count</h6>
 					{memberCount}
 				</Grid.Column>
-				<Grid.Column mobile={16} tablet={8} computer={8}>
+				<Grid.Column mobile={16} tablet={16} computer={16}>
 					<h6>Proposal hash</h6>
 					{proposalHash}
 				</Grid.Column>
-				<Grid.Column mobile={16} tablet={8} computer={8}>
-					<h6>Motion&apos;s method</h6>
-					<span className={method === 'rejectProposal' ? 'bold-red-text' : ''}>{method}</span>
-				</Grid.Column>
 				<Grid.Row>
-					<Grid.Column mobile={16} tablet={16} computer={16}>
+					<Grid.Column mobile={16} tablet={8} computer={8}>
+						<h6>Motion&apos;s method</h6>
+						<span className={method === 'rejectProposal' ? 'bold-red-text' : ''}>{method}</span>
+					</Grid.Column>
+					<Grid.Column mobile={16} tablet={8} computer={8}>
 						{proposalArguments && proposalArguments.length
-							? <ArgumentsTableJSONView postArguments={proposalArguments} showAccountArguments={false} />
+							? <>
+								<h6>Arguments</h6>
+								{proposalArguments.map((element, index) => {
+									return <div className={'methodArguments'} key={index}>
+										<span key={index}>{element.name}: {element.value}</span>
+									</div>;
+								})}
+							</>
 							: null}
 					</Grid.Column>
 				</Grid.Row>
@@ -78,6 +84,7 @@ const PostTechCommitteeProposalInfo = ({ className, onchainLink }: Props) => {
 };
 
 const ProposalInfo = ({ preimage } : {preimage?: OnchainLinkMotionPreimageFragment | null}) => {
+
 	if (!preimage) {
 		return null;
 	}
@@ -85,16 +92,27 @@ const ProposalInfo = ({ preimage } : {preimage?: OnchainLinkMotionPreimageFragme
 	const { metaDescription, method: preimageMethod, preimageArguments } = preimage;
 
 	return (
-		<Grid.Row className='motion-sub-info with-table'>
+		<Grid.Row className='motion-sub-info'>
 			{preimageMethod &&
 				<>
-					<Grid.Column mobile={16} tablet={16} computer={16}>
+					<Grid.Column mobile={16} tablet={8} computer={8}>
 						<h6>Method</h6>
 						{preimageMethod}
 					</Grid.Column>
-					<Grid.Column className='arguments-col' mobile={16} tablet={16} computer={16}>
+					<Grid.Column mobile={16} tablet={8} computer={8}>
 						{preimageArguments && preimageArguments.length
-							? <ArgumentsTableJSONView postArguments={preimageArguments} showAccountArguments={true} />
+							? <>
+								<h6>Arguments</h6>
+								{preimageArguments.map((element, index) => {
+									const isAccountArgument = element.name === 'account';
+									return <div className={isAccountArgument ? '' : 'methodArguments'} key={index}>
+										{isAccountArgument
+											? <AddressComponent address={element.value} key={index}/>
+											: <span key={index}>{element.name}: {element.value}</span>
+										}
+									</div>;
+								})}
+							</>
 							: null}
 					</Grid.Column>
 				</>
