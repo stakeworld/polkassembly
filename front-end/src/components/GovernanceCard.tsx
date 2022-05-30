@@ -40,7 +40,14 @@ const GovernanceCard = function ({
 	topic
 }:GovernanceProps) {
 	const currentUser = useContext(UserDetailsContext);
-	const mainTitle = <h4 className={tipReason ? 'tipTitle' : ''}><div>{method || tipReason ||  title || noTitle}</div></h4>;
+	let titleString = method || tipReason ||  title || noTitle;
+
+	if(tipReason) {
+		const titleTrimmed = titleString.match(/.{1,60}(\s|$)/g)![0];
+		titleString = `${titleTrimmed} ${titleTrimmed.length != titleString.length ? '...' : ''}`;
+	}
+
+	const mainTitle = <h4 className={tipReason ? 'tipTitle' : ''}><div>{titleString}</div></h4>;
 	const subTitle = title && tipReason && method && <h5>{title}</h5>;
 	const currentBlock = useCurrentBlock()?.toNumber() || 0;
 	const ownProposal = currentUser?.addresses?.includes(address);
@@ -57,7 +64,7 @@ const GovernanceCard = function ({
 				}
 				<Segment>
 					<Responsive maxWidth={Responsive.onlyMobile.maxWidth}>
-						<div className='title-wrapper'>
+						<div className='title-wrapper title-mobile'>
 							{mainTitle}
 							{subTitle}
 						</div>
@@ -155,15 +162,14 @@ export default styled(GovernanceCard)`
 		line-height: 1.2;
 	}
 
-	h4.tipTitle {
-		max-width: 55%;
-
-		& > div {
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
+	.title-mobile {
+		h4.tipTitle {
+			& > div {
+				max-width: 120%;
+			}
 		}
 	}
+
 
 	h5 {
 		font-size: md;
