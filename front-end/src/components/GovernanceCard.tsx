@@ -43,7 +43,7 @@ const GovernanceCard = function ({
 	let titleString = method || tipReason ||  title || noTitle;
 
 	if(tipReason) {
-		const titleTrimmed = titleString.match(/.{1,60}(\s|$)/g)![0];
+		const titleTrimmed = titleString.match(/.{1,80}(\s|$)/g)![0];
 		titleString = `${titleTrimmed} ${titleTrimmed.length != titleString.length ? '...' : ''}`;
 	}
 
