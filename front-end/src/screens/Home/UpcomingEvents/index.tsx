@@ -186,6 +186,8 @@ export default styled(UpcomingEvents)`
 		.event-calendar-col{
 			height: 490px;
 			max-height: 490px;
+			padding-left: 5px !important;
+			padding-right: 6px !important;
 
 			@media only screen and (max-width: 991.5px) {
 				height: 420px;
