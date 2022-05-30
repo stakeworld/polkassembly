@@ -17,9 +17,10 @@ interface Props{
 	helpText?: string
 	onChange: (balance: BN) => void
 	placeholder?: string
+	iconSize?: 'small' | 'normal'
 }
 
-const BalanceInput = ({ className, label = '', helpText = '', onChange, placeholder = '' }: Props) => {
+const BalanceInput = ({ className, label = '', helpText = '', onChange, placeholder = '', iconSize }: Props) => {
 	const [isValidInput, setIsValidInput] = useState(true);
 	const onBalanceChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		const [balance, isValid] = inputToBn(event.currentTarget.value, false);
@@ -33,7 +34,7 @@ const BalanceInput = ({ className, label = '', helpText = '', onChange, placehol
 	return <Form.Field className={className} width={16}>
 		<label>
 			{label}
-			{helpText && <HelperTooltip content={helpText}/>}
+			{helpText && <HelperTooltip content={helpText} iconSize={iconSize}/>}
 		</label>
 		<Input
 			className={'balanceInput'}
@@ -46,6 +47,11 @@ const BalanceInput = ({ className, label = '', helpText = '', onChange, placehol
 };
 
 export default styled(BalanceInput)`
+	label {
+		display: flex !important;
+    align-items: center !important;
+	}
+
 	.ui.selection.dropdown {
 		border-color: grey_light;
 	}

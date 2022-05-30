@@ -276,7 +276,8 @@ const TreasuryProposalFormButton = ({
 				size='small'
 				trigger={!id ? triggerBtnLoginDisabled : web3signup || defaultAddress ? triggerBtn: <Popup position='bottom center' content='Please login using a web3 address' trigger={triggerBtn} />}>
 				<Modal.Header className='text-center modal-header'>
-				Create Treasury Proposal
+					<div>Create Treasury Proposal</div>
+					<Button onClick={() => setModalOpen(false)} icon='close' />
 				</Modal.Header>
 				<Modal.Content scrolling>
 					<Modal.Description className='modal-desc'>
@@ -292,7 +293,7 @@ const TreasuryProposalFormButton = ({
 											<Form.Field width={16}>
 												<label className='input-label'>
 													Submit with account
-													<HelperTooltip content='This account will make the proposal and be responsible for the bond.' />
+													<HelperTooltip content='This account will make the proposal and be responsible for the bond.' iconSize='small' />
 												</label>
 
 												<div className='accountInputDiv'>
@@ -327,7 +328,7 @@ const TreasuryProposalFormButton = ({
 											<Form.Field width={16}>
 												<label className='input-label'>
 													Beneficiary Account
-													<HelperTooltip content='The beneficiary will receive the full amount if the proposal passes.' />
+													<HelperTooltip content='The beneficiary will receive the full amount if the proposal passes.' iconSize='small' />
 												</label>
 
 												<div className='accountInputDiv'>
@@ -366,6 +367,7 @@ const TreasuryProposalFormButton = ({
 													placeholder={'0'}
 													className='text-input'
 													onChange={onBalanceChange}
+													iconSize='small'
 												/>
 											</Form.Field>
 											<Form.Field width={3} className='input-form-field'>
@@ -381,7 +383,7 @@ const TreasuryProposalFormButton = ({
 											<Form.Field width={16} className='input-form-field'>
 												<label className='input-label'>
 													Proposal Bond
-													<HelperTooltip content='Of the beneficiary amount, at least 5.00% would need to be put up as collateral. The maximum of this and the minimum bond will be used to secure the proposal, refundable if it passes.' />
+													<HelperTooltip content='Of the beneficiary amount, at least 5.00% would need to be put up as collateral. The maximum of this and the minimum bond will be used to secure the proposal, refundable if it passes.' iconSize='small' />
 												</label>
 
 												<Input
@@ -397,7 +399,7 @@ const TreasuryProposalFormButton = ({
 											<Form.Field width={16} className='input-form-field'>
 												<label className='input-label'>
 												Minimum Bond
-													<HelperTooltip content='The minimum amount that will be bonded.' />
+													<HelperTooltip content='The minimum amount that will be bonded.' iconSize='small' />
 												</label>
 
 												<Input
@@ -442,7 +444,6 @@ const TreasuryProposalFormButton = ({
 				<Modal.Actions className='modal-actions'>
 					<Button floated='right' className='submitBtn' onClick={handleSubmit(handleSignAndSubmit)}>Sign &amp; Submit</Button>
 					{/* TODO: change onclick to () => setTipModalOpen(false)*/}
-					<Button floated='right' onClick={() => setModalOpen(false)}>Close</Button>
 				</Modal.Actions>
 			</Modal>
 	);
@@ -461,6 +462,23 @@ export default styled(TreasuryProposalFormButton)`
 
 	.modal-header{
 		text-transform: capitalize;
+		display: flex !important;
+		align-items: center !important;
+
+		div, button{
+			display: flex;
+			align-items: center;
+		}
+
+		div, button {
+			margin-left: auto;
+		}
+
+		button {
+			border: solid 2px #fff;
+    	border-radius: 50%;
+			background: #eee;
+		}
 	}
 
 	.modal-desc{
@@ -473,6 +491,8 @@ export default styled(TreasuryProposalFormButton)`
 	
 	.input-label {
 		margin-left: 1.4em !important;
+		display: flex !important;
+		align-items: center !important;
 	}
 
 	.availableAccountsForm {
