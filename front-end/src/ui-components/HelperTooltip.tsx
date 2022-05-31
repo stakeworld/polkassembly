@@ -8,27 +8,36 @@ import { Popup } from 'semantic-ui-react';
 
 import infoCircleIcon from '../assets/InfoCircle.png';
 
-interface Props {
-	content: string
-	position?: 'top left' | 'top right' | 'bottom right' | 'bottom left' | 'right center' | 'left center' | 'top center' | 'bottom center' | undefined
-	basic?: boolean
-}
-
 const popupStyle = {
 	fontSize: '1.2rem',
 	marginLeft: '-1rem'
 };
 
-const myIcon = ({ className }:{className?: string}) => <img className={className} height="18" width="18" src={infoCircleIcon} />;
+const myIcon = ({ className }:{className?: string}) => <img className={className} src={infoCircleIcon} />;
 
 export const StyledIcon = styled(myIcon)`
 	margin-top: -0.25em !important;
 	margin-left: 0.25em !important;
+	height: 18px;
+	width: 18px;
+
+	&.small {
+		height: 14px;
+		width: 14px;
+		margin-top: 0.8px !important;
+	}
 `;
 
-const HelperTooltip = ({ content, position, basic = false }:Props) =>
+interface Props {
+	content: string
+	position?: 'top left' | 'top right' | 'bottom right' | 'bottom left' | 'right center' | 'left center' | 'top center' | 'bottom center' | undefined
+	basic?: boolean,
+	iconSize?: 'small' | 'normal'
+}
+
+const HelperTooltip = ({ content, position, basic = false, iconSize }:Props) =>
 	<Popup
-		trigger={<span><StyledIcon /></span>}
+		trigger={<span><StyledIcon className={ iconSize } /></span>}
 		content={content}
 		style={popupStyle}
 		hoverable={true}

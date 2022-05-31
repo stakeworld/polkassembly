@@ -144,12 +144,44 @@ h1 {
 			justify-content: space-between;
 			align-items: center;
 
+			.button {
+				background: none;
+    		padding: 8px;
+
+				&:hover {
+					background: #eee;
+				}
+			}
+
+			span {
+				word-wrap: none;
+				white-space: nowrap;
+			}
+
+			.month-select-small, .view-select-small {
+				padding-left: 5px !important;
+	
+				.icon {
+					padding-right: 5px !important;
+				}
+			}
+
+			.month-select-small {
+				width: 52px !important;
+				min-width: 52px !important;
+			}
+			
+			.view-select-small {
+				width: 72px !important;
+				min-width: 72px !important;
+			}
+
 			.actions-right {
 				display: flex;
 				align-items: center;
 				.today-btn-img {
 					cursor: pointer;
-					margin-right: 16px;
+					margin-right: 8px;
 					@media only screen and (max-width: 576px) {
 						margin-right: 8px;
 					}

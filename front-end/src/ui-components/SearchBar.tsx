@@ -72,7 +72,7 @@ const SearchBar = ({ className, placeholder, size }: Props) => {
 			results={results}
 			value={value}
 			resultRenderer={resultRenderer}
-			placeholder={placeholder ? placeholder : 'Search By Proposal Keyword'}
+			placeholder={placeholder ? placeholder : 'Search By Keyword'}
 			input={{ icon: 'search', iconPosition: 'left' }}
 		/>
 	);
