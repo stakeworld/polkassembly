@@ -177,9 +177,8 @@ export interface ReactionMapFields {
 }
 
 export enum Wallet {
-  TALISMAN = 'TALISMAN',
-  NOVA = 'NOVA',
-  POLKADOT = 'POLKADOT',
-  SUBWALLET = 'SUBWALLET',
-  OTHER = 'OTHER'
+  TALISMAN = 'talisman',
+  POLKADOT = 'polkadot-js',
+  SUBWALLET = 'subwallet-js',
+  OTHER = ''
 }

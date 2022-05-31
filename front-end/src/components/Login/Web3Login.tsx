@@ -29,7 +29,7 @@ interface Props {
 	setDisplayWeb2: () => void
 }
 
-const LoginForm = ({ className, setDisplayWeb2 }:Props): JSX.Element => {
+const LoginForm = ({ className, setDisplayWeb2, chosenWallet }:Props): JSX.Element => {
 	const [error, setErr] = useState<Error | null>(null);
 	const [address, setAddress] = useState<string>('');
 	const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
@@ -42,10 +42,11 @@ const LoginForm = ({ className, setDisplayWeb2 }:Props): JSX.Element => {
 	const currentUser = useContext(UserDetailsContext);
 
 	useEffect(() => {
+		console.log(chosenWallet);
 		if (!accounts.length) {
 			getAccounts();
 		}
-	}, [accounts.length]);
+	}, [accounts.length, chosenWallet]);
 
 	const getAccounts = async (): Promise<undefined> => {
 		const extensions = await web3Enable(APPNAME);

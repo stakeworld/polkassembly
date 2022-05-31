@@ -4,12 +4,13 @@
 
 import React, { useState } from 'react';
 import { Grid } from 'semantic-ui-react';
-import NovaButton from 'src/components/WalletButton/NovaButton';
-import OtherButton from 'src/components/WalletButton/OtherButton';
-import TalismanButton from 'src/components/WalletButton/TalismanButton';
+import WalletButton from 'src/components/WalletButton';
 import { Wallet } from 'src/types';
 import Modal from 'src/ui-components/Modal';
 
+import { ReactComponent as PolkadotJSIcon } from '../../assets/wallet/polkadotjs-icon.svg';
+import { ReactComponent as SubWalletIcon } from '../../assets/wallet/subwallet-icon.svg';
+import { ReactComponent as TalismanIcon } from '../../assets/wallet/talisman-icon.svg';
 import Web2Signup from '../../components/Signup/Web2Signup';
 import Web3Signup from '../../components/Signup/Web3Signup';
 
@@ -49,9 +50,10 @@ const Signup = ({ className }: Props) => {
 			</Grid>
 
 			<Modal size="mini" open={showWalletModal} onClose={() => setShowWalletModal(false)}>
-				<TalismanButton handleClick={() => onWalletSelect(Wallet.TALISMAN)}/>
-				<NovaButton handleClick={() => onWalletSelect(Wallet.TALISMAN)}/>
-				<OtherButton handleClick={() => onWalletSelect(Wallet.OTHER)}/>
+				<WalletButton onClick={() => onWalletSelect(Wallet.POLKADOT)} name="Polkadot.js" icon={<PolkadotJSIcon />} />
+				<WalletButton onClick={() => onWalletSelect(Wallet.TALISMAN)} name="Talisman" icon={<TalismanIcon />} />
+				<WalletButton onClick={() => onWalletSelect(Wallet.SUBWALLET)} name="SubWallet" icon={<SubWalletIcon />} />
+				<WalletButton onClick={() => onWalletSelect(Wallet.OTHER)} name="Other" />
 			</Modal>
 		</>
 	);

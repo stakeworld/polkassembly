@@ -3,12 +3,11 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 import styled from '@xstyled/styled-components';
 import React from 'react';
-import { Wallet } from 'src/types';
 
-const OtherButton = ({ handleClick }: {handleClick: (wallet: Wallet) => void}) => {
+const WalletButton = ({ onClick, icon, name }: { onClick: () => void, icon?: JSX.Element, name: string }) => {
 	return (
-		<StyledButton onClick={() => handleClick(Wallet.OTHER)}>
-			<StyledName>Other</StyledName>
+		<StyledButton onClick={onClick}>
+			{icon} <StyledName>{name}</StyledName>
 		</StyledButton>
 	);
 };
@@ -29,6 +28,8 @@ const StyledButton = styled.div`
     &:hover {
         background-color: #e4e4e4;
     }
+
+    margin-bottom: 16px;
 `;
 
 const StyledName = styled.span`
@@ -37,4 +38,4 @@ const StyledName = styled.span`
     font-weight: 500;
 `;
 
-export default OtherButton;
+export default WalletButton;
