@@ -2,14 +2,14 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
+import { InjectedAccount } from '@polkadot/extension-inject/types';
 import styled from '@xstyled/styled-components';
 import React, { useState } from 'react';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import Address from 'src/ui-components/Address';
 
 interface Props{
-	accounts: InjectedAccountWithMeta[]
+	accounts: InjectedAccount[]
 	className?: string
 	defaultAddress: string
 	filterAccounts?: string[]
@@ -30,14 +30,14 @@ const AddressDropdown = ({ accounts, className, defaultAddress, filterAccounts, 
 	filteredAccounts.forEach(account => {
 		addressOptions.push({
 			children: <Address
-				extensionName={account.meta.name}
+				extensionName={account.name}
 				address={account.address}
 			/>,
 			value: account.address
 		});
 
-		if (account.address && account.meta.name){
-			dropdownList[account.address] = account.meta.name;
+		if (account.address && account.name){
+			dropdownList[account.address] = account.name;
 		}
 
 	}

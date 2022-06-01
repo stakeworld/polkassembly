@@ -2,8 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { web3Accounts, web3Enable, web3FromSource } from '@polkadot/extension-dapp';
-import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
+import { isWeb3Injected } from '@polkadot/extension-dapp';
+import { InjectedAccount, InjectedWindow } from '@polkadot/extension-inject/types';
 import { stringToHex } from '@polkadot/util';
 import styled from '@xstyled/styled-components';
 import React, { useContext, useEffect, useState } from 'react';
@@ -32,7 +32,7 @@ interface Props {
 const LoginForm = ({ className, setDisplayWeb2, chosenWallet }:Props): JSX.Element => {
 	const [error, setErr] = useState<Error | null>(null);
 	const [address, setAddress] = useState<string>('');
-	const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
+	const [accounts, setAccounts] = useState<InjectedAccount[]>([]);
 	const [isAccountLoading, setIsAccountLoading] = useState(true);
 	const [extensionNotFound, setExtensionNotFound] = useState(false);
 	const [accountsNotFound, setAccountsNotFound] = useState(false);
@@ -42,16 +42,23 @@ const LoginForm = ({ className, setDisplayWeb2, chosenWallet }:Props): JSX.Eleme
 	const currentUser = useContext(UserDetailsContext);
 
 	useEffect(() => {
-		console.log(chosenWallet);
 		if (!accounts.length) {
-			getAccounts();
+			getAccounts(chosenWallet);
 		}
 	}, [accounts.length, chosenWallet]);
 
-	const getAccounts = async (): Promise<undefined> => {
-		const extensions = await web3Enable(APPNAME);
+	const getAccounts = async (chosenWallet: Wallet): Promise<undefined> => {
+		const injectedWindow = window as Window & InjectedWindow;
 
-		if (extensions.length === 0) {
+		let wallet = isWeb3Injected
+			? injectedWindow.injectedWeb3[chosenWallet]
+			: null;
+
+		if (!wallet) {
+			wallet = Object.values(injectedWindow.injectedWeb3)[0];
+		}
+
+		if (!wallet) {
 			setExtensionNotFound(true);
 			setIsAccountLoading(false);
 			return;
@@ -59,7 +66,9 @@ const LoginForm = ({ className, setDisplayWeb2, chosenWallet }:Props): JSX.Eleme
 			setExtensionNotFound(false);
 		}
 
-		const accounts = await web3Accounts();
+		const injected = await wallet.enable(APPNAME);
+
+		const accounts = await injected.accounts.get();
 
 		if (accounts.length === 0) {
 			setAccountsNotFound(true);
@@ -89,11 +98,30 @@ const LoginForm = ({ className, setDisplayWeb2, chosenWallet }:Props): JSX.Eleme
 
 	const handleLogin = async () => {
 		if (!accounts.length) {
-			return getAccounts();
+			return getAccounts(chosenWallet);
 		}
 
 		try {
-			const injected = await web3FromSource(accounts[0].meta.source);
+			const injectedWindow = window as Window & InjectedWindow;
+
+			let wallet = isWeb3Injected
+				? injectedWindow.injectedWeb3[chosenWallet]
+				: null;
+
+			if (!wallet) {
+				wallet = Object.values(injectedWindow.injectedWeb3)[0];
+			}
+
+			if (!wallet) {
+				setExtensionNotFound(true);
+				setIsAccountLoading(false);
+				return;
+			} else {
+				setExtensionNotFound(false);
+			}
+
+			const injected = await wallet.enable(APPNAME);
+
 			const signRaw = injected && injected.signer && injected.signer.signRaw;
 
 			if (!signRaw) {

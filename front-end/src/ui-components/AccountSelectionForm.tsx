@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
+import { InjectedAccount } from '@polkadot/extension-inject/types';
 import styled from '@xstyled/styled-components';
 import React from 'react';
 import { DropdownProps } from 'semantic-ui-react/dist/commonjs/modules/Dropdown';
@@ -13,7 +13,7 @@ import AddressDropdown from './AddressDropdown';
 import HelperTooltip from './HelperTooltip';
 
 interface Props{
-	accounts: InjectedAccountWithMeta[]
+	accounts: InjectedAccount[]
 	address: string
 	className?: string;
 	onAccountChange: (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => void
@@ -25,7 +25,7 @@ const AccountSelectionForm = ({ accounts, address, className, onAccountChange, t
 	<Form.Field className={className} width={16}>
 		<label>{title}
 			<HelperTooltip
-				content='You can choose an account from the polkadot-js extension.'
+				content='You can choose an account from the extension.'
 			/>
 		</label>
 		<AddressDropdown
