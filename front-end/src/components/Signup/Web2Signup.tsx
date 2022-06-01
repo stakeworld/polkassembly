@@ -139,6 +139,7 @@ const SignupForm = ({ className, setDisplayWeb3 }:Props): JSX.Element => {
 				{error?.message && <FilteredError text={error.message}/>}
 
 				<Button
+					type="button"
 					secondary
 					disabled={loading}
 					onClick={handleToggle}

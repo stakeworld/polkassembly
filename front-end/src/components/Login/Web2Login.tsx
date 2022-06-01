@@ -107,6 +107,7 @@ const LoginForm = ({ className, setDisplayWeb3 }:Props): JSX.Element => {
 
 			<div className={'mainButtonContainer'}>
 				<Button
+					type="button"
 					secondary
 					disabled={loading}
 					onClick={handleToggle}
