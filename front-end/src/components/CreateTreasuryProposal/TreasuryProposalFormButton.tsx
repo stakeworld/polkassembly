@@ -8,6 +8,7 @@ import Identicon from '@polkadot/react-identicon';
 import styled from '@xstyled/styled-components';
 import BN from 'bn.js';
 import React, { useContext, useState } from 'react';
+import DatePicker from 'react-date-picker';
 import { Controller, useForm } from 'react-hook-form';
 import { Button, Form, Grid, Icon, Input, Label, Message, Modal, Popup } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
@@ -24,6 +25,7 @@ import Loader from 'src/ui-components/Loader';
 import getEncodedAddress from 'src/util/getEncodedAddress';
 import getNetwork from 'src/util/getNetwork';
 
+import { ReactComponent as CalendarIcon } from '../../assets/sidebar/calendar.svg';
 import { PolkassemblyProposalTypes } from '../../types';
 import AddressComponent from '../../ui-components/Address';
 import { inputToBn } from '../../util/inputToBn';
@@ -67,7 +69,7 @@ const TreasuryProposalFormButton = ({
 
 	const { control, errors, handleSubmit } = useForm();
 
-	const [errorsFound, setErrorsFound] = useState<string[]>([]);
+	const [errorsFound, setErrorsFound] = useState<string[]>(['']);
 
 	const { id, web3signup, defaultAddress } = useContext(UserDetailsContext);
 
@@ -147,18 +149,22 @@ const TreasuryProposalFormButton = ({
 	};
 
 	const onBalanceChange = (balance: BN) => setValue(balance);
+	const [deadlineDate, setDeadlineDate] = useState(new Date());
 
 	const onTitleChange = (event: React.ChangeEvent<HTMLInputElement>[]) => {setPostTitle(event[0].currentTarget.value); return event[0].currentTarget.value;};
 	const onPostDescriptionChange = (data: Array<string>) => {setPostDescription(data[0]); return data[0].length ? data[0] : null;};
 
 	const isFormValid = () => {
-		const errorsFound: string[] = [];
+		const errorsFound: string[] = [''];
 
 		if(!beneficiaryAccount){
 			errorsFound.push('beneficiaryAccount');
 		}
 		if(!submitWithAccount){
 			errorsFound.push('submitWithAccount');
+		}
+		if(!deadlineDate){
+			errorsFound.push('deadlineDate');
 		}
 		const [balance, isValid] = inputToBn(`${value}`, false);
 		if(!isValid){
@@ -413,6 +419,18 @@ const TreasuryProposalFormButton = ({
 										<Message color='yellow' className='text-input topMargin'>
 											<p><Icon name='warning circle' /> Be aware that once submitted the proposal will be put to a council vote. If the proposal is rejected due to a lack of info, invalid requirements or non-benefit to the network as a whole, the full bond posted (as describe above) will be lost.</p>
 										</Message>
+
+										<Form.Group>
+											<Form.Field width={16} className='input-form-field'>
+												<label className='input-label'>
+													Choose Deadline Date
+													<HelperTooltip content='This timeline will be used by the community to track the progress of the proposal. The team will be responsible for delivering the proposed items before the deadline.' iconSize='small' />
+												</label>
+
+												<DatePicker className={`date-input ${errorsFound.includes('deadlineDate') ? 'deadline-date-error' : ''}`} onChange={setDeadlineDate} value={deadlineDate} calendarIcon={<CalendarIcon />} format='d-M-yyyy' />
+											</Form.Field>
+										</Form.Group>
+
 									</div>
 
 									<div className='post-form-div'>
@@ -579,6 +597,46 @@ export default styled(TreasuryProposalFormButton)`
 	.submitBtn{
 		background-color: pink_primary;
 		color: #fff;
+	}
+
+	.date-input {
+		width: 100%;
+		margin-left: 1.5em;
+		font-family: 'Roboto' !important;
+
+		&.deadline-date-error {
+			.react-date-picker__wrapper {
+				border: #E06B5E 1px solid;
+				color: #E06B5E !important;
+			}
+
+			.react-date-picker__inputGroup__input {
+				color: #E06B5E !important;
+			}
+		}
+
+		.react-date-picker__wrapper {
+			padding: 0.678571em 1em;
+			border: 1px solid rgba(34,36,38,.15);
+		}
+
+		.react-date-picker__clear-button {
+			svg {
+				stroke: #aaa !important;
+				height: 14px;
+			}
+		}
+
+		.react-date-picker__inputGroup__input {
+			height: 10px;
+			border: none !important;
+		}
+
+		.react-date-picker__inputGroup__divider,.react-date-picker__inputGroup__day, .react-date-picker__inputGroup__month, .react-date-picker__inputGroup__year {
+			font-size: 16px;
+			padding-left: 1px !important;
+			padding-right: 1px !important;
+		}
 	}
 `;
 
