@@ -51,15 +51,17 @@ export default styled(StatusTag).attrs(( { status }: Props) => ({
 		letter-spacing: 0.05rem;
 		text-transform: capitalize;
 		padding: 0.5rem 1rem;
-		&.${referendumStatus.STARTED} {
+
+		&.${referendumStatus.STARTED},
+		&.${proposalStatus.PROPOSED},
+		&.${motionStatus.PROPOSED},
+		&.${bountyStatus.PROPOSED} {
 			border-color: #6495ED;
 			color: #6495ED;
 		}
-		&.${proposalStatus.PROPOSED},
-		&.${motionStatus.PROPOSED},
+		
 		&.${tipStatus.OPENED},
 		&.${tipStatus.CLOSING},
-		&.${bountyStatus.PROPOSED},
 		&.${bountyStatus.AWARDED},
 		&.${bountyStatus.BECAME_ACTIVE},
 		&.${bountyStatus.EXTENDED}
