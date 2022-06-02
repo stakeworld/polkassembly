@@ -17,6 +17,7 @@ import changePassword from './mutation/changePassword';
 import changeUsername from './mutation/changeUsername';
 import createPostConfirm from './mutation/createPostConfirm';
 import createPostStart from './mutation/createPostStart';
+import createProposalTracker from './mutation/createProposalTracker';
 import deleteAccount from './mutation/deleteAccount';
 import editPostConfirm from './mutation/editPostConfirm';
 import editPostStart from './mutation/editPostStart';
@@ -35,6 +36,7 @@ import setCredentialsStart from './mutation/setCredentialsStart';
 import setDefaultAddress from './mutation/setDefaultAddress';
 import signup from './mutation/signup';
 import undoEmailChange from './mutation/undoEmailChange';
+import updateProposalTracker from './mutation/updateProposalTracker';
 import verifyEmail from './mutation/verifyEmail';
 import about from './query/about';
 import profile from './query/profile';
@@ -60,6 +62,7 @@ export default {
 		changeUsername,
 		createPostConfirm,
 		createPostStart,
+		createProposalTracker,
 		deleteAccount,
 		editPostConfirm,
 		editPostStart,
@@ -78,6 +81,7 @@ export default {
 		setDefaultAddress,
 		signup,
 		undoEmailChange,
+		updateProposalTracker,
 		verifyEmail
 	},
 	Query: {
