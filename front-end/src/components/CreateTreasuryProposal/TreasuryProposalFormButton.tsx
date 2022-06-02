@@ -561,7 +561,7 @@ export default styled(TreasuryProposalFormButton)`
 	}
 
 	.text-input{
-		margin-left: 1.5em;
+		margin-left: 1em;
 	}
 
 	.textarea-input {
@@ -601,7 +601,7 @@ export default styled(TreasuryProposalFormButton)`
 
 	.date-input {
 		width: 100%;
-		margin-left: 1.5em;
+		margin-left: 1em;
 		font-family: 'Roboto' !important;
 
 		&.deadline-date-error {
