@@ -199,6 +199,7 @@ const TreasuryProposalFormButton = ({
 		addPolkassemblyProposalMutation({ variables: { authorId, content, proposalHash, proposalId, proposalType, proposerAddress, title } }).catch((e) => console.error('Error creating to proposal',e));
 	};
 
+	// TODO: Implement deadlineDate
 	const handleSignAndSubmit = async () => {
 
 		if(!isFormValid()) return;

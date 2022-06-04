@@ -2,13 +2,13 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-tabs */
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Button, DropdownProps, Select } from 'semantic-ui-react';
-
-import calendar_today from '../../assets/calendar_today.png';
+import { Button, Dropdown, DropdownProps } from 'semantic-ui-react';
 
 function CustomToolbar(props: any) {
 	let months = [
@@ -109,14 +109,14 @@ function CustomToolbar(props: any) {
 		props.onNavigate('current');
 	};
 
-	const onSelectMonthChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-		setSelectedMonth(Number(data.value));
-		const now = new Date();
-		props.date.setMonth(data.value);
-		props.date.setYear(now.getFullYear());
-		props.date.setDate(now.getDate());
-		props.onNavigate('current');
-	};
+	// const onSelectMonthChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+	// 	setSelectedMonth(Number(data.value));
+	// 	const now = new Date();
+	// 	props.date.setMonth(data.value);
+	// 	props.date.setYear(now.getFullYear());
+	// 	props.date.setDate(now.getDate());
+	// 	props.onNavigate('current');
+	// };
 
 	const onViewStateChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
 		setViewState(`${data.value}`);
@@ -138,16 +138,22 @@ function CustomToolbar(props: any) {
 
 	return (
 		props.date && <div className='custom-calendar-toolbar'>
-			<div className='action-div'>
-				<Select compact className={props.small ? 'month-select-small' : ''} value={selectedMonth} onChange={onSelectMonthChange} options={months} />
-				<Button onClick={goToBack} icon='chevron left' />
-				<span>{moment(props.date).format('DD - MMM - YY')}</span>
-				<Button onClick={goToNext} icon='chevron right' />
-				<div className='actions-right'>
-					<img className='today-btn-img' onClick={goToToday} src={calendar_today} height={16} width={16} title='Today' alt='Today' />
-					<Select compact className={props.small ? 'view-select-small' : ''} value={viewState} onChange={onViewStateChange} options={viewStateOptions} />
-				</div>
+			{/* <div className='select-div'>
+				<label>Filter by</label>
+				<Dropdown compact className={props.small ? 'view-select-small' : ''} value={viewState} onChange={onViewStateChange} options={viewStateOptions} />
+			</div> */}
+			<div className='select-div'>
+				<label>Type</label>
+				<Dropdown compact className={props.small ? 'view-select-small' : ''} value={viewState} onChange={onViewStateChange} options={viewStateOptions} />
 			</div>
+			<span className='date-text'>{moment(props.date).format('MMMM YYYY')}</span>
+			<Button onClick={goToBack} icon='chevron left' />
+			<Button onClick={goToNext} icon='chevron right' />
+
+			{/* <Button className='search-btn' icon='search' /> */}
+			<Button basic className='today-btn' onClick={goToToday}>Today</Button>
+			<Button basic className='create-event-btn' onClick={goToToday}>Create Event</Button>
+			{/* <Dropdown compact className={props.small ? 'month-select-small' : ''} value={selectedMonth} onChange={onSelectMonthChange} options={months} /> */}
 		</div>
 	);
 }

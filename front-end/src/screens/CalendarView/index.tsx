@@ -13,6 +13,8 @@ import { useGetCalenderEventsQuery } from 'src/generated/graphql';
 import getNetwork from 'src/util/getNetwork';
 
 import CustomToolbar from './CustomToolbar';
+import CustomWeekHeader, { TimeGutterHeader } from './CustomWeekHeader';
+// import CustomWeekView from './CustomWeekView';
 
 interface Props {
   className?: string
@@ -31,6 +33,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	} });
 
 	const [calendarEvents, setCalendarEvents] = useState<any[]>([]);
+	const [selectedView, setSelectedView] = useState<string>('month');
 
 	useEffect(() => {
 		refetch();
@@ -55,7 +58,19 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 
 	function Event({ event } : {event: any}) {
 		return (
-			<Popup size='huge' basic content={event.title} on='click' hideOnScroll trigger={<span>{event.title}</span>} />
+			<Popup
+				size='huge'
+				basic
+				content={event.title}
+				on='click'
+				hideOnScroll
+				trigger={
+					<span>
+						{ selectedView == 'month' && <span className='event-time'> {moment(event.start_time).format('LT').toLowerCase()}</span> }
+						{event.title}
+					</span>
+				}
+			/>
 		);
 	}
 
@@ -74,7 +89,21 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 							popup={true}
 							components={{
 								event: Event,
-								toolbar: props => <CustomToolbar {...props} small={small} />
+								timeGutterHeader: TimeGutterHeader,
+								toolbar: props => <CustomToolbar {...props} small={small} />,
+								week: {
+									header: CustomWeekHeader
+								}
+							}}
+							formats={{
+								timeGutterFormat: 'h A'
+							}}
+							onView={setSelectedView}
+							views={{
+								agenda: true,
+								day: true,
+								month: true,
+								week: true
 							}}
 						/>
 					</Grid.Row>
@@ -87,11 +116,6 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 };
 
 export default styled(CalendarView)`
-
-.coming-soon-text {
-	font-size: 3em;
-	text-align: center;
-}
 
 h1 {
 	@media only screen and (max-width: 576px) {
@@ -108,12 +132,9 @@ h1 {
 }
 
 .events-calendar {
-	background: #fff;
-	padding: 1em;
-	border-radius: 5px;
-	height: 600px;
-	width: 100%;
-	max-width: 1024px;
+	height: 750px;
+	width: 99%;
+	max-width: 1920px;
 	
 	@media only screen and (max-width: 768px) {
 		width: 100%;
@@ -131,77 +152,252 @@ h1 {
 		}
 	}
 
-	.custom-calendar-toolbar {
-		margin: 0 0 1.5em 1em;
+	.custom-calendar-toolbar,
+	.rbc-month-view,
+	.rbc-time-view,
+	.rbc-agenda-view  {
+		background: #fff;
+		border: none;
+	}
 
-		@media only screen and (max-width: 576px) {
-			margin: 0 0 1.5em 0.1em;
+	.custom-calendar-toolbar {
+		height: 77px;
+		padding: 6px 26px;
+		border-top-left-radius: 10px;
+		border-top-right-radius: 10px;
+		border-bottom: 1px solid #E8E8E8;
+		display: flex;
+		align-items: center;
+
+		.select-div {
+			&:nth-of-type(2) {
+				padding-left: 19px;
+			}
+
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			height: 65px;
+			border-right: 1px solid #E8E8E8;
+			padding-right: 19px;
+
+			label {
+				font-size: 14px;
+				margin-bottom: 8px;
+			}
+
+			.dropdown {
+				color: #E5007A;
+			}
 		}
 
-		.action-div {
-			margin-top: 0.5em;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
+		.date-text {
+			margin-left: 24px;
+			margin-right: 16px;
+			font-size: 20px;
+			color: #787878;
+		}
 
-			.button {
-				background: none;
-    		padding: 8px;
+		.button {
+			background: none;
+			padding: 8px;
+			font-size: 14px;
 
-				&:hover {
-					background: #eee;
-				}
+			&:hover {
+				background: #eee;
 			}
+		}
 
-			span {
-				word-wrap: none;
-				white-space: nowrap;
-			}
+		span {
+			word-wrap: none;
+			white-space: nowrap;
+		}
 
-			.month-select-small, .view-select-small {
-				padding-left: 5px !important;
-	
-				.icon {
-					padding-right: 5px !important;
-				}
-			}
+		.month-select-small, .view-select-small {
+			padding-left: 5px !important;
 
-			.month-select-small {
-				width: 52px !important;
-				min-width: 52px !important;
+			.icon {
+				padding-right: 5px !important;
 			}
-			
-			.view-select-small {
-				width: 72px !important;
-				min-width: 72px !important;
-			}
+		}
 
-			.actions-right {
-				display: flex;
-				align-items: center;
-				.today-btn-img {
-					cursor: pointer;
-					margin-right: 8px;
-					@media only screen and (max-width: 576px) {
-						margin-right: 8px;
-					}
-				}
-			}
+		.month-select-small {
+			width: 52px !important;
+			min-width: 52px !important;
+		}
+		
+		.view-select-small {
+			width: 72px !important;
+			min-width: 72px !important;
+		}
 
+		.search-btn {
+			margin-left: auto;
+			margin-right: 22px;
+			font-size: 20px;
+		}
+
+		.today-btn {
+			margin-left: auto;
+			margin-right: 22px;
+			border-radius: 5px;
+			font-size: 16px;
+			padding: 10px 20px !important;
+
+			@media only screen and (max-width: 576px) {
+				margin-right: 8px;
+			}
+		}
+		
+		.create-event-btn {
+			border-radius: 5px;
+			border: solid 1px #E5007A;
+			color: #E5007A !important;
+			font-size: 16px;
+			padding: 10px 20px !important;
+			margin-right: 0 !important;
+		}
+
+	}
+
+	.rbc-month-header {
+		height: 44px;
+		display: flex;
+		align-items: center;
+		border-bottom: 2px solid #eee;
+
+		.rbc-header {
+			font-size: 16px;
+			font-weight: 400 !important;
+			border: none !important;
+			text-align: left;
+			margin-left: 2px;
 		}
 	}
 
-	.rbc-day-bg.rbc-today {
-		background-color: rgba(230, 0, 123, 0.04);
+	.rbc-time-header-cell {
+		min-height: inherit;
+
+		.rbc-header {
+			border-bottom: none;
+			border-left: none;
+			padding-top: 6px;
+			padding-bottom: 13px;
+
+			.week-header-text {
+				height: min-content;
+				color: #787878;
+				font-family: 'Roboto' !important;
+	
+				.day-of-week {
+					text-transform: uppercase;
+					font-size: 10px;
+					margin-bottom: 8px;
+					font-weight: 500;
+				}
+	
+				.day-num {
+					font-size: 22px;
+				}
+			}
+		}
+	}
+
+
+	.rbc-date-cell {
+		button {
+			font-size: 15px;
+			padding: 5px;
+			font-weight: 600 !important;
+		}
+
+		&.rbc-current, &.rbc-now {
+			button {
+				background-color: #E6007A;
+				color: #fff;
+				border: 1px solid #E6007A;
+				border-radius: 50%;
+			}
+		}
+	}
+
+	.rbc-time-header-content {
+		border-left: none;
+	}
+
+	.rbc-off-range-bg {
+		background: #fff !important;
+	}
+
+	.rbc-off-range {
+		color: #CFCFCF;
+	}
+
+	.rbc-date-cell {
+		text-align: left;
+		padding: 5px 8px;
+	}
+
+	.rbc-time-header-gutter {
+		display: flex;
+		align-items: end;
+		justify-content: center;
+		font-weight: 400;
+		font-size: 12px;
+		color: #777777;
+		padding-bottom: 4px;
+	}
+
+	.rbc-timeslot-group {
+		padding-left: 10px;
+		padding-right: 10px;
+		font-size: 12px;
+		color: #777777;
+	}
+
+	.rbc-month-row {
+		.rbc-day-bg.rbc-today {
+			border: 1px solid #E6007A;
+			background-color: #fff;
+		}
+	}
+
+	.rbc-today {
+		background-color: rgba(229, 0, 122, 0.02);
+
+		.week-header-text {
+			color: #E5007A !important;
+		}
+	}
+
+	.rbc-events-container {
+		.rbc-event {
+			border: 1px solid #E6007A;
+			border-left: 4px solid #E6007A;
+		}
 	}
 
 	.rbc-event {
-		background-color: #E6007A;
-		border-radius: 3px;
+		background-color: #fff;
+		border-radius: 0;
+		color: #000;
+		font-weight: 500;
+		font-size: 12px;
+		border-left: 4px solid #E6007A;
+
+		.event-time {
+			margin-right: 5px;
+			font-weight: 400;
+			color: #747474;
+		}
 
 		&:focus {
 			outline: none;
 		}
+	}
+
+	.rbc-current-time-indicator {
+		background-color: #E6007A;
 	}
 }
 
