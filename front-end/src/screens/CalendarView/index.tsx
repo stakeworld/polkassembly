@@ -28,6 +28,8 @@ const NETWORK = getNetwork();
 
 const CalendarView = ({ className, small = false, emitCalendarEvents = undefined }: Props) => {
 
+	const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+
 	const { data, refetch } = useGetCalenderEventsQuery({ variables: {
 		network: NETWORK
 	} });
@@ -81,7 +83,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 				{data && data.calender_events ?
 					<Grid.Row>
 						<Calendar
-							className='events-calendar'
+							className={`events-calendar ${small || width < 768 ? 'small' : '' }`}
 							localizer={localizer}
 							events={calendarEvents}
 							startAccessor='start_time'
@@ -90,9 +92,9 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 							components={{
 								event: Event,
 								timeGutterHeader: TimeGutterHeader,
-								toolbar: props => <CustomToolbar {...props} small={small} />,
+								toolbar: props => <CustomToolbar {...props} small={small || width < 768} />,
 								week: {
-									header: CustomWeekHeader
+									header: props => <CustomWeekHeader {...props} small={small || width < 768} />
 								}
 							}}
 							formats={{
@@ -213,24 +215,6 @@ h1 {
 			white-space: nowrap;
 		}
 
-		.month-select-small, .view-select-small {
-			padding-left: 5px !important;
-
-			.icon {
-				padding-right: 5px !important;
-			}
-		}
-
-		.month-select-small {
-			width: 52px !important;
-			min-width: 52px !important;
-		}
-		
-		.view-select-small {
-			width: 72px !important;
-			min-width: 72px !important;
-		}
-
 		.search-btn {
 			margin-left: auto;
 			margin-right: 22px;
@@ -239,7 +223,7 @@ h1 {
 
 		.today-btn {
 			margin-left: auto;
-			margin-right: 22px;
+			/* margin-right: 22px; */
 			border-radius: 5px;
 			font-size: 16px;
 			padding: 10px 20px !important;
@@ -258,6 +242,66 @@ h1 {
 			margin-right: 0 !important;
 		}
 
+		&.small {
+			height: auto;
+			padding: 10px 2%;
+			border-bottom: none;
+			justify-content: space-between;
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+
+			.actions-right {
+				display: flex;
+				align-items: center;
+			}
+			
+			.today-btn-img {
+				cursor: pointer;
+				margin-right: 8px;
+			}
+
+			.select-month-dropdown, .select-view-dropdown {
+				padding-left: 5px !important;
+				border: 2px solid #eee;
+				border-radius: 5px;
+				padding: 2px;
+				font-size: 12px;
+				white-space: nowrap;
+
+				.icon {
+					padding-right: 2px !important;
+				}
+			}
+		}
+
+	}
+
+	&.small {
+		.rbc-time-header-cell {
+			.rbc-header {
+
+				&.rbc-today {
+					.week-header-text {
+						.day-num {
+							background-color: #E6007A;
+							color: #fff;
+							width: 24px;
+							height: 24px;
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							border-radius: 50%;
+						}
+					}
+				}
+
+				.week-header-text {
+					.day-num {
+						font-size: 14px;
+					}
+				}
+			}
+		}
 	}
 
 	.rbc-month-header {
@@ -291,7 +335,7 @@ h1 {
 	
 				.day-of-week {
 					text-transform: uppercase;
-					font-size: 10px;
+					font-size: 12px;
 					margin-bottom: 8px;
 					font-weight: 500;
 				}

@@ -10,6 +10,8 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Button, Dropdown, DropdownProps } from 'semantic-ui-react';
 
+import calendar_today from '../../assets/calendar_today.png';
+
 function CustomToolbar(props: any) {
 	let months = [
 		{ key: '0', text: 'January', value: 0 },
@@ -31,6 +33,7 @@ function CustomToolbar(props: any) {
 	if(props.small) {
 		viewStateOptions = [
 			{ key: 'month', text: 'Month', value: 'month' },
+			{ key: 'week', text: 'Week', value: 'week' },
 			{ key: 'day', text: 'Day', value: 'day' },
 			{ key: 'agenda', text: 'Agenda', value: 'agenda' }
 		];
@@ -109,14 +112,14 @@ function CustomToolbar(props: any) {
 		props.onNavigate('current');
 	};
 
-	// const onSelectMonthChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-	// 	setSelectedMonth(Number(data.value));
-	// 	const now = new Date();
-	// 	props.date.setMonth(data.value);
-	// 	props.date.setYear(now.getFullYear());
-	// 	props.date.setDate(now.getDate());
-	// 	props.onNavigate('current');
-	// };
+	const onSelectMonthChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+		setSelectedMonth(Number(data.value));
+		const now = new Date();
+		props.date.setMonth(data.value);
+		props.date.setYear(now.getFullYear());
+		props.date.setDate(now.getDate());
+		props.onNavigate('current');
+	};
 
 	const onViewStateChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
 		setViewState(`${data.value}`);
@@ -137,23 +140,40 @@ function CustomToolbar(props: any) {
 	},[props.view]);
 
 	return (
-		props.date && <div className='custom-calendar-toolbar'>
-			{/* <div className='select-div'>
-				<label>Filter by</label>
-				<Dropdown compact className={props.small ? 'view-select-small' : ''} value={viewState} onChange={onViewStateChange} options={viewStateOptions} />
-			</div> */}
-			<div className='select-div'>
-				<label>Type</label>
-				<Dropdown compact className={props.small ? 'view-select-small' : ''} value={viewState} onChange={onViewStateChange} options={viewStateOptions} />
-			</div>
-			<span className='date-text'>{moment(props.date).format('MMMM YYYY')}</span>
-			<Button onClick={goToBack} icon='chevron left' />
-			<Button onClick={goToNext} icon='chevron right' />
+		props.date && <div className={`custom-calendar-toolbar ${props.small ? 'small' : ''}`}>
+			{!props.small ?
+				<>
+					{/* <div className='select-div'>
+					<label>Filter by</label>
+					<Dropdown compact className={props.small ? 'view-select-small' : ''} value={viewState} onChange={onViewStateChange} options={viewStateOptions} />
+				</div> */}
+					<div className='select-div'>
+						<label>Type</label>
+						<Dropdown compact className={props.small ? 'view-select-small' : ''} value={viewState} onChange={onViewStateChange} options={viewStateOptions} />
+					</div>
+					<span className='date-text'>{moment(props.date).format('MMMM YYYY')}</span>
+					<Button onClick={goToBack} icon='chevron left' />
+					<Button onClick={goToNext} icon='chevron right' />
 
-			{/* <Button className='search-btn' icon='search' /> */}
-			<Button basic className='today-btn' onClick={goToToday}>Today</Button>
-			<Button basic className='create-event-btn' onClick={goToToday}>Create Event</Button>
-			{/* <Dropdown compact className={props.small ? 'month-select-small' : ''} value={selectedMonth} onChange={onSelectMonthChange} options={months} /> */}
+					{/* <Button className='search-btn' icon='search' /> */}
+					<Button basic className='today-btn' onClick={goToToday}>Today</Button>
+					{/* <Button basic className='create-event-btn' onClick={goToToday}>Create Event</Button> */}
+				</>
+				:
+				<>
+					<Dropdown compact className='select-month-dropdown' value={selectedMonth} onChange={onSelectMonthChange} options={months} />
+
+					<Button onClick={goToBack} icon='chevron left' />
+					<span>{moment(props.date).format('D/M/YY')}</span>
+					<Button onClick={goToNext} icon='chevron right' />
+
+					<div className='actions-right'>
+						{/* <Button className='search-btn' icon='search' /> */}
+						<img className='today-btn-img' onClick={goToToday} src={calendar_today} height={16} width={16} title='Today' alt='Today' />
+						<Dropdown upward={false} compact className='select-view-dropdown' value={viewState} onChange={onViewStateChange} options={viewStateOptions} />
+					</div>
+				</>
+			}
 		</div>
 	);
 }
