@@ -14,6 +14,7 @@ import getNetwork from 'src/util/getNetwork';
 
 import CustomToolbar from './CustomToolbar';
 import CustomWeekHeader, { TimeGutterHeader } from './CustomWeekHeader';
+import NetworkSelect from './NetworkSelect';
 
 // import CustomWeekView from './CustomWeekView';
 
@@ -35,6 +36,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	const [selectedView, setSelectedView] = useState<string>('month');
 	const [selectedNetwork, setSelectedNetwork] = useState<string>(NETWORK);
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const { data, refetch } = useGetCalenderEventsQuery({ variables: {
 		network: selectedNetwork
 	} });
@@ -42,10 +44,6 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	useEffect(() => {
 		refetch();
 	}, [refetch]);
-
-	useEffect(() => {
-		console.log('selectedNetwork : ', selectedNetwork);
-	}, [selectedNetwork]);
 
 	useEffect(() =>  {
 		const eventsArr:any[] = [];
@@ -85,7 +83,14 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 
 	return (
 		<div className={className}>
-			{ !small && <h1>Calendar</h1>}
+			{ !small && <div className='cal-heading-div'>
+				<h1> Calendar </h1>
+				<div className='mobile-network-select'>
+					<NetworkSelect selectedNetwork={selectedNetwork} setSelectedNetwork={setSelectedNetwork} />
+				</div>
+			</div>
+			}
+
 			<Grid stackable>
 				{data && data.calender_events ?
 					<Grid.Row>
@@ -139,6 +144,37 @@ h1 {
 		margin-left: 1rem;
 	}
 }
+
+.cal-heading-div {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-right: 10px;
+
+	.mobile-network-select {
+		display: none;
+		margin-top: 2rem;
+	
+		label {
+			display: none !important;
+		}
+	
+		@media only screen and (max-width: 768px) {
+			display: flex;
+			align-items: center;
+			font-size: 14px;
+
+			.filter-by-chain-div > .dropdown {
+					display: flex;
+					align-items: center;
+					border: 2px solid #aaa;
+					padding: 3px 10px;
+					border-radius: 5px;
+				}
+			}
+		}
+	}
+
 
 .events-calendar {
 	height: 750px;
