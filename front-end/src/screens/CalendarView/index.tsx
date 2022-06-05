@@ -14,6 +14,7 @@ import getNetwork from 'src/util/getNetwork';
 
 import CustomToolbar from './CustomToolbar';
 import CustomWeekHeader, { TimeGutterHeader } from './CustomWeekHeader';
+
 // import CustomWeekView from './CustomWeekView';
 
 interface Props {
@@ -30,16 +31,21 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 
 	const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
 
-	const { data, refetch } = useGetCalenderEventsQuery({ variables: {
-		network: NETWORK
-	} });
-
 	const [calendarEvents, setCalendarEvents] = useState<any[]>([]);
 	const [selectedView, setSelectedView] = useState<string>('month');
+	const [selectedNetwork, setSelectedNetwork] = useState<string>(NETWORK);
+
+	const { data, refetch } = useGetCalenderEventsQuery({ variables: {
+		network: selectedNetwork
+	} });
 
 	useEffect(() => {
 		refetch();
 	}, [refetch]);
+
+	useEffect(() => {
+		console.log('selectedNetwork : ', selectedNetwork);
+	}, [selectedNetwork]);
 
 	useEffect(() =>  {
 		const eventsArr:any[] = [];
@@ -48,7 +54,8 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 				end_time: moment(eventObj.end_time).toDate(),
 				id: eventObj.id,
 				start_time: moment(eventObj.start_time).toDate(),
-				title: eventObj.title
+				title: eventObj.title,
+				url: eventObj.url
 			});
 		});
 		setCalendarEvents(eventsArr);
@@ -63,12 +70,12 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 			<Popup
 				size='huge'
 				basic
-				content={event.title}
+				content={ <a href={event.url} target='_blank' rel="noreferrer">{event.title}</a> }
 				on='click'
 				hideOnScroll
 				trigger={
 					<span>
-						{ selectedView == 'month' && <span className='event-time'> {moment(event.start_time).format('LT').toLowerCase()}</span> }
+						{ (selectedView == 'month' && !(small || width < 768)) &&  <span className='event-time'> {moment(event.start_time).format('LT').toLowerCase()}</span> }
 						{event.title}
 					</span>
 				}
@@ -92,7 +99,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 							components={{
 								event: Event,
 								timeGutterHeader: TimeGutterHeader,
-								toolbar: props => <CustomToolbar {...props} small={small || width < 768} />,
+								toolbar: props => <CustomToolbar {...props} small={small || width < 768} selectedNetwork={selectedNetwork} setSelectedNetwork={setSelectedNetwork} />,
 								week: {
 									header: props => <CustomWeekHeader {...props} small={small || width < 768} />
 								}
@@ -161,6 +168,12 @@ h1 {
 		background: #fff;
 		border: none;
 	}
+	
+	.rbc-month-view,
+	.rbc-time-view,
+	.rbc-agenda-view  {
+		padding: 10px 10px;
+	}
 
 	.custom-calendar-toolbar {
 		height: 77px;
@@ -190,6 +203,13 @@ h1 {
 
 			.dropdown {
 				color: #E5007A;
+			}
+
+			&.filter-by-chain-div {
+				.dropdown {
+					display: flex;
+					align-items: center;
+				}
 			}
 		}
 
@@ -277,6 +297,16 @@ h1 {
 	}
 
 	&.small {
+		.custom-calendar-toolbar {
+			margin-bottom: 2px !important;
+		}
+
+		.rbc-month-view,
+		.rbc-time-view,
+		.rbc-agenda-view  {
+			padding: 0 !important;
+		}
+
 		.rbc-time-header-cell {
 			.rbc-header {
 
@@ -300,6 +330,13 @@ h1 {
 						font-size: 14px;
 					}
 				}
+			}
+		}
+
+		.rbc-date-cell {
+			button {
+				font-size: 12px;
+				font-weight: 500 !important;
 			}
 		}
 	}

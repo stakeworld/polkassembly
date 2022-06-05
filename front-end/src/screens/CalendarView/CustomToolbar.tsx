@@ -8,7 +8,16 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Button, Dropdown, DropdownProps } from 'semantic-ui-react';
+import { Button, Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
+import bifrostLogo from 'src/assets/bifrost-logo.png';
+import kiltLogo from 'src/assets/kilt-logo.png';
+import kusamaLogo from 'src/assets/kusama-logo.gif';
+import moonbeamLogo from 'src/assets/moonbeam-logo.png';
+import moonriverLogo from 'src/assets/moonriver-logo.png';
+import polkadotLogo from 'src/assets/polkadot-logo.jpg';
+import { network } from 'src/global/networkConstants';
+import getNetwork from 'src/util/getNetwork';
+import styled from 'styled-components';
 
 import calendar_today from '../../assets/calendar_today.png';
 
@@ -28,16 +37,79 @@ function CustomToolbar(props: any) {
 		{ key: '11', text: 'December', value: 11 }
 	];
 
-	let viewStateOptions = [];
+	const viewStateOptions = [
+		{ key: 'month', text: 'Month', value: 'month' },
+		{ key: 'week', text: 'Week', value: 'week' },
+		{ key: 'day', text: 'Day', value: 'day' },
+		{ key: 'agenda', text: 'Agenda', value: 'agenda' }
+	];
+
+	const StyledDiv = styled.div`
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+
+    img {
+			width: 22px;
+			border-radius: 50%;
+			margin-right: 0.5rem;
+    }
+`;
+
+	const getNetworkImage = (showNetwork: string) => {
+		switch (showNetwork) {
+		case network.KUSAMA:
+			return kusamaLogo;
+		case network.MOONBEAM:
+			return moonbeamLogo;
+		case network.MOONRIVER:
+			return moonriverLogo;
+		case network.KILT:
+			return kiltLogo;
+		case network.BIFROST:
+			return bifrostLogo;
+		default:
+			return polkadotLogo;
+		}
+	};
+
+	const StyledNetworkItem = ({ showNetwork }: {showNetwork: string}) => {
+		return <StyledDiv>
+			<img
+				src={getNetworkImage(showNetwork)}
+				alt={showNetwork}/>
+			{showNetwork}
+		</StyledDiv>;
+	};
+
+	const networkOptions: DropdownItemProps[] = [
+		{
+			children: <StyledNetworkItem showNetwork={network.POLKADOT}/>,
+			value: network.POLKADOT
+		},
+		{
+			children: <StyledNetworkItem showNetwork={network.KUSAMA}/>,
+			value: network.KUSAMA
+		},
+		{
+			children: <StyledNetworkItem showNetwork={network.MOONRIVER}/>,
+			value: network.MOONRIVER
+		},
+		{
+			children: <StyledNetworkItem showNetwork={network.MOONBEAM}/>,
+			value: network.MOONBEAM
+		},
+		{
+			children: <StyledNetworkItem showNetwork={network.KILT}/>,
+			value: network.KILT
+		},
+		{
+			children: <StyledNetworkItem showNetwork={network.BIFROST}/>,
+			value: network.BIFROST
+		}
+	];
 
 	if(props.small) {
-		viewStateOptions = [
-			{ key: 'month', text: 'Month', value: 'month' },
-			{ key: 'week', text: 'Week', value: 'week' },
-			{ key: 'day', text: 'Day', value: 'day' },
-			{ key: 'agenda', text: 'Agenda', value: 'agenda' }
-		];
-
 		months = [
 			{ key: '0', text: 'Jan', value: 0 },
 			{ key: '1', text: 'Feb', value: 1 },
@@ -52,17 +124,22 @@ function CustomToolbar(props: any) {
 			{ key: '10', text: 'Nov', value: 10 },
 			{ key: '11', text: 'Dec', value: 11 }
 		];
-	}else{
-		viewStateOptions = [
-			{ key: 'month', text: 'Month', value: 'month' },
-			{ key: 'week', text: 'Week', value: 'week' },
-			{ key: 'day', text: 'Day', value: 'day' },
-			{ key: 'agenda', text: 'Agenda', value: 'agenda' }
-		];
 	}
+
+	const NETWORK = getNetwork();
 
 	const [viewState, setViewState] = useState<string>('month');
 	const [selectedMonth, setSelectedMonth] = useState<number>(props.date.getMonth());
+	const [selectedNetwork, setSelectedNetworkToolbar] = useState<any>(props.selectedNetwork);
+
+	const handleSetSelectedNetwork = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+		setSelectedNetworkToolbar(data.value);
+		props.setSelectedNetwork(data.value);
+	};
+
+	useEffect(() => {
+		console.log('selectedNetwork toolbar: ', selectedNetwork);
+	}, [selectedNetwork]);
 
 	function addMonths(date:any, months: any) {
 		const d = date.getDate();
@@ -143,13 +220,13 @@ function CustomToolbar(props: any) {
 		props.date && <div className={`custom-calendar-toolbar ${props.small ? 'small' : ''}`}>
 			{!props.small ?
 				<>
-					{/* <div className='select-div'>
-					<label>Filter by</label>
-					<Dropdown compact className={props.small ? 'view-select-small' : ''} value={viewState} onChange={onViewStateChange} options={viewStateOptions} />
-				</div> */}
+					<div className='select-div filter-by-chain-div'>
+						<label>Filter by</label>
+						<Dropdown compact value={selectedNetwork} onChange={handleSetSelectedNetwork} options={networkOptions} trigger={<StyledNetworkItem showNetwork={selectedNetwork}/>} />
+					</div>
 					<div className='select-div'>
 						<label>Type</label>
-						<Dropdown compact className={props.small ? 'view-select-small' : ''} value={viewState} onChange={onViewStateChange} options={viewStateOptions} />
+						<Dropdown compact value={viewState} onChange={onViewStateChange} options={viewStateOptions} />
 					</div>
 					<span className='date-text'>{moment(props.date).format('MMMM YYYY')}</span>
 					<Button onClick={goToBack} icon='chevron left' />
