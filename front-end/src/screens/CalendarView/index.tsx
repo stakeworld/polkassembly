@@ -35,6 +35,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	const [calendarEvents, setCalendarEvents] = useState<any[]>([]);
 	const [selectedView, setSelectedView] = useState<string>('month');
 	const [selectedNetwork, setSelectedNetwork] = useState<string>(NETWORK);
+	const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const { data, refetch } = useGetCalenderEventsQuery({ variables: {
@@ -103,7 +104,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 							popup={true}
 							components={{
 								event: Event,
-								timeGutterHeader: TimeGutterHeader,
+								timeGutterHeader: () => <TimeGutterHeader localizer={localizer} date={selectedDate} selectedView={selectedView} />,
 								toolbar: props => <CustomToolbar {...props} small={small || width < 768} selectedNetwork={selectedNetwork} setSelectedNetwork={setSelectedNetwork} />,
 								week: {
 									header: props => <CustomWeekHeader {...props} small={small || width < 768} />
@@ -112,6 +113,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 							formats={{
 								timeGutterFormat: 'h A'
 							}}
+							onNavigate={setSelectedDate}
 							onView={setSelectedView}
 							views={{
 								agenda: true,
@@ -154,23 +156,24 @@ h1 {
 	.mobile-network-select {
 		display: none;
 		margin-top: 2rem;
+		color: #E5007A;
+		font-size: 14px;
 	
 		label {
 			display: none !important;
+		}
+
+		.filter-by-chain-div > .dropdown {
+			display: flex;
+			align-items: center;
+			border: 2px solid #aaa;
+			padding: 3px 10px;
+			border-radius: 5px;
 		}
 	
 		@media only screen and (max-width: 768px) {
 			display: flex;
 			align-items: center;
-			font-size: 14px;
-
-			.filter-by-chain-div > .dropdown {
-					display: flex;
-					align-items: center;
-					border: 2px solid #aaa;
-					padding: 3px 10px;
-					border-radius: 5px;
-				}
 			}
 		}
 	}
@@ -420,7 +423,6 @@ h1 {
 		}
 	}
 
-
 	.rbc-date-cell {
 		button {
 			font-size: 15px;
@@ -459,10 +461,23 @@ h1 {
 		display: flex;
 		align-items: end;
 		justify-content: center;
+		text-align: center;
 		font-weight: 400;
 		font-size: 12px;
 		color: #777777;
 		padding-bottom: 4px;
+
+		.day-num {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: #E6007A;
+			color: #fff;
+			height: 26px;
+			width: 26px;
+			border-radius: 50%;
+			font-size: 14px;
+		}
 	}
 
 	.rbc-timeslot-group {

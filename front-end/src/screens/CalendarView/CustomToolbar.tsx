@@ -148,11 +148,12 @@ function CustomToolbar(props: any) {
 				</>
 				:
 				<>
-					<Dropdown compact className='select-month-dropdown' value={selectedMonth} onChange={onSelectMonthChange} options={months} />
-
-					<Button onClick={goToBack} icon='chevron left' />
-					<span>{moment(props.date).format('D/M/YY')}</span>
-					<Button onClick={goToNext} icon='chevron right' />
+					<div>
+						<Dropdown compact className='select-month-dropdown' value={selectedMonth} onChange={onSelectMonthChange} options={months} />
+						<Button onClick={goToBack} icon='chevron left' />
+						{/* <span>{moment(props.date).format('D/M/YY')}</span> */}
+						<Button onClick={goToNext} icon='chevron right' />
+					</div>
 
 					<div className='actions-right'>
 						{/* <Button className='search-btn' icon='search' /> */}

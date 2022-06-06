@@ -17,8 +17,14 @@ function CustomWeekHeader({
 	);
 }
 
-export function TimeGutterHeader(): JSX.Element {
-	return <span className='time-gutter-header-text'>UTC</span>;
+export function TimeGutterHeader({ localizer, date, selectedView }: any): JSX.Element {
+
+	return <span className='time-gutter-header-text'>{selectedView == 'day' ?
+		<div className='week-header-text'>
+			<div className='day-of-week'>{localizer.format(date, 'dd')[0]}</div>
+			<div className='day-num'>{localizer.format(date, 'D')}</div>
+		</div>
+		: 'UTC'}</span>;
 }
 
 export default CustomWeekHeader;
