@@ -30,7 +30,8 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 		{
 			icon: <DiscussionsIcon />,
 			link: '/discussions',
-			name: 'Discussions'
+			name: 'Discussions',
+			otherActiveRoute: '/post'
 		},
 		{
 			icon: <CalendarIcon />,
@@ -49,34 +50,18 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 		}
 	];
 
-	const TreasuryItems = [
-		{
-			icon: <TreasuryProposalIcon />,
-			link: '/treasury-proposals',
-			name: 'Proposals'
-		},
-		{
-			icon: <BountyIcon />,
-			link: '/bounties',
-			name: 'Bounties'
-		},
-		{
-			icon: <TipIcon />,
-			link: '/tips',
-			name: 'Tips'
-		}
-	];
-
 	const DemocracyItems = [
 		{
 			icon: <ProposalIcon />,
 			link: '/proposals',
-			name: 'Proposals'
+			name: 'Proposals',
+			otherActiveRoute: '/proposal'
 		},
 		{
 			icon: <ReferendaIcon className='motion-icon' />,
 			link: '/referenda',
-			name: 'Referenda'
+			name: 'Referenda',
+			otherActiveRoute: '/referendum'
 		}
 	];
 
@@ -84,7 +69,8 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 		{
 			icon: <MotionIcon className='motion-icon' />,
 			link: '/motions',
-			name: 'Motions'
+			name: 'Motions',
+			otherActiveRoute: '/motion'
 		},
 		{
 			icon: <MembersIcon />,
@@ -93,11 +79,33 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 		}
 	];
 
+	const TreasuryItems = [
+		{
+			icon: <TreasuryProposalIcon />,
+			link: '/treasury-proposals',
+			name: 'Proposals',
+			otherActiveRoute: '/treasury'
+		},
+		{
+			icon: <BountyIcon />,
+			link: '/bounties',
+			name: 'Bounties',
+			otherActiveRoute: '/bounty'
+		},
+		{
+			icon: <TipIcon />,
+			link: '/tips',
+			name: 'Tips',
+			otherActiveRoute: '/tip'
+		}
+	];
+
 	const TechCommItems = [
 		{
 			icon: <ProposalIcon />,
 			link: '/tech-comm-proposals',
-			name: 'Proposals'
+			name: 'Proposals',
+			otherActiveRoute: '/tech'
 		}
 	];
 
@@ -141,6 +149,14 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 		}
 	}
 
+	function isOtherActiveRoute(otherActiveRoute: string | undefined): boolean {
+		if(otherActiveRoute && (activeRoute.search(otherActiveRoute) != -1)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	return (
 		<>
 			<div className={`${className} ${sidebarHidden ? 'hidden-sm' : ''}`} style={ sidebarCollapsed ? { minWidth: '47px', padding: '1.5em 0.2em 0 0.2em', width:'47px' } : {} }>
@@ -153,7 +169,7 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 						{/* Uncategorized */}
 						{
 							SidebarItems.map(item => (
-								<List.Item key={item.name} onClick={() => gotoRoute(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+								<List.Item key={item.name} onClick={() => gotoRoute(item.link)} className={`sidebar-item ${activeRoute == item.link || isOtherActiveRoute(item.otherActiveRoute) ? 'active' : ''}`}>
 									{item.icon}
 									<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
 										<List.Header>{item.name}</List.Header>
@@ -170,7 +186,7 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 						</List.Item>
 						{!collapsedOptions.includes('democracy') || sidebarCollapsed ?
 							DemocracyItems.map(item => (
-								<List.Item key={item.name} onClick={() => gotoRoute(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+								<List.Item key={item.name} onClick={() => gotoRoute(item.link)} className={`sidebar-item ${activeRoute == item.link || isOtherActiveRoute(item.otherActiveRoute) ? 'active' : ''}`}>
 									{item.icon}
 									<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
 										<List.Header>{item.name}</List.Header>
@@ -190,7 +206,7 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 						{
 							!collapsedOptions.includes('council') || sidebarCollapsed ?
 								CouncilItems.map(item => (
-									<List.Item key={item.name} onClick={() => gotoRoute(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+									<List.Item key={item.name} onClick={() => gotoRoute(item.link)} className={`sidebar-item ${activeRoute == item.link || isOtherActiveRoute(item.otherActiveRoute) ? 'active' : ''}`}>
 										{item.icon}
 										<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
 											<List.Header>{item.name}</List.Header>
@@ -210,7 +226,7 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 						{
 							!collapsedOptions.includes('treasury') || sidebarCollapsed ?
 								TreasuryItems.map(item => (
-									<List.Item key={item.name} onClick={() => gotoRoute(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+									<List.Item key={item.name} onClick={() => gotoRoute(item.link)} className={`sidebar-item ${activeRoute == item.link || isOtherActiveRoute(item.otherActiveRoute) ? 'active' : ''}`}>
 										{item.icon}
 										<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
 											<List.Header>{item.name}</List.Header>
@@ -230,7 +246,7 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 						{
 							!collapsedOptions.includes('techComm') || sidebarCollapsed ?
 								TechCommItems.map(item => (
-									<List.Item key={item.name} onClick={() => gotoRoute(item.link)} className={`sidebar-item ${activeRoute == item.link ? 'active' : ''}`}>
+									<List.Item key={item.name} onClick={() => gotoRoute(item.link)} className={`sidebar-item ${activeRoute == item.link || isOtherActiveRoute(item.otherActiveRoute) ? 'active' : ''}`}>
 										{item.icon}
 										<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
 											<List.Header>{item.name}</List.Header>

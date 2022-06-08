@@ -134,7 +134,7 @@ function SwitchRoutes() {
 				<PrivacyPolicy/>
 			</Route>
 			<Route path="/user/:username">
-				<UserProfile/>
+				<UserProfile />
 			</Route>
 			<Route path="/search">
 				<Search/>

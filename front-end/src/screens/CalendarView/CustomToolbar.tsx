@@ -2,18 +2,16 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-/* eslint-disable no-tabs */
-// TODO: Implement no-tabs
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { DropdownProps, Select } from 'semantic-ui-react';
+import { Button, DropdownProps, Select } from 'semantic-ui-react';
 
 import calendar_today from '../../assets/calendar_today.png';
 
 function CustomToolbar(props: any) {
-	const months = [
+	let months = [
 		{ key: '0', text: 'January', value: 0 },
 		{ key: '1', text: 'February', value: 1 },
 		{ key: '2', text: 'March', value: 2 },
@@ -36,6 +34,21 @@ function CustomToolbar(props: any) {
 			{ key: 'day', text: 'Day', value: 'day' },
 			{ key: 'agenda', text: 'Agenda', value: 'agenda' }
 		];
+
+		months = [
+			{ key: '0', text: 'Jan', value: 0 },
+			{ key: '1', text: 'Feb', value: 1 },
+			{ key: '2', text: 'Mar', value: 2 },
+			{ key: '3', text: 'Apr', value: 3 },
+			{ key: '4', text: 'May', value: 4 },
+			{ key: '5', text: 'Jun', value: 5 },
+			{ key: '6', text: 'Jul', value: 6 },
+			{ key: '7', text: 'Aug', value: 7 },
+			{ key: '8', text: 'Sep', value: 8 },
+			{ key: '9', text: 'Oct', value: 9 },
+			{ key: '10', text: 'Nov', value: 10 },
+			{ key: '11', text: 'Dec', value: 11 }
+		];
 	}else{
 		viewStateOptions = [
 			{ key: 'month', text: 'Month', value: 'month' },
@@ -48,61 +61,44 @@ function CustomToolbar(props: any) {
 	const [viewState, setViewState] = useState<string>('month');
 	const [selectedMonth, setSelectedMonth] = useState<number>(props.date.getMonth());
 
-	// function addMonths(date:any, months: any) {
-	// 	const d = date.getDate();
-	// 	date.setMonth(date.getMonth() + months);
-	// 	if (date.getDate() != d) {
-	// 		date.setDate(0);
-	// 	}
-	// 	console.log(date);
-	// 	return date;
-	// }
+	function addMonths(date:any, months: any) {
+		const d = date.getDate();
+		date.setMonth(date.getMonth() + months);
+		if (date.getDate() != d) {
+			date.setDate(0);
+		}
+		return date;
+	}
 
-	// function addWeeks(date: any, weeks: any) {
-	// 	date.setDate(date.getDate() + 7 * weeks);
-	// 	return date;
-	// }
+	function addWeeks(date: any, weeks: any) {
+		date.setDate(date.getDate() + 7 * weeks);
+		return date;
+	}
 
-	// function addDays(date: any, days: any) {
-	// 	date.setDate(date.getDate() + days);
-	// 	console.log(date);
-	// 	return date;
-	// }
+	function addDays(date: any, days: any) {
+		date.setDate(date.getDate() + days);
+		return date;
+	}
 
-	// const goToDayView = () => {
-	// 	props.onView('day');
-	// 	setViewState('day');
-	// };
+	const goToBack = () => {
+		if (viewState === 'month') {
+			props.onNavigate('prev', addMonths(props.date, -1));
+		} else if (viewState === 'week') {
+			props.onNavigate('prev', addWeeks(props.date, -1));
+		} else {
+			props.onNavigate('prev', addDays(props.date, -1));
+		}
+	};
 
-	// const goToWeekView = () => {
-	// 	props.onView('week');
-	// 	setViewState('week');
-	// };
-
-	// const goToMonthView = () => {
-	// 	props.onView('month');
-	// 	setViewState('month');
-	// };
-
-	// const goToBack = () => {
-	// 	if (viewState === 'month') {
-	// 		props.onNavigate('prev', addMonths(props.date, -1));
-	// 	} else if (viewState === 'week') {
-	// 		props.onNavigate('prev', addWeeks(props.date, -1));
-	// 	} else {
-	// 		props.onNavigate('prev', addDays(props.date, -1));
-	// 	}
-	// };
-
-	// const goToNext = () => {
-	// 	if (viewState === 'month') {
-	// 		props.onNavigate('next', addMonths(props.date, +1));
-	// 	} else if (viewState === 'week') {
-	// 		props.onNavigate('next', addWeeks(props.date, +1));
-	// 	} else {
-	// 		props.onNavigate('next', addDays(props.date, +1));
-	// 	}
-	// };
+	const goToNext = () => {
+		if (viewState === 'month') {
+			props.onNavigate('next', addMonths(props.date, +1));
+		} else if (viewState === 'week') {
+			props.onNavigate('next', addWeeks(props.date, +1));
+		} else {
+			props.onNavigate('next', addDays(props.date, +1));
+		}
+	};
 
 	const goToToday = () => {
 		const now = new Date();
@@ -143,17 +139,14 @@ function CustomToolbar(props: any) {
 	return (
 		props.date && <div className='custom-calendar-toolbar'>
 			<div className='action-div'>
-				<Select compact value={selectedMonth} onChange={onSelectMonthChange} options={months} />
-				<span>{moment(props.date).format('MMMM YYYY')}</span>
+				<Select compact className={props.small ? 'month-select-small' : ''} value={selectedMonth} onChange={onSelectMonthChange} options={months} />
+				<Button onClick={goToBack} icon='chevron left' />
+				<span>{moment(props.date).format('DD - MMM - YY')}</span>
+				<Button onClick={goToNext} icon='chevron right' />
 				<div className='actions-right'>
 					<img className='today-btn-img' onClick={goToToday} src={calendar_today} height={16} width={16} title='Today' alt='Today' />
-					<Select compact value={viewState} onChange={onViewStateChange} options={viewStateOptions} />
+					<Select compact className={props.small ? 'view-select-small' : ''} value={viewState} onChange={onViewStateChange} options={viewStateOptions} />
 				</div>
-				{/* <button onClick={goToMonthView}>month</button>
-					<button onClick={goToWeekView}>week</button>
-					<button onClick={goToDayView}>day</button> */}
-				{/* <button onClick={goToBack}>&#8249;</button> */}
-				{/* <button onClick={goToNext}>&#8250;</button> */}
 			</div>
 		</div>
 	);

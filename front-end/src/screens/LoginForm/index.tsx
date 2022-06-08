@@ -4,7 +4,13 @@
 
 import React, { useContext, useEffect,useState } from 'react';
 import { Grid } from 'semantic-ui-react';
+import WalletButton from 'src/components/WalletButton';
+import { Wallet } from 'src/types';
+import Modal from 'src/ui-components/Modal';
 
+import { ReactComponent as PolkadotJSIcon } from '../../assets/wallet/polkadotjs-icon.svg';
+import { ReactComponent as SubWalletIcon } from '../../assets/wallet/subwallet-icon.svg';
+import { ReactComponent as TalismanIcon } from '../../assets/wallet/talisman-icon.svg';
 import Web2Login from '../../components/Login/Web2Login';
 import Web3Login from '../../components/Login/Web3Login';
 import { UserDetailsContext } from '../../context/UserDetailsContext';
@@ -17,6 +23,23 @@ interface Props {
 const Login = ({ className }: Props) => {
 	const currentUser = useContext(UserDetailsContext);
 	const { history } = useRouter();
+	const [displayWeb, setDisplayWeb] = useState(2);
+	const [chosenWallet, setChosenWallet] = useState<Wallet>();
+	const [showWalletModal, setShowWalletModal] = useState(false);
+
+	const setDisplayWeb2 = () => setDisplayWeb(2);
+
+	const setDisplayWeb3 = () => {
+		setShowWalletModal(true);
+	};
+
+	const onWalletSelect = (wallet: Wallet) => {
+		setChosenWallet(wallet);
+
+		setDisplayWeb(3);
+
+		setShowWalletModal(false);
+	};
 
 	useEffect(() => {
 		if (currentUser?.id) {
@@ -24,18 +47,24 @@ const Login = ({ className }: Props) => {
 		}
 	}, [history, currentUser, currentUser?.id]);
 
-	const [displayWeb2, setDisplayWeb2] = useState(true);
-	const toggleWeb2Login = () => setDisplayWeb2(!displayWeb2);
-
 	return (
-		<Grid centered className={className}>
-			<Grid.Column width={10}>
-				{ displayWeb2
-					? <Web2Login toggleWeb2Login={toggleWeb2Login}/>
-					: <Web3Login toggleWeb2Login={toggleWeb2Login}/>
-				}
-			</Grid.Column>
-		</Grid>
+		<>
+			<Grid centered className={className}>
+				<Grid.Column width={10}>
+					{ displayWeb === 2
+						? <Web2Login setDisplayWeb3={setDisplayWeb3}/> : null}
+
+					{displayWeb === 3 && chosenWallet ? <Web3Login chosenWallet={chosenWallet} setDisplayWeb2={setDisplayWeb2}/> : null}
+				</Grid.Column>
+			</Grid>
+
+			<Modal size="mini" open={showWalletModal} onClose={() => setShowWalletModal(false)}>
+				<WalletButton onClick={() => onWalletSelect(Wallet.POLKADOT)} name="Polkadot.js" icon={<PolkadotJSIcon />} />
+				<WalletButton onClick={() => onWalletSelect(Wallet.TALISMAN)} name="Talisman" icon={<TalismanIcon />} />
+				<WalletButton onClick={() => onWalletSelect(Wallet.SUBWALLET)} name="SubWallet" icon={<SubWalletIcon />} />
+				<WalletButton onClick={() => onWalletSelect(Wallet.OTHER)} name="Other" />
+			</Modal>
+		</>
 	);
 };
 

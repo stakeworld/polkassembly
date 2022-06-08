@@ -45,16 +45,14 @@ export const DELETE_CALENDER_EVENT = gql`
 
 export const ADD_CALENDER_EVENT = gql`
     mutation AddCalenderEvent ($title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!) {
-        __typename
         insert_calender_events(objects: {title: $title, start_time: $start_time, end_time: $end_time, content: $content, url: $url, module: $module, network: $network}) {
             affected_rows
         }
     }
 `;
 
-export const ADD_BIO_IMAGE = gql`
-    mutation addProfile ($image: String!, $bio: String!, $user_id: Int!, $title: String, $badges: String) {
-        __typename
+export const ADD_BIO_IMAGE=gql`
+    mutation addProfile ($image: String, $bio: String, $user_id: Int!, $title: String, $badges: String) {
         addProfile(image: $image, bio: $bio, user_id: $user_id, title: $title, badges: $badges) {
             message
         }

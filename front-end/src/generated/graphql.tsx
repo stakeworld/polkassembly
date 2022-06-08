@@ -2869,8 +2869,10 @@ export type Mutation = {
 
 
 export type MutationAddProfileArgs = {
+  badges?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
   user_id: Scalars['Int'];
 };
 
@@ -4188,9 +4190,11 @@ export type PreimageWhereUniqueInput = {
 
 export type Profile = {
   __typename?: 'Profile';
+  badges?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   image?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
   user_id?: Maybe<Scalars['Int']>;
 };
 
@@ -9942,8 +9946,10 @@ export type Mutation_Root = {
 
 /** mutation root */
 export type Mutation_RootAddProfileArgs = {
+  badges?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
   user_id: Scalars['Int'];
 };
 
@@ -18332,7 +18338,7 @@ export type AddCalenderEventMutationVariables = Exact<{
 
 
 export type AddCalenderEventMutation = (
-  { __typename: 'mutation_root' }
+  { __typename?: 'mutation_root' }
   & { insert_calender_events?: Maybe<(
     { __typename?: 'calender_events_mutation_response' }
     & Pick<Calender_Events_Mutation_Response, 'affected_rows'>
@@ -18340,14 +18346,16 @@ export type AddCalenderEventMutation = (
 );
 
 export type AddProfileMutationVariables = Exact<{
-  image: Scalars['String'];
-  bio: Scalars['String'];
+  image?: Maybe<Scalars['String']>;
+  bio?: Maybe<Scalars['String']>;
   user_id: Scalars['Int'];
+  title?: Maybe<Scalars['String']>;
+  badges?: Maybe<Scalars['String']>;
 }>;
 
 
 export type AddProfileMutation = (
-  { __typename: 'mutation_root' }
+  { __typename?: 'mutation_root' }
   & { addProfile?: Maybe<(
     { __typename?: 'Message' }
     & Pick<Message, 'message'>
@@ -18363,7 +18371,7 @@ export type GetUserDetailsQuery = (
   { __typename?: 'query_root' }
   & { userDetails?: Maybe<(
     { __typename?: 'Profile' }
-    & Pick<Profile, 'bio' | 'image' | 'user_id'>
+    & Pick<Profile, 'bio' | 'image' | 'user_id' | 'title' | 'badges'>
   )> }
 );
 
@@ -22515,7 +22523,6 @@ export type DeleteCalenderEventMutationResult = ApolloReactCommon.MutationResult
 export type DeleteCalenderEventMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteCalenderEventMutation, DeleteCalenderEventMutationVariables>;
 export const AddCalenderEventDocument = gql`
     mutation AddCalenderEvent($title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!) {
-  __typename
   insert_calender_events(
     objects: {title: $title, start_time: $start_time, end_time: $end_time, content: $content, url: $url, module: $module, network: $network}
   ) {
@@ -22555,9 +22562,14 @@ export type AddCalenderEventMutationHookResult = ReturnType<typeof useAddCalende
 export type AddCalenderEventMutationResult = ApolloReactCommon.MutationResult<AddCalenderEventMutation>;
 export type AddCalenderEventMutationOptions = ApolloReactCommon.BaseMutationOptions<AddCalenderEventMutation, AddCalenderEventMutationVariables>;
 export const AddProfileDocument = gql`
-    mutation addProfile($image: String!, $bio: String!, $user_id: Int!) {
-  __typename
-  addProfile(image: $image, bio: $bio, user_id: $user_id) {
+    mutation addProfile($image: String, $bio: String, $user_id: Int!, $title: String, $badges: String) {
+  addProfile(
+    image: $image
+    bio: $bio
+    user_id: $user_id
+    title: $title
+    badges: $badges
+  ) {
     message
   }
 }
@@ -22580,6 +22592,8 @@ export type AddProfileMutationFn = ApolloReactCommon.MutationFunction<AddProfile
  *      image: // value for 'image'
  *      bio: // value for 'bio'
  *      user_id: // value for 'user_id'
+ *      title: // value for 'title'
+ *      badges: // value for 'badges'
  *   },
  * });
  */
@@ -22595,6 +22609,8 @@ export const GetUserDetailsDocument = gql`
     bio
     image
     user_id
+    title
+    badges
   }
 }
     `;

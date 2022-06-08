@@ -90,6 +90,12 @@ const UpcomingEvents = ({ className }: Props) => {
 };
 
 export default styled(UpcomingEvents)`
+	h1 {
+		@media only screen and (max-width: 576px) {
+			margin-top: 42px;
+		}
+	}
+
 	.card {
 		background: #fff;
 		border-radius: 10px;
@@ -180,6 +186,8 @@ export default styled(UpcomingEvents)`
 		.event-calendar-col{
 			height: 490px;
 			max-height: 490px;
+			padding-left: 5px !important;
+			padding-right: 6px !important;
 
 			@media only screen and (max-width: 991.5px) {
 				height: 420px;

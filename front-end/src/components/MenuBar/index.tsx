@@ -48,6 +48,7 @@ const MenuBar = ({ className, toggleSidebarHidden, setSidebarHidden } : Props): 
 	const loggedInItems = [
 		{ content:'Notifications', icon:'bell', to:'/notification-settings' },
 		{ content:'Settings', icon:'cog', to:'/settings' },
+		{ content:'Profile', icon:'user circle', to:`/user/${currentUser.username}` },
 		{ content:'Tracker', icon:'bookmark', to:'/tracker' },
 		{ content:'Logout', icon:'sign-out', onClick: handleLogout, to:'/' }
 	];
@@ -62,7 +63,7 @@ const MenuBar = ({ className, toggleSidebarHidden, setSidebarHidden } : Props): 
 
 	const userMenu = currentUser.web3signup && currentUser.defaultAddress
 		? <><AddressComponent address={currentUser.defaultAddress} /></>
-		: <><Icon size='big' name='user circle' inverted />{username}</>;
+		: <><Icon size='big' name='user circle' inverted /> {username} </>;
 
 	const caretIcon = <Icon name='caret down' inverted />;
 

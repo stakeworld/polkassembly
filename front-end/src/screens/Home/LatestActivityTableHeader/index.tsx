@@ -36,8 +36,8 @@ export default styled(LatestActivityTableHeader)`
 	z-index: 200;
 
 	tr {
-		height: 76px;
-    min-height: 76px;
+		height: 60px;
+    min-height: 60px;
 	}
 
 	th {
