@@ -12,7 +12,8 @@ export default async (
 		onchain_proposal_id,
 		status,
 		deadline,
-		network
+		network,
+		start_time
 	}: CreateProposalTrackerArgs,
 	ctx: Context): Promise<MessageType> => {
 	const authServiceInstance = new AuthService();
@@ -23,7 +24,8 @@ export default async (
 		status,
 		deadline,
 		token,
-		network
+		network,
+		start_time
 	);
 
 	return { message: 'Status set successfully' };

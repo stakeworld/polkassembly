@@ -383,6 +383,7 @@ export interface CreateProposalTrackerArgs {
     network: string;
     onchain_proposal_id: number;
     status: string;
+    start_time: string;
 }
 
 export interface UpdateProposalTrackerArgs {

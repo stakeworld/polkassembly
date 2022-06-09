@@ -40,9 +40,12 @@
       columns:
       - content
       - end_time
+      - event_id
+      - event_type
       - module
       - network
       - start_time
+      - status
       - title
       - url
       backend_only: false
@@ -63,37 +66,46 @@
   - role: event_bot
     permission:
       columns:
-      - id
       - content
+      - end_time
+      - event_id
+      - event_type
+      - id
       - module
       - network
+      - start_time
+      - status
       - title
       - url
-      - end_time
-      - start_time
       filter: {}
       allow_aggregations: true
   - role: user
     permission:
       columns:
-      - id
       - content
+      - end_time
+      - event_id
+      - event_type
+      - id
       - module
       - network
+      - start_time
+      - status
       - title
       - url
-      - end_time
-      - start_time
       filter: {}
+      allow_aggregations: true
   update_permissions:
   - role: event_bot
     permission:
       columns:
       - content
       - end_time
+      - event_id
       - module
       - network
       - start_time
+      - status
       - title
       - url
       filter: {}

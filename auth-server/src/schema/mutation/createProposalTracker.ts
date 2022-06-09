@@ -8,5 +8,6 @@ export default `
 		status: String!,
 		deadline: String!,
 		network: String!,
+		start_time: String!
     ): Message
 `;
