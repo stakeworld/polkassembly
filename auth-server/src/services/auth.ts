@@ -1276,9 +1276,10 @@ export default class AuthService {
 		status: string,
 		deadline: string,
 		token: string,
-		network: string
+		network: string,
+		start_time: string
 	): Promise<void> {
-		if (!token || !status || !deadline || !onchain_proposal_id || !network) {
+		if (!token || !status || !deadline || !onchain_proposal_id || !network || !start_time) {
 			throw new ForbiddenError(messages.INVALID_PROPOSAL_TRACKER_PARAMS);
 		}
 
@@ -1332,8 +1333,8 @@ export default class AuthService {
 		const title = 'Deadline for onchain proposal #' + onchain_proposal_id;
 		const url = 'https://' + process.env.DOMAIN_NAME + '/treasury/' + onchain_proposal_id;
 
-		const addCalenderEventMutation = `mutation calenderEvent($end_time: timestamptz!, $start_time: timestamptz!, $title: String!, $network: String!, $url: String!) {
-			insert_calender_events(objects: {end_time: $end_time, title: $title, start_time: $start_time, network: $network, url: $url}) {
+		const addCalenderEventMutation = `mutation calenderEvent($end_time: timestamptz!, $start_time: timestamptz!, $title: String!, $network: String!, $url: String!, $status: String!, $event_type: String!, $event_id: Int!) {
+			insert_calender_events(objects: {end_time: $end_time, title: $title, start_time: $start_time, network: $network, url: $url, status: $status, event_type: $event_type, event_id: $event_id}) {
 			  affected_rows
 			}
 		  }
@@ -1348,8 +1349,11 @@ export default class AuthService {
 				query: addCalenderEventMutation,
 				variables: {
 					end_time: deadline,
+					event_id: onchain_proposal_id,
+					event_type: 'onchain_treasury_proposal',
 					network: network,
-					start_time: deadline,
+					start_time: start_time,
+					status: status,
 					title: title,
 					url: url
 				}
@@ -1387,7 +1391,9 @@ export default class AuthService {
 		const getProposalTrackerQuery = `query getProposalTracker($id: Int!) {
 			proposal_tracker(where: {id: {_eq: $id}}){
 				id,
-				user_id
+				user_id,
+				onchain_proposal_id,
+				status
 			}
 		}`;
 
@@ -1459,6 +1465,42 @@ export default class AuthService {
 			console.log('error in proposal tracker');
 			console.log(updateJson.errors);
 			throw new ForbiddenError(messages.ERROR_IN_PROPOSAL_TRACKER);
+		}
+		const updateCalenderEventMutation = `mutation calenderEvent($status: String!, $event_id: Int!, $event_type: String!) {
+			update_calender_events(where: {event_type: {_eq: $event_type}, event_id: {_eq: $event_id}}, _set: {status: $status}) {
+			  affected_rows
+			}
+		  }
+		`;
+
+		const eventBot = await getUserFromUserId(Number(process.env.EVENT_BOT_USER_ID));
+		const eventBotToken = await this.getSignedToken(eventBot);
+
+		const calenderRequest = {
+			body: JSON.stringify({
+				operationName: 'calenderEvent',
+				query: updateCalenderEventMutation,
+				variables: {
+					event_id: json.data.proposal_tracker[0].onchain_proposal_id,
+					event_type: 'onchain_treasury_proposal',
+					status: status
+				}
+			}),
+			headers: {
+				authorization: `Bearer ${eventBotToken}`,
+				'content-type': 'application/json'
+			},
+			method: 'POST'
+		};
+
+		const CalenderResult = await fetch(api, calenderRequest);
+
+		const CalenderJson = await CalenderResult.json();
+
+		if (CalenderJson.errors) {
+			console.log('error in adding event');
+			console.log(CalenderJson.errors);
+			throw new ForbiddenError(messages.ERROR_IN_ADDING_EVENT);
 		}
 	}
 }

@@ -23,6 +23,9 @@ query GetCalenderEvents($network: String!) {
         start_time
         title
         url
+        event_type
+        event_id
+        status
     }
 }
 `;
