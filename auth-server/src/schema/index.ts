@@ -19,6 +19,7 @@ import changePasswordMutation from './mutation/changePassword';
 import changeUsernameMutation from './mutation/changeUsername';
 import createPostConfirm from './mutation/createPostConfirm';
 import createPostStart from './mutation/createPostStart';
+import createProposalTracker from './mutation/createProposalTracker';
 import deleteAccount from './mutation/deleteAccount';
 import editPostConfirm from './mutation/editPostConfirm';
 import editPostStart from './mutation/editPostStart';
@@ -37,6 +38,7 @@ import setCredentialsStart from './mutation/setCredentialsStart';
 import setDefaultAddress from './mutation/setDefaultAddress';
 import signupMutation from './mutation/signup';
 import undoEmailChange from './mutation/undoEmailChange';
+import updateProposalTracker from './mutation/updateProposalTracker';
 import verifyEmail from './mutation/verifyEmail';
 import aboutQuery from './query/about';
 import profileQuery from './query/profile';
@@ -102,6 +104,7 @@ export default gql`
 		${changeNotificationPreference}
 		${createPostConfirm}
 		${createPostStart}
+		${createProposalTracker}
 		${editPostConfirm}
 		${editPostStart}
 		${deleteAccount}
@@ -120,6 +123,7 @@ export default gql`
 		${setDefaultAddress}
 		${signupMutation}
 		${undoEmailChange}
+		${updateProposalTracker}
 		${verifyEmail}
 	}
 `;

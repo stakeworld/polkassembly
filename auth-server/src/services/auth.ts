@@ -1270,4 +1270,237 @@ export default class AuthService {
 			throw new ForbiddenError(messages.ERROR_IN_POST_EDIT);
 		}
 	}
+
+	public async ProposalTrackerCreate (
+		onchain_proposal_id: number,
+		status: string,
+		deadline: string,
+		token: string,
+		network: string,
+		start_time: string
+	): Promise<void> {
+		if (!token || !status || !deadline || !onchain_proposal_id || !network || !start_time) {
+			throw new ForbiddenError(messages.INVALID_PROPOSAL_TRACKER_PARAMS);
+		}
+
+		const user = await this.GetUser(token);
+		const user_id = user.id;
+
+		const proposalTrackerMutaion = `mutation createProposalTracker($deadline: timestamptz!, $network: String!, $onchain_proposal_id: Int!, $status: String!, $user_id: Int!) {
+			insert_proposal_tracker(objects: {deadline: $deadline, network: $network, onchain_proposal_id: $onchain_proposal_id, status: $status, user_id: $user_id}) {
+			  affected_rows
+			  returning {
+				id
+			  }
+			}
+		}`;
+
+		const request = {
+			body: JSON.stringify({
+				operationName: 'createProposalTracker',
+				query: proposalTrackerMutaion,
+				variables: {
+					deadline,
+					network,
+					onchain_proposal_id: onchain_proposal_id,
+					status,
+					user_id
+				}
+			}),
+			headers: {
+				authorization: `Bearer ${token}`,
+				'content-type': 'application/json'
+			},
+			method: 'POST'
+		};
+
+		let api = `https://${process.env.DOMAIN_NAME}/v1/graphql`;
+
+		if (process.env.DOMAIN_NAME === 'test.polkassembly.io') {
+			api = 'https://test.polkassembly.io/v1/graphql';
+		}
+
+		const result = await fetch(api, request);
+
+		const json = await result.json();
+
+		if (json.errors) {
+			console.log('error in proposal tracker');
+			console.log(json.errors);
+			throw new ForbiddenError(messages.ERROR_IN_PROPOSAL_TRACKER);
+		}
+
+		const title = 'Deadline for onchain proposal #' + onchain_proposal_id;
+		const url = 'https://' + process.env.DOMAIN_NAME + '/treasury/' + onchain_proposal_id;
+
+		const addCalenderEventMutation = `mutation calenderEvent($end_time: timestamptz!, $start_time: timestamptz!, $title: String!, $network: String!, $url: String!, $status: String!, $event_type: String!, $event_id: Int!) {
+			insert_calender_events(objects: {end_time: $end_time, title: $title, start_time: $start_time, network: $network, url: $url, status: $status, event_type: $event_type, event_id: $event_id}) {
+			  affected_rows
+			}
+		  }
+		`;
+
+		const eventBot = await getUserFromUserId(Number(process.env.EVENT_BOT_USER_ID));
+		const eventBotToken = await this.getSignedToken(eventBot);
+
+		const calenderRequest = {
+			body: JSON.stringify({
+				operationName: 'calenderEvent',
+				query: addCalenderEventMutation,
+				variables: {
+					end_time: deadline,
+					event_id: onchain_proposal_id,
+					event_type: 'onchain_treasury_proposal',
+					network: network,
+					start_time: start_time,
+					status: status,
+					title: title,
+					url: url
+				}
+			}),
+			headers: {
+				authorization: `Bearer ${eventBotToken}`,
+				'content-type': 'application/json'
+			},
+			method: 'POST'
+		};
+
+		const CalenderResult = await fetch(api, calenderRequest);
+
+		const CalenderJson = await CalenderResult.json();
+
+		if (CalenderJson.errors) {
+			console.log('error in adding event');
+			console.log(CalenderJson.errors);
+			throw new ForbiddenError(messages.ERROR_IN_ADDING_EVENT);
+		}
+	}
+
+	public async ProposalTrackerUpdate (
+		id: number,
+		status: string,
+		token: string
+	): Promise<void> {
+		if (!token || !status || !id) {
+			throw new ForbiddenError(messages.INVALID_PROPOSAL_TRACKER_PARAMS);
+		}
+
+		const user = await this.GetUser(token);
+		const user_id = user.id;
+
+		const getProposalTrackerQuery = `query getProposalTracker($id: Int!) {
+			proposal_tracker(where: {id: {_eq: $id}}){
+				id,
+				user_id,
+				onchain_proposal_id,
+				status
+			}
+		}`;
+
+		const getProposalTracker = {
+			body: JSON.stringify({
+				operationName: 'getProposalTracker',
+				query: getProposalTrackerQuery,
+				variables: {
+					id
+				}
+			}),
+			headers: {
+				authorization: `Bearer ${token}`,
+				'content-type': 'application/json'
+			},
+			method: 'POST'
+		};
+
+		let api = `https://${process.env.DOMAIN_NAME}/v1/graphql`;
+
+		if (process.env.DOMAIN_NAME === 'test.polkassembly.io') {
+			api = 'https://test.polkassembly.io/v1/graphql';
+		}
+
+		const result = await fetch(api, getProposalTracker);
+		const json = await result.json();
+
+		if (json.errors) {
+			console.log('error in proposal tracker');
+			console.log(json.errors);
+			throw new ForbiddenError(messages.ERROR_IN_PROPOSAL_TRACKER);
+		}
+
+		if (json.data.proposal_tracker.length === 0) {
+			throw new ForbiddenError(messages.ERROR_IN_PROPOSAL_TRACKER);
+		}
+
+		if (json.data.proposal_tracker[0].user_id !== user_id) {
+			throw new ForbiddenError(messages.ERROR_IN_PROPOSAL_TRACKER);
+		}
+
+		const proposalTrackerMutaion = `mutation updateProposalTracker($id: Int!, $status: String!) {
+			update_proposal_tracker(where: {id: {_eq: $id}}, _set: {status: $status}) {
+			  affected_rows
+			}
+		}`;
+
+		const request = {
+			body: JSON.stringify({
+				operationName: 'updateProposalTracker',
+				query: proposalTrackerMutaion,
+				variables: {
+					id,
+					status
+				}
+			}),
+			headers: {
+				authorization: `Bearer ${token}`,
+				'content-type': 'application/json'
+			},
+			method: 'POST'
+		};
+
+		const updateResult = await fetch(api, request);
+
+		const updateJson = await updateResult.json();
+
+		if (updateJson.errors) {
+			console.log('error in proposal tracker');
+			console.log(updateJson.errors);
+			throw new ForbiddenError(messages.ERROR_IN_PROPOSAL_TRACKER);
+		}
+		const updateCalenderEventMutation = `mutation calenderEvent($status: String!, $event_id: Int!, $event_type: String!) {
+			update_calender_events(where: {event_type: {_eq: $event_type}, event_id: {_eq: $event_id}}, _set: {status: $status}) {
+			  affected_rows
+			}
+		  }
+		`;
+
+		const eventBot = await getUserFromUserId(Number(process.env.EVENT_BOT_USER_ID));
+		const eventBotToken = await this.getSignedToken(eventBot);
+
+		const calenderRequest = {
+			body: JSON.stringify({
+				operationName: 'calenderEvent',
+				query: updateCalenderEventMutation,
+				variables: {
+					event_id: json.data.proposal_tracker[0].onchain_proposal_id,
+					event_type: 'onchain_treasury_proposal',
+					status: status
+				}
+			}),
+			headers: {
+				authorization: `Bearer ${eventBotToken}`,
+				'content-type': 'application/json'
+			},
+			method: 'POST'
+		};
+
+		const CalenderResult = await fetch(api, calenderRequest);
+
+		const CalenderJson = await CalenderResult.json();
+
+		if (CalenderJson.errors) {
+			console.log('error in adding event');
+			console.log(CalenderJson.errors);
+			throw new ForbiddenError(messages.ERROR_IN_ADDING_EVENT);
+		}
+	}
 }

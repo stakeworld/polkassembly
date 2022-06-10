@@ -40,9 +40,12 @@
       columns:
       - content
       - end_time
+      - event_id
+      - event_type
       - module
       - network
       - start_time
+      - status
       - title
       - url
       backend_only: false
@@ -63,37 +66,46 @@
   - role: event_bot
     permission:
       columns:
-      - id
       - content
+      - end_time
+      - event_id
+      - event_type
+      - id
       - module
       - network
+      - start_time
+      - status
       - title
       - url
-      - end_time
-      - start_time
       filter: {}
       allow_aggregations: true
   - role: user
     permission:
       columns:
-      - id
       - content
+      - end_time
+      - event_id
+      - event_type
+      - id
       - module
       - network
+      - start_time
+      - status
       - title
       - url
-      - end_time
-      - start_time
       filter: {}
+      allow_aggregations: true
   update_permissions:
   - role: event_bot
     permission:
       columns:
       - content
       - end_time
+      - event_id
       - module
       - network
       - start_time
+      - status
       - title
       - url
       filter: {}
@@ -270,6 +282,14 @@
   - name: post
     using:
       foreign_key_constraint_on: post_id
+  array_relationships:
+  - name: onchain_post_discussion_links
+    using:
+      foreign_key_constraint_on:
+        column: onchain_link_id
+        table:
+          schema: public
+          name: onchain_post_discussion_link
   remote_relationships:
   - definition:
       remote_field:
@@ -445,6 +465,13 @@
 - table:
     schema: public
     name: onchain_post_discussion_link
+  object_relationships:
+  - name: onchain_link
+    using:
+      foreign_key_constraint_on: onchain_link_id
+  - name: post
+    using:
+      foreign_key_constraint_on: discussion_post_id
   insert_permissions:
   - role: user
     permission:
@@ -990,6 +1017,13 @@
         table:
           schema: public
           name: comments
+  - name: onchain_post_discussion_links
+    using:
+      foreign_key_constraint_on:
+        column: discussion_post_id
+        table:
+          schema: public
+          name: onchain_post_discussion_link
   - name: option_polls
     using:
       foreign_key_constraint_on:
@@ -1105,6 +1139,50 @@
             proposer_address:
               _in: X-Hasura-Polkadot
       check: null
+- table:
+    schema: public
+    name: proposal_tracker
+  insert_permissions:
+  - role: user
+    permission:
+      check:
+        _and:
+        - user_id:
+            _eq: X-Hasura-User-Id
+      columns:
+      - deadline
+      - network
+      - onchain_proposal_id
+      - status
+      - user_id
+      backend_only: false
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - created_at
+      - deadline
+      - id
+      - network
+      - onchain_proposal_id
+      - status
+      - updated_at
+      - user_id
+      filter: {}
+      allow_aggregations: true
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - status
+      filter:
+        _and:
+        - user_id:
+            _eq: X-Hasura-User-Id
+      check:
+        _and:
+        - user_id:
+            _eq: X-Hasura-User-Id
 - table:
     schema: public
     name: replies
