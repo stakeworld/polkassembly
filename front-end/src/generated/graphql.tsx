@@ -2846,6 +2846,7 @@ export type Mutation = {
   changeUsername?: Maybe<ChangeResponse>;
   createPostConfirm?: Maybe<Message>;
   createPostStart?: Maybe<AddressLoginType>;
+  createProposalTracker?: Maybe<Message>;
   deleteAccount?: Maybe<Message>;
   editPostConfirm?: Maybe<Message>;
   editPostStart?: Maybe<AddressLoginType>;
@@ -2864,6 +2865,7 @@ export type Mutation = {
   setDefaultAddress?: Maybe<ChangeResponse>;
   signup?: Maybe<LoginResponse>;
   undoEmailChange?: Maybe<UndoEmailChangeResponse>;
+  updateProposalTracker?: Maybe<Message>;
   verifyEmail?: Maybe<ChangeResponse>;
 };
 
@@ -2961,6 +2963,15 @@ export type MutationCreatePostConfirmArgs = {
 
 export type MutationCreatePostStartArgs = {
   address: Scalars['String'];
+};
+
+
+export type MutationCreateProposalTrackerArgs = {
+  deadline: Scalars['String'];
+  network: Scalars['String'];
+  onchain_proposal_id: Scalars['Int'];
+  start_time: Scalars['String'];
+  status: Scalars['String'];
 };
 
 
@@ -3066,6 +3077,12 @@ export type MutationSignupArgs = {
 
 export type MutationUndoEmailChangeArgs = {
   token: Scalars['String'];
+};
+
+
+export type MutationUpdateProposalTrackerArgs = {
+  id: Scalars['Int'];
+  status: Scalars['String'];
 };
 
 
@@ -9798,6 +9815,7 @@ export type Mutation_Root = {
   changeUsername?: Maybe<ChangeResponse>;
   createPostConfirm?: Maybe<Message>;
   createPostStart?: Maybe<AddressLoginType>;
+  createProposalTracker?: Maybe<Message>;
   deleteAccount?: Maybe<Message>;
   /** delete data from the table: "blockchain_socials" */
   delete_blockchain_socials?: Maybe<Blockchain_Socials_Mutation_Response>;
@@ -9819,6 +9837,10 @@ export type Mutation_Root = {
   delete_onchain_links?: Maybe<Onchain_Links_Mutation_Response>;
   /** delete single row from the table: "onchain_links" */
   delete_onchain_links_by_pk?: Maybe<Onchain_Links>;
+  /** delete data from the table: "onchain_post_discussion_link" */
+  delete_onchain_post_discussion_link?: Maybe<Onchain_Post_Discussion_Link_Mutation_Response>;
+  /** delete single row from the table: "onchain_post_discussion_link" */
+  delete_onchain_post_discussion_link_by_pk?: Maybe<Onchain_Post_Discussion_Link>;
   /** delete data from the table: "option_poll" */
   delete_option_poll?: Maybe<Option_Poll_Mutation_Response>;
   /** delete single row from the table: "option_poll" */
@@ -9885,6 +9907,10 @@ export type Mutation_Root = {
   insert_onchain_links?: Maybe<Onchain_Links_Mutation_Response>;
   /** insert a single row into the table: "onchain_links" */
   insert_onchain_links_one?: Maybe<Onchain_Links>;
+  /** insert data into the table: "onchain_post_discussion_link" */
+  insert_onchain_post_discussion_link?: Maybe<Onchain_Post_Discussion_Link_Mutation_Response>;
+  /** insert a single row into the table: "onchain_post_discussion_link" */
+  insert_onchain_post_discussion_link_one?: Maybe<Onchain_Post_Discussion_Link>;
   /** insert data into the table: "option_poll" */
   insert_option_poll?: Maybe<Option_Poll_Mutation_Response>;
   /** insert a single row into the table: "option_poll" */
@@ -9944,6 +9970,7 @@ export type Mutation_Root = {
   setDefaultAddress?: Maybe<ChangeResponse>;
   signup?: Maybe<LoginResponse>;
   undoEmailChange?: Maybe<UndoEmailChangeResponse>;
+  updateProposalTracker?: Maybe<Message>;
   /** update data of the table: "blockchain_socials" */
   update_blockchain_socials?: Maybe<Blockchain_Socials_Mutation_Response>;
   /** update single row of the table: "blockchain_socials" */
@@ -9964,6 +9991,10 @@ export type Mutation_Root = {
   update_onchain_links?: Maybe<Onchain_Links_Mutation_Response>;
   /** update single row of the table: "onchain_links" */
   update_onchain_links_by_pk?: Maybe<Onchain_Links>;
+  /** update data of the table: "onchain_post_discussion_link" */
+  update_onchain_post_discussion_link?: Maybe<Onchain_Post_Discussion_Link_Mutation_Response>;
+  /** update single row of the table: "onchain_post_discussion_link" */
+  update_onchain_post_discussion_link_by_pk?: Maybe<Onchain_Post_Discussion_Link>;
   /** update data of the table: "option_poll" */
   update_option_poll?: Maybe<Option_Poll_Mutation_Response>;
   /** update single row of the table: "option_poll" */
@@ -10124,6 +10155,16 @@ export type Mutation_RootCreatePostStartArgs = {
 
 
 /** mutation root */
+export type Mutation_RootCreateProposalTrackerArgs = {
+  deadline: Scalars['String'];
+  network: Scalars['String'];
+  onchain_proposal_id: Scalars['Int'];
+  start_time: Scalars['String'];
+  status: Scalars['String'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDeleteAccountArgs = {
   password: Scalars['String'];
 };
@@ -10185,6 +10226,18 @@ export type Mutation_RootDelete_Onchain_LinksArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Onchain_Links_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Onchain_Post_Discussion_LinkArgs = {
+  where: Onchain_Post_Discussion_Link_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Onchain_Post_Discussion_Link_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -10406,6 +10459,20 @@ export type Mutation_RootInsert_Onchain_LinksArgs = {
 export type Mutation_RootInsert_Onchain_Links_OneArgs = {
   object: Onchain_Links_Insert_Input;
   on_conflict?: Maybe<Onchain_Links_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Onchain_Post_Discussion_LinkArgs = {
+  objects: Array<Onchain_Post_Discussion_Link_Insert_Input>;
+  on_conflict?: Maybe<Onchain_Post_Discussion_Link_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Onchain_Post_Discussion_Link_OneArgs = {
+  object: Onchain_Post_Discussion_Link_Insert_Input;
+  on_conflict?: Maybe<Onchain_Post_Discussion_Link_On_Conflict>;
 };
 
 
@@ -10661,6 +10728,13 @@ export type Mutation_RootUndoEmailChangeArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdateProposalTrackerArgs = {
+  id: Scalars['Int'];
+  status: Scalars['String'];
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Blockchain_SocialsArgs = {
   _inc?: Maybe<Blockchain_Socials_Inc_Input>;
   _set?: Maybe<Blockchain_Socials_Set_Input>;
@@ -10737,6 +10811,22 @@ export type Mutation_RootUpdate_Onchain_Links_By_PkArgs = {
   _inc?: Maybe<Onchain_Links_Inc_Input>;
   _set?: Maybe<Onchain_Links_Set_Input>;
   pk_columns: Onchain_Links_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Onchain_Post_Discussion_LinkArgs = {
+  _inc?: Maybe<Onchain_Post_Discussion_Link_Inc_Input>;
+  _set?: Maybe<Onchain_Post_Discussion_Link_Set_Input>;
+  where: Onchain_Post_Discussion_Link_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Onchain_Post_Discussion_Link_By_PkArgs = {
+  _inc?: Maybe<Onchain_Post_Discussion_Link_Inc_Input>;
+  _set?: Maybe<Onchain_Post_Discussion_Link_Set_Input>;
+  pk_columns: Onchain_Post_Discussion_Link_Pk_Columns_Input;
 };
 
 
@@ -10937,6 +11027,10 @@ export type Onchain_Links = {
   /** Remote relationship field */
   onchain_motion: Array<Maybe<Motion>>;
   onchain_motion_id?: Maybe<Scalars['Int']>;
+  /** An array relationship */
+  onchain_post_discussion_links: Array<Onchain_Post_Discussion_Link>;
+  /** An aggregated array relationship */
+  onchain_post_discussion_links_aggregate: Onchain_Post_Discussion_Link_Aggregate;
   /** Remote relationship field */
   onchain_proposal: Array<Maybe<Proposal>>;
   onchain_proposal_id?: Maybe<Scalars['Int']>;
@@ -10990,6 +11084,36 @@ export type Onchain_LinksOnchain_MotionArgs = {
   orderBy?: Maybe<MotionOrderByInput>;
   skip?: Maybe<Scalars['Int']>;
   where?: Maybe<MotionWhereInput_Remote_Rel_Public_Onchain_Linksonchain_Motion>;
+};
+
+
+/**
+ * on chain proposal created automatically by chain-db-watcher
+ *
+ *
+ * columns and relationships of "onchain_links"
+ */
+export type Onchain_LinksOnchain_Post_Discussion_LinksArgs = {
+  distinct_on?: Maybe<Array<Onchain_Post_Discussion_Link_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Onchain_Post_Discussion_Link_Order_By>>;
+  where?: Maybe<Onchain_Post_Discussion_Link_Bool_Exp>;
+};
+
+
+/**
+ * on chain proposal created automatically by chain-db-watcher
+ *
+ *
+ * columns and relationships of "onchain_links"
+ */
+export type Onchain_LinksOnchain_Post_Discussion_Links_AggregateArgs = {
+  distinct_on?: Maybe<Array<Onchain_Post_Discussion_Link_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Onchain_Post_Discussion_Link_Order_By>>;
+  where?: Maybe<Onchain_Post_Discussion_Link_Bool_Exp>;
 };
 
 
@@ -11162,6 +11286,7 @@ export type Onchain_Links_Bool_Exp = {
   id?: Maybe<Int_Comparison_Exp>;
   onchain_bounty_id?: Maybe<Int_Comparison_Exp>;
   onchain_motion_id?: Maybe<Int_Comparison_Exp>;
+  onchain_post_discussion_links?: Maybe<Onchain_Post_Discussion_Link_Bool_Exp>;
   onchain_proposal_id?: Maybe<Int_Comparison_Exp>;
   onchain_referendum_id?: Maybe<Int_Comparison_Exp>;
   onchain_tech_committee_proposal_id?: Maybe<Int_Comparison_Exp>;
@@ -11210,6 +11335,7 @@ export type Onchain_Links_Insert_Input = {
   id?: Maybe<Scalars['Int']>;
   onchain_bounty_id?: Maybe<Scalars['Int']>;
   onchain_motion_id?: Maybe<Scalars['Int']>;
+  onchain_post_discussion_links?: Maybe<Onchain_Post_Discussion_Link_Arr_Rel_Insert_Input>;
   onchain_proposal_id?: Maybe<Scalars['Int']>;
   onchain_referendum_id?: Maybe<Scalars['Int']>;
   onchain_tech_committee_proposal_id?: Maybe<Scalars['Int']>;
@@ -11310,6 +11436,7 @@ export type Onchain_Links_Order_By = {
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
+  onchain_post_discussion_links_aggregate?: Maybe<Onchain_Post_Discussion_Link_Aggregate_Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
   onchain_referendum_id?: Maybe<Order_By>;
   onchain_tech_committee_proposal_id?: Maybe<Order_By>;
@@ -11565,6 +11692,372 @@ export type Onchain_Links_Variance_Order_By = {
   onchain_tech_committee_proposal_id?: Maybe<Order_By>;
   onchain_treasury_proposal_id?: Maybe<Order_By>;
   post_id?: Maybe<Order_By>;
+};
+
+/** columns and relationships of "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link = {
+  __typename?: 'onchain_post_discussion_link';
+  author_id: Scalars['Int'];
+  created_at: Scalars['timestamp'];
+  discussion_post_id: Scalars['Int'];
+  id: Scalars['Int'];
+  /** An object relationship */
+  onchain_link: Onchain_Links;
+  onchain_link_id: Scalars['Int'];
+  /** An object relationship */
+  post: Posts;
+  updated_at: Scalars['timestamptz'];
+};
+
+/** aggregated selection of "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_Aggregate = {
+  __typename?: 'onchain_post_discussion_link_aggregate';
+  aggregate?: Maybe<Onchain_Post_Discussion_Link_Aggregate_Fields>;
+  nodes: Array<Onchain_Post_Discussion_Link>;
+};
+
+/** aggregate fields of "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_Aggregate_Fields = {
+  __typename?: 'onchain_post_discussion_link_aggregate_fields';
+  avg?: Maybe<Onchain_Post_Discussion_Link_Avg_Fields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Onchain_Post_Discussion_Link_Max_Fields>;
+  min?: Maybe<Onchain_Post_Discussion_Link_Min_Fields>;
+  stddev?: Maybe<Onchain_Post_Discussion_Link_Stddev_Fields>;
+  stddev_pop?: Maybe<Onchain_Post_Discussion_Link_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Onchain_Post_Discussion_Link_Stddev_Samp_Fields>;
+  sum?: Maybe<Onchain_Post_Discussion_Link_Sum_Fields>;
+  var_pop?: Maybe<Onchain_Post_Discussion_Link_Var_Pop_Fields>;
+  var_samp?: Maybe<Onchain_Post_Discussion_Link_Var_Samp_Fields>;
+  variance?: Maybe<Onchain_Post_Discussion_Link_Variance_Fields>;
+};
+
+
+/** aggregate fields of "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Onchain_Post_Discussion_Link_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_Aggregate_Order_By = {
+  avg?: Maybe<Onchain_Post_Discussion_Link_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Onchain_Post_Discussion_Link_Max_Order_By>;
+  min?: Maybe<Onchain_Post_Discussion_Link_Min_Order_By>;
+  stddev?: Maybe<Onchain_Post_Discussion_Link_Stddev_Order_By>;
+  stddev_pop?: Maybe<Onchain_Post_Discussion_Link_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Onchain_Post_Discussion_Link_Stddev_Samp_Order_By>;
+  sum?: Maybe<Onchain_Post_Discussion_Link_Sum_Order_By>;
+  var_pop?: Maybe<Onchain_Post_Discussion_Link_Var_Pop_Order_By>;
+  var_samp?: Maybe<Onchain_Post_Discussion_Link_Var_Samp_Order_By>;
+  variance?: Maybe<Onchain_Post_Discussion_Link_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_Arr_Rel_Insert_Input = {
+  data: Array<Onchain_Post_Discussion_Link_Insert_Input>;
+  on_conflict?: Maybe<Onchain_Post_Discussion_Link_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Onchain_Post_Discussion_Link_Avg_Fields = {
+  __typename?: 'onchain_post_discussion_link_avg_fields';
+  author_id?: Maybe<Scalars['Float']>;
+  discussion_post_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  onchain_link_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_Avg_Order_By = {
+  author_id?: Maybe<Order_By>;
+  discussion_post_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  onchain_link_id?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "onchain_post_discussion_link". All fields are combined with a logical 'AND'. */
+export type Onchain_Post_Discussion_Link_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Onchain_Post_Discussion_Link_Bool_Exp>>>;
+  _not?: Maybe<Onchain_Post_Discussion_Link_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Onchain_Post_Discussion_Link_Bool_Exp>>>;
+  author_id?: Maybe<Int_Comparison_Exp>;
+  created_at?: Maybe<Timestamp_Comparison_Exp>;
+  discussion_post_id?: Maybe<Int_Comparison_Exp>;
+  id?: Maybe<Int_Comparison_Exp>;
+  onchain_link?: Maybe<Onchain_Links_Bool_Exp>;
+  onchain_link_id?: Maybe<Int_Comparison_Exp>;
+  post?: Maybe<Posts_Bool_Exp>;
+  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "onchain_post_discussion_link" */
+export enum Onchain_Post_Discussion_Link_Constraint {
+  /** unique or primary key constraint */
+  OnchainPostDiscussionLinkPkey = 'onchain_post_discussion_link_pkey'
+}
+
+/** input type for incrementing integer column in table "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_Inc_Input = {
+  author_id?: Maybe<Scalars['Int']>;
+  discussion_post_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  onchain_link_id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_Insert_Input = {
+  author_id?: Maybe<Scalars['Int']>;
+  created_at?: Maybe<Scalars['timestamp']>;
+  discussion_post_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  onchain_link?: Maybe<Onchain_Links_Obj_Rel_Insert_Input>;
+  onchain_link_id?: Maybe<Scalars['Int']>;
+  post?: Maybe<Posts_Obj_Rel_Insert_Input>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type Onchain_Post_Discussion_Link_Max_Fields = {
+  __typename?: 'onchain_post_discussion_link_max_fields';
+  author_id?: Maybe<Scalars['Int']>;
+  created_at?: Maybe<Scalars['timestamp']>;
+  discussion_post_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  onchain_link_id?: Maybe<Scalars['Int']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by max() on columns of table "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_Max_Order_By = {
+  author_id?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  discussion_post_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  onchain_link_id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Onchain_Post_Discussion_Link_Min_Fields = {
+  __typename?: 'onchain_post_discussion_link_min_fields';
+  author_id?: Maybe<Scalars['Int']>;
+  created_at?: Maybe<Scalars['timestamp']>;
+  discussion_post_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  onchain_link_id?: Maybe<Scalars['Int']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by min() on columns of table "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_Min_Order_By = {
+  author_id?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  discussion_post_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  onchain_link_id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_Mutation_Response = {
+  __typename?: 'onchain_post_discussion_link_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Onchain_Post_Discussion_Link>;
+};
+
+/** input type for inserting object relation for remote table "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_Obj_Rel_Insert_Input = {
+  data: Onchain_Post_Discussion_Link_Insert_Input;
+  on_conflict?: Maybe<Onchain_Post_Discussion_Link_On_Conflict>;
+};
+
+/** on conflict condition type for table "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_On_Conflict = {
+  constraint: Onchain_Post_Discussion_Link_Constraint;
+  update_columns: Array<Onchain_Post_Discussion_Link_Update_Column>;
+  where?: Maybe<Onchain_Post_Discussion_Link_Bool_Exp>;
+};
+
+/** ordering options when selecting data from "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_Order_By = {
+  author_id?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  discussion_post_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  onchain_link?: Maybe<Onchain_Links_Order_By>;
+  onchain_link_id?: Maybe<Order_By>;
+  post?: Maybe<Posts_Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "onchain_post_discussion_link" */
+export enum Onchain_Post_Discussion_Link_Select_Column {
+  /** column name */
+  AuthorId = 'author_id',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  DiscussionPostId = 'discussion_post_id',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OnchainLinkId = 'onchain_link_id',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_Set_Input = {
+  author_id?: Maybe<Scalars['Int']>;
+  created_at?: Maybe<Scalars['timestamp']>;
+  discussion_post_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  onchain_link_id?: Maybe<Scalars['Int']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate stddev on columns */
+export type Onchain_Post_Discussion_Link_Stddev_Fields = {
+  __typename?: 'onchain_post_discussion_link_stddev_fields';
+  author_id?: Maybe<Scalars['Float']>;
+  discussion_post_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  onchain_link_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_Stddev_Order_By = {
+  author_id?: Maybe<Order_By>;
+  discussion_post_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  onchain_link_id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Onchain_Post_Discussion_Link_Stddev_Pop_Fields = {
+  __typename?: 'onchain_post_discussion_link_stddev_pop_fields';
+  author_id?: Maybe<Scalars['Float']>;
+  discussion_post_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  onchain_link_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_Stddev_Pop_Order_By = {
+  author_id?: Maybe<Order_By>;
+  discussion_post_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  onchain_link_id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Onchain_Post_Discussion_Link_Stddev_Samp_Fields = {
+  __typename?: 'onchain_post_discussion_link_stddev_samp_fields';
+  author_id?: Maybe<Scalars['Float']>;
+  discussion_post_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  onchain_link_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_Stddev_Samp_Order_By = {
+  author_id?: Maybe<Order_By>;
+  discussion_post_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  onchain_link_id?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Onchain_Post_Discussion_Link_Sum_Fields = {
+  __typename?: 'onchain_post_discussion_link_sum_fields';
+  author_id?: Maybe<Scalars['Int']>;
+  discussion_post_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  onchain_link_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_Sum_Order_By = {
+  author_id?: Maybe<Order_By>;
+  discussion_post_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  onchain_link_id?: Maybe<Order_By>;
+};
+
+/** update columns of table "onchain_post_discussion_link" */
+export enum Onchain_Post_Discussion_Link_Update_Column {
+  /** column name */
+  AuthorId = 'author_id',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  DiscussionPostId = 'discussion_post_id',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OnchainLinkId = 'onchain_link_id',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** aggregate var_pop on columns */
+export type Onchain_Post_Discussion_Link_Var_Pop_Fields = {
+  __typename?: 'onchain_post_discussion_link_var_pop_fields';
+  author_id?: Maybe<Scalars['Float']>;
+  discussion_post_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  onchain_link_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_Var_Pop_Order_By = {
+  author_id?: Maybe<Order_By>;
+  discussion_post_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  onchain_link_id?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Onchain_Post_Discussion_Link_Var_Samp_Fields = {
+  __typename?: 'onchain_post_discussion_link_var_samp_fields';
+  author_id?: Maybe<Scalars['Float']>;
+  discussion_post_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  onchain_link_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_Var_Samp_Order_By = {
+  author_id?: Maybe<Order_By>;
+  discussion_post_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  onchain_link_id?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Onchain_Post_Discussion_Link_Variance_Fields = {
+  __typename?: 'onchain_post_discussion_link_variance_fields';
+  author_id?: Maybe<Scalars['Float']>;
+  discussion_post_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  onchain_link_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "onchain_post_discussion_link" */
+export type Onchain_Post_Discussion_Link_Variance_Order_By = {
+  author_id?: Maybe<Order_By>;
+  discussion_post_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  onchain_link_id?: Maybe<Order_By>;
 };
 
 /** columns and relationships of "option_poll" */
@@ -14566,6 +15059,10 @@ export type Posts = {
   /** An object relationship */
   onchain_link?: Maybe<Onchain_Links>;
   /** An array relationship */
+  onchain_post_discussion_links: Array<Onchain_Post_Discussion_Link>;
+  /** An aggregated array relationship */
+  onchain_post_discussion_links_aggregate: Onchain_Post_Discussion_Link_Aggregate;
+  /** An array relationship */
   option_polls: Array<Option_Poll>;
   /** An aggregated array relationship */
   option_polls_aggregate: Option_Poll_Aggregate;
@@ -14606,6 +15103,26 @@ export type PostsComments_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Comments_Order_By>>;
   where?: Maybe<Comments_Bool_Exp>;
+};
+
+
+/** columns and relationships of "posts" */
+export type PostsOnchain_Post_Discussion_LinksArgs = {
+  distinct_on?: Maybe<Array<Onchain_Post_Discussion_Link_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Onchain_Post_Discussion_Link_Order_By>>;
+  where?: Maybe<Onchain_Post_Discussion_Link_Bool_Exp>;
+};
+
+
+/** columns and relationships of "posts" */
+export type PostsOnchain_Post_Discussion_Links_AggregateArgs = {
+  distinct_on?: Maybe<Array<Onchain_Post_Discussion_Link_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Onchain_Post_Discussion_Link_Order_By>>;
+  where?: Maybe<Onchain_Post_Discussion_Link_Bool_Exp>;
 };
 
 
@@ -14748,6 +15265,7 @@ export type Posts_Bool_Exp = {
   id?: Maybe<Int_Comparison_Exp>;
   last_update?: Maybe<Post_Last_Update_Bool_Exp>;
   onchain_link?: Maybe<Onchain_Links_Bool_Exp>;
+  onchain_post_discussion_links?: Maybe<Onchain_Post_Discussion_Link_Bool_Exp>;
   option_polls?: Maybe<Option_Poll_Bool_Exp>;
   polls?: Maybe<Poll_Bool_Exp>;
   post_reactions?: Maybe<Post_Reactions_Bool_Exp>;
@@ -14781,6 +15299,7 @@ export type Posts_Insert_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['Int']>;
   onchain_link?: Maybe<Onchain_Links_Obj_Rel_Insert_Input>;
+  onchain_post_discussion_links?: Maybe<Onchain_Post_Discussion_Link_Arr_Rel_Insert_Input>;
   option_polls?: Maybe<Option_Poll_Arr_Rel_Insert_Input>;
   polls?: Maybe<Poll_Arr_Rel_Insert_Input>;
   post_reactions?: Maybe<Post_Reactions_Arr_Rel_Insert_Input>;
@@ -14873,6 +15392,7 @@ export type Posts_Order_By = {
   id?: Maybe<Order_By>;
   last_update?: Maybe<Post_Last_Update_Order_By>;
   onchain_link?: Maybe<Onchain_Links_Order_By>;
+  onchain_post_discussion_links_aggregate?: Maybe<Onchain_Post_Discussion_Link_Aggregate_Order_By>;
   option_polls_aggregate?: Maybe<Option_Poll_Aggregate_Order_By>;
   polls_aggregate?: Maybe<Poll_Aggregate_Order_By>;
   post_reactions_aggregate?: Maybe<Post_Reactions_Aggregate_Order_By>;
@@ -15499,6 +16019,12 @@ export type Query_Root = {
   onchain_links_aggregate: Onchain_Links_Aggregate;
   /** fetch data from the table: "onchain_links" using primary key columns */
   onchain_links_by_pk?: Maybe<Onchain_Links>;
+  /** fetch data from the table: "onchain_post_discussion_link" */
+  onchain_post_discussion_link: Array<Onchain_Post_Discussion_Link>;
+  /** fetch aggregated fields from the table: "onchain_post_discussion_link" */
+  onchain_post_discussion_link_aggregate: Onchain_Post_Discussion_Link_Aggregate;
+  /** fetch data from the table: "onchain_post_discussion_link" using primary key columns */
+  onchain_post_discussion_link_by_pk?: Maybe<Onchain_Post_Discussion_Link>;
   /** fetch data from the table: "option_poll" */
   option_poll: Array<Option_Poll>;
   /** fetch aggregated fields from the table: "option_poll" */
@@ -16166,6 +16692,32 @@ export type Query_RootOnchain_Links_AggregateArgs = {
 
 /** query root */
 export type Query_RootOnchain_Links_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** query root */
+export type Query_RootOnchain_Post_Discussion_LinkArgs = {
+  distinct_on?: Maybe<Array<Onchain_Post_Discussion_Link_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Onchain_Post_Discussion_Link_Order_By>>;
+  where?: Maybe<Onchain_Post_Discussion_Link_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootOnchain_Post_Discussion_Link_AggregateArgs = {
+  distinct_on?: Maybe<Array<Onchain_Post_Discussion_Link_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Onchain_Post_Discussion_Link_Order_By>>;
+  where?: Maybe<Onchain_Post_Discussion_Link_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootOnchain_Post_Discussion_Link_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -17457,6 +18009,12 @@ export type Subscription_Root = {
   onchain_links_aggregate: Onchain_Links_Aggregate;
   /** fetch data from the table: "onchain_links" using primary key columns */
   onchain_links_by_pk?: Maybe<Onchain_Links>;
+  /** fetch data from the table: "onchain_post_discussion_link" */
+  onchain_post_discussion_link: Array<Onchain_Post_Discussion_Link>;
+  /** fetch aggregated fields from the table: "onchain_post_discussion_link" */
+  onchain_post_discussion_link_aggregate: Onchain_Post_Discussion_Link_Aggregate;
+  /** fetch data from the table: "onchain_post_discussion_link" using primary key columns */
+  onchain_post_discussion_link_by_pk?: Maybe<Onchain_Post_Discussion_Link>;
   /** fetch data from the table: "option_poll" */
   option_poll: Array<Option_Poll>;
   /** fetch aggregated fields from the table: "option_poll" */
@@ -17755,6 +18313,32 @@ export type Subscription_RootOnchain_Links_AggregateArgs = {
 
 /** subscription root */
 export type Subscription_RootOnchain_Links_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** subscription root */
+export type Subscription_RootOnchain_Post_Discussion_LinkArgs = {
+  distinct_on?: Maybe<Array<Onchain_Post_Discussion_Link_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Onchain_Post_Discussion_Link_Order_By>>;
+  where?: Maybe<Onchain_Post_Discussion_Link_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootOnchain_Post_Discussion_Link_AggregateArgs = {
+  distinct_on?: Maybe<Array<Onchain_Post_Discussion_Link_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Onchain_Post_Discussion_Link_Order_By>>;
+  where?: Maybe<Onchain_Post_Discussion_Link_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootOnchain_Post_Discussion_Link_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -18911,6 +19495,47 @@ export type GetUserDetailsQuery = (
   & { userDetails?: Maybe<(
     { __typename?: 'Profile' }
     & Pick<Profile, 'bio' | 'image' | 'user_id' | 'title' | 'badges'>
+  )> }
+);
+
+export type LinkDiscussionToOnchainPostMutationVariables = Exact<{
+  discussion_id: Scalars['Int'];
+  onchain_link_id: Scalars['Int'];
+  author_id: Scalars['Int'];
+}>;
+
+
+export type LinkDiscussionToOnchainPostMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_onchain_post_discussion_link?: Maybe<(
+    { __typename?: 'onchain_post_discussion_link_mutation_response' }
+    & Pick<Onchain_Post_Discussion_Link_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
+export type GetDiscussionToOnchainPostByOnchainIdQueryVariables = Exact<{
+  onchain_link_id: Scalars['Int'];
+}>;
+
+
+export type GetDiscussionToOnchainPostByOnchainIdQuery = (
+  { __typename?: 'query_root' }
+  & { onchain_post_discussion_link: Array<(
+    { __typename?: 'onchain_post_discussion_link' }
+    & Pick<Onchain_Post_Discussion_Link, 'author_id' | 'discussion_post_id' | 'id' | 'onchain_link_id'>
+  )> }
+);
+
+export type GetDiscussionToOnchainPostByDiscussionIdQueryVariables = Exact<{
+  discussion_post_id: Scalars['Int'];
+}>;
+
+
+export type GetDiscussionToOnchainPostByDiscussionIdQuery = (
+  { __typename?: 'query_root' }
+  & { onchain_post_discussion_link: Array<(
+    { __typename?: 'onchain_post_discussion_link' }
+    & Pick<Onchain_Post_Discussion_Link, 'author_id' | 'discussion_post_id' | 'id' | 'onchain_link_id'>
   )> }
 );
 
@@ -23195,6 +23820,120 @@ export function useGetUserDetailsLazyQuery(baseOptions?: ApolloReactHooks.LazyQu
 export type GetUserDetailsQueryHookResult = ReturnType<typeof useGetUserDetailsQuery>;
 export type GetUserDetailsLazyQueryHookResult = ReturnType<typeof useGetUserDetailsLazyQuery>;
 export type GetUserDetailsQueryResult = ApolloReactCommon.QueryResult<GetUserDetailsQuery, GetUserDetailsQueryVariables>;
+export const LinkDiscussionToOnchainPostDocument = gql`
+    mutation linkDiscussionToOnchainPost($discussion_id: Int!, $onchain_link_id: Int!, $author_id: Int!) {
+  insert_onchain_post_discussion_link(
+    objects: {discussion_post_id: $discussion_id, onchain_link_id: $onchain_link_id, author_id: $author_id}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export type LinkDiscussionToOnchainPostMutationFn = ApolloReactCommon.MutationFunction<LinkDiscussionToOnchainPostMutation, LinkDiscussionToOnchainPostMutationVariables>;
+
+/**
+ * __useLinkDiscussionToOnchainPostMutation__
+ *
+ * To run a mutation, you first call `useLinkDiscussionToOnchainPostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLinkDiscussionToOnchainPostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [linkDiscussionToOnchainPostMutation, { data, loading, error }] = useLinkDiscussionToOnchainPostMutation({
+ *   variables: {
+ *      discussion_id: // value for 'discussion_id'
+ *      onchain_link_id: // value for 'onchain_link_id'
+ *      author_id: // value for 'author_id'
+ *   },
+ * });
+ */
+export function useLinkDiscussionToOnchainPostMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<LinkDiscussionToOnchainPostMutation, LinkDiscussionToOnchainPostMutationVariables>) {
+        return ApolloReactHooks.useMutation<LinkDiscussionToOnchainPostMutation, LinkDiscussionToOnchainPostMutationVariables>(LinkDiscussionToOnchainPostDocument, baseOptions);
+      }
+export type LinkDiscussionToOnchainPostMutationHookResult = ReturnType<typeof useLinkDiscussionToOnchainPostMutation>;
+export type LinkDiscussionToOnchainPostMutationResult = ApolloReactCommon.MutationResult<LinkDiscussionToOnchainPostMutation>;
+export type LinkDiscussionToOnchainPostMutationOptions = ApolloReactCommon.BaseMutationOptions<LinkDiscussionToOnchainPostMutation, LinkDiscussionToOnchainPostMutationVariables>;
+export const GetDiscussionToOnchainPostByOnchainIdDocument = gql`
+    query GetDiscussionToOnchainPostByOnchainId($onchain_link_id: Int!) {
+  onchain_post_discussion_link(
+    where: {onchain_link_id: {_eq: $onchain_link_id}}
+    order_by: {updated_at: desc}
+  ) {
+    author_id
+    discussion_post_id
+    id
+    onchain_link_id
+  }
+}
+    `;
+
+/**
+ * __useGetDiscussionToOnchainPostByOnchainIdQuery__
+ *
+ * To run a query within a React component, call `useGetDiscussionToOnchainPostByOnchainIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetDiscussionToOnchainPostByOnchainIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetDiscussionToOnchainPostByOnchainIdQuery({
+ *   variables: {
+ *      onchain_link_id: // value for 'onchain_link_id'
+ *   },
+ * });
+ */
+export function useGetDiscussionToOnchainPostByOnchainIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetDiscussionToOnchainPostByOnchainIdQuery, GetDiscussionToOnchainPostByOnchainIdQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetDiscussionToOnchainPostByOnchainIdQuery, GetDiscussionToOnchainPostByOnchainIdQueryVariables>(GetDiscussionToOnchainPostByOnchainIdDocument, baseOptions);
+      }
+export function useGetDiscussionToOnchainPostByOnchainIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetDiscussionToOnchainPostByOnchainIdQuery, GetDiscussionToOnchainPostByOnchainIdQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetDiscussionToOnchainPostByOnchainIdQuery, GetDiscussionToOnchainPostByOnchainIdQueryVariables>(GetDiscussionToOnchainPostByOnchainIdDocument, baseOptions);
+        }
+export type GetDiscussionToOnchainPostByOnchainIdQueryHookResult = ReturnType<typeof useGetDiscussionToOnchainPostByOnchainIdQuery>;
+export type GetDiscussionToOnchainPostByOnchainIdLazyQueryHookResult = ReturnType<typeof useGetDiscussionToOnchainPostByOnchainIdLazyQuery>;
+export type GetDiscussionToOnchainPostByOnchainIdQueryResult = ApolloReactCommon.QueryResult<GetDiscussionToOnchainPostByOnchainIdQuery, GetDiscussionToOnchainPostByOnchainIdQueryVariables>;
+export const GetDiscussionToOnchainPostByDiscussionIdDocument = gql`
+    query GetDiscussionToOnchainPostByDiscussionId($discussion_post_id: Int!) {
+  onchain_post_discussion_link(
+    where: {discussion_post_id: {_eq: $discussion_post_id}}
+    order_by: {updated_at: desc}
+  ) {
+    author_id
+    discussion_post_id
+    id
+    onchain_link_id
+  }
+}
+    `;
+
+/**
+ * __useGetDiscussionToOnchainPostByDiscussionIdQuery__
+ *
+ * To run a query within a React component, call `useGetDiscussionToOnchainPostByDiscussionIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetDiscussionToOnchainPostByDiscussionIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetDiscussionToOnchainPostByDiscussionIdQuery({
+ *   variables: {
+ *      discussion_post_id: // value for 'discussion_post_id'
+ *   },
+ * });
+ */
+export function useGetDiscussionToOnchainPostByDiscussionIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetDiscussionToOnchainPostByDiscussionIdQuery, GetDiscussionToOnchainPostByDiscussionIdQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetDiscussionToOnchainPostByDiscussionIdQuery, GetDiscussionToOnchainPostByDiscussionIdQueryVariables>(GetDiscussionToOnchainPostByDiscussionIdDocument, baseOptions);
+      }
+export function useGetDiscussionToOnchainPostByDiscussionIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetDiscussionToOnchainPostByDiscussionIdQuery, GetDiscussionToOnchainPostByDiscussionIdQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetDiscussionToOnchainPostByDiscussionIdQuery, GetDiscussionToOnchainPostByDiscussionIdQueryVariables>(GetDiscussionToOnchainPostByDiscussionIdDocument, baseOptions);
+        }
+export type GetDiscussionToOnchainPostByDiscussionIdQueryHookResult = ReturnType<typeof useGetDiscussionToOnchainPostByDiscussionIdQuery>;
+export type GetDiscussionToOnchainPostByDiscussionIdLazyQueryHookResult = ReturnType<typeof useGetDiscussionToOnchainPostByDiscussionIdLazyQuery>;
+export type GetDiscussionToOnchainPostByDiscussionIdQueryResult = ApolloReactCommon.QueryResult<GetDiscussionToOnchainPostByDiscussionIdQuery, GetDiscussionToOnchainPostByDiscussionIdQueryVariables>;
 export const GetProposalStatusDocument = gql`
     query GetProposalStatus($onchain_proposal_id: Int!) {
   proposal_tracker(where: {onchain_proposal_id: {_eq: $onchain_proposal_id}}) {
