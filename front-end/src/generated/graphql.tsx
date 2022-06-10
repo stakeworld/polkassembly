@@ -8688,10 +8688,13 @@ export type Calender_Events = {
   __typename?: 'calender_events';
   content?: Maybe<Scalars['String']>;
   end_time: Scalars['timestamptz'];
+  event_id?: Maybe<Scalars['Int']>;
+  event_type?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   module?: Maybe<Scalars['String']>;
   network: Scalars['String'];
   start_time: Scalars['timestamptz'];
+  status?: Maybe<Scalars['String']>;
   title: Scalars['String'];
   url?: Maybe<Scalars['String']>;
 };
@@ -8750,11 +8753,13 @@ export type Calender_Events_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Calender_Events_Avg_Fields = {
   __typename?: 'calender_events_avg_fields';
+  event_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "calender_events" */
 export type Calender_Events_Avg_Order_By = {
+  event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
 };
 
@@ -8765,10 +8770,13 @@ export type Calender_Events_Bool_Exp = {
   _or?: Maybe<Array<Maybe<Calender_Events_Bool_Exp>>>;
   content?: Maybe<String_Comparison_Exp>;
   end_time?: Maybe<Timestamptz_Comparison_Exp>;
+  event_id?: Maybe<Int_Comparison_Exp>;
+  event_type?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Int_Comparison_Exp>;
   module?: Maybe<String_Comparison_Exp>;
   network?: Maybe<String_Comparison_Exp>;
   start_time?: Maybe<Timestamptz_Comparison_Exp>;
+  status?: Maybe<String_Comparison_Exp>;
   title?: Maybe<String_Comparison_Exp>;
   url?: Maybe<String_Comparison_Exp>;
 };
@@ -8781,6 +8789,7 @@ export enum Calender_Events_Constraint {
 
 /** input type for incrementing integer column in table "calender_events" */
 export type Calender_Events_Inc_Input = {
+  event_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
 };
 
@@ -8788,10 +8797,13 @@ export type Calender_Events_Inc_Input = {
 export type Calender_Events_Insert_Input = {
   content?: Maybe<Scalars['String']>;
   end_time?: Maybe<Scalars['timestamptz']>;
+  event_id?: Maybe<Scalars['Int']>;
+  event_type?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   module?: Maybe<Scalars['String']>;
   network?: Maybe<Scalars['String']>;
   start_time?: Maybe<Scalars['timestamptz']>;
+  status?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
 };
@@ -8801,10 +8813,13 @@ export type Calender_Events_Max_Fields = {
   __typename?: 'calender_events_max_fields';
   content?: Maybe<Scalars['String']>;
   end_time?: Maybe<Scalars['timestamptz']>;
+  event_id?: Maybe<Scalars['Int']>;
+  event_type?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   module?: Maybe<Scalars['String']>;
   network?: Maybe<Scalars['String']>;
   start_time?: Maybe<Scalars['timestamptz']>;
+  status?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
 };
@@ -8813,10 +8828,13 @@ export type Calender_Events_Max_Fields = {
 export type Calender_Events_Max_Order_By = {
   content?: Maybe<Order_By>;
   end_time?: Maybe<Order_By>;
+  event_id?: Maybe<Order_By>;
+  event_type?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   module?: Maybe<Order_By>;
   network?: Maybe<Order_By>;
   start_time?: Maybe<Order_By>;
+  status?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
   url?: Maybe<Order_By>;
 };
@@ -8826,10 +8844,13 @@ export type Calender_Events_Min_Fields = {
   __typename?: 'calender_events_min_fields';
   content?: Maybe<Scalars['String']>;
   end_time?: Maybe<Scalars['timestamptz']>;
+  event_id?: Maybe<Scalars['Int']>;
+  event_type?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   module?: Maybe<Scalars['String']>;
   network?: Maybe<Scalars['String']>;
   start_time?: Maybe<Scalars['timestamptz']>;
+  status?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
 };
@@ -8838,10 +8859,13 @@ export type Calender_Events_Min_Fields = {
 export type Calender_Events_Min_Order_By = {
   content?: Maybe<Order_By>;
   end_time?: Maybe<Order_By>;
+  event_id?: Maybe<Order_By>;
+  event_type?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   module?: Maybe<Order_By>;
   network?: Maybe<Order_By>;
   start_time?: Maybe<Order_By>;
+  status?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
   url?: Maybe<Order_By>;
 };
@@ -8872,10 +8896,13 @@ export type Calender_Events_On_Conflict = {
 export type Calender_Events_Order_By = {
   content?: Maybe<Order_By>;
   end_time?: Maybe<Order_By>;
+  event_id?: Maybe<Order_By>;
+  event_type?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   module?: Maybe<Order_By>;
   network?: Maybe<Order_By>;
   start_time?: Maybe<Order_By>;
+  status?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
   url?: Maybe<Order_By>;
 };
@@ -8892,6 +8919,10 @@ export enum Calender_Events_Select_Column {
   /** column name */
   EndTime = 'end_time',
   /** column name */
+  EventId = 'event_id',
+  /** column name */
+  EventType = 'event_type',
+  /** column name */
   Id = 'id',
   /** column name */
   Module = 'module',
@@ -8899,6 +8930,8 @@ export enum Calender_Events_Select_Column {
   Network = 'network',
   /** column name */
   StartTime = 'start_time',
+  /** column name */
+  Status = 'status',
   /** column name */
   Title = 'title',
   /** column name */
@@ -8909,10 +8942,13 @@ export enum Calender_Events_Select_Column {
 export type Calender_Events_Set_Input = {
   content?: Maybe<Scalars['String']>;
   end_time?: Maybe<Scalars['timestamptz']>;
+  event_id?: Maybe<Scalars['Int']>;
+  event_type?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   module?: Maybe<Scalars['String']>;
   network?: Maybe<Scalars['String']>;
   start_time?: Maybe<Scalars['timestamptz']>;
+  status?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
 };
@@ -8920,44 +8956,52 @@ export type Calender_Events_Set_Input = {
 /** aggregate stddev on columns */
 export type Calender_Events_Stddev_Fields = {
   __typename?: 'calender_events_stddev_fields';
+  event_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "calender_events" */
 export type Calender_Events_Stddev_Order_By = {
+  event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Calender_Events_Stddev_Pop_Fields = {
   __typename?: 'calender_events_stddev_pop_fields';
+  event_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "calender_events" */
 export type Calender_Events_Stddev_Pop_Order_By = {
+  event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Calender_Events_Stddev_Samp_Fields = {
   __typename?: 'calender_events_stddev_samp_fields';
+  event_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "calender_events" */
 export type Calender_Events_Stddev_Samp_Order_By = {
+  event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
 };
 
 /** aggregate sum on columns */
 export type Calender_Events_Sum_Fields = {
   __typename?: 'calender_events_sum_fields';
+  event_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
 };
 
 /** order by sum() on columns of table "calender_events" */
 export type Calender_Events_Sum_Order_By = {
+  event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
 };
 
@@ -8968,6 +9012,10 @@ export enum Calender_Events_Update_Column {
   /** column name */
   EndTime = 'end_time',
   /** column name */
+  EventId = 'event_id',
+  /** column name */
+  EventType = 'event_type',
+  /** column name */
   Id = 'id',
   /** column name */
   Module = 'module',
@@ -8975,6 +9023,8 @@ export enum Calender_Events_Update_Column {
   Network = 'network',
   /** column name */
   StartTime = 'start_time',
+  /** column name */
+  Status = 'status',
   /** column name */
   Title = 'title',
   /** column name */
@@ -8984,33 +9034,39 @@ export enum Calender_Events_Update_Column {
 /** aggregate var_pop on columns */
 export type Calender_Events_Var_Pop_Fields = {
   __typename?: 'calender_events_var_pop_fields';
+  event_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "calender_events" */
 export type Calender_Events_Var_Pop_Order_By = {
+  event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Calender_Events_Var_Samp_Fields = {
   __typename?: 'calender_events_var_samp_fields';
+  event_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "calender_events" */
 export type Calender_Events_Var_Samp_Order_By = {
+  event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Calender_Events_Variance_Fields = {
   __typename?: 'calender_events_variance_fields';
+  event_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "calender_events" */
 export type Calender_Events_Variance_Order_By = {
+  event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
 };
 
@@ -9799,6 +9855,10 @@ export type Mutation_Root = {
   delete_posts?: Maybe<Posts_Mutation_Response>;
   /** delete single row from the table: "posts" */
   delete_posts_by_pk?: Maybe<Posts>;
+  /** delete data from the table: "proposal_tracker" */
+  delete_proposal_tracker?: Maybe<Proposal_Tracker_Mutation_Response>;
+  /** delete single row from the table: "proposal_tracker" */
+  delete_proposal_tracker_by_pk?: Maybe<Proposal_Tracker>;
   /** delete data from the table: "replies" */
   delete_replies?: Maybe<Replies_Mutation_Response>;
   /** delete single row from the table: "replies" */
@@ -9861,6 +9921,10 @@ export type Mutation_Root = {
   insert_posts?: Maybe<Posts_Mutation_Response>;
   /** insert a single row into the table: "posts" */
   insert_posts_one?: Maybe<Posts>;
+  /** insert data into the table: "proposal_tracker" */
+  insert_proposal_tracker?: Maybe<Proposal_Tracker_Mutation_Response>;
+  /** insert a single row into the table: "proposal_tracker" */
+  insert_proposal_tracker_one?: Maybe<Proposal_Tracker>;
   /** insert data into the table: "replies" */
   insert_replies?: Maybe<Replies_Mutation_Response>;
   /** insert a single row into the table: "replies" */
@@ -9936,6 +10000,10 @@ export type Mutation_Root = {
   update_posts?: Maybe<Posts_Mutation_Response>;
   /** update single row of the table: "posts" */
   update_posts_by_pk?: Maybe<Posts>;
+  /** update data of the table: "proposal_tracker" */
+  update_proposal_tracker?: Maybe<Proposal_Tracker_Mutation_Response>;
+  /** update single row of the table: "proposal_tracker" */
+  update_proposal_tracker_by_pk?: Maybe<Proposal_Tracker>;
   /** update data of the table: "replies" */
   update_replies?: Maybe<Replies_Mutation_Response>;
   /** update single row of the table: "replies" */
@@ -10230,6 +10298,18 @@ export type Mutation_RootDelete_Posts_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_Proposal_TrackerArgs = {
+  where: Proposal_Tracker_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Proposal_Tracker_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_RepliesArgs = {
   where: Replies_Bool_Exp;
 };
@@ -10452,6 +10532,20 @@ export type Mutation_RootInsert_PostsArgs = {
 export type Mutation_RootInsert_Posts_OneArgs = {
   object: Posts_Insert_Input;
   on_conflict?: Maybe<Posts_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Proposal_TrackerArgs = {
+  objects: Array<Proposal_Tracker_Insert_Input>;
+  on_conflict?: Maybe<Proposal_Tracker_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Proposal_Tracker_OneArgs = {
+  object: Proposal_Tracker_Insert_Input;
+  on_conflict?: Maybe<Proposal_Tracker_On_Conflict>;
 };
 
 
@@ -10787,6 +10881,22 @@ export type Mutation_RootUpdate_Posts_By_PkArgs = {
   _inc?: Maybe<Posts_Inc_Input>;
   _set?: Maybe<Posts_Set_Input>;
   pk_columns: Posts_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Proposal_TrackerArgs = {
+  _inc?: Maybe<Proposal_Tracker_Inc_Input>;
+  _set?: Maybe<Proposal_Tracker_Set_Input>;
+  where: Proposal_Tracker_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Proposal_Tracker_By_PkArgs = {
+  _inc?: Maybe<Proposal_Tracker_Inc_Input>;
+  _set?: Maybe<Proposal_Tracker_Set_Input>;
+  pk_columns: Proposal_Tracker_Pk_Columns_Input;
 };
 
 
@@ -14950,6 +15060,371 @@ export type Posts_Variance_Order_By = {
   type_id?: Maybe<Order_By>;
 };
 
+/** columns and relationships of "proposal_tracker" */
+export type Proposal_Tracker = {
+  __typename?: 'proposal_tracker';
+  created_at: Scalars['timestamptz'];
+  deadline: Scalars['timestamptz'];
+  id: Scalars['Int'];
+  network?: Maybe<Scalars['String']>;
+  onchain_proposal_id: Scalars['Int'];
+  status: Scalars['String'];
+  updated_at: Scalars['timestamptz'];
+  user_id: Scalars['Int'];
+};
+
+/** aggregated selection of "proposal_tracker" */
+export type Proposal_Tracker_Aggregate = {
+  __typename?: 'proposal_tracker_aggregate';
+  aggregate?: Maybe<Proposal_Tracker_Aggregate_Fields>;
+  nodes: Array<Proposal_Tracker>;
+};
+
+/** aggregate fields of "proposal_tracker" */
+export type Proposal_Tracker_Aggregate_Fields = {
+  __typename?: 'proposal_tracker_aggregate_fields';
+  avg?: Maybe<Proposal_Tracker_Avg_Fields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Proposal_Tracker_Max_Fields>;
+  min?: Maybe<Proposal_Tracker_Min_Fields>;
+  stddev?: Maybe<Proposal_Tracker_Stddev_Fields>;
+  stddev_pop?: Maybe<Proposal_Tracker_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Proposal_Tracker_Stddev_Samp_Fields>;
+  sum?: Maybe<Proposal_Tracker_Sum_Fields>;
+  var_pop?: Maybe<Proposal_Tracker_Var_Pop_Fields>;
+  var_samp?: Maybe<Proposal_Tracker_Var_Samp_Fields>;
+  variance?: Maybe<Proposal_Tracker_Variance_Fields>;
+};
+
+
+/** aggregate fields of "proposal_tracker" */
+export type Proposal_Tracker_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Proposal_Tracker_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "proposal_tracker" */
+export type Proposal_Tracker_Aggregate_Order_By = {
+  avg?: Maybe<Proposal_Tracker_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Proposal_Tracker_Max_Order_By>;
+  min?: Maybe<Proposal_Tracker_Min_Order_By>;
+  stddev?: Maybe<Proposal_Tracker_Stddev_Order_By>;
+  stddev_pop?: Maybe<Proposal_Tracker_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Proposal_Tracker_Stddev_Samp_Order_By>;
+  sum?: Maybe<Proposal_Tracker_Sum_Order_By>;
+  var_pop?: Maybe<Proposal_Tracker_Var_Pop_Order_By>;
+  var_samp?: Maybe<Proposal_Tracker_Var_Samp_Order_By>;
+  variance?: Maybe<Proposal_Tracker_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "proposal_tracker" */
+export type Proposal_Tracker_Arr_Rel_Insert_Input = {
+  data: Array<Proposal_Tracker_Insert_Input>;
+  on_conflict?: Maybe<Proposal_Tracker_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Proposal_Tracker_Avg_Fields = {
+  __typename?: 'proposal_tracker_avg_fields';
+  id?: Maybe<Scalars['Float']>;
+  onchain_proposal_id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "proposal_tracker" */
+export type Proposal_Tracker_Avg_Order_By = {
+  id?: Maybe<Order_By>;
+  onchain_proposal_id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "proposal_tracker". All fields are combined with a logical 'AND'. */
+export type Proposal_Tracker_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Proposal_Tracker_Bool_Exp>>>;
+  _not?: Maybe<Proposal_Tracker_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Proposal_Tracker_Bool_Exp>>>;
+  created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  deadline?: Maybe<Timestamptz_Comparison_Exp>;
+  id?: Maybe<Int_Comparison_Exp>;
+  network?: Maybe<String_Comparison_Exp>;
+  onchain_proposal_id?: Maybe<Int_Comparison_Exp>;
+  status?: Maybe<String_Comparison_Exp>;
+  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+  user_id?: Maybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "proposal_tracker" */
+export enum Proposal_Tracker_Constraint {
+  /** unique or primary key constraint */
+  ProposalTrackerPkey = 'proposal_tracker_pkey'
+}
+
+/** input type for incrementing integer column in table "proposal_tracker" */
+export type Proposal_Tracker_Inc_Input = {
+  id?: Maybe<Scalars['Int']>;
+  onchain_proposal_id?: Maybe<Scalars['Int']>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "proposal_tracker" */
+export type Proposal_Tracker_Insert_Input = {
+  created_at?: Maybe<Scalars['timestamptz']>;
+  deadline?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  network?: Maybe<Scalars['String']>;
+  onchain_proposal_id?: Maybe<Scalars['Int']>;
+  status?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type Proposal_Tracker_Max_Fields = {
+  __typename?: 'proposal_tracker_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  deadline?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  network?: Maybe<Scalars['String']>;
+  onchain_proposal_id?: Maybe<Scalars['Int']>;
+  status?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by max() on columns of table "proposal_tracker" */
+export type Proposal_Tracker_Max_Order_By = {
+  created_at?: Maybe<Order_By>;
+  deadline?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  network?: Maybe<Order_By>;
+  onchain_proposal_id?: Maybe<Order_By>;
+  status?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Proposal_Tracker_Min_Fields = {
+  __typename?: 'proposal_tracker_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  deadline?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  network?: Maybe<Scalars['String']>;
+  onchain_proposal_id?: Maybe<Scalars['Int']>;
+  status?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by min() on columns of table "proposal_tracker" */
+export type Proposal_Tracker_Min_Order_By = {
+  created_at?: Maybe<Order_By>;
+  deadline?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  network?: Maybe<Order_By>;
+  onchain_proposal_id?: Maybe<Order_By>;
+  status?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "proposal_tracker" */
+export type Proposal_Tracker_Mutation_Response = {
+  __typename?: 'proposal_tracker_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Proposal_Tracker>;
+};
+
+/** input type for inserting object relation for remote table "proposal_tracker" */
+export type Proposal_Tracker_Obj_Rel_Insert_Input = {
+  data: Proposal_Tracker_Insert_Input;
+  on_conflict?: Maybe<Proposal_Tracker_On_Conflict>;
+};
+
+/** on conflict condition type for table "proposal_tracker" */
+export type Proposal_Tracker_On_Conflict = {
+  constraint: Proposal_Tracker_Constraint;
+  update_columns: Array<Proposal_Tracker_Update_Column>;
+  where?: Maybe<Proposal_Tracker_Bool_Exp>;
+};
+
+/** ordering options when selecting data from "proposal_tracker" */
+export type Proposal_Tracker_Order_By = {
+  created_at?: Maybe<Order_By>;
+  deadline?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  network?: Maybe<Order_By>;
+  onchain_proposal_id?: Maybe<Order_By>;
+  status?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: "proposal_tracker" */
+export type Proposal_Tracker_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "proposal_tracker" */
+export enum Proposal_Tracker_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Deadline = 'deadline',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Network = 'network',
+  /** column name */
+  OnchainProposalId = 'onchain_proposal_id',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** input type for updating data in table "proposal_tracker" */
+export type Proposal_Tracker_Set_Input = {
+  created_at?: Maybe<Scalars['timestamptz']>;
+  deadline?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  network?: Maybe<Scalars['String']>;
+  onchain_proposal_id?: Maybe<Scalars['Int']>;
+  status?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Proposal_Tracker_Stddev_Fields = {
+  __typename?: 'proposal_tracker_stddev_fields';
+  id?: Maybe<Scalars['Float']>;
+  onchain_proposal_id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "proposal_tracker" */
+export type Proposal_Tracker_Stddev_Order_By = {
+  id?: Maybe<Order_By>;
+  onchain_proposal_id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Proposal_Tracker_Stddev_Pop_Fields = {
+  __typename?: 'proposal_tracker_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+  onchain_proposal_id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "proposal_tracker" */
+export type Proposal_Tracker_Stddev_Pop_Order_By = {
+  id?: Maybe<Order_By>;
+  onchain_proposal_id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Proposal_Tracker_Stddev_Samp_Fields = {
+  __typename?: 'proposal_tracker_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+  onchain_proposal_id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "proposal_tracker" */
+export type Proposal_Tracker_Stddev_Samp_Order_By = {
+  id?: Maybe<Order_By>;
+  onchain_proposal_id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Proposal_Tracker_Sum_Fields = {
+  __typename?: 'proposal_tracker_sum_fields';
+  id?: Maybe<Scalars['Int']>;
+  onchain_proposal_id?: Maybe<Scalars['Int']>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "proposal_tracker" */
+export type Proposal_Tracker_Sum_Order_By = {
+  id?: Maybe<Order_By>;
+  onchain_proposal_id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** update columns of table "proposal_tracker" */
+export enum Proposal_Tracker_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Deadline = 'deadline',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Network = 'network',
+  /** column name */
+  OnchainProposalId = 'onchain_proposal_id',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** aggregate var_pop on columns */
+export type Proposal_Tracker_Var_Pop_Fields = {
+  __typename?: 'proposal_tracker_var_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+  onchain_proposal_id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "proposal_tracker" */
+export type Proposal_Tracker_Var_Pop_Order_By = {
+  id?: Maybe<Order_By>;
+  onchain_proposal_id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Proposal_Tracker_Var_Samp_Fields = {
+  __typename?: 'proposal_tracker_var_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+  onchain_proposal_id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "proposal_tracker" */
+export type Proposal_Tracker_Var_Samp_Order_By = {
+  id?: Maybe<Order_By>;
+  onchain_proposal_id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Proposal_Tracker_Variance_Fields = {
+  __typename?: 'proposal_tracker_variance_fields';
+  id?: Maybe<Scalars['Float']>;
+  onchain_proposal_id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "proposal_tracker" */
+export type Proposal_Tracker_Variance_Order_By = {
+  id?: Maybe<Order_By>;
+  onchain_proposal_id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
 /** query root */
 export type Query_Root = {
   __typename?: 'query_root';
@@ -15096,6 +15571,12 @@ export type Query_Root = {
   proposalStatus?: Maybe<ProposalStatus>;
   proposalStatuses: Array<Maybe<ProposalStatus>>;
   proposalStatusesConnection: ProposalStatusConnection;
+  /** fetch data from the table: "proposal_tracker" */
+  proposal_tracker: Array<Proposal_Tracker>;
+  /** fetch aggregated fields from the table: "proposal_tracker" */
+  proposal_tracker_aggregate: Proposal_Tracker_Aggregate;
+  /** fetch data from the table: "proposal_tracker" using primary key columns */
+  proposal_tracker_by_pk?: Maybe<Proposal_Tracker>;
   proposals: Array<Maybe<Proposal>>;
   proposalsConnection: ProposalConnection;
   referendum?: Maybe<Referendum>;
@@ -16076,6 +16557,32 @@ export type Query_RootProposalStatusesConnectionArgs = {
 
 
 /** query root */
+export type Query_RootProposal_TrackerArgs = {
+  distinct_on?: Maybe<Array<Proposal_Tracker_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Proposal_Tracker_Order_By>>;
+  where?: Maybe<Proposal_Tracker_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootProposal_Tracker_AggregateArgs = {
+  distinct_on?: Maybe<Array<Proposal_Tracker_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Proposal_Tracker_Order_By>>;
+  where?: Maybe<Proposal_Tracker_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootProposal_Tracker_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** query root */
 export type Query_RootProposalsArgs = {
   after?: Maybe<Scalars['String']>;
   before?: Maybe<Scalars['String']>;
@@ -17013,6 +17520,12 @@ export type Subscription_Root = {
   preimageStatus?: Maybe<PreimageStatusSubscriptionPayload>;
   proposal?: Maybe<ProposalSubscriptionPayload>;
   proposalStatus?: Maybe<ProposalStatusSubscriptionPayload>;
+  /** fetch data from the table: "proposal_tracker" */
+  proposal_tracker: Array<Proposal_Tracker>;
+  /** fetch aggregated fields from the table: "proposal_tracker" */
+  proposal_tracker_aggregate: Proposal_Tracker_Aggregate;
+  /** fetch data from the table: "proposal_tracker" using primary key columns */
+  proposal_tracker_by_pk?: Maybe<Proposal_Tracker>;
   referendum?: Maybe<ReferendumSubscriptionPayload>;
   referendumStatus?: Maybe<ReferendumStatusSubscriptionPayload>;
   /** fetch data from the table: "replies" */
@@ -17527,6 +18040,32 @@ export type Subscription_RootProposalArgs = {
 /** subscription root */
 export type Subscription_RootProposalStatusArgs = {
   where?: Maybe<ProposalStatusSubscriptionWhereInput>;
+};
+
+
+/** subscription root */
+export type Subscription_RootProposal_TrackerArgs = {
+  distinct_on?: Maybe<Array<Proposal_Tracker_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Proposal_Tracker_Order_By>>;
+  where?: Maybe<Proposal_Tracker_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootProposal_Tracker_AggregateArgs = {
+  distinct_on?: Maybe<Array<Proposal_Tracker_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Proposal_Tracker_Order_By>>;
+  where?: Maybe<Proposal_Tracker_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootProposal_Tracker_By_PkArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -18289,7 +18828,7 @@ export type GetCalenderEventsQuery = (
   { __typename?: 'query_root' }
   & { calender_events: Array<(
     { __typename?: 'calender_events' }
-    & Pick<Calender_Events, 'content' | 'end_time' | 'id' | 'module' | 'network' | 'start_time' | 'title' | 'url'>
+    & Pick<Calender_Events, 'content' | 'end_time' | 'id' | 'module' | 'network' | 'start_time' | 'title' | 'url' | 'event_type' | 'event_id' | 'status'>
   )> }
 );
 
@@ -18372,6 +18911,19 @@ export type GetUserDetailsQuery = (
   & { userDetails?: Maybe<(
     { __typename?: 'Profile' }
     & Pick<Profile, 'bio' | 'image' | 'user_id' | 'title' | 'badges'>
+  )> }
+);
+
+export type GetProposalStatusQueryVariables = Exact<{
+  onchain_proposal_id: Scalars['Int'];
+}>;
+
+
+export type GetProposalStatusQuery = (
+  { __typename?: 'query_root' }
+  & { proposal_tracker: Array<(
+    { __typename?: 'proposal_tracker' }
+    & Pick<Proposal_Tracker, 'deadline' | 'id' | 'onchain_proposal_id' | 'status'>
   )> }
 );
 
@@ -22418,6 +22970,9 @@ export const GetCalenderEventsDocument = gql`
     start_time
     title
     url
+    event_type
+    event_id
+    status
   }
 }
     `;
@@ -22640,6 +23195,42 @@ export function useGetUserDetailsLazyQuery(baseOptions?: ApolloReactHooks.LazyQu
 export type GetUserDetailsQueryHookResult = ReturnType<typeof useGetUserDetailsQuery>;
 export type GetUserDetailsLazyQueryHookResult = ReturnType<typeof useGetUserDetailsLazyQuery>;
 export type GetUserDetailsQueryResult = ApolloReactCommon.QueryResult<GetUserDetailsQuery, GetUserDetailsQueryVariables>;
+export const GetProposalStatusDocument = gql`
+    query GetProposalStatus($onchain_proposal_id: Int!) {
+  proposal_tracker(where: {onchain_proposal_id: {_eq: $onchain_proposal_id}}) {
+    deadline
+    id
+    onchain_proposal_id
+    status
+  }
+}
+    `;
+
+/**
+ * __useGetProposalStatusQuery__
+ *
+ * To run a query within a React component, call `useGetProposalStatusQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProposalStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProposalStatusQuery({
+ *   variables: {
+ *      onchain_proposal_id: // value for 'onchain_proposal_id'
+ *   },
+ * });
+ */
+export function useGetProposalStatusQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetProposalStatusQuery, GetProposalStatusQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetProposalStatusQuery, GetProposalStatusQueryVariables>(GetProposalStatusDocument, baseOptions);
+      }
+export function useGetProposalStatusLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetProposalStatusQuery, GetProposalStatusQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetProposalStatusQuery, GetProposalStatusQueryVariables>(GetProposalStatusDocument, baseOptions);
+        }
+export type GetProposalStatusQueryHookResult = ReturnType<typeof useGetProposalStatusQuery>;
+export type GetProposalStatusLazyQueryHookResult = ReturnType<typeof useGetProposalStatusLazyQuery>;
+export type GetProposalStatusQueryResult = ApolloReactCommon.QueryResult<GetProposalStatusQuery, GetProposalStatusQueryVariables>;
 export const AllBountyPostsDocument = gql`
     query AllBountyPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
   posts(

@@ -37,7 +37,6 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	const [selectedNetwork, setSelectedNetwork] = useState<string>(NETWORK);
 	const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const { data, refetch } = useGetCalenderEventsQuery({ variables: {
 		network: selectedNetwork
 	} });
@@ -53,6 +52,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 				end_time: moment(eventObj.end_time).toDate(),
 				id: eventObj.id,
 				start_time: moment(eventObj.start_time).toDate(),
+				status: eventObj.status,
 				title: eventObj.title,
 				url: eventObj.url
 			});
@@ -63,6 +63,15 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 			emitCalendarEvents(eventsArr);
 		}
 	}, [data, emitCalendarEvents]);
+
+	const EventWrapperComponent = ({ event, children }: any) => {
+		const newChildren = { ...children };
+		const newChildrenProps = { ...newChildren.props };
+		const statusClass = moment(event.end_time).isBefore() ? 'overdue-border' : `${event.status.toLowerCase()}-border`;
+		newChildrenProps.className = `${newChildrenProps.className} ${statusClass}`;
+		newChildren.props = { ...newChildrenProps };
+		return <div className='custom-event-wrapper'>{newChildren}</div>;
+	};
 
 	function Event({ event } : {event: any}) {
 		return (
@@ -104,6 +113,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 							popup={true}
 							components={{
 								event: Event,
+								eventWrapper: EventWrapperComponent,
 								timeGutterHeader: () => <TimeGutterHeader localizer={localizer} date={selectedDate} selectedView={selectedView} />,
 								toolbar: props => <CustomToolbar {...props} small={small || width < 768} selectedNetwork={selectedNetwork} setSelectedNetwork={setSelectedNetwork} />,
 								week: {
@@ -430,7 +440,7 @@ h1 {
 			font-weight: 600 !important;
 		}
 
-		&.rbc-current, &.rbc-now {
+		&.rbc-now {
 			button {
 				background-color: #E6007A;
 				color: #fff;
@@ -503,30 +513,62 @@ h1 {
 	}
 
 	.rbc-events-container {
+		.custom-event-wrapper{
+			.rbc-event {
+				border: 1px solid #E6007A;
+				border-left: 4px solid #E6007A;
+
+				&.overdue-border {
+					border: 1px solid #FF0000 !important;
+					border-left: 4px solid #FF0000 !important;
+				}
+
+				&.completed-border {
+					border: 1px solid #5BC044 !important;
+					border-left: 4px solid #5BC044 !important;
+				}
+
+				&.working-border {
+					border: 1px solid #EA8612 !important;
+					border-left: 4px solid #EA8612 !important;
+				}
+			}
+		}
+	}
+
+	.custom-event-wrapper{
 		.rbc-event {
-			border: 1px solid #E6007A;
+			background-color: #fff;
+			border-radius: 0;
+			color: #000;
+			font-weight: 500;
+			font-size: 12px;
 			border-left: 4px solid #E6007A;
+
+			&.overdue-border {
+				border-left: 4px solid #FF0000 !important;
+			}
+
+			&.completed-border {
+				border-left: 4px solid #5BC044 !important;
+			}
+
+			&.working-border {
+				border-left: 4px solid #EA8612 !important;
+			}
+	
+			.event-time {
+				margin-right: 5px;
+				font-weight: 400;
+				color: #747474;
+			}
+	
+			&:focus {
+				outline: none;
+			}
 		}
 	}
 
-	.rbc-event {
-		background-color: #fff;
-		border-radius: 0;
-		color: #000;
-		font-weight: 500;
-		font-size: 12px;
-		border-left: 4px solid #E6007A;
-
-		.event-time {
-			margin-right: 5px;
-			font-weight: 400;
-			color: #747474;
-		}
-
-		&:focus {
-			outline: none;
-		}
-	}
 
 	.rbc-current-time-indicator {
 		background-color: #E6007A;
