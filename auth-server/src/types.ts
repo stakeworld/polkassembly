@@ -377,3 +377,16 @@ export interface ProfileDetails {
     username?: string;
     image?: string;
 }
+
+export interface CreateProposalTrackerArgs {
+    deadline: string;
+    network: string;
+    onchain_proposal_id: number;
+    status: string;
+    start_time: string;
+}
+
+export interface UpdateProposalTrackerArgs {
+    id: number;
+    status: string;
+}

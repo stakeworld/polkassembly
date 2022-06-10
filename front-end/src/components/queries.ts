@@ -23,6 +23,9 @@ query GetCalenderEvents($network: String!) {
         start_time
         title
         url
+        event_type
+        event_id
+        status
     }
 }
 `;
@@ -67,6 +70,17 @@ export const GET_USER_DETAILS = gql`
             user_id
             title
             badges
+        }
+    }
+`;
+
+export const GET_PROPOSAL_STATUS = gql`
+    query GetProposalStatus($onchain_proposal_id: Int!) {
+        proposal_tracker(where: {onchain_proposal_id: {_eq: $onchain_proposal_id}}) {
+            deadline
+            id
+            onchain_proposal_id
+            status
         }
     }
 `;
