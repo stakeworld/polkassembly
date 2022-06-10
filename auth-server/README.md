@@ -54,6 +54,7 @@ HASURA_EVENT_SECRET="<shared secret key with hasura>"
 DOMAIN_NAME="polkassembly.io"
 DOMAIN_PROTOCOL="http://"
 REDIS_URL="redis://:<redis secret>@127.0.0.1:6379"
+EVENT_BOT_USER_ID=4
 ```
 
 `proposal_bot` is a special user identified by its id. We should grant it with the `proposal_bot` role when it signs-in.
