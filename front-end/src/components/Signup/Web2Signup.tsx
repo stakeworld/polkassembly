@@ -22,10 +22,10 @@ import * as validation from '../../util/validation';
 
 interface Props {
 	className?: string
-	toggleWeb2Signup: () => void
+	setDisplayWeb3: () => void
 }
 
-const SignupForm = ({ className, toggleWeb2Signup }:Props): JSX.Element => {
+const SignupForm = ({ className, setDisplayWeb3 }:Props): JSX.Element => {
 	const { history } = useRouter();
 	const currentUser = useContext(UserDetailsContext);
 	const [signupMutation, { loading, error }] = useSignupMutation();
@@ -59,7 +59,7 @@ const SignupForm = ({ className, toggleWeb2Signup }:Props): JSX.Element => {
 		}
 	};
 
-	const handleToggle = () => toggleWeb2Signup();
+	const handleToggle = () => setDisplayWeb3();
 
 	return (
 		<Form className={className} onSubmit={handleSubmit(handleSubmitForm)}>
@@ -139,6 +139,7 @@ const SignupForm = ({ className, toggleWeb2Signup }:Props): JSX.Element => {
 				{error?.message && <FilteredError text={error.message}/>}
 
 				<Button
+					type="button"
 					secondary
 					disabled={loading}
 					onClick={handleToggle}

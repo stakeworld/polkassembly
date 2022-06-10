@@ -46,7 +46,7 @@ export const DELETE_CALENDER_EVENT = gql`
     }
 `;
 
-export const ADD_CALENDER_EVENT=gql`
+export const ADD_CALENDER_EVENT = gql`
     mutation AddCalenderEvent ($title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!) {
         insert_calender_events(objects: {title: $title, start_time: $start_time, end_time: $end_time, content: $content, url: $url, module: $module, network: $network}) {
             affected_rows
@@ -70,6 +70,36 @@ export const GET_USER_DETAILS = gql`
             user_id
             title
             badges
+        }
+    }
+`;
+
+export const LINK_DISCUSSION_TO_ONCHAIN_POST = gql`
+    mutation linkDiscussionToOnchainPost($discussion_id: Int!, $onchain_link_id: Int!, $author_id: Int!) {
+        insert_onchain_post_discussion_link(objects: {discussion_post_id: $discussion_id, onchain_link_id: $onchain_link_id, author_id: $author_id}) {
+            affected_rows
+    }
+  }
+`;
+
+export const GET_DISCUSSION_TO_ONCHAIN_POST_BY_ONCHAIN_ID = gql`
+    query GetDiscussionToOnchainPostByOnchainId($onchain_link_id: Int!){   
+        onchain_post_discussion_link(where: {onchain_link_id: {_eq: $onchain_link_id}}, order_by: {updated_at: desc}) {
+            author_id
+            discussion_post_id
+            id
+            onchain_link_id
+        }
+    }
+`;
+
+export const GET_DISCUSSION_TO_ONCHAIN_POST_BY_DISCUSSION_ID = gql`
+    query GetDiscussionToOnchainPostByDiscussionId($discussion_post_id: Int!){   
+        onchain_post_discussion_link(where: {discussion_post_id: {_eq: $discussion_post_id}}, order_by: {updated_at: desc}) {
+            author_id
+            discussion_post_id
+            id
+            onchain_link_id
         }
     }
 `;

@@ -102,6 +102,7 @@ authServer:
     JWT_KEY_PASSPHRASE: from-gitlab-vars
     REDIS_URL: from-gitlab-vars
     SENDGRID_API_KEY: from-gitlab-vars
+    EVENT_BOT_USER_ID: "4"
 
   secret:
     JWT_PRIVATE_KEY: from-gitlab-vars
