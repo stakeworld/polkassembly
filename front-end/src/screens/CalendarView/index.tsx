@@ -15,9 +15,6 @@ import getNetwork from 'src/util/getNetwork';
 import CustomToolbar from './CustomToolbar';
 import CustomWeekHeader, { TimeGutterHeader } from './CustomWeekHeader';
 import NetworkSelect from './NetworkSelect';
-
-// import CustomWeekView from './CustomWeekView';
-
 interface Props {
   className?: string
 	small?: boolean
@@ -67,7 +64,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	const EventWrapperComponent = ({ event, children }: any) => {
 		const newChildren = { ...children };
 		const newChildrenProps = { ...newChildren.props };
-		const statusClass = moment(event.end_time).isBefore() ? 'overdue-border' : `${event.status.toLowerCase()}-border`;
+		const statusClass = moment(event.end_time).isBefore() ? 'overdue-border' : `${event.status?.toLowerCase()}-border`;
 		newChildrenProps.className = `${newChildrenProps.className} ${statusClass}`;
 		newChildren.props = { ...newChildrenProps };
 		return <div className='custom-event-wrapper'>{newChildren}</div>;
