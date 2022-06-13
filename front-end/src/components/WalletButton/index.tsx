@@ -15,6 +15,7 @@ const WalletButton = ({ onClick, icon, name }: { onClick: () => void, icon?: JSX
 const StyledButton = styled.div`
     padding: 1.25rem 1rem;
     border-radius: 0.75rem;
+    border: 1px solid #A9A9A9;
 
     display: flex;
     align-items: center;
@@ -23,10 +24,8 @@ const StyledButton = styled.div`
 
     transition: 0.3s;
 
-    background-color: #f2f2f2;
-
     &:hover {
-        background-color: #e4e4e4;
+        border: 2px solid #E5007A;
     }
 
     margin-bottom: 16px;
