@@ -1160,6 +1160,19 @@
       - user_id
       backend_only: false
   select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+      - id
+      - onchain_proposal_id
+      - status
+      - deadline
+      - user_id
+      - created_at
+      - updated_at
+      - network
+      filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:
