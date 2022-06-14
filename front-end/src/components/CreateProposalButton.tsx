@@ -91,7 +91,7 @@ export default styled(CreateProposalButton)`
 	.create-tip-button:hover, .create-tip-button:focus{
 		color: #000;
 		background-color: #fff;
-		ox-shadow: 2px 7px 11px -5x rgba(229,0,122,0.75);
+		box-shadow: 2px 7px 11px -5x rgba(229,0,122,0.75);
 		-webkit-box-shadow: 2px 7px 11px -5px rgba(229,0,122,0.75);
 		-moz-box-shadow: 2px 7px 11px -5px rgba(229,0,122,0.75);
 	}

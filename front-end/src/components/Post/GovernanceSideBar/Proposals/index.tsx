@@ -9,10 +9,12 @@ import { chainProperties } from 'src/global/networkConstants';
 import { LoadingStatusType } from 'src/types';
 import getNetwork from 'src/util/getNetwork';
 
+import EditProposalStatus from './EditProposalStatus';
 import ProposalVoteInfo from './ProposalVoteInfo';
 import SecondProposal, { SecondProposalProps } from './SecondProposal';
 
 type Props = SecondProposalProps & {
+	canEdit?: boolean | '' | undefined
 	canVote: boolean
 }
 
@@ -20,7 +22,7 @@ const network = getNetwork();
 const tokenDecimals = chainProperties[network].tokenDecimals;
 const tokenSymbol = chainProperties[network].tokenSymbol;
 
-const ProposalDisplay = ({ proposalId, accounts, address, canVote, getAccounts, onAccountChange }: Props) => {
+const ProposalDisplay = ({ proposalId, accounts, address, canEdit, canVote, getAccounts, onAccountChange }: Props) => {
 	const { api, apiReady } = useContext(ApiContext);
 	const [seconds, setSeconds] = useState(0);
 	const [deposit, setDeposit] = useState('');
@@ -60,6 +62,10 @@ const ProposalDisplay = ({ proposalId, accounts, address, canVote, getAccounts, 
 
 	return (
 		<>
+			{canEdit &&
+				<EditProposalStatus
+					proposalId={proposalId}
+				/>}
 			{(proposalId || proposalId === 0) &&
 				<ProposalVoteInfo
 					deposit={deposit}

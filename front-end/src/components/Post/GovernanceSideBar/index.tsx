@@ -24,6 +24,7 @@ import EndorseTip from './Tips/EndorseTip';
 import TipInfo from './Tips/TipInfo';
 
 interface Props {
+	canEdit?: boolean | '' | undefined
 	className?: string
 	isBounty?: boolean
 	isMotion?: boolean
@@ -37,7 +38,7 @@ interface Props {
 	status?: string
 }
 
-const GovenanceSideBar = ({ className, isMotion, isProposal, isReferendum, isTipProposal, onchainId, onchainLink, status }: Props) => {
+const GovenanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferendum, isTipProposal, onchainId, onchainLink, status }: Props) => {
 	const [address, setAddress] = useState<string>('');
 	const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
 	const [extensionNotFound, setExtensionNotFound] = useState(false);
@@ -142,6 +143,7 @@ const GovenanceSideBar = ({ className, isMotion, isProposal, isReferendum, isTip
 								getAccounts={getAccounts}
 								onAccountChange={onAccountChange}
 								proposalId={onchainId  as number}
+								canEdit={canEdit}
 							/>
 						}
 						{isReferendum &&

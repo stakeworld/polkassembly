@@ -263,6 +263,7 @@ const Post = ( { className, data, isBounty = false, isMotion = false, isProposal
 			onchainId={onchainId}
 			onchainLink={definedOnchainLink}
 			status={postStatus}
+			canEdit={canEdit}
 		/>
 		{isDiscussion(post) && <Poll postId={post.id} canEdit={post.author?.id === id} />}
 		<OptionPoll postId={post.id} canEdit={post.author?.id === id} />

@@ -64,8 +64,8 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	const EventWrapperComponent = ({ event, children }: any) => {
 		const newChildren = { ...children };
 		const newChildrenProps = { ...newChildren.props };
-		const statusClass = moment(event.end_time).isBefore() ? 'overdue-border' : `${event.status?.toLowerCase()}-border`;
-		newChildrenProps.className = `${newChildrenProps.className} ${statusClass}`;
+		const statusClassName = moment(event.end_time).isBefore() ? 'overdue-border' : `${event.status?.toLowerCase()}-border`;
+		newChildrenProps.className = `${newChildrenProps.className} ${statusClassName}`;
 		newChildren.props = { ...newChildrenProps };
 		return <div className='custom-event-wrapper'>{newChildren}</div>;
 	};
@@ -525,7 +525,7 @@ h1 {
 					border-left: 4px solid #5BC044 !important;
 				}
 
-				&.working-border {
+				&.in_progress-border {
 					border: 1px solid #EA8612 !important;
 					border-left: 4px solid #EA8612 !important;
 				}
@@ -550,7 +550,7 @@ h1 {
 				border-left: 4px solid #5BC044 !important;
 			}
 
-			&.working-border {
+			&.in_progress-border {
 				border-left: 4px solid #EA8612 !important;
 			}
 	
