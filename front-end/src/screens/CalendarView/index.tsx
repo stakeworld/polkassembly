@@ -48,12 +48,14 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 			eventsArr.push({
 				end_time: moment(eventObj.end_time).toDate(),
 				id: eventObj.id,
-				start_time: moment(eventObj.start_time).toDate(),
+				start_time: moment(eventObj.end_time).toDate(),
 				status: eventObj.status,
 				title: eventObj.title,
 				url: eventObj.url
 			});
 		});
+
+		console.log('calendarEvents : ', eventsArr);
 		setCalendarEvents(eventsArr);
 
 		if(emitCalendarEvents) {
@@ -80,7 +82,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 				hideOnScroll
 				trigger={
 					<span>
-						{ (selectedView == 'month' && !(small || width < 768)) &&  <span className='event-time'> {moment(event.start_time).format('LT').toLowerCase()}</span> }
+						{ (!(small || width < 768)) &&  <span className='event-time'> {moment(event.end_time).format('LT').toLowerCase()}</span> }
 						{event.title}
 					</span>
 				}
@@ -514,6 +516,13 @@ h1 {
 			.rbc-event {
 				border: 1px solid #E6007A;
 				border-left: 4px solid #E6007A;
+				display: flex;
+				justify-content: center;
+				padding-top: 4px;
+
+				.rbc-event-label {
+					display: none;
+				}
 
 				&.overdue-border {
 					border: 1px solid #FF0000 !important;
