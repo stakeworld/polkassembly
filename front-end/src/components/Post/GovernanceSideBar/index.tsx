@@ -148,7 +148,6 @@ const GovenanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferend
 						}
 						{isTreasuryProposal &&
 							<EditProposalStatus
-								address={address}
 								proposalId={onchainId  as number}
 								canEdit={canEdit}
 							/>

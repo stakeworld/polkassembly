@@ -8,6 +8,7 @@ import React, { useContext, useEffect,useState } from 'react';
 import DatePicker from 'react-date-picker';
 import { Button, Card, Dropdown, DropdownProps, Form, Message } from 'semantic-ui-react';
 import { NotificationContext } from 'src/context/NotificationContext';
+import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { useGetProposalStatusQuery } from 'src/generated/graphql';
 import { getLocalStorageToken } from 'src/services/auth.service';
 import { NotificationStatus } from 'src/types';
@@ -19,7 +20,6 @@ import { ReactComponent as CalendarIcon } from '../../../../assets/sidebar/calen
 interface Props {
 	canEdit?: boolean | '' | undefined
 	className?: string
-	address: string
 	proposalId?: number | null | undefined
 }
 
@@ -29,10 +29,12 @@ const statusOptions = [
 	{ key: 'in_progress', text: 'In Progress', value: 'in_progress' }
 ];
 
-const EditProposalStatus = ({ canEdit, className, address, proposalId } : Props) => {
+const EditProposalStatus = ({ canEdit, className, proposalId } : Props) => {
 	const token = getLocalStorageToken();
 
-	const [deadlineDate, setDeadlineDate] = useState<Date>(new Date());
+	const { id } = useContext(UserDetailsContext);
+
+	const [deadlineDate, setDeadlineDate] = useState<Date | null>(new Date());
 	const [status, setStatus] = useState<string>('in_progress');
 	const [loading, setLoading] = useState<boolean>(false);
 	const [errorsFound, setErrorsFound] = useState<string[]>([]);
@@ -52,14 +54,18 @@ const EditProposalStatus = ({ canEdit, className, address, proposalId } : Props)
 
 	useEffect(() => {
 		if(data?.proposal_tracker[0]?.status) {
-			setStatus(data?.proposal_tracker[0].status);
+			setStatus(data.proposal_tracker[0].status);
+		}else if(!canEdit){
+			setStatus('Not Set');
 		}
 
 		if(data?.proposal_tracker[0]?.deadline) {
-			setDeadlineDate(moment(data?.proposal_tracker[0].deadline).toDate());
+			setDeadlineDate(moment(data.proposal_tracker[0].deadline).toDate());
+		}else if(!canEdit){
+			setDeadlineDate(null);
 		}
 
-	}, [data]);
+	}, [canEdit, data]);
 
 	const onStatusChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
 		const status = data.value as string;
@@ -106,7 +112,7 @@ const EditProposalStatus = ({ canEdit, className, address, proposalId } : Props)
 					network: NETWORK,
 					onchain_proposal_id: proposalId,
 					status: status,
-					user_id: address
+					user_id: id
 				}
 			}),
 			headers: {
@@ -159,7 +165,7 @@ const EditProposalStatus = ({ canEdit, className, address, proposalId } : Props)
 							{canEdit ?
 								<DatePicker className={`date-input ${errorsFound.includes('deadlineDate') ? 'deadline-date-error' : ''}`} disabled={loading} onChange={setDeadlineDate} value={deadlineDate} calendarIcon={<CalendarIcon />} format='d-M-yyyy' />
 								:
-								<span className='deadline-date'>{moment(deadlineDate).format('MMMM Do YYYY')}</span>
+								<span className='deadline-date'>{deadlineDate==null ? 'Not Set' : moment(deadlineDate).format('MMMM Do YYYY')}</span>
 							}
 						</Form.Field>
 
@@ -171,7 +177,7 @@ const EditProposalStatus = ({ canEdit, className, address, proposalId } : Props)
 							{canEdit ?
 								<Dropdown placeholder='Status' className='status-dropdown' disabled={loading} selection options={statusOptions} value={status} onChange={onStatusChange} error={errorsFound.includes('status')} />
 								:
-								<span>{statusOptions.find(o => o.value === status)?.text}</span>
+								<span>{status=='Not Set' ? status :statusOptions.find(o => o.value === status)?.text}</span>
 							}
 						</Form.Field>
 					</Form.Group>
@@ -301,5 +307,17 @@ export default styled(EditProposalStatus)`
 			font-size: 14px;
 			width: 100%;
 		}
+	}
+
+	/* Chrome, Safari, Edge, Opera */
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+		-webkit-appearance: none !important;
+		margin: 0 !important;
+	}
+
+	/* Firefox */
+	input[type=number] {
+		-moz-appearance: textfield !important;
 	}
 `;
