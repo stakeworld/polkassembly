@@ -8,9 +8,7 @@ import React, { useContext, useEffect,useState } from 'react';
 import DatePicker from 'react-date-picker';
 import { Button, Card, Dropdown, DropdownProps, Form, Message } from 'semantic-ui-react';
 import { NotificationContext } from 'src/context/NotificationContext';
-import { UserDetailsContext } from 'src/context/UserDetailsContext';
-import { useGetProposalStatusQuery } from 'src/generated/graphql';
-import { getLocalStorageToken } from 'src/services/auth.service';
+import { useCreateProposalTrackerMutation, useGetProposalStatusQuery, useUpdateProposalTrackerMutation } from 'src/generated/graphql';
 import { NotificationStatus } from 'src/types';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
 import getNetwork from 'src/util/getNetwork';
@@ -21,6 +19,7 @@ interface Props {
 	canEdit?: boolean | '' | undefined
 	className?: string
 	proposalId?: number | null | undefined
+	startTime: string
 }
 
 const statusOptions = [
@@ -29,18 +28,14 @@ const statusOptions = [
 	{ key: 'in_progress', text: 'In Progress', value: 'in_progress' }
 ];
 
-const EditProposalStatus = ({ canEdit, className, proposalId } : Props) => {
-	const token = getLocalStorageToken();
-
-	const { id } = useContext(UserDetailsContext);
-
-	const [deadlineDate, setDeadlineDate] = useState<Date | null>(new Date());
+const EditProposalStatus = ({ canEdit, className, proposalId, startTime } : Props) => {
+	const [deadlineDate, setDeadlineDate] = useState<Date | null>(null);
 	const [status, setStatus] = useState<string>('in_progress');
 	const [loading, setLoading] = useState<boolean>(false);
 	const [errorsFound, setErrorsFound] = useState<string[]>([]);
+	const [isUpdate, setIsUpdate] = useState<boolean>(false);
 
 	const NETWORK = getNetwork();
-	const DOMAIN_NAME = window.location.hostname;
 
 	const { queueNotification } = useContext(NotificationContext);
 
@@ -55,13 +50,14 @@ const EditProposalStatus = ({ canEdit, className, proposalId } : Props) => {
 	useEffect(() => {
 		if(data?.proposal_tracker[0]?.status) {
 			setStatus(data.proposal_tracker[0].status);
-		}else if(!canEdit){
+		}else{
 			setStatus('Not Set');
 		}
 
 		if(data?.proposal_tracker[0]?.deadline) {
+			setIsUpdate(true);
 			setDeadlineDate(moment(data.proposal_tracker[0].deadline).toDate());
-		}else if(!canEdit){
+		}else{
 			setDeadlineDate(null);
 		}
 
@@ -71,6 +67,23 @@ const EditProposalStatus = ({ canEdit, className, proposalId } : Props) => {
 		const status = data.value as string;
 		setStatus(status);
 	};
+
+	const [createProposalTrackerMutation] = useCreateProposalTrackerMutation({
+		variables: {
+			deadline: moment(deadlineDate).format('YYYY-MM-DD'),
+			network: NETWORK,
+			onchain_proposal_id: Number(proposalId),
+			start_time: startTime,
+			status: status
+		}
+	});
+
+	const [updateProposalTrackerMutation] = useUpdateProposalTrackerMutation({
+		variables: {
+			id: Number(data?.proposal_tracker[0]?.id),
+			status: status
+		}
+	});
 
 	const handleSave = async () => {
 		if(!canEdit) return;
@@ -94,52 +107,37 @@ const EditProposalStatus = ({ canEdit, className, proposalId } : Props) => {
 			return;
 		}
 
-		const proposalTrackerMutaion = `mutation createProposalTracker($deadline: timestamptz!, $network: String!, $onchain_proposal_id: Int!, $status: String!, $user_id: Int!) {
-			insert_proposal_tracker(objects: {deadline: $deadline, network: $network, onchain_proposal_id: $onchain_proposal_id, status: $status, user_id: $user_id}) {
-			  affected_rows
-			  returning {
-				id
-			  }
-			}
-		}`;
-
-		const request = {
-			body: JSON.stringify({
-				operationName: 'createProposalTracker',
-				query: proposalTrackerMutaion,
-				variables: {
-					deadline: moment(deadlineDate).format('L'),
-					network: NETWORK,
-					onchain_proposal_id: proposalId,
-					status: status,
-					user_id: id
+		if(!isUpdate) {
+			createProposalTrackerMutation({ variables: {
+				deadline: moment(deadlineDate).format('YYYY-MM-DD'),
+				network: NETWORK,
+				onchain_proposal_id: Number(proposalId),
+				start_time: startTime,
+				status: status
+			} }).then(({ data }) => {
+				if (data && data.createProposalTracker?.message){
+					queueNotification({
+						header: 'Success!',
+						message: 'Proposal status was saved',
+						status: NotificationStatus.SUCCESS
+					});
+					refetch();
 				}
-			}),
-			headers: {
-				authorization: `Bearer ${token}`,
-				'content-type': 'application/json'
-			},
-			method: 'POST'
-		};
-
-		let api = `https://${DOMAIN_NAME}/v1/graphql`;
-
-		if (DOMAIN_NAME === 'test.polkassembly.io') {
-			api = 'https://test.polkassembly.io/v1/graphql';
-		}
-
-		const result = await fetch(api, request);
-
-		const json = await result.json();
-
-		if (json.errors) {
-			errorsFound.push('proposalTracker');
-		}else {
-			queueNotification({
-				header: 'Success!',
-				message: 'Proposal status was edited',
-				status: NotificationStatus.SUCCESS
-			});
+			}).catch((e:any) => console.error('Error saving status : ', e));
+		} else {
+			updateProposalTrackerMutation({ variables: {
+				id: Number(data?.proposal_tracker[0]?.id),
+				status: status
+			} }).then(({ data }) => {
+				if (data && data.updateProposalTracker?.message){
+					queueNotification({
+						header: 'Success!',
+						message: 'Proposal status was updated',
+						status: NotificationStatus.SUCCESS
+					});
+					refetch();
+				}
+			}).catch((e:any) => console.error('Error updating status : ', e));
 		}
 
 		setLoading(false);
@@ -162,7 +160,7 @@ const EditProposalStatus = ({ canEdit, className, proposalId } : Props) => {
 								<HelperTooltip content='This timeline will be used by the community to track the progress of the proposal. The team will be responsible for delivering the proposed items before the deadline.' iconSize='small' />
 							</label>
 
-							{canEdit ?
+							{(canEdit && !isUpdate) ?
 								<DatePicker className={`date-input ${errorsFound.includes('deadlineDate') ? 'deadline-date-error' : ''}`} disabled={loading} onChange={setDeadlineDate} value={deadlineDate} calendarIcon={<CalendarIcon />} format='d-M-yyyy' />
 								:
 								<span className='deadline-date'>{deadlineDate==null ? 'Not Set' : moment(deadlineDate).format('MMMM Do YYYY')}</span>

@@ -19552,6 +19552,37 @@ export type GetProposalStatusQuery = (
   )> }
 );
 
+export type CreateProposalTrackerMutationVariables = Exact<{
+  deadline: Scalars['String'];
+  network: Scalars['String'];
+  onchain_proposal_id: Scalars['Int'];
+  status: Scalars['String'];
+  start_time: Scalars['String'];
+}>;
+
+
+export type CreateProposalTrackerMutation = (
+  { __typename?: 'mutation_root' }
+  & { createProposalTracker?: Maybe<(
+    { __typename?: 'Message' }
+    & Pick<Message, 'message'>
+  )> }
+);
+
+export type UpdateProposalTrackerMutationVariables = Exact<{
+  id: Scalars['Int'];
+  status: Scalars['String'];
+}>;
+
+
+export type UpdateProposalTrackerMutation = (
+  { __typename?: 'mutation_root' }
+  & { updateProposalTracker?: Maybe<(
+    { __typename?: 'Message' }
+    & Pick<Message, 'message'>
+  )> }
+);
+
 export type AuthorFieldsFragment = (
   { __typename?: 'User' }
   & Pick<User, 'id' | 'kusama_default_address' | 'polkadot_default_address' | 'username'>
@@ -19576,6 +19607,397 @@ export type CommentFieldsFragment = (
     { __typename?: 'replies' }
     & ReplyFieldsFragment
   )> }
+);
+
+export type OnchainLinkBountyFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_bounty_id'>
+  & { onchain_bounty: Array<Maybe<(
+    { __typename?: 'Bounty' }
+    & Pick<Bounty, 'id' | 'proposer' | 'value' | 'fee' | 'curatorDeposit' | 'bond' | 'bountyId' | 'curator' | 'beneficiary'>
+    & { bountyStatus?: Maybe<Array<(
+      { __typename?: 'BountyStatus' }
+      & Pick<BountyStatus, 'id' | 'status'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'startDateTime' | 'number'>
+      ) }
+    )>> }
+  )>> }
+);
+
+export type BountyPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkBountyFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
+);
+
+export type TopicFragment = (
+  { __typename?: 'post_topics' }
+  & Pick<Post_Topics, 'id' | 'name'>
+);
+
+export type OnchainLinkDiscussionFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'onchain_referendum_id' | 'onchain_motion_id' | 'onchain_proposal_id' | 'onchain_treasury_proposal_id'>
+);
+
+export type DiscussionPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkDiscussionFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
+);
+
+export type PostFieldsFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments_aggregate: (
+    { __typename?: 'comments_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'comments_aggregate_fields' }
+      & Pick<Comments_Aggregate_Fields, 'count'>
+    )> }
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'name' | 'id'>
+  ), last_update?: Maybe<(
+    { __typename?: 'post_last_update' }
+    & Pick<Post_Last_Update, 'last_update'>
+  )> }
+);
+
+export type OnchainLinkMotionPreimageFragment = (
+  { __typename?: 'Preimage' }
+  & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
+  & { preimageArguments?: Maybe<Array<(
+    { __typename?: 'PreimageArgument' }
+    & Pick<PreimageArgument, 'id' | 'name' | 'value'>
+  )>> }
+);
+
+export type OnchainLinkMotionTreasuryFragment = (
+  { __typename?: 'TreasurySpendProposal' }
+  & Pick<TreasurySpendProposal, 'beneficiary' | 'bond' | 'value'>
+);
+
+export type OnchainLinkMotionFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_referendum_id' | 'onchain_motion_id'>
+  & { onchain_motion: Array<Maybe<(
+    { __typename?: 'Motion' }
+    & Pick<Motion, 'id' | 'memberCount' | 'method' | 'motionProposalHash'>
+    & { motionStatus?: Maybe<Array<(
+      { __typename?: 'MotionStatus' }
+      & Pick<MotionStatus, 'id' | 'status'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'number'>
+      ) }
+    )>>, motionProposalArguments?: Maybe<Array<(
+      { __typename?: 'MotionProposalArgument' }
+      & Pick<MotionProposalArgument, 'name' | 'value'>
+    )>>, preimage?: Maybe<(
+      { __typename?: 'Preimage' }
+      & OnchainLinkMotionPreimageFragment
+    )>, treasurySpendProposal?: Maybe<(
+      { __typename?: 'TreasurySpendProposal' }
+      & OnchainLinkMotionTreasuryFragment
+    )> }
+  )>> }
+);
+
+export type MotionPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkMotionFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
+);
+
+export type OnchainLinkProposalFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_proposal_id' | 'onchain_referendum_id'>
+  & { onchain_proposal: Array<Maybe<(
+    { __typename?: 'Proposal' }
+    & Pick<Proposal, 'id' | 'depositAmount'>
+    & { proposalStatus?: Maybe<Array<(
+      { __typename?: 'ProposalStatus' }
+      & Pick<ProposalStatus, 'id' | 'status'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'number'>
+      ) }
+    )>>, preimage?: Maybe<(
+      { __typename?: 'Preimage' }
+      & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
+      & { preimageArguments?: Maybe<Array<(
+        { __typename?: 'PreimageArgument' }
+        & Pick<PreimageArgument, 'id' | 'name' | 'value'>
+      )>> }
+    )> }
+  )>> }
+);
+
+export type ProposalPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkProposalFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
+);
+
+export type OnchainLinkReferendumFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_referendum_id'>
+  & { onchain_referendum: Array<Maybe<(
+    { __typename?: 'Referendum' }
+    & Pick<Referendum, 'id' | 'delay' | 'end' | 'voteThreshold'>
+    & { referendumStatus?: Maybe<Array<(
+      { __typename?: 'ReferendumStatus' }
+      & Pick<ReferendumStatus, 'status' | 'id'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'startDateTime' | 'number'>
+      ) }
+    )>>, preimage?: Maybe<(
+      { __typename?: 'Preimage' }
+      & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
+      & { preimageArguments?: Maybe<Array<(
+        { __typename?: 'PreimageArgument' }
+        & Pick<PreimageArgument, 'id' | 'name' | 'value'>
+      )>> }
+    )> }
+  )>> }
+);
+
+export type ReferendumPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkReferendumFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
+);
+
+export type SearchPostFieldsFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments_aggregate: (
+    { __typename?: 'comments_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'comments_aggregate_fields' }
+      & Pick<Comments_Aggregate_Fields, 'count'>
+    )> }
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'name' | 'id'>
+  ), last_update?: Maybe<(
+    { __typename?: 'post_last_update' }
+    & Pick<Post_Last_Update, 'last_update'>
+  )> }
+);
+
+export type OnchainLinkTechCommitteeProposalPreimageFragment = (
+  { __typename?: 'Preimage' }
+  & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
+  & { preimageArguments?: Maybe<Array<(
+    { __typename?: 'PreimageArgument' }
+    & Pick<PreimageArgument, 'id' | 'name' | 'value'>
+  )>> }
+);
+
+export type OnchainLinkTechCommitteeProposalFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_tech_committee_proposal_id'>
+  & { onchain_tech_committee_proposal: Array<Maybe<(
+    { __typename?: 'TechCommitteeProposal' }
+    & Pick<TechCommitteeProposal, 'id' | 'metaDescription' | 'memberCount' | 'method' | 'proposalHash'>
+    & { status?: Maybe<Array<(
+      { __typename?: 'TechCommitteeProposalStatus' }
+      & Pick<TechCommitteeProposalStatus, 'id' | 'status'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'number'>
+      ) }
+    )>>, proposalArguments?: Maybe<Array<(
+      { __typename?: 'TechCommitteeProposalArgument' }
+      & Pick<TechCommitteeProposalArgument, 'name' | 'value'>
+    )>>, preimage?: Maybe<(
+      { __typename?: 'Preimage' }
+      & OnchainLinkTechCommitteeProposalPreimageFragment
+    )> }
+  )>> }
+);
+
+export type TechCommitteeProposalPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkTechCommitteeProposalFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
+);
+
+export type OnchainLinkTipFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_tip_id'>
+  & { onchain_tip: Array<Maybe<(
+    { __typename?: 'Tip' }
+    & Pick<Tip, 'id' | 'hash' | 'reason' | 'who' | 'finder' | 'finderFee' | 'closes'>
+    & { tipStatus?: Maybe<Array<(
+      { __typename?: 'TipStatus' }
+      & Pick<TipStatus, 'id' | 'status'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'startDateTime' | 'number'>
+      ) }
+    )>> }
+  )>> }
+);
+
+export type TipPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkTipFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
+);
+
+export type OnchainLinkTreasuryProposalFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_treasury_proposal_id' | 'onchain_motion_id'>
+  & { onchain_treasury_spend_proposal: Array<Maybe<(
+    { __typename?: 'TreasurySpendProposal' }
+    & Pick<TreasurySpendProposal, 'id' | 'beneficiary' | 'value' | 'bond'>
+    & { treasuryStatus?: Maybe<Array<(
+      { __typename?: 'TreasuryStatus' }
+      & Pick<TreasuryStatus, 'id' | 'status'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'number'>
+      ) }
+    )>> }
+  )>> }
+);
+
+export type TreasuryProposalPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkTreasuryProposalFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
 );
 
 export type AllBountyPostsQueryVariables = Exact<{
@@ -19618,44 +20040,6 @@ export type AllBountyPostsQuery = (
       )>> }
     )> }
   )> }
-);
-
-export type OnchainLinkBountyFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_bounty_id'>
-  & { onchain_bounty: Array<Maybe<(
-    { __typename?: 'Bounty' }
-    & Pick<Bounty, 'id' | 'proposer' | 'value' | 'fee' | 'curatorDeposit' | 'bond' | 'bountyId' | 'curator' | 'beneficiary'>
-    & { bountyStatus?: Maybe<Array<(
-      { __typename?: 'BountyStatus' }
-      & Pick<BountyStatus, 'id' | 'status'>
-      & { blockNumber: (
-        { __typename?: 'BlockNumber' }
-        & Pick<BlockNumber, 'startDateTime' | 'number'>
-      ) }
-    )>> }
-  )>> }
-);
-
-export type BountyPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkBountyFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
 );
 
 export type BountyPostAndCommentsQueryVariables = Exact<{
@@ -19749,11 +20133,6 @@ export type CreatePollMutation = (
   )> }
 );
 
-export type TopicFragment = (
-  { __typename?: 'post_topics' }
-  & Pick<Post_Topics, 'id' | 'name'>
-);
-
 export type Post_TopicsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -19763,32 +20142,6 @@ export type Post_TopicsQuery = (
     { __typename?: 'post_topics' }
     & TopicFragment
   )> }
-);
-
-export type OnchainLinkDiscussionFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'onchain_referendum_id' | 'onchain_motion_id' | 'onchain_proposal_id' | 'onchain_treasury_proposal_id'>
-);
-
-export type DiscussionPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkDiscussionFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
 );
 
 export type DiscussionPostAndCommentsQueryVariables = Exact<{
@@ -19801,27 +20154,6 @@ export type DiscussionPostAndCommentsQuery = (
   & { posts: Array<(
     { __typename?: 'posts' }
     & DiscussionPostFragment
-  )> }
-);
-
-export type PostFieldsFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments_aggregate: (
-    { __typename?: 'comments_aggregate' }
-    & { aggregate?: Maybe<(
-      { __typename?: 'comments_aggregate_fields' }
-      & Pick<Comments_Aggregate_Fields, 'count'>
-    )> }
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'name' | 'id'>
-  ), last_update?: Maybe<(
-    { __typename?: 'post_last_update' }
-    & Pick<Post_Last_Update, 'last_update'>
   )> }
 );
 
@@ -19862,67 +20194,6 @@ export type DiscussionPostsIdAscQuery = (
     { __typename?: 'posts' }
     & PostFieldsFragment
   )> }
-);
-
-export type OnchainLinkMotionPreimageFragment = (
-  { __typename?: 'Preimage' }
-  & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
-  & { preimageArguments?: Maybe<Array<(
-    { __typename?: 'PreimageArgument' }
-    & Pick<PreimageArgument, 'id' | 'name' | 'value'>
-  )>> }
-);
-
-export type OnchainLinkMotionTreasuryFragment = (
-  { __typename?: 'TreasurySpendProposal' }
-  & Pick<TreasurySpendProposal, 'beneficiary' | 'bond' | 'value'>
-);
-
-export type OnchainLinkMotionFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_referendum_id' | 'onchain_motion_id'>
-  & { onchain_motion: Array<Maybe<(
-    { __typename?: 'Motion' }
-    & Pick<Motion, 'id' | 'memberCount' | 'method' | 'motionProposalHash'>
-    & { motionStatus?: Maybe<Array<(
-      { __typename?: 'MotionStatus' }
-      & Pick<MotionStatus, 'id' | 'status'>
-      & { blockNumber: (
-        { __typename?: 'BlockNumber' }
-        & Pick<BlockNumber, 'number'>
-      ) }
-    )>>, motionProposalArguments?: Maybe<Array<(
-      { __typename?: 'MotionProposalArgument' }
-      & Pick<MotionProposalArgument, 'name' | 'value'>
-    )>>, preimage?: Maybe<(
-      { __typename?: 'Preimage' }
-      & OnchainLinkMotionPreimageFragment
-    )>, treasurySpendProposal?: Maybe<(
-      { __typename?: 'TreasurySpendProposal' }
-      & OnchainLinkMotionTreasuryFragment
-    )> }
-  )>> }
-);
-
-export type MotionPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkMotionFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
 );
 
 export type MotionPostAndCommentsQueryVariables = Exact<{
@@ -20538,51 +20809,6 @@ export type ChangeAboutMutation = (
   )> }
 );
 
-export type OnchainLinkProposalFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_proposal_id' | 'onchain_referendum_id'>
-  & { onchain_proposal: Array<Maybe<(
-    { __typename?: 'Proposal' }
-    & Pick<Proposal, 'id' | 'depositAmount'>
-    & { proposalStatus?: Maybe<Array<(
-      { __typename?: 'ProposalStatus' }
-      & Pick<ProposalStatus, 'id' | 'status'>
-      & { blockNumber: (
-        { __typename?: 'BlockNumber' }
-        & Pick<BlockNumber, 'number'>
-      ) }
-    )>>, preimage?: Maybe<(
-      { __typename?: 'Preimage' }
-      & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
-      & { preimageArguments?: Maybe<Array<(
-        { __typename?: 'PreimageArgument' }
-        & Pick<PreimageArgument, 'id' | 'name' | 'value'>
-      )>> }
-    )> }
-  )>> }
-);
-
-export type ProposalPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkProposalFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
-);
-
 export type ProposalPostAndCommentsQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -20685,51 +20911,6 @@ export type AllReferendaPostsQuery = (
   )> }
 );
 
-export type OnchainLinkReferendumFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_referendum_id'>
-  & { onchain_referendum: Array<Maybe<(
-    { __typename?: 'Referendum' }
-    & Pick<Referendum, 'id' | 'delay' | 'end' | 'voteThreshold'>
-    & { referendumStatus?: Maybe<Array<(
-      { __typename?: 'ReferendumStatus' }
-      & Pick<ReferendumStatus, 'status' | 'id'>
-      & { blockNumber: (
-        { __typename?: 'BlockNumber' }
-        & Pick<BlockNumber, 'startDateTime' | 'number'>
-      ) }
-    )>>, preimage?: Maybe<(
-      { __typename?: 'Preimage' }
-      & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
-      & { preimageArguments?: Maybe<Array<(
-        { __typename?: 'PreimageArgument' }
-        & Pick<PreimageArgument, 'id' | 'name' | 'value'>
-      )>> }
-    )> }
-  )>> }
-);
-
-export type ReferendumPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkReferendumFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
-);
-
 export type ReferendumPostAndCommentsQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -20768,27 +20949,6 @@ export type ResetPasswordMutation = (
   & { resetPassword?: Maybe<(
     { __typename?: 'Message' }
     & Pick<Message, 'message'>
-  )> }
-);
-
-export type SearchPostFieldsFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments_aggregate: (
-    { __typename?: 'comments_aggregate' }
-    & { aggregate?: Maybe<(
-      { __typename?: 'comments_aggregate_fields' }
-      & Pick<Comments_Aggregate_Fields, 'count'>
-    )> }
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'name' | 'id'>
-  ), last_update?: Maybe<(
-    { __typename?: 'post_last_update' }
-    & Pick<Post_Last_Update, 'last_update'>
   )> }
 );
 
@@ -20987,59 +21147,6 @@ export type MultisigLinkConfirmMutation = (
   )> }
 );
 
-export type OnchainLinkTechCommitteeProposalPreimageFragment = (
-  { __typename?: 'Preimage' }
-  & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
-  & { preimageArguments?: Maybe<Array<(
-    { __typename?: 'PreimageArgument' }
-    & Pick<PreimageArgument, 'id' | 'name' | 'value'>
-  )>> }
-);
-
-export type OnchainLinkTechCommitteeProposalFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_tech_committee_proposal_id'>
-  & { onchain_tech_committee_proposal: Array<Maybe<(
-    { __typename?: 'TechCommitteeProposal' }
-    & Pick<TechCommitteeProposal, 'id' | 'metaDescription' | 'memberCount' | 'method' | 'proposalHash'>
-    & { status?: Maybe<Array<(
-      { __typename?: 'TechCommitteeProposalStatus' }
-      & Pick<TechCommitteeProposalStatus, 'id' | 'status'>
-      & { blockNumber: (
-        { __typename?: 'BlockNumber' }
-        & Pick<BlockNumber, 'number'>
-      ) }
-    )>>, proposalArguments?: Maybe<Array<(
-      { __typename?: 'TechCommitteeProposalArgument' }
-      & Pick<TechCommitteeProposalArgument, 'name' | 'value'>
-    )>>, preimage?: Maybe<(
-      { __typename?: 'Preimage' }
-      & OnchainLinkTechCommitteeProposalPreimageFragment
-    )> }
-  )>> }
-);
-
-export type TechCommitteeProposalPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkTechCommitteeProposalFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
-);
-
 export type TechCommitteeProposalPostAndCommentsQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -21095,44 +21202,6 @@ export type AllTechCommitteeProposalPostsQuery = (
       )>> }
     )> }
   )> }
-);
-
-export type OnchainLinkTipFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_tip_id'>
-  & { onchain_tip: Array<Maybe<(
-    { __typename?: 'Tip' }
-    & Pick<Tip, 'id' | 'hash' | 'reason' | 'who' | 'finder' | 'finderFee' | 'closes'>
-    & { tipStatus?: Maybe<Array<(
-      { __typename?: 'TipStatus' }
-      & Pick<TipStatus, 'id' | 'status'>
-      & { blockNumber: (
-        { __typename?: 'BlockNumber' }
-        & Pick<BlockNumber, 'startDateTime' | 'number'>
-      ) }
-    )>> }
-  )>> }
-);
-
-export type TipPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkTipFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
 );
 
 export type TipPostAndCommentsQueryVariables = Exact<{
@@ -21529,44 +21598,6 @@ export type AllDemocracyTreasuryProposalPostsQuery = (
       )>> }
     )> }
   )> }
-);
-
-export type OnchainLinkTreasuryProposalFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_treasury_proposal_id' | 'onchain_motion_id'>
-  & { onchain_treasury_spend_proposal: Array<Maybe<(
-    { __typename?: 'TreasurySpendProposal' }
-    & Pick<TreasurySpendProposal, 'id' | 'beneficiary' | 'value' | 'bond'>
-    & { treasuryStatus?: Maybe<Array<(
-      { __typename?: 'TreasuryStatus' }
-      & Pick<TreasuryStatus, 'id' | 'status'>
-      & { blockNumber: (
-        { __typename?: 'BlockNumber' }
-        & Pick<BlockNumber, 'number'>
-      ) }
-    )>> }
-  )>> }
-);
-
-export type TreasuryProposalPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkTreasuryProposalFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
 );
 
 export type TreasuryProposalPostAndCommentsQueryVariables = Exact<{
@@ -23970,6 +24001,81 @@ export function useGetProposalStatusLazyQuery(baseOptions?: ApolloReactHooks.Laz
 export type GetProposalStatusQueryHookResult = ReturnType<typeof useGetProposalStatusQuery>;
 export type GetProposalStatusLazyQueryHookResult = ReturnType<typeof useGetProposalStatusLazyQuery>;
 export type GetProposalStatusQueryResult = ApolloReactCommon.QueryResult<GetProposalStatusQuery, GetProposalStatusQueryVariables>;
+export const CreateProposalTrackerDocument = gql`
+    mutation createProposalTracker($deadline: String!, $network: String!, $onchain_proposal_id: Int!, $status: String!, $start_time: String!) {
+  createProposalTracker(
+    deadline: $deadline
+    network: $network
+    onchain_proposal_id: $onchain_proposal_id
+    status: $status
+    start_time: $start_time
+  ) {
+    message
+  }
+}
+    `;
+export type CreateProposalTrackerMutationFn = ApolloReactCommon.MutationFunction<CreateProposalTrackerMutation, CreateProposalTrackerMutationVariables>;
+
+/**
+ * __useCreateProposalTrackerMutation__
+ *
+ * To run a mutation, you first call `useCreateProposalTrackerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateProposalTrackerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createProposalTrackerMutation, { data, loading, error }] = useCreateProposalTrackerMutation({
+ *   variables: {
+ *      deadline: // value for 'deadline'
+ *      network: // value for 'network'
+ *      onchain_proposal_id: // value for 'onchain_proposal_id'
+ *      status: // value for 'status'
+ *      start_time: // value for 'start_time'
+ *   },
+ * });
+ */
+export function useCreateProposalTrackerMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateProposalTrackerMutation, CreateProposalTrackerMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateProposalTrackerMutation, CreateProposalTrackerMutationVariables>(CreateProposalTrackerDocument, baseOptions);
+      }
+export type CreateProposalTrackerMutationHookResult = ReturnType<typeof useCreateProposalTrackerMutation>;
+export type CreateProposalTrackerMutationResult = ApolloReactCommon.MutationResult<CreateProposalTrackerMutation>;
+export type CreateProposalTrackerMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateProposalTrackerMutation, CreateProposalTrackerMutationVariables>;
+export const UpdateProposalTrackerDocument = gql`
+    mutation updateProposalTracker($id: Int!, $status: String!) {
+  updateProposalTracker(id: $id, status: $status) {
+    message
+  }
+}
+    `;
+export type UpdateProposalTrackerMutationFn = ApolloReactCommon.MutationFunction<UpdateProposalTrackerMutation, UpdateProposalTrackerMutationVariables>;
+
+/**
+ * __useUpdateProposalTrackerMutation__
+ *
+ * To run a mutation, you first call `useUpdateProposalTrackerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProposalTrackerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateProposalTrackerMutation, { data, loading, error }] = useUpdateProposalTrackerMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      status: // value for 'status'
+ *   },
+ * });
+ */
+export function useUpdateProposalTrackerMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateProposalTrackerMutation, UpdateProposalTrackerMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateProposalTrackerMutation, UpdateProposalTrackerMutationVariables>(UpdateProposalTrackerDocument, baseOptions);
+      }
+export type UpdateProposalTrackerMutationHookResult = ReturnType<typeof useUpdateProposalTrackerMutation>;
+export type UpdateProposalTrackerMutationResult = ApolloReactCommon.MutationResult<UpdateProposalTrackerMutation>;
+export type UpdateProposalTrackerMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateProposalTrackerMutation, UpdateProposalTrackerMutationVariables>;
 export const AllBountyPostsDocument = gql`
     query AllBountyPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
   posts(

@@ -37,9 +37,10 @@ interface Props {
 	onchainId?: string | number | null
 	onchainLink?: OnchainLinkTechCommitteeProposalFragment | OnchainLinkBountyFragment | OnchainLinkMotionFragment | OnchainLinkProposalFragment | OnchainLinkReferendumFragment | OnchainLinkTreasuryProposalFragment | OnchainLinkTipFragment
 	status?: string
+	startTime: string
 }
 
-const GovenanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferendum, isTipProposal, isTreasuryProposal, onchainId, onchainLink, status }: Props) => {
+const GovenanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferendum, isTipProposal, isTreasuryProposal, onchainId, onchainLink, startTime, status }: Props) => {
 	const [address, setAddress] = useState<string>('');
 	const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
 	const [extensionNotFound, setExtensionNotFound] = useState(false);
@@ -150,6 +151,7 @@ const GovenanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferend
 							<EditProposalStatus
 								proposalId={onchainId  as number}
 								canEdit={canEdit}
+								startTime={startTime}
 							/>
 						}
 						{isReferendum &&
