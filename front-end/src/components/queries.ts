@@ -114,3 +114,21 @@ export const GET_PROPOSAL_STATUS = gql`
         }
     }
 `;
+
+
+export const PROPOSAL_STATUS_TRACKER_MUTATION = gql`
+    mutation createProposalTracker($deadline: timestamptz!, $network: String!, $onchain_proposal_id: Int!, $status: String!, $user_id: Int!) {
+        insert_proposal_tracker(objects: {deadline: $deadline, network: $network, onchain_proposal_id: $onchain_proposal_id, status: $status, user_id: $user_id}) {
+            message
+        }
+    }
+`;
+
+
+export const UPDATE_PROPOSAL_TRACKER_MUTATION = gql`
+    mutation updateProposalTracker($id: Int!, $status: String!) {
+        update_proposal_tracker(where: {id: {_eq: $id}}, _set: {status: $status}) {
+            message
+        }
+    }
+`;
