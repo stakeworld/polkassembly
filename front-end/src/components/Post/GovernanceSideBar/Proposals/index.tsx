@@ -64,6 +64,7 @@ const ProposalDisplay = ({ proposalId, accounts, address, canEdit, canVote, getA
 		<>
 			{canEdit &&
 				<EditProposalStatus
+					address={address}
 					proposalId={proposalId}
 				/>}
 			{(proposalId || proposalId === 0) &&
