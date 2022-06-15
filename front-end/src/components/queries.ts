@@ -115,7 +115,6 @@ export const GET_PROPOSAL_STATUS = gql`
     }
 `;
 
-
 export const PROPOSAL_STATUS_TRACKER_MUTATION = gql`
     mutation createProposalTracker($deadline: String!, $network: String!, $onchain_proposal_id: Int!, $status: String!, $start_time: String!) {
         createProposalTracker(deadline: $deadline, network: $network, onchain_proposal_id: $onchain_proposal_id, status: $status, start_time: $start_time) {
@@ -123,7 +122,6 @@ export const PROPOSAL_STATUS_TRACKER_MUTATION = gql`
         }
     }
 `;
-
 
 export const UPDATE_PROPOSAL_TRACKER_MUTATION = gql`
     mutation updateProposalTracker($id: Int!, $status: String!) {
