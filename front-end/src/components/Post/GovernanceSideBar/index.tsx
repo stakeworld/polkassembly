@@ -22,6 +22,7 @@ import ReferendumVoteInfo from './Referenda/ReferendumVoteInfo';
 import VoteReferendum from './Referenda/VoteReferendum';
 import EndorseTip from './Tips/EndorseTip';
 import TipInfo from './Tips/TipInfo';
+import EditProposalStatus from './TreasuryProposals/EditProposalStatus';
 
 interface Props {
 	canEdit?: boolean | '' | undefined
@@ -38,7 +39,7 @@ interface Props {
 	status?: string
 }
 
-const GovenanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferendum, isTipProposal, onchainId, onchainLink, status }: Props) => {
+const GovenanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferendum, isTipProposal, isTreasuryProposal, onchainId, onchainLink, status }: Props) => {
 	const [address, setAddress] = useState<string>('');
 	const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
 	const [extensionNotFound, setExtensionNotFound] = useState(false);
@@ -142,6 +143,12 @@ const GovenanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferend
 								canVote={canVote}
 								getAccounts={getAccounts}
 								onAccountChange={onAccountChange}
+								proposalId={onchainId  as number}
+							/>
+						}
+						{isTreasuryProposal &&
+							<EditProposalStatus
+								address={address}
 								proposalId={onchainId  as number}
 								canEdit={canEdit}
 							/>

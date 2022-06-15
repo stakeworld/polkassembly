@@ -6,7 +6,7 @@ import styled from '@xstyled/styled-components';
 import moment from 'moment';
 import React, { useContext, useEffect,useState } from 'react';
 import DatePicker from 'react-date-picker';
-import { Button, Dropdown, DropdownProps, Form, Icon, Message, Modal } from 'semantic-ui-react';
+import { Button, Card, Dropdown, DropdownProps, Form, Message } from 'semantic-ui-react';
 import { NotificationContext } from 'src/context/NotificationContext';
 import { useGetProposalStatusQuery } from 'src/generated/graphql';
 import { getLocalStorageToken } from 'src/services/auth.service';
@@ -17,6 +17,7 @@ import getNetwork from 'src/util/getNetwork';
 import { ReactComponent as CalendarIcon } from '../../../../assets/sidebar/calendar.svg';
 
 interface Props {
+	canEdit?: boolean | '' | undefined
 	className?: string
 	address: string
 	proposalId?: number | null | undefined
@@ -28,10 +29,9 @@ const statusOptions = [
 	{ key: 'in_progress', text: 'In Progress', value: 'in_progress' }
 ];
 
-const EditProposalStatus = ({ className, address, proposalId } : Props) => {
+const EditProposalStatus = ({ canEdit, className, address, proposalId } : Props) => {
 	const token = getLocalStorageToken();
 
-	const [modalOpen, setModalOpen] = useState<boolean>(false);
 	const [deadlineDate, setDeadlineDate] = useState<Date>(new Date());
 	const [status, setStatus] = useState<string>('in_progress');
 	const [loading, setLoading] = useState<boolean>(false);
@@ -67,6 +67,8 @@ const EditProposalStatus = ({ className, address, proposalId } : Props) => {
 	};
 
 	const handleSave = async () => {
+		if(!canEdit) return;
+
 		setLoading(true);
 
 		const errorsFound: string[] = [];
@@ -138,22 +140,11 @@ const EditProposalStatus = ({ className, address, proposalId } : Props) => {
 	};
 
 	return (
-		<Modal
+		<Card
 			className={className}
-			closeOnEscape={false}
-			closeOnDimmerClick={false}
-			onOpen={() => setModalOpen(true)}
-			open={modalOpen}
-			size='small'
-			trigger={<Button style={ { background: '#E5007A', color:'#fff', marginBottom:'12px' } } size='huge'> <Icon name='edit outline' /> Edit Proposal Status</Button>}
 		>
-			<Modal.Header className='modal-header'>
-				<div>Edit Proposal Status </div>
-				<Icon name='close' disabled={loading} onClick={() => setModalOpen(false) } />
-			</Modal.Header>
-			<Modal.Content>
-				<Modal.Description>
-
+			<Card.Content>
+				<div className='card-description'>
 					{errorsFound.includes('proposalTracker') && <Message negative>
 						<Message.Header>Error in updating proposal status, please try again.</Message.Header>
 					</Message>}
@@ -161,11 +152,15 @@ const EditProposalStatus = ({ className, address, proposalId } : Props) => {
 					<Form.Group>
 						<Form.Field width={16} className='date-input-form-field'>
 							<label className='input-label'>
-								Choose Deadline Date
+								Deadline Date
 								<HelperTooltip content='This timeline will be used by the community to track the progress of the proposal. The team will be responsible for delivering the proposed items before the deadline.' iconSize='small' />
 							</label>
 
-							<DatePicker className={`date-input ${errorsFound.includes('deadlineDate') ? 'deadline-date-error' : ''}`} onChange={setDeadlineDate} value={deadlineDate} calendarIcon={<CalendarIcon />} format='d-M-yyyy' />
+							{canEdit ?
+								<DatePicker className={`date-input ${errorsFound.includes('deadlineDate') ? 'deadline-date-error' : ''}`} disabled={loading} onChange={setDeadlineDate} value={deadlineDate} calendarIcon={<CalendarIcon />} format='d-M-yyyy' />
+								:
+								<span className='deadline-date'>{moment(deadlineDate).format('MMMM Do YYYY')}</span>
+							}
 						</Form.Field>
 
 						<Form.Field width={16} className='status-input-form-field'>
@@ -173,51 +168,52 @@ const EditProposalStatus = ({ className, address, proposalId } : Props) => {
 								Status
 							</label>
 
-							<Dropdown placeholder='Status' className='status-dropdown' selection options={statusOptions} value={status} onChange={onStatusChange} error={errorsFound.includes('status')} />
+							{canEdit ?
+								<Dropdown placeholder='Status' className='status-dropdown' disabled={loading} selection options={statusOptions} value={status} onChange={onStatusChange} error={errorsFound.includes('status')} />
+								:
+								<span>{statusOptions.find(o => o.value === status)?.text}</span>
+							}
 						</Form.Field>
-
 					</Form.Group>
-				</Modal.Description>
-			</Modal.Content>
+				</div>
 
-			<Modal.Actions>
-				<Button onClick={handleSave} loading={loading} disabled={loading}>
-          Save
-				</Button>
-			</Modal.Actions>
-		</Modal>
+				{ canEdit && <div className='card-actions'>
+					<Button onClick={handleSave} loading={loading} disabled={loading}>
+						Save
+					</Button>
+				</div>
+				}
+			</Card.Content>
+		</Card>
 
 	);
 
 };
 
 export default styled(EditProposalStatus)`
-	.modal-header{
-		display: flex !important;
-		align-items: center;
-		justify-content: center;
+	width: 100% !important;
+	padding: 2% 3% !important;
 
-		div, .icon {
-			margin-left: auto;
-		}
+	.header{
+		border-bottom: 1px solid #eee;
+		padding-bottom: 5px;
+		margin-bottom: 16px;
+	}
 
-		.icon {
-			cursor: pointer;
-			color: #999;
+	.card-description {
+		display: flex;
+		flex-direction: column;
 
-			&:hover {
-				color: #333;
-			}
+		.fields {
+			display: block;
 		}
 	}
 
-	.description {
-		padding: 0 5%;
-	}
-
-	.actions {
+	.card-actions {
 		margin-top: 10px;
-
+		display: flex;
+		justify-content: end;
+		
 		.button {
 			background: #E5007A !important;
 			color: #fff;
@@ -228,6 +224,14 @@ export default styled(EditProposalStatus)`
 		display: flex !important;
 		align-items: center !important;
 		font-size: 12px;
+
+		span {
+			margin-top: -5px;
+		}
+	}
+
+	.deadline-date {
+		font-size: 14px;
 	}
 
 	.date-input {
@@ -248,9 +252,20 @@ export default styled(EditProposalStatus)`
 		}
 
 		.react-date-picker__wrapper {
-			padding: 0.678571em 1em;
+			padding: 0 10px;
 			border: 1px solid rgba(34,36,38,.15);
 			border-radius: .29rem;
+
+			.react-date-picker__inputGroup {
+				display: flex;
+
+				.react-date-picker__inputGroup__divider {
+					height: 100%;
+					display: flex;
+					align-items: center;
+				}
+			}
+
 		}
 
 		.react-date-picker__clear-button {
@@ -264,6 +279,8 @@ export default styled(EditProposalStatus)`
 			border: none !important;
 			font-family: 'Roboto' !important;
 			color: #333;
+			height: min-content;
+			margin-bottom: 0 !important;
 		}
 
 		.react-date-picker__inputGroup__divider,.react-date-picker__inputGroup__day, .react-date-picker__inputGroup__month, .react-date-picker__inputGroup__year {
@@ -274,7 +291,7 @@ export default styled(EditProposalStatus)`
 	}
 
 	.status-input-form-field {
-		margin-top: 16px;
+		margin-top: 16px !important;
 
 		.input-label {
 			margin-bottom: 4px;
