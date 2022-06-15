@@ -107,7 +107,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 							events={calendarEvents}
 							startAccessor='start_time'
 							endAccessor='end_time'
-							popup={true}
+							popup={false}
 							components={{
 								event: Event,
 								eventWrapper: EventWrapperComponent,
