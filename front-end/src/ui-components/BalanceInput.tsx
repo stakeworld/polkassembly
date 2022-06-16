@@ -41,7 +41,7 @@ const BalanceInput = ({ className, label = '', helpText = '', onChange, placehol
 			invalid={isValidInput}
 			onChange={onBalanceChange}
 			placeholder={placeholder}
-			type='string'
+			type='number'
 		/>
 	</Form.Field>;
 };

@@ -6,9 +6,10 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Button, DropdownProps, Select } from 'semantic-ui-react';
+import { Button, Dropdown, DropdownProps } from 'semantic-ui-react';
 
 import calendar_today from '../../assets/calendar_today.png';
+import NetworkSelect from './NetworkSelect';
 
 function CustomToolbar(props: any) {
 	let months = [
@@ -26,15 +27,14 @@ function CustomToolbar(props: any) {
 		{ key: '11', text: 'December', value: 11 }
 	];
 
-	let viewStateOptions = [];
+	const viewStateOptions = [
+		{ key: 'month', text: 'Month', value: 'month' },
+		{ key: 'week', text: 'Week', value: 'week' },
+		{ key: 'day', text: 'Day', value: 'day' },
+		{ key: 'agenda', text: 'Agenda', value: 'agenda' }
+	];
 
 	if(props.small) {
-		viewStateOptions = [
-			{ key: 'month', text: 'Month', value: 'month' },
-			{ key: 'day', text: 'Day', value: 'day' },
-			{ key: 'agenda', text: 'Agenda', value: 'agenda' }
-		];
-
 		months = [
 			{ key: '0', text: 'Jan', value: 0 },
 			{ key: '1', text: 'Feb', value: 1 },
@@ -48,13 +48,6 @@ function CustomToolbar(props: any) {
 			{ key: '9', text: 'Oct', value: 9 },
 			{ key: '10', text: 'Nov', value: 10 },
 			{ key: '11', text: 'Dec', value: 11 }
-		];
-	}else{
-		viewStateOptions = [
-			{ key: 'month', text: 'Month', value: 'month' },
-			{ key: 'week', text: 'Week', value: 'week' },
-			{ key: 'day', text: 'Day', value: 'day' },
-			{ key: 'agenda', text: 'Agenda', value: 'agenda' }
 		];
 	}
 
@@ -137,17 +130,38 @@ function CustomToolbar(props: any) {
 	},[props.view]);
 
 	return (
-		props.date && <div className='custom-calendar-toolbar'>
-			<div className='action-div'>
-				<Select compact className={props.small ? 'month-select-small' : ''} value={selectedMonth} onChange={onSelectMonthChange} options={months} />
-				<Button onClick={goToBack} icon='chevron left' />
-				<span>{moment(props.date).format('DD - MMM - YY')}</span>
-				<Button onClick={goToNext} icon='chevron right' />
-				<div className='actions-right'>
-					<img className='today-btn-img' onClick={goToToday} src={calendar_today} height={16} width={16} title='Today' alt='Today' />
-					<Select compact className={props.small ? 'view-select-small' : ''} value={viewState} onChange={onViewStateChange} options={viewStateOptions} />
-				</div>
-			</div>
+		props.date && <div className={`custom-calendar-toolbar ${props.small ? 'small' : ''}`}>
+			{!props.small ?
+				<>
+					<NetworkSelect selectedNetwork={props.selectedNetwork} setSelectedNetwork={props.setSelectedNetwork} />
+					<div className='select-div'>
+						<label>Type</label>
+						<Dropdown compact value={viewState} onChange={onViewStateChange} options={viewStateOptions} />
+					</div>
+					<span className='date-text'>{moment(props.date).format('MMMM YYYY')}</span>
+					<Button onClick={goToBack} icon='chevron left' />
+					<Button onClick={goToNext} icon='chevron right' />
+
+					{/* <Button className='search-btn' icon='search' /> */}
+					<Button basic className='today-btn' onClick={goToToday}>Today</Button>
+					{/* <Button basic className='create-event-btn' onClick={goToToday}>Create Event</Button> */}
+				</>
+				:
+				<>
+					<div>
+						<Dropdown compact className='select-month-dropdown' value={selectedMonth} onChange={onSelectMonthChange} options={months} />
+						<Button onClick={goToBack} icon='chevron left' />
+						{/* <span>{moment(props.date).format('D/M/YY')}</span> */}
+						<Button onClick={goToNext} icon='chevron right' />
+					</div>
+
+					<div className='actions-right'>
+						{/* <Button className='search-btn' icon='search' /> */}
+						<img className='today-btn-img' onClick={goToToday} src={calendar_today} height={16} width={16} title='Today' alt='Today' />
+						<Dropdown upward={false} compact className='select-view-dropdown' value={viewState} onChange={onViewStateChange} options={viewStateOptions} />
+					</div>
+				</>
+			}
 		</div>
 	);
 }

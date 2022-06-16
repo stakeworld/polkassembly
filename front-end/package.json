@@ -48,6 +48,7 @@
     "react-apollo": "^3.1.5",
     "react-apollo-hooks": "^0.5.0",
     "react-big-calendar": "^0.40.1",
+    "react-date-picker": "^8.4.0",
     "react-dom": "^17.0.1",
     "react-helmet": "^6.0.0",
     "react-hook-form": "^5.7.2",

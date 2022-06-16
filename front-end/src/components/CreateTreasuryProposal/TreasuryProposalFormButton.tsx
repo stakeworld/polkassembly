@@ -67,7 +67,7 @@ const TreasuryProposalFormButton = ({
 
 	const { control, errors, handleSubmit } = useForm();
 
-	const [errorsFound, setErrorsFound] = useState<string[]>([]);
+	const [errorsFound, setErrorsFound] = useState<string[]>(['']);
 
 	const { id, web3signup, defaultAddress } = useContext(UserDetailsContext);
 
@@ -152,7 +152,7 @@ const TreasuryProposalFormButton = ({
 	const onPostDescriptionChange = (data: Array<string>) => {setPostDescription(data[0]); return data[0].length ? data[0] : null;};
 
 	const isFormValid = () => {
-		const errorsFound: string[] = [];
+		const errorsFound: string[] = [''];
 
 		if(!beneficiaryAccount){
 			errorsFound.push('beneficiaryAccount');
@@ -160,6 +160,7 @@ const TreasuryProposalFormButton = ({
 		if(!submitWithAccount){
 			errorsFound.push('submitWithAccount');
 		}
+
 		const [balance, isValid] = inputToBn(`${value}`, false);
 		if(!isValid){
 			return false;
@@ -373,7 +374,6 @@ const TreasuryProposalFormButton = ({
 											<Form.Field width={3} className='input-form-field'>
 												<Label size='big'>
 													{chainProperties[currentNetwork].tokenSymbol}
-													{/* <Dropdown upward={false} defaultValue='nano' options={valueUnitOptions} onChange={(event, { value }) => setValueUnit(value as string)} /> */}
 												</Label>
 											</Form.Field>
 										</Form.Group>
@@ -543,7 +543,7 @@ export default styled(TreasuryProposalFormButton)`
 	}
 
 	.text-input{
-		margin-left: 1.5em;
+		margin-left: 1em;
 	}
 
 	.textarea-input {
