@@ -98,7 +98,7 @@ const LatestChildBountiesTable = ({ className }:Props) => {
 
 };
 
-export default styled(LatestBountiesTable)`
+export default styled(LatestChildBountiesTable)`
 	&&& {
     .tab-header {
       background: white;

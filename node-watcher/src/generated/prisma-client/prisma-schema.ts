@@ -18,6 +18,14 @@ type AggregateBountyStatus {
   count: Int!
 }
 
+type AggregateChildBounty {
+  count: Int!
+}
+
+type AggregateChildBountyStatus {
+  count: Int!
+}
+
 type AggregateCouncil {
   count: Int!
 }
@@ -941,6 +949,525 @@ input BountyWhereInput {
 input BountyWhereUniqueInput {
   id: Int
   bountyId: Int
+}
+
+type ChildBounty {
+  id: Int!
+  proposer: String!
+  value: String!
+  description: String
+  fee: String
+  childBountyId: Int!
+  parentBountyId: Int!
+  curatorDeposit: String
+  childBountyStatus(where: ChildBountyStatusWhereInput, orderBy: ChildBountyStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChildBountyStatus!]
+  curator: String
+  beneficiary: String
+}
+
+type ChildBountyConnection {
+  pageInfo: PageInfo!
+  edges: [ChildBountyEdge]!
+  aggregate: AggregateChildBounty!
+}
+
+input ChildBountyCreateInput {
+  proposer: String!
+  value: String!
+  description: String
+  fee: String
+  childBountyId: Int!
+  parentBountyId: Int!
+  curatorDeposit: String
+  childBountyStatus: ChildBountyStatusCreateManyWithoutChildBountyInput
+  curator: String
+  beneficiary: String
+}
+
+input ChildBountyCreateOneWithoutChildBountyStatusInput {
+  create: ChildBountyCreateWithoutChildBountyStatusInput
+  connect: ChildBountyWhereUniqueInput
+}
+
+input ChildBountyCreateWithoutChildBountyStatusInput {
+  proposer: String!
+  value: String!
+  description: String
+  fee: String
+  childBountyId: Int!
+  parentBountyId: Int!
+  curatorDeposit: String
+  curator: String
+  beneficiary: String
+}
+
+type ChildBountyEdge {
+  node: ChildBounty!
+  cursor: String!
+}
+
+enum ChildBountyOrderByInput {
+  id_ASC
+  id_DESC
+  proposer_ASC
+  proposer_DESC
+  value_ASC
+  value_DESC
+  description_ASC
+  description_DESC
+  fee_ASC
+  fee_DESC
+  childBountyId_ASC
+  childBountyId_DESC
+  parentBountyId_ASC
+  parentBountyId_DESC
+  curatorDeposit_ASC
+  curatorDeposit_DESC
+  curator_ASC
+  curator_DESC
+  beneficiary_ASC
+  beneficiary_DESC
+}
+
+type ChildBountyPreviousValues {
+  id: Int!
+  proposer: String!
+  value: String!
+  description: String
+  fee: String
+  childBountyId: Int!
+  parentBountyId: Int!
+  curatorDeposit: String
+  curator: String
+  beneficiary: String
+}
+
+type ChildBountyStatus {
+  id: ID!
+  blockNumber: BlockNumber!
+  childBounty: ChildBounty!
+  status: String!
+  uniqueStatus: String!
+}
+
+type ChildBountyStatusConnection {
+  pageInfo: PageInfo!
+  edges: [ChildBountyStatusEdge]!
+  aggregate: AggregateChildBountyStatus!
+}
+
+input ChildBountyStatusCreateInput {
+  id: ID
+  blockNumber: BlockNumberCreateOneInput!
+  childBounty: ChildBountyCreateOneWithoutChildBountyStatusInput!
+  status: String!
+  uniqueStatus: String!
+}
+
+input ChildBountyStatusCreateManyWithoutChildBountyInput {
+  create: [ChildBountyStatusCreateWithoutChildBountyInput!]
+  connect: [ChildBountyStatusWhereUniqueInput!]
+}
+
+input ChildBountyStatusCreateWithoutChildBountyInput {
+  id: ID
+  blockNumber: BlockNumberCreateOneInput!
+  status: String!
+  uniqueStatus: String!
+}
+
+type ChildBountyStatusEdge {
+  node: ChildBountyStatus!
+  cursor: String!
+}
+
+enum ChildBountyStatusOrderByInput {
+  id_ASC
+  id_DESC
+  status_ASC
+  status_DESC
+  uniqueStatus_ASC
+  uniqueStatus_DESC
+}
+
+type ChildBountyStatusPreviousValues {
+  id: ID!
+  status: String!
+  uniqueStatus: String!
+}
+
+input ChildBountyStatusScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  status: String
+  status_not: String
+  status_in: [String!]
+  status_not_in: [String!]
+  status_lt: String
+  status_lte: String
+  status_gt: String
+  status_gte: String
+  status_contains: String
+  status_not_contains: String
+  status_starts_with: String
+  status_not_starts_with: String
+  status_ends_with: String
+  status_not_ends_with: String
+  uniqueStatus: String
+  uniqueStatus_not: String
+  uniqueStatus_in: [String!]
+  uniqueStatus_not_in: [String!]
+  uniqueStatus_lt: String
+  uniqueStatus_lte: String
+  uniqueStatus_gt: String
+  uniqueStatus_gte: String
+  uniqueStatus_contains: String
+  uniqueStatus_not_contains: String
+  uniqueStatus_starts_with: String
+  uniqueStatus_not_starts_with: String
+  uniqueStatus_ends_with: String
+  uniqueStatus_not_ends_with: String
+  AND: [ChildBountyStatusScalarWhereInput!]
+  OR: [ChildBountyStatusScalarWhereInput!]
+  NOT: [ChildBountyStatusScalarWhereInput!]
+}
+
+type ChildBountyStatusSubscriptionPayload {
+  mutation: MutationType!
+  node: ChildBountyStatus
+  updatedFields: [String!]
+  previousValues: ChildBountyStatusPreviousValues
+}
+
+input ChildBountyStatusSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ChildBountyStatusWhereInput
+  AND: [ChildBountyStatusSubscriptionWhereInput!]
+  OR: [ChildBountyStatusSubscriptionWhereInput!]
+  NOT: [ChildBountyStatusSubscriptionWhereInput!]
+}
+
+input ChildBountyStatusUpdateInput {
+  blockNumber: BlockNumberUpdateOneRequiredInput
+  childBounty: ChildBountyUpdateOneRequiredWithoutChildBountyStatusInput
+  status: String
+  uniqueStatus: String
+}
+
+input ChildBountyStatusUpdateManyDataInput {
+  status: String
+  uniqueStatus: String
+}
+
+input ChildBountyStatusUpdateManyMutationInput {
+  status: String
+  uniqueStatus: String
+}
+
+input ChildBountyStatusUpdateManyWithoutChildBountyInput {
+  create: [ChildBountyStatusCreateWithoutChildBountyInput!]
+  delete: [ChildBountyStatusWhereUniqueInput!]
+  connect: [ChildBountyStatusWhereUniqueInput!]
+  set: [ChildBountyStatusWhereUniqueInput!]
+  disconnect: [ChildBountyStatusWhereUniqueInput!]
+  update: [ChildBountyStatusUpdateWithWhereUniqueWithoutChildBountyInput!]
+  upsert: [ChildBountyStatusUpsertWithWhereUniqueWithoutChildBountyInput!]
+  deleteMany: [ChildBountyStatusScalarWhereInput!]
+  updateMany: [ChildBountyStatusUpdateManyWithWhereNestedInput!]
+}
+
+input ChildBountyStatusUpdateManyWithWhereNestedInput {
+  where: ChildBountyStatusScalarWhereInput!
+  data: ChildBountyStatusUpdateManyDataInput!
+}
+
+input ChildBountyStatusUpdateWithoutChildBountyDataInput {
+  blockNumber: BlockNumberUpdateOneRequiredInput
+  status: String
+  uniqueStatus: String
+}
+
+input ChildBountyStatusUpdateWithWhereUniqueWithoutChildBountyInput {
+  where: ChildBountyStatusWhereUniqueInput!
+  data: ChildBountyStatusUpdateWithoutChildBountyDataInput!
+}
+
+input ChildBountyStatusUpsertWithWhereUniqueWithoutChildBountyInput {
+  where: ChildBountyStatusWhereUniqueInput!
+  update: ChildBountyStatusUpdateWithoutChildBountyDataInput!
+  create: ChildBountyStatusCreateWithoutChildBountyInput!
+}
+
+input ChildBountyStatusWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  blockNumber: BlockNumberWhereInput
+  childBounty: ChildBountyWhereInput
+  status: String
+  status_not: String
+  status_in: [String!]
+  status_not_in: [String!]
+  status_lt: String
+  status_lte: String
+  status_gt: String
+  status_gte: String
+  status_contains: String
+  status_not_contains: String
+  status_starts_with: String
+  status_not_starts_with: String
+  status_ends_with: String
+  status_not_ends_with: String
+  uniqueStatus: String
+  uniqueStatus_not: String
+  uniqueStatus_in: [String!]
+  uniqueStatus_not_in: [String!]
+  uniqueStatus_lt: String
+  uniqueStatus_lte: String
+  uniqueStatus_gt: String
+  uniqueStatus_gte: String
+  uniqueStatus_contains: String
+  uniqueStatus_not_contains: String
+  uniqueStatus_starts_with: String
+  uniqueStatus_not_starts_with: String
+  uniqueStatus_ends_with: String
+  uniqueStatus_not_ends_with: String
+  AND: [ChildBountyStatusWhereInput!]
+  OR: [ChildBountyStatusWhereInput!]
+  NOT: [ChildBountyStatusWhereInput!]
+}
+
+input ChildBountyStatusWhereUniqueInput {
+  id: ID
+  uniqueStatus: String
+}
+
+type ChildBountySubscriptionPayload {
+  mutation: MutationType!
+  node: ChildBounty
+  updatedFields: [String!]
+  previousValues: ChildBountyPreviousValues
+}
+
+input ChildBountySubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ChildBountyWhereInput
+  AND: [ChildBountySubscriptionWhereInput!]
+  OR: [ChildBountySubscriptionWhereInput!]
+  NOT: [ChildBountySubscriptionWhereInput!]
+}
+
+input ChildBountyUpdateInput {
+  proposer: String
+  value: String
+  description: String
+  fee: String
+  childBountyId: Int
+  parentBountyId: Int
+  curatorDeposit: String
+  childBountyStatus: ChildBountyStatusUpdateManyWithoutChildBountyInput
+  curator: String
+  beneficiary: String
+}
+
+input ChildBountyUpdateManyMutationInput {
+  proposer: String
+  value: String
+  description: String
+  fee: String
+  childBountyId: Int
+  parentBountyId: Int
+  curatorDeposit: String
+  curator: String
+  beneficiary: String
+}
+
+input ChildBountyUpdateOneRequiredWithoutChildBountyStatusInput {
+  create: ChildBountyCreateWithoutChildBountyStatusInput
+  update: ChildBountyUpdateWithoutChildBountyStatusDataInput
+  upsert: ChildBountyUpsertWithoutChildBountyStatusInput
+  connect: ChildBountyWhereUniqueInput
+}
+
+input ChildBountyUpdateWithoutChildBountyStatusDataInput {
+  proposer: String
+  value: String
+  description: String
+  fee: String
+  childBountyId: Int
+  parentBountyId: Int
+  curatorDeposit: String
+  curator: String
+  beneficiary: String
+}
+
+input ChildBountyUpsertWithoutChildBountyStatusInput {
+  update: ChildBountyUpdateWithoutChildBountyStatusDataInput!
+  create: ChildBountyCreateWithoutChildBountyStatusInput!
+}
+
+input ChildBountyWhereInput {
+  id: Int
+  id_not: Int
+  id_in: [Int!]
+  id_not_in: [Int!]
+  id_lt: Int
+  id_lte: Int
+  id_gt: Int
+  id_gte: Int
+  proposer: String
+  proposer_not: String
+  proposer_in: [String!]
+  proposer_not_in: [String!]
+  proposer_lt: String
+  proposer_lte: String
+  proposer_gt: String
+  proposer_gte: String
+  proposer_contains: String
+  proposer_not_contains: String
+  proposer_starts_with: String
+  proposer_not_starts_with: String
+  proposer_ends_with: String
+  proposer_not_ends_with: String
+  value: String
+  value_not: String
+  value_in: [String!]
+  value_not_in: [String!]
+  value_lt: String
+  value_lte: String
+  value_gt: String
+  value_gte: String
+  value_contains: String
+  value_not_contains: String
+  value_starts_with: String
+  value_not_starts_with: String
+  value_ends_with: String
+  value_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  fee: String
+  fee_not: String
+  fee_in: [String!]
+  fee_not_in: [String!]
+  fee_lt: String
+  fee_lte: String
+  fee_gt: String
+  fee_gte: String
+  fee_contains: String
+  fee_not_contains: String
+  fee_starts_with: String
+  fee_not_starts_with: String
+  fee_ends_with: String
+  fee_not_ends_with: String
+  childBountyId: Int
+  childBountyId_not: Int
+  childBountyId_in: [Int!]
+  childBountyId_not_in: [Int!]
+  childBountyId_lt: Int
+  childBountyId_lte: Int
+  childBountyId_gt: Int
+  childBountyId_gte: Int
+  parentBountyId: Int
+  parentBountyId_not: Int
+  parentBountyId_in: [Int!]
+  parentBountyId_not_in: [Int!]
+  parentBountyId_lt: Int
+  parentBountyId_lte: Int
+  parentBountyId_gt: Int
+  parentBountyId_gte: Int
+  curatorDeposit: String
+  curatorDeposit_not: String
+  curatorDeposit_in: [String!]
+  curatorDeposit_not_in: [String!]
+  curatorDeposit_lt: String
+  curatorDeposit_lte: String
+  curatorDeposit_gt: String
+  curatorDeposit_gte: String
+  curatorDeposit_contains: String
+  curatorDeposit_not_contains: String
+  curatorDeposit_starts_with: String
+  curatorDeposit_not_starts_with: String
+  curatorDeposit_ends_with: String
+  curatorDeposit_not_ends_with: String
+  childBountyStatus_every: ChildBountyStatusWhereInput
+  childBountyStatus_some: ChildBountyStatusWhereInput
+  childBountyStatus_none: ChildBountyStatusWhereInput
+  curator: String
+  curator_not: String
+  curator_in: [String!]
+  curator_not_in: [String!]
+  curator_lt: String
+  curator_lte: String
+  curator_gt: String
+  curator_gte: String
+  curator_contains: String
+  curator_not_contains: String
+  curator_starts_with: String
+  curator_not_starts_with: String
+  curator_ends_with: String
+  curator_not_ends_with: String
+  beneficiary: String
+  beneficiary_not: String
+  beneficiary_in: [String!]
+  beneficiary_not_in: [String!]
+  beneficiary_lt: String
+  beneficiary_lte: String
+  beneficiary_gt: String
+  beneficiary_gte: String
+  beneficiary_contains: String
+  beneficiary_not_contains: String
+  beneficiary_starts_with: String
+  beneficiary_not_starts_with: String
+  beneficiary_ends_with: String
+  beneficiary_not_ends_with: String
+  AND: [ChildBountyWhereInput!]
+  OR: [ChildBountyWhereInput!]
+  NOT: [ChildBountyWhereInput!]
+}
+
+input ChildBountyWhereUniqueInput {
+  id: Int
 }
 
 type Council {
@@ -2403,6 +2930,18 @@ type Mutation {
   upsertBountyStatus(where: BountyStatusWhereUniqueInput!, create: BountyStatusCreateInput!, update: BountyStatusUpdateInput!): BountyStatus!
   deleteBountyStatus(where: BountyStatusWhereUniqueInput!): BountyStatus
   deleteManyBountyStatuses(where: BountyStatusWhereInput): BatchPayload!
+  createChildBounty(data: ChildBountyCreateInput!): ChildBounty!
+  updateChildBounty(data: ChildBountyUpdateInput!, where: ChildBountyWhereUniqueInput!): ChildBounty
+  updateManyChildBounties(data: ChildBountyUpdateManyMutationInput!, where: ChildBountyWhereInput): BatchPayload!
+  upsertChildBounty(where: ChildBountyWhereUniqueInput!, create: ChildBountyCreateInput!, update: ChildBountyUpdateInput!): ChildBounty!
+  deleteChildBounty(where: ChildBountyWhereUniqueInput!): ChildBounty
+  deleteManyChildBounties(where: ChildBountyWhereInput): BatchPayload!
+  createChildBountyStatus(data: ChildBountyStatusCreateInput!): ChildBountyStatus!
+  updateChildBountyStatus(data: ChildBountyStatusUpdateInput!, where: ChildBountyStatusWhereUniqueInput!): ChildBountyStatus
+  updateManyChildBountyStatuses(data: ChildBountyStatusUpdateManyMutationInput!, where: ChildBountyStatusWhereInput): BatchPayload!
+  upsertChildBountyStatus(where: ChildBountyStatusWhereUniqueInput!, create: ChildBountyStatusCreateInput!, update: ChildBountyStatusUpdateInput!): ChildBountyStatus!
+  deleteChildBountyStatus(where: ChildBountyStatusWhereUniqueInput!): ChildBountyStatus
+  deleteManyChildBountyStatuses(where: ChildBountyStatusWhereInput): BatchPayload!
   createCouncil(data: CouncilCreateInput!): Council!
   updateCouncil(data: CouncilUpdateInput!, where: CouncilWhereUniqueInput!): Council
   upsertCouncil(where: CouncilWhereUniqueInput!, create: CouncilCreateInput!, update: CouncilUpdateInput!): Council!
@@ -4292,6 +4831,12 @@ type Query {
   bountyStatus(where: BountyStatusWhereUniqueInput!): BountyStatus
   bountyStatuses(where: BountyStatusWhereInput, orderBy: BountyStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [BountyStatus]!
   bountyStatusesConnection(where: BountyStatusWhereInput, orderBy: BountyStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BountyStatusConnection!
+  childBounty(where: ChildBountyWhereUniqueInput!): ChildBounty
+  childBounties(where: ChildBountyWhereInput, orderBy: ChildBountyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChildBounty]!
+  childBountiesConnection(where: ChildBountyWhereInput, orderBy: ChildBountyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ChildBountyConnection!
+  childBountyStatus(where: ChildBountyStatusWhereUniqueInput!): ChildBountyStatus
+  childBountyStatuses(where: ChildBountyStatusWhereInput, orderBy: ChildBountyStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChildBountyStatus]!
+  childBountyStatusesConnection(where: ChildBountyStatusWhereInput, orderBy: ChildBountyStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ChildBountyStatusConnection!
   council(where: CouncilWhereUniqueInput!): Council
   councils(where: CouncilWhereInput, orderBy: CouncilOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Council]!
   councilsConnection(where: CouncilWhereInput, orderBy: CouncilOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CouncilConnection!
@@ -5320,6 +5865,8 @@ type Subscription {
   blockNumber(where: BlockNumberSubscriptionWhereInput): BlockNumberSubscriptionPayload
   bounty(where: BountySubscriptionWhereInput): BountySubscriptionPayload
   bountyStatus(where: BountyStatusSubscriptionWhereInput): BountyStatusSubscriptionPayload
+  childBounty(where: ChildBountySubscriptionWhereInput): ChildBountySubscriptionPayload
+  childBountyStatus(where: ChildBountyStatusSubscriptionWhereInput): ChildBountyStatusSubscriptionPayload
   council(where: CouncilSubscriptionWhereInput): CouncilSubscriptionPayload
   councilMember(where: CouncilMemberSubscriptionWhereInput): CouncilMemberSubscriptionPayload
   era(where: EraSubscriptionWhereInput): EraSubscriptionPayload

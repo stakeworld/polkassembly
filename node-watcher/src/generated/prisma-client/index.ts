@@ -20,6 +20,8 @@ export interface Exists {
   blockNumber: (where?: BlockNumberWhereInput) => Promise<boolean>;
   bounty: (where?: BountyWhereInput) => Promise<boolean>;
   bountyStatus: (where?: BountyStatusWhereInput) => Promise<boolean>;
+  childBounty: (where?: ChildBountyWhereInput) => Promise<boolean>;
+  childBountyStatus: (where?: ChildBountyStatusWhereInput) => Promise<boolean>;
   council: (where?: CouncilWhereInput) => Promise<boolean>;
   councilMember: (where?: CouncilMemberWhereInput) => Promise<boolean>;
   era: (where?: EraWhereInput) => Promise<boolean>;
@@ -160,6 +162,48 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => BountyStatusConnectionPromise;
+  childBounty: (
+    where: ChildBountyWhereUniqueInput
+  ) => ChildBountyNullablePromise;
+  childBounties: (args?: {
+    where?: ChildBountyWhereInput;
+    orderBy?: ChildBountyOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<ChildBounty>;
+  childBountiesConnection: (args?: {
+    where?: ChildBountyWhereInput;
+    orderBy?: ChildBountyOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => ChildBountyConnectionPromise;
+  childBountyStatus: (
+    where: ChildBountyStatusWhereUniqueInput
+  ) => ChildBountyStatusNullablePromise;
+  childBountyStatuses: (args?: {
+    where?: ChildBountyStatusWhereInput;
+    orderBy?: ChildBountyStatusOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<ChildBountyStatus>;
+  childBountyStatusesConnection: (args?: {
+    where?: ChildBountyStatusWhereInput;
+    orderBy?: ChildBountyStatusOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => ChildBountyStatusConnectionPromise;
   council: (where: CouncilWhereUniqueInput) => CouncilNullablePromise;
   councils: (args?: {
     where?: CouncilWhereInput;
@@ -815,6 +859,46 @@ export interface Prisma {
   deleteManyBountyStatuses: (
     where?: BountyStatusWhereInput
   ) => BatchPayloadPromise;
+  createChildBounty: (data: ChildBountyCreateInput) => ChildBountyPromise;
+  updateChildBounty: (args: {
+    data: ChildBountyUpdateInput;
+    where: ChildBountyWhereUniqueInput;
+  }) => ChildBountyPromise;
+  updateManyChildBounties: (args: {
+    data: ChildBountyUpdateManyMutationInput;
+    where?: ChildBountyWhereInput;
+  }) => BatchPayloadPromise;
+  upsertChildBounty: (args: {
+    where: ChildBountyWhereUniqueInput;
+    create: ChildBountyCreateInput;
+    update: ChildBountyUpdateInput;
+  }) => ChildBountyPromise;
+  deleteChildBounty: (where: ChildBountyWhereUniqueInput) => ChildBountyPromise;
+  deleteManyChildBounties: (
+    where?: ChildBountyWhereInput
+  ) => BatchPayloadPromise;
+  createChildBountyStatus: (
+    data: ChildBountyStatusCreateInput
+  ) => ChildBountyStatusPromise;
+  updateChildBountyStatus: (args: {
+    data: ChildBountyStatusUpdateInput;
+    where: ChildBountyStatusWhereUniqueInput;
+  }) => ChildBountyStatusPromise;
+  updateManyChildBountyStatuses: (args: {
+    data: ChildBountyStatusUpdateManyMutationInput;
+    where?: ChildBountyStatusWhereInput;
+  }) => BatchPayloadPromise;
+  upsertChildBountyStatus: (args: {
+    where: ChildBountyStatusWhereUniqueInput;
+    create: ChildBountyStatusCreateInput;
+    update: ChildBountyStatusUpdateInput;
+  }) => ChildBountyStatusPromise;
+  deleteChildBountyStatus: (
+    where: ChildBountyStatusWhereUniqueInput
+  ) => ChildBountyStatusPromise;
+  deleteManyChildBountyStatuses: (
+    where?: ChildBountyStatusWhereInput
+  ) => BatchPayloadPromise;
   createCouncil: (data: CouncilCreateInput) => CouncilPromise;
   updateCouncil: (args: {
     data: CouncilUpdateInput;
@@ -1374,6 +1458,12 @@ export interface Subscription {
   bountyStatus: (
     where?: BountyStatusSubscriptionWhereInput
   ) => BountyStatusSubscriptionPayloadSubscription;
+  childBounty: (
+    where?: ChildBountySubscriptionWhereInput
+  ) => ChildBountySubscriptionPayloadSubscription;
+  childBountyStatus: (
+    where?: ChildBountyStatusSubscriptionWhereInput
+  ) => ChildBountyStatusSubscriptionPayloadSubscription;
   council: (
     where?: CouncilSubscriptionWhereInput
   ) => CouncilSubscriptionPayloadSubscription;
@@ -1516,6 +1606,36 @@ export type BountyOrderByInput =
   | "bond_DESC"
   | "bountyId_ASC"
   | "bountyId_DESC"
+  | "curator_ASC"
+  | "curator_DESC"
+  | "beneficiary_ASC"
+  | "beneficiary_DESC";
+
+export type ChildBountyStatusOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "status_ASC"
+  | "status_DESC"
+  | "uniqueStatus_ASC"
+  | "uniqueStatus_DESC";
+
+export type ChildBountyOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "proposer_ASC"
+  | "proposer_DESC"
+  | "value_ASC"
+  | "value_DESC"
+  | "description_ASC"
+  | "description_DESC"
+  | "fee_ASC"
+  | "fee_DESC"
+  | "childBountyId_ASC"
+  | "childBountyId_DESC"
+  | "parentBountyId_ASC"
+  | "parentBountyId_DESC"
+  | "curatorDeposit_ASC"
+  | "curatorDeposit_DESC"
   | "curator_ASC"
   | "curator_DESC"
   | "beneficiary_ASC"
@@ -2107,6 +2227,196 @@ export interface BountyWhereInput {
 }
 
 export type BountyStatusWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  uniqueStatus?: Maybe<String>;
+}>;
+
+export type ChildBountyWhereUniqueInput = AtLeastOne<{
+  id: Maybe<Int>;
+}>;
+
+export interface ChildBountyStatusWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  blockNumber?: Maybe<BlockNumberWhereInput>;
+  childBounty?: Maybe<ChildBountyWhereInput>;
+  status?: Maybe<String>;
+  status_not?: Maybe<String>;
+  status_in?: Maybe<String[] | String>;
+  status_not_in?: Maybe<String[] | String>;
+  status_lt?: Maybe<String>;
+  status_lte?: Maybe<String>;
+  status_gt?: Maybe<String>;
+  status_gte?: Maybe<String>;
+  status_contains?: Maybe<String>;
+  status_not_contains?: Maybe<String>;
+  status_starts_with?: Maybe<String>;
+  status_not_starts_with?: Maybe<String>;
+  status_ends_with?: Maybe<String>;
+  status_not_ends_with?: Maybe<String>;
+  uniqueStatus?: Maybe<String>;
+  uniqueStatus_not?: Maybe<String>;
+  uniqueStatus_in?: Maybe<String[] | String>;
+  uniqueStatus_not_in?: Maybe<String[] | String>;
+  uniqueStatus_lt?: Maybe<String>;
+  uniqueStatus_lte?: Maybe<String>;
+  uniqueStatus_gt?: Maybe<String>;
+  uniqueStatus_gte?: Maybe<String>;
+  uniqueStatus_contains?: Maybe<String>;
+  uniqueStatus_not_contains?: Maybe<String>;
+  uniqueStatus_starts_with?: Maybe<String>;
+  uniqueStatus_not_starts_with?: Maybe<String>;
+  uniqueStatus_ends_with?: Maybe<String>;
+  uniqueStatus_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ChildBountyStatusWhereInput[] | ChildBountyStatusWhereInput>;
+  OR?: Maybe<ChildBountyStatusWhereInput[] | ChildBountyStatusWhereInput>;
+  NOT?: Maybe<ChildBountyStatusWhereInput[] | ChildBountyStatusWhereInput>;
+}
+
+export interface ChildBountyWhereInput {
+  id?: Maybe<Int>;
+  id_not?: Maybe<Int>;
+  id_in?: Maybe<Int[] | Int>;
+  id_not_in?: Maybe<Int[] | Int>;
+  id_lt?: Maybe<Int>;
+  id_lte?: Maybe<Int>;
+  id_gt?: Maybe<Int>;
+  id_gte?: Maybe<Int>;
+  proposer?: Maybe<String>;
+  proposer_not?: Maybe<String>;
+  proposer_in?: Maybe<String[] | String>;
+  proposer_not_in?: Maybe<String[] | String>;
+  proposer_lt?: Maybe<String>;
+  proposer_lte?: Maybe<String>;
+  proposer_gt?: Maybe<String>;
+  proposer_gte?: Maybe<String>;
+  proposer_contains?: Maybe<String>;
+  proposer_not_contains?: Maybe<String>;
+  proposer_starts_with?: Maybe<String>;
+  proposer_not_starts_with?: Maybe<String>;
+  proposer_ends_with?: Maybe<String>;
+  proposer_not_ends_with?: Maybe<String>;
+  value?: Maybe<String>;
+  value_not?: Maybe<String>;
+  value_in?: Maybe<String[] | String>;
+  value_not_in?: Maybe<String[] | String>;
+  value_lt?: Maybe<String>;
+  value_lte?: Maybe<String>;
+  value_gt?: Maybe<String>;
+  value_gte?: Maybe<String>;
+  value_contains?: Maybe<String>;
+  value_not_contains?: Maybe<String>;
+  value_starts_with?: Maybe<String>;
+  value_not_starts_with?: Maybe<String>;
+  value_ends_with?: Maybe<String>;
+  value_not_ends_with?: Maybe<String>;
+  description?: Maybe<String>;
+  description_not?: Maybe<String>;
+  description_in?: Maybe<String[] | String>;
+  description_not_in?: Maybe<String[] | String>;
+  description_lt?: Maybe<String>;
+  description_lte?: Maybe<String>;
+  description_gt?: Maybe<String>;
+  description_gte?: Maybe<String>;
+  description_contains?: Maybe<String>;
+  description_not_contains?: Maybe<String>;
+  description_starts_with?: Maybe<String>;
+  description_not_starts_with?: Maybe<String>;
+  description_ends_with?: Maybe<String>;
+  description_not_ends_with?: Maybe<String>;
+  fee?: Maybe<String>;
+  fee_not?: Maybe<String>;
+  fee_in?: Maybe<String[] | String>;
+  fee_not_in?: Maybe<String[] | String>;
+  fee_lt?: Maybe<String>;
+  fee_lte?: Maybe<String>;
+  fee_gt?: Maybe<String>;
+  fee_gte?: Maybe<String>;
+  fee_contains?: Maybe<String>;
+  fee_not_contains?: Maybe<String>;
+  fee_starts_with?: Maybe<String>;
+  fee_not_starts_with?: Maybe<String>;
+  fee_ends_with?: Maybe<String>;
+  fee_not_ends_with?: Maybe<String>;
+  childBountyId?: Maybe<Int>;
+  childBountyId_not?: Maybe<Int>;
+  childBountyId_in?: Maybe<Int[] | Int>;
+  childBountyId_not_in?: Maybe<Int[] | Int>;
+  childBountyId_lt?: Maybe<Int>;
+  childBountyId_lte?: Maybe<Int>;
+  childBountyId_gt?: Maybe<Int>;
+  childBountyId_gte?: Maybe<Int>;
+  parentBountyId?: Maybe<Int>;
+  parentBountyId_not?: Maybe<Int>;
+  parentBountyId_in?: Maybe<Int[] | Int>;
+  parentBountyId_not_in?: Maybe<Int[] | Int>;
+  parentBountyId_lt?: Maybe<Int>;
+  parentBountyId_lte?: Maybe<Int>;
+  parentBountyId_gt?: Maybe<Int>;
+  parentBountyId_gte?: Maybe<Int>;
+  curatorDeposit?: Maybe<String>;
+  curatorDeposit_not?: Maybe<String>;
+  curatorDeposit_in?: Maybe<String[] | String>;
+  curatorDeposit_not_in?: Maybe<String[] | String>;
+  curatorDeposit_lt?: Maybe<String>;
+  curatorDeposit_lte?: Maybe<String>;
+  curatorDeposit_gt?: Maybe<String>;
+  curatorDeposit_gte?: Maybe<String>;
+  curatorDeposit_contains?: Maybe<String>;
+  curatorDeposit_not_contains?: Maybe<String>;
+  curatorDeposit_starts_with?: Maybe<String>;
+  curatorDeposit_not_starts_with?: Maybe<String>;
+  curatorDeposit_ends_with?: Maybe<String>;
+  curatorDeposit_not_ends_with?: Maybe<String>;
+  childBountyStatus_every?: Maybe<ChildBountyStatusWhereInput>;
+  childBountyStatus_some?: Maybe<ChildBountyStatusWhereInput>;
+  childBountyStatus_none?: Maybe<ChildBountyStatusWhereInput>;
+  curator?: Maybe<String>;
+  curator_not?: Maybe<String>;
+  curator_in?: Maybe<String[] | String>;
+  curator_not_in?: Maybe<String[] | String>;
+  curator_lt?: Maybe<String>;
+  curator_lte?: Maybe<String>;
+  curator_gt?: Maybe<String>;
+  curator_gte?: Maybe<String>;
+  curator_contains?: Maybe<String>;
+  curator_not_contains?: Maybe<String>;
+  curator_starts_with?: Maybe<String>;
+  curator_not_starts_with?: Maybe<String>;
+  curator_ends_with?: Maybe<String>;
+  curator_not_ends_with?: Maybe<String>;
+  beneficiary?: Maybe<String>;
+  beneficiary_not?: Maybe<String>;
+  beneficiary_in?: Maybe<String[] | String>;
+  beneficiary_not_in?: Maybe<String[] | String>;
+  beneficiary_lt?: Maybe<String>;
+  beneficiary_lte?: Maybe<String>;
+  beneficiary_gt?: Maybe<String>;
+  beneficiary_gte?: Maybe<String>;
+  beneficiary_contains?: Maybe<String>;
+  beneficiary_not_contains?: Maybe<String>;
+  beneficiary_starts_with?: Maybe<String>;
+  beneficiary_not_starts_with?: Maybe<String>;
+  beneficiary_ends_with?: Maybe<String>;
+  beneficiary_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ChildBountyWhereInput[] | ChildBountyWhereInput>;
+  OR?: Maybe<ChildBountyWhereInput[] | ChildBountyWhereInput>;
+  NOT?: Maybe<ChildBountyWhereInput[] | ChildBountyWhereInput>;
+}
+
+export type ChildBountyStatusWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
   uniqueStatus?: Maybe<String>;
 }>;
@@ -4263,6 +4573,239 @@ export interface BountyUpsertWithoutBountyStatusInput {
 }
 
 export interface BountyStatusUpdateManyMutationInput {
+  status?: Maybe<String>;
+  uniqueStatus?: Maybe<String>;
+}
+
+export interface ChildBountyCreateInput {
+  proposer: String;
+  value: String;
+  description?: Maybe<String>;
+  fee?: Maybe<String>;
+  childBountyId: Int;
+  parentBountyId: Int;
+  curatorDeposit?: Maybe<String>;
+  childBountyStatus?: Maybe<ChildBountyStatusCreateManyWithoutChildBountyInput>;
+  curator?: Maybe<String>;
+  beneficiary?: Maybe<String>;
+}
+
+export interface ChildBountyStatusCreateManyWithoutChildBountyInput {
+  create?: Maybe<
+    | ChildBountyStatusCreateWithoutChildBountyInput[]
+    | ChildBountyStatusCreateWithoutChildBountyInput
+  >;
+  connect?: Maybe<
+    ChildBountyStatusWhereUniqueInput[] | ChildBountyStatusWhereUniqueInput
+  >;
+}
+
+export interface ChildBountyStatusCreateWithoutChildBountyInput {
+  id?: Maybe<ID_Input>;
+  blockNumber: BlockNumberCreateOneInput;
+  status: String;
+  uniqueStatus: String;
+}
+
+export interface ChildBountyUpdateInput {
+  proposer?: Maybe<String>;
+  value?: Maybe<String>;
+  description?: Maybe<String>;
+  fee?: Maybe<String>;
+  childBountyId?: Maybe<Int>;
+  parentBountyId?: Maybe<Int>;
+  curatorDeposit?: Maybe<String>;
+  childBountyStatus?: Maybe<ChildBountyStatusUpdateManyWithoutChildBountyInput>;
+  curator?: Maybe<String>;
+  beneficiary?: Maybe<String>;
+}
+
+export interface ChildBountyStatusUpdateManyWithoutChildBountyInput {
+  create?: Maybe<
+    | ChildBountyStatusCreateWithoutChildBountyInput[]
+    | ChildBountyStatusCreateWithoutChildBountyInput
+  >;
+  delete?: Maybe<
+    ChildBountyStatusWhereUniqueInput[] | ChildBountyStatusWhereUniqueInput
+  >;
+  connect?: Maybe<
+    ChildBountyStatusWhereUniqueInput[] | ChildBountyStatusWhereUniqueInput
+  >;
+  set?: Maybe<
+    ChildBountyStatusWhereUniqueInput[] | ChildBountyStatusWhereUniqueInput
+  >;
+  disconnect?: Maybe<
+    ChildBountyStatusWhereUniqueInput[] | ChildBountyStatusWhereUniqueInput
+  >;
+  update?: Maybe<
+    | ChildBountyStatusUpdateWithWhereUniqueWithoutChildBountyInput[]
+    | ChildBountyStatusUpdateWithWhereUniqueWithoutChildBountyInput
+  >;
+  upsert?: Maybe<
+    | ChildBountyStatusUpsertWithWhereUniqueWithoutChildBountyInput[]
+    | ChildBountyStatusUpsertWithWhereUniqueWithoutChildBountyInput
+  >;
+  deleteMany?: Maybe<
+    ChildBountyStatusScalarWhereInput[] | ChildBountyStatusScalarWhereInput
+  >;
+  updateMany?: Maybe<
+    | ChildBountyStatusUpdateManyWithWhereNestedInput[]
+    | ChildBountyStatusUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface ChildBountyStatusUpdateWithWhereUniqueWithoutChildBountyInput {
+  where: ChildBountyStatusWhereUniqueInput;
+  data: ChildBountyStatusUpdateWithoutChildBountyDataInput;
+}
+
+export interface ChildBountyStatusUpdateWithoutChildBountyDataInput {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  status?: Maybe<String>;
+  uniqueStatus?: Maybe<String>;
+}
+
+export interface ChildBountyStatusUpsertWithWhereUniqueWithoutChildBountyInput {
+  where: ChildBountyStatusWhereUniqueInput;
+  update: ChildBountyStatusUpdateWithoutChildBountyDataInput;
+  create: ChildBountyStatusCreateWithoutChildBountyInput;
+}
+
+export interface ChildBountyStatusScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  status?: Maybe<String>;
+  status_not?: Maybe<String>;
+  status_in?: Maybe<String[] | String>;
+  status_not_in?: Maybe<String[] | String>;
+  status_lt?: Maybe<String>;
+  status_lte?: Maybe<String>;
+  status_gt?: Maybe<String>;
+  status_gte?: Maybe<String>;
+  status_contains?: Maybe<String>;
+  status_not_contains?: Maybe<String>;
+  status_starts_with?: Maybe<String>;
+  status_not_starts_with?: Maybe<String>;
+  status_ends_with?: Maybe<String>;
+  status_not_ends_with?: Maybe<String>;
+  uniqueStatus?: Maybe<String>;
+  uniqueStatus_not?: Maybe<String>;
+  uniqueStatus_in?: Maybe<String[] | String>;
+  uniqueStatus_not_in?: Maybe<String[] | String>;
+  uniqueStatus_lt?: Maybe<String>;
+  uniqueStatus_lte?: Maybe<String>;
+  uniqueStatus_gt?: Maybe<String>;
+  uniqueStatus_gte?: Maybe<String>;
+  uniqueStatus_contains?: Maybe<String>;
+  uniqueStatus_not_contains?: Maybe<String>;
+  uniqueStatus_starts_with?: Maybe<String>;
+  uniqueStatus_not_starts_with?: Maybe<String>;
+  uniqueStatus_ends_with?: Maybe<String>;
+  uniqueStatus_not_ends_with?: Maybe<String>;
+  AND?: Maybe<
+    ChildBountyStatusScalarWhereInput[] | ChildBountyStatusScalarWhereInput
+  >;
+  OR?: Maybe<
+    ChildBountyStatusScalarWhereInput[] | ChildBountyStatusScalarWhereInput
+  >;
+  NOT?: Maybe<
+    ChildBountyStatusScalarWhereInput[] | ChildBountyStatusScalarWhereInput
+  >;
+}
+
+export interface ChildBountyStatusUpdateManyWithWhereNestedInput {
+  where: ChildBountyStatusScalarWhereInput;
+  data: ChildBountyStatusUpdateManyDataInput;
+}
+
+export interface ChildBountyStatusUpdateManyDataInput {
+  status?: Maybe<String>;
+  uniqueStatus?: Maybe<String>;
+}
+
+export interface ChildBountyUpdateManyMutationInput {
+  proposer?: Maybe<String>;
+  value?: Maybe<String>;
+  description?: Maybe<String>;
+  fee?: Maybe<String>;
+  childBountyId?: Maybe<Int>;
+  parentBountyId?: Maybe<Int>;
+  curatorDeposit?: Maybe<String>;
+  curator?: Maybe<String>;
+  beneficiary?: Maybe<String>;
+}
+
+export interface ChildBountyStatusCreateInput {
+  id?: Maybe<ID_Input>;
+  blockNumber: BlockNumberCreateOneInput;
+  childBounty: ChildBountyCreateOneWithoutChildBountyStatusInput;
+  status: String;
+  uniqueStatus: String;
+}
+
+export interface ChildBountyCreateOneWithoutChildBountyStatusInput {
+  create?: Maybe<ChildBountyCreateWithoutChildBountyStatusInput>;
+  connect?: Maybe<ChildBountyWhereUniqueInput>;
+}
+
+export interface ChildBountyCreateWithoutChildBountyStatusInput {
+  proposer: String;
+  value: String;
+  description?: Maybe<String>;
+  fee?: Maybe<String>;
+  childBountyId: Int;
+  parentBountyId: Int;
+  curatorDeposit?: Maybe<String>;
+  curator?: Maybe<String>;
+  beneficiary?: Maybe<String>;
+}
+
+export interface ChildBountyStatusUpdateInput {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  childBounty?: Maybe<
+    ChildBountyUpdateOneRequiredWithoutChildBountyStatusInput
+  >;
+  status?: Maybe<String>;
+  uniqueStatus?: Maybe<String>;
+}
+
+export interface ChildBountyUpdateOneRequiredWithoutChildBountyStatusInput {
+  create?: Maybe<ChildBountyCreateWithoutChildBountyStatusInput>;
+  update?: Maybe<ChildBountyUpdateWithoutChildBountyStatusDataInput>;
+  upsert?: Maybe<ChildBountyUpsertWithoutChildBountyStatusInput>;
+  connect?: Maybe<ChildBountyWhereUniqueInput>;
+}
+
+export interface ChildBountyUpdateWithoutChildBountyStatusDataInput {
+  proposer?: Maybe<String>;
+  value?: Maybe<String>;
+  description?: Maybe<String>;
+  fee?: Maybe<String>;
+  childBountyId?: Maybe<Int>;
+  parentBountyId?: Maybe<Int>;
+  curatorDeposit?: Maybe<String>;
+  curator?: Maybe<String>;
+  beneficiary?: Maybe<String>;
+}
+
+export interface ChildBountyUpsertWithoutChildBountyStatusInput {
+  update: ChildBountyUpdateWithoutChildBountyStatusDataInput;
+  create: ChildBountyCreateWithoutChildBountyStatusInput;
+}
+
+export interface ChildBountyStatusUpdateManyMutationInput {
   status?: Maybe<String>;
   uniqueStatus?: Maybe<String>;
 }
@@ -7290,6 +7833,43 @@ export interface BountyStatusSubscriptionWhereInput {
   >;
 }
 
+export interface ChildBountySubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ChildBountyWhereInput>;
+  AND?: Maybe<
+    ChildBountySubscriptionWhereInput[] | ChildBountySubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    ChildBountySubscriptionWhereInput[] | ChildBountySubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    ChildBountySubscriptionWhereInput[] | ChildBountySubscriptionWhereInput
+  >;
+}
+
+export interface ChildBountyStatusSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ChildBountyStatusWhereInput>;
+  AND?: Maybe<
+    | ChildBountyStatusSubscriptionWhereInput[]
+    | ChildBountyStatusSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    | ChildBountyStatusSubscriptionWhereInput[]
+    | ChildBountyStatusSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    | ChildBountyStatusSubscriptionWhereInput[]
+    | ChildBountyStatusSubscriptionWhereInput
+  >;
+}
+
 export interface CouncilSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
@@ -8196,6 +8776,239 @@ export interface AggregateBountyStatusPromise
 
 export interface AggregateBountyStatusSubscription
   extends Promise<AsyncIterator<AggregateBountyStatus>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ChildBounty {
+  id: Int;
+  proposer: String;
+  value: String;
+  description?: String;
+  fee?: String;
+  childBountyId: Int;
+  parentBountyId: Int;
+  curatorDeposit?: String;
+  curator?: String;
+  beneficiary?: String;
+}
+
+export interface ChildBountyPromise extends Promise<ChildBounty>, Fragmentable {
+  id: () => Promise<Int>;
+  proposer: () => Promise<String>;
+  value: () => Promise<String>;
+  description: () => Promise<String>;
+  fee: () => Promise<String>;
+  childBountyId: () => Promise<Int>;
+  parentBountyId: () => Promise<Int>;
+  curatorDeposit: () => Promise<String>;
+  childBountyStatus: <T = FragmentableArray<ChildBountyStatus>>(args?: {
+    where?: ChildBountyStatusWhereInput;
+    orderBy?: ChildBountyStatusOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  curator: () => Promise<String>;
+  beneficiary: () => Promise<String>;
+}
+
+export interface ChildBountySubscription
+  extends Promise<AsyncIterator<ChildBounty>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<Int>>;
+  proposer: () => Promise<AsyncIterator<String>>;
+  value: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  fee: () => Promise<AsyncIterator<String>>;
+  childBountyId: () => Promise<AsyncIterator<Int>>;
+  parentBountyId: () => Promise<AsyncIterator<Int>>;
+  curatorDeposit: () => Promise<AsyncIterator<String>>;
+  childBountyStatus: <
+    T = Promise<AsyncIterator<ChildBountyStatusSubscription>>
+  >(args?: {
+    where?: ChildBountyStatusWhereInput;
+    orderBy?: ChildBountyStatusOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  curator: () => Promise<AsyncIterator<String>>;
+  beneficiary: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ChildBountyNullablePromise
+  extends Promise<ChildBounty | null>,
+    Fragmentable {
+  id: () => Promise<Int>;
+  proposer: () => Promise<String>;
+  value: () => Promise<String>;
+  description: () => Promise<String>;
+  fee: () => Promise<String>;
+  childBountyId: () => Promise<Int>;
+  parentBountyId: () => Promise<Int>;
+  curatorDeposit: () => Promise<String>;
+  childBountyStatus: <T = FragmentableArray<ChildBountyStatus>>(args?: {
+    where?: ChildBountyStatusWhereInput;
+    orderBy?: ChildBountyStatusOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  curator: () => Promise<String>;
+  beneficiary: () => Promise<String>;
+}
+
+export interface ChildBountyStatus {
+  id: ID_Output;
+  status: String;
+  uniqueStatus: String;
+}
+
+export interface ChildBountyStatusPromise
+  extends Promise<ChildBountyStatus>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  blockNumber: <T = BlockNumberPromise>() => T;
+  childBounty: <T = ChildBountyPromise>() => T;
+  status: () => Promise<String>;
+  uniqueStatus: () => Promise<String>;
+}
+
+export interface ChildBountyStatusSubscription
+  extends Promise<AsyncIterator<ChildBountyStatus>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  blockNumber: <T = BlockNumberSubscription>() => T;
+  childBounty: <T = ChildBountySubscription>() => T;
+  status: () => Promise<AsyncIterator<String>>;
+  uniqueStatus: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ChildBountyStatusNullablePromise
+  extends Promise<ChildBountyStatus | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  blockNumber: <T = BlockNumberPromise>() => T;
+  childBounty: <T = ChildBountyPromise>() => T;
+  status: () => Promise<String>;
+  uniqueStatus: () => Promise<String>;
+}
+
+export interface ChildBountyConnection {
+  pageInfo: PageInfo;
+  edges: ChildBountyEdge[];
+}
+
+export interface ChildBountyConnectionPromise
+  extends Promise<ChildBountyConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ChildBountyEdge>>() => T;
+  aggregate: <T = AggregateChildBountyPromise>() => T;
+}
+
+export interface ChildBountyConnectionSubscription
+  extends Promise<AsyncIterator<ChildBountyConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ChildBountyEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateChildBountySubscription>() => T;
+}
+
+export interface ChildBountyEdge {
+  node: ChildBounty;
+  cursor: String;
+}
+
+export interface ChildBountyEdgePromise
+  extends Promise<ChildBountyEdge>,
+    Fragmentable {
+  node: <T = ChildBountyPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ChildBountyEdgeSubscription
+  extends Promise<AsyncIterator<ChildBountyEdge>>,
+    Fragmentable {
+  node: <T = ChildBountySubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateChildBounty {
+  count: Int;
+}
+
+export interface AggregateChildBountyPromise
+  extends Promise<AggregateChildBounty>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateChildBountySubscription
+  extends Promise<AsyncIterator<AggregateChildBounty>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ChildBountyStatusConnection {
+  pageInfo: PageInfo;
+  edges: ChildBountyStatusEdge[];
+}
+
+export interface ChildBountyStatusConnectionPromise
+  extends Promise<ChildBountyStatusConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ChildBountyStatusEdge>>() => T;
+  aggregate: <T = AggregateChildBountyStatusPromise>() => T;
+}
+
+export interface ChildBountyStatusConnectionSubscription
+  extends Promise<AsyncIterator<ChildBountyStatusConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ChildBountyStatusEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateChildBountyStatusSubscription>() => T;
+}
+
+export interface ChildBountyStatusEdge {
+  node: ChildBountyStatus;
+  cursor: String;
+}
+
+export interface ChildBountyStatusEdgePromise
+  extends Promise<ChildBountyStatusEdge>,
+    Fragmentable {
+  node: <T = ChildBountyStatusPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ChildBountyStatusEdgeSubscription
+  extends Promise<AsyncIterator<ChildBountyStatusEdge>>,
+    Fragmentable {
+  node: <T = ChildBountyStatusSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateChildBountyStatus {
+  count: Int;
+}
+
+export interface AggregateChildBountyStatusPromise
+  extends Promise<AggregateChildBountyStatus>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateChildBountyStatusSubscription
+  extends Promise<AsyncIterator<AggregateChildBountyStatus>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -11457,6 +12270,121 @@ export interface BountyStatusPreviousValuesSubscription
   uniqueStatus: () => Promise<AsyncIterator<String>>;
 }
 
+export interface ChildBountySubscriptionPayload {
+  mutation: MutationType;
+  node: ChildBounty;
+  updatedFields: String[];
+  previousValues: ChildBountyPreviousValues;
+}
+
+export interface ChildBountySubscriptionPayloadPromise
+  extends Promise<ChildBountySubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ChildBountyPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ChildBountyPreviousValuesPromise>() => T;
+}
+
+export interface ChildBountySubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ChildBountySubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ChildBountySubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ChildBountyPreviousValuesSubscription>() => T;
+}
+
+export interface ChildBountyPreviousValues {
+  id: Int;
+  proposer: String;
+  value: String;
+  description?: String;
+  fee?: String;
+  childBountyId: Int;
+  parentBountyId: Int;
+  curatorDeposit?: String;
+  curator?: String;
+  beneficiary?: String;
+}
+
+export interface ChildBountyPreviousValuesPromise
+  extends Promise<ChildBountyPreviousValues>,
+    Fragmentable {
+  id: () => Promise<Int>;
+  proposer: () => Promise<String>;
+  value: () => Promise<String>;
+  description: () => Promise<String>;
+  fee: () => Promise<String>;
+  childBountyId: () => Promise<Int>;
+  parentBountyId: () => Promise<Int>;
+  curatorDeposit: () => Promise<String>;
+  curator: () => Promise<String>;
+  beneficiary: () => Promise<String>;
+}
+
+export interface ChildBountyPreviousValuesSubscription
+  extends Promise<AsyncIterator<ChildBountyPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<Int>>;
+  proposer: () => Promise<AsyncIterator<String>>;
+  value: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  fee: () => Promise<AsyncIterator<String>>;
+  childBountyId: () => Promise<AsyncIterator<Int>>;
+  parentBountyId: () => Promise<AsyncIterator<Int>>;
+  curatorDeposit: () => Promise<AsyncIterator<String>>;
+  curator: () => Promise<AsyncIterator<String>>;
+  beneficiary: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ChildBountyStatusSubscriptionPayload {
+  mutation: MutationType;
+  node: ChildBountyStatus;
+  updatedFields: String[];
+  previousValues: ChildBountyStatusPreviousValues;
+}
+
+export interface ChildBountyStatusSubscriptionPayloadPromise
+  extends Promise<ChildBountyStatusSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ChildBountyStatusPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ChildBountyStatusPreviousValuesPromise>() => T;
+}
+
+export interface ChildBountyStatusSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ChildBountyStatusSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ChildBountyStatusSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ChildBountyStatusPreviousValuesSubscription>() => T;
+}
+
+export interface ChildBountyStatusPreviousValues {
+  id: ID_Output;
+  status: String;
+  uniqueStatus: String;
+}
+
+export interface ChildBountyStatusPreviousValuesPromise
+  extends Promise<ChildBountyStatusPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  status: () => Promise<String>;
+  uniqueStatus: () => Promise<String>;
+}
+
+export interface ChildBountyStatusPreviousValuesSubscription
+  extends Promise<AsyncIterator<ChildBountyStatusPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  status: () => Promise<AsyncIterator<String>>;
+  uniqueStatus: () => Promise<AsyncIterator<String>>;
+}
+
 export interface CouncilSubscriptionPayload {
   mutation: MutationType;
   node: Council;
@@ -13081,6 +14009,14 @@ export const models: Model[] = [
   },
   {
     name: "TechCommitteeProposalStatus",
+    embedded: false
+  },
+  {
+    name: "ChildBounty",
+    embedded: false
+  },
+  {
+    name: "ChildBountyStatus",
     embedded: false
   }
 ];

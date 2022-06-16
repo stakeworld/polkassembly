@@ -11,20 +11,20 @@ import { Grid, Icon, Responsive } from 'semantic-ui-react';
 import { MetaContext } from '../../context/MetaContext';
 import { UserDetailsContext } from '../../context/UserDetailsContext';
 import {
-	ChildBountyPostAndCommentsQuery,
-	ChildBountyPostAndCommentsQueryHookResult,
-	ChildBountyPostFragment,
 	BountyPostAndCommentsQuery,
 	BountyPostAndCommentsQueryHookResult,
 	BountyPostFragment,
+	ChildBountyPostAndCommentsQuery,
+	ChildBountyPostAndCommentsQueryHookResult,
+	ChildBountyPostFragment,
 	DiscussionPostAndCommentsQuery,
 	DiscussionPostAndCommentsQueryHookResult,
 	DiscussionPostFragment,
 	MotionPostAndCommentsQuery,
 	MotionPostAndCommentsQueryHookResult,
 	MotionPostFragment,
-	OnchainLinkChildBountyFragment,
 	OnchainLinkBountyFragment,
+	OnchainLinkChildBountyFragment,
 	OnchainLinkMotionFragment,
 	OnchainLinkProposalFragment,
 	OnchainLinkReferendumFragment,
@@ -63,8 +63,8 @@ import TrackerButton from '../TrackerButton';
 import GovenanceSideBar from './GovernanceSideBar';
 import Poll from './Poll';
 import CreatePostComment from './PostCommentForm';
-import PostChildBountyInfo from './PostGovernanceInfo/PostChildBountyInfo';
 import PostBountyInfo from './PostGovernanceInfo/PostBountyInfo';
+import PostChildBountyInfo from './PostGovernanceInfo/PostChildBountyInfo';
 import PostMotionInfo from './PostGovernanceInfo/PostMotionInfo';
 import PostProposalInfo from './PostGovernanceInfo/PostProposalInfo';
 import PostReferendumInfo from './PostGovernanceInfo/PostReferendumInfo';
@@ -92,6 +92,7 @@ interface Props {
 	isTreasuryProposal?: boolean
 	isTechCommitteeProposal?: boolean
 	isTipProposal?: boolean
+	isChildBounty?: boolean
 	refetch: (variables?:any) =>
 		Promise<ApolloQueryResult<ReferendumPostAndCommentsQuery>> |
 		Promise<ApolloQueryResult<ProposalPostAndCommentsQuery>> |
