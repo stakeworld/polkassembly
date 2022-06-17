@@ -62,3 +62,9 @@ export const bountyStatusMap = {
 	[bountyStatus.PROPOSED]: 'Proposed',
 	[bountyStatus.REJECTED]: 'Rejected'
 };
+
+export const approvalStatus = {
+	APPROVED: 'approved',
+	PENDING: 'pending',
+	REJECTED: 'rejected'
+};
