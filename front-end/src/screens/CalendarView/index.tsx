@@ -34,13 +34,14 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	const [selectedNetwork, setSelectedNetwork] = useState<string>(NETWORK);
 	const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const { data, refetch } = useGetCalenderEventsQuery({ variables: {
 		network: selectedNetwork
 	} });
 
-	useEffect(() => {
-		refetch();
-	}, [refetch]);
+	// useEffect(() => {
+	// refetch();
+	// }, [refetch]);
 
 	useEffect(() =>  {
 		const eventsArr:any[] = [];
@@ -55,7 +56,6 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 			});
 		});
 
-		console.log('calendarEvents : ', eventsArr);
 		setCalendarEvents(eventsArr);
 
 		if(emitCalendarEvents) {
@@ -289,17 +289,28 @@ h1 {
 			font-size: 20px;
 		}
 
-		.today-btn {
+		.right-actions {
 			margin-left: auto;
-			/* margin-right: 22px; */
-			border-radius: 5px;
-			font-size: 16px;
-			padding: 10px 20px !important;
 
-			@media only screen and (max-width: 576px) {
-				margin-right: 8px;
+			.legend-trigger {
+				margin-right: 16px;
+				color: #E5007A;
+				font-weight: 500;
+				font-size: 16px;
+			}
+
+			.today-btn {
+				/* margin-right: 22px; */
+				border-radius: 5px;
+				font-size: 16px;
+				padding: 10px 20px !important;
+	
+				@media only screen and (max-width: 576px) {
+					margin-right: 8px;
+				}
 			}
 		}
+
 		
 		.create-event-btn {
 			border-radius: 5px;
