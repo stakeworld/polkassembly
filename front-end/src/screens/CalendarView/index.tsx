@@ -34,14 +34,13 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	const [selectedNetwork, setSelectedNetwork] = useState<string>(NETWORK);
 	const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const { data, refetch } = useGetCalenderEventsQuery({ variables: {
 		network: selectedNetwork
 	} });
 
-	// useEffect(() => {
-	// refetch();
-	// }, [refetch]);
+	useEffect(() => {
+		refetch();
+	}, [refetch]);
 
 	useEffect(() =>  {
 		const eventsArr:any[] = [];
