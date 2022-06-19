@@ -75,6 +75,10 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	}, [data, emitCalendarEvents]);
 
 	function showEventSidebar(event: any) {
+		if(small){
+			return;
+		}
+
 		setSidebarEvent(event);
 	}
 
@@ -143,7 +147,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 				}
 			</Grid>
 
-			{routeWrapperHeight && sidebarEvent && <div className="events-sidebar" style={ { minHeight: `${routeWrapperHeight}px` } }>
+			{routeWrapperHeight && sidebarEvent && <div className="events-sidebar" style={ { maxHeight: `${routeWrapperHeight}px`, minHeight: `${routeWrapperHeight}px` } }>
 				<div className="event-sidebar-header d-flex">
 					<div className='d-flex'>
 						<Icon name='circle' className={`status-icon ${moment(sidebarEvent.end_time).isBefore() ? 'overdue-color' : `${sidebarEvent.status?.toLowerCase()}-color`}`} />
@@ -158,7 +162,6 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 
 				{sidebarEvent.content && <div className="sidebar-event-content">
 					{`${sidebarEvent.content.substring(0, 769)} ${sidebarEvent.content.length > 769 ? '...' : ''}`}
-
 					{sidebarEvent.content.length > 769 && <><br/><a href={sidebarEvent.url} target='_blank' rel='noreferrer'>Show More</a></>}
 				</div>
 				}
@@ -185,9 +188,25 @@ export default styled(CalendarView)`
 	right: 0;
 	top: 6.5rem;
 	background: #fff;
-	z-index: 200;
+	z-index: 100;
 	padding: 40px 24px;
 	box-shadow: -5px 0 15px -12px #888;
+
+	@media only screen and (max-width: 768px) {
+		max-width: 85vw;
+		top: 0;
+		padding: 40px 14px;
+		padding-top: 70px;
+		overflow-y: auto;
+
+		h1 {
+			margin-top: 0;
+		}
+
+		.sidebar-event-content {
+			padding-right: 10px;
+		}
+	}
 
 	.d-flex {
 		display: flex;
