@@ -41,7 +41,7 @@ function AppLayout() {
 				<MenuBar toggleSidebarHidden={toggleSidebarHidden} setSidebarHidden={setSidebarHidden} />
 				<div className='d-flex'>
 					<CustomSidebar sidebarHidden={sidebarHidden} setIsCollapsed={setSidebarCollapsed} setSidebarHidden={setSidebarHidden} />
-					<div onClick={closeSidebar} className={`route-wrapper ${location.pathname == '/calendar' ? 'no-margin-sm' : ''} ${sidebarCollapsed ? 'collapsed' : ''}`}>
+					<div onClick={closeSidebar} id='route-wrapper' className={`route-wrapper ${location.pathname == '/calendar' ? 'no-margin-sm' : ''} ${sidebarCollapsed ? 'collapsed' : ''}`}>
 						<SwitchRoutes />
 					</div>
 				</div>
