@@ -327,13 +327,18 @@ h1 {
 		label {
 			display: none !important;
 		}
+		
+		.filter-by-chain-div {
+			background-color: #fff;
+			border-radius: 5px;
+			border: 1px solid #ddd;
+			padding: 2px;
+		}
 
 		.filter-by-chain-div > .dropdown {
 			display: flex;
 			align-items: center;
-			border: 2px solid #aaa;
 			padding: 3px 10px;
-			border-radius: 5px;
 		}
 	
 		@media only screen and (max-width: 768px) {
@@ -353,6 +358,7 @@ h1 {
 		width: 100%;
 		max-width: 100%;
 		padding: 1em 0 1em 0;
+		max-height: 650px;
 	}
 
 	.rbc-toolbar {
@@ -363,6 +369,11 @@ h1 {
 				margin-bottom: 1em;
 			}
 		}
+	}
+
+	.rbc-show-more {
+		color: #E5007A;
+		margin-top: 6px;
 	}
 
 	.custom-calendar-toolbar,
