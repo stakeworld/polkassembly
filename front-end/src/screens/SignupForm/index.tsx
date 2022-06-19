@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { Grid } from 'semantic-ui-react';
 import WalletButton from 'src/components/WalletButton';
 import { Wallet } from 'src/types';
-import Modal from 'src/ui-components/Modal';
+import Modal from 'src/ui-components/WalletModal';
 
 import { ReactComponent as PolkadotJSIcon } from '../../assets/wallet/polkadotjs-icon.svg';
 import { ReactComponent as SubWalletIcon } from '../../assets/wallet/subwallet-icon.svg';
@@ -49,11 +49,10 @@ const Signup = ({ className }: Props) => {
 				</Grid.Column>
 			</Grid>
 
-			<Modal size="mini" open={showWalletModal} onClose={() => setShowWalletModal(false)}>
+			<Modal size="mini" open={showWalletModal} onClose={() => setShowWalletModal(false)} title="Choose wallet to connect">
 				<WalletButton onClick={() => onWalletSelect(Wallet.POLKADOT)} name="Polkadot.js" icon={<PolkadotJSIcon />} />
 				<WalletButton onClick={() => onWalletSelect(Wallet.TALISMAN)} name="Talisman" icon={<TalismanIcon />} />
 				<WalletButton onClick={() => onWalletSelect(Wallet.SUBWALLET)} name="SubWallet" icon={<SubWalletIcon />} />
-				<WalletButton onClick={() => onWalletSelect(Wallet.OTHER)} name="Other" />
 			</Modal>
 		</>
 	);
