@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import { Divider, Grid, Icon } from 'semantic-ui-react';
 import { useGetCalenderEventsQuery } from 'src/generated/graphql';
+import { approvalStatus } from 'src/global/statuses';
 import getNetwork from 'src/util/getNetwork';
 
 import chainLink from '../../assets/chain-link.png';
@@ -46,6 +47,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	const [sidebarEvent, setSidebarEvent] = useState<any>();
 
 	const { data, refetch } = useGetCalenderEventsQuery({ variables: {
+		approval_status: approvalStatus.APPROVED,
 		network: selectedNetwork
 	} });
 
