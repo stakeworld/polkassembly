@@ -492,7 +492,7 @@ export default styled(CalendarView)`
 		}
 
 		.input.error {
-			border: 1px solid #912d2b;
+			border: 1px solid #FF0000;
 		}
 
 		.input-label {
@@ -575,12 +575,12 @@ export default styled(CalendarView)`
 	
 			&.error {
 				.react-date-picker__wrapper {
-					border: #912d2b 1px solid;
-					color: #912d2b !important;
+					border: #FF0000 1px solid;
+					color: #FF0000 !important;
 				}
 	
 				.react-date-picker__inputGroup__input {
-					color: #912d2b !important;
+					color: #FF0000 !important;
 					font-family: 'Roboto' !important;
 				}
 			}
