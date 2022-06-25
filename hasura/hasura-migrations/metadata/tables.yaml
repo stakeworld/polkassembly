@@ -364,12 +364,23 @@
       - onchain_tech_committee_proposal_id
       remote_schema: chain-db
     name: onchain_tech_committee_proposal
+  - definition:
+      remote_field:
+        childBounties:
+          arguments:
+            where:
+              childBountyId: $onchain_child_bounty_id
+      hasura_fields:
+      - onchain_child_bounty_id
+      remote_schema: chain-db
+    name: onchain_child_bounty
   insert_permissions:
   - role: proposal_bot
     permission:
       check: {}
       columns:
       - onchain_bounty_id
+      - onchain_child_bounty_id
       - onchain_motion_id
       - onchain_proposal_id
       - onchain_referendum_id
@@ -382,17 +393,18 @@
   - role: anonymous
     permission:
       columns:
-      - id
       - created_at
-      - post_id
-      - onchain_proposal_id
-      - proposer_address
-      - onchain_referendum_id
-      - onchain_motion_id
-      - onchain_treasury_proposal_id
-      - onchain_tip_id
+      - id
       - onchain_bounty_id
+      - onchain_child_bounty_id
+      - onchain_motion_id
+      - onchain_proposal_id
+      - onchain_referendum_id
       - onchain_tech_committee_proposal_id
+      - onchain_tip_id
+      - onchain_treasury_proposal_id
+      - post_id
+      - proposer_address
       filter: {}
       allow_aggregations: true
   - role: proposal_bot
@@ -416,6 +428,7 @@
       - created_at
       - id
       - onchain_bounty_id
+      - onchain_child_bounty_id
       - onchain_motion_id
       - onchain_proposal_id
       - onchain_referendum_id
@@ -431,6 +444,7 @@
     permission:
       columns:
       - onchain_bounty_id
+      - onchain_child_bounty_id
       - onchain_motion_id
       - onchain_proposal_id
       - onchain_referendum_id
