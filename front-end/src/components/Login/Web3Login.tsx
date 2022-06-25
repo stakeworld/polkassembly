@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { isWeb3Injected } from '@polkadot/extension-dapp';
-import { InjectedAccount, InjectedWindow } from '@polkadot/extension-inject/types';
+import { Injected, InjectedAccount, InjectedWindow } from '@polkadot/extension-inject/types';
 import { stringToHex } from '@polkadot/util';
 import styled from '@xstyled/styled-components';
 import React, { useContext, useEffect, useState } from 'react';
@@ -66,7 +66,35 @@ const LoginForm = ({ className, setDisplayWeb2, chosenWallet }:Props): JSX.Eleme
 			setExtensionNotFound(false);
 		}
 
-		const injected = await wallet.enable(APPNAME);
+		console.log('gets here');
+
+		let injected: Injected | undefined;
+
+		try {
+			console.log('gets here 2');
+			injected = await new Promise((resolve, reject) => {
+				const timeoutId = setTimeout(() => {
+					reject(new Error('Wallet Timeout'));
+				}, 30000); // wait 30 sec
+
+				wallet!.enable(APPNAME).then(value => {
+					console.log('injected value : ', value);
+					clearTimeout(timeoutId);
+					resolve(value);
+				}).catch(error => {
+					reject(error);
+				});
+			});
+
+			console.log('gets here 3');
+		} catch (e) {
+			setIsAccountLoading(false);
+			console.log('ERRORRRRRR : ', e);
+		}
+
+		if(!injected) {
+			return;
+		}
 
 		const accounts = await injected.accounts.get();
 
