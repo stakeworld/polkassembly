@@ -49,6 +49,7 @@
       - status
       - title
       - url
+      - user_id
       backend_only: false
   - role: user
     permission:
@@ -59,6 +60,7 @@
       columns:
       - content
       - end_time
+      - event_type
       - id
       - module
       - network
@@ -84,6 +86,7 @@
       - status
       - title
       - url
+      - user_id
       filter: {}
       allow_aggregations: true
   - role: event_bot
@@ -101,6 +104,7 @@
       - status
       - title
       - url
+      - user_id
       filter: {}
       allow_aggregations: true
   - role: user
@@ -143,6 +147,7 @@
       columns:
       - content
       - end_time
+      - event_type
       - module
       - start_time
       - title
@@ -338,6 +343,26 @@
   remote_relationships:
   - definition:
       remote_field:
+        bounties:
+          arguments:
+            where:
+              bountyId: $onchain_bounty_id
+      hasura_fields:
+      - onchain_bounty_id
+      remote_schema: chain-db
+    name: onchain_bounty
+  - definition:
+      remote_field:
+        techCommitteeProposals:
+          arguments:
+            where:
+              proposalId: $onchain_tech_committee_proposal_id
+      hasura_fields:
+      - onchain_tech_committee_proposal_id
+      remote_schema: chain-db
+    name: onchain_tech_committee_proposal
+  - definition:
+      remote_field:
         motions:
           arguments:
             where:
@@ -386,26 +411,6 @@
       - onchain_tip_id
       remote_schema: chain-db
     name: onchain_tip
-  - definition:
-      remote_field:
-        bounties:
-          arguments:
-            where:
-              bountyId: $onchain_bounty_id
-      hasura_fields:
-      - onchain_bounty_id
-      remote_schema: chain-db
-    name: onchain_bounty
-  - definition:
-      remote_field:
-        techCommitteeProposals:
-          arguments:
-            where:
-              proposalId: $onchain_tech_committee_proposal_id
-      hasura_fields:
-      - onchain_tech_committee_proposal_id
-      remote_schema: chain-db
-    name: onchain_tech_committee_proposal
   insert_permissions:
   - role: proposal_bot
     permission:
