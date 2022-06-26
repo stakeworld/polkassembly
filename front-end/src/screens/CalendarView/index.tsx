@@ -8,14 +8,13 @@ import styled from '@xstyled/styled-components';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
-import DatePicker from 'react-date-picker';
-import { Button, CheckboxProps, Divider, Form, Grid, Icon, Input } from 'semantic-ui-react';
+import { Divider, Grid, Icon } from 'semantic-ui-react';
 import { useGetCalenderEventsQuery } from 'src/generated/graphql';
-// import { approvalStatus } from 'src/global/statuses';
+import { approvalStatus } from 'src/global/statuses';
 import getNetwork from 'src/util/getNetwork';
 
 import chainLink from '../../assets/chain-link.png';
-import { ReactComponent as CalendarIcon } from '../../assets/sidebar/calendar.svg';
+import CreateEventSidebar from './CreateEventSidebar';
 import CustomToolbar from './CustomToolbar';
 import CustomWeekHeader, { TimeGutterHeader } from './CustomWeekHeader';
 import NetworkSelect from './NetworkSelect';
@@ -31,7 +30,6 @@ const localizer = momentLocalizer(moment);
 const NETWORK = getNetwork();
 
 const CalendarView = ({ className, small = false, emitCalendarEvents = undefined }: Props) => {
-
 	// calculate #route-wrapper height with margin for sidebar.
 	const routeWrapperEl = document.getElementById('route-wrapper');
 	let routeWrapperHeight = routeWrapperEl?.offsetHeight;
@@ -48,21 +46,14 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 	const [sidebarEvent, setSidebarEvent] = useState<any>();
 	const [sidebarCreateEvent, setSidebarCreateEvent] = useState<boolean>(false);
-	const [eventTitle, setEventTitle] = useState<string>('');
-	const [eventDescription, setEventDescription] = useState<string>('');
-	const [eventType, setEventType] = useState<string>('online');
-	const [eventStartDate, setEventStartDate] = useState<Date | undefined>();
-	const [eventEndDate, setEventEndDate] = useState<Date | undefined>();
-	const [eventJoiningLink, setEventJoiningLink] = useState<string>('');
-	const [errorsFound, setErrorsFound] = useState<string[]>([]);
 
 	const { data, refetch } = useGetCalenderEventsQuery({ variables: {
-		// approval_status: approvalStatus.APPROVED,
+		approval_status: approvalStatus.APPROVED,
 		network: selectedNetwork
 	} });
 
 	useEffect(() => {
-	// refetch();
+	//TODO: refetch();
 	}, [refetch]);
 
 	useEffect(() =>  {
@@ -93,58 +84,6 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 
 		setSidebarEvent(event);
 	}
-
-	const closeCreateEventSidebar = () => {
-		setSidebarCreateEvent(false);
-		setEventTitle('');
-		setEventDescription('');
-		setEventType('');
-		setEventStartDate(undefined);
-		setEventEndDate(undefined);
-		setEventJoiningLink('');
-	};
-
-	const onEventTypeRadioToggle = (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
-		setEventType(data.value?.toString() || '');
-	};
-
-	function isFormValid(){
-		const errorsFoundTemp: string[] = [];
-
-		if(!eventTitle) {
-			errorsFoundTemp.push('eventTitle');
-		}
-
-		if(!eventDescription) {
-			errorsFoundTemp.push('eventDescription');
-		}
-
-		if(!eventStartDate) {
-			errorsFoundTemp.push('eventStartDate');
-		}
-
-		if(!eventEndDate) {
-			errorsFoundTemp.push('eventEndDate');
-		}
-
-		if(!eventJoiningLink) {
-			errorsFoundTemp.push('eventJoiningLink');
-		}
-
-		setErrorsFound(errorsFoundTemp);
-
-		if(errorsFoundTemp.length > 0 ){
-			return false;
-		}
-
-		return true;
-	}
-
-	const handleCreateEvent = () => {
-		if(!isFormValid()) return;
-
-		// TODO: LINK BE MUTATION
-	};
 
 	const EventWrapperComponent = ({ event, children }: any) => {
 		const newChildren = { ...children };
@@ -242,97 +181,15 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 			</div>}
 
 			{/* Create Event Sidebar */}
-			{routeWrapperHeight && sidebarCreateEvent && <div className="create-event-sidebar" style={ { maxHeight: `${routeWrapperHeight}px`, minHeight: `${routeWrapperHeight}px` } }>
-				<div className="create-event-sidebar-header d-flex">
-					<div className='d-flex'>
-						<h1>Create Event</h1>
-					</div>
-				</div>
-
-				<div className="create-event-form">
-					<Form>
-						<Form.Field>
-							<label className='input-label'>Event Title</label>
-							<Input
-								type='text'
-								className='text-input'
-								value={eventTitle}
-								onChange={(e) => setEventTitle(e.target.value)}
-								error={errorsFound.includes('eventTitle')}
-							/>
-						</Form.Field>
-
-						<Form.Field>
-							<label className='input-label'>Description</label>
-							<Input
-								type='text'
-								className='text-input'
-								value={eventDescription}
-								onChange={(e) => setEventDescription(e.target.value)}
-								error={errorsFound.includes('eventDescription')}
-							/>
-						</Form.Field>
-
-						<label className='input-label'>Event Type</label>
-						<Form.Group className='radio-input-group'>
-							<Form.Radio
-								label='Online'
-								value='online'
-								checked={eventType === 'online'}
-								onChange={onEventTypeRadioToggle}
-							/>
-							<Form.Radio
-								label='Offline'
-								value='offline'
-								checked={eventType === 'offline'}
-								onChange={onEventTypeRadioToggle}
-							/>
-						</Form.Group>
-
-						<div className="d-flex date-input-row">
-							<div className='start-date-div'>
-								<label className='input-label'>Start Date</label>
-								<DatePicker
-									className={`date-input ${errorsFound.includes('eventStartDate') ? 'error' : ''}`}
-									onChange={setEventStartDate}
-									value={eventStartDate}
-									minDate={new Date()}
-									calendarIcon={<CalendarIcon />}
-									format='d-M-yyyy'
-								/>
-							</div>
-
-							<div>
-								<label className='input-label'>End Date</label>
-								<DatePicker
-									className={`date-input ${errorsFound.includes('eventEndDate') ? 'error' : ''}`}
-									onChange={setEventEndDate}
-									value={eventEndDate}
-									minDate={eventStartDate}
-									calendarIcon={<CalendarIcon />}
-									format='d-M-yyyy'
-								/>
-							</div>
-						</div>
-
-						<Form.Field>
-							<label className='input-label'>Joining Link</label>
-							<Input
-								type='text'
-								className='text-input'
-								value={eventJoiningLink}
-								onChange={(e) => setEventJoiningLink(e.target.value)}
-								error={errorsFound.includes('eventJoiningLink')}
-							/>
-						</Form.Field>
-
-						<div className="form-actions">
-							<Button content='Cancel' onClick={closeCreateEventSidebar} />
-							<Button content='Create Event' className='submit-btn' onClick={handleCreateEvent} />
-						</div>
-					</Form>
-				</div>
-			</div>}
+			{routeWrapperHeight && sidebarCreateEvent &&
+				<CreateEventSidebar
+					setSidebarCreateEvent={setSidebarCreateEvent}
+					refetch={refetch}
+					routeWrapperHeight={routeWrapperHeight}
+					selectedNetwork={selectedNetwork}
+					className='create-event-sidebar'
+				/>
+			}
 		</div>
 	);
 };
@@ -565,6 +422,10 @@ export default styled(CalendarView)`
 
 			.input-label {
 				margin-bottom: 212px !important;
+			}
+
+			.react-calendar__tile--now {
+				background-color: rgba(229, 0, 122, 0.1);
 			}
 		}
 
