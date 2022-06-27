@@ -23,9 +23,10 @@ interface Props {
 			network: string;
 			approval_status: string;
 	}> | undefined) => Promise<ApolloQueryResult<GetCalenderEventsQuery>>
+	id:  number | null | undefined
 }
 
-const CreateEventSidebar = ({ className, routeWrapperHeight, refetch, selectedNetwork, setSidebarCreateEvent }: Props) => {
+const CreateEventSidebar = ({ className, routeWrapperHeight, refetch, selectedNetwork, setSidebarCreateEvent, id }: Props) => {
 	const [eventTitle, setEventTitle] = useState<string>('');
 	const [eventDescription, setEventDescription] = useState<string>('');
 	const [eventType, setEventType] = useState<string>('online');
@@ -45,7 +46,8 @@ const CreateEventSidebar = ({ className, routeWrapperHeight, refetch, selectedNe
 			network: selectedNetwork,
 			start_time: eventStartDateTime,
 			title: eventTitle,
-			url: eventJoiningLink
+			url: eventJoiningLink,
+			user_id: id
 		}
 	});
 
@@ -96,7 +98,7 @@ const CreateEventSidebar = ({ className, routeWrapperHeight, refetch, selectedNe
 	}
 
 	const handleCreateEvent = () => {
-		if(!isFormValid()) return;
+		if(!isFormValid() || !id) return;
 
 		addCalenderEventMutation({
 			variables: {
@@ -107,7 +109,8 @@ const CreateEventSidebar = ({ className, routeWrapperHeight, refetch, selectedNe
 				network: selectedNetwork,
 				start_time: eventStartDateTime,
 				title: eventTitle,
-				url: eventJoiningLink
+				url: eventJoiningLink,
+				user_id: id
 			}
 		})
 			.then(({ data }) => {

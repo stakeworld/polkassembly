@@ -19496,6 +19496,7 @@ export type AddCalenderEventMutationVariables = Exact<{
   module?: Maybe<Scalars['String']>;
   network: Scalars['String'];
   event_type: Scalars['String'];
+  user_id?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -23791,9 +23792,9 @@ export type UpdateApprovalStatusMutationHookResult = ReturnType<typeof useUpdate
 export type UpdateApprovalStatusMutationResult = ApolloReactCommon.MutationResult<UpdateApprovalStatusMutation>;
 export type UpdateApprovalStatusMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateApprovalStatusMutation, UpdateApprovalStatusMutationVariables>;
 export const AddCalenderEventDocument = gql`
-    mutation AddCalenderEvent($title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!, $event_type: String!) {
+    mutation AddCalenderEvent($title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!, $event_type: String!, $user_id: Int) {
   insert_calender_events(
-    objects: {title: $title, start_time: $start_time, end_time: $end_time, content: $content, url: $url, module: $module, network: $network, event_type: $event_type}
+    objects: {title: $title, start_time: $start_time, end_time: $end_time, content: $content, url: $url, module: $module, network: $network, event_type: $event_type, user_id: $user_id}
   ) {
     affected_rows
   }
@@ -23822,6 +23823,7 @@ export type AddCalenderEventMutationFn = ApolloReactCommon.MutationFunction<AddC
  *      module: // value for 'module'
  *      network: // value for 'network'
  *      event_type: // value for 'event_type'
+ *      user_id: // value for 'user_id'
  *   },
  * });
  */

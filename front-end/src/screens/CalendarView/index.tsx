@@ -6,9 +6,10 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import styled from '@xstyled/styled-components';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import { Divider, Grid, Icon } from 'semantic-ui-react';
+import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { useGetCalenderEventsQuery } from 'src/generated/graphql';
 import { approvalStatus } from 'src/global/statuses';
 import getNetwork from 'src/util/getNetwork';
@@ -40,6 +41,8 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 
 	const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
 
+	const { id } = useContext(UserDetailsContext);
+
 	const [calendarEvents, setCalendarEvents] = useState<any[]>([]);
 	const [selectedView, setSelectedView] = useState<string>('month');
 	const [selectedNetwork, setSelectedNetwork] = useState<string>(NETWORK);
@@ -53,7 +56,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	} });
 
 	useEffect(() => {
-	//TODO: refetch();
+		refetch();
 	}, [refetch]);
 
 	useEffect(() =>  {
@@ -127,7 +130,15 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 								event: Event,
 								eventWrapper: EventWrapperComponent,
 								timeGutterHeader: () => <TimeGutterHeader localizer={localizer} date={selectedDate} selectedView={selectedView} />,
-								toolbar: props => <CustomToolbar {...props} small={small} width={width} selectedNetwork={selectedNetwork} setSelectedNetwork={setSelectedNetwork} setSidebarCreateEvent={setSidebarCreateEvent} />,
+								toolbar: props => <CustomToolbar
+									{...props}
+									small={small}
+									width={width}
+									selectedNetwork={selectedNetwork}
+									setSelectedNetwork={setSelectedNetwork}
+									setSidebarCreateEvent={setSidebarCreateEvent}
+									isLoggedIn={Boolean(id)}
+								/>,
 								week: {
 									header: props => <CustomWeekHeader {...props} small={small || width < 768} />
 								}
@@ -188,6 +199,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 					routeWrapperHeight={routeWrapperHeight}
 					selectedNetwork={selectedNetwork}
 					className='create-event-sidebar'
+					id={id}
 				/>
 			}
 		</div>
@@ -694,6 +706,12 @@ h1 {
 				@media only screen and (max-width: 576px) {
 					margin-right: 8px;
 				}
+			}
+
+			.btn-disabled {
+				border: rgba(229, 0, 122, 0.5) !important;
+				color: rgba(229, 0, 122, 0.5) !important;
+				cursor: default;
 			}
 		}
 

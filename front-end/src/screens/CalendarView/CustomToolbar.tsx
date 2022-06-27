@@ -129,6 +129,10 @@ function CustomToolbar(props: any) {
 		setViewState(`${props.view}`);
 	},[props.view]);
 
+	function createEventButton(disabled:boolean = false){
+		return <Button basic className={`${disabled ? 'btn-disabled' : ''} create-event-btn`} onClick={() => { if(!disabled) props.setSidebarCreateEvent(true); } }>Create Event</Button>;
+	}
+
 	return (
 		props.date && <div className={`custom-calendar-toolbar ${props.small || props.width < 768 ? 'small' : ''}`}>
 			{!props.small && !(props.width < 768) ?
@@ -168,7 +172,13 @@ function CustomToolbar(props: any) {
 							</Popup.Content>
 						</Popup>
 						<Button basic className='today-btn' onClick={goToToday}>Today</Button>
-						<Button basic className='create-event-btn' onClick={() => props.setSidebarCreateEvent(true)}>Create Event</Button>
+
+						{
+							!props.isLoggedIn ?
+								<Popup content='Please login to create an event' position='left center' size='large' trigger={createEventButton(true)} />
+								:
+								createEventButton()
+						}
 					</div>
 				</>
 				:
