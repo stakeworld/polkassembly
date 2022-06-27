@@ -4,13 +4,8 @@
 
 import React, { useContext, useEffect,useState } from 'react';
 import { Grid } from 'semantic-ui-react';
-import WalletButton  from 'src/components/WalletButton';
 import { Wallet } from 'src/types';
-import Modal from 'src/ui-components/WalletModal';
 
-import { ReactComponent as PolkadotJSIcon } from '../../assets/wallet/polkadotjs-icon.svg';
-import { ReactComponent as SubWalletIcon } from '../../assets/wallet/subwallet-icon.svg';
-import { ReactComponent as TalismanIcon } from '../../assets/wallet/talisman-icon.svg';
 import Web2Login from '../../components/Login/Web2Login';
 import Web3Login from '../../components/Login/Web3Login';
 import { UserDetailsContext } from '../../context/UserDetailsContext';
@@ -25,20 +20,12 @@ const Login = ({ className }: Props) => {
 	const { history } = useRouter();
 	const [displayWeb, setDisplayWeb] = useState(2);
 	const [chosenWallet, setChosenWallet] = useState<Wallet>();
-	const [showWalletModal, setShowWalletModal] = useState(false);
 
 	const setDisplayWeb2 = () => setDisplayWeb(2);
 
-	const setDisplayWeb3 = () => {
-		setShowWalletModal(true);
-	};
-
 	const onWalletSelect = (wallet: Wallet) => {
 		setChosenWallet(wallet);
-
 		setDisplayWeb(3);
-
-		setShowWalletModal(false);
 	};
 
 	useEffect(() => {
@@ -50,19 +37,13 @@ const Login = ({ className }: Props) => {
 	return (
 		<>
 			<Grid centered className={className}>
-				<Grid.Column width={10}>
+				<Grid.Column mobile={16} tablet={14} computer={8} style={ { minWidth: 'min-content' } }>
 					{ displayWeb === 2
-						? <Web2Login setDisplayWeb3={setDisplayWeb3}/> : null}
+						? <Web2Login onWalletSelect={onWalletSelect} /> : null}
 
 					{displayWeb === 3 && chosenWallet ? <Web3Login chosenWallet={chosenWallet} setDisplayWeb2={setDisplayWeb2}/> : null}
 				</Grid.Column>
 			</Grid>
-
-			<Modal size="mini" open={showWalletModal} onClose={() => setShowWalletModal(false)} title="Choose wallet to connect">
-				<WalletButton onClick={() => onWalletSelect(Wallet.POLKADOT)} name="Polkadot.js" icon={<PolkadotJSIcon />} />
-				<WalletButton onClick={() => onWalletSelect(Wallet.TALISMAN)} name="Talisman" icon={<TalismanIcon />} />
-				<WalletButton onClick={() => onWalletSelect(Wallet.SUBWALLET)} name="SubWallet" icon={<SubWalletIcon />} />
-			</Modal>
 		</>
 	);
 };

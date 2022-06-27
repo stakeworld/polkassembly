@@ -7,6 +7,7 @@ import React, { useContext } from 'react';
 import { FieldError,useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { Divider } from 'semantic-ui-react';
+import { Wallet } from 'src/types';
 
 import { UserDetailsContext } from '../../context/UserDetailsContext';
 import { useLoginMutation } from '../../generated/graphql';
@@ -17,13 +18,14 @@ import FilteredError from '../../ui-components/FilteredError';
 import { Form } from '../../ui-components/Form';
 import messages from '../../util/messages';
 import * as validation from '../../util/validation';
+import WalletButtons from './WalletButtons';
 
 interface Props {
 	className?: string
-	setDisplayWeb3: () => void
+	onWalletSelect: (wallet: Wallet) => void
 }
 
-const LoginForm = ({ className, setDisplayWeb3 }:Props): JSX.Element => {
+const LoginForm = ({ className, onWalletSelect }:Props): JSX.Element => {
 	const currentUser = useContext(UserDetailsContext);
 	const { history } = useRouter();
 	const [loginMutation, { loading, error }] = useLoginMutation();
@@ -48,8 +50,6 @@ const LoginForm = ({ className, setDisplayWeb3 }:Props): JSX.Element => {
 			});
 		}
 	};
-
-	const handleToggle = () => setDisplayWeb3();
 
 	return (
 		<Form className={className} onSubmit={handleSubmit(handleSubmitForm)}>
@@ -105,16 +105,8 @@ const LoginForm = ({ className, setDisplayWeb3 }:Props): JSX.Element => {
 				{error?.message && <FilteredError text={error.message}/>}
 			</div>
 
-			<div className={'mainButtonContainer'}>
-				<Button
-					type="button"
-					secondary
-					disabled={loading}
-					onClick={handleToggle}
-					className='button'
-				>
-					Login with web3 address
-				</Button>
+			<div>
+				<WalletButtons disabled={loading} onWalletSelect={onWalletSelect} />
 			</div>
 
 			<Divider horizontal>Or</Divider>
