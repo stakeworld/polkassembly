@@ -7,7 +7,6 @@ import { Option } from '@polkadot/types';
 import {
   BlockNumber,
   Hash,
-  Bounty
 } from '@polkadot/types/interfaces';
 import { hexToString, logger } from '@polkadot/util';
 
@@ -47,8 +46,6 @@ const createChildBounty: Task<NomidotChildBounty[]> = {
 
     const results: NomidotChildBounty[] = [];
 
-    console.log(childBountyEvents[0].toHuman());
-
     await Promise.all(
       childBountyEvents.map(async ({ event: { data } }) => {
 
@@ -62,32 +59,56 @@ const createChildBounty: Task<NomidotChildBounty[]> = {
         const parentBountyId = Number(data[0]);
         const childBountyId = Number(data[1]);
 
-        console.log(parentBountyId, childBountyId)
-        
         const apiAt = await api.at(blockHash);
 
         const childBountyRaw: any = await apiAt.query.childBounties.childBounties(
-          childBountyId
+          parentBountyId,
+          childBountyId,
         );
 
         if (childBountyRaw.isNone) {
-          l.error('Expected data missing in bountyRaw');
-          return null;
+          l.error('Expected data missing in childBountyRaw');
+          return;
         }
 
+        const bountyRaw = await apiAt.query.bounties.bounties(parentBountyId);
+
+        if (bountyRaw.isNone) {
+          l.error('Expected data missing in bounty');
+          return;
+        }
+
+        const bounty = bountyRaw.unwrap();
+
         const childBounty = childBountyRaw.unwrap();
+
+        let description = '';
+        const descriptionRaw = await apiAt.query.childBounties.childBountyDescriptions(
+          childBountyId
+        );
+
+        try {
+          description = descriptionRaw.toHuman() as string;
+        } catch (error) {
+          l.error(error);
+        }
+
+        const curator = childBounty.status?.asCuratorProposed?.curator;
+
         const result: NomidotChildBounty = {
           childBountyId: childBountyId,
-          proposer: childBounty.proposer,
+          proposer: bounty.status?.asActive?.curator || bounty.proposer,
           value: childBounty.value,
           fee: childBounty.fee,
           curatorDeposit: childBounty.curatorDeposit,
-          description: hexToString(childBounty.description),
-          parentBountyId: childBounty.parentBountyId,
+          description: description,
+          parentBountyId,
           childBountyStatus: childBountyStatus.PROPOSED,
+          curator: curator,
+          beneficiary: curator
         };
 
-        l.log(`Nomidot Bounty: ${JSON.stringify(result)}`);
+        l.log(`Nomidot Child Bounty: ${JSON.stringify(result)}`);
 
         results.push(result);
       })
@@ -96,40 +117,44 @@ const createChildBounty: Task<NomidotChildBounty[]> = {
     return results;
   },
   write: async (blockNumber: BlockNumber, value: NomidotChildBounty[]) => {
-  await Promise.all(
-    value.map(async prop => {
-      const {
-      childBountyId,
-      proposer,
-      value,
-      fee,
-      curatorDeposit,
-      childBountyStatus,
-            description,
-            parentBountyId
-      } = prop;
+    await Promise.all(
+      value.map(async prop => {
+        const {
+          childBountyId,
+          proposer,
+          value,
+          fee,
+          curatorDeposit,
+          childBountyStatus,
+          description,
+          parentBountyId,
+          curator,
+          beneficiary
+        } = prop;
 
-      await prisma.createChildBounty({
-      childBountyId,
-      proposer: proposer.toString(),
-      value: value.toString(),
-      fee: fee.toString(),
-      curatorDeposit: curatorDeposit.toString(),
-            description:description.toString(),
-            parentBountyId: parentBountyId,
-      childBountyStatus: {
-        create: {
-        blockNumber: {
-          connect: {
-          number: blockNumber.toNumber(),
+        await prisma.createChildBounty({
+          childBountyId,
+          parentBountyId,
+          proposer: proposer.toString(),
+          value: value.toString(),
+          fee: fee.toString(),
+          curatorDeposit: curatorDeposit.toString(),
+          description:description.toString(),
+          curator: curator?.toString(),
+          beneficiary: beneficiary?.toString(),
+          childBountyStatus: {
+            create: {
+              blockNumber: {
+                connect: {
+                  number: blockNumber.toNumber(),
+                },
+              },
+              status: childBountyStatus,
+              uniqueStatus: `${childBountyId}_${childBountyStatus}`,
+            },
           },
-        },
-        status,
-        uniqueStatus: `${childBountyId}_${status}`,
-        },
-      },
-      });
-    })
+        });
+      })
     );
   },
 };
