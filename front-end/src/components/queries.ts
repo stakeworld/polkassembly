@@ -13,27 +13,20 @@ query GET_REFRESH_TOKEN {
 `;
 
 export const GET_CALENDER_EVENTS = gql`
-query GetCalenderEvents($network: String!) {
-    calender_events(where: {network: {_ilike: $network}}) {
-        content
-        end_time
-        id
-        module
-        network
-        start_time
-        title
-        url
-        event_type
-        event_id
-        status
-    }
-}
-`;
-
-export const EDIT_CALENDER_EVENT= gql`
-    mutation EditCalenderEvent ($id: Int!, $title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!) {
-        update_calender_events(where: {id: {_eq: $id}}, _set: {title: $title, content: $content, start_time: $start_time, end_time: $end_time, url: $url, module: $module, network: $network}) {
-            affected_rows
+    query GetCalenderEvents($network: String!, $approval_status: String!) {
+        calender_events(where: {network: {_ilike: $network}, approval_status: {_eq: $approval_status}}) {
+            content
+            end_time
+            id
+            module
+            network
+            start_time
+            title
+            url
+            event_type
+            event_id
+            status
+            approval_status
         }
     }
 `;
@@ -41,6 +34,14 @@ export const EDIT_CALENDER_EVENT= gql`
 export const DELETE_CALENDER_EVENT = gql`
     mutation DeleteCalenderEvent ($id: Int!) {
         delete_calender_events(where: {id: {_eq: $id}}) {
+            affected_rows
+        }
+    }
+`;
+
+export const UPDATE_APPROVAL_STATUS = gql`
+    mutation UpdateApprovalStatus ($id: Int!, $approval_status: String!) {
+        update_calender_events(where: {id: {_eq: $id}}, _set: {approval_status: $approval_status}) {
             affected_rows
         }
     }
@@ -111,6 +112,30 @@ export const GET_PROPOSAL_STATUS = gql`
             id
             onchain_proposal_id
             status
+        }
+    }
+`;
+
+export const PROPOSAL_STATUS_TRACKER_MUTATION = gql`
+    mutation createProposalTracker($deadline: String!, $network: String!, $onchain_proposal_id: Int!, $status: String!, $start_time: String!) {
+        createProposalTracker(deadline: $deadline, network: $network, onchain_proposal_id: $onchain_proposal_id, status: $status, start_time: $start_time) {
+            message
+        }
+    }
+`;
+
+export const UPDATE_PROPOSAL_TRACKER_MUTATION = gql`
+    mutation updateProposalTracker($id: Int!, $status: String!) {
+        updateProposalTracker(id: $id, status: $status) {
+            message
+        }
+    }
+`;
+
+export const EDIT_CALENDER_EVENT= gql`
+    mutation EditCalenderEvent ($id: Int!, $title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!) {
+        update_calender_events(where: {id: {_eq: $id}}, _set: {title: $title, content: $content, start_time: $start_time, end_time: $end_time, url: $url, module: $module, network: $network, approval_status: "pending"}) {
+            affected_rows
         }
     }
 `;

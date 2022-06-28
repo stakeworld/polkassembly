@@ -22,8 +22,10 @@ import ReferendumVoteInfo from './Referenda/ReferendumVoteInfo';
 import VoteReferendum from './Referenda/VoteReferendum';
 import EndorseTip from './Tips/EndorseTip';
 import TipInfo from './Tips/TipInfo';
+import EditProposalStatus from './TreasuryProposals/EditProposalStatus';
 
 interface Props {
+	canEdit?: boolean | '' | undefined
 	className?: string
 	isBounty?: boolean
 	isChildBounty?: boolean
@@ -36,9 +38,10 @@ interface Props {
 	onchainId?: string | number | null
 	onchainLink?: OnchainLinkTechCommitteeProposalFragment | OnchainLinkBountyFragment | OnchainLinkChildBountyFragment | OnchainLinkMotionFragment | OnchainLinkProposalFragment | OnchainLinkReferendumFragment | OnchainLinkTreasuryProposalFragment | OnchainLinkTipFragment
 	status?: string
+	startTime: string
 }
 
-const GovenanceSideBar = ({ className, isMotion, isProposal, isReferendum, isTipProposal, onchainId, onchainLink, status }: Props) => {
+const GovenanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferendum, isTipProposal, isTreasuryProposal, onchainId, onchainLink, startTime, status }: Props) => {
 	const [address, setAddress] = useState<string>('');
 	const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
 	const [extensionNotFound, setExtensionNotFound] = useState(false);
@@ -143,6 +146,13 @@ const GovenanceSideBar = ({ className, isMotion, isProposal, isReferendum, isTip
 								getAccounts={getAccounts}
 								onAccountChange={onAccountChange}
 								proposalId={onchainId  as number}
+							/>
+						}
+						{isTreasuryProposal &&
+							<EditProposalStatus
+								proposalId={onchainId  as number}
+								canEdit={canEdit}
+								startTime={startTime}
 							/>
 						}
 						{isReferendum &&

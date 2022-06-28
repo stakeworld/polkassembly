@@ -13042,6 +13042,7 @@ export type Bpchar_Comparison_Exp = {
 /** columns and relationships of "calender_events" */
 export type Calender_Events = {
   __typename?: 'calender_events';
+  approval_status: Scalars['String'];
   content?: Maybe<Scalars['String']>;
   end_time: Scalars['timestamptz'];
   event_id?: Maybe<Scalars['Int']>;
@@ -13053,6 +13054,7 @@ export type Calender_Events = {
   status?: Maybe<Scalars['String']>;
   title: Scalars['String'];
   url?: Maybe<Scalars['String']>;
+  user_id?: Maybe<Scalars['Int']>;
 };
 
 /** aggregated selection of "calender_events" */
@@ -13111,12 +13113,14 @@ export type Calender_Events_Avg_Fields = {
   __typename?: 'calender_events_avg_fields';
   event_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "calender_events" */
 export type Calender_Events_Avg_Order_By = {
   event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "calender_events". All fields are combined with a logical 'AND'. */
@@ -13124,6 +13128,7 @@ export type Calender_Events_Bool_Exp = {
   _and?: Maybe<Array<Maybe<Calender_Events_Bool_Exp>>>;
   _not?: Maybe<Calender_Events_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Calender_Events_Bool_Exp>>>;
+  approval_status?: Maybe<String_Comparison_Exp>;
   content?: Maybe<String_Comparison_Exp>;
   end_time?: Maybe<Timestamptz_Comparison_Exp>;
   event_id?: Maybe<Int_Comparison_Exp>;
@@ -13135,6 +13140,7 @@ export type Calender_Events_Bool_Exp = {
   status?: Maybe<String_Comparison_Exp>;
   title?: Maybe<String_Comparison_Exp>;
   url?: Maybe<String_Comparison_Exp>;
+  user_id?: Maybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "calender_events" */
@@ -13147,10 +13153,12 @@ export enum Calender_Events_Constraint {
 export type Calender_Events_Inc_Input = {
   event_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
+  user_id?: Maybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "calender_events" */
 export type Calender_Events_Insert_Input = {
+  approval_status?: Maybe<Scalars['String']>;
   content?: Maybe<Scalars['String']>;
   end_time?: Maybe<Scalars['timestamptz']>;
   event_id?: Maybe<Scalars['Int']>;
@@ -13162,11 +13170,13 @@ export type Calender_Events_Insert_Input = {
   status?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
+  user_id?: Maybe<Scalars['Int']>;
 };
 
 /** aggregate max on columns */
 export type Calender_Events_Max_Fields = {
   __typename?: 'calender_events_max_fields';
+  approval_status?: Maybe<Scalars['String']>;
   content?: Maybe<Scalars['String']>;
   end_time?: Maybe<Scalars['timestamptz']>;
   event_id?: Maybe<Scalars['Int']>;
@@ -13178,10 +13188,12 @@ export type Calender_Events_Max_Fields = {
   status?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
+  user_id?: Maybe<Scalars['Int']>;
 };
 
 /** order by max() on columns of table "calender_events" */
 export type Calender_Events_Max_Order_By = {
+  approval_status?: Maybe<Order_By>;
   content?: Maybe<Order_By>;
   end_time?: Maybe<Order_By>;
   event_id?: Maybe<Order_By>;
@@ -13193,11 +13205,13 @@ export type Calender_Events_Max_Order_By = {
   status?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
   url?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Calender_Events_Min_Fields = {
   __typename?: 'calender_events_min_fields';
+  approval_status?: Maybe<Scalars['String']>;
   content?: Maybe<Scalars['String']>;
   end_time?: Maybe<Scalars['timestamptz']>;
   event_id?: Maybe<Scalars['Int']>;
@@ -13209,10 +13223,12 @@ export type Calender_Events_Min_Fields = {
   status?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
+  user_id?: Maybe<Scalars['Int']>;
 };
 
 /** order by min() on columns of table "calender_events" */
 export type Calender_Events_Min_Order_By = {
+  approval_status?: Maybe<Order_By>;
   content?: Maybe<Order_By>;
   end_time?: Maybe<Order_By>;
   event_id?: Maybe<Order_By>;
@@ -13224,6 +13240,7 @@ export type Calender_Events_Min_Order_By = {
   status?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
   url?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** response of any mutation on the table "calender_events" */
@@ -13250,6 +13267,7 @@ export type Calender_Events_On_Conflict = {
 
 /** ordering options when selecting data from "calender_events" */
 export type Calender_Events_Order_By = {
+  approval_status?: Maybe<Order_By>;
   content?: Maybe<Order_By>;
   end_time?: Maybe<Order_By>;
   event_id?: Maybe<Order_By>;
@@ -13261,6 +13279,7 @@ export type Calender_Events_Order_By = {
   status?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
   url?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** primary key columns input for table: "calender_events" */
@@ -13270,6 +13289,8 @@ export type Calender_Events_Pk_Columns_Input = {
 
 /** select columns of table "calender_events" */
 export enum Calender_Events_Select_Column {
+  /** column name */
+  ApprovalStatus = 'approval_status',
   /** column name */
   Content = 'content',
   /** column name */
@@ -13291,11 +13312,14 @@ export enum Calender_Events_Select_Column {
   /** column name */
   Title = 'title',
   /** column name */
-  Url = 'url'
+  Url = 'url',
+  /** column name */
+  UserId = 'user_id'
 }
 
 /** input type for updating data in table "calender_events" */
 export type Calender_Events_Set_Input = {
+  approval_status?: Maybe<Scalars['String']>;
   content?: Maybe<Scalars['String']>;
   end_time?: Maybe<Scalars['timestamptz']>;
   event_id?: Maybe<Scalars['Int']>;
@@ -13307,6 +13331,7 @@ export type Calender_Events_Set_Input = {
   status?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
+  user_id?: Maybe<Scalars['Int']>;
 };
 
 /** aggregate stddev on columns */
@@ -13314,12 +13339,14 @@ export type Calender_Events_Stddev_Fields = {
   __typename?: 'calender_events_stddev_fields';
   event_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "calender_events" */
 export type Calender_Events_Stddev_Order_By = {
   event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -13327,12 +13354,14 @@ export type Calender_Events_Stddev_Pop_Fields = {
   __typename?: 'calender_events_stddev_pop_fields';
   event_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "calender_events" */
 export type Calender_Events_Stddev_Pop_Order_By = {
   event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -13340,12 +13369,14 @@ export type Calender_Events_Stddev_Samp_Fields = {
   __typename?: 'calender_events_stddev_samp_fields';
   event_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "calender_events" */
 export type Calender_Events_Stddev_Samp_Order_By = {
   event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** aggregate sum on columns */
@@ -13353,16 +13384,20 @@ export type Calender_Events_Sum_Fields = {
   __typename?: 'calender_events_sum_fields';
   event_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
+  user_id?: Maybe<Scalars['Int']>;
 };
 
 /** order by sum() on columns of table "calender_events" */
 export type Calender_Events_Sum_Order_By = {
   event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** update columns of table "calender_events" */
 export enum Calender_Events_Update_Column {
+  /** column name */
+  ApprovalStatus = 'approval_status',
   /** column name */
   Content = 'content',
   /** column name */
@@ -13384,7 +13419,9 @@ export enum Calender_Events_Update_Column {
   /** column name */
   Title = 'title',
   /** column name */
-  Url = 'url'
+  Url = 'url',
+  /** column name */
+  UserId = 'user_id'
 }
 
 /** aggregate var_pop on columns */
@@ -13392,12 +13429,14 @@ export type Calender_Events_Var_Pop_Fields = {
   __typename?: 'calender_events_var_pop_fields';
   event_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "calender_events" */
 export type Calender_Events_Var_Pop_Order_By = {
   event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
@@ -13405,12 +13444,14 @@ export type Calender_Events_Var_Samp_Fields = {
   __typename?: 'calender_events_var_samp_fields';
   event_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "calender_events" */
 export type Calender_Events_Var_Samp_Order_By = {
   event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** aggregate variance on columns */
@@ -13418,12 +13459,14 @@ export type Calender_Events_Variance_Fields = {
   __typename?: 'calender_events_variance_fields';
   event_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "calender_events" */
 export type Calender_Events_Variance_Order_By = {
   event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** columns and relationships of "comment_reactions" */
@@ -25482,6 +25525,7 @@ export type Get_Refresh_TokenQuery = (
 
 export type GetCalenderEventsQueryVariables = Exact<{
   network: Scalars['String'];
+  approval_status: Scalars['String'];
 }>;
 
 
@@ -25489,27 +25533,7 @@ export type GetCalenderEventsQuery = (
   { __typename?: 'query_root' }
   & { calender_events: Array<(
     { __typename?: 'calender_events' }
-    & Pick<Calender_Events, 'content' | 'end_time' | 'id' | 'module' | 'network' | 'start_time' | 'title' | 'url' | 'event_type' | 'event_id' | 'status'>
-  )> }
-);
-
-export type EditCalenderEventMutationVariables = Exact<{
-  id: Scalars['Int'];
-  title: Scalars['String'];
-  start_time: Scalars['timestamptz'];
-  content?: Maybe<Scalars['String']>;
-  end_time: Scalars['timestamptz'];
-  url?: Maybe<Scalars['String']>;
-  module?: Maybe<Scalars['String']>;
-  network: Scalars['String'];
-}>;
-
-
-export type EditCalenderEventMutation = (
-  { __typename?: 'mutation_root' }
-  & { update_calender_events?: Maybe<(
-    { __typename?: 'calender_events_mutation_response' }
-    & Pick<Calender_Events_Mutation_Response, 'affected_rows'>
+    & Pick<Calender_Events, 'content' | 'end_time' | 'id' | 'module' | 'network' | 'start_time' | 'title' | 'url' | 'event_type' | 'event_id' | 'status' | 'approval_status'>
   )> }
 );
 
@@ -25521,6 +25545,20 @@ export type DeleteCalenderEventMutationVariables = Exact<{
 export type DeleteCalenderEventMutation = (
   { __typename?: 'mutation_root' }
   & { delete_calender_events?: Maybe<(
+    { __typename?: 'calender_events_mutation_response' }
+    & Pick<Calender_Events_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
+export type UpdateApprovalStatusMutationVariables = Exact<{
+  id: Scalars['Int'];
+  approval_status: Scalars['String'];
+}>;
+
+
+export type UpdateApprovalStatusMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_calender_events?: Maybe<(
     { __typename?: 'calender_events_mutation_response' }
     & Pick<Calender_Events_Mutation_Response, 'affected_rows'>
   )> }
@@ -25626,6 +25664,57 @@ export type GetProposalStatusQuery = (
   & { proposal_tracker: Array<(
     { __typename?: 'proposal_tracker' }
     & Pick<Proposal_Tracker, 'deadline' | 'id' | 'onchain_proposal_id' | 'status'>
+  )> }
+);
+
+export type CreateProposalTrackerMutationVariables = Exact<{
+  deadline: Scalars['String'];
+  network: Scalars['String'];
+  onchain_proposal_id: Scalars['Int'];
+  status: Scalars['String'];
+  start_time: Scalars['String'];
+}>;
+
+
+export type CreateProposalTrackerMutation = (
+  { __typename?: 'mutation_root' }
+  & { createProposalTracker?: Maybe<(
+    { __typename?: 'Message' }
+    & Pick<Message, 'message'>
+  )> }
+);
+
+export type UpdateProposalTrackerMutationVariables = Exact<{
+  id: Scalars['Int'];
+  status: Scalars['String'];
+}>;
+
+
+export type UpdateProposalTrackerMutation = (
+  { __typename?: 'mutation_root' }
+  & { updateProposalTracker?: Maybe<(
+    { __typename?: 'Message' }
+    & Pick<Message, 'message'>
+  )> }
+);
+
+export type EditCalenderEventMutationVariables = Exact<{
+  id: Scalars['Int'];
+  title: Scalars['String'];
+  start_time: Scalars['timestamptz'];
+  content?: Maybe<Scalars['String']>;
+  end_time: Scalars['timestamptz'];
+  url?: Maybe<Scalars['String']>;
+  module?: Maybe<Scalars['String']>;
+  network: Scalars['String'];
+}>;
+
+
+export type EditCalenderEventMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_calender_events?: Maybe<(
+    { __typename?: 'calender_events_mutation_response' }
+    & Pick<Calender_Events_Mutation_Response, 'affected_rows'>
   )> }
 );
 
@@ -29866,8 +29955,10 @@ export type Get_Refresh_TokenQueryHookResult = ReturnType<typeof useGet_Refresh_
 export type Get_Refresh_TokenLazyQueryHookResult = ReturnType<typeof useGet_Refresh_TokenLazyQuery>;
 export type Get_Refresh_TokenQueryResult = ApolloReactCommon.QueryResult<Get_Refresh_TokenQuery, Get_Refresh_TokenQueryVariables>;
 export const GetCalenderEventsDocument = gql`
-    query GetCalenderEvents($network: String!) {
-  calender_events(where: {network: {_ilike: $network}}) {
+    query GetCalenderEvents($network: String!, $approval_status: String!) {
+  calender_events(
+    where: {network: {_ilike: $network}, approval_status: {_eq: $approval_status}}
+  ) {
     content
     end_time
     id
@@ -29879,6 +29970,7 @@ export const GetCalenderEventsDocument = gql`
     event_type
     event_id
     status
+    approval_status
   }
 }
     `;
@@ -29896,6 +29988,7 @@ export const GetCalenderEventsDocument = gql`
  * const { data, loading, error } = useGetCalenderEventsQuery({
  *   variables: {
  *      network: // value for 'network'
+ *      approval_status: // value for 'approval_status'
  *   },
  * });
  */
@@ -29908,48 +30001,6 @@ export function useGetCalenderEventsLazyQuery(baseOptions?: ApolloReactHooks.Laz
 export type GetCalenderEventsQueryHookResult = ReturnType<typeof useGetCalenderEventsQuery>;
 export type GetCalenderEventsLazyQueryHookResult = ReturnType<typeof useGetCalenderEventsLazyQuery>;
 export type GetCalenderEventsQueryResult = ApolloReactCommon.QueryResult<GetCalenderEventsQuery, GetCalenderEventsQueryVariables>;
-export const EditCalenderEventDocument = gql`
-    mutation EditCalenderEvent($id: Int!, $title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!) {
-  update_calender_events(
-    where: {id: {_eq: $id}}
-    _set: {title: $title, content: $content, start_time: $start_time, end_time: $end_time, url: $url, module: $module, network: $network}
-  ) {
-    affected_rows
-  }
-}
-    `;
-export type EditCalenderEventMutationFn = ApolloReactCommon.MutationFunction<EditCalenderEventMutation, EditCalenderEventMutationVariables>;
-
-/**
- * __useEditCalenderEventMutation__
- *
- * To run a mutation, you first call `useEditCalenderEventMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useEditCalenderEventMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [editCalenderEventMutation, { data, loading, error }] = useEditCalenderEventMutation({
- *   variables: {
- *      id: // value for 'id'
- *      title: // value for 'title'
- *      start_time: // value for 'start_time'
- *      content: // value for 'content'
- *      end_time: // value for 'end_time'
- *      url: // value for 'url'
- *      module: // value for 'module'
- *      network: // value for 'network'
- *   },
- * });
- */
-export function useEditCalenderEventMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EditCalenderEventMutation, EditCalenderEventMutationVariables>) {
-        return ApolloReactHooks.useMutation<EditCalenderEventMutation, EditCalenderEventMutationVariables>(EditCalenderEventDocument, baseOptions);
-      }
-export type EditCalenderEventMutationHookResult = ReturnType<typeof useEditCalenderEventMutation>;
-export type EditCalenderEventMutationResult = ApolloReactCommon.MutationResult<EditCalenderEventMutation>;
-export type EditCalenderEventMutationOptions = ApolloReactCommon.BaseMutationOptions<EditCalenderEventMutation, EditCalenderEventMutationVariables>;
 export const DeleteCalenderEventDocument = gql`
     mutation DeleteCalenderEvent($id: Int!) {
   delete_calender_events(where: {id: {_eq: $id}}) {
@@ -29982,6 +30033,42 @@ export function useDeleteCalenderEventMutation(baseOptions?: ApolloReactHooks.Mu
 export type DeleteCalenderEventMutationHookResult = ReturnType<typeof useDeleteCalenderEventMutation>;
 export type DeleteCalenderEventMutationResult = ApolloReactCommon.MutationResult<DeleteCalenderEventMutation>;
 export type DeleteCalenderEventMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteCalenderEventMutation, DeleteCalenderEventMutationVariables>;
+export const UpdateApprovalStatusDocument = gql`
+    mutation UpdateApprovalStatus($id: Int!, $approval_status: String!) {
+  update_calender_events(
+    where: {id: {_eq: $id}}
+    _set: {approval_status: $approval_status}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export type UpdateApprovalStatusMutationFn = ApolloReactCommon.MutationFunction<UpdateApprovalStatusMutation, UpdateApprovalStatusMutationVariables>;
+
+/**
+ * __useUpdateApprovalStatusMutation__
+ *
+ * To run a mutation, you first call `useUpdateApprovalStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateApprovalStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateApprovalStatusMutation, { data, loading, error }] = useUpdateApprovalStatusMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      approval_status: // value for 'approval_status'
+ *   },
+ * });
+ */
+export function useUpdateApprovalStatusMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateApprovalStatusMutation, UpdateApprovalStatusMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateApprovalStatusMutation, UpdateApprovalStatusMutationVariables>(UpdateApprovalStatusDocument, baseOptions);
+      }
+export type UpdateApprovalStatusMutationHookResult = ReturnType<typeof useUpdateApprovalStatusMutation>;
+export type UpdateApprovalStatusMutationResult = ApolloReactCommon.MutationResult<UpdateApprovalStatusMutation>;
+export type UpdateApprovalStatusMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateApprovalStatusMutation, UpdateApprovalStatusMutationVariables>;
 export const AddCalenderEventDocument = gql`
     mutation AddCalenderEvent($title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!) {
   insert_calender_events(
@@ -30251,6 +30338,123 @@ export function useGetProposalStatusLazyQuery(baseOptions?: ApolloReactHooks.Laz
 export type GetProposalStatusQueryHookResult = ReturnType<typeof useGetProposalStatusQuery>;
 export type GetProposalStatusLazyQueryHookResult = ReturnType<typeof useGetProposalStatusLazyQuery>;
 export type GetProposalStatusQueryResult = ApolloReactCommon.QueryResult<GetProposalStatusQuery, GetProposalStatusQueryVariables>;
+export const CreateProposalTrackerDocument = gql`
+    mutation createProposalTracker($deadline: String!, $network: String!, $onchain_proposal_id: Int!, $status: String!, $start_time: String!) {
+  createProposalTracker(
+    deadline: $deadline
+    network: $network
+    onchain_proposal_id: $onchain_proposal_id
+    status: $status
+    start_time: $start_time
+  ) {
+    message
+  }
+}
+    `;
+export type CreateProposalTrackerMutationFn = ApolloReactCommon.MutationFunction<CreateProposalTrackerMutation, CreateProposalTrackerMutationVariables>;
+
+/**
+ * __useCreateProposalTrackerMutation__
+ *
+ * To run a mutation, you first call `useCreateProposalTrackerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateProposalTrackerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createProposalTrackerMutation, { data, loading, error }] = useCreateProposalTrackerMutation({
+ *   variables: {
+ *      deadline: // value for 'deadline'
+ *      network: // value for 'network'
+ *      onchain_proposal_id: // value for 'onchain_proposal_id'
+ *      status: // value for 'status'
+ *      start_time: // value for 'start_time'
+ *   },
+ * });
+ */
+export function useCreateProposalTrackerMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateProposalTrackerMutation, CreateProposalTrackerMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateProposalTrackerMutation, CreateProposalTrackerMutationVariables>(CreateProposalTrackerDocument, baseOptions);
+      }
+export type CreateProposalTrackerMutationHookResult = ReturnType<typeof useCreateProposalTrackerMutation>;
+export type CreateProposalTrackerMutationResult = ApolloReactCommon.MutationResult<CreateProposalTrackerMutation>;
+export type CreateProposalTrackerMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateProposalTrackerMutation, CreateProposalTrackerMutationVariables>;
+export const UpdateProposalTrackerDocument = gql`
+    mutation updateProposalTracker($id: Int!, $status: String!) {
+  updateProposalTracker(id: $id, status: $status) {
+    message
+  }
+}
+    `;
+export type UpdateProposalTrackerMutationFn = ApolloReactCommon.MutationFunction<UpdateProposalTrackerMutation, UpdateProposalTrackerMutationVariables>;
+
+/**
+ * __useUpdateProposalTrackerMutation__
+ *
+ * To run a mutation, you first call `useUpdateProposalTrackerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProposalTrackerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateProposalTrackerMutation, { data, loading, error }] = useUpdateProposalTrackerMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      status: // value for 'status'
+ *   },
+ * });
+ */
+export function useUpdateProposalTrackerMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateProposalTrackerMutation, UpdateProposalTrackerMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateProposalTrackerMutation, UpdateProposalTrackerMutationVariables>(UpdateProposalTrackerDocument, baseOptions);
+      }
+export type UpdateProposalTrackerMutationHookResult = ReturnType<typeof useUpdateProposalTrackerMutation>;
+export type UpdateProposalTrackerMutationResult = ApolloReactCommon.MutationResult<UpdateProposalTrackerMutation>;
+export type UpdateProposalTrackerMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateProposalTrackerMutation, UpdateProposalTrackerMutationVariables>;
+export const EditCalenderEventDocument = gql`
+    mutation EditCalenderEvent($id: Int!, $title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!) {
+  update_calender_events(
+    where: {id: {_eq: $id}}
+    _set: {title: $title, content: $content, start_time: $start_time, end_time: $end_time, url: $url, module: $module, network: $network, approval_status: "pending"}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export type EditCalenderEventMutationFn = ApolloReactCommon.MutationFunction<EditCalenderEventMutation, EditCalenderEventMutationVariables>;
+
+/**
+ * __useEditCalenderEventMutation__
+ *
+ * To run a mutation, you first call `useEditCalenderEventMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditCalenderEventMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editCalenderEventMutation, { data, loading, error }] = useEditCalenderEventMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      title: // value for 'title'
+ *      start_time: // value for 'start_time'
+ *      content: // value for 'content'
+ *      end_time: // value for 'end_time'
+ *      url: // value for 'url'
+ *      module: // value for 'module'
+ *      network: // value for 'network'
+ *   },
+ * });
+ */
+export function useEditCalenderEventMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EditCalenderEventMutation, EditCalenderEventMutationVariables>) {
+        return ApolloReactHooks.useMutation<EditCalenderEventMutation, EditCalenderEventMutationVariables>(EditCalenderEventDocument, baseOptions);
+      }
+export type EditCalenderEventMutationHookResult = ReturnType<typeof useEditCalenderEventMutation>;
+export type EditCalenderEventMutationResult = ApolloReactCommon.MutationResult<EditCalenderEventMutation>;
+export type EditCalenderEventMutationOptions = ApolloReactCommon.BaseMutationOptions<EditCalenderEventMutation, EditCalenderEventMutationVariables>;
 export const AllBountyPostsDocument = gql`
     query AllBountyPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
   posts(

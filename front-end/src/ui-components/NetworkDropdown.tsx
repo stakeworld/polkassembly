@@ -5,6 +5,8 @@
 import styled from '@xstyled/styled-components';
 import React from 'react';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
+import automataLogo from 'src/assets/automata-logo.jpg';
+import basiliskLogo from 'src/assets/basilisk-logo.jpg';
 import bifrostLogo from 'src/assets/bifrost-logo.png';
 import kiltLogo from 'src/assets/kilt-logo.png';
 import kusamaLogo from 'src/assets/kusama-logo.gif';
@@ -42,6 +44,10 @@ const getNetworkImage = (showNetwork: string) => {
 		return kiltLogo;
 	case network.BIFROST:
 		return bifrostLogo;
+	case network.BASILISK:
+		return basiliskLogo;
+	case network.AUTOMATA:
+		return automataLogo;
 	default:
 		return polkadotLogo;
 	}
@@ -80,6 +86,14 @@ const NetworkOptions: DropdownItemProps[] = [
 	{
 		children: <StyledNetworkItem showNetwork={network.BIFROST}/>,
 		value: network.BIFROST
+	},
+	{
+		children: <StyledNetworkItem showNetwork={network.AUTOMATA}/>,
+		value: network.AUTOMATA
+	},
+	{
+		children: <StyledNetworkItem showNetwork={network.BASILISK}/>,
+		value: network.BASILISK
 	}
 ];
 
@@ -125,5 +139,9 @@ export default styled(NetworkDropdown)`
 
 		i.icon {
 			color: #fff !important;
+		}
+
+		.menu {
+			z-index: 201 !important;
 		}
 `;
