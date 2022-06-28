@@ -676,7 +676,7 @@ export const addDiscussionPostAndChildBounty = async ({
 		const addedId = data?.insert_onchain_links?.returning[0]?.id;
 
 		if (addedId || addedId === 0) {
-			console.log(`${chalk.green('✔︎')} Bounty ${onchainChildBountyId} added to the database.`);
+			console.log(`${chalk.green('✔︎')} Child Bounty ${onchainChildBountyId} added to the database.`);
 		}
 	} catch (err) {
 		console.error(chalk.red(`addPostAndBounty execution error, Bounty id ${onchainChildBountyId}\n`), err);
