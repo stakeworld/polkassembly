@@ -55,6 +55,19 @@ export const getDiscussionTreasuryProposals = gql`
     }
 `;
 
+export const getDiscussionBounties = gql`
+    query getDiscussionBounties {
+        onchain_links(where: {onchain_bounty_id: {_is_null: false}}){
+            ...discussionBounty
+        }
+    }
+    fragment discussionBounty on onchain_links {
+        id
+        onchain_bounty_id
+        proposer_address
+    }
+`;
+
 export const getDiscussionChildBounties = gql`
     query getDiscussionChildBounties {
         onchain_links(where: {onchain_child_bounty_id: {_is_null: false}}){

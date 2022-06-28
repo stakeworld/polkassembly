@@ -25318,6 +25318,22 @@ export type DiscussionTreasuryProposalFragment = (
   & Pick<Onchain_Links, 'id' | 'onchain_treasury_proposal_id' | 'proposer_address'>
 );
 
+export type GetDiscussionBountiesQueryVariables = {};
+
+
+export type GetDiscussionBountiesQuery = (
+  { __typename?: 'query_root' }
+  & { onchain_links: Array<(
+    { __typename?: 'onchain_links' }
+    & DiscussionBountyFragment
+  )> }
+);
+
+export type DiscussionBountyFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'onchain_bounty_id' | 'proposer_address'>
+);
+
 export type GetDiscussionChildBountiesQueryVariables = {};
 
 
@@ -25416,6 +25432,13 @@ export const DiscussionTreasuryProposalFragmentDoc = gql`
     fragment discussionTreasuryProposal on onchain_links {
   id
   onchain_treasury_proposal_id
+  proposer_address
+}
+    `;
+export const DiscussionBountyFragmentDoc = gql`
+    fragment discussionBounty on onchain_links {
+  id
+  onchain_bounty_id
   proposer_address
 }
     `;
@@ -25649,6 +25672,13 @@ export const GetDiscussionTreasuryProposalsDocument = gql`
   }
 }
     ${DiscussionTreasuryProposalFragmentDoc}`;
+export const GetDiscussionBountiesDocument = gql`
+    query getDiscussionBounties {
+  onchain_links(where: {onchain_bounty_id: {_is_null: false}}) {
+    ...discussionBounty
+  }
+}
+    ${DiscussionBountyFragmentDoc}`;
 export const GetDiscussionChildBountiesDocument = gql`
     query getDiscussionChildBounties {
   onchain_links(where: {onchain_child_bounty_id: {_is_null: false}}) {
@@ -25778,6 +25808,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getDiscussionTreasuryProposals(variables?: GetDiscussionTreasuryProposalsQueryVariables): Promise<GetDiscussionTreasuryProposalsQuery> {
       return withWrapper(() => client.request<GetDiscussionTreasuryProposalsQuery>(print(GetDiscussionTreasuryProposalsDocument), variables));
+    },
+    getDiscussionBounties(variables?: GetDiscussionBountiesQueryVariables): Promise<GetDiscussionBountiesQuery> {
+      return withWrapper(() => client.request<GetDiscussionBountiesQuery>(print(GetDiscussionBountiesDocument), variables));
     },
     getDiscussionChildBounties(variables?: GetDiscussionChildBountiesQueryVariables): Promise<GetDiscussionChildBountiesQuery> {
       return withWrapper(() => client.request<GetDiscussionChildBountiesQuery>(print(GetDiscussionChildBountiesDocument), variables));
