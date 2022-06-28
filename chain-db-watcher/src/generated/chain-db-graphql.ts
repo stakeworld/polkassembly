@@ -13526,6 +13526,24 @@ export type OnchainBountyFragment = (
   & Pick<Bounty, 'proposer' | 'id' | 'bountyId'>
 );
 
+export type GetOnchainChildBountiesQueryVariables = {
+  startBlock: Scalars['Int'];
+};
+
+
+export type GetOnchainChildBountiesQuery = (
+  { __typename?: 'Query' }
+  & { childBounties: Array<Maybe<(
+    { __typename?: 'ChildBounty' }
+    & OnchainChildBountyFragment
+  )>> }
+);
+
+export type OnchainChildBountyFragment = (
+  { __typename?: 'ChildBounty' }
+  & Pick<ChildBounty, 'proposer' | 'id' | 'childBountyId'>
+);
+
 export type GetOnchainTechCommitteeProposalsQueryVariables = {
   startBlock: Scalars['Int'];
 };
@@ -13610,6 +13628,13 @@ export const OnchainBountyFragmentDoc = gql`
   bountyId
 }
     `;
+export const OnchainChildBountyFragmentDoc = gql`
+    fragment onchainChildBounty on ChildBounty {
+  proposer
+  id
+  childBountyId
+}
+    `;
 export const OnchainTechCommitteeProposalFragmentDoc = gql`
     fragment onchainTechCommitteeProposal on TechCommitteeProposal {
   author
@@ -13676,6 +13701,13 @@ export const GetOnchainBountiesDocument = gql`
   }
 }
     ${OnchainBountyFragmentDoc}`;
+export const GetOnchainChildBountiesDocument = gql`
+    query getOnchainChildBounties($startBlock: Int!) {
+  childBounties(where: {childBountyStatus_some: {AND: [{status: "Added"}, {blockNumber: {number_gte: $startBlock}}]}}) {
+    ...onchainChildBounty
+  }
+}
+    ${OnchainChildBountyFragmentDoc}`;
 export const GetOnchainTechCommitteeProposalsDocument = gql`
     query getOnchainTechCommitteeProposals($startBlock: Int!) {
   techCommitteeProposals(where: {status_some: {AND: [{status: "Proposed"}, {blockNumber: {number_gte: $startBlock}}]}}) {
@@ -13717,6 +13749,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getOnchainBounties(variables: GetOnchainBountiesQueryVariables): Promise<GetOnchainBountiesQuery> {
       return withWrapper(() => client.request<GetOnchainBountiesQuery>(print(GetOnchainBountiesDocument), variables));
+    },
+    getOnchainChildBounties(variables: GetOnchainChildBountiesQueryVariables): Promise<GetOnchainChildBountiesQuery> {
+      return withWrapper(() => client.request<GetOnchainChildBountiesQuery>(print(GetOnchainChildBountiesDocument), variables));
     },
     getOnchainTechCommitteeProposals(variables: GetOnchainTechCommitteeProposalsQueryVariables): Promise<GetOnchainTechCommitteeProposalsQuery> {
       return withWrapper(() => client.request<GetOnchainTechCommitteeProposalsQuery>(print(GetOnchainTechCommitteeProposalsDocument), variables));
