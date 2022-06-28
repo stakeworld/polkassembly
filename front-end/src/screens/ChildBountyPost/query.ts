@@ -18,11 +18,11 @@ const onchainLinkChildBounty = gql`
             value
             fee
             curatorDeposit
-            bond
-            bountyId
+            parentBountyId
+            childBountyId
             curator
             beneficiary
-            bountyStatus(orderBy: id_DESC) {
+            childBountyStatus(orderBy: id_DESC) {
                 id
                 status
                 blockNumber {
