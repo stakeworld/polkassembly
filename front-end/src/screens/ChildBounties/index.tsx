@@ -13,7 +13,7 @@ const OnchainChildBountyContainer = ({ className } : {className?: string}) => {
 
 	return (
 		<div className={className}>
-			<h1>On-chain bounty</h1>
+			<h1>On-chain child bounty</h1>
 			<Grid stackable reversed='mobile tablet'>
 				<Grid.Column mobile={16} tablet={16} computer={10}>
 					<ChildBountyContainer limit={25} />
@@ -21,11 +21,11 @@ const OnchainChildBountyContainer = ({ className } : {className?: string}) => {
 				<Grid.Column mobile={16} tablet={16} computer={6}>
 					<InfoBox
 						dismissable={true}
-						content='This is the place to discuss on-chain bounties.
-						Bounty posts are automatically generated as soon as they are created on-chain.
+						content='This is the place to discuss on-chain child bounties.
+						Child Bounty posts are automatically generated as soon as they are created on-chain.
 						Only the proposer is able to edit them.'
 						name='onchainInfo'
-						title='About On-chain bounties'
+						title='About On-chain child bounties'
 					/>
 				</Grid.Column>
 			</Grid>
