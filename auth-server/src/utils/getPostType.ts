@@ -16,7 +16,7 @@ export default (onchainLink: OnchainLinkType): PostType => {
 		onchain_bounty_id,
 		onchain_treasury_proposal_id,
 		onchain_tech_committee_proposal_id,
-		onchain_child_bounty_id,
+		onchain_child_bounty_id
 	} = onchainLink;
 
 	let type = PostTypeEnum.POST;
