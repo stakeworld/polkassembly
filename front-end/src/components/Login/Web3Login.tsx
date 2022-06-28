@@ -27,9 +27,10 @@ interface Props {
 	className?: string
 	chosenWallet: Wallet
 	setDisplayWeb2: () => void
+	setWalletError: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
-const LoginForm = ({ className, setDisplayWeb2, chosenWallet }:Props): JSX.Element => {
+const LoginForm = ({ className, setDisplayWeb2, setWalletError, chosenWallet }:Props): JSX.Element => {
 	const [error, setErr] = useState<Error | null>(null);
 	const [address, setAddress] = useState<string>('');
 	const [accounts, setAccounts] = useState<InjectedAccount[]>([]);
@@ -45,6 +46,7 @@ const LoginForm = ({ className, setDisplayWeb2, chosenWallet }:Props): JSX.Eleme
 		if (!accounts.length) {
 			getAccounts(chosenWallet);
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [accounts.length, chosenWallet]);
 
 	const getAccounts = async (chosenWallet: Wallet): Promise<undefined> => {
@@ -66,30 +68,34 @@ const LoginForm = ({ className, setDisplayWeb2, chosenWallet }:Props): JSX.Eleme
 			setExtensionNotFound(false);
 		}
 
-		console.log('gets here');
-
 		let injected: Injected | undefined;
 
 		try {
-			console.log('gets here 2');
 			injected = await new Promise((resolve, reject) => {
 				const timeoutId = setTimeout(() => {
 					reject(new Error('Wallet Timeout'));
-				}, 30000); // wait 30 sec
+				}, 60000); // wait 60 sec
 
 				wallet!.enable(APPNAME).then(value => {
-					console.log('injected value : ', value);
 					clearTimeout(timeoutId);
 					resolve(value);
 				}).catch(error => {
 					reject(error);
 				});
 			});
-
-			console.log('gets here 3');
-		} catch (e) {
+		} catch (err) {
 			setIsAccountLoading(false);
-			console.log('ERRORRRRRR : ', e);
+
+			if(err?.message == 'Rejected') {
+				setWalletError('');
+				handleToggle();
+			} else if(err?.message == 'Pending authorisation request already exists for this site. Please accept or reject the request.') {
+				setWalletError('Pending authorisation request already exists. Please accept or reject the request on the wallet extension and try again.');
+				handleToggle();
+			} else if(err?.message == 'Wallet Timeout'){
+				setWalletError('Wallet authorisation timed out. Please accept or reject the request on the wallet extension and try again.');
+				handleToggle();
+			}
 		}
 
 		if(!injected) {

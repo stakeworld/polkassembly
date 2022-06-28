@@ -6,7 +6,7 @@ import styled from '@xstyled/styled-components';
 import React, { useContext } from 'react';
 import { FieldError,useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { Divider } from 'semantic-ui-react';
+import { Divider, Message } from 'semantic-ui-react';
 import { Wallet } from 'src/types';
 
 import { UserDetailsContext } from '../../context/UserDetailsContext';
@@ -23,9 +23,10 @@ import WalletButtons from './WalletButtons';
 interface Props {
 	className?: string
 	onWalletSelect: (wallet: Wallet) => void
+	walletError: string | undefined
 }
 
-const LoginForm = ({ className, onWalletSelect }:Props): JSX.Element => {
+const LoginForm = ({ className, onWalletSelect, walletError }:Props): JSX.Element => {
 	const currentUser = useContext(UserDetailsContext);
 	const { history } = useRouter();
 	const [loginMutation, { loading, error }] = useLoginMutation();
@@ -56,6 +57,11 @@ const LoginForm = ({ className, onWalletSelect }:Props): JSX.Element => {
 			<h3>
 				Login
 			</h3>
+
+			{walletError && <Message negative>
+				<Message.Header>{walletError}</Message.Header>
+			</Message>}
+
 			<Form.Group>
 				<Form.Field width={16}>
 					<label>Username</label>

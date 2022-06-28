@@ -16,6 +16,7 @@ interface Props {
 const Signup = ({ className }: Props) => {
 	const [displayWeb, setDisplayWeb] = useState(2);
 	const [chosenWallet, setChosenWallet] = useState<Wallet>();
+	const [walletError, setWalletError] =  useState<string | undefined>();
 
 	const setDisplayWeb2 = () => setDisplayWeb(2);
 
@@ -29,9 +30,9 @@ const Signup = ({ className }: Props) => {
 			<Grid centered className={className}>
 				<Grid.Column mobile={16} tablet={14} computer={8} style={ { minWidth: 'min-content' } }>
 					{ displayWeb === 2
-						? <Web2Signup onWalletSelect={onWalletSelect} /> : null}
+						? <Web2Signup onWalletSelect={onWalletSelect} walletError={walletError} /> : null}
 
-					{displayWeb === 3 && chosenWallet ? <Web3Signup chosenWallet={chosenWallet} setDisplayWeb2={setDisplayWeb2}/> : null}
+					{displayWeb === 3 && chosenWallet ? <Web3Signup chosenWallet={chosenWallet} setDisplayWeb2={setDisplayWeb2} setWalletError={setWalletError} /> : null}
 				</Grid.Column>
 			</Grid>
 		</>

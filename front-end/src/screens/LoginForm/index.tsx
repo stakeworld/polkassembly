@@ -20,6 +20,7 @@ const Login = ({ className }: Props) => {
 	const { history } = useRouter();
 	const [displayWeb, setDisplayWeb] = useState(2);
 	const [chosenWallet, setChosenWallet] = useState<Wallet>();
+	const [walletError, setWalletError] =  useState<string | undefined>();
 
 	const setDisplayWeb2 = () => setDisplayWeb(2);
 
@@ -38,10 +39,9 @@ const Login = ({ className }: Props) => {
 		<>
 			<Grid centered className={className}>
 				<Grid.Column mobile={16} tablet={14} computer={8} style={ { minWidth: 'min-content' } }>
-					{ displayWeb === 2
-						? <Web2Login onWalletSelect={onWalletSelect} /> : null}
+					{ displayWeb === 2 ? <Web2Login onWalletSelect={onWalletSelect} walletError={walletError} /> : null}
 
-					{displayWeb === 3 && chosenWallet ? <Web3Login chosenWallet={chosenWallet} setDisplayWeb2={setDisplayWeb2}/> : null}
+					{displayWeb === 3 && chosenWallet ? <Web3Login chosenWallet={chosenWallet} setDisplayWeb2={setDisplayWeb2} setWalletError={setWalletError} /> : null}
 				</Grid.Column>
 			</Grid>
 		</>
