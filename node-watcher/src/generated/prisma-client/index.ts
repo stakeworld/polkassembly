@@ -2233,6 +2233,7 @@ export type BountyStatusWhereUniqueInput = AtLeastOne<{
 
 export type ChildBountyWhereUniqueInput = AtLeastOne<{
   id: Maybe<Int>;
+  childBountyId?: Maybe<Int>;
 }>;
 
 export interface ChildBountyStatusWhereInput {

@@ -41,7 +41,7 @@ const createChildBounty: Task<NomidotChildBounty[]> = {
     const childBountyEvents = filterEvents(
       events,
       'childBounties',
-      'Added'
+      childBountyStatus.ADDED
     );
 
     const results: NomidotChildBounty[] = [];
@@ -58,6 +58,13 @@ const createChildBounty: Task<NomidotChildBounty[]> = {
         
         const parentBountyId = Number(data[0]);
         const childBountyId = Number(data[1]);
+
+        if (!childBountyId && childBountyId !== 0) {
+          l.error(
+            `Expected Bounty index missing in the event: ${childBountyEvents.toString()}`
+          );
+          return;
+        }
 
         const apiAt = await api.at(blockHash);
 
@@ -103,7 +110,7 @@ const createChildBounty: Task<NomidotChildBounty[]> = {
           curatorDeposit: childBounty.curatorDeposit,
           description: description,
           parentBountyId,
-          childBountyStatus: childBountyStatus.PROPOSED,
+          childBountyStatus: childBountyStatus.ADDED,
           curator: curator,
           beneficiary: curator
         };

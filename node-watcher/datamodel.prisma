@@ -292,7 +292,7 @@ type ChildBounty {
   value: String!
   description: String
   fee: String
-  childBountyId: Int!
+  childBountyId: Int! @unique
   parentBountyId: Int!
   curatorDeposit: String
   childBountyStatus: [ChildBountyStatus]! @relation(name: "ChildBountyStatusFromChildBounty")

@@ -66,12 +66,8 @@ export const techCommitteeStatus = {
 }
 
 export const childBountyStatus = {
-  PROPOSED: 'ChildBountyProposed',
-  BECAME_ACTIVE: 'ChildBountyBecameActive',
-  AWARDED: 'ChildBountyAwarded',
-  CLAIMED: 'ChildBountyClaimed',
-  CANCELED: 'ChildBountyCanceled',
-  REJECTED: 'ChildBountyRejected',
-  EXTENDED: 'ChildBountyExtended',
-  ADDED: 'ChildBountyAdded'
+  ADDED: 'Added',
+  AWARDED: 'Awarded',
+  CANCELED: 'Canceled',
+  CLAIMED: 'Claimed',
 };

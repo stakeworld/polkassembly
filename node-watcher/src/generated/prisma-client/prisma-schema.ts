@@ -1468,6 +1468,7 @@ input ChildBountyWhereInput {
 
 input ChildBountyWhereUniqueInput {
   id: Int
+  childBountyId: Int
 }
 
 type Council {

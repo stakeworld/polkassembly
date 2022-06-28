@@ -17,10 +17,6 @@ import {
 
 const l = logger('Task: Bounty Status Update');
 
-const eventField = [
-  'ChildBountyIndex'
-];
-
 /*
  *  ======= Table (Bounty Status Update) ======
  */
@@ -35,14 +31,10 @@ const createBountyStatus: Task<NomidotChildBountyStatusUpdate[]> = {
 
     const filteredEvents = events.filter(
     ({ event: { method, section } }) =>
-      section === 'bounties' &&	[
-        childBountyStatus.BECAME_ACTIVE,
+      section === 'childBounties' &&	[
         childBountyStatus.AWARDED,
-        childBountyStatus.CLAIMED,
         childBountyStatus.CANCELED,
-        childBountyStatus.REJECTED,
-        childBountyStatus.EXTENDED,
-        childBountyStatus.ADDED
+        childBountyStatus.CLAIMED,
 		].includes(method));
 
     const results: NomidotChildBountyStatusUpdate[] = [];
@@ -52,39 +44,39 @@ const createBountyStatus: Task<NomidotChildBountyStatusUpdate[]> = {
     }
 
     await Promise.all(
-      filteredEvents.map(async ({ event: { data, typeDef, method } }) => {
-        const childBountyRawEvent: NomidotChildBountyRawEvent = data.reduce(
-          (result, curr, index) => {
-            const type = eventField[index];
+      filteredEvents.map(async ({ event: { data, method } }) => {
 
-            return {
-              ...result,
-              [type]: curr.toJSON(),
-            };
-          },
-          {}
-        );
-
-        if (!childBountyRawEvent.ChildBountyIndex && childBountyRawEvent.ChildBountyIndex !== 0) {
+        if (data.length < 2) {
           l.error(
-            `Expected Bounty index missing in the event: ${childBountyRawEvent.ChildBountyIndex}`
+            `Expected Bounty index missing in the event`
+          );
+          return;
+        }
+        
+        const parentBountyId = Number(data[0]);
+        const childBountyId = Number(data[1]);
+
+        if (!childBountyId && childBountyId !== 0) {
+          l.error(
+            `Expected Bounty index missing in the event: ${filteredEvents.toString()}`
           );
           return;
         }
 
+
         const childBounties = await prisma.childBounties({
-          where: { childBountyId: childBountyRawEvent.ChildBountyIndex },
+          where: { childBountyId: childBountyId },
         });
 
         if (!childBounties || !childBounties.length) {
           l.error(
-            `No existing bounty found for index: ${childBountyRawEvent.ChildBountyIndex}`
+            `No existing bounty found for index: ${childBountyId}`
           );
           return;
         }
 
         const result: NomidotChildBountyStatusUpdate = {
-          childBountyId: childBountyRawEvent.ChildBountyIndex,
+          childBountyId: childBountyId,
           status: method,
         };
         l.log(`Nomidot Child Bounty Status Update: ${JSON.stringify(result)}`);
@@ -111,7 +103,7 @@ const createBountyStatus: Task<NomidotChildBountyStatusUpdate[]> = {
             },
             childBounty: {
               connect: {
-                id: childBountyId,
+                childBountyId
               },
             },
             status: status,
