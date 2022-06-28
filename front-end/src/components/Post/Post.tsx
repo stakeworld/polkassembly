@@ -153,7 +153,7 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 	let bountyPost: BountyPostFragment | undefined;
 	let childBountyPost: ChildBountyPostFragment | undefined;
 	let techCommitteeProposalPost: TechCommitteeProposalPostFragment | undefined;
-	let definedOnchainLink: OnchainLinkTechCommitteeProposalFragment | OnchainLinkBountyFragment | OnchainLinkMotionFragment | OnchainLinkReferendumFragment | OnchainLinkProposalFragment | OnchainLinkTipFragment | OnchainLinkTreasuryProposalFragment | undefined;
+	let definedOnchainLink: OnchainLinkTechCommitteeProposalFragment | OnchainLinkBountyFragment | OnchainLinkChildBountyFragment | OnchainLinkMotionFragment | OnchainLinkReferendumFragment | OnchainLinkProposalFragment | OnchainLinkTipFragment | OnchainLinkTreasuryProposalFragment | undefined;
 	let postStatus: string | undefined;
 	let redirection: Redirection = {};
 
@@ -172,10 +172,10 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 	}
 
 	if (post && isChildBounty) {
-		bountyPost = post as ChildBountyPostFragment;
+		childBountyPost = post as ChildBountyPostFragment;
 		definedOnchainLink = childBountyPost.onchain_link as OnchainLinkChildBountyFragment;
 		onchainId = definedOnchainLink.onchain_child_bounty_id;
-		postStatus = bountyPost?.onchain_link?.onchain_child_bounty?.[0]?.childBountyStatus?.[0].status;
+		postStatus = childBountyPost?.onchain_link?.onchain_child_bounty?.[0]?.childBountyStatus?.[0].status;
 	}
 
 	if (post && isReferendum) {

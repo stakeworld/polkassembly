@@ -26,6 +26,7 @@ import TipInfo from './Tips/TipInfo';
 interface Props {
 	className?: string
 	isBounty?: boolean
+	isChildBounty?: boolean
 	isMotion?: boolean
 	isProposal?: boolean
 	isReferendum?: boolean
@@ -33,7 +34,7 @@ interface Props {
 	isTipProposal?: boolean
 	isTechCommitteeProposal?: boolean
 	onchainId?: string | number | null
-	onchainLink?: OnchainLinkChildBountyFragment | OnchainLinkTechCommitteeProposalFragment | OnchainLinkBountyFragment | OnchainLinkMotionFragment | OnchainLinkProposalFragment | OnchainLinkReferendumFragment | OnchainLinkTreasuryProposalFragment | OnchainLinkTipFragment
+	onchainLink?: OnchainLinkTechCommitteeProposalFragment | OnchainLinkBountyFragment | OnchainLinkChildBountyFragment | OnchainLinkMotionFragment | OnchainLinkProposalFragment | OnchainLinkReferendumFragment | OnchainLinkTreasuryProposalFragment | OnchainLinkTipFragment
 	status?: string
 }
 

@@ -19,7 +19,7 @@ const ChildBounties = ({ className, data }: Props) => {
 
 	const noPost = !data.posts || !data.posts.length;
 	const atLeastOneCurrentChildBounty = data.posts.some((post) => {
-		if (post.onchain_link?.onchain_bounty.length){
+		if (post.onchain_link?.onchain_child_bounty.length){
 			// this breaks the loop as soon as
 			// we find a post that has a bounty.
 			return true;
@@ -37,14 +37,14 @@ const ChildBounties = ({ className, data }: Props) => {
 
 					return !!post?.author?.username && !!post.onchain_link?.onchain_child_bounty.length &&
 						<li key={post.id} className='bounties__item'>
-							{<Link to={`/bounty/${onchainId}`}>
+							{<Link to={`/child_bounty/${onchainId}`}>
 								<GovernanceCard
 									address={post.onchain_link.proposer_address}
 									comments={post.comments_aggregate.aggregate?.count
 										? post.comments_aggregate.aggregate.count.toString()
 										: 'no'}
 									onchainId={onchainId}
-									status={post.onchain_link.onchain_bounty[0]?.bountyStatus?.[0].status}
+									status={post.onchain_link.onchain_child_bounty[0]?.childBountyStatus?.[0].status}
 									title={post.title}
 									topic={post.topic.name}
 								/>

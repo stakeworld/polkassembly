@@ -18,7 +18,7 @@ export default () => {
 
 	if (error?.message) return <FilteredError text={error.message}/>;
 
-	if (data) return <Post data={data} isBounty refetch={refetch} />;
+	if (data) return <Post data={data} isChildBounty refetch={refetch} />;
 
 	return <Loader/>;
 };

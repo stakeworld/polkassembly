@@ -4,7 +4,7 @@
 
 import React, { useEffect } from 'react';
 
-import BountiesListing from '../../../components/Listings/BountiesListing';
+import ChildBountiesListing from '../../../components/Listings/ChildBountiesListing';
 import { useGetLatestChildBountyPostsQuery } from '../../../generated/graphql';
 import { post_type } from '../../../global/post_types';
 import FilteredError from '../../../ui-components/FilteredError';
@@ -28,7 +28,7 @@ const ChildBountiesContainer = ({ className, limit }:Props) => {
 
 	if (error?.message) return <FilteredError text={error.message}/>;
 
-	if (data) return <BountiesListing className={className} data={data}/>;
+	if (data) return <ChildBountiesListing className={className} data={data}/>;
 
 	return <Loader/>;
 };

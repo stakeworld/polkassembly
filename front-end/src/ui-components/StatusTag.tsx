@@ -66,14 +66,10 @@ export default styled(StatusTag).attrs(( { status }: Props) => ({
 		&.${bountyStatus.PROPOSED},
 		&.${bountyStatus.AWARDED},
 		&.${bountyStatus.BECAME_ACTIVE},
-		&.${bountyStatus.EXTENDED}
-		&.${childBountyStatus.PROPOSED},
-		&.${childBountyStatus.AWARDED},
-		&.${childBountyStatus.BECAME_ACTIVE},
-		&.${childBountyStatus.EXTENDED}
-		 {
-			border-color: #5BC044;
-			color: #5BC044;
+		&.${bountyStatus.EXTENDED},
+		&.${childBountyStatus.ADDED} {
+			border-color: #6495ED;
+			color: #6495ED;
 		}
 		&.${proposalStatus.TABLED},
 		&.${referendumStatus.PASSED},
@@ -84,7 +80,10 @@ export default styled(StatusTag).attrs(( { status }: Props) => ({
 		&.${tipStatus.CLOSED},
 		&.${bountyStatus.AWARDED},
 		&.${bountyStatus.CLAIMED},
-		&.${childBountyStatus.AWARDED},
+		&.${childBountyStatus.AWARDED} {
+			border-color: #5BC044;
+			color: #5BC044;
+		}
 		&.${childBountyStatus.CLAIMED},
 		&.prime {
 			border-color: green_primary;
@@ -98,11 +97,9 @@ export default styled(StatusTag).attrs(( { status }: Props) => ({
 		&.${tipStatus.RETRACTED},
 		&.${bountyStatus.CANCELED},
 		&.${bountyStatus.REJECTED},
-		&.${childBountyStatus.CANCELED},
-		&.${childBountyStatus.REJECTED} {
+		&.${childBountyStatus.CANCELED} {
 			border-color: #FF0000;
 			color: #FF0000;
 		},
-		
 	}
 `;
