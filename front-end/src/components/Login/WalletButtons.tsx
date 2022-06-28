@@ -25,7 +25,7 @@ const WalletButtons = ({ className, onWalletSelect, disabled } : Props) => {
 
 	return (
 		<div className={className}>
-			<h6 className='title-heading'>Login with Web3 wallets: </h6>
+			<h6 className='title-heading'>Or Login with a Web3 wallet: </h6>
 			<div className="button-row">
 				<WalletButton disabled={disabled} onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleWalletClick(event, Wallet.POLKADOT)} name="Polkadot.js" icon={<PolkadotJSIcon />} />
 				<WalletButton disabled={disabled} onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleWalletClick(event, Wallet.TALISMAN)} name="Talisman" icon={<TalismanIcon />} />
