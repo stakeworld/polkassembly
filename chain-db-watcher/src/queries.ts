@@ -156,6 +156,36 @@ export const bountySubscription = gql`
     }
 `;
 
+export const childBountySubscription = gql`
+	subscription childBountySubscription($startBlock: Int!) {
+        childBounty (
+            where: {
+				node: {
+					childBountyStatus_some: {
+						AND: [
+							{ status: "Added" },
+							{ blockNumber: { number_gte: $startBlock } }
+						]
+					}
+				}
+            }
+        ){
+            mutation
+            node {
+                id
+                proposer
+				childBountyId
+                childBountyStatus(orderBy: id_DESC) {
+                    blockNumber {
+                        number
+                    }
+                    status
+                }
+            }
+        }
+    }
+`;
+
 export const techCommitteeProposalSubscription = gql`
 	subscription techCommitteeProposalSubscription($startBlock: Int!) {
         techCommitteeProposal (

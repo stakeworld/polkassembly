@@ -93,6 +93,12 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 			otherActiveRoute: '/bounty'
 		},
 		{
+			icon: <BountyIcon />,
+			link: '/child_bounties',
+			name: 'ChildBounties',
+			otherActiveRoute: '/child_bounty'
+		},
+		{
 			icon: <TipIcon />,
 			link: '/tips',
 			name: 'Tips',
