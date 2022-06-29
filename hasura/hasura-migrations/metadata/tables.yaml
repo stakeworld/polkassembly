@@ -38,6 +38,7 @@
     permission:
       check: {}
       columns:
+      - approval_status
       - content
       - end_time
       - event_id
@@ -49,26 +50,46 @@
       - title
       - url
       backend_only: false
+  - role: user
+    permission:
+      check:
+        _and:
+        - user_id:
+            _eq: X-Hasura-User-Id
+      columns:
+      - content
+      - end_time
+      - id
+      - module
+      - network
+      - start_time
+      - status
+      - title
+      - url
+      - user_id
+      backend_only: false
   select_permissions:
   - role: anonymous
     permission:
       columns:
-      - event_id
-      - id
+      - approval_status
       - content
+      - end_time
+      - event_id
       - event_type
+      - id
       - module
       - network
+      - start_time
       - status
       - title
       - url
-      - end_time
-      - start_time
       filter: {}
       allow_aggregations: true
   - role: event_bot
     permission:
       columns:
+      - approval_status
       - content
       - end_time
       - event_id
@@ -85,6 +106,7 @@
   - role: user
     permission:
       columns:
+      - approval_status
       - content
       - end_time
       - event_id
@@ -96,15 +118,18 @@
       - status
       - title
       - url
+      - user_id
       filter: {}
       allow_aggregations: true
   update_permissions:
   - role: event_bot
     permission:
       columns:
+      - approval_status
       - content
       - end_time
       - event_id
+      - event_type
       - module
       - network
       - start_time
@@ -113,6 +138,23 @@
       - url
       filter: {}
       check: {}
+  - role: user
+    permission:
+      columns:
+      - content
+      - end_time
+      - module
+      - start_time
+      - title
+      - url
+      filter:
+        _and:
+        - user_id:
+            _eq: X-Hasura-User-Id
+      check:
+        _and:
+        - user_id:
+            _eq: X-Hasura-User-Id
   delete_permissions:
   - role: event_bot
     permission:
@@ -364,12 +406,23 @@
       - onchain_tech_committee_proposal_id
       remote_schema: chain-db
     name: onchain_tech_committee_proposal
+  - definition:
+      remote_field:
+        childBounties:
+          arguments:
+            where:
+              childBountyId: $onchain_child_bounty_id
+      hasura_fields:
+      - onchain_child_bounty_id
+      remote_schema: chain-db
+    name: onchain_child_bounty
   insert_permissions:
   - role: proposal_bot
     permission:
       check: {}
       columns:
       - onchain_bounty_id
+      - onchain_child_bounty_id
       - onchain_motion_id
       - onchain_proposal_id
       - onchain_referendum_id
@@ -382,17 +435,18 @@
   - role: anonymous
     permission:
       columns:
-      - id
       - created_at
-      - post_id
-      - onchain_proposal_id
-      - proposer_address
-      - onchain_referendum_id
-      - onchain_motion_id
-      - onchain_treasury_proposal_id
-      - onchain_tip_id
+      - id
       - onchain_bounty_id
+      - onchain_child_bounty_id
+      - onchain_motion_id
+      - onchain_proposal_id
+      - onchain_referendum_id
       - onchain_tech_committee_proposal_id
+      - onchain_tip_id
+      - onchain_treasury_proposal_id
+      - post_id
+      - proposer_address
       filter: {}
       allow_aggregations: true
   - role: proposal_bot
@@ -416,6 +470,7 @@
       - created_at
       - id
       - onchain_bounty_id
+      - onchain_child_bounty_id
       - onchain_motion_id
       - onchain_proposal_id
       - onchain_referendum_id
@@ -431,6 +486,7 @@
     permission:
       columns:
       - onchain_bounty_id
+      - onchain_child_bounty_id
       - onchain_motion_id
       - onchain_proposal_id
       - onchain_referendum_id

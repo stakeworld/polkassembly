@@ -130,6 +130,28 @@ export const getOnchainBounties = gql`
     }
 `;
 
+export const getOnchainChildBounties = gql`
+    query getOnchainChildBounties($startBlock: Int!) {
+        childBounties (
+            where: {
+                childBountyStatus_some: {
+                    AND: [
+                        { status: "Added" }
+                        { blockNumber: { number_gte: $startBlock } }
+                    ]
+                }
+            }
+        ){
+            ...onchainChildBounty
+        }
+    }
+    fragment onchainChildBounty on ChildBounty {
+        proposer
+        id
+        childBountyId
+    }
+`;
+
 export const getOnchainTechCommitteeProposals = gql`
     query getOnchainTechCommitteeProposals($startBlock: Int!) {
         techCommitteeProposals (

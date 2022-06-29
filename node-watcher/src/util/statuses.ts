@@ -65,3 +65,9 @@ export const techCommitteeStatus = {
   VOTED: 'Voted'
 }
 
+export const childBountyStatus = {
+  ADDED: 'Added',
+  AWARDED: 'Awarded',
+  CANCELED: 'Canceled',
+  CLAIMED: 'Claimed',
+};

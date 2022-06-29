@@ -192,6 +192,19 @@ export const getMaps = (syncData: SyncData): SyncMap => {
 			}
 		}, {});
 
+	const discussionChildBountyMap = syncData?.discussion.childBounties?.reduce(
+		(prev, curr) => {
+			// edgecase those id can be 0
+			if ((curr?.onchain_child_bounty_id || curr?.onchain_child_bounty_id === 0) && (curr?.id || curr?.id === 0)) {
+				return {
+					...prev,
+					[curr.onchain_child_bounty_id]: curr.proposer_address
+				};
+			} else {
+				return prev || {};
+			}
+		}, {});
+
 	const onchainBountyMap = syncData?.onchain.bounties?.reduce(
 		(prev, curr) => {
 			if ((curr?.bountyId || curr?.bountyId === 0) && (curr?.id || curr?.id === 0)) {
@@ -204,9 +217,22 @@ export const getMaps = (syncData: SyncData): SyncMap => {
 			}
 		}, {});
 
+	const onchainChildBountyMap = syncData?.onchain.childBounties?.reduce(
+		(prev, curr) => {
+			if ((curr?.childBountyId || curr?.childBountyId === 0) && (curr?.id || curr?.id === 0)) {
+				return {
+					...prev,
+					[curr.childBountyId]: curr.proposer
+				};
+			} else {
+				return prev || {};
+			}
+		}, {});
+
 	return {
 		discussion: {
 			bounties: discussionBountyMap,
+			childBounties: discussionChildBountyMap,
 			motions: discussionMotionMap,
 			proposals: discussionProposalMap,
 			referenda: discussionReferendaMap,
@@ -216,6 +242,7 @@ export const getMaps = (syncData: SyncData): SyncMap => {
 		},
 		onchain: {
 			bounties: onchainBountyMap,
+			childBounties: onchainChildBountyMap,
 			motions: onchainMotionMap,
 			proposals: onchainProposalMap,
 			referenda: onchainReferendaMap,

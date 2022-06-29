@@ -6,6 +6,8 @@ import { Route, Switch } from 'react-router-dom';
 import Bounties from 'src/screens/Bounties';
 import PostBounty from 'src/screens/BountyPost';
 import CalendarView from 'src/screens/CalendarView';
+import ChildBounties from 'src/screens/ChildBounties';
+import ChildPostBounty from 'src/screens/ChildBountyPost';
 import Council from 'src/screens/Council';
 import CreatePost from 'src/screens/CreatePost';
 import PostDiscussion from 'src/screens/DiscussionPost';
@@ -58,6 +60,9 @@ function SwitchRoutes() {
 			<Route exact path="/bounty/:id">
 				<PostBounty/>
 			</Route>
+			<Route exact path="/child_bounty/:id">
+				<ChildPostBounty/>
+			</Route>
 			<Route exact path="/motion/:id">
 				<PostMotion/>
 			</Route>
@@ -84,6 +89,9 @@ function SwitchRoutes() {
 			</Route>
 			<Route path="/bounties">
 				<Bounties/>
+			</Route>
+			<Route path="/child_bounties">
+				<ChildBounties/>
 			</Route>
 			<Route path="/referenda">
 				<Referenda/>

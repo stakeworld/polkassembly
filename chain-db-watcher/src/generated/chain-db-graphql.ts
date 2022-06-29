@@ -39,6 +39,16 @@ export type AggregateBountyStatus = {
   count: Scalars['Int'];
 };
 
+export type AggregateChildBounty = {
+  __typename?: 'AggregateChildBounty';
+  count: Scalars['Int'];
+};
+
+export type AggregateChildBountyStatus = {
+  __typename?: 'AggregateChildBountyStatus';
+  count: Scalars['Int'];
+};
+
 export type AggregateCouncil = {
   __typename?: 'AggregateCouncil';
   count: Scalars['Int'];
@@ -1367,6 +1377,772 @@ export type BountyWhereInput = {
 export type BountyWhereUniqueInput = {
   id?: Maybe<Scalars['Int']>;
   bountyId?: Maybe<Scalars['Int']>;
+};
+
+export type ChildBounty = {
+  __typename?: 'ChildBounty';
+  id: Scalars['Int'];
+  proposer: Scalars['String'];
+  value: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  fee?: Maybe<Scalars['String']>;
+  childBountyId: Scalars['Int'];
+  parentBountyId: Scalars['Int'];
+  curatorDeposit?: Maybe<Scalars['String']>;
+  childBountyStatus?: Maybe<Array<ChildBountyStatus>>;
+  curator?: Maybe<Scalars['String']>;
+  beneficiary?: Maybe<Scalars['String']>;
+};
+
+
+export type ChildBountyChildBountyStatusArgs = {
+  where?: Maybe<ChildBountyStatusWhereInput>;
+  orderBy?: Maybe<ChildBountyStatusOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+/** A connection to a list of items. */
+export type ChildBountyConnection = {
+  __typename?: 'ChildBountyConnection';
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** A list of edges. */
+  edges: Array<Maybe<ChildBountyEdge>>;
+  aggregate: AggregateChildBounty;
+};
+
+export type ChildBountyCreateInput = {
+  proposer: Scalars['String'];
+  value: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  fee?: Maybe<Scalars['String']>;
+  childBountyId: Scalars['Int'];
+  parentBountyId: Scalars['Int'];
+  curatorDeposit?: Maybe<Scalars['String']>;
+  curator?: Maybe<Scalars['String']>;
+  beneficiary?: Maybe<Scalars['String']>;
+  childBountyStatus?: Maybe<ChildBountyStatusCreateManyWithoutChildBountyInput>;
+};
+
+export type ChildBountyCreateOneWithoutChildBountyStatusInput = {
+  create?: Maybe<ChildBountyCreateWithoutChildBountyStatusInput>;
+  connect?: Maybe<ChildBountyWhereUniqueInput>;
+};
+
+export type ChildBountyCreateWithoutChildBountyStatusInput = {
+  proposer: Scalars['String'];
+  value: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  fee?: Maybe<Scalars['String']>;
+  childBountyId: Scalars['Int'];
+  parentBountyId: Scalars['Int'];
+  curatorDeposit?: Maybe<Scalars['String']>;
+  curator?: Maybe<Scalars['String']>;
+  beneficiary?: Maybe<Scalars['String']>;
+};
+
+/** An edge in a connection. */
+export type ChildBountyEdge = {
+  __typename?: 'ChildBountyEdge';
+  /** The item at the end of the edge. */
+  node: ChildBounty;
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+};
+
+export enum ChildBountyOrderByInput {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  ProposerAsc = 'proposer_ASC',
+  ProposerDesc = 'proposer_DESC',
+  ValueAsc = 'value_ASC',
+  ValueDesc = 'value_DESC',
+  DescriptionAsc = 'description_ASC',
+  DescriptionDesc = 'description_DESC',
+  FeeAsc = 'fee_ASC',
+  FeeDesc = 'fee_DESC',
+  ChildBountyIdAsc = 'childBountyId_ASC',
+  ChildBountyIdDesc = 'childBountyId_DESC',
+  ParentBountyIdAsc = 'parentBountyId_ASC',
+  ParentBountyIdDesc = 'parentBountyId_DESC',
+  CuratorDepositAsc = 'curatorDeposit_ASC',
+  CuratorDepositDesc = 'curatorDeposit_DESC',
+  CuratorAsc = 'curator_ASC',
+  CuratorDesc = 'curator_DESC',
+  BeneficiaryAsc = 'beneficiary_ASC',
+  BeneficiaryDesc = 'beneficiary_DESC'
+}
+
+export type ChildBountyPreviousValues = {
+  __typename?: 'ChildBountyPreviousValues';
+  id: Scalars['Int'];
+  proposer: Scalars['String'];
+  value: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  fee?: Maybe<Scalars['String']>;
+  childBountyId: Scalars['Int'];
+  parentBountyId: Scalars['Int'];
+  curatorDeposit?: Maybe<Scalars['String']>;
+  curator?: Maybe<Scalars['String']>;
+  beneficiary?: Maybe<Scalars['String']>;
+};
+
+export type ChildBountyStatus = Node & {
+  __typename?: 'ChildBountyStatus';
+  id: Scalars['ID'];
+  blockNumber: BlockNumber;
+  childBounty: ChildBounty;
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+};
+
+/** A connection to a list of items. */
+export type ChildBountyStatusConnection = {
+  __typename?: 'ChildBountyStatusConnection';
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** A list of edges. */
+  edges: Array<Maybe<ChildBountyStatusEdge>>;
+  aggregate: AggregateChildBountyStatus;
+};
+
+export type ChildBountyStatusCreateInput = {
+  id?: Maybe<Scalars['ID']>;
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+  blockNumber: BlockNumberCreateOneInput;
+  childBounty: ChildBountyCreateOneWithoutChildBountyStatusInput;
+};
+
+export type ChildBountyStatusCreateManyWithoutChildBountyInput = {
+  create?: Maybe<Array<ChildBountyStatusCreateWithoutChildBountyInput>>;
+  connect?: Maybe<Array<ChildBountyStatusWhereUniqueInput>>;
+};
+
+export type ChildBountyStatusCreateWithoutChildBountyInput = {
+  id?: Maybe<Scalars['ID']>;
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+  blockNumber: BlockNumberCreateOneInput;
+};
+
+/** An edge in a connection. */
+export type ChildBountyStatusEdge = {
+  __typename?: 'ChildBountyStatusEdge';
+  /** The item at the end of the edge. */
+  node: ChildBountyStatus;
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+};
+
+export enum ChildBountyStatusOrderByInput {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  StatusAsc = 'status_ASC',
+  StatusDesc = 'status_DESC',
+  UniqueStatusAsc = 'uniqueStatus_ASC',
+  UniqueStatusDesc = 'uniqueStatus_DESC'
+}
+
+export type ChildBountyStatusPreviousValues = {
+  __typename?: 'ChildBountyStatusPreviousValues';
+  id: Scalars['ID'];
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+};
+
+export type ChildBountyStatusScalarWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<ChildBountyStatusScalarWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<ChildBountyStatusScalarWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<ChildBountyStatusScalarWhereInput>>;
+  id?: Maybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<Scalars['ID']>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<Scalars['ID']>;
+  status?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  status_not?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  status_in?: Maybe<Array<Scalars['String']>>;
+  /** All values that are not contained in given list. */
+  status_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  status_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  status_lte?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  status_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  status_gte?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  status_contains?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  status_not_contains?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  status_starts_with?: Maybe<Scalars['String']>;
+  /** All values not starting with the given string. */
+  status_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  status_ends_with?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  status_not_ends_with?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  uniqueStatus_not?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  uniqueStatus_in?: Maybe<Array<Scalars['String']>>;
+  /** All values that are not contained in given list. */
+  uniqueStatus_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  uniqueStatus_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  uniqueStatus_lte?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  uniqueStatus_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  uniqueStatus_gte?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  uniqueStatus_contains?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  uniqueStatus_not_contains?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  uniqueStatus_starts_with?: Maybe<Scalars['String']>;
+  /** All values not starting with the given string. */
+  uniqueStatus_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  uniqueStatus_ends_with?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  uniqueStatus_not_ends_with?: Maybe<Scalars['String']>;
+};
+
+export type ChildBountyStatusSubscriptionPayload = {
+  __typename?: 'ChildBountyStatusSubscriptionPayload';
+  mutation: MutationType;
+  node?: Maybe<ChildBountyStatus>;
+  updatedFields?: Maybe<Array<Scalars['String']>>;
+  previousValues?: Maybe<ChildBountyStatusPreviousValues>;
+};
+
+export type ChildBountyStatusSubscriptionWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<ChildBountyStatusSubscriptionWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<ChildBountyStatusSubscriptionWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<ChildBountyStatusSubscriptionWhereInput>>;
+  /** The subscription event gets dispatched when it's listed in mutation_in */
+  mutation_in?: Maybe<Array<MutationType>>;
+  /** The subscription event gets only dispatched when one of the updated fields names is included in this list */
+  updatedFields_contains?: Maybe<Scalars['String']>;
+  /** The subscription event gets only dispatched when all of the field names included in this list have been updated */
+  updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
+  /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
+  updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+  node?: Maybe<ChildBountyStatusWhereInput>;
+};
+
+export type ChildBountyStatusUpdateInput = {
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  childBounty?: Maybe<ChildBountyUpdateOneRequiredWithoutChildBountyStatusInput>;
+};
+
+export type ChildBountyStatusUpdateManyDataInput = {
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type ChildBountyStatusUpdateManyMutationInput = {
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type ChildBountyStatusUpdateManyWithoutChildBountyInput = {
+  create?: Maybe<Array<ChildBountyStatusCreateWithoutChildBountyInput>>;
+  connect?: Maybe<Array<ChildBountyStatusWhereUniqueInput>>;
+  set?: Maybe<Array<ChildBountyStatusWhereUniqueInput>>;
+  disconnect?: Maybe<Array<ChildBountyStatusWhereUniqueInput>>;
+  delete?: Maybe<Array<ChildBountyStatusWhereUniqueInput>>;
+  update?: Maybe<Array<ChildBountyStatusUpdateWithWhereUniqueWithoutChildBountyInput>>;
+  updateMany?: Maybe<Array<ChildBountyStatusUpdateManyWithWhereNestedInput>>;
+  deleteMany?: Maybe<Array<ChildBountyStatusScalarWhereInput>>;
+  upsert?: Maybe<Array<ChildBountyStatusUpsertWithWhereUniqueWithoutChildBountyInput>>;
+};
+
+export type ChildBountyStatusUpdateManyWithWhereNestedInput = {
+  where: ChildBountyStatusScalarWhereInput;
+  data: ChildBountyStatusUpdateManyDataInput;
+};
+
+export type ChildBountyStatusUpdateWithoutChildBountyDataInput = {
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+};
+
+export type ChildBountyStatusUpdateWithWhereUniqueWithoutChildBountyInput = {
+  where: ChildBountyStatusWhereUniqueInput;
+  data: ChildBountyStatusUpdateWithoutChildBountyDataInput;
+};
+
+export type ChildBountyStatusUpsertWithWhereUniqueWithoutChildBountyInput = {
+  where: ChildBountyStatusWhereUniqueInput;
+  update: ChildBountyStatusUpdateWithoutChildBountyDataInput;
+  create: ChildBountyStatusCreateWithoutChildBountyInput;
+};
+
+export type ChildBountyStatusWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<ChildBountyStatusWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<ChildBountyStatusWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<ChildBountyStatusWhereInput>>;
+  id?: Maybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<Scalars['ID']>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<Scalars['ID']>;
+  status?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  status_not?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  status_in?: Maybe<Array<Scalars['String']>>;
+  /** All values that are not contained in given list. */
+  status_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  status_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  status_lte?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  status_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  status_gte?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  status_contains?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  status_not_contains?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  status_starts_with?: Maybe<Scalars['String']>;
+  /** All values not starting with the given string. */
+  status_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  status_ends_with?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  status_not_ends_with?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  uniqueStatus_not?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  uniqueStatus_in?: Maybe<Array<Scalars['String']>>;
+  /** All values that are not contained in given list. */
+  uniqueStatus_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  uniqueStatus_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  uniqueStatus_lte?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  uniqueStatus_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  uniqueStatus_gte?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  uniqueStatus_contains?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  uniqueStatus_not_contains?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  uniqueStatus_starts_with?: Maybe<Scalars['String']>;
+  /** All values not starting with the given string. */
+  uniqueStatus_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  uniqueStatus_ends_with?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  uniqueStatus_not_ends_with?: Maybe<Scalars['String']>;
+  blockNumber?: Maybe<BlockNumberWhereInput>;
+  childBounty?: Maybe<ChildBountyWhereInput>;
+};
+
+export type ChildBountyStatusWhereUniqueInput = {
+  id?: Maybe<Scalars['ID']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type ChildBountySubscriptionPayload = {
+  __typename?: 'ChildBountySubscriptionPayload';
+  mutation: MutationType;
+  node?: Maybe<ChildBounty>;
+  updatedFields?: Maybe<Array<Scalars['String']>>;
+  previousValues?: Maybe<ChildBountyPreviousValues>;
+};
+
+export type ChildBountySubscriptionWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<ChildBountySubscriptionWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<ChildBountySubscriptionWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<ChildBountySubscriptionWhereInput>>;
+  /** The subscription event gets dispatched when it's listed in mutation_in */
+  mutation_in?: Maybe<Array<MutationType>>;
+  /** The subscription event gets only dispatched when one of the updated fields names is included in this list */
+  updatedFields_contains?: Maybe<Scalars['String']>;
+  /** The subscription event gets only dispatched when all of the field names included in this list have been updated */
+  updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
+  /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
+  updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+  node?: Maybe<ChildBountyWhereInput>;
+};
+
+export type ChildBountyUpdateInput = {
+  proposer?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  fee?: Maybe<Scalars['String']>;
+  childBountyId?: Maybe<Scalars['Int']>;
+  parentBountyId?: Maybe<Scalars['Int']>;
+  curatorDeposit?: Maybe<Scalars['String']>;
+  curator?: Maybe<Scalars['String']>;
+  beneficiary?: Maybe<Scalars['String']>;
+  childBountyStatus?: Maybe<ChildBountyStatusUpdateManyWithoutChildBountyInput>;
+};
+
+export type ChildBountyUpdateManyMutationInput = {
+  proposer?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  fee?: Maybe<Scalars['String']>;
+  childBountyId?: Maybe<Scalars['Int']>;
+  parentBountyId?: Maybe<Scalars['Int']>;
+  curatorDeposit?: Maybe<Scalars['String']>;
+  curator?: Maybe<Scalars['String']>;
+  beneficiary?: Maybe<Scalars['String']>;
+};
+
+export type ChildBountyUpdateOneRequiredWithoutChildBountyStatusInput = {
+  create?: Maybe<ChildBountyCreateWithoutChildBountyStatusInput>;
+  connect?: Maybe<ChildBountyWhereUniqueInput>;
+  update?: Maybe<ChildBountyUpdateWithoutChildBountyStatusDataInput>;
+  upsert?: Maybe<ChildBountyUpsertWithoutChildBountyStatusInput>;
+};
+
+export type ChildBountyUpdateWithoutChildBountyStatusDataInput = {
+  proposer?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  fee?: Maybe<Scalars['String']>;
+  childBountyId?: Maybe<Scalars['Int']>;
+  parentBountyId?: Maybe<Scalars['Int']>;
+  curatorDeposit?: Maybe<Scalars['String']>;
+  curator?: Maybe<Scalars['String']>;
+  beneficiary?: Maybe<Scalars['String']>;
+};
+
+export type ChildBountyUpsertWithoutChildBountyStatusInput = {
+  update: ChildBountyUpdateWithoutChildBountyStatusDataInput;
+  create: ChildBountyCreateWithoutChildBountyStatusInput;
+};
+
+export type ChildBountyWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<ChildBountyWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<ChildBountyWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<ChildBountyWhereInput>>;
+  id?: Maybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['Int']>>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['Int']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['Int']>;
+  proposer?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  proposer_not?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  proposer_in?: Maybe<Array<Scalars['String']>>;
+  /** All values that are not contained in given list. */
+  proposer_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  proposer_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  proposer_lte?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  proposer_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  proposer_gte?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  proposer_contains?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  proposer_not_contains?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  proposer_starts_with?: Maybe<Scalars['String']>;
+  /** All values not starting with the given string. */
+  proposer_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  proposer_ends_with?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  proposer_not_ends_with?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  value_not?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  value_in?: Maybe<Array<Scalars['String']>>;
+  /** All values that are not contained in given list. */
+  value_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  value_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  value_lte?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  value_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  value_gte?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  value_contains?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  value_not_contains?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  value_starts_with?: Maybe<Scalars['String']>;
+  /** All values not starting with the given string. */
+  value_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  value_ends_with?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  value_not_ends_with?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  description_not?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  description_in?: Maybe<Array<Scalars['String']>>;
+  /** All values that are not contained in given list. */
+  description_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  description_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  description_lte?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  description_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  description_gte?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  description_contains?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  description_not_contains?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  description_starts_with?: Maybe<Scalars['String']>;
+  /** All values not starting with the given string. */
+  description_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  description_ends_with?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  description_not_ends_with?: Maybe<Scalars['String']>;
+  fee?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  fee_not?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  fee_in?: Maybe<Array<Scalars['String']>>;
+  /** All values that are not contained in given list. */
+  fee_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  fee_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  fee_lte?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  fee_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  fee_gte?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  fee_contains?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  fee_not_contains?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  fee_starts_with?: Maybe<Scalars['String']>;
+  /** All values not starting with the given string. */
+  fee_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  fee_ends_with?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  fee_not_ends_with?: Maybe<Scalars['String']>;
+  childBountyId?: Maybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  childBountyId_not?: Maybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  childBountyId_in?: Maybe<Array<Scalars['Int']>>;
+  /** All values that are not contained in given list. */
+  childBountyId_not_in?: Maybe<Array<Scalars['Int']>>;
+  /** All values less than the given value. */
+  childBountyId_lt?: Maybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  childBountyId_lte?: Maybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  childBountyId_gt?: Maybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  childBountyId_gte?: Maybe<Scalars['Int']>;
+  parentBountyId?: Maybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  parentBountyId_not?: Maybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  parentBountyId_in?: Maybe<Array<Scalars['Int']>>;
+  /** All values that are not contained in given list. */
+  parentBountyId_not_in?: Maybe<Array<Scalars['Int']>>;
+  /** All values less than the given value. */
+  parentBountyId_lt?: Maybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  parentBountyId_lte?: Maybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  parentBountyId_gt?: Maybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  parentBountyId_gte?: Maybe<Scalars['Int']>;
+  curatorDeposit?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  curatorDeposit_not?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  curatorDeposit_in?: Maybe<Array<Scalars['String']>>;
+  /** All values that are not contained in given list. */
+  curatorDeposit_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  curatorDeposit_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  curatorDeposit_lte?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  curatorDeposit_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  curatorDeposit_gte?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  curatorDeposit_contains?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  curatorDeposit_not_contains?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  curatorDeposit_starts_with?: Maybe<Scalars['String']>;
+  /** All values not starting with the given string. */
+  curatorDeposit_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  curatorDeposit_ends_with?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  curatorDeposit_not_ends_with?: Maybe<Scalars['String']>;
+  curator?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  curator_not?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  curator_in?: Maybe<Array<Scalars['String']>>;
+  /** All values that are not contained in given list. */
+  curator_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  curator_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  curator_lte?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  curator_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  curator_gte?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  curator_contains?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  curator_not_contains?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  curator_starts_with?: Maybe<Scalars['String']>;
+  /** All values not starting with the given string. */
+  curator_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  curator_ends_with?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  curator_not_ends_with?: Maybe<Scalars['String']>;
+  beneficiary?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  beneficiary_not?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  beneficiary_in?: Maybe<Array<Scalars['String']>>;
+  /** All values that are not contained in given list. */
+  beneficiary_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  beneficiary_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  beneficiary_lte?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  beneficiary_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  beneficiary_gte?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  beneficiary_contains?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  beneficiary_not_contains?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  beneficiary_starts_with?: Maybe<Scalars['String']>;
+  /** All values not starting with the given string. */
+  beneficiary_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  beneficiary_ends_with?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  beneficiary_not_ends_with?: Maybe<Scalars['String']>;
+  childBountyStatus_every?: Maybe<ChildBountyStatusWhereInput>;
+  childBountyStatus_some?: Maybe<ChildBountyStatusWhereInput>;
+  childBountyStatus_none?: Maybe<ChildBountyStatusWhereInput>;
+};
+
+export type ChildBountyWhereUniqueInput = {
+  id?: Maybe<Scalars['Int']>;
+  childBountyId?: Maybe<Scalars['Int']>;
 };
 
 export type Council = Node & {
@@ -3428,6 +4204,8 @@ export type Mutation = {
   createTechCommitteeProposal: TechCommitteeProposal;
   createTechCommitteeProposalArgument: TechCommitteeProposalArgument;
   createTechCommitteeProposalStatus: TechCommitteeProposalStatus;
+  createChildBounty: ChildBounty;
+  createChildBountyStatus: ChildBountyStatus;
   createPreimage: Preimage;
   createBlockNumber: BlockNumber;
   createSession: Session;
@@ -3461,6 +4239,8 @@ export type Mutation = {
   updateTechCommitteeProposal?: Maybe<TechCommitteeProposal>;
   updateTechCommitteeProposalArgument?: Maybe<TechCommitteeProposalArgument>;
   updateTechCommitteeProposalStatus?: Maybe<TechCommitteeProposalStatus>;
+  updateChildBounty?: Maybe<ChildBounty>;
+  updateChildBountyStatus?: Maybe<ChildBountyStatus>;
   updatePreimage?: Maybe<Preimage>;
   updateBlockNumber?: Maybe<BlockNumber>;
   updateSession?: Maybe<Session>;
@@ -3494,6 +4274,8 @@ export type Mutation = {
   deleteTechCommitteeProposal?: Maybe<TechCommitteeProposal>;
   deleteTechCommitteeProposalArgument?: Maybe<TechCommitteeProposalArgument>;
   deleteTechCommitteeProposalStatus?: Maybe<TechCommitteeProposalStatus>;
+  deleteChildBounty?: Maybe<ChildBounty>;
+  deleteChildBountyStatus?: Maybe<ChildBountyStatus>;
   deletePreimage?: Maybe<Preimage>;
   deleteBlockNumber?: Maybe<BlockNumber>;
   deleteSession?: Maybe<Session>;
@@ -3527,6 +4309,8 @@ export type Mutation = {
   upsertTechCommitteeProposal: TechCommitteeProposal;
   upsertTechCommitteeProposalArgument: TechCommitteeProposalArgument;
   upsertTechCommitteeProposalStatus: TechCommitteeProposalStatus;
+  upsertChildBounty: ChildBounty;
+  upsertChildBountyStatus: ChildBountyStatus;
   upsertPreimage: Preimage;
   upsertBlockNumber: BlockNumber;
   upsertSession: Session;
@@ -3559,6 +4343,8 @@ export type Mutation = {
   updateManyTechCommitteeProposals: BatchPayload;
   updateManyTechCommitteeProposalArguments: BatchPayload;
   updateManyTechCommitteeProposalStatuses: BatchPayload;
+  updateManyChildBounties: BatchPayload;
+  updateManyChildBountyStatuses: BatchPayload;
   updateManyPreimages: BatchPayload;
   updateManyBlockNumbers: BatchPayload;
   updateManySessions: BatchPayload;
@@ -3592,6 +4378,8 @@ export type Mutation = {
   deleteManyTechCommitteeProposals: BatchPayload;
   deleteManyTechCommitteeProposalArguments: BatchPayload;
   deleteManyTechCommitteeProposalStatuses: BatchPayload;
+  deleteManyChildBounties: BatchPayload;
+  deleteManyChildBountyStatuses: BatchPayload;
   deleteManyPreimages: BatchPayload;
   deleteManyBlockNumbers: BatchPayload;
   deleteManySessions: BatchPayload;
@@ -3746,6 +4534,16 @@ export type MutationCreateTechCommitteeProposalArgumentArgs = {
 
 export type MutationCreateTechCommitteeProposalStatusArgs = {
   data: TechCommitteeProposalStatusCreateInput;
+};
+
+
+export type MutationCreateChildBountyArgs = {
+  data: ChildBountyCreateInput;
+};
+
+
+export type MutationCreateChildBountyStatusArgs = {
+  data: ChildBountyStatusCreateInput;
 };
 
 
@@ -3944,6 +4742,18 @@ export type MutationUpdateTechCommitteeProposalStatusArgs = {
 };
 
 
+export type MutationUpdateChildBountyArgs = {
+  data: ChildBountyUpdateInput;
+  where: ChildBountyWhereUniqueInput;
+};
+
+
+export type MutationUpdateChildBountyStatusArgs = {
+  data: ChildBountyStatusUpdateInput;
+  where: ChildBountyStatusWhereUniqueInput;
+};
+
+
 export type MutationUpdatePreimageArgs = {
   data: PreimageUpdateInput;
   where: PreimageWhereUniqueInput;
@@ -4109,6 +4919,16 @@ export type MutationDeleteTechCommitteeProposalArgumentArgs = {
 
 export type MutationDeleteTechCommitteeProposalStatusArgs = {
   where: TechCommitteeProposalStatusWhereUniqueInput;
+};
+
+
+export type MutationDeleteChildBountyArgs = {
+  where: ChildBountyWhereUniqueInput;
+};
+
+
+export type MutationDeleteChildBountyStatusArgs = {
+  where: ChildBountyStatusWhereUniqueInput;
 };
 
 
@@ -4337,6 +5157,20 @@ export type MutationUpsertTechCommitteeProposalStatusArgs = {
 };
 
 
+export type MutationUpsertChildBountyArgs = {
+  where: ChildBountyWhereUniqueInput;
+  create: ChildBountyCreateInput;
+  update: ChildBountyUpdateInput;
+};
+
+
+export type MutationUpsertChildBountyStatusArgs = {
+  where: ChildBountyStatusWhereUniqueInput;
+  create: ChildBountyStatusCreateInput;
+  update: ChildBountyStatusUpdateInput;
+};
+
+
 export type MutationUpsertPreimageArgs = {
   where: PreimageWhereUniqueInput;
   create: PreimageCreateInput;
@@ -4532,6 +5366,18 @@ export type MutationUpdateManyTechCommitteeProposalStatusesArgs = {
 };
 
 
+export type MutationUpdateManyChildBountiesArgs = {
+  data: ChildBountyUpdateManyMutationInput;
+  where?: Maybe<ChildBountyWhereInput>;
+};
+
+
+export type MutationUpdateManyChildBountyStatusesArgs = {
+  data: ChildBountyStatusUpdateManyMutationInput;
+  where?: Maybe<ChildBountyStatusWhereInput>;
+};
+
+
 export type MutationUpdateManyPreimagesArgs = {
   data: PreimageUpdateManyMutationInput;
   where?: Maybe<PreimageWhereInput>;
@@ -4697,6 +5543,16 @@ export type MutationDeleteManyTechCommitteeProposalArgumentsArgs = {
 
 export type MutationDeleteManyTechCommitteeProposalStatusesArgs = {
   where?: Maybe<TechCommitteeProposalStatusWhereInput>;
+};
+
+
+export type MutationDeleteManyChildBountiesArgs = {
+  where?: Maybe<ChildBountyWhereInput>;
+};
+
+
+export type MutationDeleteManyChildBountyStatusesArgs = {
+  where?: Maybe<ChildBountyStatusWhereInput>;
 };
 
 
@@ -7136,6 +7992,8 @@ export type Query = {
   techCommitteeProposals: Array<Maybe<TechCommitteeProposal>>;
   techCommitteeProposalArguments: Array<Maybe<TechCommitteeProposalArgument>>;
   techCommitteeProposalStatuses: Array<Maybe<TechCommitteeProposalStatus>>;
+  childBounties: Array<Maybe<ChildBounty>>;
+  childBountyStatuses: Array<Maybe<ChildBountyStatus>>;
   preimages: Array<Maybe<Preimage>>;
   blockNumbers: Array<Maybe<BlockNumber>>;
   sessions: Array<Maybe<Session>>;
@@ -7169,6 +8027,8 @@ export type Query = {
   techCommitteeProposal?: Maybe<TechCommitteeProposal>;
   techCommitteeProposalArgument?: Maybe<TechCommitteeProposalArgument>;
   techCommitteeProposalStatus?: Maybe<TechCommitteeProposalStatus>;
+  childBounty?: Maybe<ChildBounty>;
+  childBountyStatus?: Maybe<ChildBountyStatus>;
   preimage?: Maybe<Preimage>;
   blockNumber?: Maybe<BlockNumber>;
   session?: Maybe<Session>;
@@ -7202,6 +8062,8 @@ export type Query = {
   techCommitteeProposalsConnection: TechCommitteeProposalConnection;
   techCommitteeProposalArgumentsConnection: TechCommitteeProposalArgumentConnection;
   techCommitteeProposalStatusesConnection: TechCommitteeProposalStatusConnection;
+  childBountiesConnection: ChildBountyConnection;
+  childBountyStatusesConnection: ChildBountyStatusConnection;
   preimagesConnection: PreimageConnection;
   blockNumbersConnection: BlockNumberConnection;
   sessionsConnection: SessionConnection;
@@ -7540,6 +8402,28 @@ export type QueryTechCommitteeProposalStatusesArgs = {
 };
 
 
+export type QueryChildBountiesArgs = {
+  where?: Maybe<ChildBountyWhereInput>;
+  orderBy?: Maybe<ChildBountyOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryChildBountyStatusesArgs = {
+  where?: Maybe<ChildBountyStatusWhereInput>;
+  orderBy?: Maybe<ChildBountyStatusOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
 export type QueryPreimagesArgs = {
   where?: Maybe<PreimageWhereInput>;
   orderBy?: Maybe<PreimageOrderByInput>;
@@ -7720,6 +8604,16 @@ export type QueryTechCommitteeProposalArgumentArgs = {
 
 export type QueryTechCommitteeProposalStatusArgs = {
   where: TechCommitteeProposalStatusWhereUniqueInput;
+};
+
+
+export type QueryChildBountyArgs = {
+  where: ChildBountyWhereUniqueInput;
+};
+
+
+export type QueryChildBountyStatusArgs = {
+  where: ChildBountyStatusWhereUniqueInput;
 };
 
 
@@ -8060,6 +8954,28 @@ export type QueryTechCommitteeProposalArgumentsConnectionArgs = {
 export type QueryTechCommitteeProposalStatusesConnectionArgs = {
   where?: Maybe<TechCommitteeProposalStatusWhereInput>;
   orderBy?: Maybe<TechCommitteeProposalStatusOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryChildBountiesConnectionArgs = {
+  where?: Maybe<ChildBountyWhereInput>;
+  orderBy?: Maybe<ChildBountyOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryChildBountyStatusesConnectionArgs = {
+  where?: Maybe<ChildBountyStatusWhereInput>;
+  orderBy?: Maybe<ChildBountyStatusOrderByInput>;
   skip?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
   before?: Maybe<Scalars['String']>;
@@ -9466,6 +10382,8 @@ export type Subscription = {
   techCommitteeProposal?: Maybe<TechCommitteeProposalSubscriptionPayload>;
   techCommitteeProposalArgument?: Maybe<TechCommitteeProposalArgumentSubscriptionPayload>;
   techCommitteeProposalStatus?: Maybe<TechCommitteeProposalStatusSubscriptionPayload>;
+  childBounty?: Maybe<ChildBountySubscriptionPayload>;
+  childBountyStatus?: Maybe<ChildBountyStatusSubscriptionPayload>;
   preimage?: Maybe<PreimageSubscriptionPayload>;
   blockNumber?: Maybe<BlockNumberSubscriptionPayload>;
   session?: Maybe<SessionSubscriptionPayload>;
@@ -9619,6 +10537,16 @@ export type SubscriptionTechCommitteeProposalArgumentArgs = {
 
 export type SubscriptionTechCommitteeProposalStatusArgs = {
   where?: Maybe<TechCommitteeProposalStatusSubscriptionWhereInput>;
+};
+
+
+export type SubscriptionChildBountyArgs = {
+  where?: Maybe<ChildBountySubscriptionWhereInput>;
+};
+
+
+export type SubscriptionChildBountyStatusArgs = {
+  where?: Maybe<ChildBountyStatusSubscriptionWhereInput>;
 };
 
 
@@ -12598,6 +13526,24 @@ export type OnchainBountyFragment = (
   & Pick<Bounty, 'proposer' | 'id' | 'bountyId'>
 );
 
+export type GetOnchainChildBountiesQueryVariables = {
+  startBlock: Scalars['Int'];
+};
+
+
+export type GetOnchainChildBountiesQuery = (
+  { __typename?: 'Query' }
+  & { childBounties: Array<Maybe<(
+    { __typename?: 'ChildBounty' }
+    & OnchainChildBountyFragment
+  )>> }
+);
+
+export type OnchainChildBountyFragment = (
+  { __typename?: 'ChildBounty' }
+  & Pick<ChildBounty, 'proposer' | 'id' | 'childBountyId'>
+);
+
 export type GetOnchainTechCommitteeProposalsQueryVariables = {
   startBlock: Scalars['Int'];
 };
@@ -12682,6 +13628,13 @@ export const OnchainBountyFragmentDoc = gql`
   bountyId
 }
     `;
+export const OnchainChildBountyFragmentDoc = gql`
+    fragment onchainChildBounty on ChildBounty {
+  proposer
+  id
+  childBountyId
+}
+    `;
 export const OnchainTechCommitteeProposalFragmentDoc = gql`
     fragment onchainTechCommitteeProposal on TechCommitteeProposal {
   author
@@ -12748,6 +13701,13 @@ export const GetOnchainBountiesDocument = gql`
   }
 }
     ${OnchainBountyFragmentDoc}`;
+export const GetOnchainChildBountiesDocument = gql`
+    query getOnchainChildBounties($startBlock: Int!) {
+  childBounties(where: {childBountyStatus_some: {AND: [{status: "Added"}, {blockNumber: {number_gte: $startBlock}}]}}) {
+    ...onchainChildBounty
+  }
+}
+    ${OnchainChildBountyFragmentDoc}`;
 export const GetOnchainTechCommitteeProposalsDocument = gql`
     query getOnchainTechCommitteeProposals($startBlock: Int!) {
   techCommitteeProposals(where: {status_some: {AND: [{status: "Proposed"}, {blockNumber: {number_gte: $startBlock}}]}}) {
@@ -12789,6 +13749,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getOnchainBounties(variables: GetOnchainBountiesQueryVariables): Promise<GetOnchainBountiesQuery> {
       return withWrapper(() => client.request<GetOnchainBountiesQuery>(print(GetOnchainBountiesDocument), variables));
+    },
+    getOnchainChildBounties(variables: GetOnchainChildBountiesQueryVariables): Promise<GetOnchainChildBountiesQuery> {
+      return withWrapper(() => client.request<GetOnchainChildBountiesQuery>(print(GetOnchainChildBountiesDocument), variables));
     },
     getOnchainTechCommitteeProposals(variables: GetOnchainTechCommitteeProposalsQueryVariables): Promise<GetOnchainTechCommitteeProposalsQuery> {
       return withWrapper(() => client.request<GetOnchainTechCommitteeProposalsQuery>(print(GetOnchainTechCommitteeProposalsDocument), variables));

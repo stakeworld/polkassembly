@@ -15,6 +15,8 @@ export type Scalars = {
   DateTime: any;
   /** Raw JSON value */
   Json: any;
+  /** The `Long` scalar type represents non-fractional signed whole numeric values. Long can represent values between -(2^63) and 2^63 - 1. */
+  Long: any;
   /** The `Upload` scalar type represents a file upload. */
   Upload: any;
   bpchar: any;
@@ -70,6 +72,16 @@ export type AggregateBounty = {
 
 export type AggregateBountyStatus = {
   __typename?: 'AggregateBountyStatus';
+  count: Scalars['Int'];
+};
+
+export type AggregateChildBounty = {
+  __typename?: 'AggregateChildBounty';
+  count: Scalars['Int'];
+};
+
+export type AggregateChildBountyStatus = {
+  __typename?: 'AggregateChildBountyStatus';
   count: Scalars['Int'];
 };
 
@@ -218,6 +230,12 @@ export type AggregateValidator = {
   count: Scalars['Int'];
 };
 
+export type BatchPayload = {
+  __typename?: 'BatchPayload';
+  /** The number of nodes that have been affected by the Batch operation. */
+  count: Scalars['Long'];
+};
+
 export type BlockIndex = Node & {
   __typename?: 'BlockIndex';
   id: Scalars['ID'];
@@ -234,6 +252,13 @@ export type BlockIndexConnection = {
   edges: Array<Maybe<BlockIndexEdge>>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
+};
+
+export type BlockIndexCreateInput = {
+  id?: Maybe<Scalars['ID']>;
+  identifier: Scalars['String'];
+  index: Scalars['Int'];
+  startFrom: Scalars['Int'];
 };
 
 /** An edge in a connection. */
@@ -288,6 +313,18 @@ export type BlockIndexSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type BlockIndexUpdateInput = {
+  identifier?: Maybe<Scalars['String']>;
+  index?: Maybe<Scalars['Int']>;
+  startFrom?: Maybe<Scalars['Int']>;
+};
+
+export type BlockIndexUpdateManyMutationInput = {
+  identifier?: Maybe<Scalars['String']>;
+  index?: Maybe<Scalars['Int']>;
+  startFrom?: Maybe<Scalars['Int']>;
 };
 
 export type BlockIndexWhereInput = {
@@ -407,6 +444,19 @@ export type BlockNumberConnection = {
   pageInfo: PageInfo;
 };
 
+export type BlockNumberCreateInput = {
+  authoredBy: Scalars['String'];
+  hash: Scalars['String'];
+  id?: Maybe<Scalars['ID']>;
+  number: Scalars['Int'];
+  startDateTime: Scalars['DateTime'];
+};
+
+export type BlockNumberCreateOneInput = {
+  connect?: Maybe<BlockNumberWhereUniqueInput>;
+  create?: Maybe<BlockNumberCreateInput>;
+};
+
 /** An edge in a connection. */
 export type BlockNumberEdge = {
   __typename?: 'BlockNumberEdge';
@@ -462,6 +512,39 @@ export type BlockNumberSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type BlockNumberUpdateDataInput = {
+  authoredBy?: Maybe<Scalars['String']>;
+  hash?: Maybe<Scalars['String']>;
+  number?: Maybe<Scalars['Int']>;
+  startDateTime?: Maybe<Scalars['DateTime']>;
+};
+
+export type BlockNumberUpdateInput = {
+  authoredBy?: Maybe<Scalars['String']>;
+  hash?: Maybe<Scalars['String']>;
+  number?: Maybe<Scalars['Int']>;
+  startDateTime?: Maybe<Scalars['DateTime']>;
+};
+
+export type BlockNumberUpdateManyMutationInput = {
+  authoredBy?: Maybe<Scalars['String']>;
+  hash?: Maybe<Scalars['String']>;
+  number?: Maybe<Scalars['Int']>;
+  startDateTime?: Maybe<Scalars['DateTime']>;
+};
+
+export type BlockNumberUpdateOneRequiredInput = {
+  connect?: Maybe<BlockNumberWhereUniqueInput>;
+  create?: Maybe<BlockNumberCreateInput>;
+  update?: Maybe<BlockNumberUpdateDataInput>;
+  upsert?: Maybe<BlockNumberUpsertNestedInput>;
+};
+
+export type BlockNumberUpsertNestedInput = {
+  create: BlockNumberCreateInput;
+  update: BlockNumberUpdateDataInput;
 };
 
 export type BlockNumberWhereInput = {
@@ -638,6 +721,34 @@ export type BountyConnection = {
   pageInfo: PageInfo;
 };
 
+export type BountyCreateInput = {
+  beneficiary?: Maybe<Scalars['String']>;
+  bond?: Maybe<Scalars['String']>;
+  bountyId: Scalars['Int'];
+  bountyStatus?: Maybe<BountyStatusCreateManyWithoutBountyInput>;
+  curator?: Maybe<Scalars['String']>;
+  curatorDeposit?: Maybe<Scalars['String']>;
+  fee?: Maybe<Scalars['String']>;
+  proposer: Scalars['String'];
+  value: Scalars['String'];
+};
+
+export type BountyCreateOneWithoutBountyStatusInput = {
+  connect?: Maybe<BountyWhereUniqueInput>;
+  create?: Maybe<BountyCreateWithoutBountyStatusInput>;
+};
+
+export type BountyCreateWithoutBountyStatusInput = {
+  beneficiary?: Maybe<Scalars['String']>;
+  bond?: Maybe<Scalars['String']>;
+  bountyId: Scalars['Int'];
+  curator?: Maybe<Scalars['String']>;
+  curatorDeposit?: Maybe<Scalars['String']>;
+  fee?: Maybe<Scalars['String']>;
+  proposer: Scalars['String'];
+  value: Scalars['String'];
+};
+
 /** An edge in a connection. */
 export type BountyEdge = {
   __typename?: 'BountyEdge';
@@ -700,6 +811,26 @@ export type BountyStatusConnection = {
   pageInfo: PageInfo;
 };
 
+export type BountyStatusCreateInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  bounty: BountyCreateOneWithoutBountyStatusInput;
+  id?: Maybe<Scalars['ID']>;
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+};
+
+export type BountyStatusCreateManyWithoutBountyInput = {
+  connect?: Maybe<Array<BountyStatusWhereUniqueInput>>;
+  create?: Maybe<Array<BountyStatusCreateWithoutBountyInput>>;
+};
+
+export type BountyStatusCreateWithoutBountyInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+};
+
 /** An edge in a connection. */
 export type BountyStatusEdge = {
   __typename?: 'BountyStatusEdge';
@@ -723,6 +854,96 @@ export type BountyStatusPreviousValues = {
   id: Scalars['ID'];
   status: Scalars['String'];
   uniqueStatus: Scalars['String'];
+};
+
+export type BountyStatusScalarWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<BountyStatusScalarWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<BountyStatusScalarWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<BountyStatusScalarWhereInput>>;
+  id?: Maybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<Scalars['ID']>;
+  status?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  status_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  status_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  status_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  status_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  status_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  status_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  status_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  status_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  status_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  status_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  status_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  status_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  status_starts_with?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  uniqueStatus_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  uniqueStatus_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  uniqueStatus_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  uniqueStatus_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  uniqueStatus_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  uniqueStatus_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  uniqueStatus_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  uniqueStatus_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  uniqueStatus_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  uniqueStatus_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  uniqueStatus_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  uniqueStatus_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  uniqueStatus_starts_with?: Maybe<Scalars['String']>;
 };
 
 export type BountyStatusSubscriptionPayload = {
@@ -749,6 +970,57 @@ export type BountyStatusSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type BountyStatusUpdateInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  bounty?: Maybe<BountyUpdateOneRequiredWithoutBountyStatusInput>;
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type BountyStatusUpdateManyDataInput = {
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type BountyStatusUpdateManyMutationInput = {
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type BountyStatusUpdateManyWithWhereNestedInput = {
+  data: BountyStatusUpdateManyDataInput;
+  where: BountyStatusScalarWhereInput;
+};
+
+export type BountyStatusUpdateManyWithoutBountyInput = {
+  connect?: Maybe<Array<BountyStatusWhereUniqueInput>>;
+  create?: Maybe<Array<BountyStatusCreateWithoutBountyInput>>;
+  delete?: Maybe<Array<BountyStatusWhereUniqueInput>>;
+  deleteMany?: Maybe<Array<BountyStatusScalarWhereInput>>;
+  disconnect?: Maybe<Array<BountyStatusWhereUniqueInput>>;
+  set?: Maybe<Array<BountyStatusWhereUniqueInput>>;
+  update?: Maybe<Array<BountyStatusUpdateWithWhereUniqueWithoutBountyInput>>;
+  updateMany?: Maybe<Array<BountyStatusUpdateManyWithWhereNestedInput>>;
+  upsert?: Maybe<Array<BountyStatusUpsertWithWhereUniqueWithoutBountyInput>>;
+};
+
+export type BountyStatusUpdateWithWhereUniqueWithoutBountyInput = {
+  data: BountyStatusUpdateWithoutBountyDataInput;
+  where: BountyStatusWhereUniqueInput;
+};
+
+export type BountyStatusUpdateWithoutBountyDataInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type BountyStatusUpsertWithWhereUniqueWithoutBountyInput = {
+  create: BountyStatusCreateWithoutBountyInput;
+  update: BountyStatusUpdateWithoutBountyDataInput;
+  where: BountyStatusWhereUniqueInput;
 };
 
 export type BountyStatusWhereInput = {
@@ -872,6 +1144,52 @@ export type BountySubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type BountyUpdateInput = {
+  beneficiary?: Maybe<Scalars['String']>;
+  bond?: Maybe<Scalars['String']>;
+  bountyId?: Maybe<Scalars['Int']>;
+  bountyStatus?: Maybe<BountyStatusUpdateManyWithoutBountyInput>;
+  curator?: Maybe<Scalars['String']>;
+  curatorDeposit?: Maybe<Scalars['String']>;
+  fee?: Maybe<Scalars['String']>;
+  proposer?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type BountyUpdateManyMutationInput = {
+  beneficiary?: Maybe<Scalars['String']>;
+  bond?: Maybe<Scalars['String']>;
+  bountyId?: Maybe<Scalars['Int']>;
+  curator?: Maybe<Scalars['String']>;
+  curatorDeposit?: Maybe<Scalars['String']>;
+  fee?: Maybe<Scalars['String']>;
+  proposer?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type BountyUpdateOneRequiredWithoutBountyStatusInput = {
+  connect?: Maybe<BountyWhereUniqueInput>;
+  create?: Maybe<BountyCreateWithoutBountyStatusInput>;
+  update?: Maybe<BountyUpdateWithoutBountyStatusDataInput>;
+  upsert?: Maybe<BountyUpsertWithoutBountyStatusInput>;
+};
+
+export type BountyUpdateWithoutBountyStatusDataInput = {
+  beneficiary?: Maybe<Scalars['String']>;
+  bond?: Maybe<Scalars['String']>;
+  bountyId?: Maybe<Scalars['Int']>;
+  curator?: Maybe<Scalars['String']>;
+  curatorDeposit?: Maybe<Scalars['String']>;
+  fee?: Maybe<Scalars['String']>;
+  proposer?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type BountyUpsertWithoutBountyStatusInput = {
+  create: BountyCreateWithoutBountyStatusInput;
+  update: BountyUpdateWithoutBountyStatusDataInput;
 };
 
 export type BountyWhereInput = {
@@ -1351,6 +1669,1017 @@ export type ChangeResponse = {
   token?: Maybe<Scalars['String']>;
 };
 
+export type ChildBounty = {
+  __typename?: 'ChildBounty';
+  beneficiary?: Maybe<Scalars['String']>;
+  childBountyId: Scalars['Int'];
+  childBountyStatus?: Maybe<Array<ChildBountyStatus>>;
+  curator?: Maybe<Scalars['String']>;
+  curatorDeposit?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  fee?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  parentBountyId: Scalars['Int'];
+  proposer: Scalars['String'];
+  value: Scalars['String'];
+};
+
+
+export type ChildBountyChildBountyStatusArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<ChildBountyStatusOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  where?: Maybe<ChildBountyStatusWhereInput>;
+};
+
+/** A connection to a list of items. */
+export type ChildBountyConnection = {
+  __typename?: 'ChildBountyConnection';
+  aggregate: AggregateChildBounty;
+  /** A list of edges. */
+  edges: Array<Maybe<ChildBountyEdge>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+export type ChildBountyCreateInput = {
+  beneficiary?: Maybe<Scalars['String']>;
+  childBountyId: Scalars['Int'];
+  childBountyStatus?: Maybe<ChildBountyStatusCreateManyWithoutChildBountyInput>;
+  curator?: Maybe<Scalars['String']>;
+  curatorDeposit?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  fee?: Maybe<Scalars['String']>;
+  parentBountyId: Scalars['Int'];
+  proposer: Scalars['String'];
+  value: Scalars['String'];
+};
+
+export type ChildBountyCreateOneWithoutChildBountyStatusInput = {
+  connect?: Maybe<ChildBountyWhereUniqueInput>;
+  create?: Maybe<ChildBountyCreateWithoutChildBountyStatusInput>;
+};
+
+export type ChildBountyCreateWithoutChildBountyStatusInput = {
+  beneficiary?: Maybe<Scalars['String']>;
+  childBountyId: Scalars['Int'];
+  curator?: Maybe<Scalars['String']>;
+  curatorDeposit?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  fee?: Maybe<Scalars['String']>;
+  parentBountyId: Scalars['Int'];
+  proposer: Scalars['String'];
+  value: Scalars['String'];
+};
+
+/** An edge in a connection. */
+export type ChildBountyEdge = {
+  __typename?: 'ChildBountyEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  node: ChildBounty;
+};
+
+export enum ChildBountyOrderByInput {
+  BeneficiaryAsc = 'beneficiary_ASC',
+  BeneficiaryDesc = 'beneficiary_DESC',
+  ChildBountyIdAsc = 'childBountyId_ASC',
+  ChildBountyIdDesc = 'childBountyId_DESC',
+  CuratorDepositAsc = 'curatorDeposit_ASC',
+  CuratorDepositDesc = 'curatorDeposit_DESC',
+  CuratorAsc = 'curator_ASC',
+  CuratorDesc = 'curator_DESC',
+  DescriptionAsc = 'description_ASC',
+  DescriptionDesc = 'description_DESC',
+  FeeAsc = 'fee_ASC',
+  FeeDesc = 'fee_DESC',
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  ParentBountyIdAsc = 'parentBountyId_ASC',
+  ParentBountyIdDesc = 'parentBountyId_DESC',
+  ProposerAsc = 'proposer_ASC',
+  ProposerDesc = 'proposer_DESC',
+  ValueAsc = 'value_ASC',
+  ValueDesc = 'value_DESC'
+}
+
+export type ChildBountyPreviousValues = {
+  __typename?: 'ChildBountyPreviousValues';
+  beneficiary?: Maybe<Scalars['String']>;
+  childBountyId: Scalars['Int'];
+  curator?: Maybe<Scalars['String']>;
+  curatorDeposit?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  fee?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  parentBountyId: Scalars['Int'];
+  proposer: Scalars['String'];
+  value: Scalars['String'];
+};
+
+export type ChildBountyStatus = Node & {
+  __typename?: 'ChildBountyStatus';
+  blockNumber: BlockNumber;
+  childBounty: ChildBounty;
+  id: Scalars['ID'];
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+};
+
+/** A connection to a list of items. */
+export type ChildBountyStatusConnection = {
+  __typename?: 'ChildBountyStatusConnection';
+  aggregate: AggregateChildBountyStatus;
+  /** A list of edges. */
+  edges: Array<Maybe<ChildBountyStatusEdge>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+export type ChildBountyStatusCreateInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  childBounty: ChildBountyCreateOneWithoutChildBountyStatusInput;
+  id?: Maybe<Scalars['ID']>;
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+};
+
+export type ChildBountyStatusCreateManyWithoutChildBountyInput = {
+  connect?: Maybe<Array<ChildBountyStatusWhereUniqueInput>>;
+  create?: Maybe<Array<ChildBountyStatusCreateWithoutChildBountyInput>>;
+};
+
+export type ChildBountyStatusCreateWithoutChildBountyInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+};
+
+/** An edge in a connection. */
+export type ChildBountyStatusEdge = {
+  __typename?: 'ChildBountyStatusEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  node: ChildBountyStatus;
+};
+
+export enum ChildBountyStatusOrderByInput {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  StatusAsc = 'status_ASC',
+  StatusDesc = 'status_DESC',
+  UniqueStatusAsc = 'uniqueStatus_ASC',
+  UniqueStatusDesc = 'uniqueStatus_DESC'
+}
+
+export type ChildBountyStatusPreviousValues = {
+  __typename?: 'ChildBountyStatusPreviousValues';
+  id: Scalars['ID'];
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+};
+
+export type ChildBountyStatusScalarWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<ChildBountyStatusScalarWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<ChildBountyStatusScalarWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<ChildBountyStatusScalarWhereInput>>;
+  id?: Maybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<Scalars['ID']>;
+  status?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  status_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  status_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  status_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  status_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  status_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  status_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  status_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  status_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  status_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  status_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  status_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  status_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  status_starts_with?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  uniqueStatus_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  uniqueStatus_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  uniqueStatus_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  uniqueStatus_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  uniqueStatus_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  uniqueStatus_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  uniqueStatus_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  uniqueStatus_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  uniqueStatus_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  uniqueStatus_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  uniqueStatus_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  uniqueStatus_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  uniqueStatus_starts_with?: Maybe<Scalars['String']>;
+};
+
+export type ChildBountyStatusSubscriptionPayload = {
+  __typename?: 'ChildBountyStatusSubscriptionPayload';
+  mutation: MutationType;
+  node?: Maybe<ChildBountyStatus>;
+  previousValues?: Maybe<ChildBountyStatusPreviousValues>;
+  updatedFields?: Maybe<Array<Scalars['String']>>;
+};
+
+export type ChildBountyStatusSubscriptionWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<ChildBountyStatusSubscriptionWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<ChildBountyStatusSubscriptionWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<ChildBountyStatusSubscriptionWhereInput>>;
+  /** The subscription event gets dispatched when it's listed in mutation_in */
+  mutation_in?: Maybe<Array<MutationType>>;
+  node?: Maybe<ChildBountyStatusWhereInput>;
+  /** The subscription event gets only dispatched when one of the updated fields names is included in this list */
+  updatedFields_contains?: Maybe<Scalars['String']>;
+  /** The subscription event gets only dispatched when all of the field names included in this list have been updated */
+  updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
+  /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
+  updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type ChildBountyStatusUpdateInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  childBounty?: Maybe<ChildBountyUpdateOneRequiredWithoutChildBountyStatusInput>;
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type ChildBountyStatusUpdateManyDataInput = {
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type ChildBountyStatusUpdateManyMutationInput = {
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type ChildBountyStatusUpdateManyWithWhereNestedInput = {
+  data: ChildBountyStatusUpdateManyDataInput;
+  where: ChildBountyStatusScalarWhereInput;
+};
+
+export type ChildBountyStatusUpdateManyWithoutChildBountyInput = {
+  connect?: Maybe<Array<ChildBountyStatusWhereUniqueInput>>;
+  create?: Maybe<Array<ChildBountyStatusCreateWithoutChildBountyInput>>;
+  delete?: Maybe<Array<ChildBountyStatusWhereUniqueInput>>;
+  deleteMany?: Maybe<Array<ChildBountyStatusScalarWhereInput>>;
+  disconnect?: Maybe<Array<ChildBountyStatusWhereUniqueInput>>;
+  set?: Maybe<Array<ChildBountyStatusWhereUniqueInput>>;
+  update?: Maybe<Array<ChildBountyStatusUpdateWithWhereUniqueWithoutChildBountyInput>>;
+  updateMany?: Maybe<Array<ChildBountyStatusUpdateManyWithWhereNestedInput>>;
+  upsert?: Maybe<Array<ChildBountyStatusUpsertWithWhereUniqueWithoutChildBountyInput>>;
+};
+
+export type ChildBountyStatusUpdateWithWhereUniqueWithoutChildBountyInput = {
+  data: ChildBountyStatusUpdateWithoutChildBountyDataInput;
+  where: ChildBountyStatusWhereUniqueInput;
+};
+
+export type ChildBountyStatusUpdateWithoutChildBountyDataInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type ChildBountyStatusUpsertWithWhereUniqueWithoutChildBountyInput = {
+  create: ChildBountyStatusCreateWithoutChildBountyInput;
+  update: ChildBountyStatusUpdateWithoutChildBountyDataInput;
+  where: ChildBountyStatusWhereUniqueInput;
+};
+
+export type ChildBountyStatusWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<ChildBountyStatusWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<ChildBountyStatusWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<ChildBountyStatusWhereInput>>;
+  blockNumber?: Maybe<BlockNumberWhereInput>;
+  childBounty?: Maybe<ChildBountyWhereInput>;
+  id?: Maybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<Scalars['ID']>;
+  status?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  status_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  status_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  status_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  status_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  status_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  status_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  status_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  status_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  status_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  status_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  status_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  status_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  status_starts_with?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  uniqueStatus_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  uniqueStatus_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  uniqueStatus_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  uniqueStatus_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  uniqueStatus_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  uniqueStatus_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  uniqueStatus_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  uniqueStatus_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  uniqueStatus_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  uniqueStatus_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  uniqueStatus_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  uniqueStatus_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  uniqueStatus_starts_with?: Maybe<Scalars['String']>;
+};
+
+export type ChildBountyStatusWhereUniqueInput = {
+  id?: Maybe<Scalars['ID']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type ChildBountySubscriptionPayload = {
+  __typename?: 'ChildBountySubscriptionPayload';
+  mutation: MutationType;
+  node?: Maybe<ChildBounty>;
+  previousValues?: Maybe<ChildBountyPreviousValues>;
+  updatedFields?: Maybe<Array<Scalars['String']>>;
+};
+
+export type ChildBountySubscriptionWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<ChildBountySubscriptionWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<ChildBountySubscriptionWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<ChildBountySubscriptionWhereInput>>;
+  /** The subscription event gets dispatched when it's listed in mutation_in */
+  mutation_in?: Maybe<Array<MutationType>>;
+  node?: Maybe<ChildBountyWhereInput>;
+  /** The subscription event gets only dispatched when one of the updated fields names is included in this list */
+  updatedFields_contains?: Maybe<Scalars['String']>;
+  /** The subscription event gets only dispatched when all of the field names included in this list have been updated */
+  updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
+  /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
+  updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type ChildBountyUpdateInput = {
+  beneficiary?: Maybe<Scalars['String']>;
+  childBountyId?: Maybe<Scalars['Int']>;
+  childBountyStatus?: Maybe<ChildBountyStatusUpdateManyWithoutChildBountyInput>;
+  curator?: Maybe<Scalars['String']>;
+  curatorDeposit?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  fee?: Maybe<Scalars['String']>;
+  parentBountyId?: Maybe<Scalars['Int']>;
+  proposer?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type ChildBountyUpdateManyMutationInput = {
+  beneficiary?: Maybe<Scalars['String']>;
+  childBountyId?: Maybe<Scalars['Int']>;
+  curator?: Maybe<Scalars['String']>;
+  curatorDeposit?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  fee?: Maybe<Scalars['String']>;
+  parentBountyId?: Maybe<Scalars['Int']>;
+  proposer?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type ChildBountyUpdateOneRequiredWithoutChildBountyStatusInput = {
+  connect?: Maybe<ChildBountyWhereUniqueInput>;
+  create?: Maybe<ChildBountyCreateWithoutChildBountyStatusInput>;
+  update?: Maybe<ChildBountyUpdateWithoutChildBountyStatusDataInput>;
+  upsert?: Maybe<ChildBountyUpsertWithoutChildBountyStatusInput>;
+};
+
+export type ChildBountyUpdateWithoutChildBountyStatusDataInput = {
+  beneficiary?: Maybe<Scalars['String']>;
+  childBountyId?: Maybe<Scalars['Int']>;
+  curator?: Maybe<Scalars['String']>;
+  curatorDeposit?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  fee?: Maybe<Scalars['String']>;
+  parentBountyId?: Maybe<Scalars['Int']>;
+  proposer?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type ChildBountyUpsertWithoutChildBountyStatusInput = {
+  create: ChildBountyCreateWithoutChildBountyStatusInput;
+  update: ChildBountyUpdateWithoutChildBountyStatusDataInput;
+};
+
+export type ChildBountyWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<ChildBountyWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<ChildBountyWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<ChildBountyWhereInput>>;
+  beneficiary?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  beneficiary_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  beneficiary_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  beneficiary_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  beneficiary_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  beneficiary_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  beneficiary_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  beneficiary_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  beneficiary_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  beneficiary_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  beneficiary_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  beneficiary_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  beneficiary_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  beneficiary_starts_with?: Maybe<Scalars['String']>;
+  childBountyId?: Maybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  childBountyId_gt?: Maybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  childBountyId_gte?: Maybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  childBountyId_in?: Maybe<Array<Scalars['Int']>>;
+  /** All values less than the given value. */
+  childBountyId_lt?: Maybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  childBountyId_lte?: Maybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  childBountyId_not?: Maybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  childBountyId_not_in?: Maybe<Array<Scalars['Int']>>;
+  childBountyStatus_every?: Maybe<ChildBountyStatusWhereInput>;
+  childBountyStatus_none?: Maybe<ChildBountyStatusWhereInput>;
+  childBountyStatus_some?: Maybe<ChildBountyStatusWhereInput>;
+  curator?: Maybe<Scalars['String']>;
+  curatorDeposit?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  curatorDeposit_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  curatorDeposit_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  curatorDeposit_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  curatorDeposit_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  curatorDeposit_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  curatorDeposit_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  curatorDeposit_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  curatorDeposit_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  curatorDeposit_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  curatorDeposit_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  curatorDeposit_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  curatorDeposit_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  curatorDeposit_starts_with?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  curator_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  curator_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  curator_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  curator_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  curator_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  curator_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  curator_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  curator_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  curator_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  curator_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  curator_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  curator_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  curator_starts_with?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  description_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  description_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  description_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  description_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  description_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  description_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  description_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  description_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  description_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  description_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  description_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  description_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  description_starts_with?: Maybe<Scalars['String']>;
+  fee?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  fee_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  fee_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  fee_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  fee_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  fee_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  fee_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  fee_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  fee_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  fee_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  fee_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  fee_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  fee_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  fee_starts_with?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['Int']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['Int']>>;
+  parentBountyId?: Maybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  parentBountyId_gt?: Maybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  parentBountyId_gte?: Maybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  parentBountyId_in?: Maybe<Array<Scalars['Int']>>;
+  /** All values less than the given value. */
+  parentBountyId_lt?: Maybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  parentBountyId_lte?: Maybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  parentBountyId_not?: Maybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  parentBountyId_not_in?: Maybe<Array<Scalars['Int']>>;
+  proposer?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  proposer_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  proposer_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  proposer_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  proposer_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  proposer_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  proposer_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  proposer_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  proposer_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  proposer_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  proposer_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  proposer_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  proposer_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  proposer_starts_with?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  value_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  value_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  value_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  value_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  value_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  value_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  value_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  value_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  value_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  value_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  value_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  value_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  value_starts_with?: Maybe<Scalars['String']>;
+};
+
+export type ChildBountyWhereInput_Remote_Rel_Public_Onchain_Linksonchain_Child_Bounty = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<ChildBountyWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<ChildBountyWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<ChildBountyWhereInput>>;
+  beneficiary?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  beneficiary_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  beneficiary_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  beneficiary_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  beneficiary_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  beneficiary_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  beneficiary_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  beneficiary_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  beneficiary_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  beneficiary_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  beneficiary_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  beneficiary_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  beneficiary_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  beneficiary_starts_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  childBountyId_gt?: Maybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  childBountyId_gte?: Maybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  childBountyId_in?: Maybe<Array<Scalars['Int']>>;
+  /** All values less than the given value. */
+  childBountyId_lt?: Maybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  childBountyId_lte?: Maybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  childBountyId_not?: Maybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  childBountyId_not_in?: Maybe<Array<Scalars['Int']>>;
+  childBountyStatus_every?: Maybe<ChildBountyStatusWhereInput>;
+  childBountyStatus_none?: Maybe<ChildBountyStatusWhereInput>;
+  childBountyStatus_some?: Maybe<ChildBountyStatusWhereInput>;
+  curator?: Maybe<Scalars['String']>;
+  curatorDeposit?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  curatorDeposit_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  curatorDeposit_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  curatorDeposit_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  curatorDeposit_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  curatorDeposit_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  curatorDeposit_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  curatorDeposit_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  curatorDeposit_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  curatorDeposit_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  curatorDeposit_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  curatorDeposit_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  curatorDeposit_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  curatorDeposit_starts_with?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  curator_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  curator_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  curator_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  curator_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  curator_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  curator_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  curator_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  curator_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  curator_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  curator_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  curator_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  curator_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  curator_starts_with?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  description_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  description_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  description_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  description_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  description_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  description_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  description_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  description_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  description_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  description_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  description_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  description_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  description_starts_with?: Maybe<Scalars['String']>;
+  fee?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  fee_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  fee_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  fee_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  fee_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  fee_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  fee_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  fee_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  fee_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  fee_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  fee_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  fee_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  fee_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  fee_starts_with?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['Int']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['Int']>>;
+  parentBountyId?: Maybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  parentBountyId_gt?: Maybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  parentBountyId_gte?: Maybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  parentBountyId_in?: Maybe<Array<Scalars['Int']>>;
+  /** All values less than the given value. */
+  parentBountyId_lt?: Maybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  parentBountyId_lte?: Maybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  parentBountyId_not?: Maybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  parentBountyId_not_in?: Maybe<Array<Scalars['Int']>>;
+  proposer?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  proposer_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  proposer_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  proposer_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  proposer_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  proposer_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  proposer_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  proposer_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  proposer_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  proposer_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  proposer_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  proposer_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  proposer_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  proposer_starts_with?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  value_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  value_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  value_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  value_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  value_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  value_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  value_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  value_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  value_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  value_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  value_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  value_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  value_starts_with?: Maybe<Scalars['String']>;
+};
+
+export type ChildBountyWhereUniqueInput = {
+  childBountyId?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+};
+
 export type Council = Node & {
   __typename?: 'Council';
   blockNumber: BlockNumber;
@@ -1377,6 +2706,22 @@ export type CouncilConnection = {
   edges: Array<Maybe<CouncilEdge>>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
+};
+
+export type CouncilCreateInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  members?: Maybe<CouncilMemberCreateManyWithoutCouncilsInput>;
+};
+
+export type CouncilCreateManyWithoutMembersInput = {
+  connect?: Maybe<Array<CouncilWhereUniqueInput>>;
+  create?: Maybe<Array<CouncilCreateWithoutMembersInput>>;
+};
+
+export type CouncilCreateWithoutMembersInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
 };
 
 /** An edge in a connection. */
@@ -1416,6 +2761,22 @@ export type CouncilMemberConnection = {
   pageInfo: PageInfo;
 };
 
+export type CouncilMemberCreateInput = {
+  address: Scalars['String'];
+  councils?: Maybe<CouncilCreateManyWithoutMembersInput>;
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type CouncilMemberCreateManyWithoutCouncilsInput = {
+  connect?: Maybe<Array<CouncilMemberWhereUniqueInput>>;
+  create?: Maybe<Array<CouncilMemberCreateWithoutCouncilsInput>>;
+};
+
+export type CouncilMemberCreateWithoutCouncilsInput = {
+  address: Scalars['String'];
+  id?: Maybe<Scalars['ID']>;
+};
+
 /** An edge in a connection. */
 export type CouncilMemberEdge = {
   __typename?: 'CouncilMemberEdge';
@@ -1436,6 +2797,69 @@ export type CouncilMemberPreviousValues = {
   __typename?: 'CouncilMemberPreviousValues';
   address: Scalars['String'];
   id: Scalars['ID'];
+};
+
+export type CouncilMemberScalarWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<CouncilMemberScalarWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<CouncilMemberScalarWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<CouncilMemberScalarWhereInput>>;
+  address?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  address_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  address_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  address_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  address_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  address_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  address_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  address_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  address_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  address_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  address_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  address_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  address_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  address_starts_with?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<Scalars['ID']>;
 };
 
 export type CouncilMemberSubscriptionPayload = {
@@ -1462,6 +2886,51 @@ export type CouncilMemberSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type CouncilMemberUpdateInput = {
+  address?: Maybe<Scalars['String']>;
+  councils?: Maybe<CouncilUpdateManyWithoutMembersInput>;
+};
+
+export type CouncilMemberUpdateManyDataInput = {
+  address?: Maybe<Scalars['String']>;
+};
+
+export type CouncilMemberUpdateManyMutationInput = {
+  address?: Maybe<Scalars['String']>;
+};
+
+export type CouncilMemberUpdateManyWithWhereNestedInput = {
+  data: CouncilMemberUpdateManyDataInput;
+  where: CouncilMemberScalarWhereInput;
+};
+
+export type CouncilMemberUpdateManyWithoutCouncilsInput = {
+  connect?: Maybe<Array<CouncilMemberWhereUniqueInput>>;
+  create?: Maybe<Array<CouncilMemberCreateWithoutCouncilsInput>>;
+  delete?: Maybe<Array<CouncilMemberWhereUniqueInput>>;
+  deleteMany?: Maybe<Array<CouncilMemberScalarWhereInput>>;
+  disconnect?: Maybe<Array<CouncilMemberWhereUniqueInput>>;
+  set?: Maybe<Array<CouncilMemberWhereUniqueInput>>;
+  update?: Maybe<Array<CouncilMemberUpdateWithWhereUniqueWithoutCouncilsInput>>;
+  updateMany?: Maybe<Array<CouncilMemberUpdateManyWithWhereNestedInput>>;
+  upsert?: Maybe<Array<CouncilMemberUpsertWithWhereUniqueWithoutCouncilsInput>>;
+};
+
+export type CouncilMemberUpdateWithWhereUniqueWithoutCouncilsInput = {
+  data: CouncilMemberUpdateWithoutCouncilsDataInput;
+  where: CouncilMemberWhereUniqueInput;
+};
+
+export type CouncilMemberUpdateWithoutCouncilsDataInput = {
+  address?: Maybe<Scalars['String']>;
+};
+
+export type CouncilMemberUpsertWithWhereUniqueWithoutCouncilsInput = {
+  create: CouncilMemberCreateWithoutCouncilsInput;
+  update: CouncilMemberUpdateWithoutCouncilsDataInput;
+  where: CouncilMemberWhereUniqueInput;
 };
 
 export type CouncilMemberWhereInput = {
@@ -1545,6 +3014,42 @@ export type CouncilPreviousValues = {
   id: Scalars['ID'];
 };
 
+export type CouncilScalarWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<CouncilScalarWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<CouncilScalarWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<CouncilScalarWhereInput>>;
+  id?: Maybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<Scalars['ID']>;
+};
+
 export type CouncilSubscriptionPayload = {
   __typename?: 'CouncilSubscriptionPayload';
   mutation: MutationType;
@@ -1569,6 +3074,37 @@ export type CouncilSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type CouncilUpdateInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  members?: Maybe<CouncilMemberUpdateManyWithoutCouncilsInput>;
+};
+
+export type CouncilUpdateManyWithoutMembersInput = {
+  connect?: Maybe<Array<CouncilWhereUniqueInput>>;
+  create?: Maybe<Array<CouncilCreateWithoutMembersInput>>;
+  delete?: Maybe<Array<CouncilWhereUniqueInput>>;
+  deleteMany?: Maybe<Array<CouncilScalarWhereInput>>;
+  disconnect?: Maybe<Array<CouncilWhereUniqueInput>>;
+  set?: Maybe<Array<CouncilWhereUniqueInput>>;
+  update?: Maybe<Array<CouncilUpdateWithWhereUniqueWithoutMembersInput>>;
+  upsert?: Maybe<Array<CouncilUpsertWithWhereUniqueWithoutMembersInput>>;
+};
+
+export type CouncilUpdateWithWhereUniqueWithoutMembersInput = {
+  data: CouncilUpdateWithoutMembersDataInput;
+  where: CouncilWhereUniqueInput;
+};
+
+export type CouncilUpdateWithoutMembersDataInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+};
+
+export type CouncilUpsertWithWhereUniqueWithoutMembersInput = {
+  create: CouncilCreateWithoutMembersInput;
+  update: CouncilUpdateWithoutMembersDataInput;
+  where: CouncilWhereUniqueInput;
 };
 
 export type CouncilWhereInput = {
@@ -1635,6 +3171,18 @@ export type EraConnection = {
   pageInfo: PageInfo;
 };
 
+export type EraCreateInput = {
+  eraStartSessionIndex: SessionCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  index: Scalars['Int'];
+  individualPoints?: Maybe<EraCreateindividualPointsInput>;
+  totalPoints: Scalars['String'];
+};
+
+export type EraCreateindividualPointsInput = {
+  set?: Maybe<Array<Scalars['String']>>;
+};
+
 /** An edge in a connection. */
 export type EraEdge = {
   __typename?: 'EraEdge';
@@ -1685,6 +3233,23 @@ export type EraSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type EraUpdateInput = {
+  eraStartSessionIndex?: Maybe<SessionUpdateOneRequiredInput>;
+  index?: Maybe<Scalars['Int']>;
+  individualPoints?: Maybe<EraUpdateindividualPointsInput>;
+  totalPoints?: Maybe<Scalars['String']>;
+};
+
+export type EraUpdateManyMutationInput = {
+  index?: Maybe<Scalars['Int']>;
+  individualPoints?: Maybe<EraUpdateindividualPointsInput>;
+  totalPoints?: Maybe<Scalars['String']>;
+};
+
+export type EraUpdateindividualPointsInput = {
+  set?: Maybe<Array<Scalars['String']>>;
 };
 
 export type EraWhereInput = {
@@ -1788,6 +3353,12 @@ export type HeartBeatConnection = {
   pageInfo: PageInfo;
 };
 
+export type HeartBeatCreateInput = {
+  authorityId: Scalars['String'];
+  id?: Maybe<Scalars['ID']>;
+  sessionIndex: SessionCreateOneInput;
+};
+
 /** An edge in a connection. */
 export type HeartBeatEdge = {
   __typename?: 'HeartBeatEdge';
@@ -1834,6 +3405,15 @@ export type HeartBeatSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type HeartBeatUpdateInput = {
+  authorityId?: Maybe<Scalars['String']>;
+  sessionIndex?: Maybe<SessionUpdateOneRequiredInput>;
+};
+
+export type HeartBeatUpdateManyMutationInput = {
+  authorityId?: Maybe<Scalars['String']>;
 };
 
 export type HeartBeatWhereInput = {
@@ -1923,6 +3503,7 @@ export type LoginResponse = {
   token?: Maybe<Scalars['String']>;
 };
 
+
 export type Message = {
   __typename?: 'Message';
   message?: Maybe<Scalars['String']>;
@@ -1975,6 +3556,97 @@ export type MotionConnection = {
   edges: Array<Maybe<MotionEdge>>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
+};
+
+export type MotionCreateInput = {
+  author: Scalars['String'];
+  memberCount: Scalars['Int'];
+  metaDescription: Scalars['String'];
+  method: Scalars['String'];
+  motionProposalArguments?: Maybe<MotionProposalArgumentCreateManyWithoutMotionInput>;
+  motionProposalHash: Scalars['String'];
+  motionProposalId: Scalars['Int'];
+  motionStatus?: Maybe<MotionStatusCreateManyWithoutMotionInput>;
+  preimage?: Maybe<PreimageCreateOneWithoutMotionInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  section: Scalars['String'];
+  treasurySpendProposal?: Maybe<TreasurySpendProposalCreateOneWithoutMotionInput>;
+};
+
+export type MotionCreateOneWithoutMotionProposalArgumentsInput = {
+  connect?: Maybe<MotionWhereUniqueInput>;
+  create?: Maybe<MotionCreateWithoutMotionProposalArgumentsInput>;
+};
+
+export type MotionCreateOneWithoutMotionStatusInput = {
+  connect?: Maybe<MotionWhereUniqueInput>;
+  create?: Maybe<MotionCreateWithoutMotionStatusInput>;
+};
+
+export type MotionCreateOneWithoutPreimageInput = {
+  connect?: Maybe<MotionWhereUniqueInput>;
+  create?: Maybe<MotionCreateWithoutPreimageInput>;
+};
+
+export type MotionCreateOneWithoutTreasurySpendProposalInput = {
+  connect?: Maybe<MotionWhereUniqueInput>;
+  create?: Maybe<MotionCreateWithoutTreasurySpendProposalInput>;
+};
+
+export type MotionCreateWithoutMotionProposalArgumentsInput = {
+  author: Scalars['String'];
+  memberCount: Scalars['Int'];
+  metaDescription: Scalars['String'];
+  method: Scalars['String'];
+  motionProposalHash: Scalars['String'];
+  motionProposalId: Scalars['Int'];
+  motionStatus?: Maybe<MotionStatusCreateManyWithoutMotionInput>;
+  preimage?: Maybe<PreimageCreateOneWithoutMotionInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  section: Scalars['String'];
+  treasurySpendProposal?: Maybe<TreasurySpendProposalCreateOneWithoutMotionInput>;
+};
+
+export type MotionCreateWithoutMotionStatusInput = {
+  author: Scalars['String'];
+  memberCount: Scalars['Int'];
+  metaDescription: Scalars['String'];
+  method: Scalars['String'];
+  motionProposalArguments?: Maybe<MotionProposalArgumentCreateManyWithoutMotionInput>;
+  motionProposalHash: Scalars['String'];
+  motionProposalId: Scalars['Int'];
+  preimage?: Maybe<PreimageCreateOneWithoutMotionInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  section: Scalars['String'];
+  treasurySpendProposal?: Maybe<TreasurySpendProposalCreateOneWithoutMotionInput>;
+};
+
+export type MotionCreateWithoutPreimageInput = {
+  author: Scalars['String'];
+  memberCount: Scalars['Int'];
+  metaDescription: Scalars['String'];
+  method: Scalars['String'];
+  motionProposalArguments?: Maybe<MotionProposalArgumentCreateManyWithoutMotionInput>;
+  motionProposalHash: Scalars['String'];
+  motionProposalId: Scalars['Int'];
+  motionStatus?: Maybe<MotionStatusCreateManyWithoutMotionInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  section: Scalars['String'];
+  treasurySpendProposal?: Maybe<TreasurySpendProposalCreateOneWithoutMotionInput>;
+};
+
+export type MotionCreateWithoutTreasurySpendProposalInput = {
+  author: Scalars['String'];
+  memberCount: Scalars['Int'];
+  metaDescription: Scalars['String'];
+  method: Scalars['String'];
+  motionProposalArguments?: Maybe<MotionProposalArgumentCreateManyWithoutMotionInput>;
+  motionProposalHash: Scalars['String'];
+  motionProposalId: Scalars['Int'];
+  motionStatus?: Maybe<MotionStatusCreateManyWithoutMotionInput>;
+  preimage?: Maybe<PreimageCreateOneWithoutMotionInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  section: Scalars['String'];
 };
 
 /** An edge in a connection. */
@@ -2038,6 +3710,24 @@ export type MotionProposalArgumentConnection = {
   pageInfo: PageInfo;
 };
 
+export type MotionProposalArgumentCreateInput = {
+  id?: Maybe<Scalars['ID']>;
+  motion: MotionCreateOneWithoutMotionProposalArgumentsInput;
+  name: Scalars['String'];
+  value: Scalars['String'];
+};
+
+export type MotionProposalArgumentCreateManyWithoutMotionInput = {
+  connect?: Maybe<Array<MotionProposalArgumentWhereUniqueInput>>;
+  create?: Maybe<Array<MotionProposalArgumentCreateWithoutMotionInput>>;
+};
+
+export type MotionProposalArgumentCreateWithoutMotionInput = {
+  id?: Maybe<Scalars['ID']>;
+  name: Scalars['String'];
+  value: Scalars['String'];
+};
+
 /** An edge in a connection. */
 export type MotionProposalArgumentEdge = {
   __typename?: 'MotionProposalArgumentEdge';
@@ -2061,6 +3751,96 @@ export type MotionProposalArgumentPreviousValues = {
   id: Scalars['ID'];
   name: Scalars['String'];
   value: Scalars['String'];
+};
+
+export type MotionProposalArgumentScalarWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<MotionProposalArgumentScalarWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<MotionProposalArgumentScalarWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<MotionProposalArgumentScalarWhereInput>>;
+  id?: Maybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  name_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  name_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  name_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  name_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  name_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  name_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  name_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  name_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  name_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  name_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  name_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  name_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  name_starts_with?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  value_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  value_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  value_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  value_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  value_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  value_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  value_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  value_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  value_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  value_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  value_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  value_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  value_starts_with?: Maybe<Scalars['String']>;
 };
 
 export type MotionProposalArgumentSubscriptionPayload = {
@@ -2087,6 +3867,55 @@ export type MotionProposalArgumentSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type MotionProposalArgumentUpdateInput = {
+  motion?: Maybe<MotionUpdateOneRequiredWithoutMotionProposalArgumentsInput>;
+  name?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type MotionProposalArgumentUpdateManyDataInput = {
+  name?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type MotionProposalArgumentUpdateManyMutationInput = {
+  name?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type MotionProposalArgumentUpdateManyWithWhereNestedInput = {
+  data: MotionProposalArgumentUpdateManyDataInput;
+  where: MotionProposalArgumentScalarWhereInput;
+};
+
+export type MotionProposalArgumentUpdateManyWithoutMotionInput = {
+  connect?: Maybe<Array<MotionProposalArgumentWhereUniqueInput>>;
+  create?: Maybe<Array<MotionProposalArgumentCreateWithoutMotionInput>>;
+  delete?: Maybe<Array<MotionProposalArgumentWhereUniqueInput>>;
+  deleteMany?: Maybe<Array<MotionProposalArgumentScalarWhereInput>>;
+  disconnect?: Maybe<Array<MotionProposalArgumentWhereUniqueInput>>;
+  set?: Maybe<Array<MotionProposalArgumentWhereUniqueInput>>;
+  update?: Maybe<Array<MotionProposalArgumentUpdateWithWhereUniqueWithoutMotionInput>>;
+  updateMany?: Maybe<Array<MotionProposalArgumentUpdateManyWithWhereNestedInput>>;
+  upsert?: Maybe<Array<MotionProposalArgumentUpsertWithWhereUniqueWithoutMotionInput>>;
+};
+
+export type MotionProposalArgumentUpdateWithWhereUniqueWithoutMotionInput = {
+  data: MotionProposalArgumentUpdateWithoutMotionDataInput;
+  where: MotionProposalArgumentWhereUniqueInput;
+};
+
+export type MotionProposalArgumentUpdateWithoutMotionDataInput = {
+  name?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type MotionProposalArgumentUpsertWithWhereUniqueWithoutMotionInput = {
+  create: MotionProposalArgumentCreateWithoutMotionInput;
+  update: MotionProposalArgumentUpdateWithoutMotionDataInput;
+  where: MotionProposalArgumentWhereUniqueInput;
 };
 
 export type MotionProposalArgumentWhereInput = {
@@ -2203,6 +4032,26 @@ export type MotionStatusConnection = {
   pageInfo: PageInfo;
 };
 
+export type MotionStatusCreateInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  motion: MotionCreateOneWithoutMotionStatusInput;
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+};
+
+export type MotionStatusCreateManyWithoutMotionInput = {
+  connect?: Maybe<Array<MotionStatusWhereUniqueInput>>;
+  create?: Maybe<Array<MotionStatusCreateWithoutMotionInput>>;
+};
+
+export type MotionStatusCreateWithoutMotionInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+};
+
 /** An edge in a connection. */
 export type MotionStatusEdge = {
   __typename?: 'MotionStatusEdge';
@@ -2226,6 +4075,96 @@ export type MotionStatusPreviousValues = {
   id: Scalars['ID'];
   status: Scalars['String'];
   uniqueStatus: Scalars['String'];
+};
+
+export type MotionStatusScalarWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<MotionStatusScalarWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<MotionStatusScalarWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<MotionStatusScalarWhereInput>>;
+  id?: Maybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<Scalars['ID']>;
+  status?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  status_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  status_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  status_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  status_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  status_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  status_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  status_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  status_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  status_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  status_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  status_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  status_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  status_starts_with?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  uniqueStatus_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  uniqueStatus_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  uniqueStatus_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  uniqueStatus_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  uniqueStatus_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  uniqueStatus_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  uniqueStatus_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  uniqueStatus_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  uniqueStatus_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  uniqueStatus_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  uniqueStatus_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  uniqueStatus_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  uniqueStatus_starts_with?: Maybe<Scalars['String']>;
 };
 
 export type MotionStatusSubscriptionPayload = {
@@ -2252,6 +4191,57 @@ export type MotionStatusSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type MotionStatusUpdateInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  motion?: Maybe<MotionUpdateOneRequiredWithoutMotionStatusInput>;
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type MotionStatusUpdateManyDataInput = {
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type MotionStatusUpdateManyMutationInput = {
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type MotionStatusUpdateManyWithWhereNestedInput = {
+  data: MotionStatusUpdateManyDataInput;
+  where: MotionStatusScalarWhereInput;
+};
+
+export type MotionStatusUpdateManyWithoutMotionInput = {
+  connect?: Maybe<Array<MotionStatusWhereUniqueInput>>;
+  create?: Maybe<Array<MotionStatusCreateWithoutMotionInput>>;
+  delete?: Maybe<Array<MotionStatusWhereUniqueInput>>;
+  deleteMany?: Maybe<Array<MotionStatusScalarWhereInput>>;
+  disconnect?: Maybe<Array<MotionStatusWhereUniqueInput>>;
+  set?: Maybe<Array<MotionStatusWhereUniqueInput>>;
+  update?: Maybe<Array<MotionStatusUpdateWithWhereUniqueWithoutMotionInput>>;
+  updateMany?: Maybe<Array<MotionStatusUpdateManyWithWhereNestedInput>>;
+  upsert?: Maybe<Array<MotionStatusUpsertWithWhereUniqueWithoutMotionInput>>;
+};
+
+export type MotionStatusUpdateWithWhereUniqueWithoutMotionInput = {
+  data: MotionStatusUpdateWithoutMotionDataInput;
+  where: MotionStatusWhereUniqueInput;
+};
+
+export type MotionStatusUpdateWithoutMotionDataInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type MotionStatusUpsertWithWhereUniqueWithoutMotionInput = {
+  create: MotionStatusCreateWithoutMotionInput;
+  update: MotionStatusUpdateWithoutMotionDataInput;
+  where: MotionStatusWhereUniqueInput;
 };
 
 export type MotionStatusWhereInput = {
@@ -2375,6 +4365,140 @@ export type MotionSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type MotionUpdateInput = {
+  author?: Maybe<Scalars['String']>;
+  memberCount?: Maybe<Scalars['Int']>;
+  metaDescription?: Maybe<Scalars['String']>;
+  method?: Maybe<Scalars['String']>;
+  motionProposalArguments?: Maybe<MotionProposalArgumentUpdateManyWithoutMotionInput>;
+  motionProposalHash?: Maybe<Scalars['String']>;
+  motionProposalId?: Maybe<Scalars['Int']>;
+  motionStatus?: Maybe<MotionStatusUpdateManyWithoutMotionInput>;
+  preimage?: Maybe<PreimageUpdateOneWithoutMotionInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  section?: Maybe<Scalars['String']>;
+  treasurySpendProposal?: Maybe<TreasurySpendProposalUpdateOneWithoutMotionInput>;
+};
+
+export type MotionUpdateManyMutationInput = {
+  author?: Maybe<Scalars['String']>;
+  memberCount?: Maybe<Scalars['Int']>;
+  metaDescription?: Maybe<Scalars['String']>;
+  method?: Maybe<Scalars['String']>;
+  motionProposalHash?: Maybe<Scalars['String']>;
+  motionProposalId?: Maybe<Scalars['Int']>;
+  preimageHash?: Maybe<Scalars['String']>;
+  section?: Maybe<Scalars['String']>;
+};
+
+export type MotionUpdateOneRequiredWithoutMotionProposalArgumentsInput = {
+  connect?: Maybe<MotionWhereUniqueInput>;
+  create?: Maybe<MotionCreateWithoutMotionProposalArgumentsInput>;
+  update?: Maybe<MotionUpdateWithoutMotionProposalArgumentsDataInput>;
+  upsert?: Maybe<MotionUpsertWithoutMotionProposalArgumentsInput>;
+};
+
+export type MotionUpdateOneRequiredWithoutMotionStatusInput = {
+  connect?: Maybe<MotionWhereUniqueInput>;
+  create?: Maybe<MotionCreateWithoutMotionStatusInput>;
+  update?: Maybe<MotionUpdateWithoutMotionStatusDataInput>;
+  upsert?: Maybe<MotionUpsertWithoutMotionStatusInput>;
+};
+
+export type MotionUpdateOneWithoutPreimageInput = {
+  connect?: Maybe<MotionWhereUniqueInput>;
+  create?: Maybe<MotionCreateWithoutPreimageInput>;
+  delete?: Maybe<Scalars['Boolean']>;
+  disconnect?: Maybe<Scalars['Boolean']>;
+  update?: Maybe<MotionUpdateWithoutPreimageDataInput>;
+  upsert?: Maybe<MotionUpsertWithoutPreimageInput>;
+};
+
+export type MotionUpdateOneWithoutTreasurySpendProposalInput = {
+  connect?: Maybe<MotionWhereUniqueInput>;
+  create?: Maybe<MotionCreateWithoutTreasurySpendProposalInput>;
+  delete?: Maybe<Scalars['Boolean']>;
+  disconnect?: Maybe<Scalars['Boolean']>;
+  update?: Maybe<MotionUpdateWithoutTreasurySpendProposalDataInput>;
+  upsert?: Maybe<MotionUpsertWithoutTreasurySpendProposalInput>;
+};
+
+export type MotionUpdateWithoutMotionProposalArgumentsDataInput = {
+  author?: Maybe<Scalars['String']>;
+  memberCount?: Maybe<Scalars['Int']>;
+  metaDescription?: Maybe<Scalars['String']>;
+  method?: Maybe<Scalars['String']>;
+  motionProposalHash?: Maybe<Scalars['String']>;
+  motionProposalId?: Maybe<Scalars['Int']>;
+  motionStatus?: Maybe<MotionStatusUpdateManyWithoutMotionInput>;
+  preimage?: Maybe<PreimageUpdateOneWithoutMotionInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  section?: Maybe<Scalars['String']>;
+  treasurySpendProposal?: Maybe<TreasurySpendProposalUpdateOneWithoutMotionInput>;
+};
+
+export type MotionUpdateWithoutMotionStatusDataInput = {
+  author?: Maybe<Scalars['String']>;
+  memberCount?: Maybe<Scalars['Int']>;
+  metaDescription?: Maybe<Scalars['String']>;
+  method?: Maybe<Scalars['String']>;
+  motionProposalArguments?: Maybe<MotionProposalArgumentUpdateManyWithoutMotionInput>;
+  motionProposalHash?: Maybe<Scalars['String']>;
+  motionProposalId?: Maybe<Scalars['Int']>;
+  preimage?: Maybe<PreimageUpdateOneWithoutMotionInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  section?: Maybe<Scalars['String']>;
+  treasurySpendProposal?: Maybe<TreasurySpendProposalUpdateOneWithoutMotionInput>;
+};
+
+export type MotionUpdateWithoutPreimageDataInput = {
+  author?: Maybe<Scalars['String']>;
+  memberCount?: Maybe<Scalars['Int']>;
+  metaDescription?: Maybe<Scalars['String']>;
+  method?: Maybe<Scalars['String']>;
+  motionProposalArguments?: Maybe<MotionProposalArgumentUpdateManyWithoutMotionInput>;
+  motionProposalHash?: Maybe<Scalars['String']>;
+  motionProposalId?: Maybe<Scalars['Int']>;
+  motionStatus?: Maybe<MotionStatusUpdateManyWithoutMotionInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  section?: Maybe<Scalars['String']>;
+  treasurySpendProposal?: Maybe<TreasurySpendProposalUpdateOneWithoutMotionInput>;
+};
+
+export type MotionUpdateWithoutTreasurySpendProposalDataInput = {
+  author?: Maybe<Scalars['String']>;
+  memberCount?: Maybe<Scalars['Int']>;
+  metaDescription?: Maybe<Scalars['String']>;
+  method?: Maybe<Scalars['String']>;
+  motionProposalArguments?: Maybe<MotionProposalArgumentUpdateManyWithoutMotionInput>;
+  motionProposalHash?: Maybe<Scalars['String']>;
+  motionProposalId?: Maybe<Scalars['Int']>;
+  motionStatus?: Maybe<MotionStatusUpdateManyWithoutMotionInput>;
+  preimage?: Maybe<PreimageUpdateOneWithoutMotionInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  section?: Maybe<Scalars['String']>;
+};
+
+export type MotionUpsertWithoutMotionProposalArgumentsInput = {
+  create: MotionCreateWithoutMotionProposalArgumentsInput;
+  update: MotionUpdateWithoutMotionProposalArgumentsDataInput;
+};
+
+export type MotionUpsertWithoutMotionStatusInput = {
+  create: MotionCreateWithoutMotionStatusInput;
+  update: MotionUpdateWithoutMotionStatusDataInput;
+};
+
+export type MotionUpsertWithoutPreimageInput = {
+  create: MotionCreateWithoutPreimageInput;
+  update: MotionUpdateWithoutPreimageDataInput;
+};
+
+export type MotionUpsertWithoutTreasurySpendProposalInput = {
+  create: MotionCreateWithoutTreasurySpendProposalInput;
+  update: MotionUpdateWithoutTreasurySpendProposalDataInput;
 };
 
 export type MotionWhereInput = {
@@ -3123,6 +5247,16 @@ export type NominationConnection = {
   pageInfo: PageInfo;
 };
 
+export type NominationCreateInput = {
+  id?: Maybe<Scalars['ID']>;
+  nominatorController: Scalars['String'];
+  nominatorStash: Scalars['String'];
+  session: SessionCreateOneInput;
+  stakedAmount: Scalars['String'];
+  validatorController: Scalars['String'];
+  validatorStash: Scalars['String'];
+};
+
 /** An edge in a connection. */
 export type NominationEdge = {
   __typename?: 'NominationEdge';
@@ -3181,6 +5315,23 @@ export type NominationSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type NominationUpdateInput = {
+  nominatorController?: Maybe<Scalars['String']>;
+  nominatorStash?: Maybe<Scalars['String']>;
+  session?: Maybe<SessionUpdateOneRequiredInput>;
+  stakedAmount?: Maybe<Scalars['String']>;
+  validatorController?: Maybe<Scalars['String']>;
+  validatorStash?: Maybe<Scalars['String']>;
+};
+
+export type NominationUpdateManyMutationInput = {
+  nominatorController?: Maybe<Scalars['String']>;
+  nominatorStash?: Maybe<Scalars['String']>;
+  stakedAmount?: Maybe<Scalars['String']>;
+  validatorController?: Maybe<Scalars['String']>;
+  validatorStash?: Maybe<Scalars['String']>;
 };
 
 export type NominationWhereInput = {
@@ -3394,6 +5545,19 @@ export type OfflineValidatorConnection = {
   pageInfo: PageInfo;
 };
 
+export type OfflineValidatorCreateInput = {
+  id?: Maybe<Scalars['ID']>;
+  others?: Maybe<OfflineValidatorCreateothersInput>;
+  own: Scalars['String'];
+  sessionIndex: SessionCreateOneInput;
+  total: Scalars['String'];
+  validatorId: Scalars['String'];
+};
+
+export type OfflineValidatorCreateothersInput = {
+  set?: Maybe<Array<Scalars['Json']>>;
+};
+
 /** An edge in a connection. */
 export type OfflineValidatorEdge = {
   __typename?: 'OfflineValidatorEdge';
@@ -3447,6 +5611,25 @@ export type OfflineValidatorSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type OfflineValidatorUpdateInput = {
+  others?: Maybe<OfflineValidatorUpdateothersInput>;
+  own?: Maybe<Scalars['String']>;
+  sessionIndex?: Maybe<SessionUpdateOneRequiredInput>;
+  total?: Maybe<Scalars['String']>;
+  validatorId?: Maybe<Scalars['String']>;
+};
+
+export type OfflineValidatorUpdateManyMutationInput = {
+  others?: Maybe<OfflineValidatorUpdateothersInput>;
+  own?: Maybe<Scalars['String']>;
+  total?: Maybe<Scalars['String']>;
+  validatorId?: Maybe<Scalars['String']>;
+};
+
+export type OfflineValidatorUpdateothersInput = {
+  set?: Maybe<Array<Scalars['Json']>>;
 };
 
 export type OfflineValidatorWhereInput = {
@@ -3640,6 +5823,24 @@ export type PreimageArgumentConnection = {
   pageInfo: PageInfo;
 };
 
+export type PreimageArgumentCreateInput = {
+  id?: Maybe<Scalars['ID']>;
+  name: Scalars['String'];
+  preimage: PreimageCreateOneWithoutPreimageArgumentsInput;
+  value: Scalars['String'];
+};
+
+export type PreimageArgumentCreateManyWithoutPreimageInput = {
+  connect?: Maybe<Array<PreimageArgumentWhereUniqueInput>>;
+  create?: Maybe<Array<PreimageArgumentCreateWithoutPreimageInput>>;
+};
+
+export type PreimageArgumentCreateWithoutPreimageInput = {
+  id?: Maybe<Scalars['ID']>;
+  name: Scalars['String'];
+  value: Scalars['String'];
+};
+
 /** An edge in a connection. */
 export type PreimageArgumentEdge = {
   __typename?: 'PreimageArgumentEdge';
@@ -3663,6 +5864,96 @@ export type PreimageArgumentPreviousValues = {
   id: Scalars['ID'];
   name: Scalars['String'];
   value: Scalars['String'];
+};
+
+export type PreimageArgumentScalarWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<PreimageArgumentScalarWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<PreimageArgumentScalarWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<PreimageArgumentScalarWhereInput>>;
+  id?: Maybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  name_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  name_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  name_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  name_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  name_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  name_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  name_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  name_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  name_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  name_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  name_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  name_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  name_starts_with?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  value_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  value_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  value_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  value_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  value_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  value_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  value_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  value_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  value_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  value_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  value_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  value_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  value_starts_with?: Maybe<Scalars['String']>;
 };
 
 export type PreimageArgumentSubscriptionPayload = {
@@ -3689,6 +5980,55 @@ export type PreimageArgumentSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type PreimageArgumentUpdateInput = {
+  name?: Maybe<Scalars['String']>;
+  preimage?: Maybe<PreimageUpdateOneRequiredWithoutPreimageArgumentsInput>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type PreimageArgumentUpdateManyDataInput = {
+  name?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type PreimageArgumentUpdateManyMutationInput = {
+  name?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type PreimageArgumentUpdateManyWithWhereNestedInput = {
+  data: PreimageArgumentUpdateManyDataInput;
+  where: PreimageArgumentScalarWhereInput;
+};
+
+export type PreimageArgumentUpdateManyWithoutPreimageInput = {
+  connect?: Maybe<Array<PreimageArgumentWhereUniqueInput>>;
+  create?: Maybe<Array<PreimageArgumentCreateWithoutPreimageInput>>;
+  delete?: Maybe<Array<PreimageArgumentWhereUniqueInput>>;
+  deleteMany?: Maybe<Array<PreimageArgumentScalarWhereInput>>;
+  disconnect?: Maybe<Array<PreimageArgumentWhereUniqueInput>>;
+  set?: Maybe<Array<PreimageArgumentWhereUniqueInput>>;
+  update?: Maybe<Array<PreimageArgumentUpdateWithWhereUniqueWithoutPreimageInput>>;
+  updateMany?: Maybe<Array<PreimageArgumentUpdateManyWithWhereNestedInput>>;
+  upsert?: Maybe<Array<PreimageArgumentUpsertWithWhereUniqueWithoutPreimageInput>>;
+};
+
+export type PreimageArgumentUpdateWithWhereUniqueWithoutPreimageInput = {
+  data: PreimageArgumentUpdateWithoutPreimageDataInput;
+  where: PreimageArgumentWhereUniqueInput;
+};
+
+export type PreimageArgumentUpdateWithoutPreimageDataInput = {
+  name?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type PreimageArgumentUpsertWithWhereUniqueWithoutPreimageInput = {
+  create: PreimageArgumentCreateWithoutPreimageInput;
+  update: PreimageArgumentUpdateWithoutPreimageDataInput;
+  where: PreimageArgumentWhereUniqueInput;
 };
 
 export type PreimageArgumentWhereInput = {
@@ -3796,6 +6136,121 @@ export type PreimageConnection = {
   pageInfo: PageInfo;
 };
 
+export type PreimageCreateInput = {
+  author: Scalars['String'];
+  depositAmount: Scalars['String'];
+  hash: Scalars['String'];
+  id?: Maybe<Scalars['ID']>;
+  metaDescription: Scalars['String'];
+  method: Scalars['String'];
+  motion?: Maybe<MotionCreateOneWithoutPreimageInput>;
+  preimageArguments?: Maybe<PreimageArgumentCreateManyWithoutPreimageInput>;
+  preimageStatus?: Maybe<PreimageStatusCreateManyWithoutPreimageInput>;
+  proposal?: Maybe<ProposalCreateOneWithoutPreimageInput>;
+  referendum?: Maybe<ReferendumCreateOneWithoutPreimageInput>;
+  section: Scalars['String'];
+};
+
+export type PreimageCreateOneInput = {
+  connect?: Maybe<PreimageWhereUniqueInput>;
+  create?: Maybe<PreimageCreateInput>;
+};
+
+export type PreimageCreateOneWithoutMotionInput = {
+  connect?: Maybe<PreimageWhereUniqueInput>;
+  create?: Maybe<PreimageCreateWithoutMotionInput>;
+};
+
+export type PreimageCreateOneWithoutPreimageArgumentsInput = {
+  connect?: Maybe<PreimageWhereUniqueInput>;
+  create?: Maybe<PreimageCreateWithoutPreimageArgumentsInput>;
+};
+
+export type PreimageCreateOneWithoutPreimageStatusInput = {
+  connect?: Maybe<PreimageWhereUniqueInput>;
+  create?: Maybe<PreimageCreateWithoutPreimageStatusInput>;
+};
+
+export type PreimageCreateOneWithoutProposalInput = {
+  connect?: Maybe<PreimageWhereUniqueInput>;
+  create?: Maybe<PreimageCreateWithoutProposalInput>;
+};
+
+export type PreimageCreateOneWithoutReferendumInput = {
+  connect?: Maybe<PreimageWhereUniqueInput>;
+  create?: Maybe<PreimageCreateWithoutReferendumInput>;
+};
+
+export type PreimageCreateWithoutMotionInput = {
+  author: Scalars['String'];
+  depositAmount: Scalars['String'];
+  hash: Scalars['String'];
+  id?: Maybe<Scalars['ID']>;
+  metaDescription: Scalars['String'];
+  method: Scalars['String'];
+  preimageArguments?: Maybe<PreimageArgumentCreateManyWithoutPreimageInput>;
+  preimageStatus?: Maybe<PreimageStatusCreateManyWithoutPreimageInput>;
+  proposal?: Maybe<ProposalCreateOneWithoutPreimageInput>;
+  referendum?: Maybe<ReferendumCreateOneWithoutPreimageInput>;
+  section: Scalars['String'];
+};
+
+export type PreimageCreateWithoutPreimageArgumentsInput = {
+  author: Scalars['String'];
+  depositAmount: Scalars['String'];
+  hash: Scalars['String'];
+  id?: Maybe<Scalars['ID']>;
+  metaDescription: Scalars['String'];
+  method: Scalars['String'];
+  motion?: Maybe<MotionCreateOneWithoutPreimageInput>;
+  preimageStatus?: Maybe<PreimageStatusCreateManyWithoutPreimageInput>;
+  proposal?: Maybe<ProposalCreateOneWithoutPreimageInput>;
+  referendum?: Maybe<ReferendumCreateOneWithoutPreimageInput>;
+  section: Scalars['String'];
+};
+
+export type PreimageCreateWithoutPreimageStatusInput = {
+  author: Scalars['String'];
+  depositAmount: Scalars['String'];
+  hash: Scalars['String'];
+  id?: Maybe<Scalars['ID']>;
+  metaDescription: Scalars['String'];
+  method: Scalars['String'];
+  motion?: Maybe<MotionCreateOneWithoutPreimageInput>;
+  preimageArguments?: Maybe<PreimageArgumentCreateManyWithoutPreimageInput>;
+  proposal?: Maybe<ProposalCreateOneWithoutPreimageInput>;
+  referendum?: Maybe<ReferendumCreateOneWithoutPreimageInput>;
+  section: Scalars['String'];
+};
+
+export type PreimageCreateWithoutProposalInput = {
+  author: Scalars['String'];
+  depositAmount: Scalars['String'];
+  hash: Scalars['String'];
+  id?: Maybe<Scalars['ID']>;
+  metaDescription: Scalars['String'];
+  method: Scalars['String'];
+  motion?: Maybe<MotionCreateOneWithoutPreimageInput>;
+  preimageArguments?: Maybe<PreimageArgumentCreateManyWithoutPreimageInput>;
+  preimageStatus?: Maybe<PreimageStatusCreateManyWithoutPreimageInput>;
+  referendum?: Maybe<ReferendumCreateOneWithoutPreimageInput>;
+  section: Scalars['String'];
+};
+
+export type PreimageCreateWithoutReferendumInput = {
+  author: Scalars['String'];
+  depositAmount: Scalars['String'];
+  hash: Scalars['String'];
+  id?: Maybe<Scalars['ID']>;
+  metaDescription: Scalars['String'];
+  method: Scalars['String'];
+  motion?: Maybe<MotionCreateOneWithoutPreimageInput>;
+  preimageArguments?: Maybe<PreimageArgumentCreateManyWithoutPreimageInput>;
+  preimageStatus?: Maybe<PreimageStatusCreateManyWithoutPreimageInput>;
+  proposal?: Maybe<ProposalCreateOneWithoutPreimageInput>;
+  section: Scalars['String'];
+};
+
 /** An edge in a connection. */
 export type PreimageEdge = {
   __typename?: 'PreimageEdge';
@@ -3851,6 +6306,24 @@ export type PreimageStatusConnection = {
   pageInfo: PageInfo;
 };
 
+export type PreimageStatusCreateInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  preimage: PreimageCreateOneWithoutPreimageStatusInput;
+  status: Scalars['String'];
+};
+
+export type PreimageStatusCreateManyWithoutPreimageInput = {
+  connect?: Maybe<Array<PreimageStatusWhereUniqueInput>>;
+  create?: Maybe<Array<PreimageStatusCreateWithoutPreimageInput>>;
+};
+
+export type PreimageStatusCreateWithoutPreimageInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  status: Scalars['String'];
+};
+
 /** An edge in a connection. */
 export type PreimageStatusEdge = {
   __typename?: 'PreimageStatusEdge';
@@ -3871,6 +6344,69 @@ export type PreimageStatusPreviousValues = {
   __typename?: 'PreimageStatusPreviousValues';
   id: Scalars['ID'];
   status: Scalars['String'];
+};
+
+export type PreimageStatusScalarWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<PreimageStatusScalarWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<PreimageStatusScalarWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<PreimageStatusScalarWhereInput>>;
+  id?: Maybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<Scalars['ID']>;
+  status?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  status_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  status_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  status_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  status_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  status_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  status_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  status_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  status_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  status_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  status_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  status_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  status_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  status_starts_with?: Maybe<Scalars['String']>;
 };
 
 export type PreimageStatusSubscriptionPayload = {
@@ -3897,6 +6433,53 @@ export type PreimageStatusSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type PreimageStatusUpdateInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  preimage?: Maybe<PreimageUpdateOneRequiredWithoutPreimageStatusInput>;
+  status?: Maybe<Scalars['String']>;
+};
+
+export type PreimageStatusUpdateManyDataInput = {
+  status?: Maybe<Scalars['String']>;
+};
+
+export type PreimageStatusUpdateManyMutationInput = {
+  status?: Maybe<Scalars['String']>;
+};
+
+export type PreimageStatusUpdateManyWithWhereNestedInput = {
+  data: PreimageStatusUpdateManyDataInput;
+  where: PreimageStatusScalarWhereInput;
+};
+
+export type PreimageStatusUpdateManyWithoutPreimageInput = {
+  connect?: Maybe<Array<PreimageStatusWhereUniqueInput>>;
+  create?: Maybe<Array<PreimageStatusCreateWithoutPreimageInput>>;
+  delete?: Maybe<Array<PreimageStatusWhereUniqueInput>>;
+  deleteMany?: Maybe<Array<PreimageStatusScalarWhereInput>>;
+  disconnect?: Maybe<Array<PreimageStatusWhereUniqueInput>>;
+  set?: Maybe<Array<PreimageStatusWhereUniqueInput>>;
+  update?: Maybe<Array<PreimageStatusUpdateWithWhereUniqueWithoutPreimageInput>>;
+  updateMany?: Maybe<Array<PreimageStatusUpdateManyWithWhereNestedInput>>;
+  upsert?: Maybe<Array<PreimageStatusUpsertWithWhereUniqueWithoutPreimageInput>>;
+};
+
+export type PreimageStatusUpdateWithWhereUniqueWithoutPreimageInput = {
+  data: PreimageStatusUpdateWithoutPreimageDataInput;
+  where: PreimageStatusWhereUniqueInput;
+};
+
+export type PreimageStatusUpdateWithoutPreimageDataInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  status?: Maybe<Scalars['String']>;
+};
+
+export type PreimageStatusUpsertWithWhereUniqueWithoutPreimageInput = {
+  create: PreimageStatusCreateWithoutPreimageInput;
+  update: PreimageStatusUpdateWithoutPreimageDataInput;
+  where: PreimageStatusWhereUniqueInput;
 };
 
 export type PreimageStatusWhereInput = {
@@ -3992,6 +6575,188 @@ export type PreimageSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type PreimageUpdateDataInput = {
+  author?: Maybe<Scalars['String']>;
+  depositAmount?: Maybe<Scalars['String']>;
+  hash?: Maybe<Scalars['String']>;
+  metaDescription?: Maybe<Scalars['String']>;
+  method?: Maybe<Scalars['String']>;
+  motion?: Maybe<MotionUpdateOneWithoutPreimageInput>;
+  preimageArguments?: Maybe<PreimageArgumentUpdateManyWithoutPreimageInput>;
+  preimageStatus?: Maybe<PreimageStatusUpdateManyWithoutPreimageInput>;
+  proposal?: Maybe<ProposalUpdateOneWithoutPreimageInput>;
+  referendum?: Maybe<ReferendumUpdateOneWithoutPreimageInput>;
+  section?: Maybe<Scalars['String']>;
+};
+
+export type PreimageUpdateInput = {
+  author?: Maybe<Scalars['String']>;
+  depositAmount?: Maybe<Scalars['String']>;
+  hash?: Maybe<Scalars['String']>;
+  metaDescription?: Maybe<Scalars['String']>;
+  method?: Maybe<Scalars['String']>;
+  motion?: Maybe<MotionUpdateOneWithoutPreimageInput>;
+  preimageArguments?: Maybe<PreimageArgumentUpdateManyWithoutPreimageInput>;
+  preimageStatus?: Maybe<PreimageStatusUpdateManyWithoutPreimageInput>;
+  proposal?: Maybe<ProposalUpdateOneWithoutPreimageInput>;
+  referendum?: Maybe<ReferendumUpdateOneWithoutPreimageInput>;
+  section?: Maybe<Scalars['String']>;
+};
+
+export type PreimageUpdateManyMutationInput = {
+  author?: Maybe<Scalars['String']>;
+  depositAmount?: Maybe<Scalars['String']>;
+  hash?: Maybe<Scalars['String']>;
+  metaDescription?: Maybe<Scalars['String']>;
+  method?: Maybe<Scalars['String']>;
+  section?: Maybe<Scalars['String']>;
+};
+
+export type PreimageUpdateOneInput = {
+  connect?: Maybe<PreimageWhereUniqueInput>;
+  create?: Maybe<PreimageCreateInput>;
+  delete?: Maybe<Scalars['Boolean']>;
+  disconnect?: Maybe<Scalars['Boolean']>;
+  update?: Maybe<PreimageUpdateDataInput>;
+  upsert?: Maybe<PreimageUpsertNestedInput>;
+};
+
+export type PreimageUpdateOneRequiredWithoutPreimageArgumentsInput = {
+  connect?: Maybe<PreimageWhereUniqueInput>;
+  create?: Maybe<PreimageCreateWithoutPreimageArgumentsInput>;
+  update?: Maybe<PreimageUpdateWithoutPreimageArgumentsDataInput>;
+  upsert?: Maybe<PreimageUpsertWithoutPreimageArgumentsInput>;
+};
+
+export type PreimageUpdateOneRequiredWithoutPreimageStatusInput = {
+  connect?: Maybe<PreimageWhereUniqueInput>;
+  create?: Maybe<PreimageCreateWithoutPreimageStatusInput>;
+  update?: Maybe<PreimageUpdateWithoutPreimageStatusDataInput>;
+  upsert?: Maybe<PreimageUpsertWithoutPreimageStatusInput>;
+};
+
+export type PreimageUpdateOneWithoutMotionInput = {
+  connect?: Maybe<PreimageWhereUniqueInput>;
+  create?: Maybe<PreimageCreateWithoutMotionInput>;
+  delete?: Maybe<Scalars['Boolean']>;
+  disconnect?: Maybe<Scalars['Boolean']>;
+  update?: Maybe<PreimageUpdateWithoutMotionDataInput>;
+  upsert?: Maybe<PreimageUpsertWithoutMotionInput>;
+};
+
+export type PreimageUpdateOneWithoutProposalInput = {
+  connect?: Maybe<PreimageWhereUniqueInput>;
+  create?: Maybe<PreimageCreateWithoutProposalInput>;
+  delete?: Maybe<Scalars['Boolean']>;
+  disconnect?: Maybe<Scalars['Boolean']>;
+  update?: Maybe<PreimageUpdateWithoutProposalDataInput>;
+  upsert?: Maybe<PreimageUpsertWithoutProposalInput>;
+};
+
+export type PreimageUpdateOneWithoutReferendumInput = {
+  connect?: Maybe<PreimageWhereUniqueInput>;
+  create?: Maybe<PreimageCreateWithoutReferendumInput>;
+  delete?: Maybe<Scalars['Boolean']>;
+  disconnect?: Maybe<Scalars['Boolean']>;
+  update?: Maybe<PreimageUpdateWithoutReferendumDataInput>;
+  upsert?: Maybe<PreimageUpsertWithoutReferendumInput>;
+};
+
+export type PreimageUpdateWithoutMotionDataInput = {
+  author?: Maybe<Scalars['String']>;
+  depositAmount?: Maybe<Scalars['String']>;
+  hash?: Maybe<Scalars['String']>;
+  metaDescription?: Maybe<Scalars['String']>;
+  method?: Maybe<Scalars['String']>;
+  preimageArguments?: Maybe<PreimageArgumentUpdateManyWithoutPreimageInput>;
+  preimageStatus?: Maybe<PreimageStatusUpdateManyWithoutPreimageInput>;
+  proposal?: Maybe<ProposalUpdateOneWithoutPreimageInput>;
+  referendum?: Maybe<ReferendumUpdateOneWithoutPreimageInput>;
+  section?: Maybe<Scalars['String']>;
+};
+
+export type PreimageUpdateWithoutPreimageArgumentsDataInput = {
+  author?: Maybe<Scalars['String']>;
+  depositAmount?: Maybe<Scalars['String']>;
+  hash?: Maybe<Scalars['String']>;
+  metaDescription?: Maybe<Scalars['String']>;
+  method?: Maybe<Scalars['String']>;
+  motion?: Maybe<MotionUpdateOneWithoutPreimageInput>;
+  preimageStatus?: Maybe<PreimageStatusUpdateManyWithoutPreimageInput>;
+  proposal?: Maybe<ProposalUpdateOneWithoutPreimageInput>;
+  referendum?: Maybe<ReferendumUpdateOneWithoutPreimageInput>;
+  section?: Maybe<Scalars['String']>;
+};
+
+export type PreimageUpdateWithoutPreimageStatusDataInput = {
+  author?: Maybe<Scalars['String']>;
+  depositAmount?: Maybe<Scalars['String']>;
+  hash?: Maybe<Scalars['String']>;
+  metaDescription?: Maybe<Scalars['String']>;
+  method?: Maybe<Scalars['String']>;
+  motion?: Maybe<MotionUpdateOneWithoutPreimageInput>;
+  preimageArguments?: Maybe<PreimageArgumentUpdateManyWithoutPreimageInput>;
+  proposal?: Maybe<ProposalUpdateOneWithoutPreimageInput>;
+  referendum?: Maybe<ReferendumUpdateOneWithoutPreimageInput>;
+  section?: Maybe<Scalars['String']>;
+};
+
+export type PreimageUpdateWithoutProposalDataInput = {
+  author?: Maybe<Scalars['String']>;
+  depositAmount?: Maybe<Scalars['String']>;
+  hash?: Maybe<Scalars['String']>;
+  metaDescription?: Maybe<Scalars['String']>;
+  method?: Maybe<Scalars['String']>;
+  motion?: Maybe<MotionUpdateOneWithoutPreimageInput>;
+  preimageArguments?: Maybe<PreimageArgumentUpdateManyWithoutPreimageInput>;
+  preimageStatus?: Maybe<PreimageStatusUpdateManyWithoutPreimageInput>;
+  referendum?: Maybe<ReferendumUpdateOneWithoutPreimageInput>;
+  section?: Maybe<Scalars['String']>;
+};
+
+export type PreimageUpdateWithoutReferendumDataInput = {
+  author?: Maybe<Scalars['String']>;
+  depositAmount?: Maybe<Scalars['String']>;
+  hash?: Maybe<Scalars['String']>;
+  metaDescription?: Maybe<Scalars['String']>;
+  method?: Maybe<Scalars['String']>;
+  motion?: Maybe<MotionUpdateOneWithoutPreimageInput>;
+  preimageArguments?: Maybe<PreimageArgumentUpdateManyWithoutPreimageInput>;
+  preimageStatus?: Maybe<PreimageStatusUpdateManyWithoutPreimageInput>;
+  proposal?: Maybe<ProposalUpdateOneWithoutPreimageInput>;
+  section?: Maybe<Scalars['String']>;
+};
+
+export type PreimageUpsertNestedInput = {
+  create: PreimageCreateInput;
+  update: PreimageUpdateDataInput;
+};
+
+export type PreimageUpsertWithoutMotionInput = {
+  create: PreimageCreateWithoutMotionInput;
+  update: PreimageUpdateWithoutMotionDataInput;
+};
+
+export type PreimageUpsertWithoutPreimageArgumentsInput = {
+  create: PreimageCreateWithoutPreimageArgumentsInput;
+  update: PreimageUpdateWithoutPreimageArgumentsDataInput;
+};
+
+export type PreimageUpsertWithoutPreimageStatusInput = {
+  create: PreimageCreateWithoutPreimageStatusInput;
+  update: PreimageUpdateWithoutPreimageStatusDataInput;
+};
+
+export type PreimageUpsertWithoutProposalInput = {
+  create: PreimageCreateWithoutProposalInput;
+  update: PreimageUpdateWithoutProposalDataInput;
+};
+
+export type PreimageUpsertWithoutReferendumInput = {
+  create: PreimageCreateWithoutReferendumInput;
+  update: PreimageUpdateWithoutReferendumDataInput;
 };
 
 export type PreimageWhereInput = {
@@ -4205,6 +6970,10 @@ export type PreimageWhereUniqueInput = {
   id?: Maybe<Scalars['ID']>;
 };
 
+export enum PrismaDatabase {
+  Default = 'default'
+}
+
 export type Profile = {
   __typename?: 'Profile';
   badges?: Maybe<Scalars['String']>;
@@ -4245,6 +7014,41 @@ export type ProposalConnection = {
   edges: Array<Maybe<ProposalEdge>>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
+};
+
+export type ProposalCreateInput = {
+  author: Scalars['String'];
+  depositAmount: Scalars['String'];
+  preimage?: Maybe<PreimageCreateOneWithoutProposalInput>;
+  preimageHash: Scalars['String'];
+  proposalId: Scalars['Int'];
+  proposalStatus?: Maybe<ProposalStatusCreateManyWithoutProposalInput>;
+};
+
+export type ProposalCreateOneWithoutPreimageInput = {
+  connect?: Maybe<ProposalWhereUniqueInput>;
+  create?: Maybe<ProposalCreateWithoutPreimageInput>;
+};
+
+export type ProposalCreateOneWithoutProposalStatusInput = {
+  connect?: Maybe<ProposalWhereUniqueInput>;
+  create?: Maybe<ProposalCreateWithoutProposalStatusInput>;
+};
+
+export type ProposalCreateWithoutPreimageInput = {
+  author: Scalars['String'];
+  depositAmount: Scalars['String'];
+  preimageHash: Scalars['String'];
+  proposalId: Scalars['Int'];
+  proposalStatus?: Maybe<ProposalStatusCreateManyWithoutProposalInput>;
+};
+
+export type ProposalCreateWithoutProposalStatusInput = {
+  author: Scalars['String'];
+  depositAmount: Scalars['String'];
+  preimage?: Maybe<PreimageCreateOneWithoutProposalInput>;
+  preimageHash: Scalars['String'];
+  proposalId: Scalars['Int'];
 };
 
 /** An edge in a connection. */
@@ -4297,6 +7101,26 @@ export type ProposalStatusConnection = {
   pageInfo: PageInfo;
 };
 
+export type ProposalStatusCreateInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  proposal: ProposalCreateOneWithoutProposalStatusInput;
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+};
+
+export type ProposalStatusCreateManyWithoutProposalInput = {
+  connect?: Maybe<Array<ProposalStatusWhereUniqueInput>>;
+  create?: Maybe<Array<ProposalStatusCreateWithoutProposalInput>>;
+};
+
+export type ProposalStatusCreateWithoutProposalInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+};
+
 /** An edge in a connection. */
 export type ProposalStatusEdge = {
   __typename?: 'ProposalStatusEdge';
@@ -4320,6 +7144,96 @@ export type ProposalStatusPreviousValues = {
   id: Scalars['ID'];
   status: Scalars['String'];
   uniqueStatus: Scalars['String'];
+};
+
+export type ProposalStatusScalarWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<ProposalStatusScalarWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<ProposalStatusScalarWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<ProposalStatusScalarWhereInput>>;
+  id?: Maybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<Scalars['ID']>;
+  status?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  status_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  status_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  status_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  status_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  status_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  status_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  status_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  status_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  status_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  status_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  status_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  status_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  status_starts_with?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  uniqueStatus_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  uniqueStatus_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  uniqueStatus_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  uniqueStatus_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  uniqueStatus_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  uniqueStatus_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  uniqueStatus_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  uniqueStatus_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  uniqueStatus_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  uniqueStatus_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  uniqueStatus_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  uniqueStatus_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  uniqueStatus_starts_with?: Maybe<Scalars['String']>;
 };
 
 export type ProposalStatusSubscriptionPayload = {
@@ -4346,6 +7260,57 @@ export type ProposalStatusSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type ProposalStatusUpdateInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  proposal?: Maybe<ProposalUpdateOneRequiredWithoutProposalStatusInput>;
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type ProposalStatusUpdateManyDataInput = {
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type ProposalStatusUpdateManyMutationInput = {
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type ProposalStatusUpdateManyWithWhereNestedInput = {
+  data: ProposalStatusUpdateManyDataInput;
+  where: ProposalStatusScalarWhereInput;
+};
+
+export type ProposalStatusUpdateManyWithoutProposalInput = {
+  connect?: Maybe<Array<ProposalStatusWhereUniqueInput>>;
+  create?: Maybe<Array<ProposalStatusCreateWithoutProposalInput>>;
+  delete?: Maybe<Array<ProposalStatusWhereUniqueInput>>;
+  deleteMany?: Maybe<Array<ProposalStatusScalarWhereInput>>;
+  disconnect?: Maybe<Array<ProposalStatusWhereUniqueInput>>;
+  set?: Maybe<Array<ProposalStatusWhereUniqueInput>>;
+  update?: Maybe<Array<ProposalStatusUpdateWithWhereUniqueWithoutProposalInput>>;
+  updateMany?: Maybe<Array<ProposalStatusUpdateManyWithWhereNestedInput>>;
+  upsert?: Maybe<Array<ProposalStatusUpsertWithWhereUniqueWithoutProposalInput>>;
+};
+
+export type ProposalStatusUpdateWithWhereUniqueWithoutProposalInput = {
+  data: ProposalStatusUpdateWithoutProposalDataInput;
+  where: ProposalStatusWhereUniqueInput;
+};
+
+export type ProposalStatusUpdateWithoutProposalDataInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type ProposalStatusUpsertWithWhereUniqueWithoutProposalInput = {
+  create: ProposalStatusCreateWithoutProposalInput;
+  update: ProposalStatusUpdateWithoutProposalDataInput;
+  where: ProposalStatusWhereUniqueInput;
 };
 
 export type ProposalStatusWhereInput = {
@@ -4469,6 +7434,64 @@ export type ProposalSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type ProposalUpdateInput = {
+  author?: Maybe<Scalars['String']>;
+  depositAmount?: Maybe<Scalars['String']>;
+  preimage?: Maybe<PreimageUpdateOneWithoutProposalInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  proposalId?: Maybe<Scalars['Int']>;
+  proposalStatus?: Maybe<ProposalStatusUpdateManyWithoutProposalInput>;
+};
+
+export type ProposalUpdateManyMutationInput = {
+  author?: Maybe<Scalars['String']>;
+  depositAmount?: Maybe<Scalars['String']>;
+  preimageHash?: Maybe<Scalars['String']>;
+  proposalId?: Maybe<Scalars['Int']>;
+};
+
+export type ProposalUpdateOneRequiredWithoutProposalStatusInput = {
+  connect?: Maybe<ProposalWhereUniqueInput>;
+  create?: Maybe<ProposalCreateWithoutProposalStatusInput>;
+  update?: Maybe<ProposalUpdateWithoutProposalStatusDataInput>;
+  upsert?: Maybe<ProposalUpsertWithoutProposalStatusInput>;
+};
+
+export type ProposalUpdateOneWithoutPreimageInput = {
+  connect?: Maybe<ProposalWhereUniqueInput>;
+  create?: Maybe<ProposalCreateWithoutPreimageInput>;
+  delete?: Maybe<Scalars['Boolean']>;
+  disconnect?: Maybe<Scalars['Boolean']>;
+  update?: Maybe<ProposalUpdateWithoutPreimageDataInput>;
+  upsert?: Maybe<ProposalUpsertWithoutPreimageInput>;
+};
+
+export type ProposalUpdateWithoutPreimageDataInput = {
+  author?: Maybe<Scalars['String']>;
+  depositAmount?: Maybe<Scalars['String']>;
+  preimageHash?: Maybe<Scalars['String']>;
+  proposalId?: Maybe<Scalars['Int']>;
+  proposalStatus?: Maybe<ProposalStatusUpdateManyWithoutProposalInput>;
+};
+
+export type ProposalUpdateWithoutProposalStatusDataInput = {
+  author?: Maybe<Scalars['String']>;
+  depositAmount?: Maybe<Scalars['String']>;
+  preimage?: Maybe<PreimageUpdateOneWithoutProposalInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  proposalId?: Maybe<Scalars['Int']>;
+};
+
+export type ProposalUpsertWithoutPreimageInput = {
+  create: ProposalCreateWithoutPreimageInput;
+  update: ProposalUpdateWithoutPreimageDataInput;
+};
+
+export type ProposalUpsertWithoutProposalStatusInput = {
+  create: ProposalCreateWithoutProposalStatusInput;
+  update: ProposalUpdateWithoutProposalStatusDataInput;
 };
 
 export type ProposalWhereInput = {
@@ -4798,6 +7821,44 @@ export type ReferendumConnection = {
   pageInfo: PageInfo;
 };
 
+export type ReferendumCreateInput = {
+  delay: Scalars['Int'];
+  end: Scalars['Int'];
+  preimage?: Maybe<PreimageCreateOneWithoutReferendumInput>;
+  preimageHash: Scalars['String'];
+  referendumId: Scalars['Int'];
+  referendumStatus?: Maybe<ReferendumStatusCreateManyWithoutReferendumInput>;
+  voteThreshold: Scalars['String'];
+};
+
+export type ReferendumCreateOneWithoutPreimageInput = {
+  connect?: Maybe<ReferendumWhereUniqueInput>;
+  create?: Maybe<ReferendumCreateWithoutPreimageInput>;
+};
+
+export type ReferendumCreateOneWithoutReferendumStatusInput = {
+  connect?: Maybe<ReferendumWhereUniqueInput>;
+  create?: Maybe<ReferendumCreateWithoutReferendumStatusInput>;
+};
+
+export type ReferendumCreateWithoutPreimageInput = {
+  delay: Scalars['Int'];
+  end: Scalars['Int'];
+  preimageHash: Scalars['String'];
+  referendumId: Scalars['Int'];
+  referendumStatus?: Maybe<ReferendumStatusCreateManyWithoutReferendumInput>;
+  voteThreshold: Scalars['String'];
+};
+
+export type ReferendumCreateWithoutReferendumStatusInput = {
+  delay: Scalars['Int'];
+  end: Scalars['Int'];
+  preimage?: Maybe<PreimageCreateOneWithoutReferendumInput>;
+  preimageHash: Scalars['String'];
+  referendumId: Scalars['Int'];
+  voteThreshold: Scalars['String'];
+};
+
 /** An edge in a connection. */
 export type ReferendumEdge = {
   __typename?: 'ReferendumEdge';
@@ -4851,6 +7912,26 @@ export type ReferendumStatusConnection = {
   pageInfo: PageInfo;
 };
 
+export type ReferendumStatusCreateInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  referendum: ReferendumCreateOneWithoutReferendumStatusInput;
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+};
+
+export type ReferendumStatusCreateManyWithoutReferendumInput = {
+  connect?: Maybe<Array<ReferendumStatusWhereUniqueInput>>;
+  create?: Maybe<Array<ReferendumStatusCreateWithoutReferendumInput>>;
+};
+
+export type ReferendumStatusCreateWithoutReferendumInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+};
+
 /** An edge in a connection. */
 export type ReferendumStatusEdge = {
   __typename?: 'ReferendumStatusEdge';
@@ -4874,6 +7955,96 @@ export type ReferendumStatusPreviousValues = {
   id: Scalars['ID'];
   status: Scalars['String'];
   uniqueStatus: Scalars['String'];
+};
+
+export type ReferendumStatusScalarWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<ReferendumStatusScalarWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<ReferendumStatusScalarWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<ReferendumStatusScalarWhereInput>>;
+  id?: Maybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<Scalars['ID']>;
+  status?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  status_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  status_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  status_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  status_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  status_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  status_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  status_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  status_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  status_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  status_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  status_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  status_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  status_starts_with?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  uniqueStatus_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  uniqueStatus_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  uniqueStatus_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  uniqueStatus_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  uniqueStatus_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  uniqueStatus_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  uniqueStatus_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  uniqueStatus_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  uniqueStatus_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  uniqueStatus_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  uniqueStatus_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  uniqueStatus_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  uniqueStatus_starts_with?: Maybe<Scalars['String']>;
 };
 
 export type ReferendumStatusSubscriptionPayload = {
@@ -4900,6 +8071,57 @@ export type ReferendumStatusSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type ReferendumStatusUpdateInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  referendum?: Maybe<ReferendumUpdateOneRequiredWithoutReferendumStatusInput>;
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type ReferendumStatusUpdateManyDataInput = {
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type ReferendumStatusUpdateManyMutationInput = {
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type ReferendumStatusUpdateManyWithWhereNestedInput = {
+  data: ReferendumStatusUpdateManyDataInput;
+  where: ReferendumStatusScalarWhereInput;
+};
+
+export type ReferendumStatusUpdateManyWithoutReferendumInput = {
+  connect?: Maybe<Array<ReferendumStatusWhereUniqueInput>>;
+  create?: Maybe<Array<ReferendumStatusCreateWithoutReferendumInput>>;
+  delete?: Maybe<Array<ReferendumStatusWhereUniqueInput>>;
+  deleteMany?: Maybe<Array<ReferendumStatusScalarWhereInput>>;
+  disconnect?: Maybe<Array<ReferendumStatusWhereUniqueInput>>;
+  set?: Maybe<Array<ReferendumStatusWhereUniqueInput>>;
+  update?: Maybe<Array<ReferendumStatusUpdateWithWhereUniqueWithoutReferendumInput>>;
+  updateMany?: Maybe<Array<ReferendumStatusUpdateManyWithWhereNestedInput>>;
+  upsert?: Maybe<Array<ReferendumStatusUpsertWithWhereUniqueWithoutReferendumInput>>;
+};
+
+export type ReferendumStatusUpdateWithWhereUniqueWithoutReferendumInput = {
+  data: ReferendumStatusUpdateWithoutReferendumDataInput;
+  where: ReferendumStatusWhereUniqueInput;
+};
+
+export type ReferendumStatusUpdateWithoutReferendumDataInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type ReferendumStatusUpsertWithWhereUniqueWithoutReferendumInput = {
+  create: ReferendumStatusCreateWithoutReferendumInput;
+  update: ReferendumStatusUpdateWithoutReferendumDataInput;
+  where: ReferendumStatusWhereUniqueInput;
 };
 
 export type ReferendumStatusWhereInput = {
@@ -5023,6 +8245,68 @@ export type ReferendumSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type ReferendumUpdateInput = {
+  delay?: Maybe<Scalars['Int']>;
+  end?: Maybe<Scalars['Int']>;
+  preimage?: Maybe<PreimageUpdateOneWithoutReferendumInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  referendumId?: Maybe<Scalars['Int']>;
+  referendumStatus?: Maybe<ReferendumStatusUpdateManyWithoutReferendumInput>;
+  voteThreshold?: Maybe<Scalars['String']>;
+};
+
+export type ReferendumUpdateManyMutationInput = {
+  delay?: Maybe<Scalars['Int']>;
+  end?: Maybe<Scalars['Int']>;
+  preimageHash?: Maybe<Scalars['String']>;
+  referendumId?: Maybe<Scalars['Int']>;
+  voteThreshold?: Maybe<Scalars['String']>;
+};
+
+export type ReferendumUpdateOneRequiredWithoutReferendumStatusInput = {
+  connect?: Maybe<ReferendumWhereUniqueInput>;
+  create?: Maybe<ReferendumCreateWithoutReferendumStatusInput>;
+  update?: Maybe<ReferendumUpdateWithoutReferendumStatusDataInput>;
+  upsert?: Maybe<ReferendumUpsertWithoutReferendumStatusInput>;
+};
+
+export type ReferendumUpdateOneWithoutPreimageInput = {
+  connect?: Maybe<ReferendumWhereUniqueInput>;
+  create?: Maybe<ReferendumCreateWithoutPreimageInput>;
+  delete?: Maybe<Scalars['Boolean']>;
+  disconnect?: Maybe<Scalars['Boolean']>;
+  update?: Maybe<ReferendumUpdateWithoutPreimageDataInput>;
+  upsert?: Maybe<ReferendumUpsertWithoutPreimageInput>;
+};
+
+export type ReferendumUpdateWithoutPreimageDataInput = {
+  delay?: Maybe<Scalars['Int']>;
+  end?: Maybe<Scalars['Int']>;
+  preimageHash?: Maybe<Scalars['String']>;
+  referendumId?: Maybe<Scalars['Int']>;
+  referendumStatus?: Maybe<ReferendumStatusUpdateManyWithoutReferendumInput>;
+  voteThreshold?: Maybe<Scalars['String']>;
+};
+
+export type ReferendumUpdateWithoutReferendumStatusDataInput = {
+  delay?: Maybe<Scalars['Int']>;
+  end?: Maybe<Scalars['Int']>;
+  preimage?: Maybe<PreimageUpdateOneWithoutReferendumInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  referendumId?: Maybe<Scalars['Int']>;
+  voteThreshold?: Maybe<Scalars['String']>;
+};
+
+export type ReferendumUpsertWithoutPreimageInput = {
+  create: ReferendumCreateWithoutPreimageInput;
+  update: ReferendumUpdateWithoutPreimageDataInput;
+};
+
+export type ReferendumUpsertWithoutReferendumStatusInput = {
+  create: ReferendumCreateWithoutReferendumStatusInput;
+  update: ReferendumUpdateWithoutReferendumStatusDataInput;
 };
 
 export type ReferendumWhereInput = {
@@ -5302,6 +8586,14 @@ export type RewardConnection = {
   pageInfo: PageInfo;
 };
 
+export type RewardCreateInput = {
+  authoredBlock: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  sessionIndex: SessionCreateOneInput;
+  treasuryReward: Scalars['String'];
+  validatorReward: Scalars['String'];
+};
+
 /** An edge in a connection. */
 export type RewardEdge = {
   __typename?: 'RewardEdge';
@@ -5351,6 +8643,18 @@ export type RewardSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type RewardUpdateInput = {
+  authoredBlock?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  sessionIndex?: Maybe<SessionUpdateOneRequiredInput>;
+  treasuryReward?: Maybe<Scalars['String']>;
+  validatorReward?: Maybe<Scalars['String']>;
+};
+
+export type RewardUpdateManyMutationInput = {
+  treasuryReward?: Maybe<Scalars['String']>;
+  validatorReward?: Maybe<Scalars['String']>;
 };
 
 export type RewardWhereInput = {
@@ -5466,6 +8770,17 @@ export type SessionConnection = {
   pageInfo: PageInfo;
 };
 
+export type SessionCreateInput = {
+  id?: Maybe<Scalars['ID']>;
+  index: Scalars['Int'];
+  start: BlockNumberCreateOneInput;
+};
+
+export type SessionCreateOneInput = {
+  connect?: Maybe<SessionWhereUniqueInput>;
+  create?: Maybe<SessionCreateInput>;
+};
+
 /** An edge in a connection. */
 export type SessionEdge = {
   __typename?: 'SessionEdge';
@@ -5512,6 +8827,32 @@ export type SessionSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type SessionUpdateDataInput = {
+  index?: Maybe<Scalars['Int']>;
+  start?: Maybe<BlockNumberUpdateOneRequiredInput>;
+};
+
+export type SessionUpdateInput = {
+  index?: Maybe<Scalars['Int']>;
+  start?: Maybe<BlockNumberUpdateOneRequiredInput>;
+};
+
+export type SessionUpdateManyMutationInput = {
+  index?: Maybe<Scalars['Int']>;
+};
+
+export type SessionUpdateOneRequiredInput = {
+  connect?: Maybe<SessionWhereUniqueInput>;
+  create?: Maybe<SessionCreateInput>;
+  update?: Maybe<SessionUpdateDataInput>;
+  upsert?: Maybe<SessionUpsertNestedInput>;
+};
+
+export type SessionUpsertNestedInput = {
+  create: SessionCreateInput;
+  update: SessionUpdateDataInput;
 };
 
 export type SessionWhereInput = {
@@ -5589,6 +8930,13 @@ export type SlashingConnection = {
   pageInfo: PageInfo;
 };
 
+export type SlashingCreateInput = {
+  amount: Scalars['String'];
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  who: Scalars['String'];
+};
+
 /** An edge in a connection. */
 export type SlashingEdge = {
   __typename?: 'SlashingEdge';
@@ -5638,6 +8986,17 @@ export type SlashingSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type SlashingUpdateInput = {
+  amount?: Maybe<Scalars['String']>;
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  who?: Maybe<Scalars['String']>;
+};
+
+export type SlashingUpdateManyMutationInput = {
+  amount?: Maybe<Scalars['String']>;
+  who?: Maybe<Scalars['String']>;
 };
 
 export type SlashingWhereInput = {
@@ -5753,6 +9112,12 @@ export type StakeConnection = {
   pageInfo: PageInfo;
 };
 
+export type StakeCreateInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  totalStake: Scalars['String'];
+};
+
 /** An edge in a connection. */
 export type StakeEdge = {
   __typename?: 'StakeEdge';
@@ -5799,6 +9164,15 @@ export type StakeSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type StakeUpdateInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  totalStake?: Maybe<Scalars['String']>;
+};
+
+export type StakeUpdateManyMutationInput = {
+  totalStake?: Maybe<Scalars['String']>;
 };
 
 export type StakeWhereInput = {
@@ -5949,6 +9323,24 @@ export type TechCommitteeProposalArgumentConnection = {
   pageInfo: PageInfo;
 };
 
+export type TechCommitteeProposalArgumentCreateInput = {
+  id?: Maybe<Scalars['ID']>;
+  name: Scalars['String'];
+  proposal: TechCommitteeProposalCreateOneWithoutProposalArgumentsInput;
+  value: Scalars['String'];
+};
+
+export type TechCommitteeProposalArgumentCreateManyWithoutProposalInput = {
+  connect?: Maybe<Array<TechCommitteeProposalArgumentWhereUniqueInput>>;
+  create?: Maybe<Array<TechCommitteeProposalArgumentCreateWithoutProposalInput>>;
+};
+
+export type TechCommitteeProposalArgumentCreateWithoutProposalInput = {
+  id?: Maybe<Scalars['ID']>;
+  name: Scalars['String'];
+  value: Scalars['String'];
+};
+
 /** An edge in a connection. */
 export type TechCommitteeProposalArgumentEdge = {
   __typename?: 'TechCommitteeProposalArgumentEdge';
@@ -5972,6 +9364,96 @@ export type TechCommitteeProposalArgumentPreviousValues = {
   id: Scalars['ID'];
   name: Scalars['String'];
   value: Scalars['String'];
+};
+
+export type TechCommitteeProposalArgumentScalarWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<TechCommitteeProposalArgumentScalarWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<TechCommitteeProposalArgumentScalarWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<TechCommitteeProposalArgumentScalarWhereInput>>;
+  id?: Maybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  name_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  name_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  name_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  name_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  name_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  name_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  name_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  name_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  name_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  name_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  name_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  name_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  name_starts_with?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  value_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  value_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  value_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  value_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  value_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  value_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  value_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  value_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  value_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  value_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  value_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  value_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  value_starts_with?: Maybe<Scalars['String']>;
 };
 
 export type TechCommitteeProposalArgumentSubscriptionPayload = {
@@ -5998,6 +9480,55 @@ export type TechCommitteeProposalArgumentSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type TechCommitteeProposalArgumentUpdateInput = {
+  name?: Maybe<Scalars['String']>;
+  proposal?: Maybe<TechCommitteeProposalUpdateOneRequiredWithoutProposalArgumentsInput>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type TechCommitteeProposalArgumentUpdateManyDataInput = {
+  name?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type TechCommitteeProposalArgumentUpdateManyMutationInput = {
+  name?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type TechCommitteeProposalArgumentUpdateManyWithWhereNestedInput = {
+  data: TechCommitteeProposalArgumentUpdateManyDataInput;
+  where: TechCommitteeProposalArgumentScalarWhereInput;
+};
+
+export type TechCommitteeProposalArgumentUpdateManyWithoutProposalInput = {
+  connect?: Maybe<Array<TechCommitteeProposalArgumentWhereUniqueInput>>;
+  create?: Maybe<Array<TechCommitteeProposalArgumentCreateWithoutProposalInput>>;
+  delete?: Maybe<Array<TechCommitteeProposalArgumentWhereUniqueInput>>;
+  deleteMany?: Maybe<Array<TechCommitteeProposalArgumentScalarWhereInput>>;
+  disconnect?: Maybe<Array<TechCommitteeProposalArgumentWhereUniqueInput>>;
+  set?: Maybe<Array<TechCommitteeProposalArgumentWhereUniqueInput>>;
+  update?: Maybe<Array<TechCommitteeProposalArgumentUpdateWithWhereUniqueWithoutProposalInput>>;
+  updateMany?: Maybe<Array<TechCommitteeProposalArgumentUpdateManyWithWhereNestedInput>>;
+  upsert?: Maybe<Array<TechCommitteeProposalArgumentUpsertWithWhereUniqueWithoutProposalInput>>;
+};
+
+export type TechCommitteeProposalArgumentUpdateWithWhereUniqueWithoutProposalInput = {
+  data: TechCommitteeProposalArgumentUpdateWithoutProposalDataInput;
+  where: TechCommitteeProposalArgumentWhereUniqueInput;
+};
+
+export type TechCommitteeProposalArgumentUpdateWithoutProposalDataInput = {
+  name?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type TechCommitteeProposalArgumentUpsertWithWhereUniqueWithoutProposalInput = {
+  create: TechCommitteeProposalArgumentCreateWithoutProposalInput;
+  update: TechCommitteeProposalArgumentUpdateWithoutProposalDataInput;
+  where: TechCommitteeProposalArgumentWhereUniqueInput;
 };
 
 export type TechCommitteeProposalArgumentWhereInput = {
@@ -6105,6 +9636,56 @@ export type TechCommitteeProposalConnection = {
   pageInfo: PageInfo;
 };
 
+export type TechCommitteeProposalCreateInput = {
+  author: Scalars['String'];
+  memberCount?: Maybe<Scalars['Int']>;
+  metaDescription?: Maybe<Scalars['String']>;
+  method?: Maybe<Scalars['String']>;
+  preimage?: Maybe<PreimageCreateOneInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  proposalArguments?: Maybe<TechCommitteeProposalArgumentCreateManyWithoutProposalInput>;
+  proposalHash: Scalars['String'];
+  proposalId: Scalars['Int'];
+  section?: Maybe<Scalars['String']>;
+  status?: Maybe<TechCommitteeProposalStatusCreateManyWithoutProposalInput>;
+};
+
+export type TechCommitteeProposalCreateOneWithoutProposalArgumentsInput = {
+  connect?: Maybe<TechCommitteeProposalWhereUniqueInput>;
+  create?: Maybe<TechCommitteeProposalCreateWithoutProposalArgumentsInput>;
+};
+
+export type TechCommitteeProposalCreateOneWithoutStatusInput = {
+  connect?: Maybe<TechCommitteeProposalWhereUniqueInput>;
+  create?: Maybe<TechCommitteeProposalCreateWithoutStatusInput>;
+};
+
+export type TechCommitteeProposalCreateWithoutProposalArgumentsInput = {
+  author: Scalars['String'];
+  memberCount?: Maybe<Scalars['Int']>;
+  metaDescription?: Maybe<Scalars['String']>;
+  method?: Maybe<Scalars['String']>;
+  preimage?: Maybe<PreimageCreateOneInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  proposalHash: Scalars['String'];
+  proposalId: Scalars['Int'];
+  section?: Maybe<Scalars['String']>;
+  status?: Maybe<TechCommitteeProposalStatusCreateManyWithoutProposalInput>;
+};
+
+export type TechCommitteeProposalCreateWithoutStatusInput = {
+  author: Scalars['String'];
+  memberCount?: Maybe<Scalars['Int']>;
+  metaDescription?: Maybe<Scalars['String']>;
+  method?: Maybe<Scalars['String']>;
+  preimage?: Maybe<PreimageCreateOneInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  proposalArguments?: Maybe<TechCommitteeProposalArgumentCreateManyWithoutProposalInput>;
+  proposalHash: Scalars['String'];
+  proposalId: Scalars['Int'];
+  section?: Maybe<Scalars['String']>;
+};
+
 /** An edge in a connection. */
 export type TechCommitteeProposalEdge = {
   __typename?: 'TechCommitteeProposalEdge';
@@ -6167,6 +9748,26 @@ export type TechCommitteeProposalStatusConnection = {
   pageInfo: PageInfo;
 };
 
+export type TechCommitteeProposalStatusCreateInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  proposal: TechCommitteeProposalCreateOneWithoutStatusInput;
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+};
+
+export type TechCommitteeProposalStatusCreateManyWithoutProposalInput = {
+  connect?: Maybe<Array<TechCommitteeProposalStatusWhereUniqueInput>>;
+  create?: Maybe<Array<TechCommitteeProposalStatusCreateWithoutProposalInput>>;
+};
+
+export type TechCommitteeProposalStatusCreateWithoutProposalInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+};
+
 /** An edge in a connection. */
 export type TechCommitteeProposalStatusEdge = {
   __typename?: 'TechCommitteeProposalStatusEdge';
@@ -6190,6 +9791,96 @@ export type TechCommitteeProposalStatusPreviousValues = {
   id: Scalars['ID'];
   status: Scalars['String'];
   uniqueStatus: Scalars['String'];
+};
+
+export type TechCommitteeProposalStatusScalarWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<TechCommitteeProposalStatusScalarWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<TechCommitteeProposalStatusScalarWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<TechCommitteeProposalStatusScalarWhereInput>>;
+  id?: Maybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<Scalars['ID']>;
+  status?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  status_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  status_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  status_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  status_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  status_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  status_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  status_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  status_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  status_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  status_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  status_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  status_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  status_starts_with?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  uniqueStatus_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  uniqueStatus_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  uniqueStatus_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  uniqueStatus_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  uniqueStatus_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  uniqueStatus_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  uniqueStatus_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  uniqueStatus_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  uniqueStatus_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  uniqueStatus_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  uniqueStatus_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  uniqueStatus_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  uniqueStatus_starts_with?: Maybe<Scalars['String']>;
 };
 
 export type TechCommitteeProposalStatusSubscriptionPayload = {
@@ -6216,6 +9907,57 @@ export type TechCommitteeProposalStatusSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type TechCommitteeProposalStatusUpdateInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  proposal?: Maybe<TechCommitteeProposalUpdateOneRequiredWithoutStatusInput>;
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type TechCommitteeProposalStatusUpdateManyDataInput = {
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type TechCommitteeProposalStatusUpdateManyMutationInput = {
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type TechCommitteeProposalStatusUpdateManyWithWhereNestedInput = {
+  data: TechCommitteeProposalStatusUpdateManyDataInput;
+  where: TechCommitteeProposalStatusScalarWhereInput;
+};
+
+export type TechCommitteeProposalStatusUpdateManyWithoutProposalInput = {
+  connect?: Maybe<Array<TechCommitteeProposalStatusWhereUniqueInput>>;
+  create?: Maybe<Array<TechCommitteeProposalStatusCreateWithoutProposalInput>>;
+  delete?: Maybe<Array<TechCommitteeProposalStatusWhereUniqueInput>>;
+  deleteMany?: Maybe<Array<TechCommitteeProposalStatusScalarWhereInput>>;
+  disconnect?: Maybe<Array<TechCommitteeProposalStatusWhereUniqueInput>>;
+  set?: Maybe<Array<TechCommitteeProposalStatusWhereUniqueInput>>;
+  update?: Maybe<Array<TechCommitteeProposalStatusUpdateWithWhereUniqueWithoutProposalInput>>;
+  updateMany?: Maybe<Array<TechCommitteeProposalStatusUpdateManyWithWhereNestedInput>>;
+  upsert?: Maybe<Array<TechCommitteeProposalStatusUpsertWithWhereUniqueWithoutProposalInput>>;
+};
+
+export type TechCommitteeProposalStatusUpdateWithWhereUniqueWithoutProposalInput = {
+  data: TechCommitteeProposalStatusUpdateWithoutProposalDataInput;
+  where: TechCommitteeProposalStatusWhereUniqueInput;
+};
+
+export type TechCommitteeProposalStatusUpdateWithoutProposalDataInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type TechCommitteeProposalStatusUpsertWithWhereUniqueWithoutProposalInput = {
+  create: TechCommitteeProposalStatusCreateWithoutProposalInput;
+  update: TechCommitteeProposalStatusUpdateWithoutProposalDataInput;
+  where: TechCommitteeProposalStatusWhereUniqueInput;
 };
 
 export type TechCommitteeProposalStatusWhereInput = {
@@ -6339,6 +10081,81 @@ export type TechCommitteeProposalSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type TechCommitteeProposalUpdateInput = {
+  author?: Maybe<Scalars['String']>;
+  memberCount?: Maybe<Scalars['Int']>;
+  metaDescription?: Maybe<Scalars['String']>;
+  method?: Maybe<Scalars['String']>;
+  preimage?: Maybe<PreimageUpdateOneInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  proposalArguments?: Maybe<TechCommitteeProposalArgumentUpdateManyWithoutProposalInput>;
+  proposalHash?: Maybe<Scalars['String']>;
+  proposalId?: Maybe<Scalars['Int']>;
+  section?: Maybe<Scalars['String']>;
+  status?: Maybe<TechCommitteeProposalStatusUpdateManyWithoutProposalInput>;
+};
+
+export type TechCommitteeProposalUpdateManyMutationInput = {
+  author?: Maybe<Scalars['String']>;
+  memberCount?: Maybe<Scalars['Int']>;
+  metaDescription?: Maybe<Scalars['String']>;
+  method?: Maybe<Scalars['String']>;
+  preimageHash?: Maybe<Scalars['String']>;
+  proposalHash?: Maybe<Scalars['String']>;
+  proposalId?: Maybe<Scalars['Int']>;
+  section?: Maybe<Scalars['String']>;
+};
+
+export type TechCommitteeProposalUpdateOneRequiredWithoutProposalArgumentsInput = {
+  connect?: Maybe<TechCommitteeProposalWhereUniqueInput>;
+  create?: Maybe<TechCommitteeProposalCreateWithoutProposalArgumentsInput>;
+  update?: Maybe<TechCommitteeProposalUpdateWithoutProposalArgumentsDataInput>;
+  upsert?: Maybe<TechCommitteeProposalUpsertWithoutProposalArgumentsInput>;
+};
+
+export type TechCommitteeProposalUpdateOneRequiredWithoutStatusInput = {
+  connect?: Maybe<TechCommitteeProposalWhereUniqueInput>;
+  create?: Maybe<TechCommitteeProposalCreateWithoutStatusInput>;
+  update?: Maybe<TechCommitteeProposalUpdateWithoutStatusDataInput>;
+  upsert?: Maybe<TechCommitteeProposalUpsertWithoutStatusInput>;
+};
+
+export type TechCommitteeProposalUpdateWithoutProposalArgumentsDataInput = {
+  author?: Maybe<Scalars['String']>;
+  memberCount?: Maybe<Scalars['Int']>;
+  metaDescription?: Maybe<Scalars['String']>;
+  method?: Maybe<Scalars['String']>;
+  preimage?: Maybe<PreimageUpdateOneInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  proposalHash?: Maybe<Scalars['String']>;
+  proposalId?: Maybe<Scalars['Int']>;
+  section?: Maybe<Scalars['String']>;
+  status?: Maybe<TechCommitteeProposalStatusUpdateManyWithoutProposalInput>;
+};
+
+export type TechCommitteeProposalUpdateWithoutStatusDataInput = {
+  author?: Maybe<Scalars['String']>;
+  memberCount?: Maybe<Scalars['Int']>;
+  metaDescription?: Maybe<Scalars['String']>;
+  method?: Maybe<Scalars['String']>;
+  preimage?: Maybe<PreimageUpdateOneInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  proposalArguments?: Maybe<TechCommitteeProposalArgumentUpdateManyWithoutProposalInput>;
+  proposalHash?: Maybe<Scalars['String']>;
+  proposalId?: Maybe<Scalars['Int']>;
+  section?: Maybe<Scalars['String']>;
+};
+
+export type TechCommitteeProposalUpsertWithoutProposalArgumentsInput = {
+  create: TechCommitteeProposalCreateWithoutProposalArgumentsInput;
+  update: TechCommitteeProposalUpdateWithoutProposalArgumentsDataInput;
+};
+
+export type TechCommitteeProposalUpsertWithoutStatusInput = {
+  create: TechCommitteeProposalCreateWithoutStatusInput;
+  update: TechCommitteeProposalUpdateWithoutStatusDataInput;
 };
 
 export type TechCommitteeProposalWhereInput = {
@@ -6824,6 +10641,30 @@ export type TipConnection = {
   pageInfo: PageInfo;
 };
 
+export type TipCreateInput = {
+  closes?: Maybe<Scalars['Int']>;
+  finder?: Maybe<Scalars['String']>;
+  finderFee?: Maybe<Scalars['String']>;
+  hash: Scalars['String'];
+  reason: Scalars['String'];
+  tipStatus?: Maybe<TipStatusCreateManyWithoutTipInput>;
+  who: Scalars['String'];
+};
+
+export type TipCreateOneWithoutTipStatusInput = {
+  connect?: Maybe<TipWhereUniqueInput>;
+  create?: Maybe<TipCreateWithoutTipStatusInput>;
+};
+
+export type TipCreateWithoutTipStatusInput = {
+  closes?: Maybe<Scalars['Int']>;
+  finder?: Maybe<Scalars['String']>;
+  finderFee?: Maybe<Scalars['String']>;
+  hash: Scalars['String'];
+  reason: Scalars['String'];
+  who: Scalars['String'];
+};
+
 /** An edge in a connection. */
 export type TipEdge = {
   __typename?: 'TipEdge';
@@ -6880,6 +10721,26 @@ export type TipStatusConnection = {
   pageInfo: PageInfo;
 };
 
+export type TipStatusCreateInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  status: Scalars['String'];
+  tip: TipCreateOneWithoutTipStatusInput;
+  uniqueStatus: Scalars['String'];
+};
+
+export type TipStatusCreateManyWithoutTipInput = {
+  connect?: Maybe<Array<TipStatusWhereUniqueInput>>;
+  create?: Maybe<Array<TipStatusCreateWithoutTipInput>>;
+};
+
+export type TipStatusCreateWithoutTipInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+};
+
 /** An edge in a connection. */
 export type TipStatusEdge = {
   __typename?: 'TipStatusEdge';
@@ -6903,6 +10764,96 @@ export type TipStatusPreviousValues = {
   id: Scalars['ID'];
   status: Scalars['String'];
   uniqueStatus: Scalars['String'];
+};
+
+export type TipStatusScalarWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<TipStatusScalarWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<TipStatusScalarWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<TipStatusScalarWhereInput>>;
+  id?: Maybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<Scalars['ID']>;
+  status?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  status_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  status_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  status_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  status_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  status_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  status_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  status_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  status_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  status_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  status_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  status_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  status_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  status_starts_with?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  uniqueStatus_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  uniqueStatus_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  uniqueStatus_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  uniqueStatus_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  uniqueStatus_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  uniqueStatus_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  uniqueStatus_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  uniqueStatus_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  uniqueStatus_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  uniqueStatus_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  uniqueStatus_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  uniqueStatus_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  uniqueStatus_starts_with?: Maybe<Scalars['String']>;
 };
 
 export type TipStatusSubscriptionPayload = {
@@ -6929,6 +10880,57 @@ export type TipStatusSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type TipStatusUpdateInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  status?: Maybe<Scalars['String']>;
+  tip?: Maybe<TipUpdateOneRequiredWithoutTipStatusInput>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type TipStatusUpdateManyDataInput = {
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type TipStatusUpdateManyMutationInput = {
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type TipStatusUpdateManyWithWhereNestedInput = {
+  data: TipStatusUpdateManyDataInput;
+  where: TipStatusScalarWhereInput;
+};
+
+export type TipStatusUpdateManyWithoutTipInput = {
+  connect?: Maybe<Array<TipStatusWhereUniqueInput>>;
+  create?: Maybe<Array<TipStatusCreateWithoutTipInput>>;
+  delete?: Maybe<Array<TipStatusWhereUniqueInput>>;
+  deleteMany?: Maybe<Array<TipStatusScalarWhereInput>>;
+  disconnect?: Maybe<Array<TipStatusWhereUniqueInput>>;
+  set?: Maybe<Array<TipStatusWhereUniqueInput>>;
+  update?: Maybe<Array<TipStatusUpdateWithWhereUniqueWithoutTipInput>>;
+  updateMany?: Maybe<Array<TipStatusUpdateManyWithWhereNestedInput>>;
+  upsert?: Maybe<Array<TipStatusUpsertWithWhereUniqueWithoutTipInput>>;
+};
+
+export type TipStatusUpdateWithWhereUniqueWithoutTipInput = {
+  data: TipStatusUpdateWithoutTipDataInput;
+  where: TipStatusWhereUniqueInput;
+};
+
+export type TipStatusUpdateWithoutTipDataInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type TipStatusUpsertWithWhereUniqueWithoutTipInput = {
+  create: TipStatusCreateWithoutTipInput;
+  update: TipStatusUpdateWithoutTipDataInput;
+  where: TipStatusWhereUniqueInput;
 };
 
 export type TipStatusWhereInput = {
@@ -7052,6 +11054,46 @@ export type TipSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type TipUpdateInput = {
+  closes?: Maybe<Scalars['Int']>;
+  finder?: Maybe<Scalars['String']>;
+  finderFee?: Maybe<Scalars['String']>;
+  hash?: Maybe<Scalars['String']>;
+  reason?: Maybe<Scalars['String']>;
+  tipStatus?: Maybe<TipStatusUpdateManyWithoutTipInput>;
+  who?: Maybe<Scalars['String']>;
+};
+
+export type TipUpdateManyMutationInput = {
+  closes?: Maybe<Scalars['Int']>;
+  finder?: Maybe<Scalars['String']>;
+  finderFee?: Maybe<Scalars['String']>;
+  hash?: Maybe<Scalars['String']>;
+  reason?: Maybe<Scalars['String']>;
+  who?: Maybe<Scalars['String']>;
+};
+
+export type TipUpdateOneRequiredWithoutTipStatusInput = {
+  connect?: Maybe<TipWhereUniqueInput>;
+  create?: Maybe<TipCreateWithoutTipStatusInput>;
+  update?: Maybe<TipUpdateWithoutTipStatusDataInput>;
+  upsert?: Maybe<TipUpsertWithoutTipStatusInput>;
+};
+
+export type TipUpdateWithoutTipStatusDataInput = {
+  closes?: Maybe<Scalars['Int']>;
+  finder?: Maybe<Scalars['String']>;
+  finderFee?: Maybe<Scalars['String']>;
+  hash?: Maybe<Scalars['String']>;
+  reason?: Maybe<Scalars['String']>;
+  who?: Maybe<Scalars['String']>;
+};
+
+export type TipUpsertWithoutTipStatusInput = {
+  create: TipCreateWithoutTipStatusInput;
+  update: TipUpdateWithoutTipStatusDataInput;
 };
 
 export type TipWhereInput = {
@@ -7433,6 +11475,12 @@ export type TotalIssuanceConnection = {
   pageInfo: PageInfo;
 };
 
+export type TotalIssuanceCreateInput = {
+  amount: Scalars['String'];
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+};
+
 /** An edge in a connection. */
 export type TotalIssuanceEdge = {
   __typename?: 'TotalIssuanceEdge';
@@ -7479,6 +11527,15 @@ export type TotalIssuanceSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type TotalIssuanceUpdateInput = {
+  amount?: Maybe<Scalars['String']>;
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+};
+
+export type TotalIssuanceUpdateManyMutationInput = {
+  amount?: Maybe<Scalars['String']>;
 };
 
 export type TotalIssuanceWhereInput = {
@@ -7582,6 +11639,44 @@ export type TreasurySpendProposalConnection = {
   pageInfo: PageInfo;
 };
 
+export type TreasurySpendProposalCreateInput = {
+  beneficiary: Scalars['String'];
+  bond: Scalars['String'];
+  motion?: Maybe<MotionCreateOneWithoutTreasurySpendProposalInput>;
+  proposer: Scalars['String'];
+  treasuryProposalId: Scalars['Int'];
+  treasuryStatus?: Maybe<TreasuryStatusCreateManyWithoutTreasurySpendProposalInput>;
+  value: Scalars['String'];
+};
+
+export type TreasurySpendProposalCreateOneWithoutMotionInput = {
+  connect?: Maybe<TreasurySpendProposalWhereUniqueInput>;
+  create?: Maybe<TreasurySpendProposalCreateWithoutMotionInput>;
+};
+
+export type TreasurySpendProposalCreateOneWithoutTreasuryStatusInput = {
+  connect?: Maybe<TreasurySpendProposalWhereUniqueInput>;
+  create?: Maybe<TreasurySpendProposalCreateWithoutTreasuryStatusInput>;
+};
+
+export type TreasurySpendProposalCreateWithoutMotionInput = {
+  beneficiary: Scalars['String'];
+  bond: Scalars['String'];
+  proposer: Scalars['String'];
+  treasuryProposalId: Scalars['Int'];
+  treasuryStatus?: Maybe<TreasuryStatusCreateManyWithoutTreasurySpendProposalInput>;
+  value: Scalars['String'];
+};
+
+export type TreasurySpendProposalCreateWithoutTreasuryStatusInput = {
+  beneficiary: Scalars['String'];
+  bond: Scalars['String'];
+  motion?: Maybe<MotionCreateOneWithoutTreasurySpendProposalInput>;
+  proposer: Scalars['String'];
+  treasuryProposalId: Scalars['Int'];
+  value: Scalars['String'];
+};
+
 /** An edge in a connection. */
 export type TreasurySpendProposalEdge = {
   __typename?: 'TreasurySpendProposalEdge';
@@ -7640,6 +11735,68 @@ export type TreasurySpendProposalSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type TreasurySpendProposalUpdateInput = {
+  beneficiary?: Maybe<Scalars['String']>;
+  bond?: Maybe<Scalars['String']>;
+  motion?: Maybe<MotionUpdateOneWithoutTreasurySpendProposalInput>;
+  proposer?: Maybe<Scalars['String']>;
+  treasuryProposalId?: Maybe<Scalars['Int']>;
+  treasuryStatus?: Maybe<TreasuryStatusUpdateManyWithoutTreasurySpendProposalInput>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type TreasurySpendProposalUpdateManyMutationInput = {
+  beneficiary?: Maybe<Scalars['String']>;
+  bond?: Maybe<Scalars['String']>;
+  proposer?: Maybe<Scalars['String']>;
+  treasuryProposalId?: Maybe<Scalars['Int']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type TreasurySpendProposalUpdateOneRequiredWithoutTreasuryStatusInput = {
+  connect?: Maybe<TreasurySpendProposalWhereUniqueInput>;
+  create?: Maybe<TreasurySpendProposalCreateWithoutTreasuryStatusInput>;
+  update?: Maybe<TreasurySpendProposalUpdateWithoutTreasuryStatusDataInput>;
+  upsert?: Maybe<TreasurySpendProposalUpsertWithoutTreasuryStatusInput>;
+};
+
+export type TreasurySpendProposalUpdateOneWithoutMotionInput = {
+  connect?: Maybe<TreasurySpendProposalWhereUniqueInput>;
+  create?: Maybe<TreasurySpendProposalCreateWithoutMotionInput>;
+  delete?: Maybe<Scalars['Boolean']>;
+  disconnect?: Maybe<Scalars['Boolean']>;
+  update?: Maybe<TreasurySpendProposalUpdateWithoutMotionDataInput>;
+  upsert?: Maybe<TreasurySpendProposalUpsertWithoutMotionInput>;
+};
+
+export type TreasurySpendProposalUpdateWithoutMotionDataInput = {
+  beneficiary?: Maybe<Scalars['String']>;
+  bond?: Maybe<Scalars['String']>;
+  proposer?: Maybe<Scalars['String']>;
+  treasuryProposalId?: Maybe<Scalars['Int']>;
+  treasuryStatus?: Maybe<TreasuryStatusUpdateManyWithoutTreasurySpendProposalInput>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type TreasurySpendProposalUpdateWithoutTreasuryStatusDataInput = {
+  beneficiary?: Maybe<Scalars['String']>;
+  bond?: Maybe<Scalars['String']>;
+  motion?: Maybe<MotionUpdateOneWithoutTreasurySpendProposalInput>;
+  proposer?: Maybe<Scalars['String']>;
+  treasuryProposalId?: Maybe<Scalars['Int']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type TreasurySpendProposalUpsertWithoutMotionInput = {
+  create: TreasurySpendProposalCreateWithoutMotionInput;
+  update: TreasurySpendProposalUpdateWithoutMotionDataInput;
+};
+
+export type TreasurySpendProposalUpsertWithoutTreasuryStatusInput = {
+  create: TreasurySpendProposalCreateWithoutTreasuryStatusInput;
+  update: TreasurySpendProposalUpdateWithoutTreasuryStatusDataInput;
 };
 
 export type TreasurySpendProposalWhereInput = {
@@ -7967,6 +12124,26 @@ export type TreasuryStatusConnection = {
   pageInfo: PageInfo;
 };
 
+export type TreasuryStatusCreateInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  status: Scalars['String'];
+  treasurySpendProposal: TreasurySpendProposalCreateOneWithoutTreasuryStatusInput;
+  uniqueStatus: Scalars['String'];
+};
+
+export type TreasuryStatusCreateManyWithoutTreasurySpendProposalInput = {
+  connect?: Maybe<Array<TreasuryStatusWhereUniqueInput>>;
+  create?: Maybe<Array<TreasuryStatusCreateWithoutTreasurySpendProposalInput>>;
+};
+
+export type TreasuryStatusCreateWithoutTreasurySpendProposalInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+};
+
 /** An edge in a connection. */
 export type TreasuryStatusEdge = {
   __typename?: 'TreasuryStatusEdge';
@@ -7990,6 +12167,96 @@ export type TreasuryStatusPreviousValues = {
   id: Scalars['ID'];
   status: Scalars['String'];
   uniqueStatus: Scalars['String'];
+};
+
+export type TreasuryStatusScalarWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<TreasuryStatusScalarWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<TreasuryStatusScalarWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<TreasuryStatusScalarWhereInput>>;
+  id?: Maybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<Scalars['ID']>;
+  status?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  status_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  status_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  status_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  status_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  status_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  status_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  status_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  status_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  status_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  status_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  status_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  status_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  status_starts_with?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  uniqueStatus_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  uniqueStatus_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  uniqueStatus_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  uniqueStatus_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  uniqueStatus_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  uniqueStatus_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  uniqueStatus_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  uniqueStatus_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  uniqueStatus_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  uniqueStatus_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  uniqueStatus_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  uniqueStatus_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  uniqueStatus_starts_with?: Maybe<Scalars['String']>;
 };
 
 export type TreasuryStatusSubscriptionPayload = {
@@ -8016,6 +12283,57 @@ export type TreasuryStatusSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type TreasuryStatusUpdateInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  status?: Maybe<Scalars['String']>;
+  treasurySpendProposal?: Maybe<TreasurySpendProposalUpdateOneRequiredWithoutTreasuryStatusInput>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type TreasuryStatusUpdateManyDataInput = {
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type TreasuryStatusUpdateManyMutationInput = {
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type TreasuryStatusUpdateManyWithWhereNestedInput = {
+  data: TreasuryStatusUpdateManyDataInput;
+  where: TreasuryStatusScalarWhereInput;
+};
+
+export type TreasuryStatusUpdateManyWithoutTreasurySpendProposalInput = {
+  connect?: Maybe<Array<TreasuryStatusWhereUniqueInput>>;
+  create?: Maybe<Array<TreasuryStatusCreateWithoutTreasurySpendProposalInput>>;
+  delete?: Maybe<Array<TreasuryStatusWhereUniqueInput>>;
+  deleteMany?: Maybe<Array<TreasuryStatusScalarWhereInput>>;
+  disconnect?: Maybe<Array<TreasuryStatusWhereUniqueInput>>;
+  set?: Maybe<Array<TreasuryStatusWhereUniqueInput>>;
+  update?: Maybe<Array<TreasuryStatusUpdateWithWhereUniqueWithoutTreasurySpendProposalInput>>;
+  updateMany?: Maybe<Array<TreasuryStatusUpdateManyWithWhereNestedInput>>;
+  upsert?: Maybe<Array<TreasuryStatusUpsertWithWhereUniqueWithoutTreasurySpendProposalInput>>;
+};
+
+export type TreasuryStatusUpdateWithWhereUniqueWithoutTreasurySpendProposalInput = {
+  data: TreasuryStatusUpdateWithoutTreasurySpendProposalDataInput;
+  where: TreasuryStatusWhereUniqueInput;
+};
+
+export type TreasuryStatusUpdateWithoutTreasurySpendProposalDataInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type TreasuryStatusUpsertWithWhereUniqueWithoutTreasurySpendProposalInput = {
+  create: TreasuryStatusCreateWithoutTreasurySpendProposalInput;
+  update: TreasuryStatusUpdateWithoutTreasurySpendProposalDataInput;
+  where: TreasuryStatusWhereUniqueInput;
 };
 
 export type TreasuryStatusWhereInput = {
@@ -8153,6 +12471,14 @@ export type ValidatorConnection = {
   pageInfo: PageInfo;
 };
 
+export type ValidatorCreateInput = {
+  controller: Scalars['String'];
+  id?: Maybe<Scalars['ID']>;
+  preferences: Scalars['String'];
+  session: SessionCreateOneInput;
+  stash: Scalars['String'];
+};
+
 /** An edge in a connection. */
 export type ValidatorEdge = {
   __typename?: 'ValidatorEdge';
@@ -8205,6 +12531,19 @@ export type ValidatorSubscriptionWhereInput = {
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type ValidatorUpdateInput = {
+  controller?: Maybe<Scalars['String']>;
+  preferences?: Maybe<Scalars['String']>;
+  session?: Maybe<SessionUpdateOneRequiredInput>;
+  stash?: Maybe<Scalars['String']>;
+};
+
+export type ValidatorUpdateManyMutationInput = {
+  controller?: Maybe<Scalars['String']>;
+  preferences?: Maybe<Scalars['String']>;
+  stash?: Maybe<Scalars['String']>;
 };
 
 export type ValidatorWhereInput = {
@@ -8703,6 +13042,7 @@ export type Bpchar_Comparison_Exp = {
 /** columns and relationships of "calender_events" */
 export type Calender_Events = {
   __typename?: 'calender_events';
+  approval_status: Scalars['String'];
   content?: Maybe<Scalars['String']>;
   end_time: Scalars['timestamptz'];
   event_id?: Maybe<Scalars['Int']>;
@@ -8714,6 +13054,7 @@ export type Calender_Events = {
   status?: Maybe<Scalars['String']>;
   title: Scalars['String'];
   url?: Maybe<Scalars['String']>;
+  user_id?: Maybe<Scalars['Int']>;
 };
 
 /** aggregated selection of "calender_events" */
@@ -8772,12 +13113,14 @@ export type Calender_Events_Avg_Fields = {
   __typename?: 'calender_events_avg_fields';
   event_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "calender_events" */
 export type Calender_Events_Avg_Order_By = {
   event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "calender_events". All fields are combined with a logical 'AND'. */
@@ -8785,6 +13128,7 @@ export type Calender_Events_Bool_Exp = {
   _and?: Maybe<Array<Maybe<Calender_Events_Bool_Exp>>>;
   _not?: Maybe<Calender_Events_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Calender_Events_Bool_Exp>>>;
+  approval_status?: Maybe<String_Comparison_Exp>;
   content?: Maybe<String_Comparison_Exp>;
   end_time?: Maybe<Timestamptz_Comparison_Exp>;
   event_id?: Maybe<Int_Comparison_Exp>;
@@ -8796,6 +13140,7 @@ export type Calender_Events_Bool_Exp = {
   status?: Maybe<String_Comparison_Exp>;
   title?: Maybe<String_Comparison_Exp>;
   url?: Maybe<String_Comparison_Exp>;
+  user_id?: Maybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "calender_events" */
@@ -8808,10 +13153,12 @@ export enum Calender_Events_Constraint {
 export type Calender_Events_Inc_Input = {
   event_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
+  user_id?: Maybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "calender_events" */
 export type Calender_Events_Insert_Input = {
+  approval_status?: Maybe<Scalars['String']>;
   content?: Maybe<Scalars['String']>;
   end_time?: Maybe<Scalars['timestamptz']>;
   event_id?: Maybe<Scalars['Int']>;
@@ -8823,11 +13170,13 @@ export type Calender_Events_Insert_Input = {
   status?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
+  user_id?: Maybe<Scalars['Int']>;
 };
 
 /** aggregate max on columns */
 export type Calender_Events_Max_Fields = {
   __typename?: 'calender_events_max_fields';
+  approval_status?: Maybe<Scalars['String']>;
   content?: Maybe<Scalars['String']>;
   end_time?: Maybe<Scalars['timestamptz']>;
   event_id?: Maybe<Scalars['Int']>;
@@ -8839,10 +13188,12 @@ export type Calender_Events_Max_Fields = {
   status?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
+  user_id?: Maybe<Scalars['Int']>;
 };
 
 /** order by max() on columns of table "calender_events" */
 export type Calender_Events_Max_Order_By = {
+  approval_status?: Maybe<Order_By>;
   content?: Maybe<Order_By>;
   end_time?: Maybe<Order_By>;
   event_id?: Maybe<Order_By>;
@@ -8854,11 +13205,13 @@ export type Calender_Events_Max_Order_By = {
   status?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
   url?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Calender_Events_Min_Fields = {
   __typename?: 'calender_events_min_fields';
+  approval_status?: Maybe<Scalars['String']>;
   content?: Maybe<Scalars['String']>;
   end_time?: Maybe<Scalars['timestamptz']>;
   event_id?: Maybe<Scalars['Int']>;
@@ -8870,10 +13223,12 @@ export type Calender_Events_Min_Fields = {
   status?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
+  user_id?: Maybe<Scalars['Int']>;
 };
 
 /** order by min() on columns of table "calender_events" */
 export type Calender_Events_Min_Order_By = {
+  approval_status?: Maybe<Order_By>;
   content?: Maybe<Order_By>;
   end_time?: Maybe<Order_By>;
   event_id?: Maybe<Order_By>;
@@ -8885,6 +13240,7 @@ export type Calender_Events_Min_Order_By = {
   status?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
   url?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** response of any mutation on the table "calender_events" */
@@ -8911,6 +13267,7 @@ export type Calender_Events_On_Conflict = {
 
 /** ordering options when selecting data from "calender_events" */
 export type Calender_Events_Order_By = {
+  approval_status?: Maybe<Order_By>;
   content?: Maybe<Order_By>;
   end_time?: Maybe<Order_By>;
   event_id?: Maybe<Order_By>;
@@ -8922,6 +13279,7 @@ export type Calender_Events_Order_By = {
   status?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
   url?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** primary key columns input for table: "calender_events" */
@@ -8931,6 +13289,8 @@ export type Calender_Events_Pk_Columns_Input = {
 
 /** select columns of table "calender_events" */
 export enum Calender_Events_Select_Column {
+  /** column name */
+  ApprovalStatus = 'approval_status',
   /** column name */
   Content = 'content',
   /** column name */
@@ -8952,11 +13312,14 @@ export enum Calender_Events_Select_Column {
   /** column name */
   Title = 'title',
   /** column name */
-  Url = 'url'
+  Url = 'url',
+  /** column name */
+  UserId = 'user_id'
 }
 
 /** input type for updating data in table "calender_events" */
 export type Calender_Events_Set_Input = {
+  approval_status?: Maybe<Scalars['String']>;
   content?: Maybe<Scalars['String']>;
   end_time?: Maybe<Scalars['timestamptz']>;
   event_id?: Maybe<Scalars['Int']>;
@@ -8968,6 +13331,7 @@ export type Calender_Events_Set_Input = {
   status?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
+  user_id?: Maybe<Scalars['Int']>;
 };
 
 /** aggregate stddev on columns */
@@ -8975,12 +13339,14 @@ export type Calender_Events_Stddev_Fields = {
   __typename?: 'calender_events_stddev_fields';
   event_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "calender_events" */
 export type Calender_Events_Stddev_Order_By = {
   event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -8988,12 +13354,14 @@ export type Calender_Events_Stddev_Pop_Fields = {
   __typename?: 'calender_events_stddev_pop_fields';
   event_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "calender_events" */
 export type Calender_Events_Stddev_Pop_Order_By = {
   event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -9001,12 +13369,14 @@ export type Calender_Events_Stddev_Samp_Fields = {
   __typename?: 'calender_events_stddev_samp_fields';
   event_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "calender_events" */
 export type Calender_Events_Stddev_Samp_Order_By = {
   event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** aggregate sum on columns */
@@ -9014,16 +13384,20 @@ export type Calender_Events_Sum_Fields = {
   __typename?: 'calender_events_sum_fields';
   event_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
+  user_id?: Maybe<Scalars['Int']>;
 };
 
 /** order by sum() on columns of table "calender_events" */
 export type Calender_Events_Sum_Order_By = {
   event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** update columns of table "calender_events" */
 export enum Calender_Events_Update_Column {
+  /** column name */
+  ApprovalStatus = 'approval_status',
   /** column name */
   Content = 'content',
   /** column name */
@@ -9045,7 +13419,9 @@ export enum Calender_Events_Update_Column {
   /** column name */
   Title = 'title',
   /** column name */
-  Url = 'url'
+  Url = 'url',
+  /** column name */
+  UserId = 'user_id'
 }
 
 /** aggregate var_pop on columns */
@@ -9053,12 +13429,14 @@ export type Calender_Events_Var_Pop_Fields = {
   __typename?: 'calender_events_var_pop_fields';
   event_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "calender_events" */
 export type Calender_Events_Var_Pop_Order_By = {
   event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
@@ -9066,12 +13444,14 @@ export type Calender_Events_Var_Samp_Fields = {
   __typename?: 'calender_events_var_samp_fields';
   event_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "calender_events" */
 export type Calender_Events_Var_Samp_Order_By = {
   event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** aggregate variance on columns */
@@ -9079,12 +13459,14 @@ export type Calender_Events_Variance_Fields = {
   __typename?: 'calender_events_variance_fields';
   event_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "calender_events" */
 export type Calender_Events_Variance_Order_By = {
   event_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** columns and relationships of "comment_reactions" */
@@ -9813,10 +14195,115 @@ export type Mutation_Root = {
   changeNotificationPreference?: Maybe<ChangeResponse>;
   changePassword?: Maybe<Message>;
   changeUsername?: Maybe<ChangeResponse>;
+  createBlockIndex: BlockIndex;
+  createBlockNumber: BlockNumber;
+  createBounty: Bounty;
+  createBountyStatus: BountyStatus;
+  createChildBounty: ChildBounty;
+  createChildBountyStatus: ChildBountyStatus;
+  createCouncil: Council;
+  createCouncilMember: CouncilMember;
+  createEra: Era;
+  createHeartBeat: HeartBeat;
+  createMotion: Motion;
+  createMotionProposalArgument: MotionProposalArgument;
+  createMotionStatus: MotionStatus;
+  createNomination: Nomination;
+  createOfflineValidator: OfflineValidator;
   createPostConfirm?: Maybe<Message>;
   createPostStart?: Maybe<AddressLoginType>;
+  createPreimage: Preimage;
+  createPreimageArgument: PreimageArgument;
+  createPreimageStatus: PreimageStatus;
+  createProposal: Proposal;
+  createProposalStatus: ProposalStatus;
   createProposalTracker?: Maybe<Message>;
+  createReferendum: Referendum;
+  createReferendumStatus: ReferendumStatus;
+  createReward: Reward;
+  createSession: Session;
+  createSlashing: Slashing;
+  createStake: Stake;
+  createTechCommitteeProposal: TechCommitteeProposal;
+  createTechCommitteeProposalArgument: TechCommitteeProposalArgument;
+  createTechCommitteeProposalStatus: TechCommitteeProposalStatus;
+  createTip: Tip;
+  createTipStatus: TipStatus;
+  createTotalIssuance: TotalIssuance;
+  createTreasurySpendProposal: TreasurySpendProposal;
+  createTreasuryStatus: TreasuryStatus;
+  createValidator: Validator;
   deleteAccount?: Maybe<Message>;
+  deleteBlockIndex?: Maybe<BlockIndex>;
+  deleteBlockNumber?: Maybe<BlockNumber>;
+  deleteBounty?: Maybe<Bounty>;
+  deleteBountyStatus?: Maybe<BountyStatus>;
+  deleteChildBounty?: Maybe<ChildBounty>;
+  deleteChildBountyStatus?: Maybe<ChildBountyStatus>;
+  deleteCouncil?: Maybe<Council>;
+  deleteCouncilMember?: Maybe<CouncilMember>;
+  deleteEra?: Maybe<Era>;
+  deleteHeartBeat?: Maybe<HeartBeat>;
+  deleteManyBlockIndexes: BatchPayload;
+  deleteManyBlockNumbers: BatchPayload;
+  deleteManyBounties: BatchPayload;
+  deleteManyBountyStatuses: BatchPayload;
+  deleteManyChildBounties: BatchPayload;
+  deleteManyChildBountyStatuses: BatchPayload;
+  deleteManyCouncilMembers: BatchPayload;
+  deleteManyCouncils: BatchPayload;
+  deleteManyEras: BatchPayload;
+  deleteManyHeartBeats: BatchPayload;
+  deleteManyMotionProposalArguments: BatchPayload;
+  deleteManyMotionStatuses: BatchPayload;
+  deleteManyMotions: BatchPayload;
+  deleteManyNominations: BatchPayload;
+  deleteManyOfflineValidators: BatchPayload;
+  deleteManyPreimageArguments: BatchPayload;
+  deleteManyPreimageStatuses: BatchPayload;
+  deleteManyPreimages: BatchPayload;
+  deleteManyProposalStatuses: BatchPayload;
+  deleteManyProposals: BatchPayload;
+  deleteManyReferendumStatuses: BatchPayload;
+  deleteManyReferendums: BatchPayload;
+  deleteManyRewards: BatchPayload;
+  deleteManySessions: BatchPayload;
+  deleteManySlashings: BatchPayload;
+  deleteManyStakes: BatchPayload;
+  deleteManyTechCommitteeProposalArguments: BatchPayload;
+  deleteManyTechCommitteeProposalStatuses: BatchPayload;
+  deleteManyTechCommitteeProposals: BatchPayload;
+  deleteManyTipStatuses: BatchPayload;
+  deleteManyTips: BatchPayload;
+  deleteManyTotalIssuances: BatchPayload;
+  deleteManyTreasurySpendProposals: BatchPayload;
+  deleteManyTreasuryStatuses: BatchPayload;
+  deleteManyValidators: BatchPayload;
+  deleteMotion?: Maybe<Motion>;
+  deleteMotionProposalArgument?: Maybe<MotionProposalArgument>;
+  deleteMotionStatus?: Maybe<MotionStatus>;
+  deleteNomination?: Maybe<Nomination>;
+  deleteOfflineValidator?: Maybe<OfflineValidator>;
+  deletePreimage?: Maybe<Preimage>;
+  deletePreimageArgument?: Maybe<PreimageArgument>;
+  deletePreimageStatus?: Maybe<PreimageStatus>;
+  deleteProposal?: Maybe<Proposal>;
+  deleteProposalStatus?: Maybe<ProposalStatus>;
+  deleteReferendum?: Maybe<Referendum>;
+  deleteReferendumStatus?: Maybe<ReferendumStatus>;
+  deleteReward?: Maybe<Reward>;
+  deleteSession?: Maybe<Session>;
+  deleteSlashing?: Maybe<Slashing>;
+  deleteStake?: Maybe<Stake>;
+  deleteTechCommitteeProposal?: Maybe<TechCommitteeProposal>;
+  deleteTechCommitteeProposalArgument?: Maybe<TechCommitteeProposalArgument>;
+  deleteTechCommitteeProposalStatus?: Maybe<TechCommitteeProposalStatus>;
+  deleteTip?: Maybe<Tip>;
+  deleteTipStatus?: Maybe<TipStatus>;
+  deleteTotalIssuance?: Maybe<TotalIssuance>;
+  deleteTreasurySpendProposal?: Maybe<TreasurySpendProposal>;
+  deleteTreasuryStatus?: Maybe<TreasuryStatus>;
+  deleteValidator?: Maybe<Validator>;
   /** delete data from the table: "blockchain_socials" */
   delete_blockchain_socials?: Maybe<Blockchain_Socials_Mutation_Response>;
   /** delete single row from the table: "blockchain_socials" */
@@ -9887,6 +14374,7 @@ export type Mutation_Root = {
   delete_replies_by_pk?: Maybe<Replies>;
   editPostConfirm?: Maybe<Message>;
   editPostStart?: Maybe<AddressLoginType>;
+  executeRaw: Scalars['Json'];
   /** insert data into the table: "blockchain_socials" */
   insert_blockchain_socials?: Maybe<Blockchain_Socials_Mutation_Response>;
   /** insert a single row into the table: "blockchain_socials" */
@@ -9970,7 +14458,76 @@ export type Mutation_Root = {
   setDefaultAddress?: Maybe<ChangeResponse>;
   signup?: Maybe<LoginResponse>;
   undoEmailChange?: Maybe<UndoEmailChangeResponse>;
+  updateBlockIndex?: Maybe<BlockIndex>;
+  updateBlockNumber?: Maybe<BlockNumber>;
+  updateBounty?: Maybe<Bounty>;
+  updateBountyStatus?: Maybe<BountyStatus>;
+  updateChildBounty?: Maybe<ChildBounty>;
+  updateChildBountyStatus?: Maybe<ChildBountyStatus>;
+  updateCouncil?: Maybe<Council>;
+  updateCouncilMember?: Maybe<CouncilMember>;
+  updateEra?: Maybe<Era>;
+  updateHeartBeat?: Maybe<HeartBeat>;
+  updateManyBlockIndexes: BatchPayload;
+  updateManyBlockNumbers: BatchPayload;
+  updateManyBounties: BatchPayload;
+  updateManyBountyStatuses: BatchPayload;
+  updateManyChildBounties: BatchPayload;
+  updateManyChildBountyStatuses: BatchPayload;
+  updateManyCouncilMembers: BatchPayload;
+  updateManyEras: BatchPayload;
+  updateManyHeartBeats: BatchPayload;
+  updateManyMotionProposalArguments: BatchPayload;
+  updateManyMotionStatuses: BatchPayload;
+  updateManyMotions: BatchPayload;
+  updateManyNominations: BatchPayload;
+  updateManyOfflineValidators: BatchPayload;
+  updateManyPreimageArguments: BatchPayload;
+  updateManyPreimageStatuses: BatchPayload;
+  updateManyPreimages: BatchPayload;
+  updateManyProposalStatuses: BatchPayload;
+  updateManyProposals: BatchPayload;
+  updateManyReferendumStatuses: BatchPayload;
+  updateManyReferendums: BatchPayload;
+  updateManyRewards: BatchPayload;
+  updateManySessions: BatchPayload;
+  updateManySlashings: BatchPayload;
+  updateManyStakes: BatchPayload;
+  updateManyTechCommitteeProposalArguments: BatchPayload;
+  updateManyTechCommitteeProposalStatuses: BatchPayload;
+  updateManyTechCommitteeProposals: BatchPayload;
+  updateManyTipStatuses: BatchPayload;
+  updateManyTips: BatchPayload;
+  updateManyTotalIssuances: BatchPayload;
+  updateManyTreasurySpendProposals: BatchPayload;
+  updateManyTreasuryStatuses: BatchPayload;
+  updateManyValidators: BatchPayload;
+  updateMotion?: Maybe<Motion>;
+  updateMotionProposalArgument?: Maybe<MotionProposalArgument>;
+  updateMotionStatus?: Maybe<MotionStatus>;
+  updateNomination?: Maybe<Nomination>;
+  updateOfflineValidator?: Maybe<OfflineValidator>;
+  updatePreimage?: Maybe<Preimage>;
+  updatePreimageArgument?: Maybe<PreimageArgument>;
+  updatePreimageStatus?: Maybe<PreimageStatus>;
+  updateProposal?: Maybe<Proposal>;
+  updateProposalStatus?: Maybe<ProposalStatus>;
   updateProposalTracker?: Maybe<Message>;
+  updateReferendum?: Maybe<Referendum>;
+  updateReferendumStatus?: Maybe<ReferendumStatus>;
+  updateReward?: Maybe<Reward>;
+  updateSession?: Maybe<Session>;
+  updateSlashing?: Maybe<Slashing>;
+  updateStake?: Maybe<Stake>;
+  updateTechCommitteeProposal?: Maybe<TechCommitteeProposal>;
+  updateTechCommitteeProposalArgument?: Maybe<TechCommitteeProposalArgument>;
+  updateTechCommitteeProposalStatus?: Maybe<TechCommitteeProposalStatus>;
+  updateTip?: Maybe<Tip>;
+  updateTipStatus?: Maybe<TipStatus>;
+  updateTotalIssuance?: Maybe<TotalIssuance>;
+  updateTreasurySpendProposal?: Maybe<TreasurySpendProposal>;
+  updateTreasuryStatus?: Maybe<TreasuryStatus>;
+  updateValidator?: Maybe<Validator>;
   /** update data of the table: "blockchain_socials" */
   update_blockchain_socials?: Maybe<Blockchain_Socials_Mutation_Response>;
   /** update single row of the table: "blockchain_socials" */
@@ -10039,6 +14596,41 @@ export type Mutation_Root = {
   update_replies?: Maybe<Replies_Mutation_Response>;
   /** update single row of the table: "replies" */
   update_replies_by_pk?: Maybe<Replies>;
+  upsertBlockIndex: BlockIndex;
+  upsertBlockNumber: BlockNumber;
+  upsertBounty: Bounty;
+  upsertBountyStatus: BountyStatus;
+  upsertChildBounty: ChildBounty;
+  upsertChildBountyStatus: ChildBountyStatus;
+  upsertCouncil: Council;
+  upsertCouncilMember: CouncilMember;
+  upsertEra: Era;
+  upsertHeartBeat: HeartBeat;
+  upsertMotion: Motion;
+  upsertMotionProposalArgument: MotionProposalArgument;
+  upsertMotionStatus: MotionStatus;
+  upsertNomination: Nomination;
+  upsertOfflineValidator: OfflineValidator;
+  upsertPreimage: Preimage;
+  upsertPreimageArgument: PreimageArgument;
+  upsertPreimageStatus: PreimageStatus;
+  upsertProposal: Proposal;
+  upsertProposalStatus: ProposalStatus;
+  upsertReferendum: Referendum;
+  upsertReferendumStatus: ReferendumStatus;
+  upsertReward: Reward;
+  upsertSession: Session;
+  upsertSlashing: Slashing;
+  upsertStake: Stake;
+  upsertTechCommitteeProposal: TechCommitteeProposal;
+  upsertTechCommitteeProposalArgument: TechCommitteeProposalArgument;
+  upsertTechCommitteeProposalStatus: TechCommitteeProposalStatus;
+  upsertTip: Tip;
+  upsertTipStatus: TipStatus;
+  upsertTotalIssuance: TotalIssuance;
+  upsertTreasurySpendProposal: TreasurySpendProposal;
+  upsertTreasuryStatus: TreasuryStatus;
+  upsertValidator: Validator;
   verifyEmail?: Maybe<ChangeResponse>;
 };
 
@@ -10139,6 +14731,96 @@ export type Mutation_RootChangeUsernameArgs = {
 
 
 /** mutation root */
+export type Mutation_RootCreateBlockIndexArgs = {
+  data: BlockIndexCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateBlockNumberArgs = {
+  data: BlockNumberCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateBountyArgs = {
+  data: BountyCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateBountyStatusArgs = {
+  data: BountyStatusCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateChildBountyArgs = {
+  data: ChildBountyCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateChildBountyStatusArgs = {
+  data: ChildBountyStatusCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateCouncilArgs = {
+  data: CouncilCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateCouncilMemberArgs = {
+  data: CouncilMemberCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateEraArgs = {
+  data: EraCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateHeartBeatArgs = {
+  data: HeartBeatCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateMotionArgs = {
+  data: MotionCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateMotionProposalArgumentArgs = {
+  data: MotionProposalArgumentCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateMotionStatusArgs = {
+  data: MotionStatusCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateNominationArgs = {
+  data: NominationCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateOfflineValidatorArgs = {
+  data: OfflineValidatorCreateInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootCreatePostConfirmArgs = {
   address: Scalars['String'];
   content: Scalars['String'];
@@ -10155,6 +14837,36 @@ export type Mutation_RootCreatePostStartArgs = {
 
 
 /** mutation root */
+export type Mutation_RootCreatePreimageArgs = {
+  data: PreimageCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreatePreimageArgumentArgs = {
+  data: PreimageArgumentCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreatePreimageStatusArgs = {
+  data: PreimageStatusCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateProposalArgs = {
+  data: ProposalCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateProposalStatusArgs = {
+  data: ProposalStatusCreateInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootCreateProposalTrackerArgs = {
   deadline: Scalars['String'];
   network: Scalars['String'];
@@ -10165,8 +14877,518 @@ export type Mutation_RootCreateProposalTrackerArgs = {
 
 
 /** mutation root */
+export type Mutation_RootCreateReferendumArgs = {
+  data: ReferendumCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateReferendumStatusArgs = {
+  data: ReferendumStatusCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateRewardArgs = {
+  data: RewardCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateSessionArgs = {
+  data: SessionCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateSlashingArgs = {
+  data: SlashingCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateStakeArgs = {
+  data: StakeCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateTechCommitteeProposalArgs = {
+  data: TechCommitteeProposalCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateTechCommitteeProposalArgumentArgs = {
+  data: TechCommitteeProposalArgumentCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateTechCommitteeProposalStatusArgs = {
+  data: TechCommitteeProposalStatusCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateTipArgs = {
+  data: TipCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateTipStatusArgs = {
+  data: TipStatusCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateTotalIssuanceArgs = {
+  data: TotalIssuanceCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateTreasurySpendProposalArgs = {
+  data: TreasurySpendProposalCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateTreasuryStatusArgs = {
+  data: TreasuryStatusCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateValidatorArgs = {
+  data: ValidatorCreateInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootDeleteAccountArgs = {
   password: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteBlockIndexArgs = {
+  where: BlockIndexWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteBlockNumberArgs = {
+  where: BlockNumberWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteBountyArgs = {
+  where: BountyWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteBountyStatusArgs = {
+  where: BountyStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteChildBountyArgs = {
+  where: ChildBountyWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteChildBountyStatusArgs = {
+  where: ChildBountyStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteCouncilArgs = {
+  where: CouncilWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteCouncilMemberArgs = {
+  where: CouncilMemberWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteEraArgs = {
+  where: EraWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteHeartBeatArgs = {
+  where: HeartBeatWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyBlockIndexesArgs = {
+  where?: Maybe<BlockIndexWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyBlockNumbersArgs = {
+  where?: Maybe<BlockNumberWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyBountiesArgs = {
+  where?: Maybe<BountyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyBountyStatusesArgs = {
+  where?: Maybe<BountyStatusWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyChildBountiesArgs = {
+  where?: Maybe<ChildBountyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyChildBountyStatusesArgs = {
+  where?: Maybe<ChildBountyStatusWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyCouncilMembersArgs = {
+  where?: Maybe<CouncilMemberWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyCouncilsArgs = {
+  where?: Maybe<CouncilWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyErasArgs = {
+  where?: Maybe<EraWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyHeartBeatsArgs = {
+  where?: Maybe<HeartBeatWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyMotionProposalArgumentsArgs = {
+  where?: Maybe<MotionProposalArgumentWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyMotionStatusesArgs = {
+  where?: Maybe<MotionStatusWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyMotionsArgs = {
+  where?: Maybe<MotionWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyNominationsArgs = {
+  where?: Maybe<NominationWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyOfflineValidatorsArgs = {
+  where?: Maybe<OfflineValidatorWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyPreimageArgumentsArgs = {
+  where?: Maybe<PreimageArgumentWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyPreimageStatusesArgs = {
+  where?: Maybe<PreimageStatusWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyPreimagesArgs = {
+  where?: Maybe<PreimageWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyProposalStatusesArgs = {
+  where?: Maybe<ProposalStatusWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyProposalsArgs = {
+  where?: Maybe<ProposalWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyReferendumStatusesArgs = {
+  where?: Maybe<ReferendumStatusWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyReferendumsArgs = {
+  where?: Maybe<ReferendumWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyRewardsArgs = {
+  where?: Maybe<RewardWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManySessionsArgs = {
+  where?: Maybe<SessionWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManySlashingsArgs = {
+  where?: Maybe<SlashingWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyStakesArgs = {
+  where?: Maybe<StakeWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyTechCommitteeProposalArgumentsArgs = {
+  where?: Maybe<TechCommitteeProposalArgumentWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyTechCommitteeProposalStatusesArgs = {
+  where?: Maybe<TechCommitteeProposalStatusWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyTechCommitteeProposalsArgs = {
+  where?: Maybe<TechCommitteeProposalWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyTipStatusesArgs = {
+  where?: Maybe<TipStatusWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyTipsArgs = {
+  where?: Maybe<TipWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyTotalIssuancesArgs = {
+  where?: Maybe<TotalIssuanceWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyTreasurySpendProposalsArgs = {
+  where?: Maybe<TreasurySpendProposalWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyTreasuryStatusesArgs = {
+  where?: Maybe<TreasuryStatusWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyValidatorsArgs = {
+  where?: Maybe<ValidatorWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteMotionArgs = {
+  where: MotionWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteMotionProposalArgumentArgs = {
+  where: MotionProposalArgumentWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteMotionStatusArgs = {
+  where: MotionStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteNominationArgs = {
+  where: NominationWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteOfflineValidatorArgs = {
+  where: OfflineValidatorWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeletePreimageArgs = {
+  where: PreimageWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeletePreimageArgumentArgs = {
+  where: PreimageArgumentWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeletePreimageStatusArgs = {
+  where: PreimageStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteProposalArgs = {
+  where: ProposalWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteProposalStatusArgs = {
+  where: ProposalStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteReferendumArgs = {
+  where: ReferendumWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteReferendumStatusArgs = {
+  where: ReferendumStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteRewardArgs = {
+  where: RewardWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteSessionArgs = {
+  where: SessionWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteSlashingArgs = {
+  where: SlashingWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteStakeArgs = {
+  where: StakeWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteTechCommitteeProposalArgs = {
+  where: TechCommitteeProposalWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteTechCommitteeProposalArgumentArgs = {
+  where: TechCommitteeProposalArgumentWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteTechCommitteeProposalStatusArgs = {
+  where: TechCommitteeProposalStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteTipArgs = {
+  where: TipWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteTipStatusArgs = {
+  where: TipStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteTotalIssuanceArgs = {
+  where: TotalIssuanceWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteTreasurySpendProposalArgs = {
+  where: TreasurySpendProposalWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteTreasuryStatusArgs = {
+  where: TreasuryStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteValidatorArgs = {
+  where: ValidatorWhereUniqueInput;
 };
 
 
@@ -10389,6 +15611,13 @@ export type Mutation_RootEditPostConfirmArgs = {
 /** mutation root */
 export type Mutation_RootEditPostStartArgs = {
   address: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootExecuteRawArgs = {
+  database?: Maybe<PrismaDatabase>;
+  query: Scalars['String'];
 };
 
 
@@ -10728,9 +15957,492 @@ export type Mutation_RootUndoEmailChangeArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdateBlockIndexArgs = {
+  data: BlockIndexUpdateInput;
+  where: BlockIndexWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateBlockNumberArgs = {
+  data: BlockNumberUpdateInput;
+  where: BlockNumberWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateBountyArgs = {
+  data: BountyUpdateInput;
+  where: BountyWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateBountyStatusArgs = {
+  data: BountyStatusUpdateInput;
+  where: BountyStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateChildBountyArgs = {
+  data: ChildBountyUpdateInput;
+  where: ChildBountyWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateChildBountyStatusArgs = {
+  data: ChildBountyStatusUpdateInput;
+  where: ChildBountyStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateCouncilArgs = {
+  data: CouncilUpdateInput;
+  where: CouncilWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateCouncilMemberArgs = {
+  data: CouncilMemberUpdateInput;
+  where: CouncilMemberWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateEraArgs = {
+  data: EraUpdateInput;
+  where: EraWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateHeartBeatArgs = {
+  data: HeartBeatUpdateInput;
+  where: HeartBeatWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyBlockIndexesArgs = {
+  data: BlockIndexUpdateManyMutationInput;
+  where?: Maybe<BlockIndexWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyBlockNumbersArgs = {
+  data: BlockNumberUpdateManyMutationInput;
+  where?: Maybe<BlockNumberWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyBountiesArgs = {
+  data: BountyUpdateManyMutationInput;
+  where?: Maybe<BountyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyBountyStatusesArgs = {
+  data: BountyStatusUpdateManyMutationInput;
+  where?: Maybe<BountyStatusWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyChildBountiesArgs = {
+  data: ChildBountyUpdateManyMutationInput;
+  where?: Maybe<ChildBountyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyChildBountyStatusesArgs = {
+  data: ChildBountyStatusUpdateManyMutationInput;
+  where?: Maybe<ChildBountyStatusWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyCouncilMembersArgs = {
+  data: CouncilMemberUpdateManyMutationInput;
+  where?: Maybe<CouncilMemberWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyErasArgs = {
+  data: EraUpdateManyMutationInput;
+  where?: Maybe<EraWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyHeartBeatsArgs = {
+  data: HeartBeatUpdateManyMutationInput;
+  where?: Maybe<HeartBeatWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyMotionProposalArgumentsArgs = {
+  data: MotionProposalArgumentUpdateManyMutationInput;
+  where?: Maybe<MotionProposalArgumentWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyMotionStatusesArgs = {
+  data: MotionStatusUpdateManyMutationInput;
+  where?: Maybe<MotionStatusWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyMotionsArgs = {
+  data: MotionUpdateManyMutationInput;
+  where?: Maybe<MotionWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyNominationsArgs = {
+  data: NominationUpdateManyMutationInput;
+  where?: Maybe<NominationWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyOfflineValidatorsArgs = {
+  data: OfflineValidatorUpdateManyMutationInput;
+  where?: Maybe<OfflineValidatorWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyPreimageArgumentsArgs = {
+  data: PreimageArgumentUpdateManyMutationInput;
+  where?: Maybe<PreimageArgumentWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyPreimageStatusesArgs = {
+  data: PreimageStatusUpdateManyMutationInput;
+  where?: Maybe<PreimageStatusWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyPreimagesArgs = {
+  data: PreimageUpdateManyMutationInput;
+  where?: Maybe<PreimageWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyProposalStatusesArgs = {
+  data: ProposalStatusUpdateManyMutationInput;
+  where?: Maybe<ProposalStatusWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyProposalsArgs = {
+  data: ProposalUpdateManyMutationInput;
+  where?: Maybe<ProposalWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyReferendumStatusesArgs = {
+  data: ReferendumStatusUpdateManyMutationInput;
+  where?: Maybe<ReferendumStatusWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyReferendumsArgs = {
+  data: ReferendumUpdateManyMutationInput;
+  where?: Maybe<ReferendumWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyRewardsArgs = {
+  data: RewardUpdateManyMutationInput;
+  where?: Maybe<RewardWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManySessionsArgs = {
+  data: SessionUpdateManyMutationInput;
+  where?: Maybe<SessionWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManySlashingsArgs = {
+  data: SlashingUpdateManyMutationInput;
+  where?: Maybe<SlashingWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyStakesArgs = {
+  data: StakeUpdateManyMutationInput;
+  where?: Maybe<StakeWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyTechCommitteeProposalArgumentsArgs = {
+  data: TechCommitteeProposalArgumentUpdateManyMutationInput;
+  where?: Maybe<TechCommitteeProposalArgumentWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyTechCommitteeProposalStatusesArgs = {
+  data: TechCommitteeProposalStatusUpdateManyMutationInput;
+  where?: Maybe<TechCommitteeProposalStatusWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyTechCommitteeProposalsArgs = {
+  data: TechCommitteeProposalUpdateManyMutationInput;
+  where?: Maybe<TechCommitteeProposalWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyTipStatusesArgs = {
+  data: TipStatusUpdateManyMutationInput;
+  where?: Maybe<TipStatusWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyTipsArgs = {
+  data: TipUpdateManyMutationInput;
+  where?: Maybe<TipWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyTotalIssuancesArgs = {
+  data: TotalIssuanceUpdateManyMutationInput;
+  where?: Maybe<TotalIssuanceWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyTreasurySpendProposalsArgs = {
+  data: TreasurySpendProposalUpdateManyMutationInput;
+  where?: Maybe<TreasurySpendProposalWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyTreasuryStatusesArgs = {
+  data: TreasuryStatusUpdateManyMutationInput;
+  where?: Maybe<TreasuryStatusWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyValidatorsArgs = {
+  data: ValidatorUpdateManyMutationInput;
+  where?: Maybe<ValidatorWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateMotionArgs = {
+  data: MotionUpdateInput;
+  where: MotionWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateMotionProposalArgumentArgs = {
+  data: MotionProposalArgumentUpdateInput;
+  where: MotionProposalArgumentWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateMotionStatusArgs = {
+  data: MotionStatusUpdateInput;
+  where: MotionStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateNominationArgs = {
+  data: NominationUpdateInput;
+  where: NominationWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateOfflineValidatorArgs = {
+  data: OfflineValidatorUpdateInput;
+  where: OfflineValidatorWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdatePreimageArgs = {
+  data: PreimageUpdateInput;
+  where: PreimageWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdatePreimageArgumentArgs = {
+  data: PreimageArgumentUpdateInput;
+  where: PreimageArgumentWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdatePreimageStatusArgs = {
+  data: PreimageStatusUpdateInput;
+  where: PreimageStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateProposalArgs = {
+  data: ProposalUpdateInput;
+  where: ProposalWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateProposalStatusArgs = {
+  data: ProposalStatusUpdateInput;
+  where: ProposalStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdateProposalTrackerArgs = {
   id: Scalars['Int'];
   status: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateReferendumArgs = {
+  data: ReferendumUpdateInput;
+  where: ReferendumWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateReferendumStatusArgs = {
+  data: ReferendumStatusUpdateInput;
+  where: ReferendumStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateRewardArgs = {
+  data: RewardUpdateInput;
+  where: RewardWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateSessionArgs = {
+  data: SessionUpdateInput;
+  where: SessionWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateSlashingArgs = {
+  data: SlashingUpdateInput;
+  where: SlashingWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateStakeArgs = {
+  data: StakeUpdateInput;
+  where: StakeWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateTechCommitteeProposalArgs = {
+  data: TechCommitteeProposalUpdateInput;
+  where: TechCommitteeProposalWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateTechCommitteeProposalArgumentArgs = {
+  data: TechCommitteeProposalArgumentUpdateInput;
+  where: TechCommitteeProposalArgumentWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateTechCommitteeProposalStatusArgs = {
+  data: TechCommitteeProposalStatusUpdateInput;
+  where: TechCommitteeProposalStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateTipArgs = {
+  data: TipUpdateInput;
+  where: TipWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateTipStatusArgs = {
+  data: TipStatusUpdateInput;
+  where: TipStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateTotalIssuanceArgs = {
+  data: TotalIssuanceUpdateInput;
+  where: TotalIssuanceWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateTreasurySpendProposalArgs = {
+  data: TreasurySpendProposalUpdateInput;
+  where: TreasurySpendProposalWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateTreasuryStatusArgs = {
+  data: TreasuryStatusUpdateInput;
+  where: TreasuryStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateValidatorArgs = {
+  data: ValidatorUpdateInput;
+  where: ValidatorWhereUniqueInput;
 };
 
 
@@ -11007,6 +16719,286 @@ export type Mutation_RootUpdate_Replies_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpsertBlockIndexArgs = {
+  create: BlockIndexCreateInput;
+  update: BlockIndexUpdateInput;
+  where: BlockIndexWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertBlockNumberArgs = {
+  create: BlockNumberCreateInput;
+  update: BlockNumberUpdateInput;
+  where: BlockNumberWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertBountyArgs = {
+  create: BountyCreateInput;
+  update: BountyUpdateInput;
+  where: BountyWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertBountyStatusArgs = {
+  create: BountyStatusCreateInput;
+  update: BountyStatusUpdateInput;
+  where: BountyStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertChildBountyArgs = {
+  create: ChildBountyCreateInput;
+  update: ChildBountyUpdateInput;
+  where: ChildBountyWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertChildBountyStatusArgs = {
+  create: ChildBountyStatusCreateInput;
+  update: ChildBountyStatusUpdateInput;
+  where: ChildBountyStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertCouncilArgs = {
+  create: CouncilCreateInput;
+  update: CouncilUpdateInput;
+  where: CouncilWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertCouncilMemberArgs = {
+  create: CouncilMemberCreateInput;
+  update: CouncilMemberUpdateInput;
+  where: CouncilMemberWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertEraArgs = {
+  create: EraCreateInput;
+  update: EraUpdateInput;
+  where: EraWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertHeartBeatArgs = {
+  create: HeartBeatCreateInput;
+  update: HeartBeatUpdateInput;
+  where: HeartBeatWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertMotionArgs = {
+  create: MotionCreateInput;
+  update: MotionUpdateInput;
+  where: MotionWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertMotionProposalArgumentArgs = {
+  create: MotionProposalArgumentCreateInput;
+  update: MotionProposalArgumentUpdateInput;
+  where: MotionProposalArgumentWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertMotionStatusArgs = {
+  create: MotionStatusCreateInput;
+  update: MotionStatusUpdateInput;
+  where: MotionStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertNominationArgs = {
+  create: NominationCreateInput;
+  update: NominationUpdateInput;
+  where: NominationWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertOfflineValidatorArgs = {
+  create: OfflineValidatorCreateInput;
+  update: OfflineValidatorUpdateInput;
+  where: OfflineValidatorWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertPreimageArgs = {
+  create: PreimageCreateInput;
+  update: PreimageUpdateInput;
+  where: PreimageWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertPreimageArgumentArgs = {
+  create: PreimageArgumentCreateInput;
+  update: PreimageArgumentUpdateInput;
+  where: PreimageArgumentWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertPreimageStatusArgs = {
+  create: PreimageStatusCreateInput;
+  update: PreimageStatusUpdateInput;
+  where: PreimageStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertProposalArgs = {
+  create: ProposalCreateInput;
+  update: ProposalUpdateInput;
+  where: ProposalWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertProposalStatusArgs = {
+  create: ProposalStatusCreateInput;
+  update: ProposalStatusUpdateInput;
+  where: ProposalStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertReferendumArgs = {
+  create: ReferendumCreateInput;
+  update: ReferendumUpdateInput;
+  where: ReferendumWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertReferendumStatusArgs = {
+  create: ReferendumStatusCreateInput;
+  update: ReferendumStatusUpdateInput;
+  where: ReferendumStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertRewardArgs = {
+  create: RewardCreateInput;
+  update: RewardUpdateInput;
+  where: RewardWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertSessionArgs = {
+  create: SessionCreateInput;
+  update: SessionUpdateInput;
+  where: SessionWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertSlashingArgs = {
+  create: SlashingCreateInput;
+  update: SlashingUpdateInput;
+  where: SlashingWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertStakeArgs = {
+  create: StakeCreateInput;
+  update: StakeUpdateInput;
+  where: StakeWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertTechCommitteeProposalArgs = {
+  create: TechCommitteeProposalCreateInput;
+  update: TechCommitteeProposalUpdateInput;
+  where: TechCommitteeProposalWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertTechCommitteeProposalArgumentArgs = {
+  create: TechCommitteeProposalArgumentCreateInput;
+  update: TechCommitteeProposalArgumentUpdateInput;
+  where: TechCommitteeProposalArgumentWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertTechCommitteeProposalStatusArgs = {
+  create: TechCommitteeProposalStatusCreateInput;
+  update: TechCommitteeProposalStatusUpdateInput;
+  where: TechCommitteeProposalStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertTipArgs = {
+  create: TipCreateInput;
+  update: TipUpdateInput;
+  where: TipWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertTipStatusArgs = {
+  create: TipStatusCreateInput;
+  update: TipStatusUpdateInput;
+  where: TipStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertTotalIssuanceArgs = {
+  create: TotalIssuanceCreateInput;
+  update: TotalIssuanceUpdateInput;
+  where: TotalIssuanceWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertTreasurySpendProposalArgs = {
+  create: TreasurySpendProposalCreateInput;
+  update: TreasurySpendProposalUpdateInput;
+  where: TreasurySpendProposalWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertTreasuryStatusArgs = {
+  create: TreasuryStatusCreateInput;
+  update: TreasuryStatusUpdateInput;
+  where: TreasuryStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertValidatorArgs = {
+  create: ValidatorCreateInput;
+  update: ValidatorUpdateInput;
+  where: ValidatorWhereUniqueInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootVerifyEmailArgs = {
   token: Scalars['String'];
 };
@@ -11024,6 +17016,9 @@ export type Onchain_Links = {
   /** Remote relationship field */
   onchain_bounty: Array<Maybe<Bounty>>;
   onchain_bounty_id?: Maybe<Scalars['Int']>;
+  /** Remote relationship field */
+  onchain_child_bounty: Array<Maybe<ChildBounty>>;
+  onchain_child_bounty_id?: Maybe<Scalars['Int']>;
   /** Remote relationship field */
   onchain_motion: Array<Maybe<Motion>>;
   onchain_motion_id?: Maybe<Scalars['Int']>;
@@ -11067,6 +17062,23 @@ export type Onchain_LinksOnchain_BountyArgs = {
   orderBy?: Maybe<BountyOrderByInput>;
   skip?: Maybe<Scalars['Int']>;
   where?: Maybe<BountyWhereInput_Remote_Rel_Public_Onchain_Linksonchain_Bounty>;
+};
+
+
+/**
+ * on chain proposal created automatically by chain-db-watcher
+ *
+ *
+ * columns and relationships of "onchain_links"
+ */
+export type Onchain_LinksOnchain_Child_BountyArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<ChildBountyOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  where?: Maybe<ChildBountyWhereInput_Remote_Rel_Public_Onchain_Linksonchain_Child_Bounty>;
 };
 
 
@@ -11257,6 +17269,7 @@ export type Onchain_Links_Avg_Fields = {
   __typename?: 'onchain_links_avg_fields';
   id?: Maybe<Scalars['Float']>;
   onchain_bounty_id?: Maybe<Scalars['Float']>;
+  onchain_child_bounty_id?: Maybe<Scalars['Float']>;
   onchain_motion_id?: Maybe<Scalars['Float']>;
   onchain_proposal_id?: Maybe<Scalars['Float']>;
   onchain_referendum_id?: Maybe<Scalars['Float']>;
@@ -11269,6 +17282,7 @@ export type Onchain_Links_Avg_Fields = {
 export type Onchain_Links_Avg_Order_By = {
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
+  onchain_child_bounty_id?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
   onchain_referendum_id?: Maybe<Order_By>;
@@ -11285,6 +17299,7 @@ export type Onchain_Links_Bool_Exp = {
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   id?: Maybe<Int_Comparison_Exp>;
   onchain_bounty_id?: Maybe<Int_Comparison_Exp>;
+  onchain_child_bounty_id?: Maybe<Int_Comparison_Exp>;
   onchain_motion_id?: Maybe<Int_Comparison_Exp>;
   onchain_post_discussion_links?: Maybe<Onchain_Post_Discussion_Link_Bool_Exp>;
   onchain_proposal_id?: Maybe<Int_Comparison_Exp>;
@@ -11299,8 +17314,6 @@ export type Onchain_Links_Bool_Exp = {
 
 /** unique or primary key constraints on table "onchain_links" */
 export enum Onchain_Links_Constraint {
-  /** unique or primary key constraint */
-  OnchainLinksOnchainBountyIdKey = 'onchain_links_onchain_bounty_id_key',
   /** unique or primary key constraint */
   OnchainLinksOnchainMotionIdKey = 'onchain_links_onchain_motion_id_key',
   /** unique or primary key constraint */
@@ -11321,6 +17334,7 @@ export enum Onchain_Links_Constraint {
 export type Onchain_Links_Inc_Input = {
   id?: Maybe<Scalars['Int']>;
   onchain_bounty_id?: Maybe<Scalars['Int']>;
+  onchain_child_bounty_id?: Maybe<Scalars['Int']>;
   onchain_motion_id?: Maybe<Scalars['Int']>;
   onchain_proposal_id?: Maybe<Scalars['Int']>;
   onchain_referendum_id?: Maybe<Scalars['Int']>;
@@ -11334,6 +17348,7 @@ export type Onchain_Links_Insert_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['Int']>;
   onchain_bounty_id?: Maybe<Scalars['Int']>;
+  onchain_child_bounty_id?: Maybe<Scalars['Int']>;
   onchain_motion_id?: Maybe<Scalars['Int']>;
   onchain_post_discussion_links?: Maybe<Onchain_Post_Discussion_Link_Arr_Rel_Insert_Input>;
   onchain_proposal_id?: Maybe<Scalars['Int']>;
@@ -11352,6 +17367,7 @@ export type Onchain_Links_Max_Fields = {
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['Int']>;
   onchain_bounty_id?: Maybe<Scalars['Int']>;
+  onchain_child_bounty_id?: Maybe<Scalars['Int']>;
   onchain_motion_id?: Maybe<Scalars['Int']>;
   onchain_proposal_id?: Maybe<Scalars['Int']>;
   onchain_referendum_id?: Maybe<Scalars['Int']>;
@@ -11367,6 +17383,7 @@ export type Onchain_Links_Max_Order_By = {
   created_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
+  onchain_child_bounty_id?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
   onchain_referendum_id?: Maybe<Order_By>;
@@ -11383,6 +17400,7 @@ export type Onchain_Links_Min_Fields = {
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['Int']>;
   onchain_bounty_id?: Maybe<Scalars['Int']>;
+  onchain_child_bounty_id?: Maybe<Scalars['Int']>;
   onchain_motion_id?: Maybe<Scalars['Int']>;
   onchain_proposal_id?: Maybe<Scalars['Int']>;
   onchain_referendum_id?: Maybe<Scalars['Int']>;
@@ -11398,6 +17416,7 @@ export type Onchain_Links_Min_Order_By = {
   created_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
+  onchain_child_bounty_id?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
   onchain_referendum_id?: Maybe<Order_By>;
@@ -11435,6 +17454,7 @@ export type Onchain_Links_Order_By = {
   created_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
+  onchain_child_bounty_id?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
   onchain_post_discussion_links_aggregate?: Maybe<Onchain_Post_Discussion_Link_Aggregate_Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
@@ -11461,6 +17481,8 @@ export enum Onchain_Links_Select_Column {
   /** column name */
   OnchainBountyId = 'onchain_bounty_id',
   /** column name */
+  OnchainChildBountyId = 'onchain_child_bounty_id',
+  /** column name */
   OnchainMotionId = 'onchain_motion_id',
   /** column name */
   OnchainProposalId = 'onchain_proposal_id',
@@ -11483,6 +17505,7 @@ export type Onchain_Links_Set_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['Int']>;
   onchain_bounty_id?: Maybe<Scalars['Int']>;
+  onchain_child_bounty_id?: Maybe<Scalars['Int']>;
   onchain_motion_id?: Maybe<Scalars['Int']>;
   onchain_proposal_id?: Maybe<Scalars['Int']>;
   onchain_referendum_id?: Maybe<Scalars['Int']>;
@@ -11498,6 +17521,7 @@ export type Onchain_Links_Stddev_Fields = {
   __typename?: 'onchain_links_stddev_fields';
   id?: Maybe<Scalars['Float']>;
   onchain_bounty_id?: Maybe<Scalars['Float']>;
+  onchain_child_bounty_id?: Maybe<Scalars['Float']>;
   onchain_motion_id?: Maybe<Scalars['Float']>;
   onchain_proposal_id?: Maybe<Scalars['Float']>;
   onchain_referendum_id?: Maybe<Scalars['Float']>;
@@ -11510,6 +17534,7 @@ export type Onchain_Links_Stddev_Fields = {
 export type Onchain_Links_Stddev_Order_By = {
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
+  onchain_child_bounty_id?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
   onchain_referendum_id?: Maybe<Order_By>;
@@ -11523,6 +17548,7 @@ export type Onchain_Links_Stddev_Pop_Fields = {
   __typename?: 'onchain_links_stddev_pop_fields';
   id?: Maybe<Scalars['Float']>;
   onchain_bounty_id?: Maybe<Scalars['Float']>;
+  onchain_child_bounty_id?: Maybe<Scalars['Float']>;
   onchain_motion_id?: Maybe<Scalars['Float']>;
   onchain_proposal_id?: Maybe<Scalars['Float']>;
   onchain_referendum_id?: Maybe<Scalars['Float']>;
@@ -11535,6 +17561,7 @@ export type Onchain_Links_Stddev_Pop_Fields = {
 export type Onchain_Links_Stddev_Pop_Order_By = {
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
+  onchain_child_bounty_id?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
   onchain_referendum_id?: Maybe<Order_By>;
@@ -11548,6 +17575,7 @@ export type Onchain_Links_Stddev_Samp_Fields = {
   __typename?: 'onchain_links_stddev_samp_fields';
   id?: Maybe<Scalars['Float']>;
   onchain_bounty_id?: Maybe<Scalars['Float']>;
+  onchain_child_bounty_id?: Maybe<Scalars['Float']>;
   onchain_motion_id?: Maybe<Scalars['Float']>;
   onchain_proposal_id?: Maybe<Scalars['Float']>;
   onchain_referendum_id?: Maybe<Scalars['Float']>;
@@ -11560,6 +17588,7 @@ export type Onchain_Links_Stddev_Samp_Fields = {
 export type Onchain_Links_Stddev_Samp_Order_By = {
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
+  onchain_child_bounty_id?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
   onchain_referendum_id?: Maybe<Order_By>;
@@ -11573,6 +17602,7 @@ export type Onchain_Links_Sum_Fields = {
   __typename?: 'onchain_links_sum_fields';
   id?: Maybe<Scalars['Int']>;
   onchain_bounty_id?: Maybe<Scalars['Int']>;
+  onchain_child_bounty_id?: Maybe<Scalars['Int']>;
   onchain_motion_id?: Maybe<Scalars['Int']>;
   onchain_proposal_id?: Maybe<Scalars['Int']>;
   onchain_referendum_id?: Maybe<Scalars['Int']>;
@@ -11585,6 +17615,7 @@ export type Onchain_Links_Sum_Fields = {
 export type Onchain_Links_Sum_Order_By = {
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
+  onchain_child_bounty_id?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
   onchain_referendum_id?: Maybe<Order_By>;
@@ -11601,6 +17632,8 @@ export enum Onchain_Links_Update_Column {
   Id = 'id',
   /** column name */
   OnchainBountyId = 'onchain_bounty_id',
+  /** column name */
+  OnchainChildBountyId = 'onchain_child_bounty_id',
   /** column name */
   OnchainMotionId = 'onchain_motion_id',
   /** column name */
@@ -11624,6 +17657,7 @@ export type Onchain_Links_Var_Pop_Fields = {
   __typename?: 'onchain_links_var_pop_fields';
   id?: Maybe<Scalars['Float']>;
   onchain_bounty_id?: Maybe<Scalars['Float']>;
+  onchain_child_bounty_id?: Maybe<Scalars['Float']>;
   onchain_motion_id?: Maybe<Scalars['Float']>;
   onchain_proposal_id?: Maybe<Scalars['Float']>;
   onchain_referendum_id?: Maybe<Scalars['Float']>;
@@ -11636,6 +17670,7 @@ export type Onchain_Links_Var_Pop_Fields = {
 export type Onchain_Links_Var_Pop_Order_By = {
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
+  onchain_child_bounty_id?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
   onchain_referendum_id?: Maybe<Order_By>;
@@ -11649,6 +17684,7 @@ export type Onchain_Links_Var_Samp_Fields = {
   __typename?: 'onchain_links_var_samp_fields';
   id?: Maybe<Scalars['Float']>;
   onchain_bounty_id?: Maybe<Scalars['Float']>;
+  onchain_child_bounty_id?: Maybe<Scalars['Float']>;
   onchain_motion_id?: Maybe<Scalars['Float']>;
   onchain_proposal_id?: Maybe<Scalars['Float']>;
   onchain_referendum_id?: Maybe<Scalars['Float']>;
@@ -11661,6 +17697,7 @@ export type Onchain_Links_Var_Samp_Fields = {
 export type Onchain_Links_Var_Samp_Order_By = {
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
+  onchain_child_bounty_id?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
   onchain_referendum_id?: Maybe<Order_By>;
@@ -11674,6 +17711,7 @@ export type Onchain_Links_Variance_Fields = {
   __typename?: 'onchain_links_variance_fields';
   id?: Maybe<Scalars['Float']>;
   onchain_bounty_id?: Maybe<Scalars['Float']>;
+  onchain_child_bounty_id?: Maybe<Scalars['Float']>;
   onchain_motion_id?: Maybe<Scalars['Float']>;
   onchain_proposal_id?: Maybe<Scalars['Float']>;
   onchain_referendum_id?: Maybe<Scalars['Float']>;
@@ -11686,6 +17724,7 @@ export type Onchain_Links_Variance_Fields = {
 export type Onchain_Links_Variance_Order_By = {
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
+  onchain_child_bounty_id?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
   onchain_referendum_id?: Maybe<Order_By>;
@@ -15973,6 +22012,12 @@ export type Query_Root = {
   calender_events_aggregate: Calender_Events_Aggregate;
   /** fetch data from the table: "calender_events" using primary key columns */
   calender_events_by_pk?: Maybe<Calender_Events>;
+  childBounties: Array<Maybe<ChildBounty>>;
+  childBountiesConnection: ChildBountyConnection;
+  childBounty?: Maybe<ChildBounty>;
+  childBountyStatus?: Maybe<ChildBountyStatus>;
+  childBountyStatuses: Array<Maybe<ChildBountyStatus>>;
+  childBountyStatusesConnection: ChildBountyStatusConnection;
   /** fetch data from the table: "comment_reactions" */
   comment_reactions: Array<Comment_Reactions>;
   /** fetch aggregated fields from the table: "comment_reactions" */
@@ -16006,6 +22051,7 @@ export type Query_Root = {
   motionStatusesConnection: MotionStatusConnection;
   motions: Array<Maybe<Motion>>;
   motionsConnection: MotionConnection;
+  /** Fetches an object given its ID */
   node?: Maybe<Node>;
   nomination?: Maybe<Nomination>;
   nominations: Array<Maybe<Nomination>>;
@@ -16339,6 +22385,66 @@ export type Query_RootCalender_Events_AggregateArgs = {
 /** query root */
 export type Query_RootCalender_Events_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+/** query root */
+export type Query_RootChildBountiesArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<ChildBountyOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  where?: Maybe<ChildBountyWhereInput>;
+};
+
+
+/** query root */
+export type Query_RootChildBountiesConnectionArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<ChildBountyOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  where?: Maybe<ChildBountyWhereInput>;
+};
+
+
+/** query root */
+export type Query_RootChildBountyArgs = {
+  where: ChildBountyWhereUniqueInput;
+};
+
+
+/** query root */
+export type Query_RootChildBountyStatusArgs = {
+  where: ChildBountyStatusWhereUniqueInput;
+};
+
+
+/** query root */
+export type Query_RootChildBountyStatusesArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<ChildBountyStatusOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  where?: Maybe<ChildBountyStatusWhereInput>;
+};
+
+
+/** query root */
+export type Query_RootChildBountyStatusesConnectionArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<ChildBountyStatusOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  where?: Maybe<ChildBountyStatusWhereInput>;
 };
 
 
@@ -17982,6 +24088,8 @@ export type Subscription_Root = {
   calender_events_aggregate: Calender_Events_Aggregate;
   /** fetch data from the table: "calender_events" using primary key columns */
   calender_events_by_pk?: Maybe<Calender_Events>;
+  childBounty?: Maybe<ChildBountySubscriptionPayload>;
+  childBountyStatus?: Maybe<ChildBountyStatusSubscriptionPayload>;
   /** fetch data from the table: "comment_reactions" */
   comment_reactions: Array<Comment_Reactions>;
   /** fetch aggregated fields from the table: "comment_reactions" */
@@ -18182,6 +24290,18 @@ export type Subscription_RootCalender_Events_AggregateArgs = {
 /** subscription root */
 export type Subscription_RootCalender_Events_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+/** subscription root */
+export type Subscription_RootChildBountyArgs = {
+  where?: Maybe<ChildBountySubscriptionWhereInput>;
+};
+
+
+/** subscription root */
+export type Subscription_RootChildBountyStatusArgs = {
+  where?: Maybe<ChildBountyStatusSubscriptionWhereInput>;
 };
 
 
@@ -19405,6 +25525,7 @@ export type Get_Refresh_TokenQuery = (
 
 export type GetCalenderEventsQueryVariables = Exact<{
   network: Scalars['String'];
+  approval_status: Scalars['String'];
 }>;
 
 
@@ -19412,27 +25533,7 @@ export type GetCalenderEventsQuery = (
   { __typename?: 'query_root' }
   & { calender_events: Array<(
     { __typename?: 'calender_events' }
-    & Pick<Calender_Events, 'content' | 'end_time' | 'id' | 'module' | 'network' | 'start_time' | 'title' | 'url' | 'event_type' | 'event_id' | 'status'>
-  )> }
-);
-
-export type EditCalenderEventMutationVariables = Exact<{
-  id: Scalars['Int'];
-  title: Scalars['String'];
-  start_time: Scalars['timestamptz'];
-  content?: Maybe<Scalars['String']>;
-  end_time: Scalars['timestamptz'];
-  url?: Maybe<Scalars['String']>;
-  module?: Maybe<Scalars['String']>;
-  network: Scalars['String'];
-}>;
-
-
-export type EditCalenderEventMutation = (
-  { __typename?: 'mutation_root' }
-  & { update_calender_events?: Maybe<(
-    { __typename?: 'calender_events_mutation_response' }
-    & Pick<Calender_Events_Mutation_Response, 'affected_rows'>
+    & Pick<Calender_Events, 'content' | 'end_time' | 'id' | 'module' | 'network' | 'start_time' | 'title' | 'url' | 'event_type' | 'event_id' | 'status' | 'approval_status'>
   )> }
 );
 
@@ -19444,6 +25545,20 @@ export type DeleteCalenderEventMutationVariables = Exact<{
 export type DeleteCalenderEventMutation = (
   { __typename?: 'mutation_root' }
   & { delete_calender_events?: Maybe<(
+    { __typename?: 'calender_events_mutation_response' }
+    & Pick<Calender_Events_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
+export type UpdateApprovalStatusMutationVariables = Exact<{
+  id: Scalars['Int'];
+  approval_status: Scalars['String'];
+}>;
+
+
+export type UpdateApprovalStatusMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_calender_events?: Maybe<(
     { __typename?: 'calender_events_mutation_response' }
     & Pick<Calender_Events_Mutation_Response, 'affected_rows'>
   )> }
@@ -19583,6 +25698,26 @@ export type UpdateProposalTrackerMutation = (
   )> }
 );
 
+export type EditCalenderEventMutationVariables = Exact<{
+  id: Scalars['Int'];
+  title: Scalars['String'];
+  start_time: Scalars['timestamptz'];
+  content?: Maybe<Scalars['String']>;
+  end_time: Scalars['timestamptz'];
+  url?: Maybe<Scalars['String']>;
+  module?: Maybe<Scalars['String']>;
+  network: Scalars['String'];
+}>;
+
+
+export type EditCalenderEventMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_calender_events?: Maybe<(
+    { __typename?: 'calender_events_mutation_response' }
+    & Pick<Calender_Events_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
 export type AuthorFieldsFragment = (
   { __typename?: 'User' }
   & Pick<User, 'id' | 'kusama_default_address' | 'polkadot_default_address' | 'username'>
@@ -19607,397 +25742,6 @@ export type CommentFieldsFragment = (
     { __typename?: 'replies' }
     & ReplyFieldsFragment
   )> }
-);
-
-export type OnchainLinkBountyFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_bounty_id'>
-  & { onchain_bounty: Array<Maybe<(
-    { __typename?: 'Bounty' }
-    & Pick<Bounty, 'id' | 'proposer' | 'value' | 'fee' | 'curatorDeposit' | 'bond' | 'bountyId' | 'curator' | 'beneficiary'>
-    & { bountyStatus?: Maybe<Array<(
-      { __typename?: 'BountyStatus' }
-      & Pick<BountyStatus, 'id' | 'status'>
-      & { blockNumber: (
-        { __typename?: 'BlockNumber' }
-        & Pick<BlockNumber, 'startDateTime' | 'number'>
-      ) }
-    )>> }
-  )>> }
-);
-
-export type BountyPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkBountyFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
-);
-
-export type TopicFragment = (
-  { __typename?: 'post_topics' }
-  & Pick<Post_Topics, 'id' | 'name'>
-);
-
-export type OnchainLinkDiscussionFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'onchain_referendum_id' | 'onchain_motion_id' | 'onchain_proposal_id' | 'onchain_treasury_proposal_id'>
-);
-
-export type DiscussionPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkDiscussionFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
-);
-
-export type PostFieldsFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments_aggregate: (
-    { __typename?: 'comments_aggregate' }
-    & { aggregate?: Maybe<(
-      { __typename?: 'comments_aggregate_fields' }
-      & Pick<Comments_Aggregate_Fields, 'count'>
-    )> }
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'name' | 'id'>
-  ), last_update?: Maybe<(
-    { __typename?: 'post_last_update' }
-    & Pick<Post_Last_Update, 'last_update'>
-  )> }
-);
-
-export type OnchainLinkMotionPreimageFragment = (
-  { __typename?: 'Preimage' }
-  & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
-  & { preimageArguments?: Maybe<Array<(
-    { __typename?: 'PreimageArgument' }
-    & Pick<PreimageArgument, 'id' | 'name' | 'value'>
-  )>> }
-);
-
-export type OnchainLinkMotionTreasuryFragment = (
-  { __typename?: 'TreasurySpendProposal' }
-  & Pick<TreasurySpendProposal, 'beneficiary' | 'bond' | 'value'>
-);
-
-export type OnchainLinkMotionFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_referendum_id' | 'onchain_motion_id'>
-  & { onchain_motion: Array<Maybe<(
-    { __typename?: 'Motion' }
-    & Pick<Motion, 'id' | 'memberCount' | 'method' | 'motionProposalHash'>
-    & { motionStatus?: Maybe<Array<(
-      { __typename?: 'MotionStatus' }
-      & Pick<MotionStatus, 'id' | 'status'>
-      & { blockNumber: (
-        { __typename?: 'BlockNumber' }
-        & Pick<BlockNumber, 'number'>
-      ) }
-    )>>, motionProposalArguments?: Maybe<Array<(
-      { __typename?: 'MotionProposalArgument' }
-      & Pick<MotionProposalArgument, 'name' | 'value'>
-    )>>, preimage?: Maybe<(
-      { __typename?: 'Preimage' }
-      & OnchainLinkMotionPreimageFragment
-    )>, treasurySpendProposal?: Maybe<(
-      { __typename?: 'TreasurySpendProposal' }
-      & OnchainLinkMotionTreasuryFragment
-    )> }
-  )>> }
-);
-
-export type MotionPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkMotionFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
-);
-
-export type OnchainLinkProposalFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_proposal_id' | 'onchain_referendum_id'>
-  & { onchain_proposal: Array<Maybe<(
-    { __typename?: 'Proposal' }
-    & Pick<Proposal, 'id' | 'depositAmount'>
-    & { proposalStatus?: Maybe<Array<(
-      { __typename?: 'ProposalStatus' }
-      & Pick<ProposalStatus, 'id' | 'status'>
-      & { blockNumber: (
-        { __typename?: 'BlockNumber' }
-        & Pick<BlockNumber, 'number'>
-      ) }
-    )>>, preimage?: Maybe<(
-      { __typename?: 'Preimage' }
-      & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
-      & { preimageArguments?: Maybe<Array<(
-        { __typename?: 'PreimageArgument' }
-        & Pick<PreimageArgument, 'id' | 'name' | 'value'>
-      )>> }
-    )> }
-  )>> }
-);
-
-export type ProposalPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkProposalFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
-);
-
-export type OnchainLinkReferendumFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_referendum_id'>
-  & { onchain_referendum: Array<Maybe<(
-    { __typename?: 'Referendum' }
-    & Pick<Referendum, 'id' | 'delay' | 'end' | 'voteThreshold'>
-    & { referendumStatus?: Maybe<Array<(
-      { __typename?: 'ReferendumStatus' }
-      & Pick<ReferendumStatus, 'status' | 'id'>
-      & { blockNumber: (
-        { __typename?: 'BlockNumber' }
-        & Pick<BlockNumber, 'startDateTime' | 'number'>
-      ) }
-    )>>, preimage?: Maybe<(
-      { __typename?: 'Preimage' }
-      & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
-      & { preimageArguments?: Maybe<Array<(
-        { __typename?: 'PreimageArgument' }
-        & Pick<PreimageArgument, 'id' | 'name' | 'value'>
-      )>> }
-    )> }
-  )>> }
-);
-
-export type ReferendumPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkReferendumFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
-);
-
-export type SearchPostFieldsFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments_aggregate: (
-    { __typename?: 'comments_aggregate' }
-    & { aggregate?: Maybe<(
-      { __typename?: 'comments_aggregate_fields' }
-      & Pick<Comments_Aggregate_Fields, 'count'>
-    )> }
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'name' | 'id'>
-  ), last_update?: Maybe<(
-    { __typename?: 'post_last_update' }
-    & Pick<Post_Last_Update, 'last_update'>
-  )> }
-);
-
-export type OnchainLinkTechCommitteeProposalPreimageFragment = (
-  { __typename?: 'Preimage' }
-  & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
-  & { preimageArguments?: Maybe<Array<(
-    { __typename?: 'PreimageArgument' }
-    & Pick<PreimageArgument, 'id' | 'name' | 'value'>
-  )>> }
-);
-
-export type OnchainLinkTechCommitteeProposalFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_tech_committee_proposal_id'>
-  & { onchain_tech_committee_proposal: Array<Maybe<(
-    { __typename?: 'TechCommitteeProposal' }
-    & Pick<TechCommitteeProposal, 'id' | 'metaDescription' | 'memberCount' | 'method' | 'proposalHash'>
-    & { status?: Maybe<Array<(
-      { __typename?: 'TechCommitteeProposalStatus' }
-      & Pick<TechCommitteeProposalStatus, 'id' | 'status'>
-      & { blockNumber: (
-        { __typename?: 'BlockNumber' }
-        & Pick<BlockNumber, 'number'>
-      ) }
-    )>>, proposalArguments?: Maybe<Array<(
-      { __typename?: 'TechCommitteeProposalArgument' }
-      & Pick<TechCommitteeProposalArgument, 'name' | 'value'>
-    )>>, preimage?: Maybe<(
-      { __typename?: 'Preimage' }
-      & OnchainLinkTechCommitteeProposalPreimageFragment
-    )> }
-  )>> }
-);
-
-export type TechCommitteeProposalPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkTechCommitteeProposalFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
-);
-
-export type OnchainLinkTipFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_tip_id'>
-  & { onchain_tip: Array<Maybe<(
-    { __typename?: 'Tip' }
-    & Pick<Tip, 'id' | 'hash' | 'reason' | 'who' | 'finder' | 'finderFee' | 'closes'>
-    & { tipStatus?: Maybe<Array<(
-      { __typename?: 'TipStatus' }
-      & Pick<TipStatus, 'id' | 'status'>
-      & { blockNumber: (
-        { __typename?: 'BlockNumber' }
-        & Pick<BlockNumber, 'startDateTime' | 'number'>
-      ) }
-    )>> }
-  )>> }
-);
-
-export type TipPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkTipFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
-);
-
-export type OnchainLinkTreasuryProposalFragment = (
-  { __typename?: 'onchain_links' }
-  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_treasury_proposal_id' | 'onchain_motion_id'>
-  & { onchain_treasury_spend_proposal: Array<Maybe<(
-    { __typename?: 'TreasurySpendProposal' }
-    & Pick<TreasurySpendProposal, 'id' | 'beneficiary' | 'value' | 'bond'>
-    & { treasuryStatus?: Maybe<Array<(
-      { __typename?: 'TreasuryStatus' }
-      & Pick<TreasuryStatus, 'id' | 'status'>
-      & { blockNumber: (
-        { __typename?: 'BlockNumber' }
-        & Pick<BlockNumber, 'number'>
-      ) }
-    )>> }
-  )>> }
-);
-
-export type TreasuryProposalPostFragment = (
-  { __typename?: 'posts' }
-  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
-  & { author?: Maybe<(
-    { __typename?: 'User' }
-    & AuthorFieldsFragment
-  )>, comments: Array<(
-    { __typename?: 'comments' }
-    & CommentFieldsFragment
-  )>, onchain_link?: Maybe<(
-    { __typename?: 'onchain_links' }
-    & OnchainLinkTreasuryProposalFragment
-  )>, topic: (
-    { __typename?: 'post_topics' }
-    & Pick<Post_Topics, 'id' | 'name'>
-  ), type: (
-    { __typename?: 'post_types' }
-    & Pick<Post_Types, 'id' | 'name'>
-  ) }
 );
 
 export type AllBountyPostsQueryVariables = Exact<{
@@ -20042,6 +25786,44 @@ export type AllBountyPostsQuery = (
   )> }
 );
 
+export type OnchainLinkBountyFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_bounty_id'>
+  & { onchain_bounty: Array<Maybe<(
+    { __typename?: 'Bounty' }
+    & Pick<Bounty, 'id' | 'proposer' | 'value' | 'fee' | 'curatorDeposit' | 'bond' | 'bountyId' | 'curator' | 'beneficiary'>
+    & { bountyStatus?: Maybe<Array<(
+      { __typename?: 'BountyStatus' }
+      & Pick<BountyStatus, 'id' | 'status'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'startDateTime' | 'number'>
+      ) }
+    )>> }
+  )>> }
+);
+
+export type BountyPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkBountyFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
+);
+
 export type BountyPostAndCommentsQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -20052,6 +25834,99 @@ export type BountyPostAndCommentsQuery = (
   & { posts: Array<(
     { __typename?: 'posts' }
     & BountyPostFragment
+  )> }
+);
+
+export type AllChildBountyPostsQueryVariables = Exact<{
+  postType: Scalars['Int'];
+  postTopic: Scalars['Int'];
+  limit?: Scalars['Int'];
+}>;
+
+
+export type AllChildBountyPostsQuery = (
+  { __typename?: 'query_root' }
+  & { posts: Array<(
+    { __typename?: 'posts' }
+    & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
+    & { author?: Maybe<(
+      { __typename?: 'User' }
+      & AuthorFieldsFragment
+    )>, comments_aggregate: (
+      { __typename?: 'comments_aggregate' }
+      & { aggregate?: Maybe<(
+        { __typename?: 'comments_aggregate_fields' }
+        & Pick<Comments_Aggregate_Fields, 'count'>
+      )> }
+    ), type: (
+      { __typename?: 'post_types' }
+      & Pick<Post_Types, 'name' | 'id'>
+    ), topic: (
+      { __typename?: 'post_topics' }
+      & Pick<Post_Topics, 'id' | 'name'>
+    ), onchain_link?: Maybe<(
+      { __typename?: 'onchain_links' }
+      & Pick<Onchain_Links, 'id' | 'onchain_child_bounty_id' | 'proposer_address'>
+      & { onchain_child_bounty: Array<Maybe<(
+        { __typename?: 'ChildBounty' }
+        & Pick<ChildBounty, 'id' | 'value'>
+        & { childBountyStatus?: Maybe<Array<(
+          { __typename?: 'ChildBountyStatus' }
+          & Pick<ChildBountyStatus, 'id' | 'status'>
+        )>> }
+      )>> }
+    )> }
+  )> }
+);
+
+export type OnchainLinkChildBountyFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_child_bounty_id'>
+  & { onchain_child_bounty: Array<Maybe<(
+    { __typename?: 'ChildBounty' }
+    & Pick<ChildBounty, 'id' | 'proposer' | 'value' | 'fee' | 'curatorDeposit' | 'parentBountyId' | 'childBountyId' | 'curator' | 'beneficiary' | 'description'>
+    & { childBountyStatus?: Maybe<Array<(
+      { __typename?: 'ChildBountyStatus' }
+      & Pick<ChildBountyStatus, 'id' | 'status'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'startDateTime' | 'number'>
+      ) }
+    )>> }
+  )>> }
+);
+
+export type ChildBountyPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkChildBountyFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
+);
+
+export type ChildBountyPostAndCommentsQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type ChildBountyPostAndCommentsQuery = (
+  { __typename?: 'query_root' }
+  & { posts: Array<(
+    { __typename?: 'posts' }
+    & ChildBountyPostFragment
   )> }
 );
 
@@ -20133,6 +26008,11 @@ export type CreatePollMutation = (
   )> }
 );
 
+export type TopicFragment = (
+  { __typename?: 'post_topics' }
+  & Pick<Post_Topics, 'id' | 'name'>
+);
+
 export type Post_TopicsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -20142,6 +26022,32 @@ export type Post_TopicsQuery = (
     { __typename?: 'post_topics' }
     & TopicFragment
   )> }
+);
+
+export type OnchainLinkDiscussionFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'onchain_referendum_id' | 'onchain_motion_id' | 'onchain_proposal_id' | 'onchain_treasury_proposal_id'>
+);
+
+export type DiscussionPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkDiscussionFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
 );
 
 export type DiscussionPostAndCommentsQueryVariables = Exact<{
@@ -20154,6 +26060,27 @@ export type DiscussionPostAndCommentsQuery = (
   & { posts: Array<(
     { __typename?: 'posts' }
     & DiscussionPostFragment
+  )> }
+);
+
+export type PostFieldsFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments_aggregate: (
+    { __typename?: 'comments_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'comments_aggregate_fields' }
+      & Pick<Comments_Aggregate_Fields, 'count'>
+    )> }
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'name' | 'id'>
+  ), last_update?: Maybe<(
+    { __typename?: 'post_last_update' }
+    & Pick<Post_Last_Update, 'last_update'>
   )> }
 );
 
@@ -20194,6 +26121,67 @@ export type DiscussionPostsIdAscQuery = (
     { __typename?: 'posts' }
     & PostFieldsFragment
   )> }
+);
+
+export type OnchainLinkMotionPreimageFragment = (
+  { __typename?: 'Preimage' }
+  & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
+  & { preimageArguments?: Maybe<Array<(
+    { __typename?: 'PreimageArgument' }
+    & Pick<PreimageArgument, 'id' | 'name' | 'value'>
+  )>> }
+);
+
+export type OnchainLinkMotionTreasuryFragment = (
+  { __typename?: 'TreasurySpendProposal' }
+  & Pick<TreasurySpendProposal, 'beneficiary' | 'bond' | 'value'>
+);
+
+export type OnchainLinkMotionFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_referendum_id' | 'onchain_motion_id'>
+  & { onchain_motion: Array<Maybe<(
+    { __typename?: 'Motion' }
+    & Pick<Motion, 'id' | 'memberCount' | 'method' | 'motionProposalHash'>
+    & { motionStatus?: Maybe<Array<(
+      { __typename?: 'MotionStatus' }
+      & Pick<MotionStatus, 'id' | 'status'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'number'>
+      ) }
+    )>>, motionProposalArguments?: Maybe<Array<(
+      { __typename?: 'MotionProposalArgument' }
+      & Pick<MotionProposalArgument, 'name' | 'value'>
+    )>>, preimage?: Maybe<(
+      { __typename?: 'Preimage' }
+      & OnchainLinkMotionPreimageFragment
+    )>, treasurySpendProposal?: Maybe<(
+      { __typename?: 'TreasurySpendProposal' }
+      & OnchainLinkMotionTreasuryFragment
+    )> }
+  )>> }
+);
+
+export type MotionPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkMotionFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
 );
 
 export type MotionPostAndCommentsQueryVariables = Exact<{
@@ -20272,6 +26260,63 @@ export type BountiesCountQueryVariables = Exact<{
 
 
 export type BountiesCountQuery = (
+  { __typename?: 'query_root' }
+  & { posts_aggregate: (
+    { __typename?: 'posts_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'posts_aggregate_fields' }
+      & Pick<Posts_Aggregate_Fields, 'count'>
+    )> }
+  ) }
+);
+
+export type GetLatestChildBountyPostsQueryVariables = Exact<{
+  postType: Scalars['Int'];
+  limit?: Scalars['Int'];
+}>;
+
+
+export type GetLatestChildBountyPostsQuery = (
+  { __typename?: 'query_root' }
+  & { posts: Array<(
+    { __typename?: 'posts' }
+    & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
+    & { author?: Maybe<(
+      { __typename?: 'User' }
+      & AuthorFieldsFragment
+    )>, comments_aggregate: (
+      { __typename?: 'comments_aggregate' }
+      & { aggregate?: Maybe<(
+        { __typename?: 'comments_aggregate_fields' }
+        & Pick<Comments_Aggregate_Fields, 'count'>
+      )> }
+    ), type: (
+      { __typename?: 'post_types' }
+      & Pick<Post_Types, 'name' | 'id'>
+    ), topic: (
+      { __typename?: 'post_topics' }
+      & Pick<Post_Topics, 'id' | 'name'>
+    ), onchain_link?: Maybe<(
+      { __typename?: 'onchain_links' }
+      & Pick<Onchain_Links, 'id' | 'onchain_child_bounty_id' | 'proposer_address'>
+      & { onchain_child_bounty: Array<Maybe<(
+        { __typename?: 'ChildBounty' }
+        & Pick<ChildBounty, 'id'>
+        & { childBountyStatus?: Maybe<Array<(
+          { __typename?: 'ChildBountyStatus' }
+          & Pick<ChildBountyStatus, 'id' | 'status'>
+        )>> }
+      )>> }
+    )> }
+  )> }
+);
+
+export type ChildBountiesCountQueryVariables = Exact<{
+  postType: Scalars['Int'];
+}>;
+
+
+export type ChildBountiesCountQuery = (
   { __typename?: 'query_root' }
   & { posts_aggregate: (
     { __typename?: 'posts_aggregate' }
@@ -20809,6 +26854,51 @@ export type ChangeAboutMutation = (
   )> }
 );
 
+export type OnchainLinkProposalFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_proposal_id' | 'onchain_referendum_id'>
+  & { onchain_proposal: Array<Maybe<(
+    { __typename?: 'Proposal' }
+    & Pick<Proposal, 'id' | 'depositAmount'>
+    & { proposalStatus?: Maybe<Array<(
+      { __typename?: 'ProposalStatus' }
+      & Pick<ProposalStatus, 'id' | 'status'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'number'>
+      ) }
+    )>>, preimage?: Maybe<(
+      { __typename?: 'Preimage' }
+      & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
+      & { preimageArguments?: Maybe<Array<(
+        { __typename?: 'PreimageArgument' }
+        & Pick<PreimageArgument, 'id' | 'name' | 'value'>
+      )>> }
+    )> }
+  )>> }
+);
+
+export type ProposalPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkProposalFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
+);
+
 export type ProposalPostAndCommentsQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -20911,6 +27001,51 @@ export type AllReferendaPostsQuery = (
   )> }
 );
 
+export type OnchainLinkReferendumFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_referendum_id'>
+  & { onchain_referendum: Array<Maybe<(
+    { __typename?: 'Referendum' }
+    & Pick<Referendum, 'id' | 'delay' | 'end' | 'voteThreshold'>
+    & { referendumStatus?: Maybe<Array<(
+      { __typename?: 'ReferendumStatus' }
+      & Pick<ReferendumStatus, 'status' | 'id'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'startDateTime' | 'number'>
+      ) }
+    )>>, preimage?: Maybe<(
+      { __typename?: 'Preimage' }
+      & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
+      & { preimageArguments?: Maybe<Array<(
+        { __typename?: 'PreimageArgument' }
+        & Pick<PreimageArgument, 'id' | 'name' | 'value'>
+      )>> }
+    )> }
+  )>> }
+);
+
+export type ReferendumPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkReferendumFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
+);
+
 export type ReferendumPostAndCommentsQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -20949,6 +27084,27 @@ export type ResetPasswordMutation = (
   & { resetPassword?: Maybe<(
     { __typename?: 'Message' }
     & Pick<Message, 'message'>
+  )> }
+);
+
+export type SearchPostFieldsFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments_aggregate: (
+    { __typename?: 'comments_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'comments_aggregate_fields' }
+      & Pick<Comments_Aggregate_Fields, 'count'>
+    )> }
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'name' | 'id'>
+  ), last_update?: Maybe<(
+    { __typename?: 'post_last_update' }
+    & Pick<Post_Last_Update, 'last_update'>
   )> }
 );
 
@@ -21147,6 +27303,59 @@ export type MultisigLinkConfirmMutation = (
   )> }
 );
 
+export type OnchainLinkTechCommitteeProposalPreimageFragment = (
+  { __typename?: 'Preimage' }
+  & Pick<Preimage, 'hash' | 'id' | 'metaDescription' | 'method'>
+  & { preimageArguments?: Maybe<Array<(
+    { __typename?: 'PreimageArgument' }
+    & Pick<PreimageArgument, 'id' | 'name' | 'value'>
+  )>> }
+);
+
+export type OnchainLinkTechCommitteeProposalFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_tech_committee_proposal_id'>
+  & { onchain_tech_committee_proposal: Array<Maybe<(
+    { __typename?: 'TechCommitteeProposal' }
+    & Pick<TechCommitteeProposal, 'id' | 'metaDescription' | 'memberCount' | 'method' | 'proposalHash'>
+    & { status?: Maybe<Array<(
+      { __typename?: 'TechCommitteeProposalStatus' }
+      & Pick<TechCommitteeProposalStatus, 'id' | 'status'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'number'>
+      ) }
+    )>>, proposalArguments?: Maybe<Array<(
+      { __typename?: 'TechCommitteeProposalArgument' }
+      & Pick<TechCommitteeProposalArgument, 'name' | 'value'>
+    )>>, preimage?: Maybe<(
+      { __typename?: 'Preimage' }
+      & OnchainLinkTechCommitteeProposalPreimageFragment
+    )> }
+  )>> }
+);
+
+export type TechCommitteeProposalPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkTechCommitteeProposalFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
+);
+
 export type TechCommitteeProposalPostAndCommentsQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -21202,6 +27411,44 @@ export type AllTechCommitteeProposalPostsQuery = (
       )>> }
     )> }
   )> }
+);
+
+export type OnchainLinkTipFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_tip_id'>
+  & { onchain_tip: Array<Maybe<(
+    { __typename?: 'Tip' }
+    & Pick<Tip, 'id' | 'hash' | 'reason' | 'who' | 'finder' | 'finderFee' | 'closes'>
+    & { tipStatus?: Maybe<Array<(
+      { __typename?: 'TipStatus' }
+      & Pick<TipStatus, 'id' | 'status'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'startDateTime' | 'number'>
+      ) }
+    )>> }
+  )>> }
+);
+
+export type TipPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkTipFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
 );
 
 export type TipPostAndCommentsQueryVariables = Exact<{
@@ -21600,6 +27847,44 @@ export type AllDemocracyTreasuryProposalPostsQuery = (
   )> }
 );
 
+export type OnchainLinkTreasuryProposalFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_treasury_proposal_id' | 'onchain_motion_id'>
+  & { onchain_treasury_spend_proposal: Array<Maybe<(
+    { __typename?: 'TreasurySpendProposal' }
+    & Pick<TreasurySpendProposal, 'id' | 'beneficiary' | 'value' | 'bond'>
+    & { treasuryStatus?: Maybe<Array<(
+      { __typename?: 'TreasuryStatus' }
+      & Pick<TreasuryStatus, 'id' | 'status'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'number'>
+      ) }
+    )>> }
+  )>> }
+);
+
+export type TreasuryProposalPostFragment = (
+  { __typename?: 'posts' }
+  & Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+  & { author?: Maybe<(
+    { __typename?: 'User' }
+    & AuthorFieldsFragment
+  )>, comments: Array<(
+    { __typename?: 'comments' }
+    & CommentFieldsFragment
+  )>, onchain_link?: Maybe<(
+    { __typename?: 'onchain_links' }
+    & OnchainLinkTreasuryProposalFragment
+  )>, topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'id' | 'name'>
+  ), type: (
+    { __typename?: 'post_types' }
+    & Pick<Post_Types, 'id' | 'name'>
+  ) }
+);
+
 export type TreasuryProposalPostAndCommentsQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -21810,6 +28095,61 @@ export const BountyPostFragmentDoc = gql`
     ${AuthorFieldsFragmentDoc}
 ${CommentFieldsFragmentDoc}
 ${OnchainLinkBountyFragmentDoc}`;
+export const OnchainLinkChildBountyFragmentDoc = gql`
+    fragment onchainLinkChildBounty on onchain_links {
+  id
+  proposer_address
+  onchain_child_bounty_id
+  onchain_child_bounty(where: {}) {
+    id
+    proposer
+    value
+    fee
+    curatorDeposit
+    parentBountyId
+    childBountyId
+    curator
+    beneficiary
+    description
+    childBountyStatus(orderBy: id_DESC) {
+      id
+      status
+      blockNumber {
+        startDateTime
+        number
+      }
+    }
+  }
+}
+    `;
+export const ChildBountyPostFragmentDoc = gql`
+    fragment childBountyPost on posts {
+  author {
+    ...authorFields
+  }
+  content
+  created_at
+  id
+  updated_at
+  comments(order_by: {created_at: asc}) {
+    ...commentFields
+  }
+  onchain_link {
+    ...onchainLinkChildBounty
+  }
+  title
+  topic {
+    id
+    name
+  }
+  type {
+    id
+    name
+  }
+}
+    ${AuthorFieldsFragmentDoc}
+${CommentFieldsFragmentDoc}
+${OnchainLinkChildBountyFragmentDoc}`;
 export const TopicFragmentDoc = gql`
     fragment topic on post_topics {
   id
@@ -23616,8 +29956,10 @@ export type Get_Refresh_TokenQueryHookResult = ReturnType<typeof useGet_Refresh_
 export type Get_Refresh_TokenLazyQueryHookResult = ReturnType<typeof useGet_Refresh_TokenLazyQuery>;
 export type Get_Refresh_TokenQueryResult = ApolloReactCommon.QueryResult<Get_Refresh_TokenQuery, Get_Refresh_TokenQueryVariables>;
 export const GetCalenderEventsDocument = gql`
-    query GetCalenderEvents($network: String!) {
-  calender_events(where: {network: {_ilike: $network}}) {
+    query GetCalenderEvents($network: String!, $approval_status: String!) {
+  calender_events(
+    where: {network: {_ilike: $network}, approval_status: {_eq: $approval_status}}
+  ) {
     content
     end_time
     id
@@ -23629,6 +29971,7 @@ export const GetCalenderEventsDocument = gql`
     event_type
     event_id
     status
+    approval_status
   }
 }
     `;
@@ -23646,6 +29989,7 @@ export const GetCalenderEventsDocument = gql`
  * const { data, loading, error } = useGetCalenderEventsQuery({
  *   variables: {
  *      network: // value for 'network'
+ *      approval_status: // value for 'approval_status'
  *   },
  * });
  */
@@ -23658,48 +30002,6 @@ export function useGetCalenderEventsLazyQuery(baseOptions?: ApolloReactHooks.Laz
 export type GetCalenderEventsQueryHookResult = ReturnType<typeof useGetCalenderEventsQuery>;
 export type GetCalenderEventsLazyQueryHookResult = ReturnType<typeof useGetCalenderEventsLazyQuery>;
 export type GetCalenderEventsQueryResult = ApolloReactCommon.QueryResult<GetCalenderEventsQuery, GetCalenderEventsQueryVariables>;
-export const EditCalenderEventDocument = gql`
-    mutation EditCalenderEvent($id: Int!, $title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!) {
-  update_calender_events(
-    where: {id: {_eq: $id}}
-    _set: {title: $title, content: $content, start_time: $start_time, end_time: $end_time, url: $url, module: $module, network: $network}
-  ) {
-    affected_rows
-  }
-}
-    `;
-export type EditCalenderEventMutationFn = ApolloReactCommon.MutationFunction<EditCalenderEventMutation, EditCalenderEventMutationVariables>;
-
-/**
- * __useEditCalenderEventMutation__
- *
- * To run a mutation, you first call `useEditCalenderEventMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useEditCalenderEventMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [editCalenderEventMutation, { data, loading, error }] = useEditCalenderEventMutation({
- *   variables: {
- *      id: // value for 'id'
- *      title: // value for 'title'
- *      start_time: // value for 'start_time'
- *      content: // value for 'content'
- *      end_time: // value for 'end_time'
- *      url: // value for 'url'
- *      module: // value for 'module'
- *      network: // value for 'network'
- *   },
- * });
- */
-export function useEditCalenderEventMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EditCalenderEventMutation, EditCalenderEventMutationVariables>) {
-        return ApolloReactHooks.useMutation<EditCalenderEventMutation, EditCalenderEventMutationVariables>(EditCalenderEventDocument, baseOptions);
-      }
-export type EditCalenderEventMutationHookResult = ReturnType<typeof useEditCalenderEventMutation>;
-export type EditCalenderEventMutationResult = ApolloReactCommon.MutationResult<EditCalenderEventMutation>;
-export type EditCalenderEventMutationOptions = ApolloReactCommon.BaseMutationOptions<EditCalenderEventMutation, EditCalenderEventMutationVariables>;
 export const DeleteCalenderEventDocument = gql`
     mutation DeleteCalenderEvent($id: Int!) {
   delete_calender_events(where: {id: {_eq: $id}}) {
@@ -23732,6 +30034,42 @@ export function useDeleteCalenderEventMutation(baseOptions?: ApolloReactHooks.Mu
 export type DeleteCalenderEventMutationHookResult = ReturnType<typeof useDeleteCalenderEventMutation>;
 export type DeleteCalenderEventMutationResult = ApolloReactCommon.MutationResult<DeleteCalenderEventMutation>;
 export type DeleteCalenderEventMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteCalenderEventMutation, DeleteCalenderEventMutationVariables>;
+export const UpdateApprovalStatusDocument = gql`
+    mutation UpdateApprovalStatus($id: Int!, $approval_status: String!) {
+  update_calender_events(
+    where: {id: {_eq: $id}}
+    _set: {approval_status: $approval_status}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export type UpdateApprovalStatusMutationFn = ApolloReactCommon.MutationFunction<UpdateApprovalStatusMutation, UpdateApprovalStatusMutationVariables>;
+
+/**
+ * __useUpdateApprovalStatusMutation__
+ *
+ * To run a mutation, you first call `useUpdateApprovalStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateApprovalStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateApprovalStatusMutation, { data, loading, error }] = useUpdateApprovalStatusMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      approval_status: // value for 'approval_status'
+ *   },
+ * });
+ */
+export function useUpdateApprovalStatusMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateApprovalStatusMutation, UpdateApprovalStatusMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateApprovalStatusMutation, UpdateApprovalStatusMutationVariables>(UpdateApprovalStatusDocument, baseOptions);
+      }
+export type UpdateApprovalStatusMutationHookResult = ReturnType<typeof useUpdateApprovalStatusMutation>;
+export type UpdateApprovalStatusMutationResult = ApolloReactCommon.MutationResult<UpdateApprovalStatusMutation>;
+export type UpdateApprovalStatusMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateApprovalStatusMutation, UpdateApprovalStatusMutationVariables>;
 export const AddCalenderEventDocument = gql`
     mutation AddCalenderEvent($title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!) {
   insert_calender_events(
@@ -24076,6 +30414,48 @@ export function useUpdateProposalTrackerMutation(baseOptions?: ApolloReactHooks.
 export type UpdateProposalTrackerMutationHookResult = ReturnType<typeof useUpdateProposalTrackerMutation>;
 export type UpdateProposalTrackerMutationResult = ApolloReactCommon.MutationResult<UpdateProposalTrackerMutation>;
 export type UpdateProposalTrackerMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateProposalTrackerMutation, UpdateProposalTrackerMutationVariables>;
+export const EditCalenderEventDocument = gql`
+    mutation EditCalenderEvent($id: Int!, $title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!) {
+  update_calender_events(
+    where: {id: {_eq: $id}}
+    _set: {title: $title, content: $content, start_time: $start_time, end_time: $end_time, url: $url, module: $module, network: $network, approval_status: "pending"}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export type EditCalenderEventMutationFn = ApolloReactCommon.MutationFunction<EditCalenderEventMutation, EditCalenderEventMutationVariables>;
+
+/**
+ * __useEditCalenderEventMutation__
+ *
+ * To run a mutation, you first call `useEditCalenderEventMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditCalenderEventMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editCalenderEventMutation, { data, loading, error }] = useEditCalenderEventMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      title: // value for 'title'
+ *      start_time: // value for 'start_time'
+ *      content: // value for 'content'
+ *      end_time: // value for 'end_time'
+ *      url: // value for 'url'
+ *      module: // value for 'module'
+ *      network: // value for 'network'
+ *   },
+ * });
+ */
+export function useEditCalenderEventMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EditCalenderEventMutation, EditCalenderEventMutationVariables>) {
+        return ApolloReactHooks.useMutation<EditCalenderEventMutation, EditCalenderEventMutationVariables>(EditCalenderEventDocument, baseOptions);
+      }
+export type EditCalenderEventMutationHookResult = ReturnType<typeof useEditCalenderEventMutation>;
+export type EditCalenderEventMutationResult = ApolloReactCommon.MutationResult<EditCalenderEventMutation>;
+export type EditCalenderEventMutationOptions = ApolloReactCommon.BaseMutationOptions<EditCalenderEventMutation, EditCalenderEventMutationVariables>;
 export const AllBountyPostsDocument = gql`
     query AllBountyPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
   posts(
@@ -24180,6 +30560,110 @@ export function useBountyPostAndCommentsLazyQuery(baseOptions?: ApolloReactHooks
 export type BountyPostAndCommentsQueryHookResult = ReturnType<typeof useBountyPostAndCommentsQuery>;
 export type BountyPostAndCommentsLazyQueryHookResult = ReturnType<typeof useBountyPostAndCommentsLazyQuery>;
 export type BountyPostAndCommentsQueryResult = ApolloReactCommon.QueryResult<BountyPostAndCommentsQuery, BountyPostAndCommentsQueryVariables>;
+export const AllChildBountyPostsDocument = gql`
+    query AllChildBountyPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
+  posts(
+    limit: $limit
+    where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_child_bounty_id: {_is_null: false}}}
+    order_by: {onchain_link: {id: desc}}
+  ) {
+    id
+    title
+    author {
+      ...authorFields
+    }
+    created_at
+    updated_at
+    comments_aggregate {
+      aggregate {
+        count
+      }
+    }
+    type {
+      name
+      id
+    }
+    topic {
+      id
+      name
+    }
+    onchain_link {
+      id
+      onchain_child_bounty_id
+      onchain_child_bounty(where: {}) {
+        id
+        value
+        childBountyStatus(last: 1) {
+          id
+          status
+        }
+      }
+      proposer_address
+    }
+  }
+}
+    ${AuthorFieldsFragmentDoc}`;
+
+/**
+ * __useAllChildBountyPostsQuery__
+ *
+ * To run a query within a React component, call `useAllChildBountyPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllChildBountyPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllChildBountyPostsQuery({
+ *   variables: {
+ *      postType: // value for 'postType'
+ *      postTopic: // value for 'postTopic'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useAllChildBountyPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AllChildBountyPostsQuery, AllChildBountyPostsQueryVariables>) {
+        return ApolloReactHooks.useQuery<AllChildBountyPostsQuery, AllChildBountyPostsQueryVariables>(AllChildBountyPostsDocument, baseOptions);
+      }
+export function useAllChildBountyPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AllChildBountyPostsQuery, AllChildBountyPostsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<AllChildBountyPostsQuery, AllChildBountyPostsQueryVariables>(AllChildBountyPostsDocument, baseOptions);
+        }
+export type AllChildBountyPostsQueryHookResult = ReturnType<typeof useAllChildBountyPostsQuery>;
+export type AllChildBountyPostsLazyQueryHookResult = ReturnType<typeof useAllChildBountyPostsLazyQuery>;
+export type AllChildBountyPostsQueryResult = ApolloReactCommon.QueryResult<AllChildBountyPostsQuery, AllChildBountyPostsQueryVariables>;
+export const ChildBountyPostAndCommentsDocument = gql`
+    query ChildBountyPostAndComments($id: Int!) {
+  posts(where: {onchain_link: {onchain_child_bounty_id: {_eq: $id}}}) {
+    ...childBountyPost
+  }
+}
+    ${ChildBountyPostFragmentDoc}`;
+
+/**
+ * __useChildBountyPostAndCommentsQuery__
+ *
+ * To run a query within a React component, call `useChildBountyPostAndCommentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChildBountyPostAndCommentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChildBountyPostAndCommentsQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useChildBountyPostAndCommentsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ChildBountyPostAndCommentsQuery, ChildBountyPostAndCommentsQueryVariables>) {
+        return ApolloReactHooks.useQuery<ChildBountyPostAndCommentsQuery, ChildBountyPostAndCommentsQueryVariables>(ChildBountyPostAndCommentsDocument, baseOptions);
+      }
+export function useChildBountyPostAndCommentsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ChildBountyPostAndCommentsQuery, ChildBountyPostAndCommentsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<ChildBountyPostAndCommentsQuery, ChildBountyPostAndCommentsQueryVariables>(ChildBountyPostAndCommentsDocument, baseOptions);
+        }
+export type ChildBountyPostAndCommentsQueryHookResult = ReturnType<typeof useChildBountyPostAndCommentsQuery>;
+export type ChildBountyPostAndCommentsLazyQueryHookResult = ReturnType<typeof useChildBountyPostAndCommentsLazyQuery>;
+export type ChildBountyPostAndCommentsQueryResult = ApolloReactCommon.QueryResult<ChildBountyPostAndCommentsQuery, ChildBountyPostAndCommentsQueryVariables>;
 export const AllMotionPostsDocument = gql`
     query AllMotionPosts($postType: Int!, $limit: Int! = 5) {
   posts(
@@ -24673,6 +31157,112 @@ export function useBountiesCountLazyQuery(baseOptions?: ApolloReactHooks.LazyQue
 export type BountiesCountQueryHookResult = ReturnType<typeof useBountiesCountQuery>;
 export type BountiesCountLazyQueryHookResult = ReturnType<typeof useBountiesCountLazyQuery>;
 export type BountiesCountQueryResult = ApolloReactCommon.QueryResult<BountiesCountQuery, BountiesCountQueryVariables>;
+export const GetLatestChildBountyPostsDocument = gql`
+    query GetLatestChildBountyPosts($postType: Int!, $limit: Int! = 5) {
+  posts(
+    limit: $limit
+    where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_child_bounty_id: {_is_null: false}}}
+    order_by: {onchain_link: {onchain_child_bounty_id: desc}}
+  ) {
+    id
+    title
+    author {
+      ...authorFields
+    }
+    created_at
+    updated_at
+    comments_aggregate {
+      aggregate {
+        count
+      }
+    }
+    type {
+      name
+      id
+    }
+    topic {
+      id
+      name
+    }
+    onchain_link {
+      id
+      onchain_child_bounty_id
+      onchain_child_bounty {
+        id
+        childBountyStatus(last: 1) {
+          id
+          status
+        }
+      }
+      proposer_address
+    }
+  }
+}
+    ${AuthorFieldsFragmentDoc}`;
+
+/**
+ * __useGetLatestChildBountyPostsQuery__
+ *
+ * To run a query within a React component, call `useGetLatestChildBountyPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLatestChildBountyPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLatestChildBountyPostsQuery({
+ *   variables: {
+ *      postType: // value for 'postType'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useGetLatestChildBountyPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLatestChildBountyPostsQuery, GetLatestChildBountyPostsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetLatestChildBountyPostsQuery, GetLatestChildBountyPostsQueryVariables>(GetLatestChildBountyPostsDocument, baseOptions);
+      }
+export function useGetLatestChildBountyPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLatestChildBountyPostsQuery, GetLatestChildBountyPostsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetLatestChildBountyPostsQuery, GetLatestChildBountyPostsQueryVariables>(GetLatestChildBountyPostsDocument, baseOptions);
+        }
+export type GetLatestChildBountyPostsQueryHookResult = ReturnType<typeof useGetLatestChildBountyPostsQuery>;
+export type GetLatestChildBountyPostsLazyQueryHookResult = ReturnType<typeof useGetLatestChildBountyPostsLazyQuery>;
+export type GetLatestChildBountyPostsQueryResult = ApolloReactCommon.QueryResult<GetLatestChildBountyPostsQuery, GetLatestChildBountyPostsQueryVariables>;
+export const ChildBountiesCountDocument = gql`
+    query ChildBountiesCount($postType: Int!) {
+  posts_aggregate(
+    where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_child_bounty_id: {_is_null: false}}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useChildBountiesCountQuery__
+ *
+ * To run a query within a React component, call `useChildBountiesCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChildBountiesCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChildBountiesCountQuery({
+ *   variables: {
+ *      postType: // value for 'postType'
+ *   },
+ * });
+ */
+export function useChildBountiesCountQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ChildBountiesCountQuery, ChildBountiesCountQueryVariables>) {
+        return ApolloReactHooks.useQuery<ChildBountiesCountQuery, ChildBountiesCountQueryVariables>(ChildBountiesCountDocument, baseOptions);
+      }
+export function useChildBountiesCountLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ChildBountiesCountQuery, ChildBountiesCountQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<ChildBountiesCountQuery, ChildBountiesCountQueryVariables>(ChildBountiesCountDocument, baseOptions);
+        }
+export type ChildBountiesCountQueryHookResult = ReturnType<typeof useChildBountiesCountQuery>;
+export type ChildBountiesCountLazyQueryHookResult = ReturnType<typeof useChildBountiesCountLazyQuery>;
+export type ChildBountiesCountQueryResult = ApolloReactCommon.QueryResult<ChildBountiesCountQuery, ChildBountiesCountQueryVariables>;
 export const GetLatestMotionPostsDocument = gql`
     query GetLatestMotionPosts($postType: Int!, $limit: Int! = 5) {
   posts(

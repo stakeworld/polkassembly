@@ -5,6 +5,8 @@
 import { ChainLinksType, ChainPropType } from '../types';
 
 export const network = {
+	AUTOMATA: 'automata',
+	BASILISK: 'basilisk',
 	BIFROST: 'bifrost',
 	KILT: 'kilt',
 	KUSAMA: 'kusama',
