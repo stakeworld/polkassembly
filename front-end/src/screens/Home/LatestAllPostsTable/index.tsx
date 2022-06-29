@@ -22,7 +22,7 @@ interface Props {
 interface PostTypeData {
 	method: string
 	onChainId: number
-	postTypeString: 'discussion' |'referenda' | 'proposal' | 'motion' | 'treasury proposal' | 'tech committee proposal' | 'bounty' | 'tip'
+	postTypeString: 'discussion' |'referenda' | 'proposal' | 'motion' | 'treasury proposal' | 'tech committee proposal' | 'bounty' | 'child bounty' | 'tip'
 	status: string
 	title: string
 }
@@ -107,6 +107,13 @@ const LatestAllPostsTable = ({ className }:Props) => {
 			postData.onChainId = post.onchain_link?.onchain_tip_id;
 			postData.status = post.onchain_link.onchain_tip[0]?.tipStatus?.[0].status;
 			postData.title = post.title ? post.title : post.onchain_link.onchain_tip?.[0]?.reason;
+			break;
+		case 'onchain_child_bounty_id':
+			postData.postTypeString = 'child bounty';
+			postData.method = '';
+			postData.onChainId = post.onchain_link?.onchain_child_bounty_id;
+			postData.status = post.onchain_link.onchain_child_bounty[0]?.childBountyStatus?.[0].status;
+			postData.title = post.title ? post.title : post.onchain_link.onchain_child_bounty?.[0]?.description;
 		}
 
 		return postData;
