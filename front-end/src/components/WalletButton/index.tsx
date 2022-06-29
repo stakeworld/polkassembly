@@ -3,38 +3,43 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 import styled from '@xstyled/styled-components';
 import React from 'react';
+import { Button } from 'semantic-ui-react';
+interface Props {
+	className?: string
+	onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+	icon?: JSX.Element
+	name: string
+	disabled: boolean
+}
 
-const WalletButton = ({ onClick, icon, name }: { onClick: () => void, icon?: JSX.Element, name: string }) => {
+const WalletButton = ({ className, disabled, onClick, icon, name }: Props) => {
 	return (
-		<StyledButton onClick={onClick}>
-			{icon} <StyledName>{name}</StyledName>
-		</StyledButton>
+		<Button className={className} onClick={onClick} disabled={disabled}>
+			<span className='wallet-icon'>{icon}</span> <span>{name}</span>
+		</Button>
 	);
 };
 
-const StyledButton = styled.div`
-    padding: 1.25rem 1rem;
-    border-radius: 0.75rem;
-    border: 1px solid #A9A9A9;
+export default styled(WalletButton)`
+&&& {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 16px;
+	width: 100%;
+	margin: 0 8px;
+	background-color: transparent;
+	border: 1px solid #53595C;
+	border-radius: 3px;
 
-    display: flex;
-    align-items: center;
+	.wallet-icon {
+		height: 20px;
+		width: 20px;
+		margin-right: 8px;
+	}
 
-    cursor: pointer;
-
-    transition: 0.3s;
-
-    &:hover {
-        border: 2px solid #E5007A;
-    }
-
-    margin-bottom: 16px;
+	@media only screen and (max-width: 576px) {
+		margin: 4px 0;
+	}
+}
 `;
-
-const StyledName = styled.span`
-    font-size: 16px;
-    margin-left: 8px;
-    font-weight: 500;
-`;
-
-export default WalletButton;
