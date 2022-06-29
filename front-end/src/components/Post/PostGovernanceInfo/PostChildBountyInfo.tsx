@@ -30,7 +30,8 @@ const PostChildBountyInfo = ({ onchainLink }: Props) => {
 		fee,
 		curatorDeposit,
 		curator,
-		beneficiary
+		beneficiary,
+		description
 	} = onchainChildBountyProposal?.[0] || { };
 
 	return (
@@ -65,6 +66,11 @@ const PostChildBountyInfo = ({ onchainLink }: Props) => {
 				<Grid.Column mobile={16} tablet={8} computer={8}>
 					<h6>Curator Deposit</h6>
 					{parseInt(curatorDeposit) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
+				</Grid.Column>}
+				{description &&
+				<Grid.Column mobile={16} tablet={8} computer={8}>
+					<h6>Description</h6>
+					{description}
 				</Grid.Column>}
 			</Grid>
 		</OnchainInfoWrapper>

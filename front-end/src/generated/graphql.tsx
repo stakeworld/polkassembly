@@ -25884,7 +25884,7 @@ export type OnchainLinkChildBountyFragment = (
   & Pick<Onchain_Links, 'id' | 'proposer_address' | 'onchain_child_bounty_id'>
   & { onchain_child_bounty: Array<Maybe<(
     { __typename?: 'ChildBounty' }
-    & Pick<ChildBounty, 'id' | 'proposer' | 'value' | 'fee' | 'curatorDeposit' | 'parentBountyId' | 'childBountyId' | 'curator' | 'beneficiary'>
+    & Pick<ChildBounty, 'id' | 'proposer' | 'value' | 'fee' | 'curatorDeposit' | 'parentBountyId' | 'childBountyId' | 'curator' | 'beneficiary' | 'description'>
     & { childBountyStatus?: Maybe<Array<(
       { __typename?: 'ChildBountyStatus' }
       & Pick<ChildBountyStatus, 'id' | 'status'>
@@ -28110,6 +28110,7 @@ export const OnchainLinkChildBountyFragmentDoc = gql`
     childBountyId
     curator
     beneficiary
+    description
     childBountyStatus(orderBy: id_DESC) {
       id
       status

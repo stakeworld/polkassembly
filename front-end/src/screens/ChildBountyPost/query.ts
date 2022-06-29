@@ -22,6 +22,7 @@ const onchainLinkChildBounty = gql`
             childBountyId
             curator
             beneficiary
+            description
             childBountyStatus(orderBy: id_DESC) {
                 id
                 status
