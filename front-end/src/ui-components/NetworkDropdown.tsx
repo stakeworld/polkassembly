@@ -99,9 +99,10 @@ const NetworkOptions: DropdownItemProps[] = [
 
 interface Props {
     className?: string
+		removePointer?: boolean
 }
 
-const NetworkDropdown = ({ className }: Props) =>  {
+const NetworkDropdown = ({ className, removePointer }: Props) =>  {
 
 	const navigate = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
 		if (data.value === NETWORK){
@@ -117,7 +118,7 @@ const NetworkDropdown = ({ className }: Props) =>  {
 
 	return <Dropdown
 		className={className}
-		pointing='top'
+		pointing={removePointer ? false : 'top'}
 		onChange={navigate}
 		options={NetworkOptions}
 		trigger={<StyledNetworkItem showNetwork={NETWORK}/>}
