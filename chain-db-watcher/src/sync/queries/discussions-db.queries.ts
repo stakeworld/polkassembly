@@ -68,6 +68,19 @@ export const getDiscussionBounties = gql`
     }
 `;
 
+export const getDiscussionChildBounties = gql`
+    query getDiscussionChildBounties {
+        onchain_links(where: {onchain_child_bounty_id: {_is_null: false}}){
+            ...discussionChildBounty
+        }
+    }
+    fragment discussionChildBounty on onchain_links {
+        id
+        onchain_child_bounty_id
+        proposer_address
+    }
+`;
+
 export const getDiscussionTips = gql`
     query getDiscussionTips {
         onchain_links(where: {onchain_tip_id: {_is_null: false}}){

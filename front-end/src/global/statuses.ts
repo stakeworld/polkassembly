@@ -63,6 +63,20 @@ export const bountyStatusMap = {
 	[bountyStatus.REJECTED]: 'Rejected'
 };
 
+export const childBountyStatus = {
+	ADDED: 'Added',
+	AWARDED: 'Awarded',
+	CANCELED: 'Canceled',
+	CLAIMED: 'Claimed'
+};
+
+export const childBountyStatusMap = {
+	[childBountyStatus.ADDED]: 'Added',
+	[childBountyStatus.AWARDED]: 'Awarded',
+	[childBountyStatus.CANCELED]: 'Canceled',
+	[childBountyStatus.CLAIMED]: 'Claimed'
+};
+
 export const approvalStatus = {
 	APPROVED: 'approved',
 	PENDING: 'pending',

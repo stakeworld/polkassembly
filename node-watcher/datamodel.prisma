@@ -285,3 +285,25 @@ type TechCommitteeProposalStatus {
   status: String!
   uniqueStatus: String! @unique
 }
+
+type ChildBounty {
+  id: Int! @id(strategy: SEQUENCE) @sequence(name: "CHILD_BOUNTY_SEQUENCE" initialValue:1 allocationSize:1)
+  proposer: String!
+  value: String!
+  description: String
+  fee: String
+  childBountyId: Int! @unique
+  parentBountyId: Int!
+  curatorDeposit: String
+  childBountyStatus: [ChildBountyStatus]! @relation(name: "ChildBountyStatusFromChildBounty")
+  curator: String
+  beneficiary: String
+}
+
+type ChildBountyStatus {
+  id: ID! @id
+  blockNumber: BlockNumber! @relation(name: "ChildBountyStatusAtBlockNumber", link: INLINE)
+  childBounty: ChildBounty! @relation(name: "ChildBountyStatusFromChildBounty", link: INLINE)
+  status: String!
+  uniqueStatus: String! @unique
+}

@@ -250,9 +250,24 @@ const resolvers = {
         .bountyStatus({ where, orderBy, skip, after, before, first, last });
     },
   },
+  ChildBounty: {
+    childBountyStatus(
+      parent: any,
+      { where, orderBy, skip, after, before, first, last }: Selectors
+    ) {
+      return prisma
+        .childBounty({ id: parent.id })
+        .childBountyStatus({ where, orderBy, skip, after, before, first, last });
+    },
+  },
   BountyStatus: {
     blockNumber(parent: any) {
       return prisma.bountyStatus({ id: parent.id }).blockNumber();
+    },
+  },
+  ChildBountyStatus: {
+    blockNumber(parent: any) {
+      return prisma.childBountyStatus({ id: parent.id }).blockNumber();
     },
   },
   TreasurySpendProposal: {
