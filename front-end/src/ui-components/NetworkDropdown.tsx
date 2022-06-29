@@ -99,10 +99,9 @@ const NetworkOptions: DropdownItemProps[] = [
 
 interface Props {
     className?: string
-		setSidebarHiddenFunc?: () => void
 }
 
-const NetworkDropdown = ({ className, setSidebarHiddenFunc }: Props) =>  {
+const NetworkDropdown = ({ className }: Props) =>  {
 
 	const navigate = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
 		if (data.value === NETWORK){
@@ -117,7 +116,6 @@ const NetworkDropdown = ({ className, setSidebarHiddenFunc }: Props) =>  {
 	};
 
 	return <Dropdown
-		onClick={setSidebarHiddenFunc}
 		className={className}
 		pointing='top'
 		onChange={navigate}

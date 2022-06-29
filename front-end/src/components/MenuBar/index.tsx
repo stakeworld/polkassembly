@@ -57,13 +57,13 @@ const MenuBar = ({ className, toggleSidebarHidden, setSidebarHidden } : Props): 
 		toggleSidebarHidden();
 	};
 
-	const setSidebarHiddenFunc = () => {
-		setSidebarHidden(true);
-	};
-
 	const userMenu = currentUser.web3signup && currentUser.defaultAddress
 		? <><AddressComponent address={currentUser.defaultAddress} /></>
 		: <><Icon size='big' name='user circle' inverted /> {username} </>;
+
+	const userMenuMobile = currentUser.web3signup && currentUser.defaultAddress
+		? <><AddressComponent className='mobile-address-component' address={currentUser.defaultAddress} disableAddress={true} /></>
+		: <><Icon size='large' name='user circle' inverted /></>;
 
 	const caretIcon = <Icon name='caret down' inverted />;
 
@@ -76,7 +76,19 @@ const MenuBar = ({ className, toggleSidebarHidden, setSidebarHidden } : Props): 
 					</Menu.Menu>
 					<Menu.Item as={NavLink} to="/" className='logo' id='title'><img alt='Polkassembly Logo' src={logo} /></Menu.Item>
 					<Menu.Menu position="right">
-						<NetworkDropdown setSidebarHiddenFunc={setSidebarHiddenFunc} />
+						{username
+							? <>
+								<Dropdown onClick={() => (setSidebarHidden(true))} className='logged-in-dropdown' trigger={userMenuMobile} icon={caretIcon} item={true}>
+									<Dropdown.Menu>
+										{loggedInItems.map((item, index) => <Menu.Item as={NavLink} key={index} {...item}/>)}
+									</Dropdown.Menu>
+								</Dropdown>
+							</>
+							:
+							<>
+								<Menu.Item as={NavLink} activeClassName="pink_primary-text" className='user_items' content='Login' to='/login' />
+							</>
+						}
 					</Menu.Menu>
 				</Menu>
 			</Responsive>

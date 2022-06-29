@@ -19,9 +19,10 @@ interface Props {
 	disableIdenticon?: boolean
 	extensionName?: string
 	popupContent?: string
+	disableAddress?:boolean
 }
 
-const Address = ({ address, className, displayInline, disableIdenticon, extensionName, popupContent }: Props): JSX.Element => {
+const Address = ({ address, className, displayInline, disableIdenticon, extensionName, popupContent, disableAddress }: Props): JSX.Element => {
 	const { api, apiReady } = useContext(ApiContext);
 	const [mainDisplay, setMainDisplay] = useState<string>('');
 	const [sub, setSub] = useState<string | null>(null);
@@ -92,7 +93,7 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 					:
 					null
 			}
-			<div className='content'>
+			{!disableAddress && <div className='content'>
 				{displayInline
 					// When inline disregard the extension name.
 					? popupContent
@@ -150,7 +151,7 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 							</>
 						: <div className={'description'}>{shortenAddress(address)}</div>
 				}
-			</div>
+			</div>}
 		</div>
 	);
 };

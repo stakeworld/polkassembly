@@ -5,8 +5,9 @@
 import styled from '@xstyled/styled-components';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Icon, List } from 'semantic-ui-react';
+import { Divider, Icon, List, Responsive } from 'semantic-ui-react';
 import { useRouter } from 'src/hooks';
+import NetworkDropdown from 'src/ui-components/NetworkDropdown';
 
 import { ReactComponent as BountyIcon } from '../assets/sidebar/bounties.svg';
 import { ReactComponent as CalendarIcon } from '../assets/sidebar/calendar.svg';
@@ -170,6 +171,11 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 					<div onClick={ toggleSidebarCollapse } className='sidebar-collapse-btn' style={ sidebarCollapsed ? { left: '20px' } : {} }>
 						<Icon size='small' name={sidebarCollapsed ? 'chevron up': 'chevron down' } />
 					</div>
+
+					<Responsive maxWidth={Responsive.onlyTablet.maxWidth}>
+						<NetworkDropdown className='mobile-network-dropdown' />
+						<Divider />
+					</Responsive>
 
 					<List size='large' verticalAlign='middle'>
 						{/* Uncategorized */}
@@ -418,6 +424,17 @@ export default styled(CustomSidebar)`
 			position: static;
 			height: 93.8vh;
 			padding-right: 1rem;
+		}
+	}
+
+	.mobile-network-dropdown {
+		color: #000;
+		margin-top: 20px;
+		margin-bottom: 13px;
+		font-size: 1em;
+
+		.dropdown.icon {
+			color: #000 !important;
 		}
 	}
 `;
