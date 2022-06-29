@@ -50,7 +50,7 @@ const LatestAllPostsTable = ({ className }:Props) => {
 			title: post.title
 		};
 
-		if(!post.onchain_link){
+		if (!post.onchain_link){
 			//is discussion post
 			postData.postTypeString = 'discussion';
 			postData.onChainId = post.id;
