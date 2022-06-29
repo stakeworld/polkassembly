@@ -125,7 +125,10 @@ export type Nomidot =
   | NomidotBounty[]
   | NomidotBountyStatusUpdate[]
   | NomidotTechCommitteeProposal[]
-  | NomidotTechCommitteeProposalStatusUpdate[];
+  | NomidotTechCommitteeProposalStatusUpdate[]
+  | NomidotChildBounty[]
+  | NomidotChildBountyStatusUpdate[];
+
 
 export type NomidotTask = Task<Nomidot>;
 
@@ -212,6 +215,7 @@ export interface NomidotBounty {
 export interface NomidotBountyRawEvent {
   BountyIndex?: number;
 }
+
 
 export interface NomidotMotion {
   author: AccountId;
@@ -314,4 +318,27 @@ export interface NomidotBountyStatusUpdate {
   status: string;
   curator?: string;
   beneficiary?: string;
+}
+
+export interface NomidotChildBountyStatusUpdate {
+  childBountyId: number;
+  status: string;
+  curator?: string;
+  beneficiary?: string;
+}
+export interface NomidotChildBounty {
+  childBountyId: number;
+  parentBountyId: number;
+  proposer: AccountId;
+  value: Balance;
+  description: string;
+  fee: Balance;
+  curatorDeposit: Balance;
+  curator?: AccountId;
+  beneficiary?: AccountId;
+  childBountyStatus: string;
+}
+
+export interface NomidotChildBountyRawEvent {
+  ChildBountyIndex?: number;
 }

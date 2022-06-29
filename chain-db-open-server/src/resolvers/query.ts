@@ -627,6 +627,50 @@ const Query = {
   ) {
     return prisma.bountyStatus(BountyStatusWhereUniqueInput);
   },
+  childBounties(
+    _parent: any,
+    { where, orderBy, skip, after, before, first, last }: Selectors,
+    { prisma }: Context
+  ) {
+    return prisma.childBounties({
+      where,
+      orderBy,
+      skip,
+      after,
+      before,
+      first,
+      last,
+    });
+  },
+  childBounty(
+    _parent: any,
+    { ChildBountyWhereUniqueInput }: Selectors,
+    { prisma }: Context
+  ) {
+    return prisma.childBounty(ChildBountyWhereUniqueInput);
+  },
+  childBountyStatuses(
+    _parent: any,
+    { where, orderBy, skip, after, before, first, last }: Selectors,
+    { prisma }: Context
+  ) {
+    return prisma.childBountyStatuses({
+      where,
+      orderBy,
+      skip,
+      after,
+      before,
+      first,
+      last,
+    });
+  },
+  childBountyStatus(
+    _parent: any,
+    { ChildBountyStatusWhereUniqueInput }: Selectors,
+    { prisma }: Context
+  ) {
+    return prisma.bountyStatus(ChildBountyStatusWhereUniqueInput);
+  },
   techCommitteeProposals(
     _parent: any,
     { where, orderBy, skip, after, before, first, last }: Selectors,

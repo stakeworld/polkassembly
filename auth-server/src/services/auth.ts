@@ -1333,8 +1333,8 @@ export default class AuthService {
 		const title = 'Deadline for onchain proposal #' + onchain_proposal_id;
 		const url = 'https://' + process.env.DOMAIN_NAME + '/treasury/' + onchain_proposal_id;
 
-		const addCalenderEventMutation = `mutation calenderEvent($end_time: timestamptz!, $start_time: timestamptz!, $title: String!, $network: String!, $url: String!, $status: String!, $event_type: String!, $event_id: Int!) {
-			insert_calender_events(objects: {end_time: $end_time, title: $title, start_time: $start_time, network: $network, url: $url, status: $status, event_type: $event_type, event_id: $event_id}) {
+		const addCalenderEventMutation = `mutation calenderEvent($end_time: timestamptz!, $start_time: timestamptz!, $title: String!, $network: String!, $url: String!, $status: String!, $event_type: String!, $event_id: Int!, $approval_status: String!) {
+			insert_calender_events(objects: {end_time: $end_time, title: $title, start_time: $start_time, network: $network, url: $url, status: $status, event_type: $event_type, event_id: $event_id, approval_status: $approval_status}) {
 			  affected_rows
 			}
 		  }
