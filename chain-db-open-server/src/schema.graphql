@@ -14,6 +14,12 @@ type Query {
   bountyStatus(where: BountyStatusWhereUniqueInput!): BountyStatus
   bountyStatuses(where: BountyStatusWhereInput, orderBy: BountyStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [BountyStatus]!
   bountyStatusesConnection(where: BountyStatusWhereInput, orderBy: BountyStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BountyStatusConnection!
+  childBounty(where: ChildBountyWhereUniqueInput!): ChildBounty
+  childBounties(where: ChildBountyWhereInput, orderBy: ChildBountyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChildBounty]!
+  childBountiesConnection(where: ChildBountyWhereInput, orderBy: ChildBountyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ChildBountyConnection!
+  childBountyStatus(where: ChildBountyStatusWhereUniqueInput!): ChildBountyStatus
+  childBountyStatuses(where: ChildBountyStatusWhereInput, orderBy: ChildBountyStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChildBountyStatus]!
+  childBountyStatusesConnection(where: ChildBountyStatusWhereInput, orderBy: ChildBountyStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ChildBountyStatusConnection!
   council(where: CouncilWhereUniqueInput!): Council
   councils(where: CouncilWhereInput, orderBy: CouncilOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Council]!
   councilsConnection(where: CouncilWhereInput, orderBy: CouncilOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CouncilConnection!
@@ -109,6 +115,8 @@ type Subscription {
   blockNumber(where: BlockNumberSubscriptionWhereInput): BlockNumberSubscriptionPayload
   bounty(where: BountySubscriptionWhereInput): BountySubscriptionPayload
   bountyStatus(where: BountyStatusSubscriptionWhereInput): BountyStatusSubscriptionPayload
+  childBounty(where: ChildBountySubscriptionWhereInput): ChildBountySubscriptionPayload
+  childBountyStatus(where: ChildBountyStatusSubscriptionWhereInput): ChildBountyStatusSubscriptionPayload
   council(where: CouncilSubscriptionWhereInput): CouncilSubscriptionPayload
   councilMember(where: CouncilMemberSubscriptionWhereInput): CouncilMemberSubscriptionPayload
   era(where: EraSubscriptionWhereInput): EraSubscriptionPayload
