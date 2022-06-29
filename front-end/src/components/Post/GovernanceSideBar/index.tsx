@@ -8,7 +8,7 @@ import styled from '@xstyled/styled-components';
 import React, { useContext, useState } from 'react';
 import { DropdownProps, Icon } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
-import { OnchainLinkBountyFragment, OnchainLinkMotionFragment, OnchainLinkProposalFragment, OnchainLinkReferendumFragment, OnchainLinkTechCommitteeProposalFragment, OnchainLinkTipFragment, OnchainLinkTreasuryProposalFragment } from 'src/generated/graphql';
+import { OnchainLinkBountyFragment, OnchainLinkChildBountyFragment, OnchainLinkMotionFragment, OnchainLinkProposalFragment, OnchainLinkReferendumFragment, OnchainLinkTechCommitteeProposalFragment, OnchainLinkTipFragment, OnchainLinkTreasuryProposalFragment } from 'src/generated/graphql';
 import { APPNAME } from 'src/global/appName';
 import { motionStatus, proposalStatus, referendumStatus, tipStatus } from 'src/global/statuses';
 import { VoteThreshold } from 'src/types';
@@ -28,6 +28,7 @@ interface Props {
 	canEdit?: boolean | '' | undefined
 	className?: string
 	isBounty?: boolean
+	isChildBounty?: boolean
 	isMotion?: boolean
 	isProposal?: boolean
 	isReferendum?: boolean
@@ -35,7 +36,7 @@ interface Props {
 	isTipProposal?: boolean
 	isTechCommitteeProposal?: boolean
 	onchainId?: string | number | null
-	onchainLink?: OnchainLinkTechCommitteeProposalFragment | OnchainLinkBountyFragment | OnchainLinkMotionFragment | OnchainLinkProposalFragment | OnchainLinkReferendumFragment | OnchainLinkTreasuryProposalFragment | OnchainLinkTipFragment
+	onchainLink?: OnchainLinkTechCommitteeProposalFragment | OnchainLinkBountyFragment | OnchainLinkChildBountyFragment | OnchainLinkMotionFragment | OnchainLinkProposalFragment | OnchainLinkReferendumFragment | OnchainLinkTreasuryProposalFragment | OnchainLinkTipFragment
 	status?: string
 	startTime: string
 }

@@ -12,6 +12,7 @@ import ws from 'ws';
 
 import {
 	addDiscussionPostAndBounty,
+	addDiscussionPostAndChildBounty,
 	addDiscussionPostAndMotion,
 	addDiscussionPostAndProposal,
 	addDiscussionPostAndTechCommitteeProposal,
@@ -19,6 +20,7 @@ import {
 	addDiscussionPostAndTreasuryProposal,
 	addDiscussionReferendum,
 	bountyDiscussionExists,
+	childBountyDiscussionExists,
 	motionDiscussionExists,
 	proposalDiscussionExists,
 	techCommitteeProposalDiscussionExists,
@@ -26,7 +28,7 @@ import {
 	treasuryProposalDiscussionExists,
 	updateTreasuryProposalWithMotion
 } from './graphql_helpers';
-import { bountySubscription, motionSubscription, proposalSubscription, referendumSubscription, techCommitteeProposalSubscription, tipSubscription, treasurySpendProposalSubscription } from './queries';
+import { bountySubscription, childBountySubscription, motionSubscription, proposalSubscription, referendumSubscription, techCommitteeProposalSubscription, tipSubscription, treasurySpendProposalSubscription } from './queries';
 import { syncDBs } from './sync';
 import { getMotionTreasuryProposalId } from './sync/utils';
 
@@ -118,6 +120,31 @@ const startSubscriptions = (client: SubscriptionClient): void => {
 		error: error => { throw new Error(`Subscription (bounty) error: ${error}`); },
 		complete: () => {
 			console.log('Subscription (bounty) completed');
+			process.exit(1);
+		}
+	});
+
+	execute(link, {
+		query: childBountySubscription,
+		variables: { startBlock }
+	}).subscribe({
+		next: ({ data }): void => {
+			console.log('Child bounty data received', JSON.stringify(data, null, 2));
+
+			if (data?.childBounty?.mutation === subscriptionMutation.Created) {
+				const { childBountyId, proposer } = data.childBounty.node;
+				childBountyDiscussionExists(childBountyId).then(alreadyExist => {
+					if (!alreadyExist) {
+						addDiscussionPostAndChildBounty({ onchainChildBountyId: Number(childBountyId), proposer });
+					} else {
+						console.error(chalk.red(`✖︎ Child bounty id ${childBountyId.toString()} already exists in the discsussion db. Not inserted.`));
+					}
+				}).catch(error => console.error(chalk.red(error)));
+			}
+		},
+		error: error => { throw new Error(`Subscription (childBounty) error: ${error}`); },
+		complete: () => {
+			console.log('Subscription (childBounty) completed');
 			process.exit(1);
 		}
 	});

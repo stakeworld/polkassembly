@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import { Grid, Popup } from 'semantic-ui-react';
 import { useGetCalenderEventsQuery } from 'src/generated/graphql';
+import { approvalStatus } from 'src/global/statuses';
 import getNetwork from 'src/util/getNetwork';
 
 import CustomToolbar from './CustomToolbar';
@@ -35,6 +36,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
 	const { data, refetch } = useGetCalenderEventsQuery({ variables: {
+		approval_status: approvalStatus.APPROVED,
 		network: selectedNetwork
 	} });
 

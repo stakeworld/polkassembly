@@ -8,6 +8,7 @@ generates:
     documents:
       - "src/**/*.{ts,tsx}"
       - "!src/services/*"
+      - "!src/screens/Profile/CouncilVotes.tsx"
     plugins:
       - "typescript"
       - "typescript-operations"

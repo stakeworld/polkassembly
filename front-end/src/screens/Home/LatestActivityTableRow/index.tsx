@@ -32,7 +32,7 @@ interface LatestActivityTableRowProps {
 	status?: string | null
 	tipReason?: string
 	title?: string | null
-	postType: 'discussion' | 'referenda' | 'proposal' | 'motion' | 'treasury proposal' | 'tech committee proposal' | 'bounty' | 'tip'
+	postType: 'discussion' | 'referenda' | 'proposal' | 'motion' | 'treasury proposal' | 'tech committee proposal' | 'bounty' | 'tip' | 'child bounty'
 	username?: string | null
 	hideSerialNum?: boolean
 }
@@ -88,6 +88,10 @@ const LatestActivityTableRow = function ({
 			icon = <BountyIcon />;
 			serialID = onchainId;
 			break;
+		case 'child bounty':
+			icon = <BountyIcon />;
+			serialID = onchainId;
+			break;
 		case 'tip':
 			icon = <TipIcon />;
 			serialID = null;
@@ -132,6 +136,9 @@ const LatestActivityTableRow = function ({
 			break;
 		case 'bounty':
 			path = 'bounty';
+			break;
+		case 'child bounty':
+			path = 'childBounty';
 			break;
 		case 'tip':
 			path = 'tip';

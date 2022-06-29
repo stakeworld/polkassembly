@@ -5,7 +5,7 @@
 import styled from '@xstyled/styled-components';
 import React, { ReactNode } from 'react';
 import { Label } from 'semantic-ui-react';
-import { bountyStatus, bountyStatusMap, motionStatus, proposalStatus, referendumStatus, tipStatus, tipStatusMap } from 'src/global/statuses';
+import { bountyStatus, bountyStatusMap, childBountyStatus, childBountyStatusMap, motionStatus, proposalStatus, referendumStatus, tipStatus, tipStatusMap } from 'src/global/statuses';
 
 interface Props{
 	children?: ReactNode,
@@ -22,6 +22,10 @@ const StatusTag = ({ children, className, content, status }: Props) => {
 
 	if (content && bountyStatusMap[content]) {
 		content = bountyStatusMap[content];
+	}
+
+	if (content && childBountyStatusMap[content]) {
+		content = childBountyStatusMap[content];
 	}
 
 	return (
@@ -64,10 +68,10 @@ export default styled(StatusTag).attrs(( { status }: Props) => ({
 		&.${tipStatus.CLOSING},
 		&.${bountyStatus.AWARDED},
 		&.${bountyStatus.BECAME_ACTIVE},
-		&.${bountyStatus.EXTENDED}
-		 {
-			border-color: #5BC044;
-			color: #5BC044;
+		&.${bountyStatus.EXTENDED},
+		&.${childBountyStatus.ADDED} {
+			border-color: #6495ED;
+			color: #6495ED;
 		}
 		&.${proposalStatus.TABLED},
 		&.${referendumStatus.PASSED},
@@ -78,6 +82,11 @@ export default styled(StatusTag).attrs(( { status }: Props) => ({
 		&.${tipStatus.CLOSED},
 		&.${bountyStatus.AWARDED},
 		&.${bountyStatus.CLAIMED},
+		&.${childBountyStatus.AWARDED} {
+			border-color: #5BC044;
+			color: #5BC044;
+		}
+		&.${childBountyStatus.CLAIMED},
 		&.prime {
 			border-color: green_primary;
 			color: green_primary;
@@ -89,9 +98,10 @@ export default styled(StatusTag).attrs(( { status }: Props) => ({
 		&.${motionStatus.DISAPPROVED},
 		&.${tipStatus.RETRACTED},
 		&.${bountyStatus.CANCELED},
-		&.${bountyStatus.REJECTED} {
+		&.${bountyStatus.REJECTED},
+		&.${childBountyStatus.CANCELED} {
 			border-color: #FF0000;
 			color: #FF0000;
-		}
+		},
 	}
 `;

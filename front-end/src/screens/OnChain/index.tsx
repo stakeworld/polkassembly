@@ -46,11 +46,14 @@ const OnchainPostsContainer = ({ className } : {className?: string}) => {
 					<h3>Bounties</h3>
 					<BountyContainer className='bountyContainer' limit={limit} />
 					<Link className='full-listing-link' to='bounties'><Icon name='arrow right'/>See all bounties</Link>
+					<h3>Child Bounties</h3>
+					<BountyContainer className='bountyContainer' limit={limit} />
+					<Link className='full-listing-link' to='child-bounties'><Icon name='arrow right'/>See all Child bounties</Link>
 				</Grid.Column>
 				<Grid.Column mobile={16} tablet={16} computer={6}>
 					<InfoBox
 						dismissable={true}
-						content='This is the place to discuss on-chain proposals, referenda, motions, tips, bounties, treasury proposals and technical committee proposals.
+						content='This is the place to discuss on-chain proposals, referenda, motions, tips, bounties, child bounties, treasury proposals and technical committee proposals.
 						On-chain posts are automatically generated as soon as they are created on the chain.
 						Only the proposer is able to edit them.'
 						name='onchainInfo'
