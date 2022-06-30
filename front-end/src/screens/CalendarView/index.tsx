@@ -290,17 +290,28 @@ h1 {
 			font-size: 20px;
 		}
 
-		.today-btn {
+		.right-actions {
 			margin-left: auto;
-			/* margin-right: 22px; */
-			border-radius: 5px;
-			font-size: 16px;
-			padding: 10px 20px !important;
 
-			@media only screen and (max-width: 576px) {
-				margin-right: 8px;
+			.legend-trigger {
+				margin-right: 16px;
+				color: #E5007A;
+				font-weight: 500;
+				font-size: 16px;
+			}
+
+			.today-btn {
+				/* margin-right: 22px; */
+				border-radius: 5px;
+				font-size: 16px;
+				padding: 10px 20px !important;
+	
+				@media only screen and (max-width: 576px) {
+					margin-right: 8px;
+				}
 			}
 		}
+
 		
 		.create-event-btn {
 			border-radius: 5px;

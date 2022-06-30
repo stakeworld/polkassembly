@@ -172,8 +172,9 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 				size='tiny'
 			>
 				<Modal.Header>Please input the URL for your photo</Modal.Header>
-				<Modal.Content>
-					<p><b>Instructions : </b> Please provide a valid url of your profile photo. You can use a service such as <a href='https://imgbb.com/' target='_blank' rel="noreferrer">imgbb.com</a> to upload and generate a public link.</p>
+				<Modal.Content className='modal-content'>
+					<p><b>Instructions : </b>Please provide a url of your profile photo using a service such as <a href='https://postimages.org/' target='_blank' rel="noreferrer">postimages.org</a> to upload and generate a direct link.</p>
+					<p><i>Please remember to copy the direct link.</i></p>
 					<Input className='profile-link-input' size='large' type='url' icon='linkify' iconPosition='left' placeholder='Profile Picture URL' onChange={(e) => handleImgURLChange(e.target.value)} value={imgUrl} disabled={loadingUpdate} />
 					{(imageUrlError) &&
 					<Message negative>
@@ -196,9 +197,6 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 				</Modal.Actions>
 			</Modal>
 
-			<Grid.Column width={16}>
-				<h1>Profile</h1>
-			</Grid.Column>
 			{ data && !error ?
 				<Grid.Column className='profile-card' mobile={16} tablet={16} computer={15} largeScreen={15} widescreen={15}>
 
@@ -225,9 +223,9 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 								<div className={`profile-text-div ${editProfile ? 'editing' : ''}`}>
 									{ username && <h3 className='display-name'>{username}</h3>}
 
-									{editProfile ? <Input placeholder='Title' onChange={(e) => setTitle(e.target.value)} value={title} disabled={loadingUpdate} /> :
+									{editProfile ? <Input placeholder='Job Title' onChange={(e) => setTitle(e.target.value)} value={title} disabled={loadingUpdate} /> :
 										title ? <h3 className='display-title'>{title}</h3> :
-											<h3 className='no-display-title'>No title added</h3>
+											<h3 className='no-display-title'>No Job Title Added</h3>
 									}
 
 									{ editProfile &&
@@ -240,7 +238,10 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 										<Label.Group className={`display-badges ${editProfile ? 'editing' : ''}`} size='big'>
 											{badges.map((badge, i) => (<Label key={i}>{badge}{editProfile ? <Icon disabled={loadingUpdate} onClick={() => removeBadge(badge)} name='delete' /> : null}</Label>))}
 										</Label.Group> :
-										<h3 className='no-display-title'>No badges added</h3>
+										<Label.Group className='display-badges editing dummy-badges' size='big'>
+											<Label><div className='small'></div></Label>
+											<Label><div></div></Label>
+										</Label.Group>
 									}
 								</div>
 							</div>
@@ -441,6 +442,30 @@ export default styled(UserProfile)`
 
 				&.editing {
 					margin-top: 0;
+
+					&.dummy-badges {
+						.label {
+							background: #ddd;
+							color: #ddd;
+							-webkit-touch-callout: none;
+							-webkit-user-select: none;
+							-khtml-user-select: none;
+							-moz-user-select: none;
+							-ms-user-select: none;
+							user-select: none;
+
+							div {
+								width: 64px !important;
+								height: 6px;
+								margin: 2.5px 6px;
+								background: #bbb;
+								border-radius: 3px;
+								&.small {
+									width: 34px !important;
+								}
+							}
+						}
+					}
 				}
 
 				.label {
@@ -497,5 +522,9 @@ export default styled(UserProfile)`
 			text-align: center;
 			margin-bottom: -4px;
 		}
-}
+	}
+
+	.modal-content {
+		font-size: 12px !important;
+	}
 `;

@@ -6,7 +6,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Button, Dropdown, DropdownProps } from 'semantic-ui-react';
+import { Button, Dropdown, DropdownProps, List, Popup } from 'semantic-ui-react';
 
 import calendar_today from '../../assets/calendar_today.png';
 import NetworkSelect from './NetworkSelect';
@@ -143,8 +143,33 @@ function CustomToolbar(props: any) {
 					<Button onClick={goToNext} icon='chevron right' />
 
 					{/* <Button className='search-btn' icon='search' /> */}
-					<Button basic className='today-btn' onClick={goToToday}>Today</Button>
-					{/* <Button basic className='create-event-btn' onClick={goToToday}>Create Event</Button> */}
+					<div className="right-actions">
+						<Popup
+							position='bottom center'
+							trigger={
+								<span className='legend-trigger'>Legend</span>
+							}
+						>
+							<Popup.Content style={ { fontSize: '14px' } }>
+								<List>
+									<List.Item>
+										<List.Icon name='circle' style={ { color: '#EA8612', fontSize: '8px' } } />
+										<List.Content style={ { width: 'min-content' } }>Working</List.Content>
+									</List.Item>
+									<List.Item>
+										<List.Icon name='circle' style={ { color: '#5BC044', fontSize: '8px' } } />
+										<List.Content style={ { width: 'min-content' } }>Completed</List.Content>
+									</List.Item>
+									<List.Item>
+										<List.Icon name='circle' style={ { color: '#FF0000', fontSize: '8px' } } />
+										<List.Content style={ { width: 'min-content' } }>Overdue</List.Content>
+									</List.Item>
+								</List>
+							</Popup.Content>
+						</Popup>
+						<Button basic className='today-btn' onClick={goToToday}>Today</Button>
+						{/* <Button basic className='create-event-btn' onClick={goToToday}>Create Event</Button> */}
+					</div>
 				</>
 				:
 				<>
