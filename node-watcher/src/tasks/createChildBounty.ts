@@ -102,10 +102,9 @@ const createChildBounty: Task<NomidotChildBounty[]> = {
 
         let curator = null;
         
-        try{
+        try {
           curator = childBounty.status?.asCuratorProposed?.curator;
-        }
-        catch(error){
+        } catch (error) {
           curator = bounty.proposer;
           l.error(error);
         }
