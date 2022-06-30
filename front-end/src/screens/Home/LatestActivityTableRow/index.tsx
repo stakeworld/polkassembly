@@ -138,7 +138,7 @@ const LatestActivityTableRow = function ({
 			path = 'bounty';
 			break;
 		case 'child bounty':
-			path = 'childBounty';
+			path = 'child_bounty';
 			break;
 		case 'tip':
 			path = 'tip';
