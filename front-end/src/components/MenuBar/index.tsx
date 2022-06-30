@@ -86,7 +86,7 @@ const MenuBar = ({ className, toggleSidebarHidden, setSidebarHidden } : Props): 
 							</>
 							:
 							<>
-								<Menu.Item as={NavLink} activeClassName="pink_primary-text" className='user_items' content='Login' to='/login' />
+								<Menu.Item as={NavLink} activeClassName="pink_primary-text" className='user_items' content='Login' icon='sign in' to='/login' />
 							</>
 						}
 					</Menu.Menu>
@@ -133,6 +133,10 @@ export default styled(MenuBar)`
 
 	.pink_primary-text{
 		color: pink_primary !important;
+
+		i {
+			color: pink_primary !important;
+		}
 	}
 
 	&.ui.menu, .ui.inverted.menu {
