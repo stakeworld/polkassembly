@@ -144,8 +144,8 @@ const GovenanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferend
 
 		let accounts: InjectedAccount[] = [];
 		let polakadotJSAccounts : InjectedAccount[] | undefined;
-		let talismanAccounts: InjectedAccount[] | undefined;
 		let subwalletAccounts: InjectedAccount[] | undefined;
+		let talismanAccounts: InjectedAccount[] | undefined;
 
 		const signersMapLocal = signersMap as {[key:string]: Signer};
 		const accountsMapLocal = accountsMap as {[key:string]: string};
@@ -154,12 +154,12 @@ const GovenanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferend
 			if(extObj.name == 'polkadot-js') {
 				signersMapLocal['polkadot-js'] = extObj.signer;
 				polakadotJSAccounts = await getWalletAccounts(Wallet.POLKADOT);
-			} else if(extObj.name == 'talisman') {
-				signersMapLocal['talisman'] = extObj.signer;
-				talismanAccounts = await getWalletAccounts(Wallet.TALISMAN);
 			} else if(extObj.name == 'subwallet-js') {
 				signersMapLocal['subwallet-js'] = extObj.signer;
 				subwalletAccounts = await getWalletAccounts(Wallet.SUBWALLET);
+			} else if(extObj.name == 'talisman') {
+				signersMapLocal['talisman'] = extObj.signer;
+				talismanAccounts = await getWalletAccounts(Wallet.TALISMAN);
 			}
 		}
 
@@ -170,17 +170,17 @@ const GovenanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferend
 			});
 		}
 
-		if(talismanAccounts) {
-			accounts = accounts.concat(talismanAccounts);
-			talismanAccounts.forEach((acc: InjectedAccount) => {
-				accountsMapLocal[acc.address] = 'talisman';
-			});
-		}
-
 		if(subwalletAccounts) {
 			accounts = accounts.concat(subwalletAccounts);
 			subwalletAccounts.forEach((acc: InjectedAccount) => {
 				accountsMapLocal[acc.address] = 'subwallet-js';
+			});
+		}
+
+		if(talismanAccounts) {
+			accounts = accounts.concat(talismanAccounts);
+			talismanAccounts.forEach((acc: InjectedAccount) => {
+				accountsMapLocal[acc.address] = 'talisman';
 			});
 		}
 
