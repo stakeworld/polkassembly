@@ -2,17 +2,19 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { web3Accounts, web3Enable,web3FromSource } from '@polkadot/extension-dapp';
-import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
+import { Signer } from '@polkadot/api/types';
+import { isWeb3Injected, web3Enable } from '@polkadot/extension-dapp';
+import { Injected, InjectedAccount, InjectedWindow } from '@polkadot/extension-inject/types';
 import styled from '@xstyled/styled-components';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { DropdownProps, Icon } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
 import { OnchainLinkBountyFragment, OnchainLinkChildBountyFragment, OnchainLinkMotionFragment, OnchainLinkProposalFragment, OnchainLinkReferendumFragment, OnchainLinkTechCommitteeProposalFragment, OnchainLinkTipFragment, OnchainLinkTreasuryProposalFragment } from 'src/generated/graphql';
 import { APPNAME } from 'src/global/appName';
 import { motionStatus, proposalStatus, referendumStatus, tipStatus } from 'src/global/statuses';
-import { VoteThreshold } from 'src/types';
+import { VoteThreshold, Wallet } from 'src/types';
 import { Form } from 'src/ui-components/Form';
+import getEncodedAddress from 'src/util/getEncodedAddress';
 
 import ExtensionNotDetected from '../../ExtensionNotDetected';
 import MotionVoteInfo from './Motions/MotionVoteInfo';
@@ -43,9 +45,12 @@ interface Props {
 
 const GovenanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferendum, isTipProposal, isTreasuryProposal, onchainId, onchainLink, startTime, status }: Props) => {
 	const [address, setAddress] = useState<string>('');
-	const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
+	const [accounts, setAccounts] = useState<InjectedAccount[]>([]);
 	const [extensionNotFound, setExtensionNotFound] = useState(false);
 	const [accountsNotFound, setAccountsNotFound] = useState(false);
+	const [accountsMap, setAccountsMap] = useState<{[key:string]:string}>({});
+	const [signersMap, setSignersMap] = useState<{[key:string]: Signer}>({});
+
 	const { api, apiReady } = useContext(ApiContext);
 	const [lastVote, setLastVote] = useState<string | null | undefined>(undefined);
 
@@ -54,6 +59,69 @@ const GovenanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferend
 	const onAccountChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
 		const addressValue = data.value as string;
 		setAddress(addressValue);
+	};
+
+	useEffect(() => {
+		if (!api) {
+			return;
+		}
+
+		if (!apiReady) {
+			return;
+		}
+
+		const signer: Signer = signersMap[accountsMap[address]];
+		api?.setSigner(signer);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [address]);
+
+	const getWalletAccounts = async (chosenWallet: Wallet): Promise<InjectedAccount[] | undefined> => {
+		const injectedWindow = window as Window & InjectedWindow;
+
+		let wallet = isWeb3Injected
+			? injectedWindow.injectedWeb3[chosenWallet]
+			: null;
+
+		if (!wallet) {
+			wallet = Object.values(injectedWindow.injectedWeb3)[0];
+		}
+
+		if (!wallet) {
+			return;
+		}
+
+		let injected: Injected | undefined;
+
+		try {
+			injected = await new Promise((resolve, reject) => {
+				const timeoutId = setTimeout(() => {
+					reject(new Error('Wallet Timeout'));
+				}, 60000); // wait 60 sec
+
+				wallet!.enable(APPNAME).then(value => {
+					clearTimeout(timeoutId);
+					resolve(value);
+				}).catch(error => {
+					reject(error);
+				});
+			});
+		} catch (err) {
+			console.log('Error fetching wallet accounts : ', err);
+		}
+
+		if(!injected) {
+			return;
+		}
+
+		const accounts = await injected.accounts.get();
+
+		if (accounts.length === 0) return;
+
+		accounts.forEach((account) => {
+			account.address = getEncodedAddress(account.address) || account.address;
+		});
+
+		return accounts;
 	};
 
 	const getAccounts = async (): Promise<undefined> => {
@@ -74,22 +142,62 @@ const GovenanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferend
 			setExtensionNotFound(false);
 		}
 
-		const accounts = await web3Accounts();
+		let accounts: InjectedAccount[] = [];
+		let polakadotJSAccounts : InjectedAccount[] | undefined;
+		let talismanAccounts: InjectedAccount[] | undefined;
+		let subwalletAccounts: InjectedAccount[] | undefined;
+
+		const signersMapLocal = signersMap as {[key:string]: Signer};
+		const accountsMapLocal = accountsMap as {[key:string]: string};
+
+		for (const extObj of extensions) {
+			if(extObj.name == 'polkadot-js') {
+				signersMapLocal['polkadot-js'] = extObj.signer;
+				polakadotJSAccounts = await getWalletAccounts(Wallet.POLKADOT);
+			} else if(extObj.name == 'talisman') {
+				signersMapLocal['talisman'] = extObj.signer;
+				talismanAccounts = await getWalletAccounts(Wallet.TALISMAN);
+			} else if(extObj.name == 'subwallet-js') {
+				signersMapLocal['subwallet-js'] = extObj.signer;
+				subwalletAccounts = await getWalletAccounts(Wallet.SUBWALLET);
+			}
+		}
+
+		if(polakadotJSAccounts) {
+			accounts = accounts.concat(polakadotJSAccounts);
+			polakadotJSAccounts.forEach((acc: InjectedAccount) => {
+				accountsMapLocal[acc.address] = 'polkadot-js';
+			});
+		}
+
+		if(talismanAccounts) {
+			accounts = accounts.concat(talismanAccounts);
+			talismanAccounts.forEach((acc: InjectedAccount) => {
+				accountsMapLocal[acc.address] = 'talisman';
+			});
+		}
+
+		if(subwalletAccounts) {
+			accounts = accounts.concat(subwalletAccounts);
+			subwalletAccounts.forEach((acc: InjectedAccount) => {
+				accountsMapLocal[acc.address] = 'subwallet-js';
+			});
+		}
 
 		if (accounts.length === 0) {
 			setAccountsNotFound(true);
 			return;
 		} else {
 			setAccountsNotFound(false);
+			setAccountsMap(accountsMapLocal);
+			setSignersMap(signersMapLocal);
 		}
 
 		setAccounts(accounts);
 		if (accounts.length > 0) {
 			setAddress(accounts[0].address);
-
-			const injected = await web3FromSource(accounts[0].meta.source);
-
-			api.setSigner(injected.signer);
+			const signer: Signer = signersMapLocal[accountsMapLocal[accounts[0].address]];
+			api.setSigner(signer);
 		}
 
 		return;

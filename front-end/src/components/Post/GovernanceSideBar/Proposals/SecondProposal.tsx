@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
+import { InjectedAccount } from '@polkadot/extension-inject/types';
 import styled from '@xstyled/styled-components';
 import React, { useContext, useState } from 'react';
 import { DropdownProps } from 'semantic-ui-react';
@@ -20,7 +20,7 @@ export interface ChainProps {
 	seconds: number
 }
 export interface SecondProposalProps {
-	accounts: InjectedAccountWithMeta[]
+	accounts: InjectedAccount[]
 	address: string
 	className?: string
 	proposalId?: number | null | undefined

@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
+import { InjectedAccount } from '@polkadot/extension-inject/types';
 import styled from '@xstyled/styled-components';
 import BN from 'bn.js';
 import React, { useContext, useMemo,useState } from 'react';
@@ -23,7 +23,7 @@ interface Props {
 	className?: string
 	referendumId?: number | null | undefined
 	address: string
-	accounts: InjectedAccountWithMeta[]
+	accounts: InjectedAccount[]
 	onAccountChange: (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => void
 	getAccounts: () => Promise<undefined>
 	lastVote: string | null | undefined
