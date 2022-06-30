@@ -18553,7 +18553,7 @@ export type GetLatestPostsQuery = (
       & Pick<Post_Topics, 'id' | 'name'>
     ), onchain_link?: Maybe<(
       { __typename?: 'onchain_links' }
-      & Pick<Onchain_Links, 'id' | 'onchain_proposal_id' | 'onchain_bounty_id' | 'onchain_motion_id' | 'onchain_referendum_id' | 'onchain_tech_committee_proposal_id' | 'onchain_tip_id' | 'onchain_treasury_proposal_id' | 'proposer_address'>
+      & Pick<Onchain_Links, 'id' | 'onchain_proposal_id' | 'onchain_bounty_id' | 'onchain_child_bounty_id' | 'onchain_motion_id' | 'onchain_referendum_id' | 'onchain_tech_committee_proposal_id' | 'onchain_tip_id' | 'onchain_treasury_proposal_id' | 'proposer_address'>
       & { onchain_proposal: Array<Maybe<(
         { __typename?: 'Proposal' }
         & Pick<Proposal, 'id'>
@@ -18570,6 +18570,13 @@ export type GetLatestPostsQuery = (
         & { bountyStatus?: Maybe<Array<(
           { __typename?: 'BountyStatus' }
           & Pick<BountyStatus, 'id' | 'status'>
+        )>> }
+      )>>, onchain_child_bounty: Array<Maybe<(
+        { __typename?: 'ChildBounty' }
+        & Pick<ChildBounty, 'id' | 'description'>
+        & { childBountyStatus?: Maybe<Array<(
+          { __typename?: 'ChildBountyStatus' }
+          & Pick<ChildBountyStatus, 'id' | 'status'>
         )>> }
       )>>, onchain_motion: Array<Maybe<(
         { __typename?: 'Motion' }
@@ -23808,6 +23815,15 @@ export const GetLatestPostsDocument = gql`
       onchain_bounty {
         id
         bountyStatus(last: 1) {
+          id
+          status
+        }
+      }
+      onchain_child_bounty_id
+      onchain_child_bounty {
+        id
+        description
+        childBountyStatus(last: 1) {
           id
           status
         }
