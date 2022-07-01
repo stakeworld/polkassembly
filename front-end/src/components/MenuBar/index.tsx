@@ -48,7 +48,7 @@ const MenuBar = ({ className, toggleSidebarHidden, setSidebarHidden } : Props): 
 	const loggedInItems = [
 		{ content:'Notifications', icon:'bell', to:'/notification-settings' },
 		{ content:'Settings', icon:'cog', to:'/settings' },
-		{ content:'Profile', icon:'user circle', to:`/user/${currentUser.username}` },
+		{ content:'View Profile', icon:'user circle', to:`/user/${currentUser.username}` },
 		{ content:'Tracker', icon:'bookmark', to:'/tracker' },
 		{ content:'Logout', icon:'sign-out', onClick: handleLogout, to:'/' }
 	];
@@ -78,7 +78,7 @@ const MenuBar = ({ className, toggleSidebarHidden, setSidebarHidden } : Props): 
 					<Menu.Menu position="right">
 						{username
 							? <>
-								<Dropdown onClick={() => (setSidebarHidden(true))} className='logged-in-dropdown' trigger={userMenuMobile} icon={caretIcon} item={true}>
+								<Dropdown onClick={() => (setSidebarHidden(true))} className='logged-in-dropdown' trigger={userMenuMobile} icon={caretIcon} item={true} style={ { width: '110%' } }>
 									<Dropdown.Menu>
 										{loggedInItems.map((item, index) => <Menu.Item as={NavLink} key={index} {...item}/>)}
 									</Dropdown.Menu>
