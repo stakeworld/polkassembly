@@ -58,7 +58,7 @@ const LatestAllPostsTable = ({ className }:Props) => {
 		}
 
 		for (const key of Object.keys(post.onchain_link)) {
-			if(/_id$/.test(key) && post.onchain_link[key]){
+			if(/_id$/.test(key) && (post.onchain_link[key] !=null && post.onchain_link[key] != undefined)){
 				postType = key;
 				break;
 			}
