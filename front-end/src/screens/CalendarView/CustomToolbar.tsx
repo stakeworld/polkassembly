@@ -129,9 +129,13 @@ function CustomToolbar(props: any) {
 		setViewState(`${props.view}`);
 	},[props.view]);
 
+	function createEventButton(disabled:boolean = false){
+		return <Button basic className={`${disabled ? 'btn-disabled' : ''} create-event-btn`} onClick={() => { if(!disabled) props.setSidebarCreateEvent(true); } }>Create Event</Button>;
+	}
+
 	return (
-		props.date && <div className={`custom-calendar-toolbar ${props.small ? 'small' : ''}`}>
-			{!props.small ?
+		props.date && <div className={`custom-calendar-toolbar ${props.small || props.width < 768 ? 'small' : ''}`}>
+			{!props.small && !(props.width < 768) ?
 				<>
 					<NetworkSelect selectedNetwork={props.selectedNetwork} setSelectedNetwork={props.setSelectedNetwork} />
 					<div className='select-div'>
@@ -168,7 +172,13 @@ function CustomToolbar(props: any) {
 							</Popup.Content>
 						</Popup>
 						<Button basic className='today-btn' onClick={goToToday}>Today</Button>
-						{/* <Button basic className='create-event-btn' onClick={goToToday}>Create Event</Button> */}
+
+						{
+							!props.isLoggedIn ?
+								<Popup content='Please login to create an event' position='left center' size='large' trigger={createEventButton(true)} />
+								:
+								createEventButton()
+						}
 					</div>
 				</>
 				:
@@ -184,6 +194,7 @@ function CustomToolbar(props: any) {
 						{/* <Button className='search-btn' icon='search' /> */}
 						<img className='today-btn-img' onClick={goToToday} src={calendar_today} height={16} width={16} title='Today' alt='Today' />
 						<Dropdown upward={false} compact className='select-view-dropdown' value={viewState} onChange={onViewStateChange} options={viewStateOptions} />
+						{!props.small && <Button basic className='create-event-btn' onClick={() => props.setSidebarCreateEvent(true)}>Create Event</Button>}
 					</div>
 				</>
 			}

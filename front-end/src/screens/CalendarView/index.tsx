@@ -6,14 +6,16 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import styled from '@xstyled/styled-components';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import { Divider, Grid, Icon } from 'semantic-ui-react';
+import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { useGetCalenderEventsQuery } from 'src/generated/graphql';
 import { approvalStatus } from 'src/global/statuses';
 import getNetwork from 'src/util/getNetwork';
 
 import chainLink from '../../assets/chain-link.png';
+import CreateEventSidebar from './CreateEventSidebar';
 import CustomToolbar from './CustomToolbar';
 import CustomWeekHeader, { TimeGutterHeader } from './CustomWeekHeader';
 import NetworkSelect from './NetworkSelect';
@@ -29,7 +31,6 @@ const localizer = momentLocalizer(moment);
 const NETWORK = getNetwork();
 
 const CalendarView = ({ className, small = false, emitCalendarEvents = undefined }: Props) => {
-
 	// calculate #route-wrapper height with margin for sidebar.
 	const routeWrapperEl = document.getElementById('route-wrapper');
 	let routeWrapperHeight = routeWrapperEl?.offsetHeight;
@@ -40,11 +41,14 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 
 	const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
 
+	const { id } = useContext(UserDetailsContext);
+
 	const [calendarEvents, setCalendarEvents] = useState<any[]>([]);
 	const [selectedView, setSelectedView] = useState<string>('month');
 	const [selectedNetwork, setSelectedNetwork] = useState<string>(NETWORK);
 	const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 	const [sidebarEvent, setSidebarEvent] = useState<any>();
+	const [sidebarCreateEvent, setSidebarCreateEvent] = useState<boolean>(false);
 
 	const { data, refetch } = useGetCalenderEventsQuery({ variables: {
 		approval_status: approvalStatus.APPROVED,
@@ -52,7 +56,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	} });
 
 	useEffect(() => {
-	// refetch();
+		refetch();
 	}, [refetch]);
 
 	useEffect(() =>  {
@@ -126,7 +130,15 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 								event: Event,
 								eventWrapper: EventWrapperComponent,
 								timeGutterHeader: () => <TimeGutterHeader localizer={localizer} date={selectedDate} selectedView={selectedView} />,
-								toolbar: props => <CustomToolbar {...props} small={small || width < 768} selectedNetwork={selectedNetwork} setSelectedNetwork={setSelectedNetwork} />,
+								toolbar: props => <CustomToolbar
+									{...props}
+									small={small}
+									width={width}
+									selectedNetwork={selectedNetwork}
+									setSelectedNetwork={setSelectedNetwork}
+									setSidebarCreateEvent={setSidebarCreateEvent}
+									isLoggedIn={Boolean(id)}
+								/>,
 								week: {
 									header: props => <CustomWeekHeader {...props} small={small || width < 768} />
 								}
@@ -149,6 +161,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 				}
 			</Grid>
 
+			{/* Event View Sidebar */}
 			{routeWrapperHeight && sidebarEvent && <div className="events-sidebar" style={ { maxHeight: `${routeWrapperHeight}px`, minHeight: `${routeWrapperHeight}px` } }>
 				<div className="event-sidebar-header d-flex">
 					<div className='d-flex'>
@@ -177,12 +190,24 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 					</div>
 				</div>
 			</div>}
+
+			{/* Create Event Sidebar */}
+			{routeWrapperHeight && sidebarCreateEvent &&
+				<CreateEventSidebar
+					setSidebarCreateEvent={setSidebarCreateEvent}
+					refetch={refetch}
+					routeWrapperHeight={routeWrapperHeight}
+					selectedNetwork={selectedNetwork}
+					className='create-event-sidebar'
+					id={id}
+				/>
+			}
 		</div>
 	);
 };
 
 export default styled(CalendarView)`
-.events-sidebar {
+.events-sidebar, .create-event-sidebar {
 	position: absolute;
 	min-width: 250px;
 	width: 510px;
@@ -195,7 +220,7 @@ export default styled(CalendarView)`
 	box-shadow: -5px 0 15px -12px #888;
 
 	@media only screen and (max-width: 768px) {
-		max-width: 85vw;
+		max-width: 90vw;
 		top: 0;
 		padding: 40px 14px;
 		padding-top: 70px;
@@ -211,7 +236,7 @@ export default styled(CalendarView)`
 	}
 
 	.d-flex {
-		display: flex;
+		display: flex !important;
 	}
 
 	.event-sidebar-header {
@@ -300,6 +325,202 @@ export default styled(CalendarView)`
 
 }
 
+.create-event-sidebar {
+	overflow-y: auto;
+	min-width: 350px !important;
+	width: 610px !important;
+	max-width: 60vw !important;
+
+	@media only screen and (max-width: 768px) {
+		min-width: 250px !important;
+		max-width: 90vw !important;
+	}
+
+	.create-event-sidebar-header {
+		justify-content: space-between !important;
+
+		h1 {
+			font-weight: 500;
+			font-size: 48px !important;
+		}
+
+		@media only screen and (max-width: 768px) {
+			h1 {
+				font-weight: 500;
+				font-size: 32px !important;
+				margin-left: 0;
+			}
+		}
+	}
+
+	.create-event-form {
+		margin-top: 48px;
+
+		@media only screen and (max-width: 768px) {
+			margin-top: 18px;
+		}
+
+		.input.error {
+			border: 1px solid #FF0000;
+		}
+
+		.input-label {
+			font-weight: 500;
+			font-size: 18px;
+			color: #7D7D7D;
+			margin-bottom: 12px;
+
+			@media only screen and (max-width: 768px) {
+				font-size: 16px;
+			}
+		}
+		
+		.text-input {
+			height: 40px;
+			border-radius: 5px;
+			margin-bottom: 18px;
+			font-size: 16px;
+
+			@media only screen and (max-width: 768px) {
+				font-size: 14px;
+				height: 38px;
+				margin-bottom: 12px;
+			}
+		}
+
+		.radio-input-group {
+			margin-top: 12px;
+			
+			.checkbox{
+				margin-right: 20px !important;
+
+				&.checked {
+					label {
+						color: #E5007A;
+
+						&::after {
+							background-color: #E5007A !important;
+						}
+					}
+				}
+
+				label {
+					font-size: 18px !important;
+					padding-left: 20px !important;
+				}
+
+			}
+		}
+
+		.date-input-row {
+			margin-top: 28px;
+			margin-bottom: 28px;
+			display: flex;
+
+			@media only screen and (max-width: 768px) {
+				margin-top: 22px;
+				margin-bottom: 22px;
+				flex-direction: column;
+			}
+
+			.start-date-div {
+				margin-right: 20px;
+
+				@media only screen and (max-width: 768px) {
+					margin-right: 0;
+					margin-bottom: 14px;
+				}
+			}
+
+			.input-label {
+				margin-bottom: 212px !important;
+			}
+
+			.react-calendar__tile--now {
+				background-color: rgba(229, 0, 122, 0.1);
+			}
+		}
+
+		.date-input {
+			width: 100%;
+			margin-top: 2px;
+			font-family: 'Roboto' !important;
+	
+			&.error {
+				.react-date-picker__wrapper {
+					border: #FF0000 1px solid;
+					color: #FF0000 !important;
+				}
+	
+				.react-date-picker__inputGroup__input {
+					color: #FF0000 !important;
+					font-family: 'Roboto' !important;
+				}
+			}
+	
+			.react-date-picker__wrapper {
+				padding: 0 10px;
+				border: 1px solid rgba(34,36,38,.15);
+				border-radius: .29rem;
+	
+				.react-date-picker__inputGroup {
+					display: flex;
+	
+					.react-date-picker__inputGroup__divider {
+						height: 100%;
+						display: flex;
+						align-items: center;
+					}
+				}
+	
+			}
+	
+			.react-date-picker__clear-button {
+				svg {
+					stroke: #aaa !important;
+					height: 14px;
+				}
+			}
+	
+			.react-date-picker__inputGroup__input {
+				border: none !important;
+				font-family: 'Roboto' !important;
+				color: #333;
+				height: min-content;
+				margin-bottom: 0 !important;
+			}
+	
+			.react-date-picker__inputGroup__divider,.react-date-picker__inputGroup__day, .react-date-picker__inputGroup__month, .react-date-picker__inputGroup__year {
+				font-size: 14px;
+				padding-left: 1px !important;
+				padding-right: 1px !important;
+			}
+		}
+
+		.form-actions{
+			display: flex;
+			justify-content: flex-end;
+			margin-top: 16px;
+
+			.button {
+				font-weight: 600;
+				font-size: 16px;
+
+				&:first-of-type {
+					background: transparent;
+				}
+			}
+
+			.submit-btn {
+				background: #E5007A;
+				color: #fff;
+			}
+			
+		}
+	}
+
+}
+
 h1 {
 	@media only screen and (max-width: 576px) {
 		margin: 3rem 1rem 1rem 1rem;
@@ -346,9 +567,15 @@ h1 {
 		@media only screen and (max-width: 768px) {
 			display: flex;
 			align-items: center;
-			}
 		}
 	}
+
+	@media only screen and (min-width: 768px) {
+		h1 {
+			display: none;
+		}
+	}
+}
 
 
 .events-calendar {
@@ -459,6 +686,8 @@ h1 {
 		}
 
 		.right-actions {
+			display: flex;
+			align-items: center;
 			margin-left: auto;
 
 			.legend-trigger {
@@ -478,6 +707,12 @@ h1 {
 					margin-right: 8px;
 				}
 			}
+
+			.btn-disabled {
+				border: rgba(229, 0, 122, 0.5) !important;
+				color: rgba(229, 0, 122, 0.5) !important;
+				cursor: default;
+			}
 		}
 
 		
@@ -488,6 +723,11 @@ h1 {
 			font-size: 16px;
 			padding: 10px 20px !important;
 			margin-right: 0 !important;
+			font-weight: 500;
+
+			@media only screen and (max-width: 768px) {
+				margin-right: 8px;
+			}
 		}
 
 		&.small {
@@ -519,6 +759,12 @@ h1 {
 				.icon {
 					padding-right: 2px !important;
 				}
+			}
+
+			.create-event-btn {
+				padding: 6px 6px !important;
+				font-size: 12px;
+				margin-left: 8px;
 			}
 		}
 

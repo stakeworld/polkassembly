@@ -17408,6 +17408,8 @@ export type AddCalenderEventMutationVariables = Exact<{
   url?: Maybe<Scalars['String']>;
   module?: Maybe<Scalars['String']>;
   network: Scalars['String'];
+  event_type: Scalars['String'];
+  user_id?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -17543,6 +17545,7 @@ export type EditCalenderEventMutationVariables = Exact<{
   url?: Maybe<Scalars['String']>;
   module?: Maybe<Scalars['String']>;
   network: Scalars['String'];
+  event_type: Scalars['String'];
 }>;
 
 
@@ -21914,9 +21917,9 @@ export type UpdateApprovalStatusMutationHookResult = ReturnType<typeof useUpdate
 export type UpdateApprovalStatusMutationResult = ApolloReactCommon.MutationResult<UpdateApprovalStatusMutation>;
 export type UpdateApprovalStatusMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateApprovalStatusMutation, UpdateApprovalStatusMutationVariables>;
 export const AddCalenderEventDocument = gql`
-    mutation AddCalenderEvent($title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!) {
+    mutation AddCalenderEvent($title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!, $event_type: String!, $user_id: Int) {
   insert_calender_events(
-    objects: {title: $title, start_time: $start_time, end_time: $end_time, content: $content, url: $url, module: $module, network: $network}
+    objects: {title: $title, start_time: $start_time, end_time: $end_time, content: $content, url: $url, module: $module, network: $network, event_type: $event_type, user_id: $user_id}
   ) {
     affected_rows
   }
@@ -21944,6 +21947,8 @@ export type AddCalenderEventMutationFn = ApolloReactCommon.MutationFunction<AddC
  *      url: // value for 'url'
  *      module: // value for 'module'
  *      network: // value for 'network'
+ *      event_type: // value for 'event_type'
+ *      user_id: // value for 'user_id'
  *   },
  * });
  */
@@ -22258,10 +22263,10 @@ export type UpdateProposalTrackerMutationHookResult = ReturnType<typeof useUpdat
 export type UpdateProposalTrackerMutationResult = ApolloReactCommon.MutationResult<UpdateProposalTrackerMutation>;
 export type UpdateProposalTrackerMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateProposalTrackerMutation, UpdateProposalTrackerMutationVariables>;
 export const EditCalenderEventDocument = gql`
-    mutation EditCalenderEvent($id: Int!, $title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!) {
+    mutation EditCalenderEvent($id: Int!, $title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!, $event_type: String!) {
   update_calender_events(
     where: {id: {_eq: $id}}
-    _set: {title: $title, content: $content, start_time: $start_time, end_time: $end_time, url: $url, module: $module, network: $network, approval_status: "pending"}
+    _set: {title: $title, content: $content, start_time: $start_time, end_time: $end_time, url: $url, module: $module, network: $network, approval_status: "pending", event_type: $event_type}
   ) {
     affected_rows
   }
@@ -22290,6 +22295,7 @@ export type EditCalenderEventMutationFn = ApolloReactCommon.MutationFunction<Edi
  *      url: // value for 'url'
  *      module: // value for 'module'
  *      network: // value for 'network'
+ *      event_type: // value for 'event_type'
  *   },
  * });
  */

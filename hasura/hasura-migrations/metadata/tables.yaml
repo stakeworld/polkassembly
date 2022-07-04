@@ -49,6 +49,7 @@
       - status
       - title
       - url
+      - user_id
       backend_only: false
   - role: user
     permission:
@@ -59,6 +60,8 @@
       columns:
       - content
       - end_time
+      - event_id
+      - event_type
       - id
       - module
       - network
@@ -84,6 +87,7 @@
       - status
       - title
       - url
+      - user_id
       filter: {}
       allow_aggregations: true
   - role: event_bot
@@ -101,6 +105,7 @@
       - status
       - title
       - url
+      - user_id
       filter: {}
       allow_aggregations: true
   - role: user
@@ -143,6 +148,7 @@
       columns:
       - content
       - end_time
+      - event_type
       - module
       - start_time
       - title
