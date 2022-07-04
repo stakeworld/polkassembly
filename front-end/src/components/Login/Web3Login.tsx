@@ -205,7 +205,7 @@ const LoginForm = ({ className, setDisplayWeb2, setWalletError, chosenWallet }:P
 			<h3>Login</h3>
 			{extensionNotFound?
 				<div className='card'>
-					<ExtensionNotDetected />
+					<ExtensionNotDetected walletName={chosenWallet} />
 				</div>
 				: null
 			}

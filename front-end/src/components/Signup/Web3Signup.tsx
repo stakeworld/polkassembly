@@ -218,7 +218,7 @@ const SignupForm = ({ className, setDisplayWeb2, chosenWallet, setWalletError }:
 			<h3>Sign-up</h3>
 			{extensionNotFound?
 				<div className='card'>
-					<ExtensionNotDetected />
+					<ExtensionNotDetected walletName={chosenWallet} />
 				</div>
 				: null
 			}
