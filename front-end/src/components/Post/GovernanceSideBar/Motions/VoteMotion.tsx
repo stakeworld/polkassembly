@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
+import { InjectedAccount } from '@polkadot/extension-inject/types';
 import styled from '@xstyled/styled-components';
 import React, { useContext, useEffect,useState } from 'react';
 import { DropdownProps } from 'semantic-ui-react';
@@ -20,7 +20,7 @@ import { Form } from 'src/ui-components/Form';
 import Loader from 'src/ui-components/Loader';
 
 interface Props {
-	accounts: InjectedAccountWithMeta[]
+	accounts: InjectedAccount[]
 	address: string
 	className?: string
 	getAccounts: () => Promise<undefined>
