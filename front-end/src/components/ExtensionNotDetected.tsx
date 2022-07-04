@@ -7,9 +7,13 @@ import Card from 'src/ui-components/Card';
 
 import getExtensionUrl from '../util/getExtensionUrl';
 
-const ExtensionNotDetected = () =>
+interface Props {
+	walletName?: string
+}
+
+const ExtensionNotDetected = ({ walletName } : Props) =>
 	<Card>
-		<div className='text-muted'>Polkadot-js extension not detected.</div>
+		<div className='text-muted'><span style={ { textTransform: 'capitalize' } }>{walletName ? walletName : 'Wallet'}</span> extension not detected.</div>
 		{getExtensionUrl() ?
 			<div className='text-muted'>
 				No web 3 account integration could be found. To be able to vote on-chain, visit this page on a computer with polkadot-js entension.
