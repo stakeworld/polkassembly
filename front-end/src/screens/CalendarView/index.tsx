@@ -377,7 +377,7 @@ export default styled(CalendarView)`
 		}
 		
 		.text-input {
-			height: 40px;
+			height: 35px;
 			border-radius: 5px;
 			margin-bottom: 18px;
 			font-size: 16px;
@@ -450,6 +450,7 @@ export default styled(CalendarView)`
 			width: 100%;
 			margin-top: 2px;
 			font-family: 'Roboto' !important;
+			height: 38px !important;
 	
 			&.error {
 				.react-date-picker__wrapper {
@@ -667,6 +668,18 @@ h1 {
 			margin-right: 16px;
 			font-size: 20px;
 			color: #787878;
+			width: 140px;
+			min-width: 140px;
+			max-width: 140px;
+		}
+
+		.mobile-cal-nav {
+			display: flex;
+			margin-left: 2px;
+
+			.button {
+				padding: 0 !important
+			}
 		}
 
 		.button {
@@ -764,6 +777,12 @@ h1 {
 				.icon {
 					padding-right: 2px !important;
 				}
+			}
+
+			.select-month-dropdown {
+				width: 85px;
+				min-width: 85px;
+				max-width: 85px;
 			}
 
 			.create-event-btn {

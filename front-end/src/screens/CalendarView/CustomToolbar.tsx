@@ -60,16 +60,20 @@ function CustomToolbar(props: any) {
 		if (date.getDate() != d) {
 			date.setDate(0);
 		}
+
+		setSelectedMonth(date.getMonth());
 		return date;
 	}
 
 	function addWeeks(date: any, weeks: any) {
 		date.setDate(date.getDate() + 7 * weeks);
+		setSelectedMonth(date.getMonth());
 		return date;
 	}
 
 	function addDays(date: any, days: any) {
 		date.setDate(date.getDate() + days);
+		setSelectedMonth(date.getMonth());
 		return date;
 	}
 
@@ -183,18 +187,32 @@ function CustomToolbar(props: any) {
 				</>
 				:
 				<>
-					<div>
+					<div className='d-flex'>
 						<Dropdown compact className='select-month-dropdown' value={selectedMonth} onChange={onSelectMonthChange} options={months} />
-						<Button onClick={goToBack} icon='chevron left' />
-						{/* <span>{moment(props.date).format('D/M/YY')}</span> */}
-						<Button onClick={goToNext} icon='chevron right' />
+
+						{viewState != 'month' &&
+							<div className='mobile-cal-nav'>
+								<Button onClick={goToBack} icon='chevron left' />
+								{/* <span>{moment(props.date).format('D/M/YY')}</span> */}
+								<Button onClick={goToNext} icon='chevron right' />
+							</div>
+						}
 					</div>
 
 					<div className='actions-right'>
 						{/* <Button className='search-btn' icon='search' /> */}
 						<img className='today-btn-img' onClick={goToToday} src={calendar_today} height={16} width={16} title='Today' alt='Today' />
 						<Dropdown upward={false} compact className='select-view-dropdown' value={viewState} onChange={onViewStateChange} options={viewStateOptions} />
-						{!props.small && <Button basic className='create-event-btn' onClick={() => props.setSidebarCreateEvent(true)}>Create Event</Button>}
+
+						{!props.small ?
+							!props.isLoggedIn ?
+								<Popup content='Please login to create an event' position='left center' size='large' trigger={createEventButton(true)} />
+								:
+								createEventButton()
+							: null
+						}
+
+						{/* {!props.small && <Button basic className='create-event-btn' onClick={() => props.setSidebarCreateEvent(true)}>Create Event</Button>} */}
 					</div>
 				</>
 			}
