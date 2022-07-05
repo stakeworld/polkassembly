@@ -33,6 +33,7 @@ const CreateEventSidebar = ({ className, routeWrapperHeight, refetch, selectedNe
 	const [eventStartDateTime, setEventStartDate] = useState<Date | undefined>();
 	const [eventEndDateTime, setEventEndDate] = useState<Date | undefined>();
 	const [eventJoiningLink, setEventJoiningLink] = useState<string>('');
+	const [eventLocation, setEventLocation] = useState<string>('');
 	const [errorsFound, setErrorsFound] = useState<string[]>([]);
 
 	const { queueNotification } = useContext(NotificationContext);
@@ -48,18 +49,19 @@ const CreateEventSidebar = ({ className, routeWrapperHeight, refetch, selectedNe
 			title: eventTitle,
 			url: eventJoiningLink,
 			user_id: id
+			// location: eventLocation
 		}
 	});
 
 	const onEventTypeRadioToggle = (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
-		setEventType(data.value?.toString() || '');
+		setEventType(data.value?.toString() || 'online');
 	};
 
 	const closeCreateEventSidebar = () => {
 		setSidebarCreateEvent(false);
 		setEventTitle('');
 		setEventDescription('');
-		setEventType('');
+		setEventType('online');
 		setEventStartDate(undefined);
 		setEventEndDate(undefined);
 		setEventJoiningLink('');
@@ -84,8 +86,10 @@ const CreateEventSidebar = ({ className, routeWrapperHeight, refetch, selectedNe
 			errorsFoundTemp.push('eventEndDateTime');
 		}
 
-		if(!eventJoiningLink) {
+		if(eventType == 'online' && !eventJoiningLink) {
 			errorsFoundTemp.push('eventJoiningLink');
+		} else if(eventType == 'offline' && !eventLocation) {
+			errorsFoundTemp.push('eventLocation');
 		}
 
 		setErrorsFound(errorsFoundTemp);
@@ -111,6 +115,7 @@ const CreateEventSidebar = ({ className, routeWrapperHeight, refetch, selectedNe
 				title: eventTitle,
 				url: eventJoiningLink,
 				user_id: id
+				// location: eventLocation
 			}
 		})
 			.then(({ data }) => {
@@ -214,7 +219,7 @@ const CreateEventSidebar = ({ className, routeWrapperHeight, refetch, selectedNe
 						</div>
 					</div>
 
-					<Form.Field>
+					{eventType == 'online' ? <Form.Field>
 						<label className='input-label'>Joining Link</label>
 						<Input
 							type='text'
@@ -225,6 +230,19 @@ const CreateEventSidebar = ({ className, routeWrapperHeight, refetch, selectedNe
 							disabled={loading}
 						/>
 					</Form.Field>
+						:
+						<Form.Field>
+							<label className='input-label'>Location</label>
+							<Input
+								type='text'
+								className='text-input'
+								value={eventLocation}
+								onChange={(e) => setEventLocation(e.target.value)}
+								error={errorsFound.includes('eventLocation')}
+								disabled={loading}
+							/>
+						</Form.Field>
+					}
 
 					<div className="form-actions">
 						<Button content='Cancel' onClick={closeCreateEventSidebar} disabled={loading} />

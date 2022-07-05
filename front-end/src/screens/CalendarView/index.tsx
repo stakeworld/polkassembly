@@ -55,9 +55,9 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 		network: selectedNetwork
 	} });
 
-	useEffect(() => {
-		refetch();
-	}, [refetch]);
+	// useEffect(() => {
+	// refetch();
+	// }, [refetch]);
 
 	useEffect(() =>  {
 		const eventsArr:any[] = [];
@@ -70,6 +70,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 				status: eventObj.status,
 				title: eventObj.title,
 				url: eventObj.url
+				// location: eventObj.location
 			});
 		});
 
@@ -118,7 +119,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 
 			<Grid stackable>
 				{data && data.calender_events ?
-					<Grid.Row>
+					<Grid.Row className='pt-0'>
 						<Calendar
 							className={`events-calendar ${small || width < 768 ? 'small' : '' }`}
 							localizer={localizer}
@@ -341,7 +342,7 @@ export default styled(CalendarView)`
 
 		h1 {
 			font-weight: 500;
-			font-size: 48px !important;
+			font-size: 32px !important;
 		}
 
 		@media only screen and (max-width: 768px) {
@@ -366,12 +367,12 @@ export default styled(CalendarView)`
 
 		.input-label {
 			font-weight: 500;
-			font-size: 18px;
+			font-size: 16px;
 			color: #7D7D7D;
 			margin-bottom: 12px;
 
 			@media only screen and (max-width: 768px) {
-				font-size: 16px;
+				font-size: 14px;
 			}
 		}
 		
@@ -405,8 +406,12 @@ export default styled(CalendarView)`
 				}
 
 				label {
-					font-size: 18px !important;
+					font-size: 16px !important;
 					padding-left: 20px !important;
+
+					@media only screen and (max-width: 768px) {
+						font-size: 14px;
+					}
 				}
 
 			}
@@ -579,7 +584,7 @@ h1 {
 
 
 .events-calendar {
-	height: 750px;
+	height: 88vh;
 	width: 99%;
 	max-width: 1920px;
 	
@@ -1009,6 +1014,10 @@ h1 {
 	.rbc-current-time-indicator {
 		background-color: #E6007A;
 	}
+}
+
+.pt-0 {
+	padding-top: 0 !important;
 }
 
 `;
