@@ -55,9 +55,9 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 		network: selectedNetwork
 	} });
 
-	// useEffect(() => {
-	// refetch();
-	// }, [refetch]);
+	useEffect(() => {
+		refetch();
+	}, [refetch]);
 
 	useEffect(() =>  {
 		const eventsArr:any[] = [];
