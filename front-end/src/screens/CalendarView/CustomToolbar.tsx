@@ -78,7 +78,7 @@ function CustomToolbar(props: any) {
 	}
 
 	const goToBack = () => {
-		if (viewState === 'month') {
+		if (viewState === 'month' || viewState === 'agenda') {
 			props.onNavigate('prev', addMonths(props.date, -1));
 		} else if (viewState === 'week') {
 			props.onNavigate('prev', addWeeks(props.date, -1));
@@ -88,7 +88,7 @@ function CustomToolbar(props: any) {
 	};
 
 	const goToNext = () => {
-		if (viewState === 'month') {
+		if (viewState === 'month' || viewState === 'agenda') {
 			props.onNavigate('next', addMonths(props.date, +1));
 		} else if (viewState === 'week') {
 			props.onNavigate('next', addWeeks(props.date, +1));

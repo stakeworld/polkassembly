@@ -645,6 +645,9 @@ h1 {
 			height: 65px;
 			border-right: 1px solid #E8E8E8;
 			padding-right: 19px;
+			width: 115px;
+			min-width: 115px;
+			max-width: 115px;
 
 			label {
 				font-size: 14px;
