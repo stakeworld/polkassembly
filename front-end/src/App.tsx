@@ -8,7 +8,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 import Apollo from './components/Apollo';
 import AppLayout from './components/AppLayout';
-import Head from './components/Head';
 import Modal from './components/Modal';
 import Notifications from './components/Notifications';
 import { ApiContextProvider } from './context/ApiContext';
@@ -29,7 +28,6 @@ const App = () => {
 							<UserDetailsProvider>
 								<MetaProvider>
 									<Apollo>
-										<Head />
 										<GlobalStyle />
 										<Notifications/>
 										<Modal/>
