@@ -111,10 +111,10 @@ export type ChainPropType = {
 export interface ChainProps {
   'blockTime': number;
   'logo'?: any;
-	'ss58Format': number;
-	'tokenDecimals': number;
-	'tokenSymbol': TokenSymbol;
-	'chainId': number;
+  'ss58Format': number;
+  'tokenDecimals': number;
+  'tokenSymbol': TokenSymbol;
+  'chainId': number;
   'rpcEndpoint': string;
 }
 
