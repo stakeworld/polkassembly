@@ -103,6 +103,7 @@ function CustomToolbar(props: any) {
 		props.date.setYear(now.getFullYear());
 		props.date.setDate(now.getDate());
 		setSelectedMonth(now.getMonth());
+		props.setMiniCalendarToToday();
 		props.onNavigate('current');
 	};
 

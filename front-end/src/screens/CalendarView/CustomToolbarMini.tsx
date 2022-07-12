@@ -5,14 +5,10 @@
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Button } from 'semantic-ui-react';
 
 function CustomToolbarMini(props: any) {
-	const [viewState, setViewState] = useState<string>('month');
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [selectedMonth, setSelectedMonth] = useState<number>(props.date.getMonth());
-
 	function addMonths(date:any, months: any) {
 		const d = date.getDate();
 		date.setMonth(date.getMonth() + months);
@@ -20,54 +16,26 @@ function CustomToolbarMini(props: any) {
 			date.setDate(0);
 		}
 
-		setSelectedMonth(date.getMonth());
-		return date;
-	}
-
-	function addWeeks(date: any, weeks: any) {
-		date.setDate(date.getDate() + 7 * weeks);
-		setSelectedMonth(date.getMonth());
-		return date;
-	}
-
-	function addDays(date: any, days: any) {
-		date.setDate(date.getDate() + days);
-		setSelectedMonth(date.getMonth());
+		// setSelectedMonth(date.getMonth());
 		return date;
 	}
 
 	const goToBack = () => {
-		if (viewState === 'month' || viewState === 'agenda') {
-			props.onNavigate('prev', addMonths(props.date, -1));
-		} else if (viewState === 'week') {
-			props.onNavigate('prev', addWeeks(props.date, -1));
-		} else {
-			props.onNavigate('prev', addDays(props.date, -1));
-		}
+		props.onNavigate('prev', addMonths(props.date, -1));
 	};
 
 	const goToNext = () => {
-		if (viewState === 'month' || viewState === 'agenda') {
-			props.onNavigate('next', addMonths(props.date, +1));
-		} else if (viewState === 'week') {
-			props.onNavigate('next', addWeeks(props.date, +1));
-		} else {
-			props.onNavigate('next', addDays(props.date, +1));
-		}
+		props.onNavigate('next', addMonths(props.date, +1));
 	};
 
 	useEffect(() => {
-		setSelectedMonth(props.date.getMonth());
+		// setSelectedMonth(props.date.getMonth());
 		const now = new Date();
 		props.date.setMonth(props.date.getMonth());
 		props.date.setYear(now.getFullYear());
 		props.onNavigate('current');
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
-	useEffect(() => {
-		setViewState(`${props.view}`);
-	},[props.view]);
 
 	return (
 		props.date && <div className='custom-calendar-toolbar-mini'>

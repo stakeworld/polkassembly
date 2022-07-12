@@ -7,7 +7,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import styled from '@xstyled/styled-components';
 import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
+import { Calendar, DateHeaderProps, momentLocalizer, View } from 'react-big-calendar';
 import { Divider, Grid, Icon } from 'semantic-ui-react';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { useGetCalenderEventsQuery } from 'src/generated/graphql';
@@ -41,6 +41,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	}
 	const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
 
+	// for negative margin for toolbar
 	const calLeftPanelWidth = document?.getElementById('calendar-left-panel')?.clientWidth;
 
 	const utcDate = new Date(new Date().toISOString().slice(0,-1));
@@ -48,9 +49,10 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	const { id } = useContext(UserDetailsContext);
 
 	const [calendarEvents, setCalendarEvents] = useState<any[]>([]);
-	const [selectedView, setSelectedView] = useState<string>('month');
+	const [selectedView, setSelectedView] = useState<View>('month');
 	const [selectedNetwork, setSelectedNetwork] = useState<string>(NETWORK);
 	const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+	const [miniCalSelectedDate, setMiniCalSelectedDate] = useState<Date>(new Date());
 	const [sidebarEvent, setSidebarEvent] = useState<any>();
 	const [sidebarCreateEvent, setSidebarCreateEvent] = useState<boolean>(false);
 
@@ -59,9 +61,9 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 		network: selectedNetwork
 	} });
 
-	useEffect(() => {
-		refetch();
-	}, [refetch]);
+	// useEffect(() => {
+	// refetch();
+	// }, [refetch]);
 
 	useEffect(() =>  {
 		const eventsArr:any[] = [];
@@ -111,6 +113,21 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 		);
 	}
 
+	function showDay(date: Date) {
+		setSelectedDate(date);
+		setSelectedView('day');
+	}
+
+	function setMiniCalendarToToday(){
+		setMiniCalSelectedDate(new Date());
+	}
+
+	const monthDateComponentHeader = ({ date }: DateHeaderProps) => {
+		return <button onClick={() => showDay(date)}>
+			{date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}
+		</button>;
+	};
+
 	return (
 		<div className={className}>
 			{ !small && <div className='cal-heading-div'>
@@ -122,29 +139,25 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 			}
 
 			<Grid stackable>
-				{data && data.calender_events ?
+				{data && data.calender_events &&
 					<Grid.Row className='pt-0'>
 						{!small && width > 992 && <Grid.Column id='calendar-left-panel' className='calendar-left-panel' width={4}>
 							<p className='utc-time'>Current Time: { moment(utcDate).format('D-MM-YY | h:mm a UTC') } </p>
 
 							<Calendar
 								className='events-calendar-mini'
+								date={miniCalSelectedDate}
 								localizer={localizer}
 								events={calendarEvents}
 								startAccessor="start"
 								endAccessor="end"
 								components={{
-									event: Event,
 									eventWrapper: EventWrapperComponent,
-									timeGutterHeader: () => <TimeGutterHeader localizer={localizer} date={selectedDate} selectedView={selectedView} />,
+									month: {
+										dateHeader: monthDateComponentHeader
+									},
 									toolbar: props => <CustomToolbarMini
 										{...props}
-										small={small}
-										width={width}
-										selectedNetwork={selectedNetwork}
-										setSelectedNetwork={setSelectedNetwork}
-										setSidebarCreateEvent={setSidebarCreateEvent}
-										isLoggedIn={Boolean(id)}
 										leftPanelWidth={calLeftPanelWidth}
 									/>
 								}}
@@ -156,6 +169,8 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 							<Calendar
 								className={`events-calendar ${small || width < 768 ? 'small' : '' }`}
 								localizer={localizer}
+								date={selectedDate}
+								view={selectedView}
 								events={calendarEvents}
 								startAccessor='start_time'
 								endAccessor='end_time'
@@ -173,6 +188,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 										setSidebarCreateEvent={setSidebarCreateEvent}
 										isLoggedIn={Boolean(id)}
 										leftPanelWidth={calLeftPanelWidth}
+										setMiniCalendarToToday={setMiniCalendarToToday}
 									/>,
 									week: {
 										header: props => <CustomWeekHeader {...props} small={small || width < 768} />
@@ -187,13 +203,12 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 									agenda: true,
 									day: true,
 									month: true,
-									week: true
+									week: true,
+									work_week: false
 								}}
 							/>
 						</Grid.Column>
 					</Grid.Row>
-					:
-					null
 				}
 			</Grid>
 
@@ -628,73 +643,96 @@ h1 {
 		color: #646464;
 		font-size: 14px;
 		font-weight: 500;
+		margin-left: 3px;
 	}
 
 	.events-calendar-mini {
 		height: 250px;
-	}
+		border: 2px solid #E8E8E8;
+		border-radius: 10px;
+		padding: 15px 8px;
+
+		.custom-calendar-toolbar-mini {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-bottom: 8px;
 	
-	.custom-calendar-toolbar-mini {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		margin-bottom: 8px;
-
-		.button {
-			background: #fff !important;
-
-			i {
-				font-weight: 900;
+			.button {
+				background: #fff !important;
+	
+				i {
+					font-weight: 900;
+				}
+			}
+	
+			span {
+				width: 115px;
+				min-width: 115px;
+				max-width: 115px;
+				text-align: center;
+				font-weight: 500 !important;
+				margin-left: 4px;
+				margin-right: 4px;
 			}
 		}
+	
+		.rbc-month-header {
+			margin-bottom: 8px;
+		}
+	
+		.rbc-header {
+			span {
+				font-size: 10px;
+				font-weight: 400 !important;
+				text-transform: uppercase;
+				color: #bbb;
+			}
+		}
+	
+		.rbc-month-view,
+		.rbc-header,
+		.rbc-month-row,
+		.rbc-day-bg {
+			background: #fff;
+			border: none;
+		}
+	
+		.rbc-date-cell {
+			text-align: center !important;
 
-		span {
-			width: 115px;
-			min-width: 115px;
-			max-width: 115px;
-			text-align: center;
-			font-weight: 500 !important;
-			margin-left: 4px;
-			margin-right: 4px;
+			button {
+				font-size: 12px;
+				padding: 5px;
+				font-weight: 500 !important;
+				background: #fff;
+				border: 1px solid #fff;
+				border-radius: 50%;
+				cursor: pointer;
+
+				&:hover {
+					background: #E8E8E8;
+					border: 1px solid #E8E8E8;
+				}
+			}
+
+			&.rbc-off-range {
+				button {
+					display: none;
+				}
+			}
+			
+			&.rbc-now {
+				button {
+					background-color: #E6007A;
+					color: #fff;
+					border: 1px solid #E6007A;
+					border-radius: 50%;
+				}
+			}
 		}
 	}
-
-	.rbc-month-header {
-		margin-bottom: 8px;
-	}
-
-	.rbc-header {
-		span {
-			font-size: 10px;
-			font-weight: 400 !important;
-			text-transform: uppercase;
-			color: #bbb;
-		}
-	}
-
-	.rbc-month-view,
-	.rbc-header,
-	.rbc-month-row,
-	.rbc-day-bg {
-		background: #fff;
-		border: none;
-	}
-
-	.rbc-off-range {
-		color: #fff;
-
-		.rbc-button-link {
-			cursor: default !important;
-		}
-	}
-
-	.rbc-date-cell {
-		button {
-			font-size: 12px;
-			padding: 5px;
-			font-weight: 600 !important;
-		}
-	}
+	
 }
 
 .calendar-right-panel {
