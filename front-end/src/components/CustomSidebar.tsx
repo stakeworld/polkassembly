@@ -173,7 +173,7 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 					</div>
 
 					<Responsive maxWidth={Responsive.onlyTablet.maxWidth}>
-						<NetworkDropdown className='mobile-network-dropdown' removePointer={true} />
+						<NetworkDropdown className='mobile-network-dropdown' />
 						<Divider />
 					</Responsive>
 
