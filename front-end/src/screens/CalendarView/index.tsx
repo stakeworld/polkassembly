@@ -17,6 +17,7 @@ import getNetwork from 'src/util/getNetwork';
 import chainLink from '../../assets/chain-link.png';
 import CreateEventSidebar from './CreateEventSidebar';
 import CustomToolbar from './CustomToolbar';
+import CustomToolbarMini from './CustomToolbarMini';
 import CustomWeekHeader, { TimeGutterHeader } from './CustomWeekHeader';
 import NetworkSelect from './NetworkSelect';
 
@@ -38,8 +39,11 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 		routeWrapperHeight += parseInt(window.getComputedStyle(routeWrapperEl).getPropertyValue('margin-top'));
 		routeWrapperHeight += parseInt(window.getComputedStyle(routeWrapperEl).getPropertyValue('margin-bottom'));
 	}
-
 	const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+
+	const calLeftPanelWidth = document?.getElementById('calendar-left-panel')?.clientWidth;
+
+	const utcDate = new Date(new Date().toISOString().slice(0,-1));
 
 	const { id } = useContext(UserDetailsContext);
 
@@ -120,42 +124,73 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 			<Grid stackable>
 				{data && data.calender_events ?
 					<Grid.Row className='pt-0'>
-						<Calendar
-							className={`events-calendar ${small || width < 768 ? 'small' : '' }`}
-							localizer={localizer}
-							events={calendarEvents}
-							startAccessor='start_time'
-							endAccessor='end_time'
-							popup={false}
-							components={{
-								event: Event,
-								eventWrapper: EventWrapperComponent,
-								timeGutterHeader: () => <TimeGutterHeader localizer={localizer} date={selectedDate} selectedView={selectedView} />,
-								toolbar: props => <CustomToolbar
-									{...props}
-									small={small}
-									width={width}
-									selectedNetwork={selectedNetwork}
-									setSelectedNetwork={setSelectedNetwork}
-									setSidebarCreateEvent={setSidebarCreateEvent}
-									isLoggedIn={Boolean(id)}
-								/>,
-								week: {
-									header: props => <CustomWeekHeader {...props} small={small || width < 768} />
-								}
-							}}
-							formats={{
-								timeGutterFormat: 'h A'
-							}}
-							onNavigate={setSelectedDate}
-							onView={setSelectedView}
-							views={{
-								agenda: true,
-								day: true,
-								month: true,
-								week: true
-							}}
-						/>
+						{!small && width > 992 && <Grid.Column id='calendar-left-panel' className='calendar-left-panel' width={4}>
+							<p className='utc-time'>Current Time: { moment(utcDate).format('D-MM-YY | h:mm a UTC') } </p>
+
+							<Calendar
+								className='events-calendar-mini'
+								localizer={localizer}
+								events={calendarEvents}
+								startAccessor="start"
+								endAccessor="end"
+								components={{
+									event: Event,
+									eventWrapper: EventWrapperComponent,
+									timeGutterHeader: () => <TimeGutterHeader localizer={localizer} date={selectedDate} selectedView={selectedView} />,
+									toolbar: props => <CustomToolbarMini
+										{...props}
+										small={small}
+										width={width}
+										selectedNetwork={selectedNetwork}
+										setSelectedNetwork={setSelectedNetwork}
+										setSidebarCreateEvent={setSidebarCreateEvent}
+										isLoggedIn={Boolean(id)}
+										leftPanelWidth={calLeftPanelWidth}
+									/>
+								}}
+							/>
+						</Grid.Column>
+						}
+
+						<Grid.Column className='calendar-right-panel' width={12}>
+							<Calendar
+								className={`events-calendar ${small || width < 768 ? 'small' : '' }`}
+								localizer={localizer}
+								events={calendarEvents}
+								startAccessor='start_time'
+								endAccessor='end_time'
+								popup={false}
+								components={{
+									event: Event,
+									eventWrapper: EventWrapperComponent,
+									timeGutterHeader: () => <TimeGutterHeader localizer={localizer} date={selectedDate} selectedView={selectedView} />,
+									toolbar: props => <CustomToolbar
+										{...props}
+										small={small}
+										width={width}
+										selectedNetwork={selectedNetwork}
+										setSelectedNetwork={setSelectedNetwork}
+										setSidebarCreateEvent={setSidebarCreateEvent}
+										isLoggedIn={Boolean(id)}
+										leftPanelWidth={calLeftPanelWidth}
+									/>,
+									week: {
+										header: props => <CustomWeekHeader {...props} small={small || width < 768} />
+									}
+								}}
+								formats={{
+									timeGutterFormat: 'h A'
+								}}
+								onNavigate={setSelectedDate}
+								onView={setSelectedView}
+								views={{
+									agenda: true,
+									day: true,
+									month: true,
+									week: true
+								}}
+							/>
+						</Grid.Column>
 					</Grid.Row>
 					:
 					null
@@ -583,6 +618,88 @@ h1 {
 	}
 }
 
+.calendar-left-panel {
+	padding-top: 95px;
+	background-color: #fff;
+	border-top-left-radius: 10px;
+	border-right: 1px solid #E8E8E8;
+
+	.utc-time {
+		color: #646464;
+		font-size: 14px;
+		font-weight: 500;
+	}
+
+	.events-calendar-mini {
+		height: 250px;
+	}
+	
+	.custom-calendar-toolbar-mini {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 8px;
+
+		.button {
+			background: #fff !important;
+
+			i {
+				font-weight: 900;
+			}
+		}
+
+		span {
+			width: 115px;
+			min-width: 115px;
+			max-width: 115px;
+			text-align: center;
+			font-weight: 500 !important;
+			margin-left: 4px;
+			margin-right: 4px;
+		}
+	}
+
+	.rbc-month-header {
+		margin-bottom: 8px;
+	}
+
+	.rbc-header {
+		span {
+			font-size: 10px;
+			font-weight: 400 !important;
+			text-transform: uppercase;
+			color: #bbb;
+		}
+	}
+
+	.rbc-month-view,
+	.rbc-header,
+	.rbc-month-row,
+	.rbc-day-bg {
+		background: #fff;
+		border: none;
+	}
+
+	.rbc-off-range {
+		color: #fff;
+
+		.rbc-button-link {
+			cursor: default !important;
+		}
+	}
+
+	.rbc-date-cell {
+		button {
+			font-size: 12px;
+			padding: 5px;
+			font-weight: 600 !important;
+		}
+	}
+}
+
+.calendar-right-panel {
+	padding-left: 0 !important;
+}
 
 .events-calendar {
 	height: 88vh;
@@ -633,10 +750,14 @@ h1 {
 		border-bottom: 1px solid #E8E8E8;
 		display: flex;
 		align-items: center;
+		margin-left: -25%; //TODO: Determine value
 
 		.select-div {
 			&:nth-of-type(2) {
 				padding-left: 19px;
+				width: 115px;
+				min-width: 115px;
+				max-width: 115px;
 			}
 
 			display: flex;
@@ -645,9 +766,6 @@ h1 {
 			height: 65px;
 			border-right: 1px solid #E8E8E8;
 			padding-right: 19px;
-			width: 115px;
-			min-width: 115px;
-			max-width: 115px;
 
 			label {
 				font-size: 14px;

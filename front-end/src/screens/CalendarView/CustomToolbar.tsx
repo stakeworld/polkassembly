@@ -138,7 +138,7 @@ function CustomToolbar(props: any) {
 	}
 
 	return (
-		props.date && <div className={`custom-calendar-toolbar ${props.small || props.width < 768 ? 'small' : ''}`}>
+		props.date && <div className={`custom-calendar-toolbar ${props.small || props.width < 768 ? 'small' : ''}`} style={ { marginLeft: -props.leftPanelWidth } }>
 			{!props.small && !(props.width < 768) ?
 				<>
 					<NetworkSelect selectedNetwork={props.selectedNetwork} setSelectedNetwork={props.setSelectedNetwork} />
