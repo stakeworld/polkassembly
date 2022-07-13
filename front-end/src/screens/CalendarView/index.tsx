@@ -61,9 +61,9 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 		network: selectedNetwork
 	} });
 
-	// useEffect(() => {
-	// refetch();
-	// }, [refetch]);
+	useEffect(() => {
+		refetch();
+	}, [refetch]);
 
 	useEffect(() =>  {
 		const eventsArr:any[] = [];
@@ -122,7 +122,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 		setMiniCalSelectedDate(new Date());
 	}
 
-	const monthDateComponentHeader = ({ date }: DateHeaderProps) => {
+	const MonthDateComponentHeader = ({ date }: DateHeaderProps) => {
 		return <button onClick={() => showDay(date)}>
 			{date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}
 		</button>;
@@ -141,7 +141,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 			<Grid stackable>
 				{data && data.calender_events &&
 					<Grid.Row className='pt-0'>
-						{!small && width > 992 && <Grid.Column id='calendar-left-panel' className='calendar-left-panel' width={4}>
+						{!small && width > 992 && <Grid.Column id='calendar-left-panel' className='calendar-left-panel' computer={4}>
 							<p className='utc-time'>Current Time: { moment(utcDate).format('D-MM-YY | h:mm a UTC') } </p>
 
 							<Calendar
@@ -149,12 +149,13 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 								date={miniCalSelectedDate}
 								localizer={localizer}
 								events={calendarEvents}
-								startAccessor="start"
-								endAccessor="end"
+								startAccessor="start_time"
+								endAccessor="end_time"
 								components={{
+									event: () => null,
 									eventWrapper: EventWrapperComponent,
 									month: {
-										dateHeader: monthDateComponentHeader
+										dateHeader: MonthDateComponentHeader
 									},
 									toolbar: props => <CustomToolbarMini
 										{...props}
@@ -165,7 +166,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 						</Grid.Column>
 						}
 
-						<Grid.Column className='calendar-right-panel' width={12}>
+						<Grid.Column className='calendar-right-panel' mobile={16} tablet={16} computer={small ? 16: 12}>
 							<Calendar
 								className={`events-calendar ${small || width < 768 ? 'small' : '' }`}
 								localizer={localizer}
@@ -626,7 +627,13 @@ h1 {
 		}
 	}
 
-	@media only screen and (min-width: 768px) {
+	@media only screen and (max-width: 768px) {
+		h1 {
+			margin-bottom: 0 !important;
+		}
+	}
+
+	@media only screen and (min-width: 769px) {
 		h1 {
 			display: none;
 		}
@@ -647,7 +654,7 @@ h1 {
 	}
 
 	.events-calendar-mini {
-		height: 250px;
+		height: 320px;
 		border: 2px solid #E8E8E8;
 		border-radius: 10px;
 		padding: 15px 8px;
@@ -667,9 +674,9 @@ h1 {
 			}
 	
 			span {
-				width: 115px;
-				min-width: 115px;
-				max-width: 115px;
+				width: 104px;
+				min-width: 104px;
+				max-width: 104px;
 				text-align: center;
 				font-weight: 500 !important;
 				margin-left: 4px;
@@ -718,7 +725,7 @@ h1 {
 
 			&.rbc-off-range {
 				button {
-					display: none;
+					color: #E8E8E8;
 				}
 			}
 			
@@ -728,6 +735,43 @@ h1 {
 					color: #fff;
 					border: 1px solid #E6007A;
 					border-radius: 50%;
+				}
+			}
+		}
+
+		.custom-event-wrapper{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-top: 3px;
+
+			.rbc-event {
+				background:#E6007A;
+				cursor: default;
+				padding: 0 !important;
+				width: 5px;
+				height: 5px;
+  			border-radius: 50%;
+				border: 2px solid #E6007A;
+
+				&.overdue-border {
+					background:#FF0000 !important;
+					border: 2px solid #FF0000;
+				}
+
+				&.completed-border {
+					background:#5BC044 !important;
+					border: 2px solid #5BC044;
+
+				}
+
+				&.in_progress-border {
+					background:#EA8612 !important;
+					border: 2px solid #EA8612;
+				}
+		
+				&:focus {
+					outline: none;
 				}
 			}
 		}
