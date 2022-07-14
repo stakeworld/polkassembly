@@ -82,14 +82,13 @@ const UpcomingEvents = ({ className }: Props) => {
 						</Grid>
 					</Grid.Row>
 					{
-						eventsList.length > 0 && false &&
+						eventsList.length > 0 &&
 						<Grid.Row className='info-bar-row'>
 							<Grid.Column className='info-bar-col' width={16}>
 								<p>*Time in UTC</p>
 							</Grid.Column>
 						</Grid.Row>
 					}
-
 				</Grid>
 			</div>
 		</div>
