@@ -52,6 +52,7 @@
     "react-helmet": "^6.0.0",
     "react-hook-form": "^5.7.2",
     "react-icons": "^4.1.0",
+    "react-lottie-player": "^1.4.3",
     "react-markdown": "^5.0.3",
     "react-mde": "^11.0.0",
     "react-router-dom": "^5.2.0",
@@ -74,7 +75,8 @@
     "api:bump": "yarn add @polkadot/api @polkadot/extension-dapp @polkadot/extension-inject @polkadot/react-identicon @polkadot/ui-settings @polkadot/util @polkadot/util-crypto"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "emitWarning": true
   },
   "browserslist": {
     "production": [
