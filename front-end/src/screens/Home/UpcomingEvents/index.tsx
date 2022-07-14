@@ -67,12 +67,14 @@ const UpcomingEvents = ({ className }: Props) => {
 					<Grid.Row className='event-content-row'>
 						<Grid columns={2} className='event-content-row'>
 							<Grid.Column className={`event-list-col ${calendarVisible ? 'd-sm-none' : ''}`} mobile={16} tablet={16} computer={6}>
-								{/* {eventsList.length > 0 && false &&
+								{eventsList.length > 0 &&
 									<List relaxed='very' divided>
 										{eventsList}
 									</List>
-								} */}
-								<EventsEmptyState />
+								}
+								{eventsList.length == 0 &&
+									<EventsEmptyState />
+								}
 							</Grid.Column>
 							<Grid.Column className={`event-calendar-col ${calendarVisible ? '' : 'd-sm-none'}`} mobile={16} tablet={16} computer={10}>
 								<CalendarView className='event-calendar-small' small={true} emitCalendarEvents={setCalendarEvents} />
