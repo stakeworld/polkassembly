@@ -15,13 +15,18 @@ export default (onchainLink: OnchainLinkType): PostType => {
 		onchain_tip_id,
 		onchain_bounty_id,
 		onchain_treasury_proposal_id,
-		onchain_tech_committee_proposal_id
+		onchain_tech_committee_proposal_id,
+		onchain_child_bounty_id
 	} = onchainLink;
 
 	let type = PostTypeEnum.POST;
 
 	if (onchain_bounty_id === 0 || onchain_bounty_id) {
 		type = PostTypeEnum.BOUNTY;
+	}
+
+	if (onchain_child_bounty_id === 0 || onchain_child_bounty_id) {
+		type = PostTypeEnum.CHILD_BOUNTY;
 	}
 
 	if (onchain_tip_id) {

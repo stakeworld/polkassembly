@@ -38,66 +38,129 @@
     permission:
       check: {}
       columns:
+      - approval_status
       - content
       - end_time
+      - event_id
+      - event_type
       - module
       - network
       - start_time
+      - status
       - title
       - url
+      - user_id
+      backend_only: false
+  - role: user
+    permission:
+      check:
+        _and:
+        - user_id:
+            _eq: X-Hasura-User-Id
+      columns:
+      - content
+      - end_time
+      - event_id
+      - event_type
+      - id
+      - module
+      - network
+      - start_time
+      - status
+      - title
+      - url
+      - user_id
       backend_only: false
   select_permissions:
   - role: anonymous
     permission:
       columns:
-      - id
-      - title
+      - approval_status
       - content
-      - start_time
       - end_time
-      - network
+      - event_id
+      - event_type
+      - id
       - module
+      - network
+      - start_time
+      - status
+      - title
       - url
+      - user_id
       filter: {}
       allow_aggregations: true
   - role: event_bot
     permission:
       columns:
-      - id
+      - approval_status
       - content
+      - end_time
+      - event_id
+      - event_type
+      - id
       - module
       - network
+      - start_time
+      - status
       - title
       - url
-      - end_time
-      - start_time
+      - user_id
       filter: {}
       allow_aggregations: true
   - role: user
     permission:
       columns:
-      - id
+      - approval_status
       - content
+      - end_time
+      - event_id
+      - event_type
+      - id
       - module
       - network
+      - start_time
+      - status
       - title
       - url
-      - end_time
-      - start_time
+      - user_id
       filter: {}
+      allow_aggregations: true
   update_permissions:
   - role: event_bot
     permission:
       columns:
+      - approval_status
       - content
       - end_time
+      - event_id
+      - event_type
       - module
       - network
       - start_time
+      - status
       - title
       - url
       filter: {}
       check: {}
+  - role: user
+    permission:
+      columns:
+      - content
+      - end_time
+      - event_type
+      - module
+      - start_time
+      - title
+      - url
+      filter:
+        _and:
+        - user_id:
+            _eq: X-Hasura-User-Id
+      check:
+        _and:
+        - user_id:
+            _eq: X-Hasura-User-Id
   delete_permissions:
   - role: event_bot
     permission:
@@ -270,6 +333,14 @@
   - name: post
     using:
       foreign_key_constraint_on: post_id
+  array_relationships:
+  - name: onchain_post_discussion_links
+    using:
+      foreign_key_constraint_on:
+        column: onchain_link_id
+        table:
+          schema: public
+          name: onchain_post_discussion_link
   remote_relationships:
   - definition:
       remote_field:
@@ -341,12 +412,23 @@
       - onchain_tech_committee_proposal_id
       remote_schema: chain-db
     name: onchain_tech_committee_proposal
+  - definition:
+      remote_field:
+        childBounties:
+          arguments:
+            where:
+              childBountyId: $onchain_child_bounty_id
+      hasura_fields:
+      - onchain_child_bounty_id
+      remote_schema: chain-db
+    name: onchain_child_bounty
   insert_permissions:
   - role: proposal_bot
     permission:
       check: {}
       columns:
       - onchain_bounty_id
+      - onchain_child_bounty_id
       - onchain_motion_id
       - onchain_proposal_id
       - onchain_referendum_id
@@ -359,17 +441,18 @@
   - role: anonymous
     permission:
       columns:
-      - id
       - created_at
-      - post_id
-      - onchain_proposal_id
-      - proposer_address
-      - onchain_referendum_id
-      - onchain_motion_id
-      - onchain_treasury_proposal_id
-      - onchain_tip_id
+      - id
       - onchain_bounty_id
+      - onchain_child_bounty_id
+      - onchain_motion_id
+      - onchain_proposal_id
+      - onchain_referendum_id
       - onchain_tech_committee_proposal_id
+      - onchain_tip_id
+      - onchain_treasury_proposal_id
+      - post_id
+      - proposer_address
       filter: {}
       allow_aggregations: true
   - role: proposal_bot
@@ -393,6 +476,7 @@
       - created_at
       - id
       - onchain_bounty_id
+      - onchain_child_bounty_id
       - onchain_motion_id
       - onchain_proposal_id
       - onchain_referendum_id
@@ -408,6 +492,7 @@
     permission:
       columns:
       - onchain_bounty_id
+      - onchain_child_bounty_id
       - onchain_motion_id
       - onchain_proposal_id
       - onchain_referendum_id
@@ -442,6 +527,59 @@
     headers:
     - name: HASURA_EVENT_SECRET
       value_from_env: HASURA_EVENT_SECRET
+- table:
+    schema: public
+    name: onchain_post_discussion_link
+  object_relationships:
+  - name: onchain_link
+    using:
+      foreign_key_constraint_on: onchain_link_id
+  - name: post
+    using:
+      foreign_key_constraint_on: discussion_post_id
+  insert_permissions:
+  - role: user
+    permission:
+      check:
+        _and:
+        - author_id:
+            _eq: X-Hasura-User-Id
+      columns:
+      - id
+      - onchain_link_id
+      - discussion_post_id
+      - author_id
+      backend_only: false
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - author_id
+      - discussion_post_id
+      - onchain_link_id
+      filter: {}
+      allow_aggregations: true
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - discussion_post_id
+      - onchain_link_id
+      filter:
+        _and:
+        - author_id:
+            _eq: X-Hasura-User-Id
+      check:
+        _and:
+        - author_id:
+            _eq: X-Hasura-User-Id
+  delete_permissions:
+  - role: user
+    permission:
+      filter:
+        _and:
+        - author_id:
+            _eq: X-Hasura-User-Id
 - table:
     schema: public
     name: option_poll
@@ -944,6 +1082,13 @@
         table:
           schema: public
           name: comments
+  - name: onchain_post_discussion_links
+    using:
+      foreign_key_constraint_on:
+        column: discussion_post_id
+        table:
+          schema: public
+          name: onchain_post_discussion_link
   - name: option_polls
     using:
       foreign_key_constraint_on:
@@ -1059,6 +1204,63 @@
             proposer_address:
               _in: X-Hasura-Polkadot
       check: null
+- table:
+    schema: public
+    name: proposal_tracker
+  insert_permissions:
+  - role: user
+    permission:
+      check:
+        _and:
+        - user_id:
+            _eq: X-Hasura-User-Id
+      columns:
+      - deadline
+      - network
+      - onchain_proposal_id
+      - status
+      - user_id
+      backend_only: false
+  select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+      - id
+      - onchain_proposal_id
+      - status
+      - deadline
+      - user_id
+      - created_at
+      - updated_at
+      - network
+      filter: {}
+      allow_aggregations: true
+  - role: user
+    permission:
+      columns:
+      - created_at
+      - deadline
+      - id
+      - network
+      - onchain_proposal_id
+      - status
+      - updated_at
+      - user_id
+      filter: {}
+      allow_aggregations: true
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - status
+      filter:
+        _and:
+        - user_id:
+            _eq: X-Hasura-User-Id
+      check:
+        _and:
+        - user_id:
+            _eq: X-Hasura-User-Id
 - table:
     schema: public
     name: replies

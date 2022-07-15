@@ -22,7 +22,7 @@ interface Props {
 interface PostTypeData {
 	method: string
 	onChainId: number
-	postTypeString: 'discussion' | 'referenda' | 'proposal' | 'motion' | 'treasury proposal' | 'tech committee proposal' | 'bounty' | 'tip'
+	postTypeString: 'discussion' |'referenda' | 'proposal' | 'motion' | 'treasury proposal' | 'tech committee proposal' | 'bounty' | 'child bounty' | 'tip'
 	status: string
 	title: string
 }
@@ -52,7 +52,7 @@ const LatestAllPostsTable = ({ className }: Props) => {
 			title: post.title
 		};
 
-		if (!post.onchain_link) {
+		if (!post.onchain_link){
 			//is discussion post
 			postData.postTypeString = 'discussion';
 			postData.onChainId = post.id;
@@ -60,55 +60,62 @@ const LatestAllPostsTable = ({ className }: Props) => {
 		}
 
 		for (const key of Object.keys(post.onchain_link)) {
-			if (/_id$/.test(key) && post.onchain_link[key]) {
+			if(/_id$/.test(key) && (post.onchain_link[key] !=null && post.onchain_link[key] != undefined)){
 				postType = key;
 				break;
 			}
 		}
 
-		switch (postType) {
-			case 'onchain_bounty_id':
-				postData.postTypeString = 'bounty';
-				postData.method = '';
-				postData.onChainId = post.onchain_link?.onchain_bounty_id;
-				postData.status = post.onchain_link.onchain_bounty[0]?.bountyStatus?.[0].status;
-				break;
-			case 'onchain_motion_id':
-				postData.postTypeString = 'motion';
-				postData.method = post.onchain_link.onchain_motion[0]?.preimage?.method;
-				postData.onChainId = post.onchain_link?.onchain_motion_id;
-				postData.status = post.onchain_link.onchain_motion[0]?.motionStatus?.[0].status;
-				break;
-			case 'onchain_proposal_id':
-				postData.postTypeString = 'proposal';
-				postData.method = post.onchain_link.onchain_proposal[0]?.preimage?.method;
-				postData.onChainId = post.onchain_link?.onchain_proposal_id;
-				postData.status = post.onchain_link.onchain_proposal[0]?.proposalStatus?.[0].status;
-				break;
-			case 'onchain_referendum_id':
-				postData.postTypeString = 'referenda';
-				postData.method = post.onchain_link.onchain_referendum[0]?.preimage?.method;
-				postData.onChainId = post.onchain_link?.onchain_referendum_id;
-				postData.status = post.onchain_link.onchain_referendum[0]?.referendumStatus?.[0].status;
-				break;
-			case 'onchain_tech_committee_proposal_id':
-				postData.postTypeString = 'tech committee proposal';
-				postData.method = post.onchain_link.onchain_tech_committee_proposal[0]?.preimage?.method;
-				postData.onChainId = post.onchain_link?.onchain_tech_committee_proposal_id;
-				postData.status = post.onchain_link.onchain_tech_committee_proposal[0]?.status?.[0].status;
-				break;
-			case 'onchain_treasury_proposal_id':
-				postData.postTypeString = 'treasury proposal';
-				postData.method = '';
-				postData.onChainId = post.onchain_link?.onchain_treasury_proposal_id;
-				postData.status = post.onchain_link.onchain_treasury_spend_proposal[0]?.treasuryStatus?.[0].status;
-				break;
-			case 'onchain_tip_id':
-				postData.postTypeString = 'tip';
-				postData.method = '';
-				postData.onChainId = post.onchain_link?.onchain_tip_id;
-				postData.status = post.onchain_link.onchain_tip[0]?.tipStatus?.[0].status;
-				postData.title = post.title ? post.title : post.onchain_link.onchain_tip?.[0]?.reason;
+		switch (postType){
+		case 'onchain_bounty_id':
+			postData.postTypeString = 'bounty';
+			postData.method = '';
+			postData.onChainId = post.onchain_link?.onchain_bounty_id;
+			postData.status = post.onchain_link.onchain_bounty[0]?.bountyStatus?.[0].status;
+			break;
+		case 'onchain_motion_id':
+			postData.postTypeString = 'motion';
+			postData.method = post.onchain_link.onchain_motion[0]?.preimage?.method;
+			postData.onChainId = post.onchain_link?.onchain_motion_id;
+			postData.status = post.onchain_link.onchain_motion[0]?.motionStatus?.[0].status;
+			break;
+		case 'onchain_proposal_id':
+			postData.postTypeString = 'proposal';
+			postData.method = post.onchain_link.onchain_proposal[0]?.preimage?.method;
+			postData.onChainId = post.onchain_link?.onchain_proposal_id;
+			postData.status = post.onchain_link.onchain_proposal[0]?.proposalStatus?.[0].status;
+			break;
+		case 'onchain_referendum_id':
+			postData.postTypeString = 'referenda';
+			postData.method = post.onchain_link.onchain_referendum[0]?.preimage?.method;
+			postData.onChainId = post.onchain_link?.onchain_referendum_id;
+			postData.status = post.onchain_link.onchain_referendum[0]?.referendumStatus?.[0].status;
+			break;
+		case 'onchain_tech_committee_proposal_id':
+			postData.postTypeString = 'tech committee proposal';
+			postData.method = post.onchain_link.onchain_tech_committee_proposal[0]?.preimage?.method;
+			postData.onChainId = post.onchain_link?.onchain_tech_committee_proposal_id;
+			postData.status = post.onchain_link.onchain_tech_committee_proposal[0]?.status?.[0].status;
+			break;
+		case 'onchain_treasury_proposal_id':
+			postData.postTypeString = 'treasury proposal';
+			postData.method = '';
+			postData.onChainId = post.onchain_link?.onchain_treasury_proposal_id;
+			postData.status = post.onchain_link.onchain_treasury_spend_proposal[0]?.treasuryStatus?.[0].status;
+			break;
+		case 'onchain_tip_id':
+			postData.postTypeString = 'tip';
+			postData.method = '';
+			postData.onChainId = post.onchain_link?.onchain_tip_id;
+			postData.status = post.onchain_link.onchain_tip[0]?.tipStatus?.[0].status;
+			postData.title = post.title ? post.title : post.onchain_link.onchain_tip?.[0]?.reason;
+			break;
+		case 'onchain_child_bounty_id':
+			postData.postTypeString = 'child bounty';
+			postData.method = '';
+			postData.onChainId = post.onchain_link?.onchain_child_bounty_id;
+			postData.status = post.onchain_link.onchain_child_bounty[0]?.childBountyStatus?.[0].status;
+			postData.title = post.title ? post.title : post.onchain_link.onchain_child_bounty?.[0]?.description;
 		}
 
 		return postData;

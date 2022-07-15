@@ -52,6 +52,15 @@ export const QUERY_ALL_POSTS = gql`
                         status
                     }
                 }
+                onchain_child_bounty_id
+                onchain_child_bounty {
+                    id
+                    description
+                    childBountyStatus(last: 1) {
+                        id
+                        status
+                    }
+                }
                 onchain_motion_id
                 onchain_motion {
                     id

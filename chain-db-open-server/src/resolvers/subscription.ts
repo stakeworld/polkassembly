@@ -6,6 +6,8 @@ import {
   BlockNumberSubscription,
   BountySubscriptionPayloadSubscription,
   BountySubscriptionWhereInput,
+  ChildBountySubscriptionPayloadSubscription,
+  ChildBountySubscriptionWhereInput,
   EraSubscription,
   HeartBeatSubscription,
   MotionSubscriptionPayloadSubscription,
@@ -298,6 +300,19 @@ const bounty = {
   },
 };
 
+const childBounty = {
+  subscribe: (
+    parent: any,
+    { where }: { where: ChildBountySubscriptionWhereInput },
+    context: Context
+  ): ChildBountySubscriptionPayloadSubscription => {
+    return context.prisma.$subscribe.childBounty(where);
+  },
+  resolve: (payload: any) => {
+    return payload;
+  },
+};
+
 const techCommitteeProposal = {
   subscribe: (
     parent: any,
@@ -314,6 +329,7 @@ const techCommitteeProposal = {
 export const Subscription = {
   blockNumber,
   bounty,
+  childBounty,
   era,
   heartBeat,
   nomination,

@@ -14,6 +14,9 @@ import {
 	BountyPostAndCommentsQuery,
 	BountyPostAndCommentsQueryHookResult,
 	BountyPostFragment,
+	ChildBountyPostAndCommentsQuery,
+	ChildBountyPostAndCommentsQueryHookResult,
+	ChildBountyPostFragment,
 	DiscussionPostAndCommentsQuery,
 	DiscussionPostAndCommentsQueryHookResult,
 	DiscussionPostFragment,
@@ -21,6 +24,7 @@ import {
 	MotionPostAndCommentsQueryHookResult,
 	MotionPostFragment,
 	OnchainLinkBountyFragment,
+	OnchainLinkChildBountyFragment,
 	OnchainLinkMotionFragment,
 	OnchainLinkProposalFragment,
 	OnchainLinkReferendumFragment,
@@ -60,6 +64,7 @@ import GovenanceSideBar from './GovernanceSideBar';
 import Poll from './Poll';
 import CreatePostComment from './PostCommentForm';
 import PostBountyInfo from './PostGovernanceInfo/PostBountyInfo';
+import PostChildBountyInfo from './PostGovernanceInfo/PostChildBountyInfo';
 import PostMotionInfo from './PostGovernanceInfo/PostMotionInfo';
 import PostProposalInfo from './PostGovernanceInfo/PostProposalInfo';
 import PostReferendumInfo from './PostGovernanceInfo/PostReferendumInfo';
@@ -77,7 +82,8 @@ interface Props {
 		TreasuryProposalPostAndCommentsQueryHookResult['data'] |
 		TipPostAndCommentsQueryHookResult['data'] |
 		BountyPostAndCommentsQueryHookResult['data'] |
-		TechCommitteeProposalPostAndCommentsQueryHookResult['data']
+		TechCommitteeProposalPostAndCommentsQueryHookResult['data'] |
+		ChildBountyPostAndCommentsQueryHookResult['data']
 	)
 	isBounty?: boolean
 	isMotion?: boolean
@@ -86,6 +92,7 @@ interface Props {
 	isTreasuryProposal?: boolean
 	isTechCommitteeProposal?: boolean
 	isTipProposal?: boolean
+	isChildBounty?: boolean
 	refetch: (variables?:any) =>
 		Promise<ApolloQueryResult<ReferendumPostAndCommentsQuery>> |
 		Promise<ApolloQueryResult<ProposalPostAndCommentsQuery>> |
@@ -94,7 +101,8 @@ interface Props {
 		Promise<ApolloQueryResult<TipPostAndCommentsQuery>> |
 		Promise<ApolloQueryResult<BountyPostAndCommentsQuery>> |
 		Promise<ApolloQueryResult<DiscussionPostAndCommentsQuery>> |
-		Promise<ApolloQueryResult<TechCommitteeProposalPostAndCommentsQuery>>
+		Promise<ApolloQueryResult<TechCommitteeProposalPostAndCommentsQuery>> |
+		Promise<ApolloQueryResult<ChildBountyPostAndCommentsQuery>>
 }
 
 interface Redirection {
@@ -102,7 +110,7 @@ interface Redirection {
 	text?: string;
 }
 
-const Post = ( { className, data, isBounty = false, isMotion = false, isProposal = false, isReferendum = false, isTipProposal = false, isTreasuryProposal = false, isTechCommitteeProposal = false, refetch }: Props ) => {
+const Post = ( { className, data, isBounty = false, isChildBounty = false, isMotion = false, isProposal = false, isReferendum = false, isTipProposal = false, isTreasuryProposal = false, isTechCommitteeProposal = false, refetch }: Props ) => {
 	const post = data && data.posts && data.posts[0];
 	const { id, addresses } = useContext(UserDetailsContext);
 	const [isEditing, setIsEditing] = useState(false);
@@ -143,8 +151,9 @@ const Post = ( { className, data, isBounty = false, isMotion = false, isProposal
 	let treasuryPost: TreasuryProposalPostFragment | undefined;
 	let tipPost: TipPostFragment | undefined;
 	let bountyPost: BountyPostFragment | undefined;
+	let childBountyPost: ChildBountyPostFragment | undefined;
 	let techCommitteeProposalPost: TechCommitteeProposalPostFragment | undefined;
-	let definedOnchainLink: OnchainLinkTechCommitteeProposalFragment | OnchainLinkBountyFragment | OnchainLinkMotionFragment | OnchainLinkReferendumFragment | OnchainLinkProposalFragment | OnchainLinkTipFragment | OnchainLinkTreasuryProposalFragment | undefined;
+	let definedOnchainLink: OnchainLinkTechCommitteeProposalFragment | OnchainLinkBountyFragment | OnchainLinkChildBountyFragment | OnchainLinkMotionFragment | OnchainLinkReferendumFragment | OnchainLinkProposalFragment | OnchainLinkTipFragment | OnchainLinkTreasuryProposalFragment | undefined;
 	let postStatus: string | undefined;
 	let redirection: Redirection = {};
 
@@ -160,6 +169,13 @@ const Post = ( { className, data, isBounty = false, isMotion = false, isProposal
 		definedOnchainLink = bountyPost.onchain_link as OnchainLinkBountyFragment;
 		onchainId = definedOnchainLink.onchain_bounty_id;
 		postStatus = bountyPost?.onchain_link?.onchain_bounty?.[0]?.bountyStatus?.[0].status;
+	}
+
+	if (post && isChildBounty) {
+		childBountyPost = post as ChildBountyPostFragment;
+		definedOnchainLink = childBountyPost.onchain_link as OnchainLinkChildBountyFragment;
+		onchainId = definedOnchainLink.onchain_child_bounty_id;
+		postStatus = childBountyPost?.onchain_link?.onchain_child_bounty?.[0]?.childBountyStatus?.[0].status;
 	}
 
 	if (post && isReferendum) {
@@ -215,8 +231,8 @@ const Post = ( { className, data, isBounty = false, isMotion = false, isProposal
 		postStatus = tipPost?.onchain_link?.onchain_tip?.[0]?.tipStatus?.[0].status;
 	}
 
-	const isDiscussion = (post: TechCommitteeProposalPostFragment | BountyPostFragment | TipPostFragment | TreasuryProposalPostFragment | MotionPostFragment | ProposalPostFragment | DiscussionPostFragment | ReferendumPostFragment): post is DiscussionPostFragment => {
-		if (!isTechCommitteeProposal && !isReferendum && !isProposal && !isMotion && !isTreasuryProposal && !isTipProposal && !isBounty) {
+	const isDiscussion = (post: TechCommitteeProposalPostFragment | BountyPostFragment | ChildBountyPostFragment | TipPostFragment | TreasuryProposalPostFragment | MotionPostFragment | ProposalPostFragment | DiscussionPostFragment | ReferendumPostFragment): post is DiscussionPostFragment => {
+		if (!isTechCommitteeProposal && !isReferendum && !isProposal && !isMotion && !isTreasuryProposal && !isTipProposal && !isBounty && !isChildBounty) {
 			return (post as DiscussionPostFragment) !== undefined;
 		}
 
@@ -231,9 +247,11 @@ const Post = ( { className, data, isBounty = false, isMotion = false, isProposal
 		isTipProposal={isTipProposal}
 		isBounty={isBounty}
 		isTechCommitteeProposal={isTechCommitteeProposal}
+		isChildBounty={isChildBounty}
 	/>;
 
 	const isBountyProposer = isBounty && bountyPost?.onchain_link?.proposer_address && addresses?.includes(bountyPost.onchain_link.proposer_address);
+	const isChildBountyProposer = isChildBounty && childBountyPost?.onchain_link?.proposer_address && addresses?.includes(childBountyPost.onchain_link.proposer_address);
 	const isProposalProposer = isProposal && proposalPost?.onchain_link?.proposer_address && addresses?.includes(proposalPost.onchain_link.proposer_address);
 	const isReferendumProposer = isReferendum && referendumPost?.onchain_link?.proposer_address && addresses?.includes(referendumPost.onchain_link.proposer_address);
 	const isMotionProposer = isMotion && motionPost?.onchain_link?.proposer_address && addresses?.includes(motionPost.onchain_link.proposer_address);
@@ -248,12 +266,14 @@ const Post = ( { className, data, isBounty = false, isMotion = false, isProposal
 		isTreasuryProposer ||
 		isTipProposer ||
 		isBountyProposer ||
-		isTechCommitteeProposalProposer
+		isTechCommitteeProposalProposer ||
+		isChildBountyProposer
 	);
 
 	const Sidebar = () => <>
 		<GovenanceSideBar
 			isBounty={isBounty}
+			isChildBounty={isChildBounty}
 			isMotion={isMotion}
 			isProposal={isProposal}
 			isReferendum={isReferendum}
@@ -263,6 +283,8 @@ const Post = ( { className, data, isBounty = false, isMotion = false, isProposal
 			onchainId={onchainId}
 			onchainLink={definedOnchainLink}
 			status={postStatus}
+			canEdit={canEdit}
+			startTime={post.created_at}
 		/>
 		{isDiscussion(post) && <Poll postId={post.id} canEdit={post.author?.id === id} />}
 		<OptionPoll postId={post.id} canEdit={post.author?.id === id} />
@@ -330,6 +352,19 @@ const Post = ( { className, data, isBounty = false, isMotion = false, isProposal
 						/>
 						<Timeline
 							statuses={bountyPost?.onchain_link?.onchain_bounty?.[0]?.bountyStatus?.map(s => ({
+								blockNumber: s.blockNumber?.number || 0,
+								status: s.status || ''
+							})) || []}
+						/>
+					</>)
+				}
+				{ isChildBounty && (
+					<>
+						<PostChildBountyInfo
+							onchainLink={definedOnchainLink as OnchainLinkChildBountyFragment}
+						/>
+						<Timeline
+							statuses={childBountyPost?.onchain_link?.onchain_child_bounty?.[0]?.childBountyStatus?.map(s => ({
 								blockNumber: s.blockNumber?.number || 0,
 								status: s.status || ''
 							})) || []}

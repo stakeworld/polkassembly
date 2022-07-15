@@ -29,6 +29,7 @@ export enum Role {
   ADMIN = 'admin',
   PROPOSAL_BOT = 'proposal_bot',
   USER = 'user',
+  EVENT_BOT = 'event_bot',
 }
 
 // these are enforced by Hasura
@@ -108,10 +109,13 @@ export type ChainPropType = {
 };
 
 export interface ChainProps {
-  blockTime: number;
-  ss58Format: number;
-  tokenDecimals: number;
-  tokenSymbol: TokenSymbol;
+  'blockTime': number;
+  'logo'?: any;
+  'ss58Format': number;
+  'tokenDecimals': number;
+  'tokenSymbol': TokenSymbol;
+  'chainId': number;
+  'rpcEndpoint': string;
 }
 
 export type ChainLinksType = {

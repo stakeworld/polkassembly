@@ -163,6 +163,18 @@ export const GlobalStyle = createGlobalStyle`
         font-size: sm;
     }
 
+    .disable-scroll-sm {
+        @media only screen and (max-width: 992px) {
+            overflow-y: hidden !important;
+        }
+    }
+
+    .enable-scroll-sm {
+        @media only screen and (max-width: 992px) {
+            overflow-y: auto !important;
+        }
+    }
+
     @media only screen and (max-width: 768px) {
         .container-fluid {
         margin: 2.5rem auto 0 auto;

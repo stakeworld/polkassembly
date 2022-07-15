@@ -23,6 +23,8 @@ import createTip from './createTip';
 import createTipStatus from './createTipStatus';
 import createBounty from './createBounty';
 import createBountyStatus from './createBountyStatus';
+import createChildBounty from './createChildBounty';
+import createChildBountyStatus from './createChildBountyStatus';
 import createTreasury from './createTreasury';
 import createTechCommitteeProposal from './createTechCommitteeProposal';
 import createTechCommitteeProposalStatus from './createTechCommitteeProposalStatus';
@@ -53,5 +55,7 @@ export const nomidotTasks: NomidotTask[] = [
   createBounty,
   createBountyStatus,
   createTechCommitteeProposal,
-  createTechCommitteeProposalStatus
+  createTechCommitteeProposalStatus,
+  createChildBounty,
+  createChildBountyStatus
 ];

@@ -6,7 +6,8 @@ import styled from '@xstyled/styled-components';
 import React, { useContext } from 'react';
 import { FieldError,useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { Divider } from 'semantic-ui-react';
+import { Divider, Message } from 'semantic-ui-react';
+import { Wallet } from 'src/types';
 
 import { ModalContext } from '../../context/ModalContext';
 import { UserDetailsContext } from '../../context/UserDetailsContext';
@@ -19,13 +20,15 @@ import { Form } from '../../ui-components/Form';
 import HelperTooltip from '../../ui-components/HelperTooltip';
 import messages from '../../util/messages';
 import * as validation from '../../util/validation';
+import WalletButtons from '../Login/WalletButtons';
 
 interface Props {
 	className?: string
-	setDisplayWeb3: () => void
+	onWalletSelect: (wallet: Wallet) => void
+	walletError: string | undefined
 }
 
-const SignupForm = ({ className, setDisplayWeb3 }:Props): JSX.Element => {
+const SignupForm = ({ className, onWalletSelect, walletError }:Props): JSX.Element => {
 	const { history } = useRouter();
 	const currentUser = useContext(UserDetailsContext);
 	const [signupMutation, { loading, error }] = useSignupMutation();
@@ -59,13 +62,16 @@ const SignupForm = ({ className, setDisplayWeb3 }:Props): JSX.Element => {
 		}
 	};
 
-	const handleToggle = () => setDisplayWeb3();
-
 	return (
 		<Form className={className} onSubmit={handleSubmit(handleSubmitForm)}>
 			<h3>
 				Sign Up
 			</h3>
+
+			{walletError && <Message negative>
+				<Message.Header>{walletError}</Message.Header>
+			</Message>}
+
 			<Form.Group>
 				<Form.Field width={16}>
 					<label>Username<sup>*</sup></label>
@@ -138,14 +144,9 @@ const SignupForm = ({ className, setDisplayWeb3 }:Props): JSX.Element => {
 				</Button>
 				{error?.message && <FilteredError text={error.message}/>}
 
-				<Button
-					type="button"
-					secondary
-					disabled={loading}
-					onClick={handleToggle}
-				>
-					Sign-up with Web3 address
-				</Button>
+				<div>
+					<WalletButtons disabled={loading} onWalletSelect={onWalletSelect} />
+				</div>
 			</div>
 			<Divider horizontal>Or</Divider>
 			<div className={'mainButtonContainer'}>

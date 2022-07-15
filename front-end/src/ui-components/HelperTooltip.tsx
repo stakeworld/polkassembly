@@ -24,7 +24,8 @@ export const StyledIcon = styled(myIcon)`
 	&.small {
 		height: 14px;
 		width: 14px;
-		margin-top: 0.8px !important;
+		margin-top: 1.6px !important;
+		margin-left: 3.5px !important;
 	}
 `;
 

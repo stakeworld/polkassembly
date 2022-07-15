@@ -6,6 +6,7 @@ import chalk from 'chalk';
 
 import {
 	addDiscussionPostAndBounty,
+	addDiscussionPostAndChildBounty,
 	addDiscussionPostAndMotion,
 	addDiscussionPostAndProposal,
 	addDiscussionPostAndTechCommitteeProposal,
@@ -17,6 +18,7 @@ import {
 import { MotionObjectMap, ObjectMap, OnchainMotionSyncType, ReferendumObjectMap, SyncData, TreasuryDeduplicateMotionMap } from '../types';
 import {
 	getDiscussionBounties,
+	getDiscussionChildBounties,
 	getDiscussionMotions,
 	getDiscussionProposals,
 	getDiscussionReferenda,
@@ -24,6 +26,7 @@ import {
 	getDiscussionTips,
 	getDiscussionTreasuryProposals,
 	getOnChainBounties,
+	getOnChainChildBounties,
 	getOnChainMotions,
 	getOnChainProposals,
 	getOnchainReferenda,
@@ -41,6 +44,7 @@ const getSyncData = async (): Promise<SyncData | undefined> => {
 		const discussionTreasuryProposals = await getDiscussionTreasuryProposals();
 		const discussionTips = await getDiscussionTips();
 		const discussionBounties = await getDiscussionBounties();
+		const discussionChildBounties = await getDiscussionChildBounties();
 		const discussionTechCommitteeProposals = await getDiscussionTechCommitteeProposals();
 
 		const onChainMotions = await getOnChainMotions();
@@ -49,11 +53,13 @@ const getSyncData = async (): Promise<SyncData | undefined> => {
 		const onChainTreasuryProposals = await getOnChainTreasuryProposals();
 		const onChainTips = await getOnChainTips();
 		const onChainBounties = await getOnChainBounties();
+		const onChainChildBounties = await getOnChainChildBounties();
 		const onChainTechCommitteeProposals = await getOnChainTechCommitteeProposals();
 
 		return {
 			discussion: {
 				bounties: discussionBounties,
+				childBounties: discussionChildBounties,
 				motions: discussionMotions,
 				proposals: discussionProposals,
 				referenda: discussionReferenda,
@@ -63,6 +69,7 @@ const getSyncData = async (): Promise<SyncData | undefined> => {
 			},
 			onchain: {
 				bounties: onChainBounties,
+				childBounties: onChainChildBounties,
 				motions: onChainMotions,
 				proposals: onChainProposals,
 				referenda: onchainReferenda,
@@ -90,6 +97,15 @@ const syncBounties = async (onChainBounties: ObjectMap, discussionBounties: Obje
 		// if this bounty doesn't exist in the discussion DB
 		if (!discussionBounties[key]) {
 			await addDiscussionPostAndBounty({ onchainBountyId: Number(key), proposer: author });
+		}
+	}));
+};
+
+const syncChildBounties = async (onChainChildBounties: ObjectMap, discussionChildBounties: ObjectMap): Promise<void[]> => {
+	return Promise.all(Object.entries(onChainChildBounties).map(async ([key, author]) => {
+		// if this child bounty doesn't exist in the discussion DB
+		if (!discussionChildBounties[key]) {
+			await addDiscussionPostAndChildBounty({ onchainChildBountyId: Number(key), proposer: author });
 		}
 	}));
 };
@@ -207,6 +223,10 @@ export const syncDBs = async (): Promise<void> => {
 		syncMaps?.onchain?.bounties &&
 		syncMaps?.discussion?.bounties &&
 		await syncBounties(syncMaps.onchain.bounties, syncMaps.discussion.bounties);
+
+		syncMaps?.onchain?.childBounties &&
+		syncMaps?.discussion?.childBounties &&
+		await syncChildBounties(syncMaps.onchain.childBounties, syncMaps.discussion.childBounties);
 
 		syncMaps?.onchain?.techCommitteeProposals &&
 		syncMaps?.discussion?.techCommitteeProposals &&
