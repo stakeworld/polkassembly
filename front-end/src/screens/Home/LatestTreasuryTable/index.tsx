@@ -6,7 +6,7 @@ import styled from '@xstyled/styled-components';
 import React, { useEffect } from 'react';
 // import { Link } from 'react-router-dom';
 import { Tab, Table } from 'semantic-ui-react';
-import NothingFoundCard from 'src/ui-components/NothingFoundCard';
+import NoLatestActivity from 'src/ui-components/NoLatestActivity';
 
 import { useGetLatestDemocracyTreasuryProposalPostsQuery } from '../../../generated/graphql';
 import { post_topic } from '../../../global/post_topics';
@@ -20,25 +20,27 @@ interface Props {
 	className?: string
 }
 
-const LatestTreasuryTable = ({ className }:Props) => {
-	const { data, error, refetch } = useGetLatestDemocracyTreasuryProposalPostsQuery({ variables: {
-		limit: 10,
-		postTopic: post_topic.TREASURY,
-		postType: post_type.ON_CHAIN
-	} });
+const LatestTreasuryTable = ({ className }: Props) => {
+	const { data, error, refetch } = useGetLatestDemocracyTreasuryProposalPostsQuery({
+		variables: {
+			limit: 10,
+			postTopic: post_topic.TREASURY,
+			postType: post_type.ON_CHAIN
+		}
+	});
 
 	useEffect(() => {
 		refetch();
 	}, [refetch]);
 
-	if (error?.message) return <Tab.Pane loading={!data} className='tab-panel'><FilteredError text={error.message}/></Tab.Pane>;
+	if (error?.message) return <Tab.Pane loading={!data} className='tab-panel'><FilteredError text={error.message} /></Tab.Pane>;
 
-	if(data){
+	if (data) {
 
 		const noPost = !data.posts || !data.posts.length;
 
 		const atLeastOneTreasuryProposal = data.posts.some((post) => {
-			if(post.onchain_link?.onchain_treasury_spend_proposal.length || post.onchain_link?.onchain_treasury_proposal_id){
+			if (post.onchain_link?.onchain_treasury_spend_proposal.length || post.onchain_link?.onchain_treasury_proposal_id) {
 				// this breaks the loop as soon as
 				// we find a post that has a motion.
 				return true;
@@ -48,7 +50,7 @@ const LatestTreasuryTable = ({ className }:Props) => {
 
 		if (!atLeastOneTreasuryProposal || noPost)
 			return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
-				<NothingFoundCard className={className} text='There are currently no active treasury proposals.'/>
+				<NoLatestActivity className={className} />
 			</Tab.Pane>;
 
 		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
@@ -69,7 +71,7 @@ const LatestTreasuryTable = ({ className }:Props) => {
 									postType='treasury proposal'
 									created_at={post.created_at}
 								/>
-							;
+								;
 						}
 					)}
 				</Table.Body>
@@ -89,7 +91,7 @@ const LatestTreasuryTable = ({ className }:Props) => {
 								postType='treasury proposal'
 								created_at={post.created_at}
 							/>
-						;
+							;
 					}
 				)}
 			</div>

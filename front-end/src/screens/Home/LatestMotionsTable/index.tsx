@@ -6,7 +6,7 @@ import styled from '@xstyled/styled-components';
 import React, { useEffect } from 'react';
 // import { Link } from 'react-router-dom';
 import { Tab, Table } from 'semantic-ui-react';
-import NothingFoundCard from 'src/ui-components/NothingFoundCard';
+import NoLatestActivity from 'src/ui-components/NoLatestActivity';
 
 import { useGetLatestMotionPostsQuery } from '../../../generated/graphql';
 import { post_type } from '../../../global/post_types';
@@ -19,7 +19,7 @@ interface Props {
 	className?: string
 }
 
-const LatestMotionsTable = ({ className }:Props) => {
+const LatestMotionsTable = ({ className }: Props) => {
 
 	const { data, error, refetch } = useGetLatestMotionPostsQuery({ variables: { limit: 10, postType: post_type.ON_CHAIN } });
 
@@ -27,12 +27,12 @@ const LatestMotionsTable = ({ className }:Props) => {
 		refetch();
 	}, [refetch]);
 
-	if (error?.message) return <Tab.Pane loading={!data} className='tab-panel'><FilteredError text={error.message}/></Tab.Pane>;
+	if (error?.message) return <Tab.Pane loading={!data} className='tab-panel'><FilteredError text={error.message} /></Tab.Pane>;
 
-	if(data){
+	if (data) {
 		const noPost = !data.posts || !data.posts.length;
 		const atLeastOneCurrentMotion = data.posts.some((post) => {
-			if(post.onchain_link?.onchain_motion.length || post.onchain_link?.onchain_motion_id){
+			if (post.onchain_link?.onchain_motion.length || post.onchain_link?.onchain_motion_id) {
 				// this breaks the loop as soon as
 				// we find a post that has a motion.
 				return true;
@@ -42,7 +42,7 @@ const LatestMotionsTable = ({ className }:Props) => {
 
 		if (!atLeastOneCurrentMotion || noPost)
 			return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
-				<NothingFoundCard className={className} text='There are currently no active motions.'/>
+				<NoLatestActivity className={className} />
 			</Tab.Pane>;
 		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
 			<Table className='hidden-mobile' basic='very' striped unstackable selectable>
@@ -63,7 +63,7 @@ const LatestMotionsTable = ({ className }:Props) => {
 									postType='motion'
 									created_at={post.created_at}
 								/>
-							;
+								;
 						}
 					)}
 				</Table.Body>
@@ -84,7 +84,7 @@ const LatestMotionsTable = ({ className }:Props) => {
 								postType='motion'
 								created_at={post.created_at}
 							/>
-						;
+							;
 					}
 				)}
 			</div>
