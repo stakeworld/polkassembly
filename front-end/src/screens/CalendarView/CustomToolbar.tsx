@@ -199,7 +199,7 @@ function CustomToolbar(props: any) {
 						}
 					</div>
 
-					<span>{moment(props.date).format('YYYY')}</span>
+					<span className='year-text'>{moment(props.date).format('YYYY')}</span>
 
 					<div className='actions-right'>
 						{/* <Button className='search-btn' icon='search' /> */}

@@ -988,6 +988,10 @@ h1 {
 				max-width: 50px;
 			}
 
+			.year-text {
+				margin-right: 8px;
+			}
+
 			.create-event-btn {
 				padding: 6px 6px !important;
 				font-size: 12px;
