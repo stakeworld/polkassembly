@@ -983,9 +983,9 @@ h1 {
 			}
 
 			.select-month-dropdown {
-				width: 85px;
-				min-width: 85px;
-				max-width: 85px;
+				width: 50px;
+				min-width: 50px;
+				max-width: 50px;
 			}
 
 			.create-event-btn {

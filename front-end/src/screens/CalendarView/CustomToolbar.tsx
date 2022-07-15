@@ -194,11 +194,12 @@ function CustomToolbar(props: any) {
 						{viewState != 'month' &&
 							<div className='mobile-cal-nav'>
 								<Button onClick={goToBack} icon='chevron left' />
-								{/* <span>{moment(props.date).format('D/M/YY')}</span> */}
 								<Button onClick={goToNext} icon='chevron right' />
 							</div>
 						}
 					</div>
+
+					<span>{moment(props.date).format('YYYY')}</span>
 
 					<div className='actions-right'>
 						{/* <Button className='search-btn' icon='search' /> */}
