@@ -62,7 +62,7 @@ const LatestDiscussionsTable = ({ className }: Props) => {
 									username={post.author.username}
 									hideSerialNum={false}
 								/>
-								;
+							;
 						}
 					)}
 				</Table.Body>
@@ -83,7 +83,7 @@ const LatestDiscussionsTable = ({ className }: Props) => {
 								username={post.author.username}
 								hideSerialNum={false}
 							/>
-							;
+						;
 					}
 				)}
 			</div>

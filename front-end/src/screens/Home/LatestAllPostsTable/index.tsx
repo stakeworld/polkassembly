@@ -154,7 +154,7 @@ const LatestAllPostsTable = ({ className }: Props) => {
 										created_at={post.created_at}
 										username={post.author.username}
 									/>
-									;
+								;
 							}
 							return null;
 						}
@@ -181,7 +181,7 @@ const LatestAllPostsTable = ({ className }: Props) => {
 									created_at={post.created_at}
 									username={post.author.username}
 								/>
-								;
+							;
 						}
 						return null;
 					}

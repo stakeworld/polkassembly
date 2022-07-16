@@ -68,7 +68,7 @@ const LatestBountiesTable = ({ className }: Props) => {
 									postType='bounty'
 									created_at={post.created_at}
 								/>
-								;
+							;
 						}
 					)}
 				</Table.Body>
@@ -89,7 +89,7 @@ const LatestBountiesTable = ({ className }: Props) => {
 								postType='bounty'
 								created_at={post.created_at}
 							/>
-							;
+						;
 					}
 				)}
 			</div>

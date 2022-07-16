@@ -63,7 +63,7 @@ const LatestMotionsTable = ({ className }: Props) => {
 									postType='motion'
 									created_at={post.created_at}
 								/>
-								;
+							;
 						}
 					)}
 				</Table.Body>
@@ -84,7 +84,7 @@ const LatestMotionsTable = ({ className }: Props) => {
 								postType='motion'
 								created_at={post.created_at}
 							/>
-							;
+						;
 					}
 				)}
 			</div>

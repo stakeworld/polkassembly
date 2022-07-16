@@ -71,7 +71,7 @@ const LatestTreasuryTable = ({ className }: Props) => {
 									postType='treasury proposal'
 									created_at={post.created_at}
 								/>
-								;
+							;
 						}
 					)}
 				</Table.Body>
@@ -91,7 +91,7 @@ const LatestTreasuryTable = ({ className }: Props) => {
 								postType='treasury proposal'
 								created_at={post.created_at}
 							/>
-							;
+						;
 					}
 				)}
 			</div>

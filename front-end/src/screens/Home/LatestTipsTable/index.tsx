@@ -73,7 +73,7 @@ const LatestTipsTable = ({ className }: Props) => {
 									created_at={post.created_at}
 									hideSerialNum={true}
 								/>
-								;
+							;
 						}
 					)}
 				</Table.Body>
@@ -96,7 +96,7 @@ const LatestTipsTable = ({ className }: Props) => {
 								created_at={post.created_at}
 								hideSerialNum={true}
 							/>
-							;
+						;
 					}
 				)}
 			</div>

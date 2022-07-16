@@ -69,7 +69,7 @@ const LatestReferendaTable = ({ className }: Props) => {
 									postType='referenda'
 									created_at={post.created_at}
 								/>
-								;
+							;
 						}
 					)}
 				</Table.Body>
@@ -90,7 +90,7 @@ const LatestReferendaTable = ({ className }: Props) => {
 								postType='referenda'
 								created_at={post.created_at}
 							/>
-							;
+						;
 					}
 				)}
 			</div>

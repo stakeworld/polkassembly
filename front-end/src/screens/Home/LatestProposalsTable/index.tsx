@@ -71,7 +71,7 @@ const LatestProposalsTable = ({ className }: Props) => {
 									postType='proposal'
 									created_at={post.created_at}
 								/>
-								;
+							;
 						}
 					)}
 				</Table.Body>
@@ -92,7 +92,7 @@ const LatestProposalsTable = ({ className }: Props) => {
 								postType='proposal'
 								created_at={post.created_at}
 							/>
-							;
+						;
 					}
 				)}
 			</div>
