@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from '@xstyled/styled-components';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Card, Divider, Grid, Icon, Label } from 'semantic-ui-react';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { useGetUserDetailsQuery } from 'src/generated/graphql';
@@ -34,10 +34,9 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 		}
 	});
 
-	// TODO: remove
-	// useEffect(() => {
-	// refetch();
-	// }, [refetch]);
+	useEffect(() => {
+		refetch();
+	}, [refetch]);
 
 	return (
 		<div className={className}>
