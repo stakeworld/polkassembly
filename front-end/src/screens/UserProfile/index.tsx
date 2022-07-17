@@ -375,6 +375,10 @@ export default styled(UserProfile)`
 				margin-bottom: 18px;
 				font-size: 14px;
 
+				&.mb-0 {
+					margin-bottom: 0 !important;
+				}
+
 				@media only screen and (max-width: 768px) {
 					font-size: 14px;
 					height: 38px;
@@ -386,113 +390,27 @@ export default styled(UserProfile)`
 				height: auto !important;
 			}
 
-			.radio-input-group {
-				margin-top: 12px;
+			.add-badge-btn {
+				margin-left: 8px;
+				white-space: nowrap;
+				font-size: 12px;
+				background: transparent !important;
+				border: 1px solid #E5007A;
+				color: #E5007A !important;
+				text-align: center;
+
+				.icon {
+					margin-right: 0 !important;
+				}
+
+				@media only screen and (max-width: 767px) {
+					white-space: normal;
+
+					.badge-btn-text {
+						display: none;
+					}
+				}
 				
-				.checkbox{
-					margin-right: 20px !important;
-
-					&.checked {
-						label {
-							color: #E5007A;
-
-							&::after {
-								background-color: #E5007A !important;
-							}
-						}
-					}
-
-					label {
-						font-size: 18px !important;
-						padding-left: 20px !important;
-					}
-
-				}
-			}
-
-			.date-input-row {
-				margin-top: 28px;
-				margin-bottom: 28px;
-				display: flex;
-
-				@media only screen and (max-width: 768px) {
-					margin-top: 22px;
-					margin-bottom: 22px;
-					flex-direction: column;
-				}
-
-				.start-date-div {
-					margin-right: 20px;
-
-					@media only screen and (max-width: 768px) {
-						margin-right: 0;
-						margin-bottom: 14px;
-					}
-				}
-
-				.input-label {
-					margin-bottom: 212px !important;
-				}
-
-				.react-calendar__tile--now {
-					background-color: rgba(229, 0, 122, 0.1);
-				}
-			}
-
-			.date-input {
-				width: 100%;
-				margin-top: 2px;
-				font-family: 'Roboto' !important;
-		
-				&.error {
-					.react-date-picker__wrapper {
-						border: #FF0000 1px solid;
-						color: #FF0000 !important;
-					}
-		
-					.react-date-picker__inputGroup__input {
-						color: #FF0000 !important;
-						font-family: 'Roboto' !important;
-					}
-				}
-		
-				.react-date-picker__wrapper {
-					padding: 0 10px;
-					border: 1px solid rgba(34,36,38,.15);
-					border-radius: .29rem;
-		
-					.react-date-picker__inputGroup {
-						display: flex;
-		
-						.react-date-picker__inputGroup__divider {
-							height: 100%;
-							display: flex;
-							align-items: center;
-						}
-					}
-		
-				}
-		
-				.react-date-picker__clear-button {
-					svg {
-						stroke: #aaa !important;
-						height: 14px;
-					}
-				}
-		
-				.react-date-picker__inputGroup__input {
-					border: none !important;
-					font-family: 'Roboto' !important;
-					color: #333;
-					height: min-content;
-					margin-bottom: 0 !important;
-				}
-		
-				.react-date-picker__inputGroup__divider,.react-date-picker__inputGroup__day, .react-date-picker__inputGroup__month, .react-date-picker__inputGroup__year {
-					font-size: 14px;
-					padding-left: 1px !important;
-					padding-right: 1px !important;
-				}
 			}
 
 			.form-actions{

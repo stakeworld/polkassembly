@@ -114,7 +114,14 @@ const EditProfileSidebar = ({ className, data, routeWrapperHeight, refetch, setE
 					status: NotificationStatus.SUCCESS
 				});
 			}
-		}).catch((e) => console.error('Error updating profile: ',e));
+		}).catch((e) => {
+			console.error('Error updating profile: ',e);
+			queueNotification({
+				header: 'Error!',
+				message: 'Your profile was not updated.',
+				status: NotificationStatus.ERROR
+			});
+		});
 	};
 
 	const addNewBadge = () => {
@@ -248,14 +255,17 @@ const EditProfileSidebar = ({ className, data, routeWrapperHeight, refetch, setE
 					<Form.Field>
 						<label className='input-label'>Badges</label>
 						<p className='info-para'>Badges are pointers that indicate individual successes, abilities, skills and/or interests.</p>
-						<Input
-							type='text'
-							className='text-input'
-							value={newBadge}
-							onChange={(e) => setNewBadge(e.target.value)}
-							onKeyPress={(e: any) => handleNewBadgeKeyPress(e)}
-							disabled={loading}
-						/>
+						<div className="d-flex">
+							<Input
+								type='text'
+								className='text-input mb-0'
+								value={newBadge}
+								onChange={(e) => setNewBadge(e.target.value)}
+								onKeyPress={(e: any) => handleNewBadgeKeyPress(e)}
+								disabled={loading}
+							/>
+							<Button className='add-badge-btn' onClick={() => addNewBadge()}><Icon name='plus' /><span className='badge-btn-text'>Add Badge</span></Button>
+						</div>
 						{ newBadgeError && <span className='error-text'>This badge already exists.</span> }
 
 						{ badges.length > 0 &&
