@@ -11,7 +11,6 @@ import {
 import { hexToString, logger } from '@polkadot/util';
 
 import { prisma } from '../generated/prisma-client';
-import { filterEvents } from '../util/filterEvents';
 import { childBountyStatus } from '../util/statuses';
 import {
   Cached,
@@ -38,11 +37,18 @@ const createChildBounty: Task<NomidotChildBounty[]> = {
   ): Promise<NomidotChildBounty[]> => {
     const { events } = cached;
 
-    const childBountyEvents = filterEvents(
-      events,
-      'childBounties',
-      childBountyStatus.ADDED
-    );
+    // const childBountyEvents = filterEvents(
+    //   events,
+    //   'childBounties',
+    //   'Awarded',
+    // );
+
+    const childBountyEvents = events.filter(
+      ({ event: { method, section } }) =>
+        section === 'childBounties' &&	[
+          childBountyStatus.ADDED,
+          childBountyStatus.AWARDED,
+      ].includes(method));
 
     const results: NomidotChildBounty[] = [];
 
@@ -101,13 +107,30 @@ const createChildBounty: Task<NomidotChildBounty[]> = {
         }
 
         let curator = null;
-        
-        try {
-          curator = childBounty.status?.asCuratorProposed?.curator;
-        } catch (error) {
+        let beneficiary = null;
+
+        const cbStatus = childBounty.status?.toHuman();
+
+        if (cbStatus === childBountyStatus.ADDED) {
           curator = bounty.proposer;
-          l.error(error);
         }
+
+        else if (Object.keys(cbStatus).includes("CuratorProposed")) {
+          curator = cbStatus.CuratorProposed.curator;
+          beneficiary = cbStatus.CuratorProposed.beneficiary;
+        }
+
+        else if (Object.keys(cbStatus).includes("PendingPayout")) {
+          curator = cbStatus.PendingPayout.curator;
+          beneficiary = cbStatus.PendingPayout.beneficiary;
+        }
+        
+        // try {
+        //   curator = childBounty.status?.asCuratorProposed?.curator;
+        // } catch (error) {
+        //   curator = bounty.proposer;
+        //   l.error(error);
+        // }
 
         const result: NomidotChildBounty = {
           childBountyId: childBountyId,
@@ -119,7 +142,7 @@ const createChildBounty: Task<NomidotChildBounty[]> = {
           parentBountyId,
           childBountyStatus: childBountyStatus.ADDED,
           curator: curator,
-          beneficiary: curator
+          beneficiary: beneficiary,
         };
 
         l.log(`Nomidot Child Bounty: ${JSON.stringify(result)}`);
@@ -146,27 +169,37 @@ const createChildBounty: Task<NomidotChildBounty[]> = {
           beneficiary
         } = prop;
 
-        await prisma.createChildBounty({
-          childBountyId,
-          parentBountyId,
-          proposer: proposer.toString(),
-          value: value.toString(),
-          fee: fee.toString(),
-          curatorDeposit: curatorDeposit.toString(),
-          description:description.toString(),
-          curator: curator?.toString(),
-          beneficiary: beneficiary?.toString(),
-          childBountyStatus: {
-            create: {
-              blockNumber: {
-                connect: {
-                  number: blockNumber.toNumber(),
-                },
-              },
-              status: childBountyStatus,
-              uniqueStatus: `${childBountyId}_${childBountyStatus}`,
-            },
+        await prisma.upsertChildBounty({
+          where: {
+            childBountyId,
           },
+          update: {
+            childBountyId,
+            curator: curator?.toString(),
+            beneficiary: beneficiary?.toString(),
+          },
+          create: {
+            childBountyId,
+            parentBountyId,
+            proposer: proposer.toString(),
+            value: value.toString(),
+            fee: fee.toString(),
+            curatorDeposit: curatorDeposit.toString(),
+            description: description.toString(),
+            curator: curator?.toString(),
+            beneficiary: beneficiary?.toString(),
+            childBountyStatus: {
+              create: {
+                blockNumber: {
+                  connect: {
+                    number: blockNumber.toNumber(),
+                  },
+                },
+                status: childBountyStatus,
+                uniqueStatus: `${childBountyId}_${childBountyStatus}`,
+              },
+            },
+          }
         });
       })
     );
