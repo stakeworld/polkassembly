@@ -72,11 +72,11 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 				content: eventObj.content,
 				end_time: moment(eventObj.end_time).toDate(),
 				id: eventObj.id,
+				location: eventObj.location,
 				start_time: moment(eventObj.end_time).toDate(),
 				status: eventObj.status,
 				title: eventObj.title,
 				url: eventObj.url
-				// location: eventObj.location
 			});
 		});
 
@@ -832,7 +832,6 @@ h1 {
 		border-bottom: 1px solid #E8E8E8;
 		display: flex;
 		align-items: center;
-		margin-left: -25%; //TODO: Determine value
 
 		.select-div {
 			&:nth-of-type(2) {

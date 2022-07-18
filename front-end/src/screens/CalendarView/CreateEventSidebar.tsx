@@ -43,13 +43,13 @@ const CreateEventSidebar = ({ className, routeWrapperHeight, refetch, selectedNe
 			content: eventDescription,
 			end_time: eventEndDateTime,
 			event_type: eventType,
+			location: eventLocation,
 			module: '',
 			network: selectedNetwork,
 			start_time: eventStartDateTime,
 			title: eventTitle,
 			url: eventJoiningLink,
 			user_id: id
-			// location: eventLocation
 		}
 	});
 
@@ -109,13 +109,13 @@ const CreateEventSidebar = ({ className, routeWrapperHeight, refetch, selectedNe
 				content: eventDescription,
 				end_time: eventEndDateTime,
 				event_type: eventType,
+				location: eventLocation,
 				module: '',
 				network: selectedNetwork,
 				start_time: eventStartDateTime,
 				title: eventTitle,
 				url: eventJoiningLink,
 				user_id: id
-				// location: eventLocation
 			}
 		})
 			.then(({ data }) => {
