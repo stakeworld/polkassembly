@@ -44,7 +44,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
 
 	const { id } = useContext(UserDetailsContext);
-	const event_bot_id = process.env.REACT_APP_EVENT_BOT_USER_ID;
+	const event_bot_id = Number(process.env.REACT_APP_EVENT_BOT_USER_ID);
 
 	const { queueNotification } = useContext(NotificationContext);
 
@@ -52,7 +52,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	const [selectedView, setSelectedView] = useState<string>('month');
 	const [selectedNetwork, setSelectedNetwork] = useState<string>(NETWORK);
 	const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-	const [sidebarEvent, setSidebarEvent] = useState<any>({});
+	const [sidebarEvent, setSidebarEvent] = useState<any>();
 	const [sidebarCreateEvent, setSidebarCreateEvent] = useState<boolean>(false);
 
 	const [queryApprovalStatus, setQueryApprovalStatus] = useState<string>(approvalStatus.APPROVED);
@@ -110,7 +110,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	const [updateApprovalStatusMutation, { loading: loadingUpdate }] = useUpdateApprovalStatusMutation({
 		variables: {
 			approval_status: eventApprovalStatus,
-			id: sidebarEvent.id
+			id: sidebarEvent?.id
 		}
 	});
 
@@ -125,6 +125,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	const onApprovalStatusChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
 		const status = data.value as string;
 		setEventApprovalStatus(status);
+		refetch();
 	};
 
 	const handleUpdateApproval = () => {
@@ -187,9 +188,9 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 
 	return (
 		<div className={className}>
-			{id == event_bot_id &&
+			{id && (id == event_bot_id) &&
 				<div className='event-bot-div'>
-					<Button fluid className='pending-events-btn' onClick={togglePendingEvents}>
+					<Button fluid className='pending-events-btn' onClick={togglePendingEvents} disabled={Boolean(sidebarEvent)}>
 						{queryApprovalStatus == approvalStatus.APPROVED ? 'Show' : 'Hide'} Pending Events
 					</Button>
 				</div>
@@ -250,7 +251,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 
 			{/* Event View Sidebar */}
 			{routeWrapperHeight && sidebarEvent && Object.keys(sidebarEvent).length !== 0 && <div className="events-sidebar" style={ { maxHeight: `${routeWrapperHeight}px`, minHeight: `${routeWrapperHeight}px` } }>
-				{event_bot_id == id &&
+				{id && (id == event_bot_id) &&
 					<div className='approval-status-div'>
 						<span>Status: </span>
 						<Dropdown
