@@ -8,10 +8,12 @@ import styled from '@xstyled/styled-components';
 import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
-import { Divider, Grid, Icon } from 'semantic-ui-react';
+import { Button, Divider, Dropdown, DropdownProps, Grid, Icon } from 'semantic-ui-react';
+import { NotificationContext } from 'src/context/NotificationContext';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
-import { useGetCalenderEventsQuery } from 'src/generated/graphql';
+import { useGetCalenderEventsQuery, useUpdateApprovalStatusMutation } from 'src/generated/graphql';
 import { approvalStatus } from 'src/global/statuses';
+import { NotificationStatus } from 'src/types';
 import getNetwork from 'src/util/getNetwork';
 
 import chainLink from '../../assets/chain-link.png';
@@ -42,16 +44,41 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
 
 	const { id } = useContext(UserDetailsContext);
+	const event_bot_id = process.env.REACT_APP_EVENT_BOT_ID;
+
+	const { queueNotification } = useContext(NotificationContext);
 
 	const [calendarEvents, setCalendarEvents] = useState<any[]>([]);
 	const [selectedView, setSelectedView] = useState<string>('month');
 	const [selectedNetwork, setSelectedNetwork] = useState<string>(NETWORK);
 	const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-	const [sidebarEvent, setSidebarEvent] = useState<any>();
+	const [sidebarEvent, setSidebarEvent] = useState<any>({});
 	const [sidebarCreateEvent, setSidebarCreateEvent] = useState<boolean>(false);
 
-	const { data, refetch } = useGetCalenderEventsQuery({ variables: {
-		approval_status: approvalStatus.APPROVED,
+	const [queryApprovalStatus, setQueryApprovalStatus] = useState<string>(approvalStatus.APPROVED);
+
+	const [eventApprovalStatus, setEventApprovalStatus] = useState<string>(queryApprovalStatus);
+
+	const approvalStatusDropdown = [
+		{
+			key: approvalStatus.APPROVED,
+			text: 'Approved',
+			value: approvalStatus.APPROVED
+		},
+		{
+			key: approvalStatus.PENDING,
+			text: 'Pending',
+			value: approvalStatus.PENDING
+		},
+		{
+			key: approvalStatus.REJECTED,
+			text: 'Rejected',
+			value: approvalStatus.REJECTED
+		}
+	];
+
+	const { data, loading, refetch } = useGetCalenderEventsQuery({ variables: {
+		approval_status: queryApprovalStatus,
 		network: selectedNetwork
 	} });
 
@@ -80,11 +107,63 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 		}
 	}, [data, emitCalendarEvents]);
 
+	const [updateApprovalStatusMutation, { loading: loadingUpdate }] = useUpdateApprovalStatusMutation({
+		variables: {
+			approval_status: eventApprovalStatus,
+			id: sidebarEvent.id
+		}
+	});
+
+	const togglePendingEvents = () => {
+		if(queryApprovalStatus != approvalStatus.APPROVED){
+			setQueryApprovalStatus(approvalStatus.APPROVED);
+		}else {
+			setQueryApprovalStatus(approvalStatus.PENDING);
+		}
+	};
+
+	const onApprovalStatusChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+		const status = data.value as string;
+		setEventApprovalStatus(status);
+	};
+
+	const handleUpdateApproval = () => {
+		if(!sidebarEvent || !eventApprovalStatus ||  Object.keys(sidebarEvent).length === 0){
+			return;
+		}
+
+		updateApprovalStatusMutation({
+			variables: {
+				approval_status: eventApprovalStatus,
+				id: sidebarEvent.id
+			}
+		})
+			.then(({ data }) => {
+				if (data && data.update_calender_events && data.update_calender_events.affected_rows > 0){
+					queueNotification({
+						header: 'Success!',
+						message: 'Event updated successfully',
+						status: NotificationStatus.SUCCESS
+					});
+					refetch();
+				}
+			})
+			.catch((e) => {
+				queueNotification({
+					header: 'Error!',
+					message: 'Error updating event',
+					status: NotificationStatus.ERROR
+				});
+				console.error('Error updating event :', e);
+			});
+	};
+
 	function showEventSidebar(event: any) {
 		if(small){
 			return;
 		}
 
+		setEventApprovalStatus(queryApprovalStatus);
 		setSidebarEvent(event);
 	}
 
@@ -108,6 +187,14 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 
 	return (
 		<div className={className}>
+			{id == event_bot_id &&
+				<div className='event-bot-div'>
+					<Button fluid className='pending-events-btn' onClick={togglePendingEvents}>
+						{queryApprovalStatus == approvalStatus.APPROVED ? 'Show' : 'Hide'} Pending Events
+					</Button>
+				</div>
+			}
+
 			{ !small && <div className='cal-heading-div'>
 				<h1> Calendar </h1>
 				<div className='mobile-network-select'>
@@ -117,7 +204,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 			}
 
 			<Grid stackable>
-				{data && data.calender_events ?
+				{!loading && data && data.calender_events ?
 					<Grid.Row>
 						<Calendar
 							className={`events-calendar ${small || width < 768 ? 'small' : '' }`}
@@ -162,13 +249,27 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 			</Grid>
 
 			{/* Event View Sidebar */}
-			{routeWrapperHeight && sidebarEvent && <div className="events-sidebar" style={ { maxHeight: `${routeWrapperHeight}px`, minHeight: `${routeWrapperHeight}px` } }>
+			{routeWrapperHeight && sidebarEvent && Object.keys(sidebarEvent).length !== 0 && <div className="events-sidebar" style={ { maxHeight: `${routeWrapperHeight}px`, minHeight: `${routeWrapperHeight}px` } }>
+				{event_bot_id == id &&
+					<div className='approval-status-div'>
+						<span>Status: </span>
+						<Dropdown
+							fluid
+							selection
+							value={eventApprovalStatus}
+							options={approvalStatusDropdown}
+							onChange={onApprovalStatusChange}
+							disabled={loadingUpdate}
+						/>
+						<Button onClick={handleUpdateApproval} disabled={loadingUpdate}>Save</Button>
+					</div>
+				}
 				<div className="event-sidebar-header d-flex">
 					<div className='d-flex'>
 						<Icon name='circle' className={`status-icon ${moment(sidebarEvent.end_time).isBefore() ? 'overdue-color' : `${sidebarEvent.status?.toLowerCase()}-color`}`} />
 						<h1>{sidebarEvent.title}</h1>
 					</div>
-					<Icon className='close-btn' name='close' onClick={() => setSidebarEvent(false)} />
+					<Icon className='close-btn' name='close' disabled={loadingUpdate} onClick={() => setSidebarEvent(false)} />
 				</div>
 
 				<div className="sidebar-event-datetime">
@@ -207,6 +308,36 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 };
 
 export default styled(CalendarView)`
+.event-bot-div {
+	width: 100%;
+	margin-bottom: 16px;
+
+	.pending-events-btn {
+		margin-left: auto;
+		margin-right: auto;
+		background-color: #E5007A;
+		color: #fff;
+		width: 50%;
+		font-size: 16px;
+	}
+}
+
+.approval-status-div {
+	display: flex;
+	align-items: center;
+	margin-bottom: 34px;
+
+	span, .dropdown {
+		margin-right: 8px;
+	}
+
+	.button {
+		background-color: #E5007A;
+		color: #fff;
+		font-size: 13px;
+	}
+}
+
 .events-sidebar, .create-event-sidebar {
 	position: absolute;
 	min-width: 250px;
@@ -1012,3 +1143,4 @@ h1 {
 }
 
 `;
+
