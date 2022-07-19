@@ -16,6 +16,21 @@
       - block_explorer
       - id
       filter: {}
+  - role: event_bot
+    permission:
+      columns:
+      - block_explorer
+      - discord
+      - github
+      - homepage
+      - id
+      - network
+      - reddit
+      - telegram
+      - twitter
+      - youtube
+      filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -211,6 +226,17 @@
       - user_id
       filter: {}
       allow_aggregations: true
+  - role: event_bot
+    permission:
+      columns:
+      - comment_id
+      - created_at
+      - id
+      - reaction
+      - updated_at
+      - user_id
+      filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -283,6 +309,17 @@
       - post_id
   select_permissions:
   - role: anonymous
+    permission:
+      columns:
+      - author_id
+      - content
+      - created_at
+      - id
+      - post_id
+      - updated_at
+      filter: {}
+      allow_aggregations: true
+  - role: event_bot
     permission:
       columns:
       - author_id
@@ -462,6 +499,23 @@
       - proposer_address
       filter: {}
       allow_aggregations: true
+  - role: event_bot
+    permission:
+      columns:
+      - id
+      - created_at
+      - post_id
+      - onchain_proposal_id
+      - proposer_address
+      - onchain_referendum_id
+      - onchain_motion_id
+      - onchain_treasury_proposal_id
+      - onchain_tip_id
+      - onchain_bounty_id
+      - onchain_tech_committee_proposal_id
+      - onchain_child_bounty_id
+      filter: {}
+      allow_aggregations: true
   - role: proposal_bot
     permission:
       columns:
@@ -558,6 +612,14 @@
       - author_id
       backend_only: false
   select_permissions:
+  - role: event_bot
+    permission:
+      columns:
+      - author_id
+      - discussion_post_id
+      - onchain_link_id
+      filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -617,6 +679,18 @@
       backend_only: false
   select_permissions:
   - role: anonymous
+    permission:
+      columns:
+      - created_at
+      - end_at
+      - id
+      - options
+      - post_id
+      - question
+      - updated_at
+      filter: {}
+      allow_aggregations: true
+  - role: event_bot
     permission:
       columns:
       - created_at
@@ -703,6 +777,17 @@
       - updated_at
       filter: {}
       allow_aggregations: true
+  - role: event_bot
+    permission:
+      columns:
+      - created_at
+      - id
+      - option
+      - option_poll_id
+      - updated_at
+      - user_id
+      filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -764,6 +849,22 @@
       - updated_at
       backend_only: false
   select_permissions:
+  - role: event_bot
+    permission:
+      columns:
+      - author_id
+      - content
+      - created_at
+      - id
+      - is_synced
+      - proposal_hash
+      - proposal_id
+      - proposal_type
+      - proposer_address
+      - title
+      - updated_at
+      filter: {}
+      allow_aggregations: true
   - role: proposal_bot
     permission:
       columns:
@@ -834,6 +935,16 @@
       - updated_at
       filter: {}
       allow_aggregations: true
+  - role: event_bot
+    permission:
+      columns:
+      - block_end
+      - created_at
+      - id
+      - post_id
+      - updated_at
+      filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -893,6 +1004,17 @@
       - updated_at
       filter: {}
       allow_aggregations: true
+  - role: event_bot
+    permission:
+      columns:
+      - created_at
+      - id
+      - poll_id
+      - updated_at
+      - user_id
+      - vote
+      filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -934,6 +1056,14 @@
       - post_id
       - last_update
       filter: {}
+  - role: event_bot
+    permission:
+      columns:
+      - comment_id
+      - post_id
+      - last_update
+      filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -970,6 +1100,17 @@
       - user_id
   select_permissions:
   - role: anonymous
+    permission:
+      columns:
+      - created_at
+      - id
+      - post_id
+      - reaction
+      - updated_at
+      - user_id
+      filter: {}
+      allow_aggregations: true
+  - role: event_bot
     permission:
       columns:
       - created_at
@@ -1025,6 +1166,13 @@
       - id
       - name
       filter: {}
+  - role: event_bot
+    permission:
+      columns:
+      - id
+      - name
+      filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -1049,6 +1197,13 @@
       - id
       - name
       filter: {}
+  - role: event_bot
+    permission:
+      columns:
+      - id
+      - name
+      filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -1167,6 +1322,19 @@
       - updated_at
       filter: {}
       allow_aggregations: true
+  - role: event_bot
+    permission:
+      columns:
+      - author_id
+      - content
+      - created_at
+      - id
+      - title
+      - topic_id
+      - type_id
+      - updated_at
+      filter: {}
+      allow_aggregations: true
   - role: proposal_bot
     permission:
       columns:
@@ -1242,6 +1410,19 @@
       - network
       filter: {}
       allow_aggregations: true
+  - role: event_bot
+    permission:
+      columns:
+      - id
+      - onchain_proposal_id
+      - status
+      - network
+      - deadline
+      - user_id
+      - created_at
+      - updated_at
+      filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -1305,6 +1486,17 @@
       - comment_id
       - author_id
       - created_at
+      - updated_at
+      filter: {}
+      allow_aggregations: true
+  - role: event_bot
+    permission:
+      columns:
+      - author_id
+      - comment_id
+      - content
+      - created_at
+      - id
       - updated_at
       filter: {}
       allow_aggregations: true

@@ -44,7 +44,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 	const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
 
 	const { id } = useContext(UserDetailsContext);
-	const event_bot_id = process.env.REACT_APP_EVENT_BOT_ID;
+	const event_bot_id = process.env.REACT_APP_EVENT_BOT_USER_ID;
 
 	const { queueNotification } = useContext(NotificationContext);
 
