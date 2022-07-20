@@ -6,7 +6,7 @@ import styled from '@xstyled/styled-components';
 import React, { useEffect } from 'react';
 // import { Link } from 'react-router-dom';
 import { Tab, Table } from 'semantic-ui-react';
-import NothingFoundCard from 'src/ui-components/NothingFoundCard';
+import NoLatestActivity from 'src/ui-components/NoLatestActivity';
 import getDefaultAddressField from 'src/util/getDefaultAddressField';
 
 import { useLatestDiscussionPostsQuery } from '../../../generated/graphql';
@@ -19,26 +19,28 @@ interface Props {
 	className?: string
 }
 
-const LatestDiscussionsTable = ({ className }:Props) => {
+const LatestDiscussionsTable = ({ className }: Props) => {
 
 	const defaultAddressField = getDefaultAddressField();
 
-	const { data, error, refetch } = useLatestDiscussionPostsQuery({ variables: {
-		limit: 10
-	} });
+	const { data, error, refetch } = useLatestDiscussionPostsQuery({
+		variables: {
+			limit: 10
+		}
+	});
 
 	useEffect(() => {
 		refetch();
 	}, [refetch]);
 
-	if (error?.message) return <Tab.Pane loading={!data} className='tab-panel'><FilteredError text={error.message}/></Tab.Pane>;
+	if (error?.message) return <Tab.Pane loading={!data} className='tab-panel'><FilteredError text={error.message} /></Tab.Pane>;
 
-	if(data){
+	if (data) {
 		const noPost = !data.posts || !data.posts.length;
 
 		if (noPost)
 			return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
-				<NothingFoundCard className={className} text='There are currently no active referenda.'/>
+				<NoLatestActivity className={className} />
 			</Tab.Pane>;
 
 		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
