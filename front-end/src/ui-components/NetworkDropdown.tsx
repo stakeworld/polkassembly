@@ -57,7 +57,12 @@ const NetworkDropdown = ({ className, setSidebarHiddenFunc }: Props) =>  {
 		if (data.value === NETWORK){
 			return null;
 		}
-		window.location.href = `https://${data.value}.polkassembly.io`;
+
+		if (data.value === 'moonbase' || data.value === 'moonriver' || data.value === 'moonbeam' || data.value === 'kilt' || data.value === 'automata') {
+			window.location.href = `https://${data.value}.polkassembly.network`;
+		} else {
+			window.location.href = `https://${data.value}.polkassembly.io`;
+		}
 		return null;
 	};
 
