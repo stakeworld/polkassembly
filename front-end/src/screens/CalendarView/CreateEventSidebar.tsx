@@ -123,8 +123,9 @@ const CreateEventSidebar = ({ className, routeWrapperHeight, refetch, selectedNe
 					closeCreateEventSidebar();
 					queueNotification({
 						header: 'Success!',
-						message: 'Event saved successfully',
-						status: NotificationStatus.SUCCESS
+						message: 'Event has been sent for approval and should be live in 48 hours. Please contact hello@polkassembly.io in case of any queries',
+						status: NotificationStatus.SUCCESS,
+						timeout: 12000
 					});
 					refetch();
 				}

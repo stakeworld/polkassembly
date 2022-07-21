@@ -77,6 +77,7 @@ export interface NotificationType {
   header: string;
   message: string;
   status: NotificationStatus;
+  timeout?: number;
 }
 
 export interface ModalType {
