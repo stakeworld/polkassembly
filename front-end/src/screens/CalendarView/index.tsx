@@ -8,7 +8,7 @@ import styled from '@xstyled/styled-components';
 import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
 import { Calendar, DateHeaderProps, momentLocalizer, View } from 'react-big-calendar';
-import {  Button, Divider, Dropdown, DropdownProps, Grid, Icon } from 'semantic-ui-react';
+import {  Button, Divider, Dropdown, DropdownProps, Grid, Icon, List } from 'semantic-ui-react';
 import { NotificationContext } from 'src/context/NotificationContext';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { useGetCalenderEventsQuery, useUpdateApprovalStatusMutation } from 'src/generated/graphql';
@@ -251,6 +251,22 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 									/>
 								}}
 							/>
+
+							<span className='legend-title'>Proposal Status: </span>
+							<List className='legend-list'>
+								<List.Item>
+									<List.Icon name='square' style={ { color: '#EA8612' } } />
+									<List.Content>Working</List.Content>
+								</List.Item>
+								<List.Item>
+									<List.Icon name='square' style={ { color: '#5BC044' } } />
+									<List.Content>Completed</List.Content>
+								</List.Item>
+								<List.Item>
+									<List.Icon name='square' style={ { color: '#FF0000' } } />
+									<List.Content>Overdue</List.Content>
+								</List.Item>
+							</List>
 						</Grid.Column>
 						}
 
@@ -790,6 +806,7 @@ h1 {
 		border: 2px solid #E8E8E8;
 		border-radius: 10px;
 		padding: 15px 8px;
+		margin-bottom: 24px;
 
 		.custom-calendar-toolbar-mini {
 			display: flex;
@@ -907,6 +924,17 @@ h1 {
 				}
 			}
 		}
+	}
+
+	.legend-title {
+		margin-left: 8px;
+		color: #646464;
+		font-size: 14px;
+		font-weight: 500;
+	}
+
+	.legend-list {
+		margin-left: 10px;
 	}
 	
 }
@@ -1041,13 +1069,6 @@ h1 {
 			display: flex;
 			align-items: center;
 			margin-left: auto;
-
-			.legend-trigger {
-				margin-right: 16px;
-				color: #E5007A;
-				font-weight: 500;
-				font-size: 16px;
-			}
 
 			.today-btn {
 				/* margin-right: 22px; */
