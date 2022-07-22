@@ -17,6 +17,7 @@ import { NotificationStatus } from 'src/types';
 import getNetwork from 'src/util/getNetwork';
 
 import chainLink from '../../assets/chain-link.png';
+import { Role } from '../../types';
 import CreateEventSidebar from './CreateEventSidebar';
 import CustomToolbar from './CustomToolbar';
 import CustomToolbarMini from './CustomToolbarMini';
@@ -28,6 +29,8 @@ interface Props {
 	small?: boolean
 	emitCalendarEvents?: React.Dispatch<React.SetStateAction<any[]>> | undefined
 }
+
+const ALLOWED_ROLE = Role.EVENT_BOT;
 
 const localizer = momentLocalizer(moment);
 
@@ -48,8 +51,11 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 
 	const utcDate = new Date(new Date().toISOString().slice(0,-1));
 
-	const { id } = useContext(UserDetailsContext);
-	const event_bot_id = Number(process.env.REACT_APP_EVENT_BOT_USER_ID);
+	const { id, allowed_roles } = useContext(UserDetailsContext);
+	let accessible = false;
+	if(allowed_roles && allowed_roles?.length > 0 && allowed_roles.includes(ALLOWED_ROLE)) {
+		accessible = true;
+	}
 
 	const { queueNotification } = useContext(NotificationContext);
 
@@ -210,7 +216,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 
 	return (
 		<div className={className}>
-			{id && (id == event_bot_id) &&
+			{accessible &&
 				<div className='event-bot-div'>
 					<Button fluid className='pending-events-btn' onClick={togglePendingEvents} disabled={Boolean(sidebarEvent)}>
 						{queryApprovalStatus == approvalStatus.APPROVED ? 'Show' : 'Hide'} Pending Events
@@ -303,7 +309,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 
 			{/* Event View Sidebar */}
 			{routeWrapperHeight && sidebarEvent && Object.keys(sidebarEvent).length !== 0 && <div className="events-sidebar" style={ { maxHeight: `${routeWrapperHeight}px`, minHeight: `${routeWrapperHeight}px` } }>
-				{id && (id == event_bot_id) &&
+				{accessible &&
 					<div className='approval-status-div'>
 						<span>Status: </span>
 						<Dropdown
