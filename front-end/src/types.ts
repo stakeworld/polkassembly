@@ -13,6 +13,7 @@ export interface UserDetailsContextType {
   email?: string | null;
   email_verified?: boolean | null;
   addresses?: string[] | null;
+  allowed_roles?: string[] | null;
   defaultAddress?: string | null;
   notification: {
     postParticipated: boolean;

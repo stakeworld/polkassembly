@@ -69,10 +69,12 @@ export const handleTokenChange = (token: string, currentUser: UserDetailsContext
 					addresses = claims['x-hasura-polkadot'];
 					defaultAddress = claims['x-hasura-polkadot-default'];
 				}
+				const allowed_roles = claims['x-hasura-allowed-roles'];
 
 				return {
 					...prevState,
 					addresses: decodePostgresArray(addresses),
+					allowed_roles,
 					defaultAddress,
 					email,
 					email_verified,
@@ -94,6 +96,7 @@ export const logout = (setUserDetailsContextState: UserDetailsContextType['setUs
 		return {
 			...prevState,
 			addresses: [],
+			allowed_roles: [],
 			defaultAddress: null,
 			email: null,
 			email_verified: false,

@@ -14,6 +14,7 @@ const NETWORK = getNetwork();
 
 const initialUserDetailsContext : UserDetailsContextType = {
 	addresses: [],
+	allowed_roles: [],
 	defaultAddress: '',
 	email: null,
 	email_verified: false,
@@ -63,6 +64,7 @@ try {
 
 		initialUserDetailsContext.addresses = decodePostgresArray((claims as any)[`x-hasura-${NETWORK}`]);
 		initialUserDetailsContext.defaultAddress = (claims as any)[`x-hasura-${NETWORK}-default`];
+		initialUserDetailsContext.allowed_roles = (claims as any)['x-hasura-allowed-roles'];
 		initialUserDetailsContext.web3signup = web3signup || false;
 	}
 } catch {
