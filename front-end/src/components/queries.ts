@@ -140,3 +140,25 @@ export const EDIT_CALENDER_EVENT= gql`
         }
     }
 `;
+
+export const GET_CHILD_BOUNTIES_OF_PARENT_BOUNTY = gql`
+    query GetChildBountiesOfParentBounty($parent_bounty_id: Int!) {
+        childBounties(where: {parentBountyId: $parent_bounty_id}) {
+            beneficiary
+            childBountyId
+            childBountyStatus {
+                id
+                status
+                uniqueStatus
+            }
+            curator
+            curatorDeposit
+            description
+            fee
+            id
+            parentBountyId
+            proposer
+            value
+        }
+    }
+`;
