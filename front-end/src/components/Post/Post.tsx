@@ -352,7 +352,7 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 							onchainLink={definedOnchainLink as OnchainLinkBountyFragment}
 						/>
 						<PostChildBountiesList
-							onchainLink={definedOnchainLink as OnchainLinkBountyFragment}
+							onchainId={Number(onchainId)}
 						/>
 						<Timeline
 							statuses={bountyPost?.onchain_link?.onchain_bounty?.[0]?.bountyStatus?.map(s => ({
