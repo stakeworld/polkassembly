@@ -26,7 +26,7 @@ export const NotificationProvider = ({ children }: React.PropsWithChildren<{}>) 
 	const queueNotification = (notification : NotificationType) => {
 		queue.current.set(globalIndex, notification);
 		setNotificationsQueue(new Map(queue.current));
-		setTimeout(() => deQueueNotification(globalIndex), 5000);
+		setTimeout(() => deQueueNotification(globalIndex), notification.timeout ? notification.timeout : 5000);
 		setGlobalIndex(globalIndex+1);
 	};
 

@@ -6,7 +6,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Button, Dropdown, DropdownProps, List, Popup } from 'semantic-ui-react';
+import { Button, Dropdown, DropdownProps, Popup } from 'semantic-ui-react';
 
 import calendar_today from '../../assets/calendar_today.png';
 import NetworkSelect from './NetworkSelect';
@@ -153,29 +153,6 @@ function CustomToolbar(props: any) {
 
 					{/* <Button className='search-btn' icon='search' /> */}
 					<div className="right-actions">
-						<Popup
-							position='bottom center'
-							trigger={
-								<span className='legend-trigger'>Legend</span>
-							}
-						>
-							<Popup.Content style={ { fontSize: '14px' } }>
-								<List>
-									<List.Item>
-										<List.Icon name='circle' style={ { color: '#EA8612', fontSize: '8px' } } />
-										<List.Content style={ { width: 'min-content' } }>Working</List.Content>
-									</List.Item>
-									<List.Item>
-										<List.Icon name='circle' style={ { color: '#5BC044', fontSize: '8px' } } />
-										<List.Content style={ { width: 'min-content' } }>Completed</List.Content>
-									</List.Item>
-									<List.Item>
-										<List.Icon name='circle' style={ { color: '#FF0000', fontSize: '8px' } } />
-										<List.Content style={ { width: 'min-content' } }>Overdue</List.Content>
-									</List.Item>
-								</List>
-							</Popup.Content>
-						</Popup>
 						<Button basic className='today-btn' onClick={goToToday}>Today</Button>
 
 						{
@@ -191,12 +168,10 @@ function CustomToolbar(props: any) {
 					<div className='d-flex'>
 						<Dropdown compact className='select-month-dropdown' value={selectedMonth} onChange={onSelectMonthChange} options={months} />
 
-						{viewState != 'month' &&
-							<div className='mobile-cal-nav'>
-								<Button onClick={goToBack} icon='chevron left' />
-								<Button onClick={goToNext} icon='chevron right' />
-							</div>
-						}
+						<div className='mobile-cal-nav'>
+							<Button onClick={goToBack} icon='chevron left' />
+							<Button onClick={goToNext} icon='chevron right' />
+						</div>
 					</div>
 
 					<span className='year-text'>{moment(props.date).format('YYYY')}</span>
