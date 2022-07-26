@@ -17572,6 +17572,23 @@ export type EditCalenderEventMutation = (
   )> }
 );
 
+export type GetChildBountiesOfParentBountyQueryVariables = Exact<{
+  parent_bounty_id: Scalars['Int'];
+}>;
+
+
+export type GetChildBountiesOfParentBountyQuery = (
+  { __typename?: 'query_root' }
+  & { childBounties: Array<Maybe<(
+    { __typename?: 'ChildBounty' }
+    & Pick<ChildBounty, 'beneficiary' | 'childBountyId' | 'curator' | 'curatorDeposit' | 'description' | 'fee' | 'id' | 'parentBountyId' | 'proposer' | 'value'>
+    & { childBountyStatus?: Maybe<Array<(
+      { __typename?: 'ChildBountyStatus' }
+      & Pick<ChildBountyStatus, 'id' | 'status' | 'uniqueStatus'>
+    )>> }
+  )>> }
+);
+
 export type AuthorFieldsFragment = (
   { __typename?: 'User' }
   & Pick<User, 'id' | 'kusama_default_address' | 'polkadot_default_address' | 'username'>
@@ -22323,6 +22340,53 @@ export function useEditCalenderEventMutation(baseOptions?: ApolloReactHooks.Muta
 export type EditCalenderEventMutationHookResult = ReturnType<typeof useEditCalenderEventMutation>;
 export type EditCalenderEventMutationResult = ApolloReactCommon.MutationResult<EditCalenderEventMutation>;
 export type EditCalenderEventMutationOptions = ApolloReactCommon.BaseMutationOptions<EditCalenderEventMutation, EditCalenderEventMutationVariables>;
+export const GetChildBountiesOfParentBountyDocument = gql`
+    query GetChildBountiesOfParentBounty($parent_bounty_id: Int!) {
+  childBounties(where: {parentBountyId: $parent_bounty_id}) {
+    beneficiary
+    childBountyId
+    childBountyStatus {
+      id
+      status
+      uniqueStatus
+    }
+    curator
+    curatorDeposit
+    description
+    fee
+    id
+    parentBountyId
+    proposer
+    value
+  }
+}
+    `;
+
+/**
+ * __useGetChildBountiesOfParentBountyQuery__
+ *
+ * To run a query within a React component, call `useGetChildBountiesOfParentBountyQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetChildBountiesOfParentBountyQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetChildBountiesOfParentBountyQuery({
+ *   variables: {
+ *      parent_bounty_id: // value for 'parent_bounty_id'
+ *   },
+ * });
+ */
+export function useGetChildBountiesOfParentBountyQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetChildBountiesOfParentBountyQuery, GetChildBountiesOfParentBountyQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetChildBountiesOfParentBountyQuery, GetChildBountiesOfParentBountyQueryVariables>(GetChildBountiesOfParentBountyDocument, baseOptions);
+      }
+export function useGetChildBountiesOfParentBountyLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetChildBountiesOfParentBountyQuery, GetChildBountiesOfParentBountyQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetChildBountiesOfParentBountyQuery, GetChildBountiesOfParentBountyQueryVariables>(GetChildBountiesOfParentBountyDocument, baseOptions);
+        }
+export type GetChildBountiesOfParentBountyQueryHookResult = ReturnType<typeof useGetChildBountiesOfParentBountyQuery>;
+export type GetChildBountiesOfParentBountyLazyQueryHookResult = ReturnType<typeof useGetChildBountiesOfParentBountyLazyQuery>;
+export type GetChildBountiesOfParentBountyQueryResult = ApolloReactCommon.QueryResult<GetChildBountiesOfParentBountyQuery, GetChildBountiesOfParentBountyQueryVariables>;
 export const AllBountyPostsDocument = gql`
     query AllBountyPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
   posts(
