@@ -88,7 +88,7 @@ const TipInfo = ({ className, onChainId }: Props) => {
 		return () => unsubscribe && unsubscribe();
 	}, [api, apiReady, isTippersLoading, onChainId, members]);
 
-	const pendingTippers = members.filter(item => !tips?.tips.includes(item));
+	const pendingTippers = members.filter(item => !tips?.tips.find((tip: any[]) => tip[0] == item));
 
 	return (
 		<>

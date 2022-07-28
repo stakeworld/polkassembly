@@ -18,7 +18,8 @@ export default function blockToDays (blocks: BN |  number, blocktime?: number ):
 		blocks = blocks.toNumber();
 	}
 
-	const time = Math.floor((blocks * blocktime) / (3600*24));
+	let time = (blocks * blocktime) / (3600*24);
+	time = time >= 1 ? Math.floor(time) : Math.round((time + Number.EPSILON) * 100) / 100;
 
 	return time;
 }
