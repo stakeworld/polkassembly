@@ -113,67 +113,45 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [api, apiReady, treasuryBalance, currentBlock]);
 
-	// fetch available token to USD price whenever available token changes
+	// set availableUSD and nextBurnUSD whenever they or current price of the token changes
 	useEffect(() => {
 		let cancel = false;
-		if (cancel || resultValue === undefined) return;
+		if (cancel || !currentTokenPrice) return;
 
-		// replace spaces returned in string by format function
-		const token_available: number = parseFloat(formatBnBalance(
-			resultValue.toString(),
-			{
-				numberAfterComma: 2,
-				withThousandDelimitor: false,
-				withUnit: false
+		if(resultValue) {
+			// replace spaces returned in string by format function
+			const availableVal: number = parseFloat(formatBnBalance(
+				resultValue.toString(),
+				{
+					numberAfterComma: 2,
+					withThousandDelimitor: false,
+					withUnit: false
+				}
+			));
+
+			if(availableVal != 0) {
+				setAvailableUSD(formatUSDWithUnits((availableVal * Number(currentTokenPrice)).toString()));
 			}
-		).replaceAll(/\s/g,''));
-
-		if(token_available == 0) {
-			setAvailableUSD('N/A');
-			return;
 		}
 
-		fetchTokenToUSDPrice(token_available).then((formattedUSD) => {
-			if(formattedUSD){
-				setAvailableUSD(formattedUSD);
+		if(resultBurn) {
+			// replace spaces returned in string by format function
+			const burnVal: number = parseFloat(formatBnBalance(
+				resultBurn.toString(),
+				{
+					numberAfterComma: 2,
+					withThousandDelimitor: false,
+					withUnit: false
+				}
+			));
+
+			if(burnVal != 0) {
+				setNextBurnUSD(formatUSDWithUnits((burnVal * Number(currentTokenPrice)).toString()));
 			}
-		}).catch(() => {
-			setAvailableUSD('N/A');
-		});
+		}
 
 		return () => { cancel = true; };
-	}, [resultValue]);
-
-	// fetch Next Burn token to USD price whenever Next Burn token changes
-	useEffect(() => {
-		let cancel = false;
-		if (cancel || resultBurn === undefined) return;
-
-		// replace spaces returned in string by format function
-		const tokenBurn: number = parseFloat(formatBnBalance(
-			resultBurn.toString(),
-			{
-				numberAfterComma: 2,
-				withThousandDelimitor: false,
-				withUnit: false
-			}
-		));
-
-		if(tokenBurn == 0) {
-			setNextBurnUSD('N/A');
-			return;
-		}
-
-		fetchTokenToUSDPrice(tokenBurn).then((formattedUSD) => {
-			if(formattedUSD){
-				setNextBurnUSD(formattedUSD);
-			}
-		}).catch(() => {
-			setNextBurnUSD('N/A');
-		});
-
-		return () => {cancel = true;};
-	}, [resultBurn]);
+	}, [resultValue, resultBurn, currentTokenPrice]);
 
 	// fetch current price of the token
 	useEffect(() => {
@@ -181,13 +159,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 		if(cancel) return;
 
 		fetchTokenToUSDPrice(1).then((formattedUSD) => {
-			if(formattedUSD != 'N/A'){
-				setCurrentTokenPrice(parseFloat(formattedUSD).toFixed(2));
-			}else {
-				setCurrentTokenPrice('N/A');
-			}
-		}).catch(() => {
-			setCurrentTokenPrice('N/A');
+			setCurrentTokenPrice(parseFloat(formattedUSD).toFixed(2));
 		});
 
 		return () => {cancel = true;};
@@ -196,13 +168,10 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 	// fetch a week ago price of the token and calc priceWeeklyChange
 	useEffect(() => {
 		let cancel = false;
-		if(currentTokenPrice == 'N/A') {
-			setPriceWeeklyChange('N/A');
-			return;
-		}
+		if(!currentTokenPrice) return;
 
 		async function fetchWeekAgoTokenPrice() {
-			if (cancel || NETWORK == 'basilisk') return;
+			if (cancel) return;
 			const weekAgoDate = moment().subtract(7,'d').format('YYYY-MM-DD');
 
 			try {
@@ -262,7 +231,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 						Available <HelperTooltip basic={true} position='top left' content='Funds collected through a portion of block production rewards, transaction fees, slashing, staking inefficiencies, etc.' />
 					</Card.Meta>
 					<Card.Header className='treasury-card-header'>
-						{resultValue == 'N/A' ? 'N/A' : result.value ? (
+						{result.value ? (
 							<span>
 								{formatUSDWithUnits(formatBnBalance(
 									result.value.toString(),
@@ -281,7 +250,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 					</Card.Header>
 
 					<Card.Description className='treasury-card-desc'>
-						{availableUSD == 'N/A' ? 'N/A' : availableUSD
+						{availableUSD
 							? `~ $${availableUSD}`
 							: 'loading...'
 						}
@@ -302,14 +271,14 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 						</span>
 					</Card.Meta>
 					<Card.Header className='treasury-card-header'>
-						{currentTokenPrice == 'N/A' ? 'N/A' : currentTokenPrice
+						{currentTokenPrice
 							? `$${currentTokenPrice}`
 							: <div><Icon loading name='circle notched' /></div>
 						}
 					</Card.Header>
 
 					<Card.Description className='treasury-card-desc'>
-						{priceWeeklyChange == 'N/A' ? 'N/A' : priceWeeklyChange ?
+						{priceWeeklyChange ?
 							<div>
 								<span className='desktop-text'>
 									Weekly Change &nbsp;{Math.abs(Number(priceWeeklyChange))}% {priceWeeklyChange < 0 ? <Icon color='red' name='caret down' /> : <Icon color='green' name='caret up' /> }
@@ -353,7 +322,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 						Next Burn <HelperTooltip basic={true} position='right center' content='If the Treasury ends a spend period without spending all of its funds, it suffers a burn of a percentage of its funds.' />
 					</Card.Meta>
 					<Card.Header className='treasury-card-header'>
-						{resultBurn=='N/A' ? 'N/A' : result.burn ? (
+						{result.burn ? (
 							<span>
 								{formatUSDWithUnits(formatBnBalance(
 									result.burn.toString(),
@@ -372,7 +341,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 					</Card.Header>
 
 					<Card.Description className='treasury-card-desc'>
-						{nextBurnUSD == 'N/A' ? 'N/A' : nextBurnUSD
+						{nextBurnUSD
 							? `~ $${nextBurnUSD}`
 							: 'loading...'
 						}
