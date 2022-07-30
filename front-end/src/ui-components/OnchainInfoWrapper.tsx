@@ -94,8 +94,8 @@ export default styled(OnchainInfoWrapper)`
 		
 		.variable-value {
 			max-width: 70vw;
+			min-width: 956px !important;
 			word-break: break-all;
-			line-height: 2;
 		}
 	}
 	.json-view {
@@ -110,13 +110,17 @@ export default styled(OnchainInfoWrapper)`
 			border-spacing: 0px;
 		}
 		td {
-			max-width: 70vw;
+			width: 70vw;
 			word-break: break-all;
 			white-space: pre-line;
 			overflow-wrap: break-word;
 			text-align: justify;
 			text-overflow: ellipsis;
 			overflow: hidden;
+			
+			&.direct-data.data-2 {
+				min-width: 400px !important;
+			}
 
 			&.indirect-data {
 				background: #fff;
