@@ -16,8 +16,6 @@ function EventsEmptyState({ width = 80 }: Props): ReactElement {
 
 	const [playing, setPlaying] = useState(false);
 
-	console.log(playing);
-
 	return (
 		<div>
 			<img

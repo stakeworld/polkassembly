@@ -15,7 +15,9 @@ import { chainProperties } from 'src/global/networkConstants';
 import { useBlockTime } from 'src/hooks';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
 import blockToDays from 'src/util/blockToDays';
+import fetchTokenToUSDPrice from 'src/util/fetchTokenToUSDPrice';
 import formatBnBalance from 'src/util/formatBnBalance';
+import formatUSDWithUnits from 'src/util/formatUSDWithUnits';
 import getNetwork from 'src/util/getNetwork';
 import styled from 'styled-components';
 
@@ -47,12 +49,12 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 		)
 	}));
 
-	const [resultValue, setResultValue] = useState<string>('0');
-	const [resultBurn, setResultBurn] = useState<string>('0');
+	const [resultValue, setResultValue] = useState<string | undefined>(undefined);
+	const [resultBurn, setResultBurn] = useState<string | undefined>(undefined);
 	const [availableUSD, setAvailableUSD] = useState<string>('');
 	const [nextBurnUSD, setNextBurnUSD] = useState<string>('');
 	const [currentTokenPrice, setCurrentTokenPrice] = useState<string>('');
-	const [priceWeeklyChange, setPriceWeeklyChange] = useState<number>();
+	const [priceWeeklyChange, setPriceWeeklyChange] = useState<string | number>();
 	const [spendPeriodElapsed, setSpendPeriodElapsed] = useState<number>();
 	const [spendPeriodPercentage, setSpendPeriodPercentage] = useState<number>();
 
@@ -111,146 +113,54 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [api, apiReady, treasuryBalance, currentBlock]);
 
-	function formatUSDWithUnits (usd:string) {
-		// Nine Zeroes for Billions
-		const formattedUSD = Math.abs(Number(usd)) >= 1.0e+9
-
-			? (Math.abs(Number(usd)) / 1.0e+9).toFixed(2) + 'B'
-		// Six Zeroes for Millions
-			: Math.abs(Number(usd)) >= 1.0e+6
-
-				? (Math.abs(Number(usd)) / 1.0e+6).toFixed(2) + 'M'
-			// Three Zeroes for Thousands
-				: Math.abs(Number(usd)) >= 1.0e+3
-
-					? (Math.abs(Number(usd)) / 1.0e+3).toFixed(2) + 'K'
-
-					: Math.abs(Number(usd)).toFixed(2);
-
-		return formattedUSD;
-
-	}
-
-	// fetch available token to USD price whenever available token changes
+	// set availableUSD and nextBurnUSD whenever they or current price of the token changes
 	useEffect(() => {
 		let cancel = false;
+		if (cancel || !currentTokenPrice) return;
 
-		// replace spaces returned in string by format function
-		const token_available: number = parseFloat(formatBnBalance(
-			resultValue.toString(),
-			{
-				numberAfterComma: 2,
-				withThousandDelimitor: false,
-				withUnit: false
-			}
-		).replaceAll(/\s/g,''));
-
-		async function fetchAvailableUSDCPrice(token: number) {
-			if (cancel) return;
-			const response = await fetch(
-				`https://${NETWORK}.api.subscan.io/api/open/price_converter`,
+		if(resultValue) {
+			// replace spaces returned in string by format function
+			const availableVal: number = parseFloat(formatBnBalance(
+				resultValue.toString(),
 				{
-					body: JSON.stringify({
-						from: chainProperties[NETWORK].tokenSymbol,
-						quote: 'USD',
-						value: token
-					}),
-					headers: {
-						Accept: 'application/json',
-						'Content-Type': 'application/json',
-						'X-API-Key': REACT_APP_SUBSCAN_API_KEY || ''
-					},
-					method: 'POST'
+					numberAfterComma: 2,
+					withThousandDelimitor: false,
+					withUnit: false
 				}
-			);
-			const responseJSON = await response.json();
-			if (responseJSON['message'] == 'Success') {
-				const formattedUSD = formatUSDWithUnits(responseJSON['data']['output']);
-				setAvailableUSD(formattedUSD);
+			));
+
+			if(availableVal != 0) {
+				setAvailableUSD(formatUSDWithUnits((availableVal * Number(currentTokenPrice)).toString()));
 			}
 		}
-		fetchAvailableUSDCPrice(token_available);
+
+		if(resultBurn) {
+			// replace spaces returned in string by format function
+			const burnVal: number = parseFloat(formatBnBalance(
+				resultBurn.toString(),
+				{
+					numberAfterComma: 2,
+					withThousandDelimitor: false,
+					withUnit: false
+				}
+			));
+
+			if(burnVal != 0) {
+				setNextBurnUSD(formatUSDWithUnits((burnVal * Number(currentTokenPrice)).toString()));
+			}
+		}
 
 		return () => { cancel = true; };
-	}, [resultValue]);
-
-	// fetch Next Burn token to USD price whenever Next Burn token changes
-	useEffect(() => {
-		let cancel = false;
-
-		// replace spaces returned in string by format function
-		const tokenBurn: number = parseFloat(formatBnBalance(
-			resultBurn.toString(),
-			{
-				numberAfterComma: 2,
-				withThousandDelimitor: false,
-				withUnit: false
-			}
-		));
-
-		async function fetchNextBurnUSDCPrice(token: number) {
-			if (cancel) return;
-			const response = await fetch(
-				`https://${NETWORK}.api.subscan.io/api/open/price_converter`,
-				{
-					body: JSON.stringify({
-						from: chainProperties[NETWORK].tokenSymbol,
-						quote: 'USD',
-						value: token
-					}),
-					headers: {
-						Accept: 'application/json',
-						'Content-Type': 'application/json',
-						'X-API-Key': REACT_APP_SUBSCAN_API_KEY || ''
-					},
-					method: 'POST'
-				}
-			);
-			const responseJSON = await response.json();
-			if (responseJSON['message'] == 'Success') {
-				const formattedUSD = formatUSDWithUnits(responseJSON['data']['output']);
-				setNextBurnUSD(formattedUSD);
-			}
-		}
-
-		fetchNextBurnUSDCPrice(tokenBurn);
-
-		return () => {cancel = true;};
-	}, [resultBurn]);
+	}, [resultValue, resultBurn, currentTokenPrice]);
 
 	// fetch current price of the token
 	useEffect(() => {
 		let cancel = false;
+		if(cancel) return;
 
-		async function fetchCurrentTokenPrice() {
-			if (cancel) return;
-			let today = new Date();
-			const offset = today.getTimezoneOffset();
-			today = new Date(today.getTime() - (offset*60*1000));
-
-			const response = await fetch(
-				`https://${NETWORK}.api.subscan.io/api/open/price_converter`,
-				{
-					body: JSON.stringify({
-						from: chainProperties[NETWORK].tokenSymbol,
-						quote: 'USD',
-						value: 1
-					}),
-					headers: {
-						Accept: 'application/json',
-						'Content-Type': 'application/json',
-						'X-API-Key': REACT_APP_SUBSCAN_API_KEY || ''
-					},
-					method: 'POST'
-				}
-			);
-			const responseJSON = await response.json();
-			if (responseJSON['message'] == 'Success') {
-				setCurrentTokenPrice(parseFloat(responseJSON['data']['output']).toFixed(2));
-			}
-		}
-
-		fetchCurrentTokenPrice();
+		fetchTokenToUSDPrice(1).then((formattedUSD) => {
+			setCurrentTokenPrice(parseFloat(formattedUSD).toFixed(2));
+		});
 
 		return () => {cancel = true;};
 	}, []);
@@ -258,33 +168,38 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 	// fetch a week ago price of the token and calc priceWeeklyChange
 	useEffect(() => {
 		let cancel = false;
+		if(cancel || !currentTokenPrice) return;
 
 		async function fetchWeekAgoTokenPrice() {
 			if (cancel) return;
 			const weekAgoDate = moment().subtract(7,'d').format('YYYY-MM-DD');
 
-			const response = await fetch(
-				`https://${NETWORK}.api.subscan.io/api/scan/price/history`,
-				{
-					body: JSON.stringify({
-						end: weekAgoDate,
-						start: weekAgoDate
-					}),
-					headers: {
-						Accept: 'application/json',
-						'Content-Type': 'application/json',
-						'X-API-Key': REACT_APP_SUBSCAN_API_KEY || ''
-					},
-					method: 'POST'
+			try {
+				const response = await fetch(
+					`https://${NETWORK === 'kilt' ? 'spiritnet' : NETWORK}.api.subscan.io/api/scan/price/history`,
+					{
+						body: JSON.stringify({
+							end: weekAgoDate,
+							start: weekAgoDate
+						}),
+						headers: {
+							Accept: 'application/json',
+							'Content-Type': 'application/json',
+							'X-API-Key': REACT_APP_SUBSCAN_API_KEY || ''
+						},
+						method: 'POST'
+					}
+				);
+				const responseJSON = await response.json();
+				if (responseJSON['message'] == 'Success') {
+					const weekAgoPrice = responseJSON['data']['average'];
+					const currentTokenPriceNum : number = parseFloat(currentTokenPrice);
+					const weekAgoPriceNum : number = parseFloat(weekAgoPrice);
+					const percentChange = ((currentTokenPriceNum - weekAgoPriceNum) / weekAgoPriceNum) * 100;
+					setPriceWeeklyChange(parseFloat(percentChange.toFixed(2)));
 				}
-			);
-			const responseJSON = await response.json();
-			if (responseJSON['message'] == 'Success') {
-				const weekAgoPrice = responseJSON['data']['average'];
-				const currentTokenPriceNum : number = parseFloat(currentTokenPrice);
-				const weekAgoPriceNum : number = parseFloat(weekAgoPrice);
-				const percentChange = ((currentTokenPriceNum - weekAgoPriceNum) / weekAgoPriceNum) * 100;
-				setPriceWeeklyChange(parseFloat(percentChange.toFixed(2)));
+			} catch(err) {
+				setPriceWeeklyChange('N/A');
 			}
 		}
 
@@ -325,7 +240,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 										withThousandDelimitor: false,
 										withUnit: false
 									}
-								))} {chainProperties[NETWORK].tokenSymbol}
+								))} {chainProperties[NETWORK]?.tokenSymbol}
 							</span>
 						) : (
 							<div>
@@ -337,7 +252,8 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 					<Card.Description className='treasury-card-desc'>
 						{availableUSD
 							? `~ $${availableUSD}`
-							: 'loading...'}
+							: 'loading...'
+						}
 					</Card.Description>
 				</Card.Content>
 			</Card>
@@ -355,9 +271,9 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 						</span>
 					</Card.Meta>
 					<Card.Header className='treasury-card-header'>
-						{currentTokenPrice ?
-							`$${currentTokenPrice}` :
-							<div><Icon loading name='circle notched' /></div>
+						{currentTokenPrice
+							? `$${currentTokenPrice}`
+							: <div><Icon loading name='circle notched' /></div>
 						}
 					</Card.Header>
 
@@ -365,13 +281,13 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 						{priceWeeklyChange ?
 							<div>
 								<span className='desktop-text'>
-									Weekly Change &nbsp;{Math.abs(priceWeeklyChange)}% {priceWeeklyChange < 0 ? <Icon color='red' name='caret down' /> : <Icon color='green' name='caret up' /> }
+									Weekly Change &nbsp;{Math.abs(Number(priceWeeklyChange))}% {priceWeeklyChange < 0 ? <Icon color='red' name='caret down' /> : <Icon color='green' name='caret up' /> }
 								</span>
 								<span className='mobile-text'>
-								Weekly &nbsp;{Math.abs(Number(priceWeeklyChange.toFixed(0)))}% {priceWeeklyChange < 0 ? <Icon color='red' name='caret down' /> : <Icon color='green' name='caret up' /> }
+								Weekly &nbsp;{Math.abs(Number(Number(priceWeeklyChange).toFixed(0)))}% {priceWeeklyChange < 0 ? <Icon color='red' name='caret down' /> : <Icon color='green' name='caret up' /> }
 								</span>
 							</div> :
-							'Fetching...'
+							'loading...'
 						}
 					</Card.Description>
 				</Card.Content>
@@ -415,7 +331,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 										withThousandDelimitor: false,
 										withUnit: false
 									}
-								))} {chainProperties[NETWORK].tokenSymbol}
+								))} {chainProperties[NETWORK]?.tokenSymbol}
 							</span>
 						) : (
 							<div>
@@ -427,7 +343,8 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 					<Card.Description className='treasury-card-desc'>
 						{nextBurnUSD
 							? `~ $${nextBurnUSD}`
-							: 'loading...'}
+							: 'loading...'
+						}
 					</Card.Description>
 				</Card.Content>
 			</Card>

@@ -9,14 +9,13 @@ import BN from 'bn.js';
 import React, { useContext, useEffect, useState } from 'react';
 import { Grid, Icon } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
-import { REACT_APP_SUBSCAN_API_KEY } from 'src/global/apiKeys';
-import { chainProperties } from 'src/global/networkConstants';
 import { useBlockTime } from 'src/hooks';
 import Card from 'src/ui-components/Card';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
 import blockToTime from 'src/util/blockToTime';
+import fetchTokenToUSDPrice from 'src/util/fetchTokenToUSDPrice';
 import formatBnBalance from 'src/util/formatBnBalance';
-import getNetwork from 'src/util/getNetwork';
+import formatUSDWithUnits from 'src/util/formatUSDWithUnits';
 
 import Loader from '../../../ui-components/Loader';
 
@@ -28,8 +27,6 @@ interface Result {
 	spendPeriod: BN;
 	treasuryAccount: Uint8Array;
 }
-
-const NETWORK = getNetwork();
 
 const TreasuryOverview = () => {
 	const { api, apiReady } = useContext(ApiContext);
@@ -48,8 +45,9 @@ const TreasuryOverview = () => {
 		)
 	}));
 
-	const [resultValue, setResultValue] = useState<String>('0');
-	const [resultBurn, setResultBurn] = useState<String>('0');
+	const [resultValue, setResultValue] = useState<string | undefined>(undefined);
+	const [resultBurn, setResultBurn] = useState<string | undefined>(undefined);
+	const [currentTokenPrice, setCurrentTokenPrice] = useState<string>('');
 	const [availableUSD, setAvailableUSD] = useState<String>('');
 	const [nextBurnUSD, setNextBurnUSD] = useState<String>('');
 
@@ -108,104 +106,57 @@ const TreasuryOverview = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [api, apiReady, treasuryBalance, currentBlock]);
 
-	function formatUSDWithUnits (usd:String) {
-
-		// Nine Zeroes for Billions
-		const formattedUSD = Math.abs(Number(usd)) >= 1.0e+9
-
-			? (Math.abs(Number(usd)) / 1.0e+9).toFixed(2) + 'B'
-		// Six Zeroes for Millions
-			: Math.abs(Number(usd)) >= 1.0e+6
-
-				? (Math.abs(Number(usd)) / 1.0e+6).toFixed(2) + 'M'
-			// Three Zeroes for Thousands
-				: Math.abs(Number(usd)) >= 1.0e+3
-
-					? (Math.abs(Number(usd)) / 1.0e+3).toFixed(2) + 'K'
-
-					: Math.abs(Number(usd));
-
-		return formattedUSD.toString();
-
-	}
-
-	// fetch available token to USD price whenever available token changes
+	// set availableUSD and nextBurnUSD whenever they or current price of the token changes
 	useEffect(() => {
-		// replace spaces returned in string by format function
-		const token_available: number = parseFloat(formatBnBalance(
-			resultValue.toString(),
-			{
-				numberAfterComma: 2,
-				withThousandDelimitor: false,
-				withUnit: false
-			}
-		).replaceAll(/\s/g,''));
+		let cancel = false;
+		if (cancel || !currentTokenPrice) return;
 
-		async function fetchAvailableUSDCPrice(token: number) {
-			const response = await fetch(
-				`https://${NETWORK}.api.subscan.io/api/open/price_converter`,
+		if(resultValue) {
+		// replace spaces returned in string by format function
+			const availableVal: number = parseFloat(formatBnBalance(
+				resultValue.toString(),
 				{
-					body: JSON.stringify({
-						from: chainProperties[NETWORK].tokenSymbol,
-						quote: 'USD',
-						value: token
-					}),
-					headers: {
-						Accept: 'application/json',
-						'Content-Type': 'application/json',
-						'X-API-Key': REACT_APP_SUBSCAN_API_KEY || ''
-					},
-					method: 'POST'
+					numberAfterComma: 2,
+					withThousandDelimitor: false,
+					withUnit: false
 				}
-			);
-			const responseJSON = await response.json();
-			if (responseJSON['message'] == 'Success') {
-				const formattedUSD = formatUSDWithUnits(responseJSON['data']['output']);
-				setAvailableUSD(formattedUSD);
+			));
+
+			if(availableVal != 0) {
+				setAvailableUSD(formatUSDWithUnits((availableVal * Number(currentTokenPrice)).toString()));
 			}
 		}
 
-		fetchAvailableUSDCPrice(token_available);
-	}, [resultValue]);
-
-	// fetch Next Burn token to USD price whenever Next Burn token changes
-	useEffect(() => {
+		if(resultBurn) {
 		// replace spaces returned in string by format function
-		const token_burn: number = parseFloat(formatBnBalance(
-			resultBurn.toString(),
-			{
-				numberAfterComma: 2,
-				withThousandDelimitor: false,
-				withUnit: false
-			}
-		).replaceAll(/\s/g,''));
-
-		async function fetchNextBurnUSDCPrice(token: number) {
-			const response = await fetch(
-				`https://${NETWORK}.api.subscan.io/api/open/price_converter`,
+			const burnVal: number = parseFloat(formatBnBalance(
+				resultBurn.toString(),
 				{
-					body: JSON.stringify({
-						from: chainProperties[NETWORK].tokenSymbol,
-						quote: 'USD',
-						value: token
-					}),
-					headers: {
-						Accept: 'application/json',
-						'Content-Type': 'application/json',
-						'X-API-Key': REACT_APP_SUBSCAN_API_KEY || ''
-					},
-					method: 'POST'
+					numberAfterComma: 2,
+					withThousandDelimitor: false,
+					withUnit: false
 				}
-			);
-			const responseJSON = await response.json();
-			if (responseJSON['message'] == 'Success') {
-				const formattedUSD = formatUSDWithUnits(responseJSON['data']['output']);
-				setNextBurnUSD(formattedUSD);
+			));
+
+			if(burnVal != 0) {
+				setNextBurnUSD(formatUSDWithUnits((burnVal * Number(currentTokenPrice)).toString()));
 			}
 		}
 
-		fetchNextBurnUSDCPrice(token_burn);
-	}, [resultBurn]);
+		return () => { cancel = true; };
+	}, [resultValue, resultBurn, currentTokenPrice]);
+
+	// fetch current price of the token
+	useEffect(() => {
+		let cancel = false;
+		if(cancel) return;
+
+		fetchTokenToUSDPrice(1).then((formattedUSD) => {
+			setCurrentTokenPrice(parseFloat(formattedUSD).toFixed(2));
+		});
+
+		return () => {cancel = true;};
+	}, []);
 
 	return (
 		<>
