@@ -4,6 +4,7 @@
 
 import * as React from 'react';
 import { useState } from 'react';
+import ReactJson from 'react-json-view';
 // import ReactJson from 'react-json-view';
 import { Button } from 'semantic-ui-react';
 import ArgumentsTable from 'src/components/ArgumentsTable';
@@ -42,14 +43,12 @@ const ArgumentsTableJSONView = ({ className, postArguments, showAccountArguments
 						</div>
 						:
 						<div className="json-view">
-							{/* <ReactJson
+							<ReactJson
 								src={argumentsArr}
 								iconStyle='circle'
 								enableClipboard={false}
 								displayDataTypes={false}
-							/> */}
-
-							JSON VIEW
+							/>
 						</div>
 				}
 

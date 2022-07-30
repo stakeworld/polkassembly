@@ -91,8 +91,13 @@ export default styled(OnchainInfoWrapper)`
 		padding: 8px;
 		width: 100%;
 		overflow-x: auto;
+		
+		.object-key-val {
+			max-width: 70vw;
+			word-break: break-all;
+		}
 	}
-	.table-view {
+	.table-view, .json-view {
 		max-height: 500px;
 		overflow-y: auto;
 		table {
