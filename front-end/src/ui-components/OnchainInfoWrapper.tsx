@@ -99,21 +99,27 @@ export default styled(OnchainInfoWrapper)`
 			width: 100%;
 			border-spacing: 0px;
 		}
-		td.indirect-data {
-			background: #fff;
-		}
-		td.direct-data {
-			font-style: normal;
-			font-weight: normal;
-			font-size: 14px;
-			line-height: 20px;
-			height: 40px;
-			border-style: solid;
-			border-width: 1px 1px 0px 1px;
-			border-color: rgb(238, 238, 238);
-			min-width: 160px;
-    	padding: 10px 24px;
-			background: #fff;
+		td {
+			max-width: 70vw;
+			word-break: break-all;
+
+			&.indirect-data {
+				background: #fff;
+			}
+			
+			&.direct-data {
+				font-style: normal;
+				font-weight: normal;
+				font-size: 14px;
+				line-height: 20px;
+				height: 40px;
+				border-style: solid;
+				border-width: 1px 1px 0px 1px;
+				border-color: rgb(238, 238, 238);
+				min-width: 160px;
+				padding: 10px 24px;
+				background: #fff;
+			}
 		}
 	}
 `;
