@@ -102,6 +102,11 @@ export default styled(OnchainInfoWrapper)`
 		td {
 			max-width: 70vw;
 			word-break: break-all;
+			white-space: pre-line;
+			overflow-wrap: break-word;
+			text-align: justify;
+			text-overflow: ellipsis;
+			overflow: hidden;
 
 			&.indirect-data {
 				background: #fff;
