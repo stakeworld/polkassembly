@@ -83,19 +83,24 @@ export default styled(OnchainInfoWrapper)`
 		width: 100%;
 		max-width: 100%;
 		overflow-x: auto;
-		background: #EBF0F5;
+		background: #FFF !important;
 		padding: 16px;
+		border: 2px solid #EBF0F5;
 	}
 	.react-json-view {
-		background: #fff !important;
 		padding: 8px;
-		width: 100%;
-		overflow-x: auto;
+		font-size: 14px;
+		min-width: max-content;
 		
-		.object-key-val {
+		.variable-value {
 			max-width: 70vw;
 			word-break: break-all;
+			line-height: 2;
 		}
+	}
+	.json-view {
+		overflow-x: auto;
+		background-color: #fff !important;
 	}
 	.table-view, .json-view {
 		max-height: 500px;

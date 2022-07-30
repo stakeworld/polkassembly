@@ -17,7 +17,6 @@ interface Props {
 	postArguments: any
 	showAccountArguments: boolean
 }
-// TODO: ADD to bounty and child bounty etc as well
 const ArgumentsTableJSONView = ({ className, postArguments, showAccountArguments }: Props) => {
 	const [dataViewMode, setDataViewMode] = useState<'table' | 'json'>('table');
 	const argumentsArr = formatPostInfoArguments(postArguments);
