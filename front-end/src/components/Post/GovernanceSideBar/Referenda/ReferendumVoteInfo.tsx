@@ -182,7 +182,7 @@ const ReferendumVoteInfo = ({ className, referendumId, threshold, setLastVote }:
 					: <>
 						{
 							isPassing === null
-								? <Loader className={'progressLoader'} text={'Loading vote progress'} timeout={30000} timeoutText='Vote calculation failed'/>
+								? <Loader className={'progressLoader'} text={'Loading vote progress'} timeout={90000} timeoutText='Vote calculation failed' delayText='The results should be available soon!' delayTextTimeout={30000}/>
 								: <VoteProgress
 									ayeVotes={ayeVotes}
 									className='vote-progress'
