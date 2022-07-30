@@ -51,6 +51,7 @@ authServer:
   config:
     DOMAIN_NAME: "kusama.polkassembly.io"
     PROPOSAL_BOT_USER_ID: "1"
+    EVENT_BOT_USER_ID: "1613"
 
 chainDbWatcher:
   config:

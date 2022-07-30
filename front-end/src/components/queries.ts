@@ -27,6 +27,7 @@ export const GET_CALENDER_EVENTS = gql`
             event_id
             status
             approval_status
+            location
         }
     }
 `;
@@ -48,8 +49,8 @@ export const UPDATE_APPROVAL_STATUS = gql`
 `;
 
 export const ADD_CALENDER_EVENT = gql`
-    mutation AddCalenderEvent ($title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!, $event_type: String!, $user_id: Int) {
-        insert_calender_events(objects: {title: $title, start_time: $start_time, end_time: $end_time, content: $content, url: $url, module: $module, network: $network, event_type: $event_type, user_id: $user_id}) {
+    mutation AddCalenderEvent ($title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!, $event_type: String!, $user_id: Int, $location: String) {
+        insert_calender_events(objects: {title: $title, start_time: $start_time, end_time: $end_time, content: $content, url: $url, module: $module, network: $network, event_type: $event_type, user_id: $user_id, location: $location}) {
             affected_rows
         }
     }
@@ -133,9 +134,31 @@ export const UPDATE_PROPOSAL_TRACKER_MUTATION = gql`
 `;
 
 export const EDIT_CALENDER_EVENT= gql`
-    mutation EditCalenderEvent ($id: Int!, $title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!, $event_type: String!) {
-        update_calender_events(where: {id: {_eq: $id}}, _set: {title: $title, content: $content, start_time: $start_time, end_time: $end_time, url: $url, module: $module, network: $network, approval_status: "pending", event_type: $event_type}) {
+    mutation EditCalenderEvent ($id: Int!, $title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!, $event_type: String!, $location: String) {
+        update_calender_events(where: {id: {_eq: $id}}, _set: {title: $title, content: $content, start_time: $start_time, end_time: $end_time, url: $url, module: $module, network: $network, approval_status: "pending", event_type: $event_type, location: $location}) {
             affected_rows
+        }
+    }
+`;
+
+export const GET_CHILD_BOUNTIES_OF_PARENT_BOUNTY = gql`
+    query GetChildBountiesOfParentBounty($parent_bounty_id: Int!) {
+        childBounties(where: {parentBountyId: $parent_bounty_id}) {
+            beneficiary
+            childBountyId
+            childBountyStatus {
+                id
+                status
+                uniqueStatus
+            }
+            curator
+            curatorDeposit
+            description
+            fee
+            id
+            parentBountyId
+            proposer
+            value
         }
     }
 `;

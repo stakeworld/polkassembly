@@ -6,12 +6,13 @@ import styled from '@xstyled/styled-components';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Grid, Icon, List } from 'semantic-ui-react';
+import EventsEmptyState from 'src/assets/empty-states/EventsEmptyState';
 import CalendarView from 'src/screens/CalendarView';
 
 import calendarImg from '../../../assets/calendar.png';
 
 interface Props {
-  className?: string
+	className?: string
 }
 
 const UpcomingEvents = ({ className }: Props) => {
@@ -68,8 +69,11 @@ const UpcomingEvents = ({ className }: Props) => {
 							<Grid.Column className={`event-list-col ${calendarVisible ? 'd-sm-none' : ''}`} mobile={16} tablet={16} computer={6}>
 								{eventsList.length > 0 &&
 									<List relaxed='very' divided>
-										{ eventsList }
+										{eventsList}
 									</List>
+								}
+								{eventsList.length == 0 &&
+									<EventsEmptyState />
 								}
 							</Grid.Column>
 							<Grid.Column className={`event-calendar-col ${calendarVisible ? '' : 'd-sm-none'}`} mobile={16} tablet={16} computer={10}>
@@ -77,12 +81,14 @@ const UpcomingEvents = ({ className }: Props) => {
 							</Grid.Column>
 						</Grid>
 					</Grid.Row>
-
-					<Grid.Row className='info-bar-row'>
-						<Grid.Column className='info-bar-col' width={16}>
-							<p>*Time in UTC</p>
-						</Grid.Column>
-					</Grid.Row>
+					{
+						eventsList.length > 0 &&
+						<Grid.Row className='info-bar-row'>
+							<Grid.Column className='info-bar-col' width={16}>
+								<p>*Time in UTC</p>
+							</Grid.Column>
+						</Grid.Row>
+					}
 				</Grid>
 			</div>
 		</div>
@@ -182,6 +188,7 @@ export default styled(UpcomingEvents)`
 		.event-list-col, .event-calendar-col{
 			padding-top: 1em;
 		}
+
 
 		.event-calendar-col{
 			height: 490px;

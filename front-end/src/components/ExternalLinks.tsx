@@ -17,7 +17,6 @@ interface Props {
 }
 
 const service = {
-	POLKASCAN: 'polkascan',
 	SUBSCAN: 'subscan'
 };
 
@@ -33,28 +32,6 @@ const ExternalLinks = ({
 	const network = getNetwork();
 
 	const serviceMap = {
-		[service.POLKASCAN]: (network: string) => {
-			let url = '';
-			const host = `https://polkascan.io/${network}`;
-
-			if (isReferendum) {
-				url = `${host}/democracy/referendum/${onchainId}`;
-			}
-			if (isProposal) {
-				url = `${host}/democracy/proposal/${onchainId}`;
-			}
-			if (isMotion) {
-				url = `${host}/council/motion/${onchainId}`;
-			}
-			if (isTreasuryProposal) {
-				url = `${host}/treasury/proposal/${onchainId}`;
-			}
-			if (isTechCommitteeProposal) {
-				url = `${host}/techcomm/proposal/${onchainId}`;
-			}
-
-			return url;
-		},
 		[service.SUBSCAN]: (network: string) => {
 			let url = '';
 			const host = `https://${network}.subscan.io`;
@@ -85,9 +62,6 @@ const ExternalLinks = ({
 
 	return (
 		<div className={className}>
-			<div>
-				<a href={getLink(service.POLKASCAN)} rel="noopener noreferrer" target='_blank'>{'-> Show in Polkascan'}</a>
-			</div>
 			<div>
 				<a href={getLink(service.SUBSCAN)} rel="noopener noreferrer" target='_blank'>{'-> Show in Subscan'}</a>
 			</div>

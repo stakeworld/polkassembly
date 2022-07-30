@@ -13,6 +13,7 @@ export interface UserDetailsContextType {
   email?: string | null;
   email_verified?: boolean | null;
   addresses?: string[] | null;
+  allowed_roles?: string[] | null;
   defaultAddress?: string | null;
   notification: {
     postParticipated: boolean;
@@ -77,6 +78,7 @@ export interface NotificationType {
   header: string;
   message: string;
   status: NotificationStatus;
+  timeout?: number;
 }
 
 export interface ModalType {
@@ -109,10 +111,13 @@ export type ChainPropType = {
 };
 
 export interface ChainProps {
-  blockTime: number;
-  ss58Format: number;
-  tokenDecimals: number;
-  tokenSymbol: TokenSymbol;
+  'blockTime': number;
+  'logo'?: any;
+  'ss58Format': number;
+  'tokenDecimals': number;
+  'tokenSymbol': TokenSymbol;
+  'chainId': number;
+  'rpcEndpoint': string;
 }
 
 export type ChainLinksType = {

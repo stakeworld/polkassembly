@@ -6495,6 +6495,7 @@ export type Calender_Events = {
   event_id?: Maybe<Scalars['Int']>;
   event_type?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
+  location?: Maybe<Scalars['String']>;
   module?: Maybe<Scalars['String']>;
   network: Scalars['String'];
   start_time: Scalars['timestamptz'];
@@ -6581,6 +6582,7 @@ export type Calender_Events_Bool_Exp = {
   event_id?: Maybe<Int_Comparison_Exp>;
   event_type?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Int_Comparison_Exp>;
+  location?: Maybe<String_Comparison_Exp>;
   module?: Maybe<String_Comparison_Exp>;
   network?: Maybe<String_Comparison_Exp>;
   start_time?: Maybe<Timestamptz_Comparison_Exp>;
@@ -6611,6 +6613,7 @@ export type Calender_Events_Insert_Input = {
   event_id?: Maybe<Scalars['Int']>;
   event_type?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
+  location?: Maybe<Scalars['String']>;
   module?: Maybe<Scalars['String']>;
   network?: Maybe<Scalars['String']>;
   start_time?: Maybe<Scalars['timestamptz']>;
@@ -6629,6 +6632,7 @@ export type Calender_Events_Max_Fields = {
   event_id?: Maybe<Scalars['Int']>;
   event_type?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
+  location?: Maybe<Scalars['String']>;
   module?: Maybe<Scalars['String']>;
   network?: Maybe<Scalars['String']>;
   start_time?: Maybe<Scalars['timestamptz']>;
@@ -6646,6 +6650,7 @@ export type Calender_Events_Max_Order_By = {
   event_id?: Maybe<Order_By>;
   event_type?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  location?: Maybe<Order_By>;
   module?: Maybe<Order_By>;
   network?: Maybe<Order_By>;
   start_time?: Maybe<Order_By>;
@@ -6664,6 +6669,7 @@ export type Calender_Events_Min_Fields = {
   event_id?: Maybe<Scalars['Int']>;
   event_type?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
+  location?: Maybe<Scalars['String']>;
   module?: Maybe<Scalars['String']>;
   network?: Maybe<Scalars['String']>;
   start_time?: Maybe<Scalars['timestamptz']>;
@@ -6681,6 +6687,7 @@ export type Calender_Events_Min_Order_By = {
   event_id?: Maybe<Order_By>;
   event_type?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  location?: Maybe<Order_By>;
   module?: Maybe<Order_By>;
   network?: Maybe<Order_By>;
   start_time?: Maybe<Order_By>;
@@ -6720,6 +6727,7 @@ export type Calender_Events_Order_By = {
   event_id?: Maybe<Order_By>;
   event_type?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  location?: Maybe<Order_By>;
   module?: Maybe<Order_By>;
   network?: Maybe<Order_By>;
   start_time?: Maybe<Order_By>;
@@ -6749,6 +6757,8 @@ export enum Calender_Events_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  Location = 'location',
+  /** column name */
   Module = 'module',
   /** column name */
   Network = 'network',
@@ -6772,6 +6782,7 @@ export type Calender_Events_Set_Input = {
   event_id?: Maybe<Scalars['Int']>;
   event_type?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
+  location?: Maybe<Scalars['String']>;
   module?: Maybe<Scalars['String']>;
   network?: Maybe<Scalars['String']>;
   start_time?: Maybe<Scalars['timestamptz']>;
@@ -6855,6 +6866,8 @@ export enum Calender_Events_Update_Column {
   EventType = 'event_type',
   /** column name */
   Id = 'id',
+  /** column name */
+  Location = 'location',
   /** column name */
   Module = 'module',
   /** column name */
@@ -17369,7 +17382,7 @@ export type GetCalenderEventsQuery = (
   { __typename?: 'query_root' }
   & { calender_events: Array<(
     { __typename?: 'calender_events' }
-    & Pick<Calender_Events, 'content' | 'end_time' | 'id' | 'module' | 'network' | 'start_time' | 'title' | 'url' | 'event_type' | 'event_id' | 'status' | 'approval_status'>
+    & Pick<Calender_Events, 'content' | 'end_time' | 'id' | 'module' | 'network' | 'start_time' | 'title' | 'url' | 'event_type' | 'event_id' | 'status' | 'approval_status' | 'location'>
   )> }
 );
 
@@ -17410,6 +17423,7 @@ export type AddCalenderEventMutationVariables = Exact<{
   network: Scalars['String'];
   event_type: Scalars['String'];
   user_id?: Maybe<Scalars['Int']>;
+  location?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -17546,6 +17560,7 @@ export type EditCalenderEventMutationVariables = Exact<{
   module?: Maybe<Scalars['String']>;
   network: Scalars['String'];
   event_type: Scalars['String'];
+  location?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -17555,6 +17570,23 @@ export type EditCalenderEventMutation = (
     { __typename?: 'calender_events_mutation_response' }
     & Pick<Calender_Events_Mutation_Response, 'affected_rows'>
   )> }
+);
+
+export type GetChildBountiesOfParentBountyQueryVariables = Exact<{
+  parent_bounty_id: Scalars['Int'];
+}>;
+
+
+export type GetChildBountiesOfParentBountyQuery = (
+  { __typename?: 'query_root' }
+  & { childBounties: Array<Maybe<(
+    { __typename?: 'ChildBounty' }
+    & Pick<ChildBounty, 'beneficiary' | 'childBountyId' | 'curator' | 'curatorDeposit' | 'description' | 'fee' | 'id' | 'parentBountyId' | 'proposer' | 'value'>
+    & { childBountyStatus?: Maybe<Array<(
+      { __typename?: 'ChildBountyStatus' }
+      & Pick<ChildBountyStatus, 'id' | 'status' | 'uniqueStatus'>
+    )>> }
+  )>> }
 );
 
 export type AuthorFieldsFragment = (
@@ -21818,6 +21850,7 @@ export const GetCalenderEventsDocument = gql`
     event_id
     status
     approval_status
+    location
   }
 }
     `;
@@ -21917,9 +21950,9 @@ export type UpdateApprovalStatusMutationHookResult = ReturnType<typeof useUpdate
 export type UpdateApprovalStatusMutationResult = ApolloReactCommon.MutationResult<UpdateApprovalStatusMutation>;
 export type UpdateApprovalStatusMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateApprovalStatusMutation, UpdateApprovalStatusMutationVariables>;
 export const AddCalenderEventDocument = gql`
-    mutation AddCalenderEvent($title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!, $event_type: String!, $user_id: Int) {
+    mutation AddCalenderEvent($title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!, $event_type: String!, $user_id: Int, $location: String) {
   insert_calender_events(
-    objects: {title: $title, start_time: $start_time, end_time: $end_time, content: $content, url: $url, module: $module, network: $network, event_type: $event_type, user_id: $user_id}
+    objects: {title: $title, start_time: $start_time, end_time: $end_time, content: $content, url: $url, module: $module, network: $network, event_type: $event_type, user_id: $user_id, location: $location}
   ) {
     affected_rows
   }
@@ -21949,6 +21982,7 @@ export type AddCalenderEventMutationFn = ApolloReactCommon.MutationFunction<AddC
  *      network: // value for 'network'
  *      event_type: // value for 'event_type'
  *      user_id: // value for 'user_id'
+ *      location: // value for 'location'
  *   },
  * });
  */
@@ -22263,10 +22297,10 @@ export type UpdateProposalTrackerMutationHookResult = ReturnType<typeof useUpdat
 export type UpdateProposalTrackerMutationResult = ApolloReactCommon.MutationResult<UpdateProposalTrackerMutation>;
 export type UpdateProposalTrackerMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateProposalTrackerMutation, UpdateProposalTrackerMutationVariables>;
 export const EditCalenderEventDocument = gql`
-    mutation EditCalenderEvent($id: Int!, $title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!, $event_type: String!) {
+    mutation EditCalenderEvent($id: Int!, $title: String!, $start_time: timestamptz!, $content: String, $end_time: timestamptz!, $url: String, $module: String, $network: String!, $event_type: String!, $location: String) {
   update_calender_events(
     where: {id: {_eq: $id}}
-    _set: {title: $title, content: $content, start_time: $start_time, end_time: $end_time, url: $url, module: $module, network: $network, approval_status: "pending", event_type: $event_type}
+    _set: {title: $title, content: $content, start_time: $start_time, end_time: $end_time, url: $url, module: $module, network: $network, approval_status: "pending", event_type: $event_type, location: $location}
   ) {
     affected_rows
   }
@@ -22296,6 +22330,7 @@ export type EditCalenderEventMutationFn = ApolloReactCommon.MutationFunction<Edi
  *      module: // value for 'module'
  *      network: // value for 'network'
  *      event_type: // value for 'event_type'
+ *      location: // value for 'location'
  *   },
  * });
  */
@@ -22305,6 +22340,53 @@ export function useEditCalenderEventMutation(baseOptions?: ApolloReactHooks.Muta
 export type EditCalenderEventMutationHookResult = ReturnType<typeof useEditCalenderEventMutation>;
 export type EditCalenderEventMutationResult = ApolloReactCommon.MutationResult<EditCalenderEventMutation>;
 export type EditCalenderEventMutationOptions = ApolloReactCommon.BaseMutationOptions<EditCalenderEventMutation, EditCalenderEventMutationVariables>;
+export const GetChildBountiesOfParentBountyDocument = gql`
+    query GetChildBountiesOfParentBounty($parent_bounty_id: Int!) {
+  childBounties(where: {parentBountyId: $parent_bounty_id}) {
+    beneficiary
+    childBountyId
+    childBountyStatus {
+      id
+      status
+      uniqueStatus
+    }
+    curator
+    curatorDeposit
+    description
+    fee
+    id
+    parentBountyId
+    proposer
+    value
+  }
+}
+    `;
+
+/**
+ * __useGetChildBountiesOfParentBountyQuery__
+ *
+ * To run a query within a React component, call `useGetChildBountiesOfParentBountyQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetChildBountiesOfParentBountyQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetChildBountiesOfParentBountyQuery({
+ *   variables: {
+ *      parent_bounty_id: // value for 'parent_bounty_id'
+ *   },
+ * });
+ */
+export function useGetChildBountiesOfParentBountyQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetChildBountiesOfParentBountyQuery, GetChildBountiesOfParentBountyQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetChildBountiesOfParentBountyQuery, GetChildBountiesOfParentBountyQueryVariables>(GetChildBountiesOfParentBountyDocument, baseOptions);
+      }
+export function useGetChildBountiesOfParentBountyLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetChildBountiesOfParentBountyQuery, GetChildBountiesOfParentBountyQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetChildBountiesOfParentBountyQuery, GetChildBountiesOfParentBountyQueryVariables>(GetChildBountiesOfParentBountyDocument, baseOptions);
+        }
+export type GetChildBountiesOfParentBountyQueryHookResult = ReturnType<typeof useGetChildBountiesOfParentBountyQuery>;
+export type GetChildBountiesOfParentBountyLazyQueryHookResult = ReturnType<typeof useGetChildBountiesOfParentBountyLazyQuery>;
+export type GetChildBountiesOfParentBountyQueryResult = ApolloReactCommon.QueryResult<GetChildBountiesOfParentBountyQuery, GetChildBountiesOfParentBountyQueryVariables>;
 export const AllBountyPostsDocument = gql`
     query AllBountyPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
   posts(

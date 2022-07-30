@@ -5,15 +5,8 @@
 import styled from '@xstyled/styled-components';
 import React from 'react';
 import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
-import automataLogo from 'src/assets/automata-logo.jpg';
-import basiliskLogo from 'src/assets/basilisk-logo.jpg';
-import bifrostLogo from 'src/assets/bifrost-logo.png';
-import kiltLogo from 'src/assets/kilt-logo.png';
-import kusamaLogo from 'src/assets/kusama-logo.gif';
-import moonbeamLogo from 'src/assets/moonbeam-logo.png';
-import moonriverLogo from 'src/assets/moonriver-logo.png';
-import polkadotLogo from 'src/assets/polkadot-logo.jpg';
-import { network } from 'src/global/networkConstants';
+import chainLogo from 'src/assets/parachain-logos/chain-logo.jpg';
+import { chainProperties, network } from 'src/global/networkConstants';
 import getNetwork from 'src/util/getNetwork';
 
 const NETWORK = getNetwork();
@@ -32,97 +25,56 @@ const StyledDiv = styled.div`
     }
 `;
 
-const getNetworkImage = (showNetwork: string) => {
-	switch (showNetwork) {
-	case network.KUSAMA:
-		return kusamaLogo;
-	case network.MOONBEAM:
-		return moonbeamLogo;
-	case network.MOONRIVER:
-		return moonriverLogo;
-	case network.KILT:
-		return kiltLogo;
-	case network.BIFROST:
-		return bifrostLogo;
-	case network.BASILISK:
-		return basiliskLogo;
-	case network.AUTOMATA:
-		return automataLogo;
-	default:
-		return polkadotLogo;
-	}
-};
-
 const StyledNetworkItem = ({ showNetwork }: {showNetwork: string}) => {
 	return <StyledDiv>
 		<img
-			src={getNetworkImage(showNetwork)}
-			alt={showNetwork}/>
+			src={chainProperties[showNetwork]?.logo ? chainProperties[showNetwork].logo : chainLogo}
+			alt={showNetwork}
+		/>
 		{showNetwork}
 	</StyledDiv>;
 };
 
-const NetworkOptions: DropdownItemProps[] = [
-	{
-		children: <StyledNetworkItem showNetwork={network.POLKADOT}/>,
-		value: network.POLKADOT
-	},
-	{
-		children: <StyledNetworkItem showNetwork={network.KUSAMA}/>,
-		value: network.KUSAMA
-	},
-	{
-		children: <StyledNetworkItem showNetwork={network.MOONRIVER}/>,
-		value: network.MOONRIVER
-	},
-	{
-		children: <StyledNetworkItem showNetwork={network.MOONBEAM}/>,
-		value: network.MOONBEAM
-	},
-	{
-		children: <StyledNetworkItem showNetwork={network.KILT}/>,
-		value: network.KILT
-	},
-	{
-		children: <StyledNetworkItem showNetwork={network.BIFROST}/>,
-		value: network.BIFROST
-	},
-	{
-		children: <StyledNetworkItem showNetwork={network.AUTOMATA}/>,
-		value: network.AUTOMATA
-	},
-	{
-		children: <StyledNetworkItem showNetwork={network.BASILISK}/>,
-		value: network.BASILISK
-	}
-];
+const NetworkOptions: DropdownItemProps[] = [];
+
+for (const key of Object.keys(network)) {
+	const optionObj = {
+		children: <StyledNetworkItem showNetwork={network[key as keyof typeof network]} />,
+		value: network[key as keyof typeof network]
+	};
+
+	NetworkOptions.push(optionObj);
+}
 
 interface Props {
     className?: string
-		removePointer?: boolean
+		setSidebarHiddenFunc?: () => void
 }
 
-const NetworkDropdown = ({ className, removePointer }: Props) =>  {
+const NetworkDropdown = ({ className, setSidebarHiddenFunc }: Props) =>  {
 
 	const navigate = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
 		if (data.value === NETWORK){
 			return null;
 		}
-		let domain = 'network';
-		if (data.value === network.POLKADOT || data.value === network.KUSAMA){
-			domain = 'io';
+
+		if (data.value === 'moonbase' || data.value === 'moonriver' || data.value === 'moonbeam' || data.value === 'kilt' || data.value === 'automata') {
+			window.location.href = `https://${data.value}.polkassembly.network`;
+		} else {
+			window.location.href = `https://${data.value}.polkassembly.io`;
 		}
-		window.location.href = `https://${data.value}.polkassembly.${domain}`;
 		return null;
 	};
 
 	return <Dropdown
+		onClick={setSidebarHiddenFunc}
 		className={className}
-		pointing={removePointer ? false : 'top'}
+		pointing='top'
 		onChange={navigate}
 		options={NetworkOptions}
 		trigger={<StyledNetworkItem showNetwork={NETWORK}/>}
 		value={NETWORK}
+		scrolling
 	/>;
 };
 
@@ -131,7 +83,7 @@ export default styled(NetworkDropdown)`
     display: flex !important;
     align-items: center;
 		margin: 0 1.2rem;
-		
+
 		@media only screen and (max-width: 768px) {
 			font-size: 13px;
 		}
@@ -142,5 +94,6 @@ export default styled(NetworkDropdown)`
 
 		.menu {
 			z-index: 201 !important;
+			min-height: 70vh !important;
 		}
 `;

@@ -6,7 +6,7 @@ import styled from '@xstyled/styled-components';
 import React, { useEffect } from 'react';
 // import { Link } from 'react-router-dom';
 import { Tab, Table } from 'semantic-ui-react';
-import NothingFoundCard from 'src/ui-components/NothingFoundCard';
+import NoLatestActivity from 'src/ui-components/NoLatestActivity';
 import getDefaultAddressField from 'src/util/getDefaultAddressField';
 
 import { useGetLatestPostsQuery } from '../../../generated/graphql';
@@ -27,19 +27,21 @@ interface PostTypeData {
 	title: string
 }
 
-const LatestAllPostsTable = ({ className }:Props) => {
+const LatestAllPostsTable = ({ className }: Props) => {
 
 	const defaultAddressField = getDefaultAddressField();
 
-	const { data, error, refetch } = useGetLatestPostsQuery({ variables: {
-		limit: 10
-	} });
+	const { data, error, refetch } = useGetLatestPostsQuery({
+		variables: {
+			limit: 10
+		}
+	});
 
 	useEffect(() => {
 		refetch();
 	}, [refetch]);
 
-	function getPostTypeData(post: any): PostTypeData | null{
+	function getPostTypeData(post: any): PostTypeData | null {
 		let postType: string = '';
 
 		const postData: PostTypeData = {
@@ -119,14 +121,14 @@ const LatestAllPostsTable = ({ className }:Props) => {
 		return postData;
 	}
 
-	if (error?.message) return <Tab.Pane loading={!data} className='tab-panel'><FilteredError text={error.message}/></Tab.Pane>;
+	if (error?.message) return <Tab.Pane loading={!data} className='tab-panel'><FilteredError text={error.message} /></Tab.Pane>;
 
-	if(data){
+	if (data) {
 		const noPost = !data.posts || !data.posts.length;
 
 		if (noPost)
 			return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
-				<NothingFoundCard className={className} text='There are currently no posts.'/>
+				<NoLatestActivity className={className} />
 			</Tab.Pane>;
 
 		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
@@ -138,7 +140,7 @@ const LatestAllPostsTable = ({ className }:Props) => {
 						(post) => {
 							const postTypeData = getPostTypeData(post);
 
-							if(postTypeData){
+							if (postTypeData) {
 								return postTypeData && !!post?.author?.username &&
 									<LatestActivityTableRow
 										key={post.id}
@@ -150,7 +152,7 @@ const LatestAllPostsTable = ({ className }:Props) => {
 										title={postTypeData.title}
 										postType={postTypeData.postTypeString}
 										created_at={post.created_at}
-										username = {post.author.username}
+										username={post.author.username}
 									/>
 								;
 							}
@@ -165,20 +167,20 @@ const LatestAllPostsTable = ({ className }:Props) => {
 					(post) => {
 						const postTypeData = getPostTypeData(post);
 
-						if(postTypeData){
+						if (postTypeData) {
 							return postTypeData && !!post?.author?.username &&
-							<LatestActivityCard
-								key={post.id}
-								postId={post.id}
-								address={postTypeData.postTypeString == 'discussion' ? post.author[defaultAddressField]! : post.onchain_link?.proposer_address!}
-								method={postTypeData.method ? postTypeData.method : undefined}
-								onchainId={postTypeData?.onChainId}
-								status={postTypeData.status}
-								title={postTypeData.title}
-								postType={postTypeData.postTypeString}
-								created_at={post.created_at}
-								username = {post.author.username}
-							/>
+								<LatestActivityCard
+									key={post.id}
+									postId={post.id}
+									address={postTypeData.postTypeString == 'discussion' ? post.author[defaultAddressField]! : post.onchain_link?.proposer_address!}
+									method={postTypeData.method ? postTypeData.method : undefined}
+									onchainId={postTypeData?.onChainId}
+									status={postTypeData.status}
+									title={postTypeData.title}
+									postType={postTypeData.postTypeString}
+									created_at={post.created_at}
+									username={post.author.username}
+								/>
 							;
 						}
 						return null;

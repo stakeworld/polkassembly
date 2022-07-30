@@ -14,6 +14,7 @@ interface Props {
 	isPassing: boolean,
 	nayVotes: BN,
 	threshold: BN,
+	thresholdType?: string | null
 }
 
 const bnToIntBalance = function (bn: BN): number{
@@ -24,7 +25,7 @@ const bnToStringBalanceDelimitor = function (bn: BN): string{
 	return  formatBnBalance(bn, { numberAfterComma: 2, withThousandDelimitor: true });
 };
 
-const VoteProgress = ({ ayeVotes, className, isPassing, nayVotes, threshold }: Props) => {
+const VoteProgress = ({ ayeVotes, className, isPassing, nayVotes, threshold, thresholdType }: Props) => {
 
 	const thresholdNumber = bnToIntBalance(threshold);
 	const ayeVotesNumber = bnToIntBalance(ayeVotes);
@@ -51,7 +52,7 @@ const VoteProgress = ({ ayeVotes, className, isPassing, nayVotes, threshold }: P
 			/>
 			{
 				// don't show the threshold if it's not been calculated yet
-				thresholdPercent > 0 &&  <div
+				thresholdPercent > 0 && thresholdType !== 'SimpleMajority' ? <div
 					id='passingThreshold'
 					style={{ left: thresholdPercent + '%' }}
 				>
@@ -62,6 +63,21 @@ const VoteProgress = ({ ayeVotes, className, isPassing, nayVotes, threshold }: P
 						{isPassing ? 'Failing' : 'Passing'} threshold: {bnToStringBalanceDelimitor(threshold)}
 					</div>
 				</div>
+					:
+					<>
+						<div
+							id='passingThreshold'
+							style={{ left: '50%' }}
+						>
+							<hr/>
+						</div>
+						<div
+							className={'threshold-right'}
+							style={{ marginTop: '8px' }}
+						>
+							{isPassing ? 'Failing' : 'Passing'} threshold: {'50%'}
+						</div>
+					</>
 			}
 		</div>
 	);

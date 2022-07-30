@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Grid } from 'semantic-ui-react';
 
 import { OnchainLinkChildBountyFragment } from '../../../generated/graphql';
@@ -31,7 +32,8 @@ const PostChildBountyInfo = ({ onchainLink }: Props) => {
 		curatorDeposit,
 		curator,
 		beneficiary,
-		description
+		description,
+		parentBountyId
 	} = onchainChildBountyProposal?.[0] || { };
 
 	return (
@@ -71,6 +73,11 @@ const PostChildBountyInfo = ({ onchainLink }: Props) => {
 				<Grid.Column mobile={16} tablet={8} computer={8}>
 					<h6>Description</h6>
 					{description}
+				</Grid.Column>}
+				{parentBountyId &&
+				<Grid.Column mobile={16} tablet={8} computer={8}>
+					<h6>Parent Bounty</h6>
+					<Link to={`/bounty/${parentBountyId}`}>#{parentBountyId}</Link>
 				</Grid.Column>}
 			</Grid>
 		</OnchainInfoWrapper>

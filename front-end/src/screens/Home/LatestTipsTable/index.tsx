@@ -7,7 +7,7 @@ import React, { useEffect } from 'react';
 // import { Link } from 'react-router-dom';
 import { Tab, Table } from 'semantic-ui-react';
 import { post_topic } from 'src/global/post_topics';
-import NothingFoundCard from 'src/ui-components/NothingFoundCard';
+import NoLatestActivity from 'src/ui-components/NoLatestActivity';
 
 import { useGetLatestTipPostsQuery } from '../../../generated/graphql';
 import { post_type } from '../../../global/post_types';
@@ -20,24 +20,26 @@ interface Props {
 	className?: string
 }
 
-const LatestTipsTable = ({ className }:Props) => {
+const LatestTipsTable = ({ className }: Props) => {
 
-	const { data, error, refetch } = useGetLatestTipPostsQuery({ variables: {
-		limit: 10,
-		postTopic: post_topic.TREASURY,
-		postType: post_type.ON_CHAIN
-	} });
+	const { data, error, refetch } = useGetLatestTipPostsQuery({
+		variables: {
+			limit: 10,
+			postTopic: post_topic.TREASURY,
+			postType: post_type.ON_CHAIN
+		}
+	});
 
 	useEffect(() => {
 		refetch();
 	}, [refetch]);
 
-	if (error?.message) return <Tab.Pane loading={!data} className='tab-panel'><FilteredError text={error.message}/></Tab.Pane>;
+	if (error?.message) return <Tab.Pane loading={!data} className='tab-panel'><FilteredError text={error.message} /></Tab.Pane>;
 
-	if(data){
+	if (data) {
 		const noPost = !data.posts || !data.posts.length;
 		const atLeastOneCurrentTip = data.posts.some((post) => {
-			if(post.onchain_link?.onchain_tip.length|| post.onchain_link?.onchain_tip_id){
+			if (post.onchain_link?.onchain_tip.length || post.onchain_link?.onchain_tip_id) {
 				// this breaks the loop as soon as
 				// we find a post that has a tip.
 				return true;
@@ -47,7 +49,7 @@ const LatestTipsTable = ({ className }:Props) => {
 
 		if (!atLeastOneCurrentTip || noPost)
 			return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
-				<NothingFoundCard className={className} text='There are currently no active tips.'/>
+				<NoLatestActivity className={className} />
 			</Tab.Pane>;
 
 		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>

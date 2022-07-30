@@ -60,6 +60,21 @@ export default styled(OnchainInfoWrapper)`
 			margin: 12px 9px 6px 9px;
 		}
 	}
+
+	.child-bounty-item {
+		margin-top: 4px;
+		margin-bottom: 4px;
+
+		.child-bounty-item-header {
+			margin-bottom: 2px !important;
+			color: #4183c4 !important;
+		}
+	}
+
+	.child-bounty-show-btn {
+		margin-top: 4px;
+	}
+
 	@media only screen and (max-width: 576px) {
 		padding: 2rem;
 	}

@@ -40,6 +40,7 @@ authServer:
   config:
     domainName: "test.polkassembly.io"
     PROPOSAL_BOT_USER_ID: "1"
+    EVENT_BOT_USER_ID: "21"
 
 chainDbWatcher:
   config:

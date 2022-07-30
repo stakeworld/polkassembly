@@ -189,6 +189,7 @@ const ReferendumVoteInfo = ({ className, referendumId, threshold, setLastVote }:
 									isPassing={isPassing}
 									threshold={getThreshold}
 									nayVotes={nayVotes}
+									thresholdType={threshold}
 								/>
 						}
 

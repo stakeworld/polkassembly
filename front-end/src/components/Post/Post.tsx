@@ -64,6 +64,7 @@ import GovenanceSideBar from './GovernanceSideBar';
 import Poll from './Poll';
 import CreatePostComment from './PostCommentForm';
 import PostBountyInfo from './PostGovernanceInfo/PostBountyInfo';
+import PostChildBountiesList from './PostGovernanceInfo/PostChildBountiesList';
 import PostChildBountyInfo from './PostGovernanceInfo/PostChildBountyInfo';
 import PostMotionInfo from './PostGovernanceInfo/PostMotionInfo';
 import PostProposalInfo from './PostGovernanceInfo/PostProposalInfo';
@@ -349,6 +350,9 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 					<>
 						<PostBountyInfo
 							onchainLink={definedOnchainLink as OnchainLinkBountyFragment}
+						/>
+						<PostChildBountiesList
+							onchainId={Number(onchainId)}
 						/>
 						<Timeline
 							statuses={bountyPost?.onchain_link?.onchain_bounty?.[0]?.bountyStatus?.map(s => ({
