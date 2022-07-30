@@ -168,7 +168,7 @@ const TreasuryOverviewCards = ({ className }: {className?: string}) => {
 	// fetch a week ago price of the token and calc priceWeeklyChange
 	useEffect(() => {
 		let cancel = false;
-		if(!currentTokenPrice) return;
+		if(cancel || !currentTokenPrice) return;
 
 		async function fetchWeekAgoTokenPrice() {
 			if (cancel) return;

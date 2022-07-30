@@ -11,7 +11,6 @@ import formatUSDWithUnits from './formatUSDWithUnits';
 const NETWORK = getNetwork();
 
 export default async function fetchTokenToUSDPrice(token: number) {
-	console.log('fetchTokenToUSDPrice called');
 
 	const response = await fetch(
 		`https://${NETWORK === 'kilt' ? 'spiritnet' : NETWORK}.api.subscan.io/api/open/price_converter`,
