@@ -84,9 +84,6 @@ const TipProposalFormButton = ({
 		if (!apiReady) {
 			return;
 		}
-		api.query.childBounties.childBounties().then((result) => {
-			console.log('cb', result);
-		});
 
 		api.query.council.members().then((members) => {
 			setCurrentCouncil(members.map(member => member.toString()));
