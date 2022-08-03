@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 import styled from '@xstyled/styled-components';
 import React from 'react';
-import LatestActivityEmptyState from 'src/assets/empty-states/LatestActivityEmptyState';
+import LatestActivityEmptyState from 'src/assets/lottie-graphics/LatestActivityEmptyState';
 
 interface Props {
 	className?: string;

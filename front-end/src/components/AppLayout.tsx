@@ -41,12 +41,12 @@ function AppLayout() {
 
 	return (
 		<>
-			{!apiReady && showLoader &&
+			{/* {!apiReady && showLoader &&
 			<div style={ { left: '50vw', position: 'fixed', top: '40vh', transform: 'translate(-50%, 0)', width: '100%', zIndex: 500 } } >
 				<Loader text='Waiting to make a connection to the remote endpoint and finishing API initialization.' size="big" />
 				<Button onClick={() => setShowLoader(false)} style={ { background: '#fff', color: '#333', left: '50vw', position: 'fixed', top: '15vh', transform: 'translate(-50%, 0)', zIndex: 500 } }>Skip</Button>
 			</div>
-			}
+			} */}
 			<div style={!apiReady && showLoader ? { opacity: 0.1 } : {}}>
 				<MenuBar toggleSidebarHidden={toggleSidebarHidden} setSidebarHidden={setSidebarHidden} />
 				<div className='d-flex'>
