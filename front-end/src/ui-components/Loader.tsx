@@ -5,6 +5,7 @@
 import styled from '@xstyled/styled-components';
 import React, { useEffect, useState } from 'react';
 import { Dimmer, Loader as SUILoader } from 'semantic-ui-react';
+import LoaderGraphic from 'src/assets/lottie-graphics/LoaderGraphic';
 
 interface Props{
 	className?: string
@@ -41,6 +42,7 @@ const Loader = ({ className, text = 'Loading', timeout, timeoutText = 'Process t
 			{displayLoader
 				?
 				<Dimmer inverted active className={className}>
+					<LoaderGraphic />
 					<SUILoader inverted className={size ? size : ''}>{showDelayText ? delayText : text}</SUILoader>
 				</Dimmer>
 				:
