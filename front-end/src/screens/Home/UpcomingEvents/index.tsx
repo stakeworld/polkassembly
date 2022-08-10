@@ -6,7 +6,7 @@ import styled from '@xstyled/styled-components';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Grid, Icon, List } from 'semantic-ui-react';
-import EventsEmptyState from 'src/assets/empty-states/EventsEmptyState';
+import EventsEmptyState from 'src/assets/lottie-graphics/EventsEmptyState';
 import CalendarView from 'src/screens/CalendarView';
 
 import calendarImg from '../../../assets/calendar.png';
