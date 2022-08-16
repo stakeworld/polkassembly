@@ -19,6 +19,7 @@ import karuraLogo from 'src/assets/parachain-logos/karura-logo.jpg';
 import khalaLogo from 'src/assets/parachain-logos/khala-logo.png';
 import kiltLogo from 'src/assets/parachain-logos/kilt-logo.png';
 import kusamaLogo from 'src/assets/parachain-logos/kusama-logo.gif';
+import kylinLogo from 'src/assets/parachain-logos/kylin-logo.png';
 import mantaLogo from 'src/assets/parachain-logos/manta-logo.jpg';
 import moonbaseLogo from 'src/assets/parachain-logos/moonbase-logo.png';
 import moonbeamLogo from 'src/assets/parachain-logos/moonbeam-logo.png';
@@ -53,6 +54,7 @@ export const network = {
 	KARURA: 'karura',
 	KHALA: 'khala',
 	KILT: 'kilt',
+	KYLIN: 'kylin',
 	MANTA: 'manta',
 	MOONBASE: 'moonbase',
 	MOONBEAM: 'moonbeam',
@@ -89,6 +91,7 @@ export const tokenSymbol = {
 	KILT: 'KILT',
 	KMA: 'KMA',
 	KSM: 'KSM',
+	KYL: 'KYL',
 	MOVR: 'MOVR',
 	PARA: 'PARA',
 	PDEX: 'PDEX',
@@ -245,6 +248,15 @@ export const chainProperties: ChainPropType = {
 		ss58Format: 8,
 		tokenDecimals: 18,
 		tokenSymbol: tokenSymbol.KAR
+	},
+	[network.KYLIN]: {
+		blockTime: 12000,
+		chainId: 0,
+		logo: kylinLogo,
+		rpcEndpoint: 'wss://polkadot.kylin-node.co.uk',
+		ss58Format: 42,
+		tokenDecimals: 18,
+		tokenSymbol: tokenSymbol.KYL
 	},
 	[network.KHALA]: {
 		blockTime: 12000,
