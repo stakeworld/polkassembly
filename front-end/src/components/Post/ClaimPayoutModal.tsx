@@ -135,7 +135,7 @@ const ClaimPayoutModal = ({ className, parentBountyId, childBountyId } : { class
 
 	return (
 		<Modal
-			modalopen={modalopen}
+			open={modalopen}
 			onClose={() => { if(!isLoading) setModalOpen(false);}}
 			onOpen={() => setModalOpen(true)}
 			trigger={triggerBtn}
@@ -184,7 +184,7 @@ const ClaimPayoutModal = ({ className, parentBountyId, childBountyId } : { class
 				</Form.Group>
 			</Modal.Content>
 			<Modal.Actions>
-				<Button style={ { fontSize: '12px' } } loading={isLoading} onClick={() => setModalOpen(false)}>Cancel</Button>
+				<Button style={ { fontSize: '12px' } } loading={isLoading} disabled={isLoading} onClick={() => setModalOpen(false)}>Cancel</Button>
 				<Button floated='right' className='submitBtn' disabled={isLoading} loading={isLoading} onClick={() => handleSignAndSubmit()}>Sign &amp; Submit</Button>
 			</Modal.Actions>
 		</Modal>
