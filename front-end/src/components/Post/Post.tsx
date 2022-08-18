@@ -553,6 +553,10 @@ export default styled(Post)`
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		
+		span {
+			margin-top: 4px;
+		}
 	}
 
 	.timelineCard {

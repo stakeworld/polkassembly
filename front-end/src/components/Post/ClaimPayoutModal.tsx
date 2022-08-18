@@ -19,7 +19,6 @@ import AddressComponent from '../../ui-components/Address';
 const ClaimPayoutModal = ({ className, parentBountyId, childBountyId } : { className?: string, parentBountyId:number | undefined, childBountyId:number | undefined }) => {
 	const { api, apiReady } = useContext(ApiContext);
 	const { queueNotification } = useContext(NotificationContext);
-	console.log('status : ', status);
 
 	const [modalopen, setModalOpen] = useState<boolean>(false);
 	const [beneficiaryAccount, setBeneficiaryAccount] = useState<string>('');
