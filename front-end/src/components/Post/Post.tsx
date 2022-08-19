@@ -60,6 +60,7 @@ import ShareButton from '../ShareButton';
 import SubscriptionButton from '../SubscriptionButton/SubscriptionButton';
 import Timeline from '../Timeline';
 import TrackerButton from '../TrackerButton';
+import ClaimPayoutModal from './ClaimPayoutModal';
 import GovenanceSideBar from './GovernanceSideBar';
 import Poll from './Poll';
 import CreatePostComment from './PostCommentForm';
@@ -301,6 +302,16 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 						</Card>
 					</Link>
 				}
+				{ post && isChildBounty && postStatus === 'PendingPayout' && (
+					// TODO: Add condition to check for benificiary
+					<Card className='claimPayoutCard'>
+						<span>The child bounty payout is ready to be claimed&nbsp;&nbsp;</span>
+						<ClaimPayoutModal
+							parentBountyId={(definedOnchainLink as OnchainLinkChildBountyFragment).onchain_child_bounty[0]?.parentBountyId}
+							childBountyId={(definedOnchainLink as OnchainLinkChildBountyFragment).onchain_child_bounty[0]?.childBountyId}
+						/>
+					</Card>
+				)}
 				<div className='post_content'>
 					<EditablePostContent
 						isEditing={isEditing}
@@ -514,7 +525,7 @@ export default styled(Post)`
 		}
 	}
 
-	.redirectionCard {
+	.redirectionCard, .claimPayoutCard {
 		color: black_text;
 		background-color: grey_border;
 		padding: 2rem 3rem 2rem 3rem;
@@ -535,6 +546,16 @@ export default styled(Post)`
 				text-decoration: none;
 				color: pink_secondary;
 			}
+		}
+	}
+
+	.claimPayoutCard {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		
+		span {
+			margin-top: 4px;
 		}
 	}
 
