@@ -61,6 +61,6 @@ export default styled(NewsView)`
 	}
 
 	.timeline-col{
-		height: 95vh;
+		height: 100%;
 	}
 `;
