@@ -14,6 +14,7 @@ import pioneerLogo from 'src/assets/parachain-logos/bitcountrypioneer-logo.jpg';
 import calamariLogo from 'src/assets/parachain-logos/calamari-logo.png';
 import centrifugeLogo from 'src/assets/parachain-logos/centrifuge-logo.png';
 import gearLogo from 'src/assets/parachain-logos/gear-logo.jpg';
+import heikoLogo from 'src/assets/parachain-logos/heiko-logo.png';
 import hydradxLogo from 'src/assets/parachain-logos/hydradx-logo.jpg';
 import karuraLogo from 'src/assets/parachain-logos/karura-logo.jpg';
 import khalaLogo from 'src/assets/parachain-logos/khala-logo.png';
@@ -34,7 +35,7 @@ import tanganikaLogo from 'src/assets/parachain-logos/tanganika-logo.png';
 import turingLogo from 'src/assets/parachain-logos/turing-logo.png';
 import westendLogo from 'src/assets/parachain-logos/westend-logo.jpg';
 
-import { ChainLinksType, ChainPropType } from '../types';
+import * as types from '../types';
 
 export const network = {
 	POLKADOT: 'polkadot',
@@ -104,7 +105,7 @@ export const tokenSymbol = {
 	UNIT: 'UNIT'
 };
 
-export const chainProperties: ChainPropType = {
+export const chainProperties: types.ChainPropType = {
 	[network.POLKADOT]: {
 		blockTime: 6000,
 		chainId: 0,
@@ -225,7 +226,7 @@ export const chainProperties: ChainPropType = {
 	[network.HEIKO]: {
 		blockTime: 13000,
 		chainId: 0,
-		logo: hydradxLogo,
+		logo: heikoLogo,
 		rpcEndpoint: 'wss://heiko-rpc.parallel.fi',
 		ss58Format: 63,
 		tokenDecimals: 12,
@@ -395,7 +396,7 @@ export const chainProperties: ChainPropType = {
 	}
 };
 
-export const chainLinks: ChainLinksType = {
+export const chainLinks: types.ChainLinksType = {
 	[network.POLKADOT]: {
 		blockExplorer: 'https://polkadot.subscan.io/',
 		discord: 'https://discord.gg/wGUDt2p',
