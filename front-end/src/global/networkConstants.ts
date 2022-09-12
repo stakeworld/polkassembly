@@ -9,7 +9,6 @@ import amplitudeLogo from 'src/assets/parachain-logos/amplitude-logo.png';
 import astarLogo from 'src/assets/parachain-logos/astar-logo.png';
 import automataLogo from 'src/assets/parachain-logos/automata-logo.jpg';
 import basiliskLogo from 'src/assets/parachain-logos/basilisk-logo.jpg';
-import bifrostLogo from 'src/assets/parachain-logos/bifrost-logo.png';
 import pioneerLogo from 'src/assets/parachain-logos/bitcountrypioneer-logo.jpg';
 import calamariLogo from 'src/assets/parachain-logos/calamari-logo.png';
 import centrifugeLogo from 'src/assets/parachain-logos/centrifuge-logo.png';
@@ -46,7 +45,6 @@ export const network = {
 	ASTAR: 'astar',
 	AUTOMATA: 'automata',
 	BASILISK: 'basilisk',
-	BIFROST: 'bifrost',
 	CALAMARI: 'calamari',
 	CENTRIFUGE: 'centrifuge',
 	GEAR: 'gear',
@@ -177,15 +175,6 @@ export const chainProperties: types.ChainPropType = {
 		ss58Format: 10041,
 		tokenDecimals: 12,
 		tokenSymbol: tokenSymbol.BSX
-	},
-	[network.BIFROST]: {
-		blockTime: 12000,
-		chainId: 0,
-		logo: bifrostLogo,
-		rpcEndpoint: 'wss://hk.p.bifrost-rpc.liebi.com/ws',
-		ss58Format: 6,
-		tokenDecimals: 18,
-		tokenSymbol: tokenSymbol.BNC
 	},
 	[network.PIONEER]: {
 		blockTime: 12000,
