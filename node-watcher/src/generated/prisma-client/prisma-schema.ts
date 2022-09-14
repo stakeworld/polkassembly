@@ -34,6 +34,10 @@ type AggregateCouncilMember {
   count: Int!
 }
 
+type AggregateCouncilMotionVote {
+  count: Int!
+}
+
 type AggregateEra {
   count: Int!
 }
@@ -87,6 +91,10 @@ type AggregateReferendum {
 }
 
 type AggregateReferendumStatus {
+  count: Int!
+}
+
+type AggregateReferendumVote {
   count: Int!
 }
 
@@ -1688,6 +1696,120 @@ input CouncilMemberWhereUniqueInput {
   address: String
 }
 
+type CouncilMotionVote {
+  id: ID!
+  blockNumber: BlockNumber!
+  motion: Motion!
+  voter: String!
+  seconded: Boolean!
+}
+
+type CouncilMotionVoteConnection {
+  pageInfo: PageInfo!
+  edges: [CouncilMotionVoteEdge]!
+  aggregate: AggregateCouncilMotionVote!
+}
+
+input CouncilMotionVoteCreateInput {
+  id: ID
+  blockNumber: BlockNumberCreateOneInput!
+  motion: MotionCreateOneInput!
+  voter: String!
+  seconded: Boolean!
+}
+
+type CouncilMotionVoteEdge {
+  node: CouncilMotionVote!
+  cursor: String!
+}
+
+enum CouncilMotionVoteOrderByInput {
+  id_ASC
+  id_DESC
+  voter_ASC
+  voter_DESC
+  seconded_ASC
+  seconded_DESC
+}
+
+type CouncilMotionVotePreviousValues {
+  id: ID!
+  voter: String!
+  seconded: Boolean!
+}
+
+type CouncilMotionVoteSubscriptionPayload {
+  mutation: MutationType!
+  node: CouncilMotionVote
+  updatedFields: [String!]
+  previousValues: CouncilMotionVotePreviousValues
+}
+
+input CouncilMotionVoteSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: CouncilMotionVoteWhereInput
+  AND: [CouncilMotionVoteSubscriptionWhereInput!]
+  OR: [CouncilMotionVoteSubscriptionWhereInput!]
+  NOT: [CouncilMotionVoteSubscriptionWhereInput!]
+}
+
+input CouncilMotionVoteUpdateInput {
+  blockNumber: BlockNumberUpdateOneRequiredInput
+  motion: MotionUpdateOneRequiredInput
+  voter: String
+  seconded: Boolean
+}
+
+input CouncilMotionVoteUpdateManyMutationInput {
+  voter: String
+  seconded: Boolean
+}
+
+input CouncilMotionVoteWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  blockNumber: BlockNumberWhereInput
+  motion: MotionWhereInput
+  voter: String
+  voter_not: String
+  voter_in: [String!]
+  voter_not_in: [String!]
+  voter_lt: String
+  voter_lte: String
+  voter_gt: String
+  voter_gte: String
+  voter_contains: String
+  voter_not_contains: String
+  voter_starts_with: String
+  voter_not_starts_with: String
+  voter_ends_with: String
+  voter_not_ends_with: String
+  seconded: Boolean
+  seconded_not: Boolean
+  AND: [CouncilMotionVoteWhereInput!]
+  OR: [CouncilMotionVoteWhereInput!]
+  NOT: [CouncilMotionVoteWhereInput!]
+}
+
+input CouncilMotionVoteWhereUniqueInput {
+  id: ID
+}
+
 enum CouncilOrderByInput {
   id_ASC
   id_DESC
@@ -2066,6 +2188,11 @@ input MotionCreateInput {
   preimageHash: String
   treasurySpendProposal: TreasurySpendProposalCreateOneWithoutMotionInput
   section: String!
+}
+
+input MotionCreateOneInput {
+  create: MotionCreateInput
+  connect: MotionWhereUniqueInput
 }
 
 input MotionCreateOneWithoutMotionProposalArgumentsInput {
@@ -2645,6 +2772,21 @@ input MotionSubscriptionWhereInput {
   NOT: [MotionSubscriptionWhereInput!]
 }
 
+input MotionUpdateDataInput {
+  author: String
+  memberCount: Int
+  metaDescription: String
+  method: String
+  motionProposalArguments: MotionProposalArgumentUpdateManyWithoutMotionInput
+  motionProposalHash: String
+  motionProposalId: Int
+  motionStatus: MotionStatusUpdateManyWithoutMotionInput
+  preimage: PreimageUpdateOneWithoutMotionInput
+  preimageHash: String
+  treasurySpendProposal: TreasurySpendProposalUpdateOneWithoutMotionInput
+  section: String
+}
+
 input MotionUpdateInput {
   author: String
   memberCount: Int
@@ -2669,6 +2811,13 @@ input MotionUpdateManyMutationInput {
   motionProposalId: Int
   preimageHash: String
   section: String
+}
+
+input MotionUpdateOneRequiredInput {
+  create: MotionCreateInput
+  update: MotionUpdateDataInput
+  upsert: MotionUpsertNestedInput
+  connect: MotionWhereUniqueInput
 }
 
 input MotionUpdateOneRequiredWithoutMotionProposalArgumentsInput {
@@ -2757,6 +2906,11 @@ input MotionUpdateWithoutTreasurySpendProposalDataInput {
   preimage: PreimageUpdateOneWithoutMotionInput
   preimageHash: String
   section: String
+}
+
+input MotionUpsertNestedInput {
+  update: MotionUpdateDataInput!
+  create: MotionCreateInput!
 }
 
 input MotionUpsertWithoutMotionProposalArgumentsInput {
@@ -2954,6 +3108,12 @@ type Mutation {
   upsertCouncilMember(where: CouncilMemberWhereUniqueInput!, create: CouncilMemberCreateInput!, update: CouncilMemberUpdateInput!): CouncilMember!
   deleteCouncilMember(where: CouncilMemberWhereUniqueInput!): CouncilMember
   deleteManyCouncilMembers(where: CouncilMemberWhereInput): BatchPayload!
+  createCouncilMotionVote(data: CouncilMotionVoteCreateInput!): CouncilMotionVote!
+  updateCouncilMotionVote(data: CouncilMotionVoteUpdateInput!, where: CouncilMotionVoteWhereUniqueInput!): CouncilMotionVote
+  updateManyCouncilMotionVotes(data: CouncilMotionVoteUpdateManyMutationInput!, where: CouncilMotionVoteWhereInput): BatchPayload!
+  upsertCouncilMotionVote(where: CouncilMotionVoteWhereUniqueInput!, create: CouncilMotionVoteCreateInput!, update: CouncilMotionVoteUpdateInput!): CouncilMotionVote!
+  deleteCouncilMotionVote(where: CouncilMotionVoteWhereUniqueInput!): CouncilMotionVote
+  deleteManyCouncilMotionVotes(where: CouncilMotionVoteWhereInput): BatchPayload!
   createEra(data: EraCreateInput!): Era!
   updateEra(data: EraUpdateInput!, where: EraWhereUniqueInput!): Era
   updateManyEras(data: EraUpdateManyMutationInput!, where: EraWhereInput): BatchPayload!
@@ -3038,6 +3198,12 @@ type Mutation {
   upsertReferendumStatus(where: ReferendumStatusWhereUniqueInput!, create: ReferendumStatusCreateInput!, update: ReferendumStatusUpdateInput!): ReferendumStatus!
   deleteReferendumStatus(where: ReferendumStatusWhereUniqueInput!): ReferendumStatus
   deleteManyReferendumStatuses(where: ReferendumStatusWhereInput): BatchPayload!
+  createReferendumVote(data: ReferendumVoteCreateInput!): ReferendumVote!
+  updateReferendumVote(data: ReferendumVoteUpdateInput!, where: ReferendumVoteWhereUniqueInput!): ReferendumVote
+  updateManyReferendumVotes(data: ReferendumVoteUpdateManyMutationInput!, where: ReferendumVoteWhereInput): BatchPayload!
+  upsertReferendumVote(where: ReferendumVoteWhereUniqueInput!, create: ReferendumVoteCreateInput!, update: ReferendumVoteUpdateInput!): ReferendumVote!
+  deleteReferendumVote(where: ReferendumVoteWhereUniqueInput!): ReferendumVote
+  deleteManyReferendumVotes(where: ReferendumVoteWhereInput): BatchPayload!
   createReward(data: RewardCreateInput!): Reward!
   updateReward(data: RewardUpdateInput!, where: RewardWhereUniqueInput!): Reward
   updateManyRewards(data: RewardUpdateManyMutationInput!, where: RewardWhereInput): BatchPayload!
@@ -4844,6 +5010,9 @@ type Query {
   councilMember(where: CouncilMemberWhereUniqueInput!): CouncilMember
   councilMembers(where: CouncilMemberWhereInput, orderBy: CouncilMemberOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CouncilMember]!
   councilMembersConnection(where: CouncilMemberWhereInput, orderBy: CouncilMemberOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CouncilMemberConnection!
+  councilMotionVote(where: CouncilMotionVoteWhereUniqueInput!): CouncilMotionVote
+  councilMotionVotes(where: CouncilMotionVoteWhereInput, orderBy: CouncilMotionVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CouncilMotionVote]!
+  councilMotionVotesConnection(where: CouncilMotionVoteWhereInput, orderBy: CouncilMotionVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CouncilMotionVoteConnection!
   era(where: EraWhereUniqueInput!): Era
   eras(where: EraWhereInput, orderBy: EraOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Era]!
   erasConnection(where: EraWhereInput, orderBy: EraOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EraConnection!
@@ -4886,6 +5055,9 @@ type Query {
   referendumStatus(where: ReferendumStatusWhereUniqueInput!): ReferendumStatus
   referendumStatuses(where: ReferendumStatusWhereInput, orderBy: ReferendumStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ReferendumStatus]!
   referendumStatusesConnection(where: ReferendumStatusWhereInput, orderBy: ReferendumStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReferendumStatusConnection!
+  referendumVote(where: ReferendumVoteWhereUniqueInput!): ReferendumVote
+  referendumVotes(where: ReferendumVoteWhereInput, orderBy: ReferendumVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ReferendumVote]!
+  referendumVotesConnection(where: ReferendumVoteWhereInput, orderBy: ReferendumVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReferendumVoteConnection!
   reward(where: RewardWhereUniqueInput!): Reward
   rewards(where: RewardWhereInput, orderBy: RewardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Reward]!
   rewardsConnection(where: RewardWhereInput, orderBy: RewardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RewardConnection!
@@ -4953,6 +5125,11 @@ input ReferendumCreateInput {
   referendumId: Int!
   referendumStatus: ReferendumStatusCreateManyWithoutReferendumInput
   voteThreshold: String!
+}
+
+input ReferendumCreateOneInput {
+  create: ReferendumCreateInput
+  connect: ReferendumWhereUniqueInput
 }
 
 input ReferendumCreateOneWithoutPreimageInput {
@@ -5256,6 +5433,16 @@ input ReferendumSubscriptionWhereInput {
   NOT: [ReferendumSubscriptionWhereInput!]
 }
 
+input ReferendumUpdateDataInput {
+  delay: Int
+  end: Int
+  preimage: PreimageUpdateOneWithoutReferendumInput
+  preimageHash: String
+  referendumId: Int
+  referendumStatus: ReferendumStatusUpdateManyWithoutReferendumInput
+  voteThreshold: String
+}
+
 input ReferendumUpdateInput {
   delay: Int
   end: Int
@@ -5272,6 +5459,13 @@ input ReferendumUpdateManyMutationInput {
   preimageHash: String
   referendumId: Int
   voteThreshold: String
+}
+
+input ReferendumUpdateOneRequiredInput {
+  create: ReferendumCreateInput
+  update: ReferendumUpdateDataInput
+  upsert: ReferendumUpsertNestedInput
+  connect: ReferendumWhereUniqueInput
 }
 
 input ReferendumUpdateOneRequiredWithoutReferendumStatusInput {
@@ -5308,6 +5502,11 @@ input ReferendumUpdateWithoutReferendumStatusDataInput {
   voteThreshold: String
 }
 
+input ReferendumUpsertNestedInput {
+  update: ReferendumUpdateDataInput!
+  create: ReferendumCreateInput!
+}
+
 input ReferendumUpsertWithoutPreimageInput {
   update: ReferendumUpdateWithoutPreimageDataInput!
   create: ReferendumCreateWithoutPreimageInput!
@@ -5316,6 +5515,153 @@ input ReferendumUpsertWithoutPreimageInput {
 input ReferendumUpsertWithoutReferendumStatusInput {
   update: ReferendumUpdateWithoutReferendumStatusDataInput!
   create: ReferendumCreateWithoutReferendumStatusInput!
+}
+
+type ReferendumVote {
+  id: ID!
+  blockNumber: BlockNumber!
+  referendum: Referendum!
+  vote: String!
+  voter: String!
+  lockedValue: String!
+}
+
+type ReferendumVoteConnection {
+  pageInfo: PageInfo!
+  edges: [ReferendumVoteEdge]!
+  aggregate: AggregateReferendumVote!
+}
+
+input ReferendumVoteCreateInput {
+  id: ID
+  blockNumber: BlockNumberCreateOneInput!
+  referendum: ReferendumCreateOneInput!
+  vote: String!
+  voter: String!
+  lockedValue: String!
+}
+
+type ReferendumVoteEdge {
+  node: ReferendumVote!
+  cursor: String!
+}
+
+enum ReferendumVoteOrderByInput {
+  id_ASC
+  id_DESC
+  vote_ASC
+  vote_DESC
+  voter_ASC
+  voter_DESC
+  lockedValue_ASC
+  lockedValue_DESC
+}
+
+type ReferendumVotePreviousValues {
+  id: ID!
+  vote: String!
+  voter: String!
+  lockedValue: String!
+}
+
+type ReferendumVoteSubscriptionPayload {
+  mutation: MutationType!
+  node: ReferendumVote
+  updatedFields: [String!]
+  previousValues: ReferendumVotePreviousValues
+}
+
+input ReferendumVoteSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ReferendumVoteWhereInput
+  AND: [ReferendumVoteSubscriptionWhereInput!]
+  OR: [ReferendumVoteSubscriptionWhereInput!]
+  NOT: [ReferendumVoteSubscriptionWhereInput!]
+}
+
+input ReferendumVoteUpdateInput {
+  blockNumber: BlockNumberUpdateOneRequiredInput
+  referendum: ReferendumUpdateOneRequiredInput
+  vote: String
+  voter: String
+  lockedValue: String
+}
+
+input ReferendumVoteUpdateManyMutationInput {
+  vote: String
+  voter: String
+  lockedValue: String
+}
+
+input ReferendumVoteWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  blockNumber: BlockNumberWhereInput
+  referendum: ReferendumWhereInput
+  vote: String
+  vote_not: String
+  vote_in: [String!]
+  vote_not_in: [String!]
+  vote_lt: String
+  vote_lte: String
+  vote_gt: String
+  vote_gte: String
+  vote_contains: String
+  vote_not_contains: String
+  vote_starts_with: String
+  vote_not_starts_with: String
+  vote_ends_with: String
+  vote_not_ends_with: String
+  voter: String
+  voter_not: String
+  voter_in: [String!]
+  voter_not_in: [String!]
+  voter_lt: String
+  voter_lte: String
+  voter_gt: String
+  voter_gte: String
+  voter_contains: String
+  voter_not_contains: String
+  voter_starts_with: String
+  voter_not_starts_with: String
+  voter_ends_with: String
+  voter_not_ends_with: String
+  lockedValue: String
+  lockedValue_not: String
+  lockedValue_in: [String!]
+  lockedValue_not_in: [String!]
+  lockedValue_lt: String
+  lockedValue_lte: String
+  lockedValue_gt: String
+  lockedValue_gte: String
+  lockedValue_contains: String
+  lockedValue_not_contains: String
+  lockedValue_starts_with: String
+  lockedValue_not_starts_with: String
+  lockedValue_ends_with: String
+  lockedValue_not_ends_with: String
+  AND: [ReferendumVoteWhereInput!]
+  OR: [ReferendumVoteWhereInput!]
+  NOT: [ReferendumVoteWhereInput!]
+}
+
+input ReferendumVoteWhereUniqueInput {
+  id: ID
 }
 
 input ReferendumWhereInput {
@@ -5870,6 +6216,7 @@ type Subscription {
   childBountyStatus(where: ChildBountyStatusSubscriptionWhereInput): ChildBountyStatusSubscriptionPayload
   council(where: CouncilSubscriptionWhereInput): CouncilSubscriptionPayload
   councilMember(where: CouncilMemberSubscriptionWhereInput): CouncilMemberSubscriptionPayload
+  councilMotionVote(where: CouncilMotionVoteSubscriptionWhereInput): CouncilMotionVoteSubscriptionPayload
   era(where: EraSubscriptionWhereInput): EraSubscriptionPayload
   heartBeat(where: HeartBeatSubscriptionWhereInput): HeartBeatSubscriptionPayload
   motion(where: MotionSubscriptionWhereInput): MotionSubscriptionPayload
@@ -5884,6 +6231,7 @@ type Subscription {
   proposalStatus(where: ProposalStatusSubscriptionWhereInput): ProposalStatusSubscriptionPayload
   referendum(where: ReferendumSubscriptionWhereInput): ReferendumSubscriptionPayload
   referendumStatus(where: ReferendumStatusSubscriptionWhereInput): ReferendumStatusSubscriptionPayload
+  referendumVote(where: ReferendumVoteSubscriptionWhereInput): ReferendumVoteSubscriptionPayload
   reward(where: RewardSubscriptionWhereInput): RewardSubscriptionPayload
   session(where: SessionSubscriptionWhereInput): SessionSubscriptionPayload
   slashing(where: SlashingSubscriptionWhereInput): SlashingSubscriptionPayload

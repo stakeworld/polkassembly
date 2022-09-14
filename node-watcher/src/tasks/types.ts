@@ -127,7 +127,11 @@ export type Nomidot =
   | NomidotTechCommitteeProposal[]
   | NomidotTechCommitteeProposalStatusUpdate[]
   | NomidotChildBounty[]
-  | NomidotChildBountyStatusUpdate[];
+  | NomidotChildBountyStatusUpdate[]
+  | NomidotReferendumRawVoteEvent[]
+  | NomidotReferendumVote[]
+  | NomidotCouncilMotionRawVoteEvent[]
+  | NomidotCouncilMotionVote[];
 
 
 export type NomidotTask = Task<Nomidot>;
@@ -341,4 +345,28 @@ export interface NomidotChildBounty {
 
 export interface NomidotChildBountyRawEvent {
   ChildBountyIndex?: number;
+}
+export interface NomidotReferendumRawVoteEvent {
+  refIndex?: number;
+  vote?: string;
+  voter?: string;
+}
+
+export interface NomidotReferendumVote {
+  refIndex: number;
+  voter: string;
+  vote: string;
+  lockedValue: string;
+}
+export interface NomidotCouncilMotionRawVoteEvent {
+  voter?: string;
+  proposalHash?: Hash;
+  seconded?: boolean;
+}
+
+export interface NomidotCouncilMotionVote {
+  voter: string;
+  proposalHash: Hash;
+  seconded: boolean;
+  motionProposalId: number;
 }

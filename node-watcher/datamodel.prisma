@@ -307,3 +307,20 @@ type ChildBountyStatus {
   status: String!
   uniqueStatus: String! @unique
 }
+
+type ReferendumVote {
+  id: ID! @id
+  blockNumber: BlockNumber! @relation(name: "ReferendumVoteAtBlockNumber", link: INLINE)
+  referendum: Referendum! @relation(name: "ReferendumVoteFromReferendum", link: INLINE)
+  vote: String!
+  voter: String!
+  lockedValue: String!
+}
+
+type CouncilMotionVote {
+  id: ID! @id
+  blockNumber: BlockNumber! @relation(name: "CouncilMotionVoteAtBlockNumber", link: INLINE)
+  motion: Motion! @relation(name: "CouncilMotionVoteFromMotion", link: INLINE)
+  voter: String!
+  seconded: Boolean!
+}
