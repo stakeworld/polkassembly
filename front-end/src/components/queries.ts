@@ -162,3 +162,16 @@ export const GET_CHILD_BOUNTIES_OF_PARENT_BOUNTY = gql`
         }
     }
 `;
+
+export const GET_VOTES_0F_VOTER = gql`
+    query GetVotesOfVoter($voter: String!) {
+        referendumVotes(where: {voter: $voter}) {
+            id
+            vote
+            voter
+            referendum {
+                referendumId
+            }
+        }
+    }
+`;
