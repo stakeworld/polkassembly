@@ -6,11 +6,8 @@ import jwt from 'jsonwebtoken';
 import React, { createContext, useState } from 'react';
 
 import { getLocalStorageToken } from '../services/auth.service';
-import { JWTPayploadType, Role, UserDetailsContextType } from '../types';
+import { JWTPayploadType, UserDetailsContextType } from '../types';
 import { decodePostgresArray } from '../util/decodePostgressArray';
-import getNetwork from '../util/getNetwork';
-
-const NETWORK = getNetwork();
 
 const initialUserDetailsContext : UserDetailsContextType = {
 	addresses: [],
@@ -44,7 +41,6 @@ try {
 			email,
 			email_verified,
 			notification,
-			'https://hasura.io/jwt/claims': claims,
 			web3signup
 		} = tokenPayload as JWTPayploadType;
 

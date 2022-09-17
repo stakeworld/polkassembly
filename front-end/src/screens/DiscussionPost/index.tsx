@@ -10,11 +10,11 @@ import { useDiscussionPostAndCommentsQuery } from '../../generated/graphql';
 import FilteredError from '../../ui-components/FilteredError';
 import Loader from '../../ui-components/Loader';
 
-export default () => {
+export default ({ postID }: {postID?: number}) => {
 
 	const { query } = useRouter();
 	const id = query['id'] as string;
-	const idNumber = Number(id) || 0;
+	const idNumber = Number(id) || Number(postID) || 0;
 	const { data, error, refetch } = useDiscussionPostAndCommentsQuery({ variables: { 'id': idNumber } });
 
 	if (error?.message) return <FilteredError text={error.message}/>;
