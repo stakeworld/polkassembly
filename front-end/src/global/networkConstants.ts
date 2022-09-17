@@ -13,6 +13,7 @@ import bifrostLogo from 'src/assets/parachain-logos/bifrost-logo.png';
 import pioneerLogo from 'src/assets/parachain-logos/bitcountrypioneer-logo.jpg';
 import calamariLogo from 'src/assets/parachain-logos/calamari-logo.png';
 import centrifugeLogo from 'src/assets/parachain-logos/centrifuge-logo.png';
+import composableFinanceLogo from 'src/assets/parachain-logos/composable-finance-logo.png';
 import gearLogo from 'src/assets/parachain-logos/gear-logo.jpg';
 import heikoLogo from 'src/assets/parachain-logos/heiko-logo.png';
 import hydradxLogo from 'src/assets/parachain-logos/hydradx-logo.jpg';
@@ -49,6 +50,7 @@ export const network = {
 	BIFROST: 'bifrost',
 	CALAMARI: 'calamari',
 	CENTRIFUGE: 'centrifuge',
+	COMPOSABLE: 'composable',
 	GEAR: 'gear',
 	HEIKO: 'heiko',
 	HYDRADX: 'hydradx',
@@ -93,6 +95,7 @@ export const tokenSymbol = {
 	KMA: 'KMA',
 	KSM: 'KSM',
 	KYL: 'KYL',
+	LAYR: 'LAYR',
 	MOVR: 'MOVR',
 	PARA: 'PARA',
 	PDEX: 'PDEX',
@@ -213,6 +216,15 @@ export const chainProperties: types.ChainPropType = {
 		ss58Format: 36,
 		tokenDecimals: 18,
 		tokenSymbol: tokenSymbol.CFG
+	},
+	[network.COMPOSABLE]: {
+		blockTime: 12000,
+		chainId: 0,
+		logo: composableFinanceLogo,
+		rpcEndpoint: 'wss://rpc.composable.finance',
+		ss58Format: 49,
+		tokenDecimals: 12,
+		tokenSymbol: tokenSymbol.LAYR
 	},
 	[network.GEAR]: {
 		blockTime: 1000,
