@@ -13,6 +13,7 @@ import pioneerLogo from 'src/assets/parachain-logos/bitcountrypioneer-logo.jpg';
 import calamariLogo from 'src/assets/parachain-logos/calamari-logo.png';
 import centrifugeLogo from 'src/assets/parachain-logos/centrifuge-logo.png';
 import composableFinanceLogo from 'src/assets/parachain-logos/composable-finance-logo.png';
+import crustLogo from 'src/assets/parachain-logos/crust-logo.svg';
 import gearLogo from 'src/assets/parachain-logos/gear-logo.jpg';
 import heikoLogo from 'src/assets/parachain-logos/heiko-logo.png';
 import hydradxLogo from 'src/assets/parachain-logos/hydradx-logo.jpg';
@@ -49,6 +50,8 @@ export const network = {
 	CALAMARI: 'calamari',
 	CENTRIFUGE: 'centrifuge',
 	COMPOSABLE: 'composable',
+	CRUST: 'crust',
+	CRUSTSHADOW: 'crustshadow',
 	GEAR: 'gear',
 	HEIKO: 'heiko',
 	HYDRADX: 'hydradx',
@@ -80,6 +83,8 @@ export const tokenSymbol = {
 	BNC: 'BNC',
 	BSX: 'BSX',
 	CFG: 'CFG',
+	CRU: 'CRU',
+	CSM: 'CSM',
 	DOL: 'DOL',
 	DEV: 'DEV',
 	DHX: 'DHX',
@@ -214,6 +219,24 @@ export const chainProperties: types.ChainPropType = {
 		ss58Format: 49,
 		tokenDecimals: 12,
 		tokenSymbol: tokenSymbol.LAYR
+	},
+	[network.CRUST]: {
+		blockTime: 12000,
+		chainId: 0,
+		logo: crustLogo,
+		rpcEndpoint: 'wss://rpc.crust.network',
+		ss58Format: 66,
+		tokenDecimals: 12,
+		tokenSymbol: tokenSymbol.CRU
+	},
+	[network.CRUSTSHADOW]: {
+		blockTime: 12000,
+		chainId: 0,
+		logo: crustLogo,
+		rpcEndpoint: 'wss://rpc-shadow.crust.network',
+		ss58Format: 66,
+		tokenDecimals: 12,
+		tokenSymbol: tokenSymbol.CSM
 	},
 	[network.GEAR]: {
 		blockTime: 1000,
