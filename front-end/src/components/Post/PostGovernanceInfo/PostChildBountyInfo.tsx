@@ -14,11 +14,12 @@ import getNetwork from '../../../util/getNetwork';
 
 interface Props {
 	onchainLink: OnchainLinkChildBountyFragment
+	setOtherProposalsSidebarAddr: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 const currentNetwork = getNetwork();
 
-const PostChildBountyInfo = ({ onchainLink }: Props) => {
+const PostChildBountyInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props) => {
 	if (!onchainLink) return null;
 
 	const {
@@ -42,7 +43,10 @@ const PostChildBountyInfo = ({ onchainLink }: Props) => {
 			<Grid>
 				<Grid.Column mobile={16} tablet={8} computer={8}>
 					<h6>Proposer</h6>
-					<AddressComponent address={proposerAddress}/>
+					<div className="address-comp-cont d-flex">
+						<AddressComponent address={proposerAddress}/>
+						<span className='prev-proposals-btn' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>Previous Proposals &gt;</span>
+					</div>
 				</Grid.Column>
 				{curator &&
 				<Grid.Column mobile={16} tablet={8} computer={8}>

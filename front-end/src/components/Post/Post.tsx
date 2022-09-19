@@ -390,6 +390,7 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 						<>
 							<PostChildBountyInfo
 								onchainLink={definedOnchainLink as OnchainLinkChildBountyFragment}
+								setOtherProposalsSidebarAddr={setOtherProposalsSidebarAddr}
 							/>
 							<Timeline
 								statuses={childBountyPost?.onchain_link?.onchain_child_bounty?.[0]?.childBountyStatus?.map(s => ({
@@ -403,6 +404,7 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 						<>
 							<PostMotionInfo
 								onchainLink={definedOnchainLink as OnchainLinkMotionFragment}
+								setOtherProposalsSidebarAddr={setOtherProposalsSidebarAddr}
 							/>
 							<Timeline
 								statuses={motionPost?.onchain_link?.onchain_motion?.[0]?.motionStatus?.map(s => ({
@@ -416,6 +418,7 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 						<>
 							<PostProposalInfo
 								onchainLink={definedOnchainLink as OnchainLinkProposalFragment}
+								setOtherProposalsSidebarAddr={setOtherProposalsSidebarAddr}
 							/>
 							<Timeline
 								statuses={proposalPost?.onchain_link?.onchain_proposal?.[0]?.proposalStatus?.map(s => ({
@@ -429,6 +432,7 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 						<>
 							<PostReferendumInfo
 								onchainLink={definedOnchainLink as OnchainLinkReferendumFragment}
+								setOtherProposalsSidebarAddr={setOtherProposalsSidebarAddr}
 							/>
 							<Timeline
 								statuses={referendumPost?.onchain_link?.onchain_referendum?.[0]?.referendumStatus?.map(s => ({
@@ -442,6 +446,7 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 						<>
 							<PostTreasuryInfo
 								onchainLink={definedOnchainLink as OnchainLinkTreasuryProposalFragment}
+								setOtherProposalsSidebarAddr={setOtherProposalsSidebarAddr}
 							/>
 							<Timeline
 								statuses={treasuryPost?.onchain_link?.onchain_treasury_spend_proposal?.[0]?.treasuryStatus?.map(s => ({
@@ -455,6 +460,7 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 						<>
 							<PostTipInfo
 								onchainLink={definedOnchainLink as OnchainLinkTipFragment}
+								setOtherProposalsSidebarAddr={setOtherProposalsSidebarAddr}
 							/>
 							<Timeline
 								statuses={tipPost?.onchain_link?.onchain_tip?.[0]?.tipStatus?.map(s => ({

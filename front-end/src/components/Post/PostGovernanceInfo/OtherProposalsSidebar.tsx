@@ -4,7 +4,8 @@
 
 import styled from '@xstyled/styled-components';
 import React from 'react';
-import { Icon } from 'semantic-ui-react';
+import { Icon, Message } from 'semantic-ui-react';
+import { useGetUsersProposalsQuery } from 'src/generated/graphql';
 
 import AddressComponent from '../../../ui-components/Address';
 
@@ -16,6 +17,12 @@ interface Props {
 }
 
 const OtherProposalsSidebar = ({ className, routeWrapperHeight, closeOtherProposalsSidebar, proposerAddress }:Props) => {
+	const { data, loading, error } = useGetUsersProposalsQuery({
+		variables: {
+			proposer_address: proposerAddress
+		}
+	});
+
 	return (
 		<div className={className} style={ { maxHeight: `${routeWrapperHeight}px`, minHeight: `${routeWrapperHeight}px` } }>
 			<div className="d-flex other-proposals-heading">
@@ -23,25 +30,44 @@ const OtherProposalsSidebar = ({ className, routeWrapperHeight, closeOtherPropos
 				<Icon className='close-icon' name='close' onClick={closeOtherProposalsSidebar} />
 			</div>
 
-			{
-				[1,2,3,4].map(post => (
-					<div className='post-card' key={post}>
-						{post} ID
-					</div>
-				))
+			{!loading && error && <Message negative>
+				<Message.Header>There was an error loading the posts.</Message.Header>
+				<p>Please try again :(</p>
+			</Message>
+			}
+
+			{loading && <div className="loading-cont d-flex"><Icon loading name='circle notched' size='big' /></div>}
+
+			{!loading && !error && data?.posts &&
+				<>
+					{
+						data?.posts.length > 0 ?
+							<>
+								{data?.posts.map(post => (
+									<div className='post-card' key={post.id}>
+										{post.id} ID
+									</div>
+								))}
+							</> :
+							<div className="loading-cont d-flex">
+								No other proposals found.
+							</div>
+					}
+				</>
 			}
 		</div>
 	);
 };
 
 export default styled(OtherProposalsSidebar)`
-	position: absolute;
+	position: fixed;
 	min-width: 250px;
 	width: 700px;
 	min-width: 30vw;
 	max-width: 55vw;
+	height: 100vh;
 	right: 0;
-	top: 6.5rem;
+	top: 0;
 	background: #fff;
 	z-index: 100;
 	padding: 40px 24px;
@@ -85,6 +111,14 @@ export default styled(OtherProposalsSidebar)`
 				color: #333;
 			}
 		}
+	}
+
+	.loading-cont {
+		width: 100%;
+		height: 50px;
+		margin-top: 50px;
+		align-items: center;
+		justify-content: center;
 	}
 
 	.post-card {

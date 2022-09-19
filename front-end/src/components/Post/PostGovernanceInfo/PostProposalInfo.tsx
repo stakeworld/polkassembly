@@ -15,11 +15,12 @@ import ArgumentsTableJSONView from './ArgumentsTableJSONView';
 
 interface Props{
 	onchainLink: OnchainLinkProposalFragment
+	setOtherProposalsSidebarAddr: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 const currentNetwork = getNetwork();
 
-const PostProposalInfo = ({ onchainLink }: Props) => {
+const PostProposalInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props) => {
 	if (!onchainLink) return null;
 
 	const {
@@ -37,7 +38,10 @@ const PostProposalInfo = ({ onchainLink }: Props) => {
 			<Grid>
 				<Grid.Column mobile={16} tablet={8} computer={8}>
 					<h6>Proposer</h6>
-					<AddressComponent address={proposerAddress}/>
+					<div className="address-comp-cont d-flex">
+						<AddressComponent address={proposerAddress}/>
+						<span className='prev-proposals-btn' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>Previous Proposals &gt;</span>
+					</div>
 				</Grid.Column>
 				{depositAmount && currentNetwork &&
 				<Grid.Column mobile={16} tablet={8} computer={8}>
