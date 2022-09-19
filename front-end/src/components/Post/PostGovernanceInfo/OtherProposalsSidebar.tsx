@@ -69,7 +69,7 @@ export default styled(OtherProposalsSidebar)`
 	right: 0;
 	top: 0;
 	background: #fff;
-	z-index: 100;
+	z-index: 1001;
 	padding: 40px 24px;
 	box-shadow: -5px 0 15px -12px #888;
 	overflow-y: auto;
