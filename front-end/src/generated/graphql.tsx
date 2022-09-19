@@ -25764,10 +25764,10 @@ export type GetUsersProposalsQuery = (
   { __typename?: 'query_root' }
   & { posts: Array<(
     { __typename?: 'posts' }
-    & Pick<Posts, 'author_id' | 'content' | 'title' | 'topic_id' | 'id' | 'created_at'>
+    & Pick<Posts, 'id' | 'author_id' | 'content' | 'title' | 'topic_id' | 'created_at'>
     & { onchain_link?: Maybe<(
       { __typename?: 'onchain_links' }
-      & Pick<Onchain_Links, 'onchain_proposal_id' | 'onchain_treasury_proposal_id' | 'proposer_address'>
+      & Pick<Onchain_Links, 'id' | 'onchain_proposal_id' | 'onchain_treasury_proposal_id' | 'proposer_address'>
       & { onchain_treasury_spend_proposal: Array<Maybe<(
         { __typename?: 'TreasurySpendProposal' }
         & Pick<TreasurySpendProposal, 'beneficiary' | 'treasuryProposalId' | 'value'>
@@ -30596,13 +30596,14 @@ export const GetUsersProposalsDocument = gql`
   posts(
     where: {_or: [{onchain_link: {onchain_proposal_id: {_is_null: false}}}, {onchain_link: {onchain_treasury_proposal_id: {_is_null: false}}}], onchain_link: {proposer_address: {_eq: $proposer_address}}}
   ) {
+    id
     author_id
     content
     title
     topic_id
-    id
     created_at
     onchain_link {
+      id
       onchain_proposal_id
       onchain_treasury_proposal_id
       onchain_treasury_spend_proposal {
