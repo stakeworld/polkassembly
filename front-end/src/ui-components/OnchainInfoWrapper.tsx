@@ -78,6 +78,18 @@ export default styled(OnchainInfoWrapper)`
 	@media only screen and (max-width: 576px) {
 		padding: 2rem;
 	}
+
+	.address-comp-cont {
+		align-items: center;
+
+		.prev-proposals-btn {
+			cursor: pointer;
+			color: pink_primary;
+			margin-left: 6px;
+			font-weight: 500;
+		}
+	}
+
 	/* Arguments Style */
 	.arguments-heading {
 		margin-bottom: 12px;
