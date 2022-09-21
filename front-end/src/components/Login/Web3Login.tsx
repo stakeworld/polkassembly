@@ -52,9 +52,13 @@ const LoginForm = ({ className, setDisplayWeb2, setWalletError, chosenWallet }:P
 	const getAccounts = async (chosenWallet: Wallet): Promise<undefined> => {
 		const injectedWindow = window as Window & InjectedWindow;
 
-		const wallet = isWeb3Injected
+		let wallet = isWeb3Injected
 			? injectedWindow.injectedWeb3[chosenWallet]
 			: null;
+
+		if (!wallet) {
+			wallet = Object.values(injectedWindow.injectedWeb3)[0];
+		}
 
 		if (!wallet) {
 			setExtensionNotFound(true);
