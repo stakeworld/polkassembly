@@ -6,6 +6,7 @@ import React from 'react';
 import { Wallet } from 'src/types';
 import styled from 'styled-components';
 
+import { ReactComponent as NovaWalletIcon } from '../../assets/wallet/nova-wallet-star.svg';
 import { ReactComponent as PolkadotJSIcon } from '../../assets/wallet/polkadotjs-icon.svg';
 import { ReactComponent as SubWalletIcon } from '../../assets/wallet/subwallet-icon.svg';
 import { ReactComponent as TalismanIcon } from '../../assets/wallet/talisman-icon.svg';
@@ -30,6 +31,10 @@ const WalletButtons = ({ className, onWalletSelect, disabled } : Props) => {
 				<WalletButton disabled={disabled} onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleWalletClick(event, Wallet.POLKADOT)} name="Polkadot.js" icon={<PolkadotJSIcon />} />
 				<WalletButton disabled={disabled} onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleWalletClick(event, Wallet.TALISMAN)} name="Talisman" icon={<TalismanIcon />} />
 				<WalletButton disabled={disabled} onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleWalletClick(event, Wallet.SUBWALLET)} name="SubWallet" icon={<SubWalletIcon />} />
+				{
+					(window as any).walletExtension?.isNovaWallet &&
+					<WalletButton disabled={disabled} onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleWalletClick(event, Wallet.NOVAWALLET)} name="Nova Wallet" icon={<NovaWalletIcon />} />
+				}
 			</div>
 		</div>
 	);

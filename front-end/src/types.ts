@@ -186,5 +186,6 @@ export enum Wallet {
   TALISMAN = 'talisman',
   POLKADOT = 'polkadot-js',
   SUBWALLET = 'subwallet-js',
+  NOVAWALLET = 'polkadot-js',
   OTHER = ''
 }
