@@ -16,10 +16,11 @@ interface Props {
   className?: string
 	routeWrapperHeight: number
 	closeOtherProposalsSidebar: () => void
+	currPostOnchainID: number
 	proposerAddress: string
 }
 
-const OtherProposalsSidebar = ({ className, routeWrapperHeight, closeOtherProposalsSidebar, proposerAddress }:Props) => {
+const OtherProposalsSidebar = ({ className, routeWrapperHeight, closeOtherProposalsSidebar, currPostOnchainID, proposerAddress }:Props) => {
 	const { data, loading, error } = useGetUsersProposalsQuery({
 		variables: {
 			proposer_address: proposerAddress
@@ -30,7 +31,7 @@ const OtherProposalsSidebar = ({ className, routeWrapperHeight, closeOtherPropos
 		<div className={className} style={ { maxHeight: `${routeWrapperHeight}px`, minHeight: `${routeWrapperHeight}px` } }>
 			<Icon className='close-icon' name='close' onClick={closeOtherProposalsSidebar} />
 			<div className="d-flex other-proposals-heading">
-				Proposals by <span className='addr-cont'><AddressComponent address={proposerAddress}/></span>
+				Other Proposals by <span className='addr-cont'><AddressComponent address={proposerAddress} shortenAddressLength={7}/></span>
 			</div>
 
 			{!loading && error && <Message negative>
@@ -53,13 +54,15 @@ const OtherProposalsSidebar = ({ className, routeWrapperHeight, closeOtherPropos
 									const status = proposalType == 'proposal' ? post.onchain_link?.onchain_proposal[0]?.proposalStatus?.[0].status : post.onchain_link?.onchain_treasury_spend_proposal[0]?.treasuryStatus?.[0].status;
 									const toPath = proposalType == 'proposal' ? `/${proposalType}/${onChainLinkID}` : `/${proposalType}/${onChainLinkID}`;
 
-									return <Link key={post.id} to={toPath} onClick={closeOtherProposalsSidebar}>
-										<div className='post-card'>
-											{status && <StatusTag className='statusTag' status={status} />}
-											<h6>{post.title || `#${onChainLinkID} Untitled`}</h6>
-											<div className='d-flex created-at-cont'> <Icon name='clock outline' /> {post.created_at ? moment(post.created_at).startOf('day').fromNow() : null}</div>
-										</div>
-									</Link>;
+									return <>
+										{onChainLinkID != currPostOnchainID && <Link key={post.id} to={toPath} onClick={closeOtherProposalsSidebar}>
+											<div className='post-card'>
+												{status && <StatusTag className='statusTag' status={status} />}
+												<h6>{post.title || `#${onChainLinkID} Untitled`}</h6>
+												<div className='d-flex created-at-cont'> <Icon name='clock outline' /> {post.created_at ? moment(post.created_at).startOf('day').fromNow() : null}</div>
+											</div>
+										</Link>}
+									</>;
 								})}
 							</div> :
 							<div className="loading-cont d-flex">

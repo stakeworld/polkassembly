@@ -20,9 +20,10 @@ interface Props {
 	extensionName?: string
 	popupContent?: string
 	disableAddress?:boolean
+	shortenAddressLength?:number
 }
 
-const Address = ({ address, className, displayInline, disableIdenticon, extensionName, popupContent, disableAddress }: Props): JSX.Element => {
+const Address = ({ address, className, displayInline, disableIdenticon, extensionName, popupContent, disableAddress, shortenAddressLength }: Props): JSX.Element => {
 	const { api, apiReady } = useContext(ApiContext);
 	const [mainDisplay, setMainDisplay] = useState<string>('');
 	const [sub, setSub] = useState<string | null>(null);
@@ -149,7 +150,7 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 								</div>
 								<div className={'description'}>{shortenAddress(address)}</div>
 							</>
-						: <div className={'description'}>{shortenAddress(address)}</div>
+						: <div className={'description'}>{shortenAddress(address, shortenAddressLength)}</div>
 				}
 			</div>}
 		</div>

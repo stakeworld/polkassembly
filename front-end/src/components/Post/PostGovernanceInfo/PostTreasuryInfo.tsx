@@ -38,7 +38,7 @@ const PostTreasuryInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props) 
 					<h6>Proposer</h6>
 					<div className="address-comp-cont d-flex">
 						<AddressComponent address={proposerAddress}/>
-						<span className='prev-proposals-btn' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>Previous Proposals &gt;</span>
+						<span className='prev-proposals-btn' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>Other Proposals &gt;</span>
 					</div>
 				</Grid.Column>
 				{bond && currentNetwork &&

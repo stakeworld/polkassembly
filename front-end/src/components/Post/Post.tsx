@@ -498,6 +498,7 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 			{routeWrapperHeight && otherProposalsSidebarAddr &&
 				<OtherProposalsSidebar
 					closeOtherProposalsSidebar={() => setOtherProposalsSidebarAddr(null)}
+					currPostOnchainID={Number(onchainId)}
 					proposerAddress={otherProposalsSidebarAddr}
 					routeWrapperHeight={routeWrapperHeight}
 				/>
