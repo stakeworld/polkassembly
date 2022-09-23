@@ -57,6 +57,15 @@ export const QUERY_LATEST_REFERENDA = gql`
                         id
                         method
                     }
+                    referendumVote {
+                        conviction
+                        lockedValue
+                        vote
+                        voter
+                        referendum {
+                          id
+                        }
+                    }
                 }
                 proposer_address
             }
