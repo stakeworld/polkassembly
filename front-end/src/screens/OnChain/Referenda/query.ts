@@ -74,3 +74,18 @@ export const QUERY_COUNT_REFERENDA = gql`
         }
     }
 `;
+
+export const GET_VOTES_0F_VOTER = gql`
+    query GetVotesOfVoter($voter: String!) {
+        referendumVotes(where: {voter: $voter}) {
+            id
+            vote
+            voter
+            referendum {
+                referendumId
+            }
+            conviction
+            lockedValue
+        }
+    }
+`;
