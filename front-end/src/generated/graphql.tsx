@@ -27454,14 +27454,7 @@ export type GetLatestReferendaPostsQuery = (
         )>>, preimage?: Maybe<(
           { __typename?: 'Preimage' }
           & Pick<Preimage, 'id' | 'method'>
-        )>, referendumVote?: Maybe<Array<(
-          { __typename?: 'ReferendumVote' }
-          & Pick<ReferendumVote, 'conviction' | 'lockedValue' | 'vote' | 'voter'>
-          & { referendum: (
-            { __typename?: 'Referendum' }
-            & Pick<Referendum, 'id'>
-          ) }
-        )>> }
+        )> }
       )>> }
     )> }
   )> }
@@ -27481,6 +27474,23 @@ export type ReferundumCountQuery = (
       & Pick<Posts_Aggregate_Fields, 'count'>
     )> }
   ) }
+);
+
+export type GetVotesOfVoterQueryVariables = Exact<{
+  voter: Scalars['String'];
+}>;
+
+
+export type GetVotesOfVoterQuery = (
+  { __typename?: 'query_root' }
+  & { referendumVotes: Array<Maybe<(
+    { __typename?: 'ReferendumVote' }
+    & Pick<ReferendumVote, 'id' | 'vote' | 'voter' | 'conviction' | 'lockedValue'>
+    & { referendum: (
+      { __typename?: 'Referendum' }
+      & Pick<Referendum, 'referendumId'>
+    ) }
+  )>> }
 );
 
 export type LatestTechCommitteeProposalPostsQueryVariables = Exact<{
@@ -32633,15 +32643,6 @@ export const GetLatestReferendaPostsDocument = gql`
           id
           method
         }
-        referendumVote {
-          conviction
-          lockedValue
-          vote
-          voter
-          referendum {
-            id
-          }
-        }
       }
       proposer_address
     }
@@ -32712,6 +32713,46 @@ export function useReferundumCountLazyQuery(baseOptions?: ApolloReactHooks.LazyQ
 export type ReferundumCountQueryHookResult = ReturnType<typeof useReferundumCountQuery>;
 export type ReferundumCountLazyQueryHookResult = ReturnType<typeof useReferundumCountLazyQuery>;
 export type ReferundumCountQueryResult = ApolloReactCommon.QueryResult<ReferundumCountQuery, ReferundumCountQueryVariables>;
+export const GetVotesOfVoterDocument = gql`
+    query GetVotesOfVoter($voter: String!) {
+  referendumVotes(where: {voter: $voter}) {
+    id
+    vote
+    voter
+    referendum {
+      referendumId
+    }
+    conviction
+    lockedValue
+  }
+}
+    `;
+
+/**
+ * __useGetVotesOfVoterQuery__
+ *
+ * To run a query within a React component, call `useGetVotesOfVoterQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetVotesOfVoterQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetVotesOfVoterQuery({
+ *   variables: {
+ *      voter: // value for 'voter'
+ *   },
+ * });
+ */
+export function useGetVotesOfVoterQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetVotesOfVoterQuery, GetVotesOfVoterQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetVotesOfVoterQuery, GetVotesOfVoterQueryVariables>(GetVotesOfVoterDocument, baseOptions);
+      }
+export function useGetVotesOfVoterLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetVotesOfVoterQuery, GetVotesOfVoterQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetVotesOfVoterQuery, GetVotesOfVoterQueryVariables>(GetVotesOfVoterDocument, baseOptions);
+        }
+export type GetVotesOfVoterQueryHookResult = ReturnType<typeof useGetVotesOfVoterQuery>;
+export type GetVotesOfVoterLazyQueryHookResult = ReturnType<typeof useGetVotesOfVoterLazyQuery>;
+export type GetVotesOfVoterQueryResult = ApolloReactCommon.QueryResult<GetVotesOfVoterQuery, GetVotesOfVoterQueryVariables>;
 export const LatestTechCommitteeProposalPostsDocument = gql`
     query LatestTechCommitteeProposalPosts($postType: Int!, $limit: Int! = 5) {
   posts(
