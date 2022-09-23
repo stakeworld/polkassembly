@@ -45,7 +45,7 @@ const LatestDiscussionsTable = ({ className }: Props) => {
 
 		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
 			<Table className='hidden-mobile' basic='very' striped unstackable selectable>
-				<LatestActivityTableHeader className={className} hideSerialNum={false} />
+				<LatestActivityTableHeader className={className} />
 
 				<Table.Body>
 					{data.posts.map(
@@ -60,7 +60,6 @@ const LatestDiscussionsTable = ({ className }: Props) => {
 									postType='discussion'
 									created_at={post.created_at}
 									username={post.author.username}
-									hideSerialNum={false}
 								/>
 							;
 						}
