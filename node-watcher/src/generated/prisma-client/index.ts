@@ -1789,6 +1789,18 @@ export type ReferendumStatusOrderByInput =
   | "uniqueStatus_ASC"
   | "uniqueStatus_DESC";
 
+export type ReferendumVoteOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "vote_ASC"
+  | "vote_DESC"
+  | "voter_ASC"
+  | "voter_DESC"
+  | "lockedValue_ASC"
+  | "lockedValue_DESC"
+  | "conviction_ASC"
+  | "conviction_DESC";
+
 export type TreasuryStatusOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -1904,16 +1916,6 @@ export type ReferendumOrderByInput =
   | "referendumId_DESC"
   | "voteThreshold_ASC"
   | "voteThreshold_DESC";
-
-export type ReferendumVoteOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "vote_ASC"
-  | "vote_DESC"
-  | "voter_ASC"
-  | "voter_DESC"
-  | "lockedValue_ASC"
-  | "lockedValue_DESC";
 
 export type RewardOrderByInput =
   | "id_ASC"
@@ -3216,6 +3218,9 @@ export interface ReferendumWhereInput {
   voteThreshold_not_starts_with?: Maybe<String>;
   voteThreshold_ends_with?: Maybe<String>;
   voteThreshold_not_ends_with?: Maybe<String>;
+  referendumVote_every?: Maybe<ReferendumVoteWhereInput>;
+  referendumVote_some?: Maybe<ReferendumVoteWhereInput>;
+  referendumVote_none?: Maybe<ReferendumVoteWhereInput>;
   AND?: Maybe<ReferendumWhereInput[] | ReferendumWhereInput>;
   OR?: Maybe<ReferendumWhereInput[] | ReferendumWhereInput>;
   NOT?: Maybe<ReferendumWhereInput[] | ReferendumWhereInput>;
@@ -3269,6 +3274,84 @@ export interface ReferendumStatusWhereInput {
   AND?: Maybe<ReferendumStatusWhereInput[] | ReferendumStatusWhereInput>;
   OR?: Maybe<ReferendumStatusWhereInput[] | ReferendumStatusWhereInput>;
   NOT?: Maybe<ReferendumStatusWhereInput[] | ReferendumStatusWhereInput>;
+}
+
+export interface ReferendumVoteWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  blockNumber?: Maybe<BlockNumberWhereInput>;
+  referendum?: Maybe<ReferendumWhereInput>;
+  vote?: Maybe<String>;
+  vote_not?: Maybe<String>;
+  vote_in?: Maybe<String[] | String>;
+  vote_not_in?: Maybe<String[] | String>;
+  vote_lt?: Maybe<String>;
+  vote_lte?: Maybe<String>;
+  vote_gt?: Maybe<String>;
+  vote_gte?: Maybe<String>;
+  vote_contains?: Maybe<String>;
+  vote_not_contains?: Maybe<String>;
+  vote_starts_with?: Maybe<String>;
+  vote_not_starts_with?: Maybe<String>;
+  vote_ends_with?: Maybe<String>;
+  vote_not_ends_with?: Maybe<String>;
+  voter?: Maybe<String>;
+  voter_not?: Maybe<String>;
+  voter_in?: Maybe<String[] | String>;
+  voter_not_in?: Maybe<String[] | String>;
+  voter_lt?: Maybe<String>;
+  voter_lte?: Maybe<String>;
+  voter_gt?: Maybe<String>;
+  voter_gte?: Maybe<String>;
+  voter_contains?: Maybe<String>;
+  voter_not_contains?: Maybe<String>;
+  voter_starts_with?: Maybe<String>;
+  voter_not_starts_with?: Maybe<String>;
+  voter_ends_with?: Maybe<String>;
+  voter_not_ends_with?: Maybe<String>;
+  lockedValue?: Maybe<String>;
+  lockedValue_not?: Maybe<String>;
+  lockedValue_in?: Maybe<String[] | String>;
+  lockedValue_not_in?: Maybe<String[] | String>;
+  lockedValue_lt?: Maybe<String>;
+  lockedValue_lte?: Maybe<String>;
+  lockedValue_gt?: Maybe<String>;
+  lockedValue_gte?: Maybe<String>;
+  lockedValue_contains?: Maybe<String>;
+  lockedValue_not_contains?: Maybe<String>;
+  lockedValue_starts_with?: Maybe<String>;
+  lockedValue_not_starts_with?: Maybe<String>;
+  lockedValue_ends_with?: Maybe<String>;
+  lockedValue_not_ends_with?: Maybe<String>;
+  conviction?: Maybe<String>;
+  conviction_not?: Maybe<String>;
+  conviction_in?: Maybe<String[] | String>;
+  conviction_not_in?: Maybe<String[] | String>;
+  conviction_lt?: Maybe<String>;
+  conviction_lte?: Maybe<String>;
+  conviction_gt?: Maybe<String>;
+  conviction_gte?: Maybe<String>;
+  conviction_contains?: Maybe<String>;
+  conviction_not_contains?: Maybe<String>;
+  conviction_starts_with?: Maybe<String>;
+  conviction_not_starts_with?: Maybe<String>;
+  conviction_ends_with?: Maybe<String>;
+  conviction_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ReferendumVoteWhereInput[] | ReferendumVoteWhereInput>;
+  OR?: Maybe<ReferendumVoteWhereInput[] | ReferendumVoteWhereInput>;
+  NOT?: Maybe<ReferendumVoteWhereInput[] | ReferendumVoteWhereInput>;
 }
 
 export interface TreasurySpendProposalWhereInput {
@@ -3774,70 +3857,6 @@ export type ReferendumStatusWhereUniqueInput = AtLeastOne<{
 export type ReferendumVoteWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
-
-export interface ReferendumVoteWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  blockNumber?: Maybe<BlockNumberWhereInput>;
-  referendum?: Maybe<ReferendumWhereInput>;
-  vote?: Maybe<String>;
-  vote_not?: Maybe<String>;
-  vote_in?: Maybe<String[] | String>;
-  vote_not_in?: Maybe<String[] | String>;
-  vote_lt?: Maybe<String>;
-  vote_lte?: Maybe<String>;
-  vote_gt?: Maybe<String>;
-  vote_gte?: Maybe<String>;
-  vote_contains?: Maybe<String>;
-  vote_not_contains?: Maybe<String>;
-  vote_starts_with?: Maybe<String>;
-  vote_not_starts_with?: Maybe<String>;
-  vote_ends_with?: Maybe<String>;
-  vote_not_ends_with?: Maybe<String>;
-  voter?: Maybe<String>;
-  voter_not?: Maybe<String>;
-  voter_in?: Maybe<String[] | String>;
-  voter_not_in?: Maybe<String[] | String>;
-  voter_lt?: Maybe<String>;
-  voter_lte?: Maybe<String>;
-  voter_gt?: Maybe<String>;
-  voter_gte?: Maybe<String>;
-  voter_contains?: Maybe<String>;
-  voter_not_contains?: Maybe<String>;
-  voter_starts_with?: Maybe<String>;
-  voter_not_starts_with?: Maybe<String>;
-  voter_ends_with?: Maybe<String>;
-  voter_not_ends_with?: Maybe<String>;
-  lockedValue?: Maybe<String>;
-  lockedValue_not?: Maybe<String>;
-  lockedValue_in?: Maybe<String[] | String>;
-  lockedValue_not_in?: Maybe<String[] | String>;
-  lockedValue_lt?: Maybe<String>;
-  lockedValue_lte?: Maybe<String>;
-  lockedValue_gt?: Maybe<String>;
-  lockedValue_gte?: Maybe<String>;
-  lockedValue_contains?: Maybe<String>;
-  lockedValue_not_contains?: Maybe<String>;
-  lockedValue_starts_with?: Maybe<String>;
-  lockedValue_not_starts_with?: Maybe<String>;
-  lockedValue_ends_with?: Maybe<String>;
-  lockedValue_not_ends_with?: Maybe<String>;
-  AND?: Maybe<ReferendumVoteWhereInput[] | ReferendumVoteWhereInput>;
-  OR?: Maybe<ReferendumVoteWhereInput[] | ReferendumVoteWhereInput>;
-  NOT?: Maybe<ReferendumVoteWhereInput[] | ReferendumVoteWhereInput>;
-}
 
 export type RewardWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
@@ -5389,6 +5408,7 @@ export interface ReferendumCreateWithoutPreimageInput {
   referendumId: Int;
   referendumStatus?: Maybe<ReferendumStatusCreateManyWithoutReferendumInput>;
   voteThreshold: String;
+  referendumVote?: Maybe<ReferendumVoteCreateManyWithoutReferendumInput>;
 }
 
 export interface ReferendumStatusCreateManyWithoutReferendumInput {
@@ -5406,6 +5426,25 @@ export interface ReferendumStatusCreateWithoutReferendumInput {
   blockNumber: BlockNumberCreateOneInput;
   status: String;
   uniqueStatus: String;
+}
+
+export interface ReferendumVoteCreateManyWithoutReferendumInput {
+  create?: Maybe<
+    | ReferendumVoteCreateWithoutReferendumInput[]
+    | ReferendumVoteCreateWithoutReferendumInput
+  >;
+  connect?: Maybe<
+    ReferendumVoteWhereUniqueInput[] | ReferendumVoteWhereUniqueInput
+  >;
+}
+
+export interface ReferendumVoteCreateWithoutReferendumInput {
+  id?: Maybe<ID_Input>;
+  blockNumber: BlockNumberCreateOneInput;
+  vote: String;
+  voter: String;
+  lockedValue: String;
+  conviction: String;
 }
 
 export interface TreasurySpendProposalCreateOneWithoutMotionInput {
@@ -6085,6 +6124,7 @@ export interface ReferendumUpdateWithoutPreimageDataInput {
   referendumId?: Maybe<Int>;
   referendumStatus?: Maybe<ReferendumStatusUpdateManyWithoutReferendumInput>;
   voteThreshold?: Maybe<String>;
+  referendumVote?: Maybe<ReferendumVoteUpdateManyWithoutReferendumInput>;
 }
 
 export interface ReferendumStatusUpdateManyWithoutReferendumInput {
@@ -6200,6 +6240,151 @@ export interface ReferendumStatusUpdateManyWithWhereNestedInput {
 export interface ReferendumStatusUpdateManyDataInput {
   status?: Maybe<String>;
   uniqueStatus?: Maybe<String>;
+}
+
+export interface ReferendumVoteUpdateManyWithoutReferendumInput {
+  create?: Maybe<
+    | ReferendumVoteCreateWithoutReferendumInput[]
+    | ReferendumVoteCreateWithoutReferendumInput
+  >;
+  delete?: Maybe<
+    ReferendumVoteWhereUniqueInput[] | ReferendumVoteWhereUniqueInput
+  >;
+  connect?: Maybe<
+    ReferendumVoteWhereUniqueInput[] | ReferendumVoteWhereUniqueInput
+  >;
+  set?: Maybe<
+    ReferendumVoteWhereUniqueInput[] | ReferendumVoteWhereUniqueInput
+  >;
+  disconnect?: Maybe<
+    ReferendumVoteWhereUniqueInput[] | ReferendumVoteWhereUniqueInput
+  >;
+  update?: Maybe<
+    | ReferendumVoteUpdateWithWhereUniqueWithoutReferendumInput[]
+    | ReferendumVoteUpdateWithWhereUniqueWithoutReferendumInput
+  >;
+  upsert?: Maybe<
+    | ReferendumVoteUpsertWithWhereUniqueWithoutReferendumInput[]
+    | ReferendumVoteUpsertWithWhereUniqueWithoutReferendumInput
+  >;
+  deleteMany?: Maybe<
+    ReferendumVoteScalarWhereInput[] | ReferendumVoteScalarWhereInput
+  >;
+  updateMany?: Maybe<
+    | ReferendumVoteUpdateManyWithWhereNestedInput[]
+    | ReferendumVoteUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface ReferendumVoteUpdateWithWhereUniqueWithoutReferendumInput {
+  where: ReferendumVoteWhereUniqueInput;
+  data: ReferendumVoteUpdateWithoutReferendumDataInput;
+}
+
+export interface ReferendumVoteUpdateWithoutReferendumDataInput {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  vote?: Maybe<String>;
+  voter?: Maybe<String>;
+  lockedValue?: Maybe<String>;
+  conviction?: Maybe<String>;
+}
+
+export interface ReferendumVoteUpsertWithWhereUniqueWithoutReferendumInput {
+  where: ReferendumVoteWhereUniqueInput;
+  update: ReferendumVoteUpdateWithoutReferendumDataInput;
+  create: ReferendumVoteCreateWithoutReferendumInput;
+}
+
+export interface ReferendumVoteScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  vote?: Maybe<String>;
+  vote_not?: Maybe<String>;
+  vote_in?: Maybe<String[] | String>;
+  vote_not_in?: Maybe<String[] | String>;
+  vote_lt?: Maybe<String>;
+  vote_lte?: Maybe<String>;
+  vote_gt?: Maybe<String>;
+  vote_gte?: Maybe<String>;
+  vote_contains?: Maybe<String>;
+  vote_not_contains?: Maybe<String>;
+  vote_starts_with?: Maybe<String>;
+  vote_not_starts_with?: Maybe<String>;
+  vote_ends_with?: Maybe<String>;
+  vote_not_ends_with?: Maybe<String>;
+  voter?: Maybe<String>;
+  voter_not?: Maybe<String>;
+  voter_in?: Maybe<String[] | String>;
+  voter_not_in?: Maybe<String[] | String>;
+  voter_lt?: Maybe<String>;
+  voter_lte?: Maybe<String>;
+  voter_gt?: Maybe<String>;
+  voter_gte?: Maybe<String>;
+  voter_contains?: Maybe<String>;
+  voter_not_contains?: Maybe<String>;
+  voter_starts_with?: Maybe<String>;
+  voter_not_starts_with?: Maybe<String>;
+  voter_ends_with?: Maybe<String>;
+  voter_not_ends_with?: Maybe<String>;
+  lockedValue?: Maybe<String>;
+  lockedValue_not?: Maybe<String>;
+  lockedValue_in?: Maybe<String[] | String>;
+  lockedValue_not_in?: Maybe<String[] | String>;
+  lockedValue_lt?: Maybe<String>;
+  lockedValue_lte?: Maybe<String>;
+  lockedValue_gt?: Maybe<String>;
+  lockedValue_gte?: Maybe<String>;
+  lockedValue_contains?: Maybe<String>;
+  lockedValue_not_contains?: Maybe<String>;
+  lockedValue_starts_with?: Maybe<String>;
+  lockedValue_not_starts_with?: Maybe<String>;
+  lockedValue_ends_with?: Maybe<String>;
+  lockedValue_not_ends_with?: Maybe<String>;
+  conviction?: Maybe<String>;
+  conviction_not?: Maybe<String>;
+  conviction_in?: Maybe<String[] | String>;
+  conviction_not_in?: Maybe<String[] | String>;
+  conviction_lt?: Maybe<String>;
+  conviction_lte?: Maybe<String>;
+  conviction_gt?: Maybe<String>;
+  conviction_gte?: Maybe<String>;
+  conviction_contains?: Maybe<String>;
+  conviction_not_contains?: Maybe<String>;
+  conviction_starts_with?: Maybe<String>;
+  conviction_not_starts_with?: Maybe<String>;
+  conviction_ends_with?: Maybe<String>;
+  conviction_not_ends_with?: Maybe<String>;
+  AND?: Maybe<
+    ReferendumVoteScalarWhereInput[] | ReferendumVoteScalarWhereInput
+  >;
+  OR?: Maybe<ReferendumVoteScalarWhereInput[] | ReferendumVoteScalarWhereInput>;
+  NOT?: Maybe<
+    ReferendumVoteScalarWhereInput[] | ReferendumVoteScalarWhereInput
+  >;
+}
+
+export interface ReferendumVoteUpdateManyWithWhereNestedInput {
+  where: ReferendumVoteScalarWhereInput;
+  data: ReferendumVoteUpdateManyDataInput;
+}
+
+export interface ReferendumVoteUpdateManyDataInput {
+  vote?: Maybe<String>;
+  voter?: Maybe<String>;
+  lockedValue?: Maybe<String>;
+  conviction?: Maybe<String>;
 }
 
 export interface ReferendumUpsertWithoutPreimageInput {
@@ -7009,6 +7194,7 @@ export interface ReferendumCreateInput {
   referendumId: Int;
   referendumStatus?: Maybe<ReferendumStatusCreateManyWithoutReferendumInput>;
   voteThreshold: String;
+  referendumVote?: Maybe<ReferendumVoteCreateManyWithoutReferendumInput>;
 }
 
 export interface PreimageCreateOneWithoutReferendumInput {
@@ -7038,6 +7224,7 @@ export interface ReferendumUpdateInput {
   referendumId?: Maybe<Int>;
   referendumStatus?: Maybe<ReferendumStatusUpdateManyWithoutReferendumInput>;
   voteThreshold?: Maybe<String>;
+  referendumVote?: Maybe<ReferendumVoteUpdateManyWithoutReferendumInput>;
 }
 
 export interface PreimageUpdateOneWithoutReferendumInput {
@@ -7095,6 +7282,7 @@ export interface ReferendumCreateWithoutReferendumStatusInput {
   preimageHash: String;
   referendumId: Int;
   voteThreshold: String;
+  referendumVote?: Maybe<ReferendumVoteCreateManyWithoutReferendumInput>;
 }
 
 export interface ReferendumStatusUpdateInput {
@@ -7118,6 +7306,7 @@ export interface ReferendumUpdateWithoutReferendumStatusDataInput {
   preimageHash?: Maybe<String>;
   referendumId?: Maybe<Int>;
   voteThreshold?: Maybe<String>;
+  referendumVote?: Maybe<ReferendumVoteUpdateManyWithoutReferendumInput>;
 }
 
 export interface ReferendumUpsertWithoutReferendumStatusInput {
@@ -7133,33 +7322,45 @@ export interface ReferendumStatusUpdateManyMutationInput {
 export interface ReferendumVoteCreateInput {
   id?: Maybe<ID_Input>;
   blockNumber: BlockNumberCreateOneInput;
-  referendum: ReferendumCreateOneInput;
+  referendum: ReferendumCreateOneWithoutReferendumVoteInput;
   vote: String;
   voter: String;
   lockedValue: String;
+  conviction: String;
 }
 
-export interface ReferendumCreateOneInput {
-  create?: Maybe<ReferendumCreateInput>;
+export interface ReferendumCreateOneWithoutReferendumVoteInput {
+  create?: Maybe<ReferendumCreateWithoutReferendumVoteInput>;
   connect?: Maybe<ReferendumWhereUniqueInput>;
+}
+
+export interface ReferendumCreateWithoutReferendumVoteInput {
+  delay: Int;
+  end: Int;
+  preimage?: Maybe<PreimageCreateOneWithoutReferendumInput>;
+  preimageHash: String;
+  referendumId: Int;
+  referendumStatus?: Maybe<ReferendumStatusCreateManyWithoutReferendumInput>;
+  voteThreshold: String;
 }
 
 export interface ReferendumVoteUpdateInput {
   blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
-  referendum?: Maybe<ReferendumUpdateOneRequiredInput>;
+  referendum?: Maybe<ReferendumUpdateOneRequiredWithoutReferendumVoteInput>;
   vote?: Maybe<String>;
   voter?: Maybe<String>;
   lockedValue?: Maybe<String>;
+  conviction?: Maybe<String>;
 }
 
-export interface ReferendumUpdateOneRequiredInput {
-  create?: Maybe<ReferendumCreateInput>;
-  update?: Maybe<ReferendumUpdateDataInput>;
-  upsert?: Maybe<ReferendumUpsertNestedInput>;
+export interface ReferendumUpdateOneRequiredWithoutReferendumVoteInput {
+  create?: Maybe<ReferendumCreateWithoutReferendumVoteInput>;
+  update?: Maybe<ReferendumUpdateWithoutReferendumVoteDataInput>;
+  upsert?: Maybe<ReferendumUpsertWithoutReferendumVoteInput>;
   connect?: Maybe<ReferendumWhereUniqueInput>;
 }
 
-export interface ReferendumUpdateDataInput {
+export interface ReferendumUpdateWithoutReferendumVoteDataInput {
   delay?: Maybe<Int>;
   end?: Maybe<Int>;
   preimage?: Maybe<PreimageUpdateOneWithoutReferendumInput>;
@@ -7169,15 +7370,16 @@ export interface ReferendumUpdateDataInput {
   voteThreshold?: Maybe<String>;
 }
 
-export interface ReferendumUpsertNestedInput {
-  update: ReferendumUpdateDataInput;
-  create: ReferendumCreateInput;
+export interface ReferendumUpsertWithoutReferendumVoteInput {
+  update: ReferendumUpdateWithoutReferendumVoteDataInput;
+  create: ReferendumCreateWithoutReferendumVoteInput;
 }
 
 export interface ReferendumVoteUpdateManyMutationInput {
   vote?: Maybe<String>;
   voter?: Maybe<String>;
   lockedValue?: Maybe<String>;
+  conviction?: Maybe<String>;
 }
 
 export interface RewardCreateInput {
@@ -10124,6 +10326,15 @@ export interface ReferendumPromise extends Promise<Referendum>, Fragmentable {
     last?: Int;
   }) => T;
   voteThreshold: () => Promise<String>;
+  referendumVote: <T = FragmentableArray<ReferendumVote>>(args?: {
+    where?: ReferendumVoteWhereInput;
+    orderBy?: ReferendumVoteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface ReferendumSubscription
@@ -10147,6 +10358,17 @@ export interface ReferendumSubscription
     last?: Int;
   }) => T;
   voteThreshold: () => Promise<AsyncIterator<String>>;
+  referendumVote: <
+    T = Promise<AsyncIterator<ReferendumVoteSubscription>>
+  >(args?: {
+    where?: ReferendumVoteWhereInput;
+    orderBy?: ReferendumVoteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface ReferendumNullablePromise
@@ -10168,6 +10390,15 @@ export interface ReferendumNullablePromise
     last?: Int;
   }) => T;
   voteThreshold: () => Promise<String>;
+  referendumVote: <T = FragmentableArray<ReferendumVote>>(args?: {
+    where?: ReferendumVoteWhereInput;
+    orderBy?: ReferendumVoteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface ReferendumStatus {
@@ -10204,6 +10435,50 @@ export interface ReferendumStatusNullablePromise
   referendum: <T = ReferendumPromise>() => T;
   status: () => Promise<String>;
   uniqueStatus: () => Promise<String>;
+}
+
+export interface ReferendumVote {
+  id: ID_Output;
+  vote: String;
+  voter: String;
+  lockedValue: String;
+  conviction: String;
+}
+
+export interface ReferendumVotePromise
+  extends Promise<ReferendumVote>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  blockNumber: <T = BlockNumberPromise>() => T;
+  referendum: <T = ReferendumPromise>() => T;
+  vote: () => Promise<String>;
+  voter: () => Promise<String>;
+  lockedValue: () => Promise<String>;
+  conviction: () => Promise<String>;
+}
+
+export interface ReferendumVoteSubscription
+  extends Promise<AsyncIterator<ReferendumVote>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  blockNumber: <T = BlockNumberSubscription>() => T;
+  referendum: <T = ReferendumSubscription>() => T;
+  vote: () => Promise<AsyncIterator<String>>;
+  voter: () => Promise<AsyncIterator<String>>;
+  lockedValue: () => Promise<AsyncIterator<String>>;
+  conviction: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ReferendumVoteNullablePromise
+  extends Promise<ReferendumVote | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  blockNumber: <T = BlockNumberPromise>() => T;
+  referendum: <T = ReferendumPromise>() => T;
+  vote: () => Promise<String>;
+  voter: () => Promise<String>;
+  lockedValue: () => Promise<String>;
+  conviction: () => Promise<String>;
 }
 
 export interface TreasurySpendProposal {
@@ -11323,46 +11598,6 @@ export interface AggregateReferendumStatusSubscription
   extends Promise<AsyncIterator<AggregateReferendumStatus>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface ReferendumVote {
-  id: ID_Output;
-  vote: String;
-  voter: String;
-  lockedValue: String;
-}
-
-export interface ReferendumVotePromise
-  extends Promise<ReferendumVote>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  blockNumber: <T = BlockNumberPromise>() => T;
-  referendum: <T = ReferendumPromise>() => T;
-  vote: () => Promise<String>;
-  voter: () => Promise<String>;
-  lockedValue: () => Promise<String>;
-}
-
-export interface ReferendumVoteSubscription
-  extends Promise<AsyncIterator<ReferendumVote>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  blockNumber: <T = BlockNumberSubscription>() => T;
-  referendum: <T = ReferendumSubscription>() => T;
-  vote: () => Promise<AsyncIterator<String>>;
-  voter: () => Promise<AsyncIterator<String>>;
-  lockedValue: () => Promise<AsyncIterator<String>>;
-}
-
-export interface ReferendumVoteNullablePromise
-  extends Promise<ReferendumVote | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  blockNumber: <T = BlockNumberPromise>() => T;
-  referendum: <T = ReferendumPromise>() => T;
-  vote: () => Promise<String>;
-  voter: () => Promise<String>;
-  lockedValue: () => Promise<String>;
 }
 
 export interface ReferendumVoteConnection {
@@ -13819,6 +14054,7 @@ export interface ReferendumVotePreviousValues {
   vote: String;
   voter: String;
   lockedValue: String;
+  conviction: String;
 }
 
 export interface ReferendumVotePreviousValuesPromise
@@ -13828,6 +14064,7 @@ export interface ReferendumVotePreviousValuesPromise
   vote: () => Promise<String>;
   voter: () => Promise<String>;
   lockedValue: () => Promise<String>;
+  conviction: () => Promise<String>;
 }
 
 export interface ReferendumVotePreviousValuesSubscription
@@ -13837,6 +14074,7 @@ export interface ReferendumVotePreviousValuesSubscription
   vote: () => Promise<AsyncIterator<String>>;
   voter: () => Promise<AsyncIterator<String>>;
   lockedValue: () => Promise<AsyncIterator<String>>;
+  conviction: () => Promise<AsyncIterator<String>>;
 }
 
 export interface RewardSubscriptionPayload {

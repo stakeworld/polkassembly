@@ -5,27 +5,24 @@
 import { ApiPromise } from '@polkadot/api';
 import {
   BlockNumber,
-  Hash,
+  Hash
 } from '@polkadot/types/interfaces';
 import { logger } from '@polkadot/util';
-import { encodeAddress } from '@polkadot/util-crypto';
-
 import { prisma } from '../generated/prisma-client';
 import { filterEvents } from '../util/filterEvents';
 import {
   Cached,
-  NomidotReferendumRawVoteEvent,
   NomidotReferendumVote,
   Task,
 } from './types';
 
 const l = logger('Task: Referendum Votes');
 
-const eventField = [
-	'voter',
-    'refIndex',
-    'vote',
-];
+// const eventField = [
+// 	'voter',
+//   'refIndex',
+//   'vote',
+// ];
 
 /*
  *  ======= Table (createReferendumVote) ======
@@ -48,47 +45,33 @@ const createReferendumVote: Task<NomidotReferendumVote[]> = {
         const results: NomidotReferendumVote[] = [];
 
         await Promise.all(
-        	referendumVoteEvents.map(async ({ event: { data, typeDef } }) => {
-                const referendumVoteRawEvent: NomidotReferendumRawVoteEvent = data.reduce(
-                    (prev, curr, index) => {
-                        let type = eventField[index];
-                        console.log(index, curr.toJSON());
-                        return {
-                            ...prev,
-                            [type]: curr.toJSON(),
-                        };
-                    },
-                    {});
-                    l.log(`referendumVoteRawEvent: ${JSON.stringify(referendumVoteRawEvent)}`);
-                    console.log('ref', JSON.stringify(referendumVoteRawEvent));
-                    if (
-                        !referendumVoteRawEvent.refIndex &&
-                        referendumVoteRawEvent.refIndex !== 0
-                    ) {
-                        l.error(
-                            `Expected refIndex missing in the event: ${referendumVoteRawEvent.refIndex}`
-                        );
-                        return null;
-                    }
-                    if (
-                        !referendumVoteRawEvent.vote ||
-                        !referendumVoteRawEvent.voter
-                    ) {
-                        l.error(
-                            `Expected referendum vote event: ${ JSON.stringify(referendumVoteRawEvent)}`
-                        );
-                        return null;
-                    }
-                    const vote: NomidotReferendumVote = {
-                        refIndex: referendumVoteRawEvent.refIndex,
-                        voter: referendumVoteRawEvent.voter,
-                        vote: Object(referendumVoteRawEvent?.vote)['standard']['vote'],
-                        lockedValue: Object(referendumVoteRawEvent?.vote)['standard']['balance']
-                    }
-                    l.log(`Nomidot referendum vote: ${JSON.stringify(vote)}`);
-                    results.push(vote);
+        	referendumVoteEvents.map(async ({ event: { data } }) => {
+                const rawData: any = data.toHuman();
+                const refIndex: number = rawData[1];
+                const voter: string = rawData[0];
+                const vote: string = rawData[2]?.Standard?.vote?.vote
+                const conviction: string = rawData[2]?.Standard?.vote?.conviction
+                const lockedValue: string = rawData[2]?.Standard?.balance
+
+                l.log(`Nomidot input for vote event ${refIndex}, ${voter}, ${vote}, ${conviction}, ${lockedValue}`);
+
+                if(!vote || !voter || !conviction || !lockedValue || !refIndex){
+                    l.error(`Nomidot unexpected input for vote event ${JSON.stringify(rawData, null, 2)}`)
+                    return null
                 }
-            )
+
+                const voteData: NomidotReferendumVote = {
+                    refIndex: refIndex,
+                    voter: voter,
+                    vote: vote ,
+                    conviction: conviction,
+                    lockedValue: lockedValue
+                }
+
+                l.log(`Nomidot referendum vote: ${JSON.stringify(voteData)}`);
+                
+                results.push(voteData);
+            })
         );
         return results;
     },
@@ -99,13 +82,15 @@ const createReferendumVote: Task<NomidotReferendumVote[]> = {
                 refIndex,
                 voter,
                 vote,
-                lockedValue
+                lockedValue,
+                conviction
             } = prop;
     
             await prisma.createReferendumVote({
               voter: voter.toString(),
               vote: vote,
               lockedValue: lockedValue.toString(),
+              conviction: conviction,
               blockNumber: {
                 connect: {
                   number: blockNumber.toNumber(),
@@ -113,7 +98,7 @@ const createReferendumVote: Task<NomidotReferendumVote[]> = {
               },
               referendum: {
                 connect: {
-                    referendumId: refIndex,
+                  referendumId: Number(refIndex),
                 },
               },
             });

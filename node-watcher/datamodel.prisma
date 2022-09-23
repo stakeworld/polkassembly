@@ -180,6 +180,7 @@ type Referendum {
   referendumId: Int! @unique
   referendumStatus: [ReferendumStatus]! @relation(name: "ReferendumStatusFromReferendum")
   voteThreshold: String!
+  referendumVote: [ReferendumVote] @relation(name: "ReferendumVoteFromReferendum")
 }
 
 type ReferendumStatus {
@@ -315,6 +316,7 @@ type ReferendumVote {
   vote: String!
   voter: String!
   lockedValue: String!
+  conviction: String!
 }
 
 type CouncilMotionVote {

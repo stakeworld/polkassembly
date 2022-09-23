@@ -356,6 +356,7 @@ export interface NomidotReferendumVote {
   refIndex: number;
   voter: string;
   vote: string;
+  conviction: string;
   lockedValue: string;
 }
 export interface NomidotCouncilMotionRawVoteEvent {

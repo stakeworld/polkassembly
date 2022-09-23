@@ -5109,6 +5109,7 @@ type Referendum {
   referendumId: Int!
   referendumStatus(where: ReferendumStatusWhereInput, orderBy: ReferendumStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ReferendumStatus!]
   voteThreshold: String!
+  referendumVote(where: ReferendumVoteWhereInput, orderBy: ReferendumVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ReferendumVote!]
 }
 
 type ReferendumConnection {
@@ -5125,11 +5126,7 @@ input ReferendumCreateInput {
   referendumId: Int!
   referendumStatus: ReferendumStatusCreateManyWithoutReferendumInput
   voteThreshold: String!
-}
-
-input ReferendumCreateOneInput {
-  create: ReferendumCreateInput
-  connect: ReferendumWhereUniqueInput
+  referendumVote: ReferendumVoteCreateManyWithoutReferendumInput
 }
 
 input ReferendumCreateOneWithoutPreimageInput {
@@ -5142,6 +5139,11 @@ input ReferendumCreateOneWithoutReferendumStatusInput {
   connect: ReferendumWhereUniqueInput
 }
 
+input ReferendumCreateOneWithoutReferendumVoteInput {
+  create: ReferendumCreateWithoutReferendumVoteInput
+  connect: ReferendumWhereUniqueInput
+}
+
 input ReferendumCreateWithoutPreimageInput {
   delay: Int!
   end: Int!
@@ -5149,6 +5151,7 @@ input ReferendumCreateWithoutPreimageInput {
   referendumId: Int!
   referendumStatus: ReferendumStatusCreateManyWithoutReferendumInput
   voteThreshold: String!
+  referendumVote: ReferendumVoteCreateManyWithoutReferendumInput
 }
 
 input ReferendumCreateWithoutReferendumStatusInput {
@@ -5157,6 +5160,17 @@ input ReferendumCreateWithoutReferendumStatusInput {
   preimage: PreimageCreateOneWithoutReferendumInput
   preimageHash: String!
   referendumId: Int!
+  voteThreshold: String!
+  referendumVote: ReferendumVoteCreateManyWithoutReferendumInput
+}
+
+input ReferendumCreateWithoutReferendumVoteInput {
+  delay: Int!
+  end: Int!
+  preimage: PreimageCreateOneWithoutReferendumInput
+  preimageHash: String!
+  referendumId: Int!
+  referendumStatus: ReferendumStatusCreateManyWithoutReferendumInput
   voteThreshold: String!
 }
 
@@ -5433,16 +5447,6 @@ input ReferendumSubscriptionWhereInput {
   NOT: [ReferendumSubscriptionWhereInput!]
 }
 
-input ReferendumUpdateDataInput {
-  delay: Int
-  end: Int
-  preimage: PreimageUpdateOneWithoutReferendumInput
-  preimageHash: String
-  referendumId: Int
-  referendumStatus: ReferendumStatusUpdateManyWithoutReferendumInput
-  voteThreshold: String
-}
-
 input ReferendumUpdateInput {
   delay: Int
   end: Int
@@ -5451,6 +5455,7 @@ input ReferendumUpdateInput {
   referendumId: Int
   referendumStatus: ReferendumStatusUpdateManyWithoutReferendumInput
   voteThreshold: String
+  referendumVote: ReferendumVoteUpdateManyWithoutReferendumInput
 }
 
 input ReferendumUpdateManyMutationInput {
@@ -5461,17 +5466,17 @@ input ReferendumUpdateManyMutationInput {
   voteThreshold: String
 }
 
-input ReferendumUpdateOneRequiredInput {
-  create: ReferendumCreateInput
-  update: ReferendumUpdateDataInput
-  upsert: ReferendumUpsertNestedInput
-  connect: ReferendumWhereUniqueInput
-}
-
 input ReferendumUpdateOneRequiredWithoutReferendumStatusInput {
   create: ReferendumCreateWithoutReferendumStatusInput
   update: ReferendumUpdateWithoutReferendumStatusDataInput
   upsert: ReferendumUpsertWithoutReferendumStatusInput
+  connect: ReferendumWhereUniqueInput
+}
+
+input ReferendumUpdateOneRequiredWithoutReferendumVoteInput {
+  create: ReferendumCreateWithoutReferendumVoteInput
+  update: ReferendumUpdateWithoutReferendumVoteDataInput
+  upsert: ReferendumUpsertWithoutReferendumVoteInput
   connect: ReferendumWhereUniqueInput
 }
 
@@ -5491,6 +5496,7 @@ input ReferendumUpdateWithoutPreimageDataInput {
   referendumId: Int
   referendumStatus: ReferendumStatusUpdateManyWithoutReferendumInput
   voteThreshold: String
+  referendumVote: ReferendumVoteUpdateManyWithoutReferendumInput
 }
 
 input ReferendumUpdateWithoutReferendumStatusDataInput {
@@ -5500,11 +5506,17 @@ input ReferendumUpdateWithoutReferendumStatusDataInput {
   preimageHash: String
   referendumId: Int
   voteThreshold: String
+  referendumVote: ReferendumVoteUpdateManyWithoutReferendumInput
 }
 
-input ReferendumUpsertNestedInput {
-  update: ReferendumUpdateDataInput!
-  create: ReferendumCreateInput!
+input ReferendumUpdateWithoutReferendumVoteDataInput {
+  delay: Int
+  end: Int
+  preimage: PreimageUpdateOneWithoutReferendumInput
+  preimageHash: String
+  referendumId: Int
+  referendumStatus: ReferendumStatusUpdateManyWithoutReferendumInput
+  voteThreshold: String
 }
 
 input ReferendumUpsertWithoutPreimageInput {
@@ -5517,6 +5529,11 @@ input ReferendumUpsertWithoutReferendumStatusInput {
   create: ReferendumCreateWithoutReferendumStatusInput!
 }
 
+input ReferendumUpsertWithoutReferendumVoteInput {
+  update: ReferendumUpdateWithoutReferendumVoteDataInput!
+  create: ReferendumCreateWithoutReferendumVoteInput!
+}
+
 type ReferendumVote {
   id: ID!
   blockNumber: BlockNumber!
@@ -5524,6 +5541,7 @@ type ReferendumVote {
   vote: String!
   voter: String!
   lockedValue: String!
+  conviction: String!
 }
 
 type ReferendumVoteConnection {
@@ -5535,10 +5553,25 @@ type ReferendumVoteConnection {
 input ReferendumVoteCreateInput {
   id: ID
   blockNumber: BlockNumberCreateOneInput!
-  referendum: ReferendumCreateOneInput!
+  referendum: ReferendumCreateOneWithoutReferendumVoteInput!
   vote: String!
   voter: String!
   lockedValue: String!
+  conviction: String!
+}
+
+input ReferendumVoteCreateManyWithoutReferendumInput {
+  create: [ReferendumVoteCreateWithoutReferendumInput!]
+  connect: [ReferendumVoteWhereUniqueInput!]
+}
+
+input ReferendumVoteCreateWithoutReferendumInput {
+  id: ID
+  blockNumber: BlockNumberCreateOneInput!
+  vote: String!
+  voter: String!
+  lockedValue: String!
+  conviction: String!
 }
 
 type ReferendumVoteEdge {
@@ -5555,6 +5588,8 @@ enum ReferendumVoteOrderByInput {
   voter_DESC
   lockedValue_ASC
   lockedValue_DESC
+  conviction_ASC
+  conviction_DESC
 }
 
 type ReferendumVotePreviousValues {
@@ -5562,6 +5597,83 @@ type ReferendumVotePreviousValues {
   vote: String!
   voter: String!
   lockedValue: String!
+  conviction: String!
+}
+
+input ReferendumVoteScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  vote: String
+  vote_not: String
+  vote_in: [String!]
+  vote_not_in: [String!]
+  vote_lt: String
+  vote_lte: String
+  vote_gt: String
+  vote_gte: String
+  vote_contains: String
+  vote_not_contains: String
+  vote_starts_with: String
+  vote_not_starts_with: String
+  vote_ends_with: String
+  vote_not_ends_with: String
+  voter: String
+  voter_not: String
+  voter_in: [String!]
+  voter_not_in: [String!]
+  voter_lt: String
+  voter_lte: String
+  voter_gt: String
+  voter_gte: String
+  voter_contains: String
+  voter_not_contains: String
+  voter_starts_with: String
+  voter_not_starts_with: String
+  voter_ends_with: String
+  voter_not_ends_with: String
+  lockedValue: String
+  lockedValue_not: String
+  lockedValue_in: [String!]
+  lockedValue_not_in: [String!]
+  lockedValue_lt: String
+  lockedValue_lte: String
+  lockedValue_gt: String
+  lockedValue_gte: String
+  lockedValue_contains: String
+  lockedValue_not_contains: String
+  lockedValue_starts_with: String
+  lockedValue_not_starts_with: String
+  lockedValue_ends_with: String
+  lockedValue_not_ends_with: String
+  conviction: String
+  conviction_not: String
+  conviction_in: [String!]
+  conviction_not_in: [String!]
+  conviction_lt: String
+  conviction_lte: String
+  conviction_gt: String
+  conviction_gte: String
+  conviction_contains: String
+  conviction_not_contains: String
+  conviction_starts_with: String
+  conviction_not_starts_with: String
+  conviction_ends_with: String
+  conviction_not_ends_with: String
+  AND: [ReferendumVoteScalarWhereInput!]
+  OR: [ReferendumVoteScalarWhereInput!]
+  NOT: [ReferendumVoteScalarWhereInput!]
 }
 
 type ReferendumVoteSubscriptionPayload {
@@ -5584,16 +5696,61 @@ input ReferendumVoteSubscriptionWhereInput {
 
 input ReferendumVoteUpdateInput {
   blockNumber: BlockNumberUpdateOneRequiredInput
-  referendum: ReferendumUpdateOneRequiredInput
+  referendum: ReferendumUpdateOneRequiredWithoutReferendumVoteInput
   vote: String
   voter: String
   lockedValue: String
+  conviction: String
+}
+
+input ReferendumVoteUpdateManyDataInput {
+  vote: String
+  voter: String
+  lockedValue: String
+  conviction: String
 }
 
 input ReferendumVoteUpdateManyMutationInput {
   vote: String
   voter: String
   lockedValue: String
+  conviction: String
+}
+
+input ReferendumVoteUpdateManyWithoutReferendumInput {
+  create: [ReferendumVoteCreateWithoutReferendumInput!]
+  delete: [ReferendumVoteWhereUniqueInput!]
+  connect: [ReferendumVoteWhereUniqueInput!]
+  set: [ReferendumVoteWhereUniqueInput!]
+  disconnect: [ReferendumVoteWhereUniqueInput!]
+  update: [ReferendumVoteUpdateWithWhereUniqueWithoutReferendumInput!]
+  upsert: [ReferendumVoteUpsertWithWhereUniqueWithoutReferendumInput!]
+  deleteMany: [ReferendumVoteScalarWhereInput!]
+  updateMany: [ReferendumVoteUpdateManyWithWhereNestedInput!]
+}
+
+input ReferendumVoteUpdateManyWithWhereNestedInput {
+  where: ReferendumVoteScalarWhereInput!
+  data: ReferendumVoteUpdateManyDataInput!
+}
+
+input ReferendumVoteUpdateWithoutReferendumDataInput {
+  blockNumber: BlockNumberUpdateOneRequiredInput
+  vote: String
+  voter: String
+  lockedValue: String
+  conviction: String
+}
+
+input ReferendumVoteUpdateWithWhereUniqueWithoutReferendumInput {
+  where: ReferendumVoteWhereUniqueInput!
+  data: ReferendumVoteUpdateWithoutReferendumDataInput!
+}
+
+input ReferendumVoteUpsertWithWhereUniqueWithoutReferendumInput {
+  where: ReferendumVoteWhereUniqueInput!
+  update: ReferendumVoteUpdateWithoutReferendumDataInput!
+  create: ReferendumVoteCreateWithoutReferendumInput!
 }
 
 input ReferendumVoteWhereInput {
@@ -5655,6 +5812,20 @@ input ReferendumVoteWhereInput {
   lockedValue_not_starts_with: String
   lockedValue_ends_with: String
   lockedValue_not_ends_with: String
+  conviction: String
+  conviction_not: String
+  conviction_in: [String!]
+  conviction_not_in: [String!]
+  conviction_lt: String
+  conviction_lte: String
+  conviction_gt: String
+  conviction_gte: String
+  conviction_contains: String
+  conviction_not_contains: String
+  conviction_starts_with: String
+  conviction_not_starts_with: String
+  conviction_ends_with: String
+  conviction_not_ends_with: String
   AND: [ReferendumVoteWhereInput!]
   OR: [ReferendumVoteWhereInput!]
   NOT: [ReferendumVoteWhereInput!]
@@ -5729,6 +5900,9 @@ input ReferendumWhereInput {
   voteThreshold_not_starts_with: String
   voteThreshold_ends_with: String
   voteThreshold_not_ends_with: String
+  referendumVote_every: ReferendumVoteWhereInput
+  referendumVote_some: ReferendumVoteWhereInput
+  referendumVote_none: ReferendumVoteWhereInput
   AND: [ReferendumWhereInput!]
   OR: [ReferendumWhereInput!]
   NOT: [ReferendumWhereInput!]
