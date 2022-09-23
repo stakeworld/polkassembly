@@ -64,6 +64,7 @@ import ClaimPayoutModal from './ClaimPayoutModal';
 import GovenanceSideBar from './GovernanceSideBar';
 import Poll from './Poll';
 import CreatePostComment from './PostCommentForm';
+import OtherProposalsSidebar from './PostGovernanceInfo/OtherProposalsSidebar';
 import PostBountyInfo from './PostGovernanceInfo/PostBountyInfo';
 import PostChildBountiesList from './PostGovernanceInfo/PostChildBountiesList';
 import PostChildBountyInfo from './PostGovernanceInfo/PostChildBountyInfo';
@@ -113,6 +114,16 @@ interface Redirection {
 }
 
 const Post = ( { className, data, isBounty = false, isChildBounty = false, isMotion = false, isProposal = false, isReferendum = false, isTipProposal = false, isTreasuryProposal = false, isTechCommitteeProposal = false, refetch }: Props ) => {
+
+	const routeWrapperEl = document.getElementById('route-wrapper');
+	let routeWrapperHeight = routeWrapperEl?.offsetHeight;
+	if(routeWrapperEl && routeWrapperHeight) {
+		routeWrapperHeight += parseInt(window.getComputedStyle(routeWrapperEl).getPropertyValue('margin-top'));
+		routeWrapperHeight += parseInt(window.getComputedStyle(routeWrapperEl).getPropertyValue('margin-bottom'));
+	}
+
+	const [otherProposalsSidebarAddr, setOtherProposalsSidebarAddr] = useState<string|null>(null);
+
 	const post = data && data.posts && data.posts[0];
 	const { id, addresses } = useContext(UserDetailsContext);
 	const [isEditing, setIsEditing] = useState(false);
@@ -293,187 +304,205 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 	</>;
 
 	return (
-		<Grid className={className}>
-			<Grid.Column mobile={16} tablet={16} computer={10} largeScreen={10}>
-				{redirection.link &&
-					<Link className='redirection' to={redirection.link}>
-						<Card className='redirectionCard'>
-							<Icon name='forward'/> This proposal has become <span className='redirectionText'>{redirection.text}</span>
+		<>
+			<Grid className={className}>
+				<Grid.Column mobile={16} tablet={16} computer={10} largeScreen={10}>
+					{redirection.link &&
+						<Link className='redirection' to={redirection.link}>
+							<Card className='redirectionCard'>
+								<Icon name='forward'/> This proposal has become <span className='redirectionText'>{redirection.text}</span>
+							</Card>
+						</Link>
+					}
+					{ post && isChildBounty && postStatus === 'PendingPayout' && (
+						// TODO: Add condition to check for benificiary
+						<Card className='claimPayoutCard'>
+							<span>The child bounty payout is ready to be claimed&nbsp;&nbsp;</span>
+							<ClaimPayoutModal
+								parentBountyId={(definedOnchainLink as OnchainLinkChildBountyFragment).onchain_child_bounty[0]?.parentBountyId}
+								childBountyId={(definedOnchainLink as OnchainLinkChildBountyFragment).onchain_child_bounty[0]?.childBountyId}
+							/>
 						</Card>
-					</Link>
-				}
-				{ post && isChildBounty && postStatus === 'PendingPayout' && (
-					// TODO: Add condition to check for benificiary
-					<Card className='claimPayoutCard'>
-						<span>The child bounty payout is ready to be claimed&nbsp;&nbsp;</span>
-						<ClaimPayoutModal
-							parentBountyId={(definedOnchainLink as OnchainLinkChildBountyFragment).onchain_child_bounty[0]?.parentBountyId}
-							childBountyId={(definedOnchainLink as OnchainLinkChildBountyFragment).onchain_child_bounty[0]?.childBountyId}
+					)}
+					<div className='post_content'>
+						<EditablePostContent
+							isEditing={isEditing}
+							isTipProposal={isTipProposal}
+							onchainId={onchainId}
+							post={post}
+							postStatus={postStatus}
+							refetch={refetch}
+							toggleEdit={toggleEdit}
 						/>
-					</Card>
-				)}
-				<div className='post_content'>
-					<EditablePostContent
-						isEditing={isEditing}
-						isTipProposal={isTipProposal}
-						onchainId={onchainId}
-						post={post}
-						postStatus={postStatus}
-						refetch={refetch}
-						toggleEdit={toggleEdit}
-					/>
-					<div className='actions-bar'>
-						<PostReactionBar className='reactions' postId={post.id} />
-						{id && <div className='vl'/>}
-						{id && !isEditing && <SubscriptionButton postId={post.id}/>}
-						{canEdit && <Button className={'social'} onClick={toggleEdit}><Icon name='edit' className='icon'/>Edit</Button>}
-						{id && !isEditing && !isOnchainPost && <ReportButton type='post' contentId={`${post.id}`} />}
-						{canEdit && !isEditing && <CreateOptionPoll postId={post.id} />}
-						{id && onchainId && isOnchainPost && !isEditing && (
-							<TrackerButton
-								onchainId={onchainId}
-								isBounty={isBounty}
-								isMotion={isMotion}
-								isProposal={isProposal}
-								isReferendum={isReferendum}
-								isTipProposal={isTipProposal}
-								isTreasuryProposal={isTreasuryProposal}
-								isTechCommitteeProposal={isTechCommitteeProposal}
-							/>)
-						}
-						<ShareButton title={post.title} />
+						<div className='actions-bar'>
+							<PostReactionBar className='reactions' postId={post.id} />
+							{id && <div className='vl'/>}
+							{id && !isEditing && <SubscriptionButton postId={post.id}/>}
+							{canEdit && <Button className={'social'} onClick={toggleEdit}><Icon name='edit' className='icon'/>Edit</Button>}
+							{id && !isEditing && !isOnchainPost && <ReportButton type='post' contentId={`${post.id}`} />}
+							{canEdit && !isEditing && <CreateOptionPoll postId={post.id} />}
+							{id && onchainId && isOnchainPost && !isEditing && (
+								<TrackerButton
+									onchainId={onchainId}
+									isBounty={isBounty}
+									isMotion={isMotion}
+									isProposal={isProposal}
+									isReferendum={isReferendum}
+									isTipProposal={isTipProposal}
+									isTreasuryProposal={isTreasuryProposal}
+									isTechCommitteeProposal={isTechCommitteeProposal}
+								/>)
+							}
+							<ShareButton title={post.title} />
+						</div>
 					</div>
-				</div>
-				{ isTechCommitteeProposal && (
-					<>
-						<PostTechCommitteeProposalInfo
-							onchainLink={definedOnchainLink as OnchainLinkTechCommitteeProposalFragment}
+					{ isTechCommitteeProposal && (
+						<>
+							<PostTechCommitteeProposalInfo
+								onchainLink={definedOnchainLink as OnchainLinkTechCommitteeProposalFragment}
+							/>
+							<Timeline
+								statuses={techCommitteeProposalPost?.onchain_link?.onchain_tech_committee_proposal?.[0]?.status?.map(s => ({
+									blockNumber: s.blockNumber?.number || 0,
+									status: s.status || ''
+								})) || []}
+							/>
+						</>)
+					}
+					{ isBounty && (
+						<>
+							<PostBountyInfo
+								onchainLink={definedOnchainLink as OnchainLinkBountyFragment}
+								setOtherProposalsSidebarAddr={setOtherProposalsSidebarAddr}
+							/>
+							<PostChildBountiesList
+								onchainId={Number(onchainId)}
+							/>
+							<Timeline
+								statuses={bountyPost?.onchain_link?.onchain_bounty?.[0]?.bountyStatus?.map(s => ({
+									blockNumber: s.blockNumber?.number || 0,
+									status: s.status || ''
+								})) || []}
+							/>
+						</>)
+					}
+					{ isChildBounty && (
+						<>
+							<PostChildBountyInfo
+								onchainLink={definedOnchainLink as OnchainLinkChildBountyFragment}
+								setOtherProposalsSidebarAddr={setOtherProposalsSidebarAddr}
+							/>
+							<Timeline
+								statuses={childBountyPost?.onchain_link?.onchain_child_bounty?.[0]?.childBountyStatus?.map(s => ({
+									blockNumber: s.blockNumber?.number || 0,
+									status: s.status || ''
+								})) || []}
+							/>
+						</>)
+					}
+					{ isMotion && (
+						<>
+							<PostMotionInfo
+								onchainLink={definedOnchainLink as OnchainLinkMotionFragment}
+								setOtherProposalsSidebarAddr={setOtherProposalsSidebarAddr}
+							/>
+							<Timeline
+								statuses={motionPost?.onchain_link?.onchain_motion?.[0]?.motionStatus?.map(s => ({
+									blockNumber: s.blockNumber?.number || 0,
+									status: s.status || ''
+								})) || []}
+							/>
+						</>)
+					}
+					{ isProposal && (
+						<>
+							<PostProposalInfo
+								onchainLink={definedOnchainLink as OnchainLinkProposalFragment}
+								setOtherProposalsSidebarAddr={setOtherProposalsSidebarAddr}
+							/>
+							<Timeline
+								statuses={proposalPost?.onchain_link?.onchain_proposal?.[0]?.proposalStatus?.map(s => ({
+									blockNumber: s.blockNumber?.number || 0,
+									status: s.status || ''
+								})) || []}
+							/>
+						</>)
+					}
+					{ isReferendum && (
+						<>
+							<PostReferendumInfo
+								onchainLink={definedOnchainLink as OnchainLinkReferendumFragment}
+								setOtherProposalsSidebarAddr={setOtherProposalsSidebarAddr}
+							/>
+							<Timeline
+								statuses={referendumPost?.onchain_link?.onchain_referendum?.[0]?.referendumStatus?.map(s => ({
+									blockNumber: s.blockNumber?.number || 0,
+									status: s.status || ''
+								})) || []}
+							/>
+						</>)
+					}
+					{ isTreasuryProposal && (
+						<>
+							<PostTreasuryInfo
+								onchainLink={definedOnchainLink as OnchainLinkTreasuryProposalFragment}
+								setOtherProposalsSidebarAddr={setOtherProposalsSidebarAddr}
+							/>
+							<Timeline
+								statuses={treasuryPost?.onchain_link?.onchain_treasury_spend_proposal?.[0]?.treasuryStatus?.map(s => ({
+									blockNumber: s.blockNumber?.number || 0,
+									status: s.status || ''
+								})) || []}
+							/>
+						</>)
+					}
+					{ isTipProposal && (
+						<>
+							<PostTipInfo
+								onchainLink={definedOnchainLink as OnchainLinkTipFragment}
+								setOtherProposalsSidebarAddr={setOtherProposalsSidebarAddr}
+							/>
+							<Timeline
+								statuses={tipPost?.onchain_link?.onchain_tip?.[0]?.tipStatus?.map(s => ({
+									blockNumber: s.blockNumber?.number || 0,
+									status: s.status || ''
+								})) || []}
+							/>
+						</>)
+					}
+					{redirection.link &&
+						<Card className='timelineCard'>
+							<Icon name='forward'/> Became <Link className='redirection' to={redirection.link}><span className='redirectionText'>{redirection.text}</span></Link>
+						</Card>
+					}
+					<Responsive maxWidth={Responsive.onlyTablet.maxWidth}>
+						<Sidebar />
+					</Responsive>
+					{ !!post.comments?.length &&
+						<Comments
+							comments={post.comments}
+							refetch={refetch}
 						/>
-						<Timeline
-							statuses={techCommitteeProposalPost?.onchain_link?.onchain_tech_committee_proposal?.[0]?.status?.map(s => ({
-								blockNumber: s.blockNumber?.number || 0,
-								status: s.status || ''
-							})) || []}
-						/>
-					</>)
-				}
-				{ isBounty && (
-					<>
-						<PostBountyInfo
-							onchainLink={definedOnchainLink as OnchainLinkBountyFragment}
-						/>
-						<PostChildBountiesList
-							onchainId={Number(onchainId)}
-						/>
-						<Timeline
-							statuses={bountyPost?.onchain_link?.onchain_bounty?.[0]?.bountyStatus?.map(s => ({
-								blockNumber: s.blockNumber?.number || 0,
-								status: s.status || ''
-							})) || []}
-						/>
-					</>)
-				}
-				{ isChildBounty && (
-					<>
-						<PostChildBountyInfo
-							onchainLink={definedOnchainLink as OnchainLinkChildBountyFragment}
-						/>
-						<Timeline
-							statuses={childBountyPost?.onchain_link?.onchain_child_bounty?.[0]?.childBountyStatus?.map(s => ({
-								blockNumber: s.blockNumber?.number || 0,
-								status: s.status || ''
-							})) || []}
-						/>
-					</>)
-				}
-				{ isMotion && (
-					<>
-						<PostMotionInfo
-							onchainLink={definedOnchainLink as OnchainLinkMotionFragment}
-						/>
-						<Timeline
-							statuses={motionPost?.onchain_link?.onchain_motion?.[0]?.motionStatus?.map(s => ({
-								blockNumber: s.blockNumber?.number || 0,
-								status: s.status || ''
-							})) || []}
-						/>
-					</>)
-				}
-				{ isProposal && (
-					<>
-						<PostProposalInfo
-							onchainLink={definedOnchainLink as OnchainLinkProposalFragment}
-						/>
-						<Timeline
-							statuses={proposalPost?.onchain_link?.onchain_proposal?.[0]?.proposalStatus?.map(s => ({
-								blockNumber: s.blockNumber?.number || 0,
-								status: s.status || ''
-							})) || []}
-						/>
-					</>)
-				}
-				{ isReferendum && (
-					<>
-						<PostReferendumInfo
-							onchainLink={definedOnchainLink as OnchainLinkReferendumFragment}
-						/>
-						<Timeline
-							statuses={referendumPost?.onchain_link?.onchain_referendum?.[0]?.referendumStatus?.map(s => ({
-								blockNumber: s.blockNumber?.number || 0,
-								status: s.status || ''
-							})) || []}
-						/>
-					</>)
-				}
-				{ isTreasuryProposal && (
-					<>
-						<PostTreasuryInfo
-							onchainLink={definedOnchainLink as OnchainLinkTreasuryProposalFragment}
-						/>
-						<Timeline
-							statuses={treasuryPost?.onchain_link?.onchain_treasury_spend_proposal?.[0]?.treasuryStatus?.map(s => ({
-								blockNumber: s.blockNumber?.number || 0,
-								status: s.status || ''
-							})) || []}
-						/>
-					</>)
-				}
-				{ isTipProposal && (
-					<>
-						<PostTipInfo
-							onchainLink={definedOnchainLink as OnchainLinkTipFragment}
-						/>
-						<Timeline
-							statuses={tipPost?.onchain_link?.onchain_tip?.[0]?.tipStatus?.map(s => ({
-								blockNumber: s.blockNumber?.number || 0,
-								status: s.status || ''
-							})) || []}
-						/>
-					</>)
-				}
-				{redirection.link &&
-					<Card className='timelineCard'>
-						<Icon name='forward'/> Became <Link className='redirection' to={redirection.link}><span className='redirectionText'>{redirection.text}</span></Link>
-					</Card>
-				}
-				<Responsive maxWidth={Responsive.onlyTablet.maxWidth}>
-					<Sidebar />
-				</Responsive>
-				{ !!post.comments?.length &&
-					<Comments
-						comments={post.comments}
-						refetch={refetch}
-					/>
-				}
-				{ id && <CreatePostComment postId={post.id} refetch={refetch} /> }
-			</Grid.Column>
-			<Grid.Column mobile={16} tablet={16} computer={6} largeScreen={6}>
-				<Responsive minWidth={Responsive.onlyComputer.minWidth}>
-					<Sidebar />
-				</Responsive>
-				<ScrollToTop/>
-			</Grid.Column>
-		</Grid>
+					}
+					{ id && <CreatePostComment postId={post.id} refetch={refetch} /> }
+				</Grid.Column>
+				<Grid.Column mobile={16} tablet={16} computer={6} largeScreen={6}>
+					<Responsive minWidth={Responsive.onlyComputer.minWidth}>
+						<Sidebar />
+					</Responsive>
+					<ScrollToTop/>
+				</Grid.Column>
+			</Grid>
+
+			{/* Create Event Sidebar */}
+			{routeWrapperHeight && otherProposalsSidebarAddr &&
+				<OtherProposalsSidebar
+					closeOtherProposalsSidebar={() => setOtherProposalsSidebarAddr(null)}
+					proposerAddress={otherProposalsSidebarAddr}
+					routeWrapperHeight={routeWrapperHeight}
+				/>
+			}
+		</>
 	);
 };
 
