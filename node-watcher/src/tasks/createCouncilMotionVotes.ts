@@ -89,7 +89,7 @@ const createCouncilMotionVotes: Task<NomidotCouncilMotionVote[]> = {
           proposalHash: councilMotionVoteRawEvent.proposalHash,
           voter: councilMotionVoteRawEvent.voter,
           seconded: councilMotionVoteRawEvent.seconded,
-          motionProposalId: motionProposal[0].motionProposalId
+          motionProposalId: motionProposal[0]?.motionProposalId
         };
         l.log(`Nomidot Council Motion vote: ${JSON.stringify(vote)}`);
         results.push(vote);
