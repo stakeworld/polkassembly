@@ -79,7 +79,7 @@ const createCouncilMotionVotes: Task<NomidotCouncilMotionVote[]> = {
             motionProposalHash: councilMotionVoteRawEvent.proposalHash.toString()
           }
         })
-        if(!motionProposal){
+        if(!motionProposal || motionProposal == undefined){
           l.error(
             `Expected motionProposal missing from prisma: ${JSON.stringify(councilMotionVoteRawEvent)}`
           );
