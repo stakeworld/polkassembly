@@ -7,6 +7,7 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Accordion, Icon, Message } from 'semantic-ui-react';
+import { ReactComponent as NoProposalsSVG } from 'src/assets/no-proposal.svg';
 import { useGetUsersProposalsQuery } from 'src/generated/graphql';
 import StatusTag from 'src/ui-components/StatusTag';
 
@@ -84,7 +85,7 @@ const OtherProposalsSidebar = ({ className, routeWrapperHeight, closeOtherPropos
 
 			{loading && <div className="loading-cont d-flex"><Icon loading name='circle notched' size='big' /></div>}
 
-			{!loading && !error && data?.posts && data?.posts.length > 1 ?
+			{!loading && !error && data?.posts && data?.posts.length > 1 &&
 				<>
 					<Accordion fluid styled className='accordion' exclusive={false}>
 						{
@@ -150,9 +151,14 @@ const OtherProposalsSidebar = ({ className, routeWrapperHeight, closeOtherPropos
 						}
 					</Accordion>
 				</>
-				:
+			}
+
+			{!loading && !error && data?.posts && data.posts.length <=1 &&
 				<div className='d-flex empty-state'>
+					<NoProposalsSVG />
+					<div className='text'>
 					No other proposals found
+					</div>
 				</div>
 			}
 		</div>
@@ -267,8 +273,13 @@ export default styled(OtherProposalsSidebar)`
 	}
 
 	.empty-state {
+		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		margin-top: 56px;
+		margin-top: 84px;
+		
+		.text {
+			margin-top: 24px;
+		}
 	}
 `;
