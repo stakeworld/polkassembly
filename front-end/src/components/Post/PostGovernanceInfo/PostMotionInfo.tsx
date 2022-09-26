@@ -35,42 +35,47 @@ const PostMotionInfo = ({ className, onchainLink, setOtherProposalsSidebarAddr }
 	const { memberCount, method, motionProposalArguments, motionProposalHash, preimage, treasurySpendProposal } = onchainMotion[0];
 
 	return (
-		<OnchainInfoWrapper className={className}>
-			<h4>On-chain info</h4>
-			<Grid>
-				<Grid.Column mobile={16} tablet={8} computer={8}>
-					<h6>Proposer</h6>
-					<div className="address-comp-cont d-flex">
+		<>
+			<OnchainInfoWrapper className={className}>
+				<h4>On-chain info</h4>
+				<Grid>
+					<Grid.Column mobile={16} tablet={8} computer={8}>
+						<h6>Proposer</h6>
 						<AddressComponent address={proposerAddress}/>
-						<span className='prev-proposals-btn' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>Other Proposals &gt;</span>
-					</div>
-				</Grid.Column>
-				<Grid.Column mobile={16} tablet={8} computer={8}>
-					<h6>Member count</h6>
-					{memberCount}
-				</Grid.Column>
-				<Grid.Column mobile={16} tablet={8} computer={8}>
-					<h6>Motion hash</h6>
-					{motionProposalHash}
-				</Grid.Column>
-				<Grid.Column mobile={16} tablet={8} computer={8}>
-					<h6>Motion&apos;s method</h6>
-					<span className={method === 'rejectProposal' ? 'bold-red-text' : ''}>{method}</span>
-				</Grid.Column>
-				<Grid.Row>
-					<Grid.Column mobile={16} tablet={16} computer={16}>
-						{motionProposalArguments && motionProposalArguments.length
-							? <ArgumentsTableJSONView postArguments={motionProposalArguments} showAccountArguments={false}  />
-							: null}
 					</Grid.Column>
-				</Grid.Row>
-				<ProposalInfo preimage={preimage}/>
-				<TreasuryInfo treasurySpendProposal={treasurySpendProposal}/>
-				<Grid.Column mobile={16} tablet={16} computer={16}>
-					<ExternalLinks isMotion={true} onchainId={onchainLink.onchain_motion_id} />
-				</Grid.Column>
-			</Grid>
-		</OnchainInfoWrapper>
+					<Grid.Column mobile={16} tablet={8} computer={8}>
+						<h6>Member count</h6>
+						{memberCount}
+					</Grid.Column>
+					<Grid.Column mobile={16} tablet={8} computer={8}>
+						<h6>Motion hash</h6>
+						{motionProposalHash}
+					</Grid.Column>
+					<Grid.Column mobile={16} tablet={8} computer={8}>
+						<h6>Motion&apos;s method</h6>
+						<span className={method === 'rejectProposal' ? 'bold-red-text' : ''}>{method}</span>
+					</Grid.Column>
+					<Grid.Row>
+						<Grid.Column mobile={16} tablet={16} computer={16}>
+							{motionProposalArguments && motionProposalArguments.length
+								? <ArgumentsTableJSONView postArguments={motionProposalArguments} showAccountArguments={false}  />
+								: null}
+						</Grid.Column>
+					</Grid.Row>
+					<ProposalInfo preimage={preimage}/>
+					<TreasuryInfo treasurySpendProposal={treasurySpendProposal}/>
+					<Grid.Column mobile={16} tablet={16} computer={16}>
+						<ExternalLinks isMotion={true} onchainId={onchainLink.onchain_motion_id} />
+					</Grid.Column>
+				</Grid>
+			</OnchainInfoWrapper>
+
+			<OnchainInfoWrapper>
+				<span className='prev-proposals-btn' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
+					Show all proposals by proposer &gt;
+				</span>
+			</OnchainInfoWrapper>
+		</>
 	);
 };
 

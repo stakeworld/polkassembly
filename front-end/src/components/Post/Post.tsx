@@ -360,6 +360,7 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 						<>
 							<PostTechCommitteeProposalInfo
 								onchainLink={definedOnchainLink as OnchainLinkTechCommitteeProposalFragment}
+								setOtherProposalsSidebarAddr={setOtherProposalsSidebarAddr}
 							/>
 							<Timeline
 								statuses={techCommitteeProposalPost?.onchain_link?.onchain_tech_committee_proposal?.[0]?.status?.map(s => ({
@@ -497,7 +498,7 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 			{/* Create Event Sidebar */}
 			{routeWrapperHeight && otherProposalsSidebarAddr &&
 				<OtherProposalsSidebar
-					closeOtherProposalsSidebar={() => setOtherProposalsSidebarAddr(null)}
+					closeOtherProposalsSidebar={() => {setOtherProposalsSidebarAddr(null); window.scrollTo(0, 0);}}
 					currPostOnchainID={Number(onchainId)}
 					proposerAddress={otherProposalsSidebarAddr}
 					routeWrapperHeight={routeWrapperHeight}

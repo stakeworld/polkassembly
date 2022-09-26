@@ -103,7 +103,7 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 							<Popup
 								trigger={
 									<div className={'header inline identityName'}>
-										{mainDisplay || shortenAddress(address)}
+										{mainDisplay || shortenAddress(address, shortenAddressLength)}
 										{sub && <span className='sub'>/{sub}</span>}
 									</div>
 								}
@@ -116,7 +116,7 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 							<div className={'description inline'}>
 								{identity && mainDisplay && <IdentityBadge identity={identity} flags={flags} />}
 								<span className='identityName'>
-									{ mainDisplay || shortenAddress(address)}
+									{ mainDisplay || shortenAddress(address, shortenAddressLength)}
 									{sub && <span className='sub'>/{sub}</span>}
 								</span>
 							</div>
@@ -133,7 +133,7 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 												{!extensionName && sub && <span className='sub'>/{sub}</span>}
 											</span>
 										</div>
-										<div className={'description inline'}>{shortenAddress(address)}</div>
+										<div className={'description inline'}>{shortenAddress(address, shortenAddressLength)}</div>
 									</>
 								}
 								content={popupContent}
@@ -148,7 +148,7 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 										{!extensionName && sub && <span className='sub'>/{sub}</span>}
 									</span>
 								</div>
-								<div className={'description'}>{shortenAddress(address)}</div>
+								<div className={'description'}>{shortenAddress(address, shortenAddressLength)}</div>
 							</>
 						: <div className={'description'}>{shortenAddress(address, shortenAddressLength)}</div>
 				}

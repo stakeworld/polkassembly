@@ -29,55 +29,60 @@ const PostTipInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props) => {
 	const { blockNumber, status } = tipStatus?.[0] || {};
 
 	return (
-		<OnchainInfoWrapper>
-			<h4>On-chain info</h4>
-			<Grid>
-				<Grid.Column mobile={16} tablet={8} computer={8}>
-					<h6>Proposer</h6>
-					<div className="address-comp-cont d-flex">
+		<>
+			<OnchainInfoWrapper>
+				<h4>On-chain info</h4>
+				<Grid>
+					<Grid.Column mobile={16} tablet={8} computer={8}>
+						<h6>Proposer</h6>
 						<AddressComponent address={proposerAddress}/>
-						<span className='prev-proposals-btn' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>Other Proposals &gt;</span>
-					</div>
-				</Grid.Column>
-				{hash &&
-				<Grid.Column mobile={16} tablet={8} computer={8}>
-					<h6>Hash</h6>
-					{hash}
-				</Grid.Column>}
-				{reason &&
-				<Grid.Column mobile={16} tablet={8} computer={8}>
-					<h6>Reason</h6>
-					{reason}
-				</Grid.Column>}
-				{who &&
-				<Grid.Column mobile={16} tablet={8} computer={8}>
-					<h6>Receiver</h6>
-					<AddressComponent address={who}/>
-				</Grid.Column>}
-				{finder &&
-				<Grid.Column mobile={16} tablet={8} computer={8}>
-					<h6>Finder</h6>
-					<AddressComponent address={finder}/>
-				</Grid.Column>}
-				{closes &&
-				<Grid.Column mobile={16} tablet={8} computer={8}>
-					{status === tipStatuses.CLOSING
-						?
-						<>
-							<h6>Closing</h6>
-							<BlockCountdown endBlock={closes}/>
-						</>
-						:  status === tipStatuses.CLOSED
+					</Grid.Column>
+					{hash &&
+					<Grid.Column mobile={16} tablet={8} computer={8}>
+						<h6>Hash</h6>
+						{hash}
+					</Grid.Column>}
+					{reason &&
+					<Grid.Column mobile={16} tablet={8} computer={8}>
+						<h6>Reason</h6>
+						{reason}
+					</Grid.Column>}
+					{who &&
+					<Grid.Column mobile={16} tablet={8} computer={8}>
+						<h6>Receiver</h6>
+						<AddressComponent address={who}/>
+					</Grid.Column>}
+					{finder &&
+					<Grid.Column mobile={16} tablet={8} computer={8}>
+						<h6>Finder</h6>
+						<AddressComponent address={finder}/>
+					</Grid.Column>}
+					{closes &&
+					<Grid.Column mobile={16} tablet={8} computer={8}>
+						{status === tipStatuses.CLOSING
 							?
 							<>
-								<h6>Closed</h6>
-								<div>{moment.utc(blockNumber?.startDateTime).format('DD MMM YYYY, HH:mm:ss')}</div>
+								<h6>Closing</h6>
+								<BlockCountdown endBlock={closes}/>
 							</>
-							: <span>#{closes}</span>
-					}
-				</Grid.Column>}
-			</Grid>
-		</OnchainInfoWrapper>
+							:  status === tipStatuses.CLOSED
+								?
+								<>
+									<h6>Closed</h6>
+									<div>{moment.utc(blockNumber?.startDateTime).format('DD MMM YYYY, HH:mm:ss')}</div>
+								</>
+								: <span>#{closes}</span>
+						}
+					</Grid.Column>}
+				</Grid>
+			</OnchainInfoWrapper>
+
+			<OnchainInfoWrapper>
+				<span className='prev-proposals-btn' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
+					Show all proposals by proposer &gt;
+				</span>
+			</OnchainInfoWrapper>
+		</>
 	);
 };
 
