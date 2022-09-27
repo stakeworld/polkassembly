@@ -27477,42 +27477,17 @@ export type ReferundumCountQuery = (
 );
 
 export type GetLatestReferendaPostsWithVotesQueryVariables = Exact<{
-  postType: Scalars['Int'];
-  limit?: Scalars['Int'];
   voter: Scalars['String'];
+  referendumId: Scalars['Int'];
 }>;
 
 
 export type GetLatestReferendaPostsWithVotesQuery = (
   { __typename?: 'query_root' }
-  & { posts: Array<(
-    { __typename?: 'posts' }
-    & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
-    & { author?: Maybe<(
-      { __typename?: 'User' }
-      & AuthorFieldsFragment
-    )>, type: (
-      { __typename?: 'post_types' }
-      & Pick<Post_Types, 'name' | 'id'>
-    ), topic: (
-      { __typename?: 'post_topics' }
-      & Pick<Post_Topics, 'id' | 'name'>
-    ), onchain_link?: Maybe<(
-      { __typename?: 'onchain_links' }
-      & Pick<Onchain_Links, 'id' | 'onchain_referendum_id' | 'proposer_address'>
-      & { onchain_referendum: Array<Maybe<(
-        { __typename?: 'Referendum' }
-        & Pick<Referendum, 'id' | 'end'>
-        & { referendumStatus?: Maybe<Array<(
-          { __typename?: 'ReferendumStatus' }
-          & Pick<ReferendumStatus, 'id' | 'status'>
-        )>>, referendumVote?: Maybe<Array<(
-          { __typename?: 'ReferendumVote' }
-          & Pick<ReferendumVote, 'conviction' | 'id' | 'lockedValue' | 'vote' | 'voter'>
-        )>> }
-      )>> }
-    )> }
-  )> }
+  & { referendumVotes: Array<Maybe<(
+    { __typename?: 'ReferendumVote' }
+    & Pick<ReferendumVote, 'voter' | 'vote' | 'lockedValue' | 'id' | 'conviction'>
+  )>> }
 );
 
 export type LatestTechCommitteeProposalPostsQueryVariables = Exact<{
@@ -32736,50 +32711,16 @@ export type ReferundumCountQueryHookResult = ReturnType<typeof useReferundumCoun
 export type ReferundumCountLazyQueryHookResult = ReturnType<typeof useReferundumCountLazyQuery>;
 export type ReferundumCountQueryResult = ApolloReactCommon.QueryResult<ReferundumCountQuery, ReferundumCountQueryVariables>;
 export const GetLatestReferendaPostsWithVotesDocument = gql`
-    query GetLatestReferendaPostsWithVotes($postType: Int!, $limit: Int! = 10, $voter: String!) {
-  posts(
-    limit: $limit
-    where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_referendum_id: {_is_null: false}}}
-    order_by: {onchain_link: {onchain_referendum_id: desc}}
-  ) {
+    query GetLatestReferendaPostsWithVotes($voter: String!, $referendumId: Int!) {
+  referendumVotes(where: {voter: $voter, referendum: {id: $referendumId}}) {
+    voter
+    vote
+    lockedValue
     id
-    title
-    author {
-      ...authorFields
-    }
-    created_at
-    updated_at
-    type {
-      name
-      id
-    }
-    topic {
-      id
-      name
-    }
-    onchain_link {
-      id
-      onchain_referendum_id
-      onchain_referendum {
-        id
-        end
-        referendumStatus(last: 1) {
-          id
-          status
-        }
-        referendumVote(where: {voter: $voter}) {
-          conviction
-          id
-          lockedValue
-          vote
-          voter
-        }
-      }
-      proposer_address
-    }
+    conviction
   }
 }
-    ${AuthorFieldsFragmentDoc}`;
+    `;
 
 /**
  * __useGetLatestReferendaPostsWithVotesQuery__
@@ -32793,9 +32734,8 @@ export const GetLatestReferendaPostsWithVotesDocument = gql`
  * @example
  * const { data, loading, error } = useGetLatestReferendaPostsWithVotesQuery({
  *   variables: {
- *      postType: // value for 'postType'
- *      limit: // value for 'limit'
  *      voter: // value for 'voter'
+ *      referendumId: // value for 'referendumId'
  *   },
  * });
  */
