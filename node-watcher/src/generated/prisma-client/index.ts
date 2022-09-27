@@ -24,6 +24,7 @@ export interface Exists {
   childBountyStatus: (where?: ChildBountyStatusWhereInput) => Promise<boolean>;
   council: (where?: CouncilWhereInput) => Promise<boolean>;
   councilMember: (where?: CouncilMemberWhereInput) => Promise<boolean>;
+  councilMotionVote: (where?: CouncilMotionVoteWhereInput) => Promise<boolean>;
   era: (where?: EraWhereInput) => Promise<boolean>;
   heartBeat: (where?: HeartBeatWhereInput) => Promise<boolean>;
   motion: (where?: MotionWhereInput) => Promise<boolean>;
@@ -40,6 +41,7 @@ export interface Exists {
   proposalStatus: (where?: ProposalStatusWhereInput) => Promise<boolean>;
   referendum: (where?: ReferendumWhereInput) => Promise<boolean>;
   referendumStatus: (where?: ReferendumStatusWhereInput) => Promise<boolean>;
+  referendumVote: (where?: ReferendumVoteWhereInput) => Promise<boolean>;
   reward: (where?: RewardWhereInput) => Promise<boolean>;
   session: (where?: SessionWhereInput) => Promise<boolean>;
   slashing: (where?: SlashingWhereInput) => Promise<boolean>;
@@ -244,6 +246,27 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => CouncilMemberConnectionPromise;
+  councilMotionVote: (
+    where: CouncilMotionVoteWhereUniqueInput
+  ) => CouncilMotionVoteNullablePromise;
+  councilMotionVotes: (args?: {
+    where?: CouncilMotionVoteWhereInput;
+    orderBy?: CouncilMotionVoteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<CouncilMotionVote>;
+  councilMotionVotesConnection: (args?: {
+    where?: CouncilMotionVoteWhereInput;
+    orderBy?: CouncilMotionVoteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => CouncilMotionVoteConnectionPromise;
   era: (where: EraWhereUniqueInput) => EraNullablePromise;
   eras: (args?: {
     where?: EraWhereInput;
@@ -524,6 +547,27 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => ReferendumStatusConnectionPromise;
+  referendumVote: (
+    where: ReferendumVoteWhereUniqueInput
+  ) => ReferendumVoteNullablePromise;
+  referendumVotes: (args?: {
+    where?: ReferendumVoteWhereInput;
+    orderBy?: ReferendumVoteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<ReferendumVote>;
+  referendumVotesConnection: (args?: {
+    where?: ReferendumVoteWhereInput;
+    orderBy?: ReferendumVoteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => ReferendumVoteConnectionPromise;
   reward: (where: RewardWhereUniqueInput) => RewardNullablePromise;
   rewards: (args?: {
     where?: RewardWhereInput;
@@ -931,6 +975,28 @@ export interface Prisma {
   deleteManyCouncilMembers: (
     where?: CouncilMemberWhereInput
   ) => BatchPayloadPromise;
+  createCouncilMotionVote: (
+    data: CouncilMotionVoteCreateInput
+  ) => CouncilMotionVotePromise;
+  updateCouncilMotionVote: (args: {
+    data: CouncilMotionVoteUpdateInput;
+    where: CouncilMotionVoteWhereUniqueInput;
+  }) => CouncilMotionVotePromise;
+  updateManyCouncilMotionVotes: (args: {
+    data: CouncilMotionVoteUpdateManyMutationInput;
+    where?: CouncilMotionVoteWhereInput;
+  }) => BatchPayloadPromise;
+  upsertCouncilMotionVote: (args: {
+    where: CouncilMotionVoteWhereUniqueInput;
+    create: CouncilMotionVoteCreateInput;
+    update: CouncilMotionVoteUpdateInput;
+  }) => CouncilMotionVotePromise;
+  deleteCouncilMotionVote: (
+    where: CouncilMotionVoteWhereUniqueInput
+  ) => CouncilMotionVotePromise;
+  deleteManyCouncilMotionVotes: (
+    where?: CouncilMotionVoteWhereInput
+  ) => BatchPayloadPromise;
   createEra: (data: EraCreateInput) => EraPromise;
   updateEra: (args: {
     data: EraUpdateInput;
@@ -1194,6 +1260,28 @@ export interface Prisma {
   ) => ReferendumStatusPromise;
   deleteManyReferendumStatuses: (
     where?: ReferendumStatusWhereInput
+  ) => BatchPayloadPromise;
+  createReferendumVote: (
+    data: ReferendumVoteCreateInput
+  ) => ReferendumVotePromise;
+  updateReferendumVote: (args: {
+    data: ReferendumVoteUpdateInput;
+    where: ReferendumVoteWhereUniqueInput;
+  }) => ReferendumVotePromise;
+  updateManyReferendumVotes: (args: {
+    data: ReferendumVoteUpdateManyMutationInput;
+    where?: ReferendumVoteWhereInput;
+  }) => BatchPayloadPromise;
+  upsertReferendumVote: (args: {
+    where: ReferendumVoteWhereUniqueInput;
+    create: ReferendumVoteCreateInput;
+    update: ReferendumVoteUpdateInput;
+  }) => ReferendumVotePromise;
+  deleteReferendumVote: (
+    where: ReferendumVoteWhereUniqueInput
+  ) => ReferendumVotePromise;
+  deleteManyReferendumVotes: (
+    where?: ReferendumVoteWhereInput
   ) => BatchPayloadPromise;
   createReward: (data: RewardCreateInput) => RewardPromise;
   updateReward: (args: {
@@ -1470,6 +1558,9 @@ export interface Subscription {
   councilMember: (
     where?: CouncilMemberSubscriptionWhereInput
   ) => CouncilMemberSubscriptionPayloadSubscription;
+  councilMotionVote: (
+    where?: CouncilMotionVoteSubscriptionWhereInput
+  ) => CouncilMotionVoteSubscriptionPayloadSubscription;
   era: (
     where?: EraSubscriptionWhereInput
   ) => EraSubscriptionPayloadSubscription;
@@ -1512,6 +1603,9 @@ export interface Subscription {
   referendumStatus: (
     where?: ReferendumStatusSubscriptionWhereInput
   ) => ReferendumStatusSubscriptionPayloadSubscription;
+  referendumVote: (
+    where?: ReferendumVoteSubscriptionWhereInput
+  ) => ReferendumVoteSubscriptionPayloadSubscription;
   reward: (
     where?: RewardSubscriptionWhereInput
   ) => RewardSubscriptionPayloadSubscription;
@@ -1649,20 +1743,6 @@ export type CouncilMemberOrderByInput =
 
 export type CouncilOrderByInput = "id_ASC" | "id_DESC";
 
-export type EraOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "index_ASC"
-  | "index_DESC"
-  | "totalPoints_ASC"
-  | "totalPoints_DESC";
-
-export type HeartBeatOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "authorityId_ASC"
-  | "authorityId_DESC";
-
 export type MotionProposalArgumentOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -1709,6 +1789,18 @@ export type ReferendumStatusOrderByInput =
   | "uniqueStatus_ASC"
   | "uniqueStatus_DESC";
 
+export type ReferendumVoteOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "vote_ASC"
+  | "vote_DESC"
+  | "voter_ASC"
+  | "voter_DESC"
+  | "lockedValue_ASC"
+  | "lockedValue_DESC"
+  | "conviction_ASC"
+  | "conviction_DESC";
+
 export type TreasuryStatusOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -1716,6 +1808,28 @@ export type TreasuryStatusOrderByInput =
   | "status_DESC"
   | "uniqueStatus_ASC"
   | "uniqueStatus_DESC";
+
+export type CouncilMotionVoteOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "voter_ASC"
+  | "voter_DESC"
+  | "seconded_ASC"
+  | "seconded_DESC";
+
+export type EraOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "index_ASC"
+  | "index_DESC"
+  | "totalPoints_ASC"
+  | "totalPoints_DESC";
+
+export type HeartBeatOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "authorityId_ASC"
+  | "authorityId_DESC";
 
 export type MotionOrderByInput =
   | "id_ASC"
@@ -2492,125 +2606,8 @@ export type CouncilMemberWhereUniqueInput = AtLeastOne<{
   address?: Maybe<String>;
 }>;
 
-export type EraWhereUniqueInput = AtLeastOne<{
+export type CouncilMotionVoteWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
-  index?: Maybe<Int>;
-}>;
-
-export interface EraWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  index?: Maybe<Int>;
-  index_not?: Maybe<Int>;
-  index_in?: Maybe<Int[] | Int>;
-  index_not_in?: Maybe<Int[] | Int>;
-  index_lt?: Maybe<Int>;
-  index_lte?: Maybe<Int>;
-  index_gt?: Maybe<Int>;
-  index_gte?: Maybe<Int>;
-  eraStartSessionIndex?: Maybe<SessionWhereInput>;
-  totalPoints?: Maybe<String>;
-  totalPoints_not?: Maybe<String>;
-  totalPoints_in?: Maybe<String[] | String>;
-  totalPoints_not_in?: Maybe<String[] | String>;
-  totalPoints_lt?: Maybe<String>;
-  totalPoints_lte?: Maybe<String>;
-  totalPoints_gt?: Maybe<String>;
-  totalPoints_gte?: Maybe<String>;
-  totalPoints_contains?: Maybe<String>;
-  totalPoints_not_contains?: Maybe<String>;
-  totalPoints_starts_with?: Maybe<String>;
-  totalPoints_not_starts_with?: Maybe<String>;
-  totalPoints_ends_with?: Maybe<String>;
-  totalPoints_not_ends_with?: Maybe<String>;
-  AND?: Maybe<EraWhereInput[] | EraWhereInput>;
-  OR?: Maybe<EraWhereInput[] | EraWhereInput>;
-  NOT?: Maybe<EraWhereInput[] | EraWhereInput>;
-}
-
-export interface SessionWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  index?: Maybe<Int>;
-  index_not?: Maybe<Int>;
-  index_in?: Maybe<Int[] | Int>;
-  index_not_in?: Maybe<Int[] | Int>;
-  index_lt?: Maybe<Int>;
-  index_lte?: Maybe<Int>;
-  index_gt?: Maybe<Int>;
-  index_gte?: Maybe<Int>;
-  start?: Maybe<BlockNumberWhereInput>;
-  AND?: Maybe<SessionWhereInput[] | SessionWhereInput>;
-  OR?: Maybe<SessionWhereInput[] | SessionWhereInput>;
-  NOT?: Maybe<SessionWhereInput[] | SessionWhereInput>;
-}
-
-export type HeartBeatWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface HeartBeatWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  sessionIndex?: Maybe<SessionWhereInput>;
-  authorityId?: Maybe<String>;
-  authorityId_not?: Maybe<String>;
-  authorityId_in?: Maybe<String[] | String>;
-  authorityId_not_in?: Maybe<String[] | String>;
-  authorityId_lt?: Maybe<String>;
-  authorityId_lte?: Maybe<String>;
-  authorityId_gt?: Maybe<String>;
-  authorityId_gte?: Maybe<String>;
-  authorityId_contains?: Maybe<String>;
-  authorityId_not_contains?: Maybe<String>;
-  authorityId_starts_with?: Maybe<String>;
-  authorityId_not_starts_with?: Maybe<String>;
-  authorityId_ends_with?: Maybe<String>;
-  authorityId_not_ends_with?: Maybe<String>;
-  AND?: Maybe<HeartBeatWhereInput[] | HeartBeatWhereInput>;
-  OR?: Maybe<HeartBeatWhereInput[] | HeartBeatWhereInput>;
-  NOT?: Maybe<HeartBeatWhereInput[] | HeartBeatWhereInput>;
-}
-
-export type MotionWhereUniqueInput = AtLeastOne<{
-  id: Maybe<Int>;
-  motionProposalId?: Maybe<Int>;
 }>;
 
 export interface MotionProposalArgumentWhereInput {
@@ -3221,6 +3218,9 @@ export interface ReferendumWhereInput {
   voteThreshold_not_starts_with?: Maybe<String>;
   voteThreshold_ends_with?: Maybe<String>;
   voteThreshold_not_ends_with?: Maybe<String>;
+  referendumVote_every?: Maybe<ReferendumVoteWhereInput>;
+  referendumVote_some?: Maybe<ReferendumVoteWhereInput>;
+  referendumVote_none?: Maybe<ReferendumVoteWhereInput>;
   AND?: Maybe<ReferendumWhereInput[] | ReferendumWhereInput>;
   OR?: Maybe<ReferendumWhereInput[] | ReferendumWhereInput>;
   NOT?: Maybe<ReferendumWhereInput[] | ReferendumWhereInput>;
@@ -3274,6 +3274,84 @@ export interface ReferendumStatusWhereInput {
   AND?: Maybe<ReferendumStatusWhereInput[] | ReferendumStatusWhereInput>;
   OR?: Maybe<ReferendumStatusWhereInput[] | ReferendumStatusWhereInput>;
   NOT?: Maybe<ReferendumStatusWhereInput[] | ReferendumStatusWhereInput>;
+}
+
+export interface ReferendumVoteWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  blockNumber?: Maybe<BlockNumberWhereInput>;
+  referendum?: Maybe<ReferendumWhereInput>;
+  vote?: Maybe<String>;
+  vote_not?: Maybe<String>;
+  vote_in?: Maybe<String[] | String>;
+  vote_not_in?: Maybe<String[] | String>;
+  vote_lt?: Maybe<String>;
+  vote_lte?: Maybe<String>;
+  vote_gt?: Maybe<String>;
+  vote_gte?: Maybe<String>;
+  vote_contains?: Maybe<String>;
+  vote_not_contains?: Maybe<String>;
+  vote_starts_with?: Maybe<String>;
+  vote_not_starts_with?: Maybe<String>;
+  vote_ends_with?: Maybe<String>;
+  vote_not_ends_with?: Maybe<String>;
+  voter?: Maybe<String>;
+  voter_not?: Maybe<String>;
+  voter_in?: Maybe<String[] | String>;
+  voter_not_in?: Maybe<String[] | String>;
+  voter_lt?: Maybe<String>;
+  voter_lte?: Maybe<String>;
+  voter_gt?: Maybe<String>;
+  voter_gte?: Maybe<String>;
+  voter_contains?: Maybe<String>;
+  voter_not_contains?: Maybe<String>;
+  voter_starts_with?: Maybe<String>;
+  voter_not_starts_with?: Maybe<String>;
+  voter_ends_with?: Maybe<String>;
+  voter_not_ends_with?: Maybe<String>;
+  lockedValue?: Maybe<String>;
+  lockedValue_not?: Maybe<String>;
+  lockedValue_in?: Maybe<String[] | String>;
+  lockedValue_not_in?: Maybe<String[] | String>;
+  lockedValue_lt?: Maybe<String>;
+  lockedValue_lte?: Maybe<String>;
+  lockedValue_gt?: Maybe<String>;
+  lockedValue_gte?: Maybe<String>;
+  lockedValue_contains?: Maybe<String>;
+  lockedValue_not_contains?: Maybe<String>;
+  lockedValue_starts_with?: Maybe<String>;
+  lockedValue_not_starts_with?: Maybe<String>;
+  lockedValue_ends_with?: Maybe<String>;
+  lockedValue_not_ends_with?: Maybe<String>;
+  conviction?: Maybe<String>;
+  conviction_not?: Maybe<String>;
+  conviction_in?: Maybe<String[] | String>;
+  conviction_not_in?: Maybe<String[] | String>;
+  conviction_lt?: Maybe<String>;
+  conviction_lte?: Maybe<String>;
+  conviction_gt?: Maybe<String>;
+  conviction_gte?: Maybe<String>;
+  conviction_contains?: Maybe<String>;
+  conviction_not_contains?: Maybe<String>;
+  conviction_starts_with?: Maybe<String>;
+  conviction_not_starts_with?: Maybe<String>;
+  conviction_ends_with?: Maybe<String>;
+  conviction_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ReferendumVoteWhereInput[] | ReferendumVoteWhereInput>;
+  OR?: Maybe<ReferendumVoteWhereInput[] | ReferendumVoteWhereInput>;
+  NOT?: Maybe<ReferendumVoteWhereInput[] | ReferendumVoteWhereInput>;
 }
 
 export interface TreasurySpendProposalWhereInput {
@@ -3413,6 +3491,165 @@ export interface TreasuryStatusWhereInput {
   OR?: Maybe<TreasuryStatusWhereInput[] | TreasuryStatusWhereInput>;
   NOT?: Maybe<TreasuryStatusWhereInput[] | TreasuryStatusWhereInput>;
 }
+
+export interface CouncilMotionVoteWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  blockNumber?: Maybe<BlockNumberWhereInput>;
+  motion?: Maybe<MotionWhereInput>;
+  voter?: Maybe<String>;
+  voter_not?: Maybe<String>;
+  voter_in?: Maybe<String[] | String>;
+  voter_not_in?: Maybe<String[] | String>;
+  voter_lt?: Maybe<String>;
+  voter_lte?: Maybe<String>;
+  voter_gt?: Maybe<String>;
+  voter_gte?: Maybe<String>;
+  voter_contains?: Maybe<String>;
+  voter_not_contains?: Maybe<String>;
+  voter_starts_with?: Maybe<String>;
+  voter_not_starts_with?: Maybe<String>;
+  voter_ends_with?: Maybe<String>;
+  voter_not_ends_with?: Maybe<String>;
+  seconded?: Maybe<Boolean>;
+  seconded_not?: Maybe<Boolean>;
+  AND?: Maybe<CouncilMotionVoteWhereInput[] | CouncilMotionVoteWhereInput>;
+  OR?: Maybe<CouncilMotionVoteWhereInput[] | CouncilMotionVoteWhereInput>;
+  NOT?: Maybe<CouncilMotionVoteWhereInput[] | CouncilMotionVoteWhereInput>;
+}
+
+export type EraWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  index?: Maybe<Int>;
+}>;
+
+export interface EraWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  index?: Maybe<Int>;
+  index_not?: Maybe<Int>;
+  index_in?: Maybe<Int[] | Int>;
+  index_not_in?: Maybe<Int[] | Int>;
+  index_lt?: Maybe<Int>;
+  index_lte?: Maybe<Int>;
+  index_gt?: Maybe<Int>;
+  index_gte?: Maybe<Int>;
+  eraStartSessionIndex?: Maybe<SessionWhereInput>;
+  totalPoints?: Maybe<String>;
+  totalPoints_not?: Maybe<String>;
+  totalPoints_in?: Maybe<String[] | String>;
+  totalPoints_not_in?: Maybe<String[] | String>;
+  totalPoints_lt?: Maybe<String>;
+  totalPoints_lte?: Maybe<String>;
+  totalPoints_gt?: Maybe<String>;
+  totalPoints_gte?: Maybe<String>;
+  totalPoints_contains?: Maybe<String>;
+  totalPoints_not_contains?: Maybe<String>;
+  totalPoints_starts_with?: Maybe<String>;
+  totalPoints_not_starts_with?: Maybe<String>;
+  totalPoints_ends_with?: Maybe<String>;
+  totalPoints_not_ends_with?: Maybe<String>;
+  AND?: Maybe<EraWhereInput[] | EraWhereInput>;
+  OR?: Maybe<EraWhereInput[] | EraWhereInput>;
+  NOT?: Maybe<EraWhereInput[] | EraWhereInput>;
+}
+
+export interface SessionWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  index?: Maybe<Int>;
+  index_not?: Maybe<Int>;
+  index_in?: Maybe<Int[] | Int>;
+  index_not_in?: Maybe<Int[] | Int>;
+  index_lt?: Maybe<Int>;
+  index_lte?: Maybe<Int>;
+  index_gt?: Maybe<Int>;
+  index_gte?: Maybe<Int>;
+  start?: Maybe<BlockNumberWhereInput>;
+  AND?: Maybe<SessionWhereInput[] | SessionWhereInput>;
+  OR?: Maybe<SessionWhereInput[] | SessionWhereInput>;
+  NOT?: Maybe<SessionWhereInput[] | SessionWhereInput>;
+}
+
+export type HeartBeatWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface HeartBeatWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  sessionIndex?: Maybe<SessionWhereInput>;
+  authorityId?: Maybe<String>;
+  authorityId_not?: Maybe<String>;
+  authorityId_in?: Maybe<String[] | String>;
+  authorityId_not_in?: Maybe<String[] | String>;
+  authorityId_lt?: Maybe<String>;
+  authorityId_lte?: Maybe<String>;
+  authorityId_gt?: Maybe<String>;
+  authorityId_gte?: Maybe<String>;
+  authorityId_contains?: Maybe<String>;
+  authorityId_not_contains?: Maybe<String>;
+  authorityId_starts_with?: Maybe<String>;
+  authorityId_not_starts_with?: Maybe<String>;
+  authorityId_ends_with?: Maybe<String>;
+  authorityId_not_ends_with?: Maybe<String>;
+  AND?: Maybe<HeartBeatWhereInput[] | HeartBeatWhereInput>;
+  OR?: Maybe<HeartBeatWhereInput[] | HeartBeatWhereInput>;
+  NOT?: Maybe<HeartBeatWhereInput[] | HeartBeatWhereInput>;
+}
+
+export type MotionWhereUniqueInput = AtLeastOne<{
+  id: Maybe<Int>;
+  motionProposalId?: Maybe<Int>;
+}>;
 
 export type MotionProposalArgumentWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
@@ -3615,6 +3852,10 @@ export type ReferendumWhereUniqueInput = AtLeastOne<{
 export type ReferendumStatusWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
   uniqueStatus?: Maybe<String>;
+}>;
+
+export type ReferendumVoteWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
 }>;
 
 export type RewardWhereUniqueInput = AtLeastOne<{
@@ -5008,76 +5249,17 @@ export interface CouncilMemberUpdateManyMutationInput {
   address?: Maybe<String>;
 }
 
-export interface EraCreateInput {
+export interface CouncilMotionVoteCreateInput {
   id?: Maybe<ID_Input>;
-  index: Int;
-  eraStartSessionIndex: SessionCreateOneInput;
-  totalPoints: String;
-  individualPoints?: Maybe<EraCreateindividualPointsInput>;
+  blockNumber: BlockNumberCreateOneInput;
+  motion: MotionCreateOneInput;
+  voter: String;
+  seconded: Boolean;
 }
 
-export interface SessionCreateOneInput {
-  create?: Maybe<SessionCreateInput>;
-  connect?: Maybe<SessionWhereUniqueInput>;
-}
-
-export interface SessionCreateInput {
-  id?: Maybe<ID_Input>;
-  index: Int;
-  start: BlockNumberCreateOneInput;
-}
-
-export interface EraCreateindividualPointsInput {
-  set?: Maybe<String[] | String>;
-}
-
-export interface EraUpdateInput {
-  index?: Maybe<Int>;
-  eraStartSessionIndex?: Maybe<SessionUpdateOneRequiredInput>;
-  totalPoints?: Maybe<String>;
-  individualPoints?: Maybe<EraUpdateindividualPointsInput>;
-}
-
-export interface SessionUpdateOneRequiredInput {
-  create?: Maybe<SessionCreateInput>;
-  update?: Maybe<SessionUpdateDataInput>;
-  upsert?: Maybe<SessionUpsertNestedInput>;
-  connect?: Maybe<SessionWhereUniqueInput>;
-}
-
-export interface SessionUpdateDataInput {
-  index?: Maybe<Int>;
-  start?: Maybe<BlockNumberUpdateOneRequiredInput>;
-}
-
-export interface SessionUpsertNestedInput {
-  update: SessionUpdateDataInput;
-  create: SessionCreateInput;
-}
-
-export interface EraUpdateindividualPointsInput {
-  set?: Maybe<String[] | String>;
-}
-
-export interface EraUpdateManyMutationInput {
-  index?: Maybe<Int>;
-  totalPoints?: Maybe<String>;
-  individualPoints?: Maybe<EraUpdateindividualPointsInput>;
-}
-
-export interface HeartBeatCreateInput {
-  id?: Maybe<ID_Input>;
-  sessionIndex: SessionCreateOneInput;
-  authorityId: String;
-}
-
-export interface HeartBeatUpdateInput {
-  sessionIndex?: Maybe<SessionUpdateOneRequiredInput>;
-  authorityId?: Maybe<String>;
-}
-
-export interface HeartBeatUpdateManyMutationInput {
-  authorityId?: Maybe<String>;
+export interface MotionCreateOneInput {
+  create?: Maybe<MotionCreateInput>;
+  connect?: Maybe<MotionWhereUniqueInput>;
 }
 
 export interface MotionCreateInput {
@@ -5226,6 +5408,7 @@ export interface ReferendumCreateWithoutPreimageInput {
   referendumId: Int;
   referendumStatus?: Maybe<ReferendumStatusCreateManyWithoutReferendumInput>;
   voteThreshold: String;
+  referendumVote?: Maybe<ReferendumVoteCreateManyWithoutReferendumInput>;
 }
 
 export interface ReferendumStatusCreateManyWithoutReferendumInput {
@@ -5243,6 +5426,25 @@ export interface ReferendumStatusCreateWithoutReferendumInput {
   blockNumber: BlockNumberCreateOneInput;
   status: String;
   uniqueStatus: String;
+}
+
+export interface ReferendumVoteCreateManyWithoutReferendumInput {
+  create?: Maybe<
+    | ReferendumVoteCreateWithoutReferendumInput[]
+    | ReferendumVoteCreateWithoutReferendumInput
+  >;
+  connect?: Maybe<
+    ReferendumVoteWhereUniqueInput[] | ReferendumVoteWhereUniqueInput
+  >;
+}
+
+export interface ReferendumVoteCreateWithoutReferendumInput {
+  id?: Maybe<ID_Input>;
+  blockNumber: BlockNumberCreateOneInput;
+  vote: String;
+  voter: String;
+  lockedValue: String;
+  conviction: String;
 }
 
 export interface TreasurySpendProposalCreateOneWithoutMotionInput {
@@ -5278,7 +5480,21 @@ export interface TreasuryStatusCreateWithoutTreasurySpendProposalInput {
   uniqueStatus: String;
 }
 
-export interface MotionUpdateInput {
+export interface CouncilMotionVoteUpdateInput {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  motion?: Maybe<MotionUpdateOneRequiredInput>;
+  voter?: Maybe<String>;
+  seconded?: Maybe<Boolean>;
+}
+
+export interface MotionUpdateOneRequiredInput {
+  create?: Maybe<MotionCreateInput>;
+  update?: Maybe<MotionUpdateDataInput>;
+  upsert?: Maybe<MotionUpsertNestedInput>;
+  connect?: Maybe<MotionWhereUniqueInput>;
+}
+
+export interface MotionUpdateDataInput {
   author?: Maybe<String>;
   memberCount?: Maybe<Int>;
   metaDescription?: Maybe<String>;
@@ -5908,6 +6124,7 @@ export interface ReferendumUpdateWithoutPreimageDataInput {
   referendumId?: Maybe<Int>;
   referendumStatus?: Maybe<ReferendumStatusUpdateManyWithoutReferendumInput>;
   voteThreshold?: Maybe<String>;
+  referendumVote?: Maybe<ReferendumVoteUpdateManyWithoutReferendumInput>;
 }
 
 export interface ReferendumStatusUpdateManyWithoutReferendumInput {
@@ -6023,6 +6240,151 @@ export interface ReferendumStatusUpdateManyWithWhereNestedInput {
 export interface ReferendumStatusUpdateManyDataInput {
   status?: Maybe<String>;
   uniqueStatus?: Maybe<String>;
+}
+
+export interface ReferendumVoteUpdateManyWithoutReferendumInput {
+  create?: Maybe<
+    | ReferendumVoteCreateWithoutReferendumInput[]
+    | ReferendumVoteCreateWithoutReferendumInput
+  >;
+  delete?: Maybe<
+    ReferendumVoteWhereUniqueInput[] | ReferendumVoteWhereUniqueInput
+  >;
+  connect?: Maybe<
+    ReferendumVoteWhereUniqueInput[] | ReferendumVoteWhereUniqueInput
+  >;
+  set?: Maybe<
+    ReferendumVoteWhereUniqueInput[] | ReferendumVoteWhereUniqueInput
+  >;
+  disconnect?: Maybe<
+    ReferendumVoteWhereUniqueInput[] | ReferendumVoteWhereUniqueInput
+  >;
+  update?: Maybe<
+    | ReferendumVoteUpdateWithWhereUniqueWithoutReferendumInput[]
+    | ReferendumVoteUpdateWithWhereUniqueWithoutReferendumInput
+  >;
+  upsert?: Maybe<
+    | ReferendumVoteUpsertWithWhereUniqueWithoutReferendumInput[]
+    | ReferendumVoteUpsertWithWhereUniqueWithoutReferendumInput
+  >;
+  deleteMany?: Maybe<
+    ReferendumVoteScalarWhereInput[] | ReferendumVoteScalarWhereInput
+  >;
+  updateMany?: Maybe<
+    | ReferendumVoteUpdateManyWithWhereNestedInput[]
+    | ReferendumVoteUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface ReferendumVoteUpdateWithWhereUniqueWithoutReferendumInput {
+  where: ReferendumVoteWhereUniqueInput;
+  data: ReferendumVoteUpdateWithoutReferendumDataInput;
+}
+
+export interface ReferendumVoteUpdateWithoutReferendumDataInput {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  vote?: Maybe<String>;
+  voter?: Maybe<String>;
+  lockedValue?: Maybe<String>;
+  conviction?: Maybe<String>;
+}
+
+export interface ReferendumVoteUpsertWithWhereUniqueWithoutReferendumInput {
+  where: ReferendumVoteWhereUniqueInput;
+  update: ReferendumVoteUpdateWithoutReferendumDataInput;
+  create: ReferendumVoteCreateWithoutReferendumInput;
+}
+
+export interface ReferendumVoteScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  vote?: Maybe<String>;
+  vote_not?: Maybe<String>;
+  vote_in?: Maybe<String[] | String>;
+  vote_not_in?: Maybe<String[] | String>;
+  vote_lt?: Maybe<String>;
+  vote_lte?: Maybe<String>;
+  vote_gt?: Maybe<String>;
+  vote_gte?: Maybe<String>;
+  vote_contains?: Maybe<String>;
+  vote_not_contains?: Maybe<String>;
+  vote_starts_with?: Maybe<String>;
+  vote_not_starts_with?: Maybe<String>;
+  vote_ends_with?: Maybe<String>;
+  vote_not_ends_with?: Maybe<String>;
+  voter?: Maybe<String>;
+  voter_not?: Maybe<String>;
+  voter_in?: Maybe<String[] | String>;
+  voter_not_in?: Maybe<String[] | String>;
+  voter_lt?: Maybe<String>;
+  voter_lte?: Maybe<String>;
+  voter_gt?: Maybe<String>;
+  voter_gte?: Maybe<String>;
+  voter_contains?: Maybe<String>;
+  voter_not_contains?: Maybe<String>;
+  voter_starts_with?: Maybe<String>;
+  voter_not_starts_with?: Maybe<String>;
+  voter_ends_with?: Maybe<String>;
+  voter_not_ends_with?: Maybe<String>;
+  lockedValue?: Maybe<String>;
+  lockedValue_not?: Maybe<String>;
+  lockedValue_in?: Maybe<String[] | String>;
+  lockedValue_not_in?: Maybe<String[] | String>;
+  lockedValue_lt?: Maybe<String>;
+  lockedValue_lte?: Maybe<String>;
+  lockedValue_gt?: Maybe<String>;
+  lockedValue_gte?: Maybe<String>;
+  lockedValue_contains?: Maybe<String>;
+  lockedValue_not_contains?: Maybe<String>;
+  lockedValue_starts_with?: Maybe<String>;
+  lockedValue_not_starts_with?: Maybe<String>;
+  lockedValue_ends_with?: Maybe<String>;
+  lockedValue_not_ends_with?: Maybe<String>;
+  conviction?: Maybe<String>;
+  conviction_not?: Maybe<String>;
+  conviction_in?: Maybe<String[] | String>;
+  conviction_not_in?: Maybe<String[] | String>;
+  conviction_lt?: Maybe<String>;
+  conviction_lte?: Maybe<String>;
+  conviction_gt?: Maybe<String>;
+  conviction_gte?: Maybe<String>;
+  conviction_contains?: Maybe<String>;
+  conviction_not_contains?: Maybe<String>;
+  conviction_starts_with?: Maybe<String>;
+  conviction_not_starts_with?: Maybe<String>;
+  conviction_ends_with?: Maybe<String>;
+  conviction_not_ends_with?: Maybe<String>;
+  AND?: Maybe<
+    ReferendumVoteScalarWhereInput[] | ReferendumVoteScalarWhereInput
+  >;
+  OR?: Maybe<ReferendumVoteScalarWhereInput[] | ReferendumVoteScalarWhereInput>;
+  NOT?: Maybe<
+    ReferendumVoteScalarWhereInput[] | ReferendumVoteScalarWhereInput
+  >;
+}
+
+export interface ReferendumVoteUpdateManyWithWhereNestedInput {
+  where: ReferendumVoteScalarWhereInput;
+  data: ReferendumVoteUpdateManyDataInput;
+}
+
+export interface ReferendumVoteUpdateManyDataInput {
+  vote?: Maybe<String>;
+  voter?: Maybe<String>;
+  lockedValue?: Maybe<String>;
+  conviction?: Maybe<String>;
 }
 
 export interface ReferendumUpsertWithoutPreimageInput {
@@ -6171,6 +6533,107 @@ export interface TreasuryStatusUpdateManyDataInput {
 export interface TreasurySpendProposalUpsertWithoutMotionInput {
   update: TreasurySpendProposalUpdateWithoutMotionDataInput;
   create: TreasurySpendProposalCreateWithoutMotionInput;
+}
+
+export interface MotionUpsertNestedInput {
+  update: MotionUpdateDataInput;
+  create: MotionCreateInput;
+}
+
+export interface CouncilMotionVoteUpdateManyMutationInput {
+  voter?: Maybe<String>;
+  seconded?: Maybe<Boolean>;
+}
+
+export interface EraCreateInput {
+  id?: Maybe<ID_Input>;
+  index: Int;
+  eraStartSessionIndex: SessionCreateOneInput;
+  totalPoints: String;
+  individualPoints?: Maybe<EraCreateindividualPointsInput>;
+}
+
+export interface SessionCreateOneInput {
+  create?: Maybe<SessionCreateInput>;
+  connect?: Maybe<SessionWhereUniqueInput>;
+}
+
+export interface SessionCreateInput {
+  id?: Maybe<ID_Input>;
+  index: Int;
+  start: BlockNumberCreateOneInput;
+}
+
+export interface EraCreateindividualPointsInput {
+  set?: Maybe<String[] | String>;
+}
+
+export interface EraUpdateInput {
+  index?: Maybe<Int>;
+  eraStartSessionIndex?: Maybe<SessionUpdateOneRequiredInput>;
+  totalPoints?: Maybe<String>;
+  individualPoints?: Maybe<EraUpdateindividualPointsInput>;
+}
+
+export interface SessionUpdateOneRequiredInput {
+  create?: Maybe<SessionCreateInput>;
+  update?: Maybe<SessionUpdateDataInput>;
+  upsert?: Maybe<SessionUpsertNestedInput>;
+  connect?: Maybe<SessionWhereUniqueInput>;
+}
+
+export interface SessionUpdateDataInput {
+  index?: Maybe<Int>;
+  start?: Maybe<BlockNumberUpdateOneRequiredInput>;
+}
+
+export interface SessionUpsertNestedInput {
+  update: SessionUpdateDataInput;
+  create: SessionCreateInput;
+}
+
+export interface EraUpdateindividualPointsInput {
+  set?: Maybe<String[] | String>;
+}
+
+export interface EraUpdateManyMutationInput {
+  index?: Maybe<Int>;
+  totalPoints?: Maybe<String>;
+  individualPoints?: Maybe<EraUpdateindividualPointsInput>;
+}
+
+export interface HeartBeatCreateInput {
+  id?: Maybe<ID_Input>;
+  sessionIndex: SessionCreateOneInput;
+  authorityId: String;
+}
+
+export interface HeartBeatUpdateInput {
+  sessionIndex?: Maybe<SessionUpdateOneRequiredInput>;
+  authorityId?: Maybe<String>;
+}
+
+export interface HeartBeatUpdateManyMutationInput {
+  authorityId?: Maybe<String>;
+}
+
+export interface MotionUpdateInput {
+  author?: Maybe<String>;
+  memberCount?: Maybe<Int>;
+  metaDescription?: Maybe<String>;
+  method?: Maybe<String>;
+  motionProposalArguments?: Maybe<
+    MotionProposalArgumentUpdateManyWithoutMotionInput
+  >;
+  motionProposalHash?: Maybe<String>;
+  motionProposalId?: Maybe<Int>;
+  motionStatus?: Maybe<MotionStatusUpdateManyWithoutMotionInput>;
+  preimage?: Maybe<PreimageUpdateOneWithoutMotionInput>;
+  preimageHash?: Maybe<String>;
+  treasurySpendProposal?: Maybe<
+    TreasurySpendProposalUpdateOneWithoutMotionInput
+  >;
+  section?: Maybe<String>;
 }
 
 export interface MotionUpdateManyMutationInput {
@@ -6731,6 +7194,7 @@ export interface ReferendumCreateInput {
   referendumId: Int;
   referendumStatus?: Maybe<ReferendumStatusCreateManyWithoutReferendumInput>;
   voteThreshold: String;
+  referendumVote?: Maybe<ReferendumVoteCreateManyWithoutReferendumInput>;
 }
 
 export interface PreimageCreateOneWithoutReferendumInput {
@@ -6760,6 +7224,7 @@ export interface ReferendumUpdateInput {
   referendumId?: Maybe<Int>;
   referendumStatus?: Maybe<ReferendumStatusUpdateManyWithoutReferendumInput>;
   voteThreshold?: Maybe<String>;
+  referendumVote?: Maybe<ReferendumVoteUpdateManyWithoutReferendumInput>;
 }
 
 export interface PreimageUpdateOneWithoutReferendumInput {
@@ -6817,6 +7282,7 @@ export interface ReferendumCreateWithoutReferendumStatusInput {
   preimageHash: String;
   referendumId: Int;
   voteThreshold: String;
+  referendumVote?: Maybe<ReferendumVoteCreateManyWithoutReferendumInput>;
 }
 
 export interface ReferendumStatusUpdateInput {
@@ -6840,6 +7306,7 @@ export interface ReferendumUpdateWithoutReferendumStatusDataInput {
   preimageHash?: Maybe<String>;
   referendumId?: Maybe<Int>;
   voteThreshold?: Maybe<String>;
+  referendumVote?: Maybe<ReferendumVoteUpdateManyWithoutReferendumInput>;
 }
 
 export interface ReferendumUpsertWithoutReferendumStatusInput {
@@ -6850,6 +7317,69 @@ export interface ReferendumUpsertWithoutReferendumStatusInput {
 export interface ReferendumStatusUpdateManyMutationInput {
   status?: Maybe<String>;
   uniqueStatus?: Maybe<String>;
+}
+
+export interface ReferendumVoteCreateInput {
+  id?: Maybe<ID_Input>;
+  blockNumber: BlockNumberCreateOneInput;
+  referendum: ReferendumCreateOneWithoutReferendumVoteInput;
+  vote: String;
+  voter: String;
+  lockedValue: String;
+  conviction: String;
+}
+
+export interface ReferendumCreateOneWithoutReferendumVoteInput {
+  create?: Maybe<ReferendumCreateWithoutReferendumVoteInput>;
+  connect?: Maybe<ReferendumWhereUniqueInput>;
+}
+
+export interface ReferendumCreateWithoutReferendumVoteInput {
+  delay: Int;
+  end: Int;
+  preimage?: Maybe<PreimageCreateOneWithoutReferendumInput>;
+  preimageHash: String;
+  referendumId: Int;
+  referendumStatus?: Maybe<ReferendumStatusCreateManyWithoutReferendumInput>;
+  voteThreshold: String;
+}
+
+export interface ReferendumVoteUpdateInput {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  referendum?: Maybe<ReferendumUpdateOneRequiredWithoutReferendumVoteInput>;
+  vote?: Maybe<String>;
+  voter?: Maybe<String>;
+  lockedValue?: Maybe<String>;
+  conviction?: Maybe<String>;
+}
+
+export interface ReferendumUpdateOneRequiredWithoutReferendumVoteInput {
+  create?: Maybe<ReferendumCreateWithoutReferendumVoteInput>;
+  update?: Maybe<ReferendumUpdateWithoutReferendumVoteDataInput>;
+  upsert?: Maybe<ReferendumUpsertWithoutReferendumVoteInput>;
+  connect?: Maybe<ReferendumWhereUniqueInput>;
+}
+
+export interface ReferendumUpdateWithoutReferendumVoteDataInput {
+  delay?: Maybe<Int>;
+  end?: Maybe<Int>;
+  preimage?: Maybe<PreimageUpdateOneWithoutReferendumInput>;
+  preimageHash?: Maybe<String>;
+  referendumId?: Maybe<Int>;
+  referendumStatus?: Maybe<ReferendumStatusUpdateManyWithoutReferendumInput>;
+  voteThreshold?: Maybe<String>;
+}
+
+export interface ReferendumUpsertWithoutReferendumVoteInput {
+  update: ReferendumUpdateWithoutReferendumVoteDataInput;
+  create: ReferendumCreateWithoutReferendumVoteInput;
+}
+
+export interface ReferendumVoteUpdateManyMutationInput {
+  vote?: Maybe<String>;
+  voter?: Maybe<String>;
+  lockedValue?: Maybe<String>;
+  conviction?: Maybe<String>;
 }
 
 export interface RewardCreateInput {
@@ -7899,6 +8429,26 @@ export interface CouncilMemberSubscriptionWhereInput {
   >;
 }
 
+export interface CouncilMotionVoteSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<CouncilMotionVoteWhereInput>;
+  AND?: Maybe<
+    | CouncilMotionVoteSubscriptionWhereInput[]
+    | CouncilMotionVoteSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    | CouncilMotionVoteSubscriptionWhereInput[]
+    | CouncilMotionVoteSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    | CouncilMotionVoteSubscriptionWhereInput[]
+    | CouncilMotionVoteSubscriptionWhereInput
+  >;
+}
+
 export interface EraSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
@@ -8136,6 +8686,26 @@ export interface ReferendumStatusSubscriptionWhereInput {
   NOT?: Maybe<
     | ReferendumStatusSubscriptionWhereInput[]
     | ReferendumStatusSubscriptionWhereInput
+  >;
+}
+
+export interface ReferendumVoteSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ReferendumVoteWhereInput>;
+  AND?: Maybe<
+    | ReferendumVoteSubscriptionWhereInput[]
+    | ReferendumVoteSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    | ReferendumVoteSubscriptionWhereInput[]
+    | ReferendumVoteSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    | ReferendumVoteSubscriptionWhereInput[]
+    | ReferendumVoteSubscriptionWhereInput
   >;
 }
 
@@ -9227,201 +9797,40 @@ export interface AggregateCouncilMemberSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface Era {
+export interface CouncilMotionVote {
   id: ID_Output;
-  index: Int;
-  totalPoints: String;
-  individualPoints: String[];
+  voter: String;
+  seconded: Boolean;
 }
 
-export interface EraPromise extends Promise<Era>, Fragmentable {
+export interface CouncilMotionVotePromise
+  extends Promise<CouncilMotionVote>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
-  index: () => Promise<Int>;
-  eraStartSessionIndex: <T = SessionPromise>() => T;
-  totalPoints: () => Promise<String>;
-  individualPoints: () => Promise<String[]>;
+  blockNumber: <T = BlockNumberPromise>() => T;
+  motion: <T = MotionPromise>() => T;
+  voter: () => Promise<String>;
+  seconded: () => Promise<Boolean>;
 }
 
-export interface EraSubscription
-  extends Promise<AsyncIterator<Era>>,
+export interface CouncilMotionVoteSubscription
+  extends Promise<AsyncIterator<CouncilMotionVote>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  index: () => Promise<AsyncIterator<Int>>;
-  eraStartSessionIndex: <T = SessionSubscription>() => T;
-  totalPoints: () => Promise<AsyncIterator<String>>;
-  individualPoints: () => Promise<AsyncIterator<String[]>>;
+  blockNumber: <T = BlockNumberSubscription>() => T;
+  motion: <T = MotionSubscription>() => T;
+  voter: () => Promise<AsyncIterator<String>>;
+  seconded: () => Promise<AsyncIterator<Boolean>>;
 }
 
-export interface EraNullablePromise extends Promise<Era | null>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  index: () => Promise<Int>;
-  eraStartSessionIndex: <T = SessionPromise>() => T;
-  totalPoints: () => Promise<String>;
-  individualPoints: () => Promise<String[]>;
-}
-
-export interface Session {
-  id: ID_Output;
-  index: Int;
-}
-
-export interface SessionPromise extends Promise<Session>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  index: () => Promise<Int>;
-  start: <T = BlockNumberPromise>() => T;
-}
-
-export interface SessionSubscription
-  extends Promise<AsyncIterator<Session>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  index: () => Promise<AsyncIterator<Int>>;
-  start: <T = BlockNumberSubscription>() => T;
-}
-
-export interface SessionNullablePromise
-  extends Promise<Session | null>,
+export interface CouncilMotionVoteNullablePromise
+  extends Promise<CouncilMotionVote | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  index: () => Promise<Int>;
-  start: <T = BlockNumberPromise>() => T;
-}
-
-export interface EraConnection {
-  pageInfo: PageInfo;
-  edges: EraEdge[];
-}
-
-export interface EraConnectionPromise
-  extends Promise<EraConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<EraEdge>>() => T;
-  aggregate: <T = AggregateEraPromise>() => T;
-}
-
-export interface EraConnectionSubscription
-  extends Promise<AsyncIterator<EraConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<EraEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateEraSubscription>() => T;
-}
-
-export interface EraEdge {
-  node: Era;
-  cursor: String;
-}
-
-export interface EraEdgePromise extends Promise<EraEdge>, Fragmentable {
-  node: <T = EraPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface EraEdgeSubscription
-  extends Promise<AsyncIterator<EraEdge>>,
-    Fragmentable {
-  node: <T = EraSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateEra {
-  count: Int;
-}
-
-export interface AggregateEraPromise
-  extends Promise<AggregateEra>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateEraSubscription
-  extends Promise<AsyncIterator<AggregateEra>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface HeartBeat {
-  id: ID_Output;
-  authorityId: String;
-}
-
-export interface HeartBeatPromise extends Promise<HeartBeat>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  sessionIndex: <T = SessionPromise>() => T;
-  authorityId: () => Promise<String>;
-}
-
-export interface HeartBeatSubscription
-  extends Promise<AsyncIterator<HeartBeat>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  sessionIndex: <T = SessionSubscription>() => T;
-  authorityId: () => Promise<AsyncIterator<String>>;
-}
-
-export interface HeartBeatNullablePromise
-  extends Promise<HeartBeat | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  sessionIndex: <T = SessionPromise>() => T;
-  authorityId: () => Promise<String>;
-}
-
-export interface HeartBeatConnection {
-  pageInfo: PageInfo;
-  edges: HeartBeatEdge[];
-}
-
-export interface HeartBeatConnectionPromise
-  extends Promise<HeartBeatConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<HeartBeatEdge>>() => T;
-  aggregate: <T = AggregateHeartBeatPromise>() => T;
-}
-
-export interface HeartBeatConnectionSubscription
-  extends Promise<AsyncIterator<HeartBeatConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<HeartBeatEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateHeartBeatSubscription>() => T;
-}
-
-export interface HeartBeatEdge {
-  node: HeartBeat;
-  cursor: String;
-}
-
-export interface HeartBeatEdgePromise
-  extends Promise<HeartBeatEdge>,
-    Fragmentable {
-  node: <T = HeartBeatPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface HeartBeatEdgeSubscription
-  extends Promise<AsyncIterator<HeartBeatEdge>>,
-    Fragmentable {
-  node: <T = HeartBeatSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateHeartBeat {
-  count: Int;
-}
-
-export interface AggregateHeartBeatPromise
-  extends Promise<AggregateHeartBeat>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateHeartBeatSubscription
-  extends Promise<AsyncIterator<AggregateHeartBeat>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  blockNumber: <T = BlockNumberPromise>() => T;
+  motion: <T = MotionPromise>() => T;
+  voter: () => Promise<String>;
+  seconded: () => Promise<Boolean>;
 }
 
 export interface Motion {
@@ -9917,6 +10326,15 @@ export interface ReferendumPromise extends Promise<Referendum>, Fragmentable {
     last?: Int;
   }) => T;
   voteThreshold: () => Promise<String>;
+  referendumVote: <T = FragmentableArray<ReferendumVote>>(args?: {
+    where?: ReferendumVoteWhereInput;
+    orderBy?: ReferendumVoteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface ReferendumSubscription
@@ -9940,6 +10358,17 @@ export interface ReferendumSubscription
     last?: Int;
   }) => T;
   voteThreshold: () => Promise<AsyncIterator<String>>;
+  referendumVote: <
+    T = Promise<AsyncIterator<ReferendumVoteSubscription>>
+  >(args?: {
+    where?: ReferendumVoteWhereInput;
+    orderBy?: ReferendumVoteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface ReferendumNullablePromise
@@ -9961,6 +10390,15 @@ export interface ReferendumNullablePromise
     last?: Int;
   }) => T;
   voteThreshold: () => Promise<String>;
+  referendumVote: <T = FragmentableArray<ReferendumVote>>(args?: {
+    where?: ReferendumVoteWhereInput;
+    orderBy?: ReferendumVoteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface ReferendumStatus {
@@ -9997,6 +10435,50 @@ export interface ReferendumStatusNullablePromise
   referendum: <T = ReferendumPromise>() => T;
   status: () => Promise<String>;
   uniqueStatus: () => Promise<String>;
+}
+
+export interface ReferendumVote {
+  id: ID_Output;
+  vote: String;
+  voter: String;
+  lockedValue: String;
+  conviction: String;
+}
+
+export interface ReferendumVotePromise
+  extends Promise<ReferendumVote>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  blockNumber: <T = BlockNumberPromise>() => T;
+  referendum: <T = ReferendumPromise>() => T;
+  vote: () => Promise<String>;
+  voter: () => Promise<String>;
+  lockedValue: () => Promise<String>;
+  conviction: () => Promise<String>;
+}
+
+export interface ReferendumVoteSubscription
+  extends Promise<AsyncIterator<ReferendumVote>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  blockNumber: <T = BlockNumberSubscription>() => T;
+  referendum: <T = ReferendumSubscription>() => T;
+  vote: () => Promise<AsyncIterator<String>>;
+  voter: () => Promise<AsyncIterator<String>>;
+  lockedValue: () => Promise<AsyncIterator<String>>;
+  conviction: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ReferendumVoteNullablePromise
+  extends Promise<ReferendumVote | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  blockNumber: <T = BlockNumberPromise>() => T;
+  referendum: <T = ReferendumPromise>() => T;
+  vote: () => Promise<String>;
+  voter: () => Promise<String>;
+  lockedValue: () => Promise<String>;
+  conviction: () => Promise<String>;
 }
 
 export interface TreasurySpendProposal {
@@ -10107,6 +10589,259 @@ export interface TreasuryStatusNullablePromise
   treasurySpendProposal: <T = TreasurySpendProposalPromise>() => T;
   status: () => Promise<String>;
   uniqueStatus: () => Promise<String>;
+}
+
+export interface CouncilMotionVoteConnection {
+  pageInfo: PageInfo;
+  edges: CouncilMotionVoteEdge[];
+}
+
+export interface CouncilMotionVoteConnectionPromise
+  extends Promise<CouncilMotionVoteConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CouncilMotionVoteEdge>>() => T;
+  aggregate: <T = AggregateCouncilMotionVotePromise>() => T;
+}
+
+export interface CouncilMotionVoteConnectionSubscription
+  extends Promise<AsyncIterator<CouncilMotionVoteConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CouncilMotionVoteEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCouncilMotionVoteSubscription>() => T;
+}
+
+export interface CouncilMotionVoteEdge {
+  node: CouncilMotionVote;
+  cursor: String;
+}
+
+export interface CouncilMotionVoteEdgePromise
+  extends Promise<CouncilMotionVoteEdge>,
+    Fragmentable {
+  node: <T = CouncilMotionVotePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CouncilMotionVoteEdgeSubscription
+  extends Promise<AsyncIterator<CouncilMotionVoteEdge>>,
+    Fragmentable {
+  node: <T = CouncilMotionVoteSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateCouncilMotionVote {
+  count: Int;
+}
+
+export interface AggregateCouncilMotionVotePromise
+  extends Promise<AggregateCouncilMotionVote>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCouncilMotionVoteSubscription
+  extends Promise<AsyncIterator<AggregateCouncilMotionVote>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface Era {
+  id: ID_Output;
+  index: Int;
+  totalPoints: String;
+  individualPoints: String[];
+}
+
+export interface EraPromise extends Promise<Era>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  index: () => Promise<Int>;
+  eraStartSessionIndex: <T = SessionPromise>() => T;
+  totalPoints: () => Promise<String>;
+  individualPoints: () => Promise<String[]>;
+}
+
+export interface EraSubscription
+  extends Promise<AsyncIterator<Era>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  index: () => Promise<AsyncIterator<Int>>;
+  eraStartSessionIndex: <T = SessionSubscription>() => T;
+  totalPoints: () => Promise<AsyncIterator<String>>;
+  individualPoints: () => Promise<AsyncIterator<String[]>>;
+}
+
+export interface EraNullablePromise extends Promise<Era | null>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  index: () => Promise<Int>;
+  eraStartSessionIndex: <T = SessionPromise>() => T;
+  totalPoints: () => Promise<String>;
+  individualPoints: () => Promise<String[]>;
+}
+
+export interface Session {
+  id: ID_Output;
+  index: Int;
+}
+
+export interface SessionPromise extends Promise<Session>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  index: () => Promise<Int>;
+  start: <T = BlockNumberPromise>() => T;
+}
+
+export interface SessionSubscription
+  extends Promise<AsyncIterator<Session>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  index: () => Promise<AsyncIterator<Int>>;
+  start: <T = BlockNumberSubscription>() => T;
+}
+
+export interface SessionNullablePromise
+  extends Promise<Session | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  index: () => Promise<Int>;
+  start: <T = BlockNumberPromise>() => T;
+}
+
+export interface EraConnection {
+  pageInfo: PageInfo;
+  edges: EraEdge[];
+}
+
+export interface EraConnectionPromise
+  extends Promise<EraConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<EraEdge>>() => T;
+  aggregate: <T = AggregateEraPromise>() => T;
+}
+
+export interface EraConnectionSubscription
+  extends Promise<AsyncIterator<EraConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<EraEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateEraSubscription>() => T;
+}
+
+export interface EraEdge {
+  node: Era;
+  cursor: String;
+}
+
+export interface EraEdgePromise extends Promise<EraEdge>, Fragmentable {
+  node: <T = EraPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface EraEdgeSubscription
+  extends Promise<AsyncIterator<EraEdge>>,
+    Fragmentable {
+  node: <T = EraSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateEra {
+  count: Int;
+}
+
+export interface AggregateEraPromise
+  extends Promise<AggregateEra>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateEraSubscription
+  extends Promise<AsyncIterator<AggregateEra>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface HeartBeat {
+  id: ID_Output;
+  authorityId: String;
+}
+
+export interface HeartBeatPromise extends Promise<HeartBeat>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  sessionIndex: <T = SessionPromise>() => T;
+  authorityId: () => Promise<String>;
+}
+
+export interface HeartBeatSubscription
+  extends Promise<AsyncIterator<HeartBeat>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  sessionIndex: <T = SessionSubscription>() => T;
+  authorityId: () => Promise<AsyncIterator<String>>;
+}
+
+export interface HeartBeatNullablePromise
+  extends Promise<HeartBeat | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  sessionIndex: <T = SessionPromise>() => T;
+  authorityId: () => Promise<String>;
+}
+
+export interface HeartBeatConnection {
+  pageInfo: PageInfo;
+  edges: HeartBeatEdge[];
+}
+
+export interface HeartBeatConnectionPromise
+  extends Promise<HeartBeatConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<HeartBeatEdge>>() => T;
+  aggregate: <T = AggregateHeartBeatPromise>() => T;
+}
+
+export interface HeartBeatConnectionSubscription
+  extends Promise<AsyncIterator<HeartBeatConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<HeartBeatEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateHeartBeatSubscription>() => T;
+}
+
+export interface HeartBeatEdge {
+  node: HeartBeat;
+  cursor: String;
+}
+
+export interface HeartBeatEdgePromise
+  extends Promise<HeartBeatEdge>,
+    Fragmentable {
+  node: <T = HeartBeatPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface HeartBeatEdgeSubscription
+  extends Promise<AsyncIterator<HeartBeatEdge>>,
+    Fragmentable {
+  node: <T = HeartBeatSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateHeartBeat {
+  count: Int;
+}
+
+export interface AggregateHeartBeatPromise
+  extends Promise<AggregateHeartBeat>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateHeartBeatSubscription
+  extends Promise<AsyncIterator<AggregateHeartBeat>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface MotionConnection {
@@ -10861,6 +11596,62 @@ export interface AggregateReferendumStatusPromise
 
 export interface AggregateReferendumStatusSubscription
   extends Promise<AsyncIterator<AggregateReferendumStatus>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ReferendumVoteConnection {
+  pageInfo: PageInfo;
+  edges: ReferendumVoteEdge[];
+}
+
+export interface ReferendumVoteConnectionPromise
+  extends Promise<ReferendumVoteConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ReferendumVoteEdge>>() => T;
+  aggregate: <T = AggregateReferendumVotePromise>() => T;
+}
+
+export interface ReferendumVoteConnectionSubscription
+  extends Promise<AsyncIterator<ReferendumVoteConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ReferendumVoteEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateReferendumVoteSubscription>() => T;
+}
+
+export interface ReferendumVoteEdge {
+  node: ReferendumVote;
+  cursor: String;
+}
+
+export interface ReferendumVoteEdgePromise
+  extends Promise<ReferendumVoteEdge>,
+    Fragmentable {
+  node: <T = ReferendumVotePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ReferendumVoteEdgeSubscription
+  extends Promise<AsyncIterator<ReferendumVoteEdge>>,
+    Fragmentable {
+  node: <T = ReferendumVoteSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateReferendumVote {
+  count: Int;
+}
+
+export interface AggregateReferendumVotePromise
+  extends Promise<AggregateReferendumVote>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateReferendumVoteSubscription
+  extends Promise<AsyncIterator<AggregateReferendumVote>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -12471,6 +13262,53 @@ export interface CouncilMemberPreviousValuesSubscription
   address: () => Promise<AsyncIterator<String>>;
 }
 
+export interface CouncilMotionVoteSubscriptionPayload {
+  mutation: MutationType;
+  node: CouncilMotionVote;
+  updatedFields: String[];
+  previousValues: CouncilMotionVotePreviousValues;
+}
+
+export interface CouncilMotionVoteSubscriptionPayloadPromise
+  extends Promise<CouncilMotionVoteSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = CouncilMotionVotePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CouncilMotionVotePreviousValuesPromise>() => T;
+}
+
+export interface CouncilMotionVoteSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CouncilMotionVoteSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CouncilMotionVoteSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CouncilMotionVotePreviousValuesSubscription>() => T;
+}
+
+export interface CouncilMotionVotePreviousValues {
+  id: ID_Output;
+  voter: String;
+  seconded: Boolean;
+}
+
+export interface CouncilMotionVotePreviousValuesPromise
+  extends Promise<CouncilMotionVotePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  voter: () => Promise<String>;
+  seconded: () => Promise<Boolean>;
+}
+
+export interface CouncilMotionVotePreviousValuesSubscription
+  extends Promise<AsyncIterator<CouncilMotionVotePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  voter: () => Promise<AsyncIterator<String>>;
+  seconded: () => Promise<AsyncIterator<Boolean>>;
+}
+
 export interface EraSubscriptionPayload {
   mutation: MutationType;
   node: Era;
@@ -13184,6 +14022,59 @@ export interface ReferendumStatusPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   status: () => Promise<AsyncIterator<String>>;
   uniqueStatus: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ReferendumVoteSubscriptionPayload {
+  mutation: MutationType;
+  node: ReferendumVote;
+  updatedFields: String[];
+  previousValues: ReferendumVotePreviousValues;
+}
+
+export interface ReferendumVoteSubscriptionPayloadPromise
+  extends Promise<ReferendumVoteSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ReferendumVotePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ReferendumVotePreviousValuesPromise>() => T;
+}
+
+export interface ReferendumVoteSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ReferendumVoteSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ReferendumVoteSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ReferendumVotePreviousValuesSubscription>() => T;
+}
+
+export interface ReferendumVotePreviousValues {
+  id: ID_Output;
+  vote: String;
+  voter: String;
+  lockedValue: String;
+  conviction: String;
+}
+
+export interface ReferendumVotePreviousValuesPromise
+  extends Promise<ReferendumVotePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  vote: () => Promise<String>;
+  voter: () => Promise<String>;
+  lockedValue: () => Promise<String>;
+  conviction: () => Promise<String>;
+}
+
+export interface ReferendumVotePreviousValuesSubscription
+  extends Promise<AsyncIterator<ReferendumVotePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  vote: () => Promise<AsyncIterator<String>>;
+  voter: () => Promise<AsyncIterator<String>>;
+  lockedValue: () => Promise<AsyncIterator<String>>;
+  conviction: () => Promise<AsyncIterator<String>>;
 }
 
 export interface RewardSubscriptionPayload {
@@ -14018,6 +14909,14 @@ export const models: Model[] = [
   },
   {
     name: "ChildBountyStatus",
+    embedded: false
+  },
+  {
+    name: "ReferendumVote",
+    embedded: false
+  },
+  {
+    name: "CouncilMotionVote",
     embedded: false
   }
 ];

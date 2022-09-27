@@ -34,7 +34,6 @@ interface LatestActivityTableRowProps {
 	title?: string | null
 	postType: 'discussion' | 'referenda' | 'proposal' | 'motion' | 'treasury proposal' | 'tech committee proposal' | 'bounty' | 'tip' | 'child bounty'
 	username?: string | null
-	hideSerialNum?: boolean
 }
 
 const LatestActivityTableRow = function ({
@@ -48,8 +47,7 @@ const LatestActivityTableRow = function ({
 	tipReason,
 	title,
 	postType,
-	username,
-	hideSerialNum
+	username
 }:LatestActivityTableRowProps) {
 	const { history } = useRouter();
 	const [postTypeIcon, setPostTypeIcon] = useState<any>();
@@ -94,13 +92,13 @@ const LatestActivityTableRow = function ({
 			break;
 		case 'tip':
 			icon = <TipIcon />;
-			serialID = null;
+			serialID = postId;
 			break;
 		}
 
 		setPostTypeIcon(icon);
 		setPostSerialID(serialID);
-	},[postType, onchainId]);
+	},[postType, onchainId, postId]);
 
 	const mainTitle = title || method || noTitle;
 
@@ -150,10 +148,10 @@ const LatestActivityTableRow = function ({
 
 	return (
 		<Table.Row className={className}>
-			{!hideSerialNum ? <Table.Cell onClick={ gotoPost } className='sub-title-text serial-num'>
+			<Table.Cell onClick={ gotoPost } className='sub-title-text serial-num'>
 				{ postSerialID }
-			</Table.Cell> : null}
-			<Table.Cell className={!hideSerialNum ? 'pl-0' : ''} onClick={ gotoPost }>
+			</Table.Cell>
+			<Table.Cell onClick={ gotoPost }>
 				<div className='main-title-text'>
 					<h4>
 						<div>
@@ -208,10 +206,6 @@ export default styled(LatestActivityTableRow)`
 	@media only screen and (min-width: 992px) {
 		min-height: 76px;
 		height: 76px;
-		
-		.pl-0 {
-			padding-left: 0 !important;
-		}
 	}
 
 	.main-title-text h4 {

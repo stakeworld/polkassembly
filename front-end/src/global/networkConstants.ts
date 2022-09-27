@@ -9,11 +9,13 @@ import amplitudeLogo from 'src/assets/parachain-logos/amplitude-logo.png';
 import astarLogo from 'src/assets/parachain-logos/astar-logo.png';
 import automataLogo from 'src/assets/parachain-logos/automata-logo.jpg';
 import basiliskLogo from 'src/assets/parachain-logos/basilisk-logo.jpg';
-import bifrostLogo from 'src/assets/parachain-logos/bifrost-logo.png';
 import pioneerLogo from 'src/assets/parachain-logos/bitcountrypioneer-logo.jpg';
 import calamariLogo from 'src/assets/parachain-logos/calamari-logo.png';
 import centrifugeLogo from 'src/assets/parachain-logos/centrifuge-logo.png';
+import composableFinanceLogo from 'src/assets/parachain-logos/composable-finance-logo.png';
+import crustLogo from 'src/assets/parachain-logos/crust-logo.svg';
 import gearLogo from 'src/assets/parachain-logos/gear-logo.jpg';
+import heikoLogo from 'src/assets/parachain-logos/heiko-logo.png';
 import hydradxLogo from 'src/assets/parachain-logos/hydradx-logo.jpg';
 import karuraLogo from 'src/assets/parachain-logos/karura-logo.jpg';
 import khalaLogo from 'src/assets/parachain-logos/khala-logo.png';
@@ -34,7 +36,7 @@ import tanganikaLogo from 'src/assets/parachain-logos/tanganika-logo.png';
 import turingLogo from 'src/assets/parachain-logos/turing-logo.png';
 import westendLogo from 'src/assets/parachain-logos/westend-logo.jpg';
 
-import { ChainLinksType, ChainPropType } from '../types';
+import * as types from '../types';
 
 export const network = {
 	POLKADOT: 'polkadot',
@@ -45,9 +47,11 @@ export const network = {
 	ASTAR: 'astar',
 	AUTOMATA: 'automata',
 	BASILISK: 'basilisk',
-	BIFROST: 'bifrost',
 	CALAMARI: 'calamari',
 	CENTRIFUGE: 'centrifuge',
+	COMPOSABLE: 'composable',
+	CRUST: 'crust',
+	CRUSTSHADOW: 'crustshadow',
 	GEAR: 'gear',
 	HEIKO: 'heiko',
 	HYDRADX: 'hydradx',
@@ -79,6 +83,8 @@ export const tokenSymbol = {
 	BNC: 'BNC',
 	BSX: 'BSX',
 	CFG: 'CFG',
+	CRU: 'CRU',
+	CSM: 'CSM',
 	DOL: 'DOL',
 	DEV: 'DEV',
 	DHX: 'DHX',
@@ -92,6 +98,7 @@ export const tokenSymbol = {
 	KMA: 'KMA',
 	KSM: 'KSM',
 	KYL: 'KYL',
+	LAYR: 'LAYR',
 	MOVR: 'MOVR',
 	PARA: 'PARA',
 	PDEX: 'PDEX',
@@ -104,7 +111,7 @@ export const tokenSymbol = {
 	UNIT: 'UNIT'
 };
 
-export const chainProperties: ChainPropType = {
+export const chainProperties: types.ChainPropType = {
 	[network.POLKADOT]: {
 		blockTime: 6000,
 		chainId: 0,
@@ -177,15 +184,6 @@ export const chainProperties: ChainPropType = {
 		tokenDecimals: 12,
 		tokenSymbol: tokenSymbol.BSX
 	},
-	[network.BIFROST]: {
-		blockTime: 12000,
-		chainId: 0,
-		logo: bifrostLogo,
-		rpcEndpoint: 'wss://hk.p.bifrost-rpc.liebi.com/ws',
-		ss58Format: 6,
-		tokenDecimals: 18,
-		tokenSymbol: tokenSymbol.BNC
-	},
 	[network.PIONEER]: {
 		blockTime: 12000,
 		chainId: 0,
@@ -213,6 +211,33 @@ export const chainProperties: ChainPropType = {
 		tokenDecimals: 18,
 		tokenSymbol: tokenSymbol.CFG
 	},
+	[network.COMPOSABLE]: {
+		blockTime: 12000,
+		chainId: 0,
+		logo: composableFinanceLogo,
+		rpcEndpoint: 'wss://rpc.composable.finance',
+		ss58Format: 49,
+		tokenDecimals: 12,
+		tokenSymbol: tokenSymbol.LAYR
+	},
+	[network.CRUST]: {
+		blockTime: 12000,
+		chainId: 0,
+		logo: crustLogo,
+		rpcEndpoint: 'wss://rpc.crust.network',
+		ss58Format: 66,
+		tokenDecimals: 12,
+		tokenSymbol: tokenSymbol.CRU
+	},
+	[network.CRUSTSHADOW]: {
+		blockTime: 12000,
+		chainId: 0,
+		logo: crustLogo,
+		rpcEndpoint: 'wss://rpc-shadow.crust.network',
+		ss58Format: 66,
+		tokenDecimals: 12,
+		tokenSymbol: tokenSymbol.CSM
+	},
 	[network.GEAR]: {
 		blockTime: 1000,
 		chainId: 0,
@@ -225,7 +250,7 @@ export const chainProperties: ChainPropType = {
 	[network.HEIKO]: {
 		blockTime: 13000,
 		chainId: 0,
-		logo: hydradxLogo,
+		logo: heikoLogo,
 		rpcEndpoint: 'wss://heiko-rpc.parallel.fi',
 		ss58Format: 63,
 		tokenDecimals: 12,
@@ -395,7 +420,7 @@ export const chainProperties: ChainPropType = {
 	}
 };
 
-export const chainLinks: ChainLinksType = {
+export const chainLinks: types.ChainLinksType = {
 	[network.POLKADOT]: {
 		blockExplorer: 'https://polkadot.subscan.io/',
 		discord: 'https://discord.gg/wGUDt2p',

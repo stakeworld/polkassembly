@@ -300,10 +300,23 @@ const resolvers = {
         .referendum({ id: parent.id })
         .referendumStatus({ where, orderBy, skip, after, before, first, last });
     },
+    referendumVote(
+      parent: any,
+      { where, orderBy, skip, after, before, first, last }: Selectors
+    ) {
+      return prisma
+        .referendum({ id: parent.id })
+        .referendumVote({ where, orderBy, skip, after, before, first, last });
+    },
   },
   ReferendumStatus: {
     blockNumber(parent: any) {
       return prisma.referendumStatus({ id: parent.id }).blockNumber();
+    },
+  },
+  ReferendumVote: {
+    blockNumber(parent: any) {
+      return prisma.referendumVote({ id: parent.id }).blockNumber();
     },
   },
 };

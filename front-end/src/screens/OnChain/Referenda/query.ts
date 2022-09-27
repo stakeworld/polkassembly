@@ -74,3 +74,46 @@ export const QUERY_COUNT_REFERENDA = gql`
         }
     }
 `;
+
+export const GET_REFERENDA_WITH_VOTES_OF_USER = gql`
+    query GetLatestReferendaPostsWithVotes($postType: Int!, $limit: Int! = 10, $voter: String!) {
+        posts(limit: $limit, where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_referendum_id: {_is_null: false}}}, order_by: {onchain_link: {onchain_referendum_id: desc}}) {
+            id
+            title
+            author {
+                ...authorFields
+            }
+            created_at
+            updated_at
+            type {
+                name
+                id
+            }
+            topic {
+                id
+                name
+            }
+            onchain_link {
+                id
+                onchain_referendum_id
+                onchain_referendum {
+                    id
+                    end
+                    referendumStatus(last: 1) {
+                        id
+                        status
+                    }
+                    referendumVote(where: {voter: $voter}) {
+                        conviction
+                        id
+                        lockedValue
+                        vote
+                        voter
+                    }
+                }
+                proposer_address
+            }
+        }
+    }
+    ${authorFields}
+`;

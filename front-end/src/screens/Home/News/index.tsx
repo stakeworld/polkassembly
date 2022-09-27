@@ -92,7 +92,7 @@ export default styled(News)`
 		}
 
 		.event-list-col {
-			overflow-y: hidden;
+			overflow-y: auto;
 			border-right: 2px #eee solid;
 			max-height: 496px;
 			padding-top: 10px;

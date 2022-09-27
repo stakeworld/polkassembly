@@ -28,6 +28,8 @@ import createChildBountyStatus from './createChildBountyStatus';
 import createTreasury from './createTreasury';
 import createTechCommitteeProposal from './createTechCommitteeProposal';
 import createTechCommitteeProposalStatus from './createTechCommitteeProposalStatus';
+import createCouncilMotionVotes from './createCouncilMotionVotes';
+import createReferendumVote from './createReferendumVotes';
 import { NomidotTask } from './types';
 
 // N.B. Order of tasks matters here
@@ -57,5 +59,7 @@ export const nomidotTasks: NomidotTask[] = [
   createTechCommitteeProposal,
   createTechCommitteeProposalStatus,
   createChildBounty,
-  createChildBountyStatus
+  createChildBountyStatus,
+  createCouncilMotionVotes,
+  createReferendumVote
 ];
