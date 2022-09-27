@@ -54,7 +54,7 @@ const LatestTipsTable = ({ className }: Props) => {
 
 		return <Tab.Pane loading={!data} className={`${className} tab-panel`}>
 			<Table className='hidden-mobile' basic='very' striped unstackable selectable>
-				<LatestActivityTableHeader className={className} hideSerialNum={true} />
+				<LatestActivityTableHeader className={className} />
 
 				<Table.Body>
 					{data.posts.map(
@@ -71,7 +71,6 @@ const LatestTipsTable = ({ className }: Props) => {
 									title={post.title ? post.title : post.onchain_link.onchain_tip?.[0]?.reason}
 									postType='tip'
 									created_at={post.created_at}
-									hideSerialNum={true}
 								/>
 							;
 						}
