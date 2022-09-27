@@ -33,49 +33,54 @@ const PostProposalInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props) 
 	const { metaDescription, method, preimageArguments } = preimage || {};
 
 	return (
-		<OnchainInfoWrapper>
-			<h4>On-chain info</h4>
-			<Grid>
-				<Grid.Column mobile={16} tablet={8} computer={8}>
-					<h6>Proposer</h6>
-					<div className="address-comp-cont d-flex">
-						<AddressComponent address={proposerAddress}/>
-						<span className='prev-proposals-btn' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>Previous Proposals &gt;</span>
-					</div>
-				</Grid.Column>
-				{depositAmount && currentNetwork &&
-				<Grid.Column mobile={16} tablet={8} computer={8}>
-					<h6>Deposit</h6>
-					{parseInt(depositAmount) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
-				</Grid.Column>}
-				{method &&
-				<Grid.Row>
+		<>
+			<OnchainInfoWrapper>
+				<h4>On-chain info</h4>
+				<Grid>
 					<Grid.Column mobile={16} tablet={8} computer={8}>
-						<h6>Method</h6>
-						{method}
+						<h6>Proposer</h6>
+						<AddressComponent address={proposerAddress}/>
 					</Grid.Column>
-					<Grid.Column mobile={16} tablet={16} computer={16}>
-						{preimageArguments && preimageArguments.length
-							? <ArgumentsTableJSONView postArguments={preimageArguments} showAccountArguments={true}  />
-							: null}
-					</Grid.Column>
-				</Grid.Row>}
-				<Grid.Row>
-					<Grid.Column mobile={16} tablet={16} computer={16}>
-						{ metaDescription &&
-						<>
-							<h6>Description</h6>
-							{metaDescription}
-						</>}
-					</Grid.Column>
-				</Grid.Row>
-				<Grid.Row>
-					<Grid.Column mobile={16} tablet={16} computer={16}>
-						<ExternalLinks isProposal={true} onchainId={onchainLink.onchain_proposal_id} />
-					</Grid.Column>
-				</Grid.Row>
-			</Grid>
-		</OnchainInfoWrapper>
+					{depositAmount && currentNetwork &&
+					<Grid.Column mobile={16} tablet={8} computer={8}>
+						<h6>Deposit</h6>
+						{parseInt(depositAmount) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
+					</Grid.Column>}
+					{method &&
+					<Grid.Row>
+						<Grid.Column mobile={16} tablet={8} computer={8}>
+							<h6>Method</h6>
+							{method}
+						</Grid.Column>
+						<Grid.Column mobile={16} tablet={16} computer={16}>
+							{preimageArguments && preimageArguments.length
+								? <ArgumentsTableJSONView postArguments={preimageArguments} showAccountArguments={true}  />
+								: null}
+						</Grid.Column>
+					</Grid.Row>}
+					<Grid.Row>
+						<Grid.Column mobile={16} tablet={16} computer={16}>
+							{ metaDescription &&
+							<>
+								<h6>Description</h6>
+								{metaDescription}
+							</>}
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row>
+						<Grid.Column mobile={16} tablet={16} computer={16}>
+							<ExternalLinks isProposal={true} onchainId={onchainLink.onchain_proposal_id} />
+						</Grid.Column>
+					</Grid.Row>
+				</Grid>
+			</OnchainInfoWrapper>
+
+			<OnchainInfoWrapper>
+				<span className='prev-proposals-btn' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
+					Show all proposals by proposer &gt;
+				</span>
+			</OnchainInfoWrapper>
+		</>
 	);
 };
 

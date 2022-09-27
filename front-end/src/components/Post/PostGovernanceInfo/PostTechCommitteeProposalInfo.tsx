@@ -15,9 +15,10 @@ import ArgumentsTableJSONView from './ArgumentsTableJSONView';
 interface Props {
 	className?: string;
 	onchainLink: OnchainLinkTechCommitteeProposalFragment
+	setOtherProposalsSidebarAddr: React.Dispatch<React.SetStateAction<string | null>>
 }
 
-const PostTechCommitteeProposalInfo = ({ className, onchainLink }: Props) => {
+const PostTechCommitteeProposalInfo = ({ className, onchainLink, setOtherProposalsSidebarAddr }: Props) => {
 	if (!onchainLink) return null;
 
 	const {
@@ -32,48 +33,56 @@ const PostTechCommitteeProposalInfo = ({ className, onchainLink }: Props) => {
 	const { metaDescription, memberCount, method, proposalArguments, proposalHash, preimage } = onchainTechCommitteeProposal[0];
 
 	return (
-		<OnchainInfoWrapper className={className}>
-			<h4>On-chain info</h4>
-			<Grid>
-				<Grid.Column mobile={16} tablet={8} computer={8}>
-					<h6>Proposer</h6>
-					<AddressComponent address={proposerAddress}/>
-				</Grid.Column>
-				<Grid.Column mobile={16} tablet={8} computer={8}>
-					<h6>Member count</h6>
-					{memberCount}
-				</Grid.Column>
-				<Grid.Column mobile={16} tablet={8} computer={8}>
-					<h6>Proposal hash</h6>
-					{proposalHash}
-				</Grid.Column>
-				<Grid.Column mobile={16} tablet={8} computer={8}>
-					<h6>Motion&apos;s method</h6>
-					<span className={method === 'rejectProposal' ? 'bold-red-text' : ''}>{method}</span>
-				</Grid.Column>
-				<Grid.Row>
-					<Grid.Column mobile={16} tablet={16} computer={16}>
-						{proposalArguments && proposalArguments.length
-							? <ArgumentsTableJSONView postArguments={proposalArguments} showAccountArguments={false} />
-							: null}
+		<>
+			<OnchainInfoWrapper className={className}>
+				<h4>On-chain info</h4>
+				<Grid>
+					<Grid.Column mobile={16} tablet={8} computer={8}>
+						<h6>Proposer</h6>
+						<AddressComponent address={proposerAddress}/>
 					</Grid.Column>
-				</Grid.Row>
-				<Grid.Row>
-					<Grid.Column mobile={16} tablet={16} computer={16}>
-						{ metaDescription &&
-							<>
-								<h6>Description</h6>
-								{metaDescription}
-							</>
-						}
+					<Grid.Column mobile={16} tablet={8} computer={8}>
+						<h6>Member count</h6>
+						{memberCount}
 					</Grid.Column>
-				</Grid.Row>
-				<ProposalInfo preimage={preimage}/>
-				<Grid.Column mobile={16} tablet={16} computer={16}>
-					<ExternalLinks isTechCommitteeProposal={true} onchainId={onchainLink.onchain_tech_committee_proposal_id} />
-				</Grid.Column>
-			</Grid>
-		</OnchainInfoWrapper>
+					<Grid.Column mobile={16} tablet={8} computer={8}>
+						<h6>Proposal hash</h6>
+						{proposalHash}
+					</Grid.Column>
+					<Grid.Column mobile={16} tablet={8} computer={8}>
+						<h6>Motion&apos;s method</h6>
+						<span className={method === 'rejectProposal' ? 'bold-red-text' : ''}>{method}</span>
+					</Grid.Column>
+					<Grid.Row>
+						<Grid.Column mobile={16} tablet={16} computer={16}>
+							{proposalArguments && proposalArguments.length
+								? <ArgumentsTableJSONView postArguments={proposalArguments} showAccountArguments={false} />
+								: null}
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row>
+						<Grid.Column mobile={16} tablet={16} computer={16}>
+							{ metaDescription &&
+								<>
+									<h6>Description</h6>
+									{metaDescription}
+								</>
+							}
+						</Grid.Column>
+					</Grid.Row>
+					<ProposalInfo preimage={preimage}/>
+					<Grid.Column mobile={16} tablet={16} computer={16}>
+						<ExternalLinks isTechCommitteeProposal={true} onchainId={onchainLink.onchain_tech_committee_proposal_id} />
+					</Grid.Column>
+				</Grid>
+			</OnchainInfoWrapper>
+
+			<OnchainInfoWrapper>
+				<span className='prev-proposals-btn' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
+					Show all proposals by proposer &gt;
+				</span>
+			</OnchainInfoWrapper>
+		</>
 	);
 };
 
