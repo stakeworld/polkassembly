@@ -8001,6 +8001,7 @@ export type Referendum = {
   preimageHash: Scalars['String'];
   referendumId: Scalars['Int'];
   referendumStatus?: Maybe<Array<ReferendumStatus>>;
+  referendumVote?: Maybe<Array<ReferendumVote>>;
   voteThreshold: Scalars['String'];
 };
 
@@ -8013,6 +8014,17 @@ export type ReferendumReferendumStatusArgs = {
   orderBy?: Maybe<ReferendumStatusOrderByInput>;
   skip?: Maybe<Scalars['Int']>;
   where?: Maybe<ReferendumStatusWhereInput>;
+};
+
+
+export type ReferendumReferendumVoteArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<ReferendumVoteOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  where?: Maybe<ReferendumVoteWhereInput>;
 };
 
 /** A connection to a list of items. */
@@ -8032,12 +8044,8 @@ export type ReferendumCreateInput = {
   preimageHash: Scalars['String'];
   referendumId: Scalars['Int'];
   referendumStatus?: Maybe<ReferendumStatusCreateManyWithoutReferendumInput>;
+  referendumVote?: Maybe<ReferendumVoteCreateManyWithoutReferendumInput>;
   voteThreshold: Scalars['String'];
-};
-
-export type ReferendumCreateOneInput = {
-  connect?: Maybe<ReferendumWhereUniqueInput>;
-  create?: Maybe<ReferendumCreateInput>;
 };
 
 export type ReferendumCreateOneWithoutPreimageInput = {
@@ -8050,12 +8058,18 @@ export type ReferendumCreateOneWithoutReferendumStatusInput = {
   create?: Maybe<ReferendumCreateWithoutReferendumStatusInput>;
 };
 
+export type ReferendumCreateOneWithoutReferendumVoteInput = {
+  connect?: Maybe<ReferendumWhereUniqueInput>;
+  create?: Maybe<ReferendumCreateWithoutReferendumVoteInput>;
+};
+
 export type ReferendumCreateWithoutPreimageInput = {
   delay: Scalars['Int'];
   end: Scalars['Int'];
   preimageHash: Scalars['String'];
   referendumId: Scalars['Int'];
   referendumStatus?: Maybe<ReferendumStatusCreateManyWithoutReferendumInput>;
+  referendumVote?: Maybe<ReferendumVoteCreateManyWithoutReferendumInput>;
   voteThreshold: Scalars['String'];
 };
 
@@ -8065,6 +8079,17 @@ export type ReferendumCreateWithoutReferendumStatusInput = {
   preimage?: Maybe<PreimageCreateOneWithoutReferendumInput>;
   preimageHash: Scalars['String'];
   referendumId: Scalars['Int'];
+  referendumVote?: Maybe<ReferendumVoteCreateManyWithoutReferendumInput>;
+  voteThreshold: Scalars['String'];
+};
+
+export type ReferendumCreateWithoutReferendumVoteInput = {
+  delay: Scalars['Int'];
+  end: Scalars['Int'];
+  preimage?: Maybe<PreimageCreateOneWithoutReferendumInput>;
+  preimageHash: Scalars['String'];
+  referendumId: Scalars['Int'];
+  referendumStatus?: Maybe<ReferendumStatusCreateManyWithoutReferendumInput>;
   voteThreshold: Scalars['String'];
 };
 
@@ -8456,16 +8481,6 @@ export type ReferendumSubscriptionWhereInput = {
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
 };
 
-export type ReferendumUpdateDataInput = {
-  delay?: Maybe<Scalars['Int']>;
-  end?: Maybe<Scalars['Int']>;
-  preimage?: Maybe<PreimageUpdateOneWithoutReferendumInput>;
-  preimageHash?: Maybe<Scalars['String']>;
-  referendumId?: Maybe<Scalars['Int']>;
-  referendumStatus?: Maybe<ReferendumStatusUpdateManyWithoutReferendumInput>;
-  voteThreshold?: Maybe<Scalars['String']>;
-};
-
 export type ReferendumUpdateInput = {
   delay?: Maybe<Scalars['Int']>;
   end?: Maybe<Scalars['Int']>;
@@ -8473,6 +8488,7 @@ export type ReferendumUpdateInput = {
   preimageHash?: Maybe<Scalars['String']>;
   referendumId?: Maybe<Scalars['Int']>;
   referendumStatus?: Maybe<ReferendumStatusUpdateManyWithoutReferendumInput>;
+  referendumVote?: Maybe<ReferendumVoteUpdateManyWithoutReferendumInput>;
   voteThreshold?: Maybe<Scalars['String']>;
 };
 
@@ -8484,18 +8500,18 @@ export type ReferendumUpdateManyMutationInput = {
   voteThreshold?: Maybe<Scalars['String']>;
 };
 
-export type ReferendumUpdateOneRequiredInput = {
-  connect?: Maybe<ReferendumWhereUniqueInput>;
-  create?: Maybe<ReferendumCreateInput>;
-  update?: Maybe<ReferendumUpdateDataInput>;
-  upsert?: Maybe<ReferendumUpsertNestedInput>;
-};
-
 export type ReferendumUpdateOneRequiredWithoutReferendumStatusInput = {
   connect?: Maybe<ReferendumWhereUniqueInput>;
   create?: Maybe<ReferendumCreateWithoutReferendumStatusInput>;
   update?: Maybe<ReferendumUpdateWithoutReferendumStatusDataInput>;
   upsert?: Maybe<ReferendumUpsertWithoutReferendumStatusInput>;
+};
+
+export type ReferendumUpdateOneRequiredWithoutReferendumVoteInput = {
+  connect?: Maybe<ReferendumWhereUniqueInput>;
+  create?: Maybe<ReferendumCreateWithoutReferendumVoteInput>;
+  update?: Maybe<ReferendumUpdateWithoutReferendumVoteDataInput>;
+  upsert?: Maybe<ReferendumUpsertWithoutReferendumVoteInput>;
 };
 
 export type ReferendumUpdateOneWithoutPreimageInput = {
@@ -8513,6 +8529,7 @@ export type ReferendumUpdateWithoutPreimageDataInput = {
   preimageHash?: Maybe<Scalars['String']>;
   referendumId?: Maybe<Scalars['Int']>;
   referendumStatus?: Maybe<ReferendumStatusUpdateManyWithoutReferendumInput>;
+  referendumVote?: Maybe<ReferendumVoteUpdateManyWithoutReferendumInput>;
   voteThreshold?: Maybe<Scalars['String']>;
 };
 
@@ -8522,12 +8539,18 @@ export type ReferendumUpdateWithoutReferendumStatusDataInput = {
   preimage?: Maybe<PreimageUpdateOneWithoutReferendumInput>;
   preimageHash?: Maybe<Scalars['String']>;
   referendumId?: Maybe<Scalars['Int']>;
+  referendumVote?: Maybe<ReferendumVoteUpdateManyWithoutReferendumInput>;
   voteThreshold?: Maybe<Scalars['String']>;
 };
 
-export type ReferendumUpsertNestedInput = {
-  create: ReferendumCreateInput;
-  update: ReferendumUpdateDataInput;
+export type ReferendumUpdateWithoutReferendumVoteDataInput = {
+  delay?: Maybe<Scalars['Int']>;
+  end?: Maybe<Scalars['Int']>;
+  preimage?: Maybe<PreimageUpdateOneWithoutReferendumInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  referendumId?: Maybe<Scalars['Int']>;
+  referendumStatus?: Maybe<ReferendumStatusUpdateManyWithoutReferendumInput>;
+  voteThreshold?: Maybe<Scalars['String']>;
 };
 
 export type ReferendumUpsertWithoutPreimageInput = {
@@ -8540,9 +8563,15 @@ export type ReferendumUpsertWithoutReferendumStatusInput = {
   update: ReferendumUpdateWithoutReferendumStatusDataInput;
 };
 
+export type ReferendumUpsertWithoutReferendumVoteInput = {
+  create: ReferendumCreateWithoutReferendumVoteInput;
+  update: ReferendumUpdateWithoutReferendumVoteDataInput;
+};
+
 export type ReferendumVote = Node & {
   __typename?: 'ReferendumVote';
   blockNumber: BlockNumber;
+  conviction: Scalars['String'];
   id: Scalars['ID'];
   lockedValue: Scalars['String'];
   referendum: Referendum;
@@ -8562,9 +8591,24 @@ export type ReferendumVoteConnection = {
 
 export type ReferendumVoteCreateInput = {
   blockNumber: BlockNumberCreateOneInput;
+  conviction: Scalars['String'];
   id?: Maybe<Scalars['ID']>;
   lockedValue: Scalars['String'];
-  referendum: ReferendumCreateOneInput;
+  referendum: ReferendumCreateOneWithoutReferendumVoteInput;
+  vote: Scalars['String'];
+  voter: Scalars['String'];
+};
+
+export type ReferendumVoteCreateManyWithoutReferendumInput = {
+  connect?: Maybe<Array<ReferendumVoteWhereUniqueInput>>;
+  create?: Maybe<Array<ReferendumVoteCreateWithoutReferendumInput>>;
+};
+
+export type ReferendumVoteCreateWithoutReferendumInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  conviction: Scalars['String'];
+  id?: Maybe<Scalars['ID']>;
+  lockedValue: Scalars['String'];
   vote: Scalars['String'];
   voter: Scalars['String'];
 };
@@ -8579,6 +8623,8 @@ export type ReferendumVoteEdge = {
 };
 
 export enum ReferendumVoteOrderByInput {
+  ConvictionAsc = 'conviction_ASC',
+  ConvictionDesc = 'conviction_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
   LockedValueAsc = 'lockedValue_ASC',
@@ -8591,10 +8637,155 @@ export enum ReferendumVoteOrderByInput {
 
 export type ReferendumVotePreviousValues = {
   __typename?: 'ReferendumVotePreviousValues';
+  conviction: Scalars['String'];
   id: Scalars['ID'];
   lockedValue: Scalars['String'];
   vote: Scalars['String'];
   voter: Scalars['String'];
+};
+
+export type ReferendumVoteScalarWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<ReferendumVoteScalarWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<ReferendumVoteScalarWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<ReferendumVoteScalarWhereInput>>;
+  conviction?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  conviction_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  conviction_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  conviction_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  conviction_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  conviction_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  conviction_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  conviction_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  conviction_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  conviction_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  conviction_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  conviction_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  conviction_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  conviction_starts_with?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<Scalars['ID']>;
+  lockedValue?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  lockedValue_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  lockedValue_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  lockedValue_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  lockedValue_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  lockedValue_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  lockedValue_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  lockedValue_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  lockedValue_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  lockedValue_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  lockedValue_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  lockedValue_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  lockedValue_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  lockedValue_starts_with?: Maybe<Scalars['String']>;
+  vote?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  vote_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  vote_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  vote_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  vote_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  vote_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  vote_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  vote_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  vote_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  vote_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  vote_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  vote_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  vote_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  vote_starts_with?: Maybe<Scalars['String']>;
+  voter?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  voter_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  voter_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  voter_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  voter_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  voter_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  voter_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  voter_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  voter_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  voter_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  voter_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  voter_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  voter_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  voter_starts_with?: Maybe<Scalars['String']>;
 };
 
 export type ReferendumVoteSubscriptionPayload = {
@@ -8625,16 +8816,61 @@ export type ReferendumVoteSubscriptionWhereInput = {
 
 export type ReferendumVoteUpdateInput = {
   blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  conviction?: Maybe<Scalars['String']>;
   lockedValue?: Maybe<Scalars['String']>;
-  referendum?: Maybe<ReferendumUpdateOneRequiredInput>;
+  referendum?: Maybe<ReferendumUpdateOneRequiredWithoutReferendumVoteInput>;
+  vote?: Maybe<Scalars['String']>;
+  voter?: Maybe<Scalars['String']>;
+};
+
+export type ReferendumVoteUpdateManyDataInput = {
+  conviction?: Maybe<Scalars['String']>;
+  lockedValue?: Maybe<Scalars['String']>;
   vote?: Maybe<Scalars['String']>;
   voter?: Maybe<Scalars['String']>;
 };
 
 export type ReferendumVoteUpdateManyMutationInput = {
+  conviction?: Maybe<Scalars['String']>;
   lockedValue?: Maybe<Scalars['String']>;
   vote?: Maybe<Scalars['String']>;
   voter?: Maybe<Scalars['String']>;
+};
+
+export type ReferendumVoteUpdateManyWithWhereNestedInput = {
+  data: ReferendumVoteUpdateManyDataInput;
+  where: ReferendumVoteScalarWhereInput;
+};
+
+export type ReferendumVoteUpdateManyWithoutReferendumInput = {
+  connect?: Maybe<Array<ReferendumVoteWhereUniqueInput>>;
+  create?: Maybe<Array<ReferendumVoteCreateWithoutReferendumInput>>;
+  delete?: Maybe<Array<ReferendumVoteWhereUniqueInput>>;
+  deleteMany?: Maybe<Array<ReferendumVoteScalarWhereInput>>;
+  disconnect?: Maybe<Array<ReferendumVoteWhereUniqueInput>>;
+  set?: Maybe<Array<ReferendumVoteWhereUniqueInput>>;
+  update?: Maybe<Array<ReferendumVoteUpdateWithWhereUniqueWithoutReferendumInput>>;
+  updateMany?: Maybe<Array<ReferendumVoteUpdateManyWithWhereNestedInput>>;
+  upsert?: Maybe<Array<ReferendumVoteUpsertWithWhereUniqueWithoutReferendumInput>>;
+};
+
+export type ReferendumVoteUpdateWithWhereUniqueWithoutReferendumInput = {
+  data: ReferendumVoteUpdateWithoutReferendumDataInput;
+  where: ReferendumVoteWhereUniqueInput;
+};
+
+export type ReferendumVoteUpdateWithoutReferendumDataInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  conviction?: Maybe<Scalars['String']>;
+  lockedValue?: Maybe<Scalars['String']>;
+  vote?: Maybe<Scalars['String']>;
+  voter?: Maybe<Scalars['String']>;
+};
+
+export type ReferendumVoteUpsertWithWhereUniqueWithoutReferendumInput = {
+  create: ReferendumVoteCreateWithoutReferendumInput;
+  update: ReferendumVoteUpdateWithoutReferendumDataInput;
+  where: ReferendumVoteWhereUniqueInput;
 };
 
 export type ReferendumVoteWhereInput = {
@@ -8645,6 +8881,33 @@ export type ReferendumVoteWhereInput = {
   /** Logical OR on all given filters. */
   OR?: Maybe<Array<ReferendumVoteWhereInput>>;
   blockNumber?: Maybe<BlockNumberWhereInput>;
+  conviction?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  conviction_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  conviction_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  conviction_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  conviction_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  conviction_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  conviction_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  conviction_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  conviction_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  conviction_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  conviction_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  conviction_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  conviction_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  conviction_starts_with?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: Maybe<Scalars['ID']>;
@@ -8858,6 +9121,9 @@ export type ReferendumWhereInput = {
   referendumStatus_every?: Maybe<ReferendumStatusWhereInput>;
   referendumStatus_none?: Maybe<ReferendumStatusWhereInput>;
   referendumStatus_some?: Maybe<ReferendumStatusWhereInput>;
+  referendumVote_every?: Maybe<ReferendumVoteWhereInput>;
+  referendumVote_none?: Maybe<ReferendumVoteWhereInput>;
+  referendumVote_some?: Maybe<ReferendumVoteWhereInput>;
   voteThreshold?: Maybe<Scalars['String']>;
   /** All values containing the given string. */
   voteThreshold_contains?: Maybe<Scalars['String']>;
@@ -8984,6 +9250,9 @@ export type ReferendumWhereInput_Remote_Rel_Public_Onchain_Linksonchain_Referend
   referendumStatus_every?: Maybe<ReferendumStatusWhereInput>;
   referendumStatus_none?: Maybe<ReferendumStatusWhereInput>;
   referendumStatus_some?: Maybe<ReferendumStatusWhereInput>;
+  referendumVote_every?: Maybe<ReferendumVoteWhereInput>;
+  referendumVote_none?: Maybe<ReferendumVoteWhereInput>;
+  referendumVote_some?: Maybe<ReferendumVoteWhereInput>;
   voteThreshold?: Maybe<Scalars['String']>;
   /** All values containing the given string. */
   voteThreshold_contains?: Maybe<Scalars['String']>;
@@ -26387,10 +26656,10 @@ export type GetUsersProposalsQuery = (
   { __typename?: 'query_root' }
   & { posts: Array<(
     { __typename?: 'posts' }
-    & Pick<Posts, 'author_id' | 'content' | 'title' | 'topic_id' | 'id' | 'created_at'>
+    & Pick<Posts, 'id' | 'author_id' | 'content' | 'title' | 'topic_id' | 'created_at'>
     & { onchain_link?: Maybe<(
       { __typename?: 'onchain_links' }
-      & Pick<Onchain_Links, 'onchain_proposal_id' | 'onchain_treasury_proposal_id'>
+      & Pick<Onchain_Links, 'id' | 'onchain_proposal_id' | 'onchain_treasury_proposal_id' | 'proposer_address'>
       & { onchain_treasury_spend_proposal: Array<Maybe<(
         { __typename?: 'TreasurySpendProposal' }
         & Pick<TreasurySpendProposal, 'beneficiary' | 'treasuryProposalId' | 'value'>
@@ -27205,6 +27474,20 @@ export type ReferundumCountQuery = (
       & Pick<Posts_Aggregate_Fields, 'count'>
     )> }
   ) }
+);
+
+export type GetLatestReferendaPostsWithVotesQueryVariables = Exact<{
+  voter: Scalars['String'];
+  referendumId: Scalars['Int'];
+}>;
+
+
+export type GetLatestReferendaPostsWithVotesQuery = (
+  { __typename?: 'query_root' }
+  & { referendumVotes: Array<Maybe<(
+    { __typename?: 'ReferendumVote' }
+    & Pick<ReferendumVote, 'voter' | 'vote' | 'lockedValue' | 'id' | 'conviction'>
+  )>> }
 );
 
 export type LatestTechCommitteeProposalPostsQueryVariables = Exact<{
@@ -31217,16 +31500,16 @@ export type GetChildBountiesOfParentBountyQueryResult = ApolloReactCommon.QueryR
 export const GetUsersProposalsDocument = gql`
     query GetUsersProposals($proposer_address: String!) {
   posts(
-    where: {_or: {onchain_link: {onchain_proposal_id: {_is_null: false}, onchain_treasury_proposal_id: {_is_null: false}}}, onchain_link: {proposer_address: {_eq: $proposer_address}}}
-    order_by: {created_at: desc_nulls_last}
+    where: {_or: [{onchain_link: {onchain_proposal_id: {_is_null: false}}}, {onchain_link: {onchain_treasury_proposal_id: {_is_null: false}}}], onchain_link: {proposer_address: {_eq: $proposer_address}}}
   ) {
+    id
     author_id
     content
     title
     topic_id
-    id
     created_at
     onchain_link {
+      id
       onchain_proposal_id
       onchain_treasury_proposal_id
       onchain_treasury_spend_proposal {
@@ -31237,6 +31520,7 @@ export const GetUsersProposalsDocument = gql`
           status
         }
       }
+      proposer_address
       onchain_proposal {
         depositAmount
         author
@@ -32426,6 +32710,44 @@ export function useReferundumCountLazyQuery(baseOptions?: ApolloReactHooks.LazyQ
 export type ReferundumCountQueryHookResult = ReturnType<typeof useReferundumCountQuery>;
 export type ReferundumCountLazyQueryHookResult = ReturnType<typeof useReferundumCountLazyQuery>;
 export type ReferundumCountQueryResult = ApolloReactCommon.QueryResult<ReferundumCountQuery, ReferundumCountQueryVariables>;
+export const GetLatestReferendaPostsWithVotesDocument = gql`
+    query GetLatestReferendaPostsWithVotes($voter: String!, $referendumId: Int!) {
+  referendumVotes(where: {voter: $voter, referendum: {id: $referendumId}}) {
+    voter
+    vote
+    lockedValue
+    id
+    conviction
+  }
+}
+    `;
+
+/**
+ * __useGetLatestReferendaPostsWithVotesQuery__
+ *
+ * To run a query within a React component, call `useGetLatestReferendaPostsWithVotesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLatestReferendaPostsWithVotesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLatestReferendaPostsWithVotesQuery({
+ *   variables: {
+ *      voter: // value for 'voter'
+ *      referendumId: // value for 'referendumId'
+ *   },
+ * });
+ */
+export function useGetLatestReferendaPostsWithVotesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLatestReferendaPostsWithVotesQuery, GetLatestReferendaPostsWithVotesQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetLatestReferendaPostsWithVotesQuery, GetLatestReferendaPostsWithVotesQueryVariables>(GetLatestReferendaPostsWithVotesDocument, baseOptions);
+      }
+export function useGetLatestReferendaPostsWithVotesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLatestReferendaPostsWithVotesQuery, GetLatestReferendaPostsWithVotesQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetLatestReferendaPostsWithVotesQuery, GetLatestReferendaPostsWithVotesQueryVariables>(GetLatestReferendaPostsWithVotesDocument, baseOptions);
+        }
+export type GetLatestReferendaPostsWithVotesQueryHookResult = ReturnType<typeof useGetLatestReferendaPostsWithVotesQuery>;
+export type GetLatestReferendaPostsWithVotesLazyQueryHookResult = ReturnType<typeof useGetLatestReferendaPostsWithVotesLazyQuery>;
+export type GetLatestReferendaPostsWithVotesQueryResult = ApolloReactCommon.QueryResult<GetLatestReferendaPostsWithVotesQuery, GetLatestReferendaPostsWithVotesQueryVariables>;
 export const LatestTechCommitteeProposalPostsDocument = gql`
     query LatestTechCommitteeProposalPosts($postType: Int!, $limit: Int! = 5) {
   posts(

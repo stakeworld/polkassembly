@@ -78,6 +78,7 @@ export default styled(OnchainInfoWrapper)`
 	@media only screen and (max-width: 576px) {
 		padding: 2rem;
 	}
+
 	/* Arguments Style */
 	.arguments-heading {
 		margin-bottom: 12px;
@@ -94,6 +95,7 @@ export default styled(OnchainInfoWrapper)`
 			}
 		}
 	}
+
 	.json-view, .table-view {
 		width: 100%;
 		max-width: 100%;
@@ -102,6 +104,7 @@ export default styled(OnchainInfoWrapper)`
 		padding: 16px;
 		border: 2px solid #EBF0F5;
 	}
+
 	.react-json-view {
 		padding: 8px;
 		font-size: 14px;
@@ -113,10 +116,12 @@ export default styled(OnchainInfoWrapper)`
 			word-break: break-all;
 		}
 	}
+
 	.json-view {
 		overflow-x: auto;
 		background-color: #fff !important;
 	}
+
 	.table-view, .json-view {
 		max-height: 500px;
 		overflow-y: auto;
@@ -154,6 +159,19 @@ export default styled(OnchainInfoWrapper)`
 				padding: 10px 24px;
 				background: #fff;
 			}
+		}
+	}
+
+	.prev-proposals-btn {
+		display: flex;
+		align-items: center;
+		cursor: pointer;
+		color: pink_primary;
+		margin-left: 6px;
+		font-weight: 500;
+
+		&>div {
+			margin-left: 12px;
 		}
 	}
 `;

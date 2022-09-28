@@ -164,45 +164,47 @@ export const GET_CHILD_BOUNTIES_OF_PARENT_BOUNTY = gql`
 `;
 
 export const GET_USERS_PROPOSALS = gql`
-    query GetUsersProposals($proposer_address: String!) {
-        posts(where: {_or: {onchain_link: {onchain_proposal_id: {_is_null: false}, onchain_treasury_proposal_id: {_is_null: false}}}, onchain_link: {proposer_address: {_eq: $proposer_address}}}, order_by: {created_at: desc_nulls_last}) {
-            author_id
-            content
-            title
-            topic_id
-            id
-            created_at
-            onchain_link {
-                onchain_proposal_id
-                onchain_treasury_proposal_id
-                onchain_treasury_spend_proposal {
-                    beneficiary
-                    treasuryProposalId
-                    value
-                    treasuryStatus(last: 1) {
-                        status
-                    }
-                }
-                onchain_proposal {
-                    depositAmount
-                    author
-                    id
-                    proposalId
-                    preimageHash
-                    proposalStatus(last: 1) {
-                        status
-                        id
-                    }
-                }
-            }
-            type {
-                name
-                id
-            }
-            topic {
-                id
-                name
-            }
+query GetUsersProposals($proposer_address: String!) {
+    posts(where: {_or: [{onchain_link: {onchain_proposal_id: {_is_null: false}}}, {onchain_link: {onchain_treasury_proposal_id: {_is_null: false}}}], onchain_link: {proposer_address: {_eq: $proposer_address}}}) {
+      id
+      author_id
+      content
+      title
+      topic_id
+      created_at
+      onchain_link {
+        id
+        onchain_proposal_id
+        onchain_treasury_proposal_id
+        onchain_treasury_spend_proposal {
+          beneficiary
+          treasuryProposalId
+          value
+          treasuryStatus(last: 1) {
+            status
+          }
         }
+        proposer_address
+        onchain_proposal {
+          depositAmount
+          author
+          id
+          proposalId
+          preimageHash
+          proposalStatus(last: 1) {
+            status
+            id
+          }
+        }
+      }
+      type {
+        name
+        id
+      }
+      topic {
+        id
+        name
+      }
     }
+  }
 `;

@@ -14,11 +14,12 @@ import ExternalLinks from '../../ExternalLinks';
 
 interface Props{
 	onchainLink: OnchainLinkTreasuryProposalFragment
+	setOtherProposalsSidebarAddr: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 const currentNetwork = getNetwork();
 
-const PostTreasuryInfo = ({ onchainLink }: Props) => {
+const PostTreasuryInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props) => {
 	if (!onchainLink) return null;
 
 	const {
@@ -30,33 +31,41 @@ const PostTreasuryInfo = ({ onchainLink }: Props) => {
 	const bond = onchainTreasuryProposal?.[0]?.bond;
 
 	return (
-		<OnchainInfoWrapper>
-			<h4>On-chain info</h4>
-			<Grid>
-				<Grid.Column mobile={16} tablet={8} computer={8}>
-					<h6>Proposer</h6>
-					<AddressComponent address={proposerAddress}/>
-				</Grid.Column>
-				{bond && currentNetwork &&
-				<Grid.Column mobile={16} tablet={8} computer={8}>
-					<h6>Bond</h6>
-					{parseInt(bond) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
-				</Grid.Column>}
-				{beneficiary &&
-				<Grid.Column mobile={16} tablet={8} computer={8}>
-					<h6>Beneficiary</h6>
-					<AddressComponent address={beneficiary}/>
-				</Grid.Column>}
-				{value && currentNetwork &&
-				<Grid.Column mobile={16} tablet={8} computer={8}>
-					<h6>Value</h6>
-					{parseInt(value) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
-				</Grid.Column>}
-				<Grid.Column mobile={16} tablet={16} computer={16}>
-					<ExternalLinks isTreasuryProposal={true} onchainId={onchainLink.onchain_treasury_proposal_id} />
-				</Grid.Column>
-			</Grid>
-		</OnchainInfoWrapper>
+		<>
+			<OnchainInfoWrapper>
+				<h4>On-chain info</h4>
+				<Grid>
+					<Grid.Column mobile={16} tablet={8} computer={8}>
+						<h6>Proposer</h6>
+						<AddressComponent address={proposerAddress}/>
+					</Grid.Column>
+					{bond && currentNetwork &&
+					<Grid.Column mobile={16} tablet={8} computer={8}>
+						<h6>Bond</h6>
+						{parseInt(bond) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
+					</Grid.Column>}
+					{beneficiary &&
+					<Grid.Column mobile={16} tablet={8} computer={8}>
+						<h6>Beneficiary</h6>
+						<AddressComponent address={beneficiary}/>
+					</Grid.Column>}
+					{value && currentNetwork &&
+					<Grid.Column mobile={16} tablet={8} computer={8}>
+						<h6>Value</h6>
+						{parseInt(value) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
+					</Grid.Column>}
+					<Grid.Column mobile={16} tablet={16} computer={16}>
+						<ExternalLinks isTreasuryProposal={true} onchainId={onchainLink.onchain_treasury_proposal_id} />
+					</Grid.Column>
+				</Grid>
+			</OnchainInfoWrapper>
+
+			<OnchainInfoWrapper>
+				<span className='prev-proposals-btn' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
+					Show all proposals by proposer &gt;
+				</span>
+			</OnchainInfoWrapper>
+		</>
 	);
 };
 

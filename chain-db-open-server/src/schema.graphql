@@ -26,6 +26,9 @@ type Query {
   councilMember(where: CouncilMemberWhereUniqueInput!): CouncilMember
   councilMembers(where: CouncilMemberWhereInput, orderBy: CouncilMemberOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CouncilMember]!
   councilMembersConnection(where: CouncilMemberWhereInput, orderBy: CouncilMemberOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CouncilMemberConnection!
+  councilMotionVote(where: CouncilMotionVoteWhereUniqueInput!): CouncilMotionVote
+  councilMotionVotes(where: CouncilMotionVoteWhereInput, orderBy: CouncilMotionVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CouncilMotionVote]!
+  councilMotionVotesConnection(where: CouncilMotionVoteWhereInput, orderBy: CouncilMotionVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CouncilMotionVoteConnection!
   era(where: EraWhereUniqueInput!): Era
   eras(where: EraWhereInput, orderBy: EraOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Era]!
   erasConnection(where: EraWhereInput, orderBy: EraOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EraConnection!
@@ -68,6 +71,9 @@ type Query {
   referendumStatus(where: ReferendumStatusWhereUniqueInput!): ReferendumStatus
   referendumStatuses(where: ReferendumStatusWhereInput, orderBy: ReferendumStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ReferendumStatus]!
   referendumStatusesConnection(where: ReferendumStatusWhereInput, orderBy: ReferendumStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReferendumStatusConnection!
+  referendumVote(where: ReferendumVoteWhereUniqueInput!): ReferendumVote
+  referendumVotes(where: ReferendumVoteWhereInput, orderBy: ReferendumVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ReferendumVote]!
+  referendumVotesConnection(where: ReferendumVoteWhereInput, orderBy: ReferendumVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReferendumVoteConnection!
   reward(where: RewardWhereUniqueInput!): Reward
   rewards(where: RewardWhereInput, orderBy: RewardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Reward]!
   rewardsConnection(where: RewardWhereInput, orderBy: RewardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RewardConnection!
@@ -119,6 +125,7 @@ type Subscription {
   childBountyStatus(where: ChildBountyStatusSubscriptionWhereInput): ChildBountyStatusSubscriptionPayload
   council(where: CouncilSubscriptionWhereInput): CouncilSubscriptionPayload
   councilMember(where: CouncilMemberSubscriptionWhereInput): CouncilMemberSubscriptionPayload
+  councilMotionVote(where: CouncilMotionVoteSubscriptionWhereInput): CouncilMotionVoteSubscriptionPayload
   era(where: EraSubscriptionWhereInput): EraSubscriptionPayload
   heartBeat(where: HeartBeatSubscriptionWhereInput): HeartBeatSubscriptionPayload
   motion(where: MotionSubscriptionWhereInput): MotionSubscriptionPayload
@@ -133,6 +140,7 @@ type Subscription {
   proposalStatus(where: ProposalStatusSubscriptionWhereInput): ProposalStatusSubscriptionPayload
   referendum(where: ReferendumSubscriptionWhereInput): ReferendumSubscriptionPayload
   referendumStatus(where: ReferendumStatusSubscriptionWhereInput): ReferendumStatusSubscriptionPayload
+  referendumVote(where: ReferendumVoteSubscriptionWhereInput): ReferendumVoteSubscriptionPayload
   reward(where: RewardSubscriptionWhereInput): RewardSubscriptionPayload
   session(where: SessionSubscriptionWhereInput): SessionSubscriptionPayload
   slashing(where: SlashingSubscriptionWhereInput): SlashingSubscriptionPayload

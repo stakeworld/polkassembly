@@ -20,9 +20,10 @@ interface Props {
 	extensionName?: string
 	popupContent?: string
 	disableAddress?:boolean
+	shortenAddressLength?:number
 }
 
-const Address = ({ address, className, displayInline, disableIdenticon, extensionName, popupContent, disableAddress }: Props): JSX.Element => {
+const Address = ({ address, className, displayInline, disableIdenticon, extensionName, popupContent, disableAddress, shortenAddressLength }: Props): JSX.Element => {
 	const { api, apiReady } = useContext(ApiContext);
 	const [mainDisplay, setMainDisplay] = useState<string>('');
 	const [sub, setSub] = useState<string | null>(null);
@@ -102,7 +103,7 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 							<Popup
 								trigger={
 									<div className={'header inline identityName'}>
-										{mainDisplay || shortenAddress(address)}
+										{mainDisplay || shortenAddress(address, shortenAddressLength)}
 										{sub && <span className='sub'>/{sub}</span>}
 									</div>
 								}
@@ -115,7 +116,7 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 							<div className={'description inline'}>
 								{identity && mainDisplay && <IdentityBadge identity={identity} flags={flags} />}
 								<span className='identityName'>
-									{ mainDisplay || shortenAddress(address)}
+									{ mainDisplay || shortenAddress(address, shortenAddressLength)}
 									{sub && <span className='sub'>/{sub}</span>}
 								</span>
 							</div>
@@ -132,7 +133,7 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 												{!extensionName && sub && <span className='sub'>/{sub}</span>}
 											</span>
 										</div>
-										<div className={'description inline'}>{shortenAddress(address)}</div>
+										<div className={'description inline'}>{shortenAddress(address, shortenAddressLength)}</div>
 									</>
 								}
 								content={popupContent}
@@ -147,9 +148,9 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 										{!extensionName && sub && <span className='sub'>/{sub}</span>}
 									</span>
 								</div>
-								<div className={'description'}>{shortenAddress(address)}</div>
+								<div className={'description'}>{shortenAddress(address, shortenAddressLength)}</div>
 							</>
-						: <div className={'description'}>{shortenAddress(address)}</div>
+						: <div className={'description'}>{shortenAddress(address, shortenAddressLength)}</div>
 				}
 			</div>}
 		</div>
