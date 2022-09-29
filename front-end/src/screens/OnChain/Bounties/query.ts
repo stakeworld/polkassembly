@@ -7,7 +7,7 @@ import { authorFields } from 'src/fragments/author';
 
 // for bounties postType should be 2, postTopic should be 4
 export const QUERY_LATEST_BOUNTIES = gql`
-    query GetLatestBountyPosts($postType: Int!, $limit: Int! = 5 ) {
+    query GetLatestBountyPosts($postType: Int!, $limit: Int! = 5) {
         posts(limit: $limit, where: {
             type: {
                 id: {

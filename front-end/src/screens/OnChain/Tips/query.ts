@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import { authorFields } from 'src/fragments/author';
 
 export const QUERY_LATEST_TIP_PROPOSALS = gql`
-    query GetLatestTipPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5 ) {
+    query GetLatestTipPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
         posts(limit: $limit, where: {
             type: {
                 id: {

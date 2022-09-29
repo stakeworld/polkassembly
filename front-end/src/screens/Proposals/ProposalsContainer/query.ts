@@ -6,8 +6,8 @@ import gql from 'graphql-tag';
 import { authorFields } from 'src/fragments/author';
 
 export const QUERY_LATEST_PROPOSALS = gql`
-    query AllDemocracyProposalPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5 ) {
-        posts(limit: $limit, where: {
+    query AllDemocracyProposalPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5, $offset: Int! = 0 ) {
+        posts(limit: $limit, offset: $offset, where: {
             type: {
                 id: {
                     _eq: $postType
