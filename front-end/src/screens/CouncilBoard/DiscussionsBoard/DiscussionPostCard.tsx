@@ -4,21 +4,26 @@
 
 import styled from '@xstyled/styled-components';
 import moment from 'moment';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Icon } from 'semantic-ui-react';
+import { useDiscussionPostAndCommentsQuery } from 'src/generated/graphql';
+import { noTitle } from 'src/global/noTitle';
+import Markdown from 'src/ui-components/Markdown';
 
 import commentImg from '../../../assets/latest-activity-comment.png';
 
 interface Props {
 	className?: string
+	id: number
 	title?: string | null
-	content?: string | null
 	username?: string
 	commentsCount?: number | null
 	createdAt?: any
 }
 
-const DiscussionPostCard = ({ className, title, content, username, commentsCount, createdAt } : Props) => {
+const DiscussionPostCard = ({ className, id, title, username, commentsCount, createdAt } : Props) => {
+
+	const { data, error, loading, refetch } = useDiscussionPostAndCommentsQuery({ variables: { 'id': id } });
 
 	const relativeCreatedAt = createdAt ?
 		moment(createdAt).isBefore(moment().subtract(1,'w')) ?
@@ -26,10 +31,17 @@ const DiscussionPostCard = ({ className, title, content, username, commentsCount
 			moment(createdAt).startOf('day').fromNow() :
 		null;
 
+	useEffect(() => {
+		refetch();
+	}, [refetch]);
+
 	return (
 		<div className={className}>
-			<h5>{title}</h5>
-			<p>{content}</p>
+			<h5>{title || noTitle}</h5>
+			{ loading && <p>loading...</p>}
+			{
+				!loading && !error && data?.posts && data.posts.length > 0 && <Markdown md={`${(data.posts[0].content as string).split(' ').splice(0, 30).join(' ')}...` } />
+			}
 
 			<div className="info-bar">
 				<div className="posted-by d-flex">

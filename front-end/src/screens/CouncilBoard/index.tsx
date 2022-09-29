@@ -9,7 +9,7 @@ import { Grid } from 'semantic-ui-react';
 import DiscussionsBoard from './DiscussionsBoard';
 import PostSidebar from './PostSidebar';
 import ReferendaBoard from './ReferendaBoard';
-import TipsBoard from './TipsBoard';
+// import TipsBoard from './TipsBoard';
 
 enum SidebarReducerAction {
 	CLOSE,
@@ -89,9 +89,9 @@ const CouncilBoardContainer = ({ className } : {className?: string}) => {
 					<Grid.Column>
 						<DiscussionsBoard className="board-card" openSidebar={(postID) => openSidebar(postID, SidebarReducerAction.OPEN_DISCUSSION)}  />
 					</Grid.Column>
-					<Grid.Column>
+					{/* <Grid.Column>
 						<TipsBoard className="board-card" openSidebar={(postID) => openSidebar(postID, SidebarReducerAction.OPEN_TIP)}  />
-					</Grid.Column>
+					</Grid.Column> */}
 					<Grid.Column>
 						<ReferendaBoard className="board-card" openSidebar={(postID) => openSidebar(postID, SidebarReducerAction.OPEN_REFERENDA)}  />
 					</Grid.Column>
@@ -147,6 +147,7 @@ export default styled(CouncilBoardContainer)`
 
 		.post-card-div {
 			cursor: pointer;
+			width: 100%
 		}
 	}
 `;

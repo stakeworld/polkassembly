@@ -3,7 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from '@xstyled/styled-components';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useAllReferendaPostsQuery } from 'src/generated/graphql';
+import { post_type } from 'src/global/post_types';
 
 import ReferendaPostCard from './ReferendaPostCard';
 
@@ -13,15 +15,41 @@ interface Props {
 }
 
 const ReferendaBoard = ({ className, openSidebar } : Props) => {
+	const { data, loading, error, refetch } = useAllReferendaPostsQuery({
+		variables: {
+			limit: 10,
+			postType: post_type.ON_CHAIN
+		}
+	});
+
+	useEffect(() => {
+		refetch();
+	}, [refetch]);
+
 	return (
 		<div className={className}>
-			<h3>Referenda <span className='card-count'>23</span></h3>
+			<h3>Referenda {!loading && !error && data?.posts && <span className='card-count'>{data.posts.length}</span>}</h3>
 
-			{[1,2,3,4].map(item => (
-				<div key={item} className='post-card-div' onClick={() => openSidebar(item)}>
-					<ReferendaPostCard />
-				</div>
-			))}
+			{
+				!loading && !error && data?.posts &&
+				<>
+					{ data.posts.length > 0 ?
+						data.posts.map(post => {
+							return !!post?.author?.username &&
+						<div key={post.id} className='post-card-div' onClick={() => openSidebar(Number(post.onchain_link?.onchain_referendum_id))}>
+							<ReferendaPostCard
+								title={post.title}
+								method={post.onchain_link?.onchain_referendum[0]?.preimage?.method}
+								postStatus={post.onchain_link?.onchain_referendum?.[0]?.referendumStatus?.[0].status}
+								createdAt={post.created_at}
+								referendumId={Number(post.onchain_link?.onchain_referendum_id)}
+							/>
+						</div>;
+						})
+						: <p>No Referenda found.</p>
+					}
+				</>
+			}
 		</div>
 	);
 };

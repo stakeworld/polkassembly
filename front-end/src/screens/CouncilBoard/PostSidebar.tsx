@@ -6,6 +6,7 @@ import styled from '@xstyled/styled-components';
 import React from 'react';
 import { Icon } from 'semantic-ui-react';
 import PostDiscussion from 'src/screens/DiscussionPost';
+import PostReferendum from 'src/screens/ReferendumPost';
 
 interface Props {
   className?: string
@@ -20,7 +21,10 @@ const PostSidebar = ({ className, routeWrapperHeight, closeSidebar, sidebarState
 			<Icon className='close-sidebar-icon' onClick={closeSidebar} name='close' />
 			<div className="sidebar-content">
 				{sidebarState.postType === 'discussion' &&
-					<PostDiscussion postID={sidebarState.postID} />
+						<PostDiscussion postID={sidebarState.postID} />
+				}
+				{sidebarState.postType === 'referenda' &&
+						<PostReferendum postID={sidebarState.postID} />
 				}
 			</div>
 		</div>
@@ -29,7 +33,7 @@ const PostSidebar = ({ className, routeWrapperHeight, closeSidebar, sidebarState
 
 export default styled(PostSidebar)`
 	position: absolute;
-	min-width: 250px;
+	min-width: 70vw;
 	width: max-content;
 	max-width: 70vw;
 	right: 0;
@@ -40,7 +44,7 @@ export default styled(PostSidebar)`
 	box-shadow: -5px 0 15px -12px #888;
 
 	@media only screen and (max-width: 768px) {
-		max-width: 90vw;
+		max-width: 92vw;
 		top: 0;
 		padding: 40px 14px;
 		padding-top: 70px;
@@ -64,5 +68,8 @@ export default styled(PostSidebar)`
 
 	.sidebar-content {
 		margin-top: 20px;
+		/* position: -webkit-sticky;
+		position: sticky; */
+		top: 0;
 	}
 `;
