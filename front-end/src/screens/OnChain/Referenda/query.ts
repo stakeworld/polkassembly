@@ -6,8 +6,8 @@ import gql from 'graphql-tag';
 import { authorFields } from 'src/fragments/author';
 
 export const QUERY_LATEST_REFERENDA = gql`
-    query GetLatestReferendaPosts($postType: Int!, $limit: Int! = 5, $offset: Int!) {
-        posts(limit: $limit, offset: $offset, where: {
+    query GetLatestReferendaPosts($postType: Int!, $limit: Int! = 5) {
+        posts(limit: $limit, where: {
             type: {
                 id: {
                     _eq: $postType
