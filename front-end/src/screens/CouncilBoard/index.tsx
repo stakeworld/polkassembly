@@ -83,8 +83,8 @@ const CouncilBoardContainer = ({ className } : {className?: string}) => {
 			return;
 		}
 
-		api.query.council.members().then((members) => {
-			setMembers(members.map(member => member.toString()));
+		api.query.council.members().then((memberAccounts) => {
+			setMembers(memberAccounts.map(member => member.toString()));
 		});
 
 	}, [api, apiReady]);
