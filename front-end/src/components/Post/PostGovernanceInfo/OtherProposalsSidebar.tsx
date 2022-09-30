@@ -70,7 +70,7 @@ const OtherProposalsSidebar = ({ className, routeWrapperHeight, closeOtherPropos
 	};
 
 	return (
-		<div className={className} style={ { maxHeight: `${routeWrapperHeight}px`, minHeight: `${routeWrapperHeight}px` } }>
+		<div className={className} style={ { maxHeight: `${routeWrapperHeight}px`, minHeight: `${routeWrapperHeight}px`, position:'fixed', top:0 } }>
 			<Icon className='close-icon' name='close' onClick={closeOtherProposalsSidebar} />
 			<div className="d-flex other-proposals-heading">
 				Other Proposals by <span className='addr-cont'><AddressComponent address={proposerAddress} shortenAddressLength={7}/></span>
