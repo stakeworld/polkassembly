@@ -3,13 +3,16 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from '@xstyled/styled-components';
-import React, { useReducer } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import { Grid } from 'semantic-ui-react';
+import { ApiContext } from 'src/context/ApiContext';
+import { UserDetailsContext } from 'src/context/UserDetailsContext';
+import Loader from 'src/ui-components/Loader';
 
 import DiscussionsBoard from './DiscussionsBoard';
 import PostSidebar from './PostSidebar';
 import ReferendaBoard from './ReferendaBoard';
-// import TipsBoard from './TipsBoard';
+import TipsBoard from './TipsBoard';
 
 enum SidebarReducerAction {
 	CLOSE,
@@ -56,7 +59,6 @@ function reducer(state: any, action: any) {
 }
 
 const CouncilBoardContainer = ({ className } : {className?: string}) => {
-
 	// calculate #route-wrapper height with margin for sidebar.
 	const routeWrapperEl = document.getElementById('route-wrapper');
 	let routeWrapperHeight = routeWrapperEl?.offsetHeight;
@@ -65,7 +67,27 @@ const CouncilBoardContainer = ({ className } : {className?: string}) => {
 		routeWrapperHeight += parseInt(window.getComputedStyle(routeWrapperEl).getPropertyValue('margin-bottom'));
 	}
 
+	const [members, setMembers] = useState<string[]>([]);
 	const [sidebarState, dispatch] = useReducer(reducer, initSidebarState);
+
+	// const defaultAddress = 'E35K8FV3K1vn1wJfkjUZcDnG8mmcXVre4LiDZxKWDdjtaVE';
+	const { defaultAddress } = useContext(UserDetailsContext);
+	const { api, apiReady } = useContext(ApiContext);
+
+	useEffect(() => {
+		if (!api) {
+			return;
+		}
+
+		if (!apiReady) {
+			return;
+		}
+
+		api.query.council.members().then((members) => {
+			setMembers(members.map(member => member.toString()));
+		});
+
+	}, [api, apiReady]);
 
 	const openSidebar = (postID: number, type: SidebarReducerAction) => {
 		dispatch({ postID, type });
@@ -75,38 +97,53 @@ const CouncilBoardContainer = ({ className } : {className?: string}) => {
 		dispatch({ type: SidebarReducerAction.CLOSE });
 	};
 
-	return (
+	if (!defaultAddress) return (
 		<div className={className}>
-			<h1>Council Board</h1>
+			<h5>Please login to access the council board.</h5>
+		</div>
+	);
 
-			<Grid>
-				<Grid.Row columns={1} only='mobile tablet'>
-					<Grid.Column>
-						<h3>Feature available in desktop site only.</h3>
-					</Grid.Column>
-				</Grid.Row>
-				<Grid.Row columns={3} only='computer'>
-					<Grid.Column>
-						<DiscussionsBoard className="board-card" openSidebar={(postID) => openSidebar(postID, SidebarReducerAction.OPEN_DISCUSSION)}  />
-					</Grid.Column>
-					{/* <Grid.Column>
-						<TipsBoard className="board-card" openSidebar={(postID) => openSidebar(postID, SidebarReducerAction.OPEN_TIP)}  />
-					</Grid.Column> */}
-					<Grid.Column>
-						<ReferendaBoard className="board-card" openSidebar={(postID) => openSidebar(postID, SidebarReducerAction.OPEN_REFERENDA)}  />
-					</Grid.Column>
-				</Grid.Row>
-			</Grid>
+	return (
+		members && members.length > 0 ?
+			members.includes(defaultAddress) ?
+				<div className={className}>
+					<h1>Council Board</h1>
 
-			{/* Create Event Sidebar */}
-			{routeWrapperHeight && sidebarState.enabled &&
+					<Grid>
+						<Grid.Row columns={1} only='mobile tablet'>
+							<Grid.Column>
+								<h3>Feature available in desktop site only.</h3>
+							</Grid.Column>
+						</Grid.Row>
+						<Grid.Row columns={3} only='computer'>
+							<Grid.Column>
+								<DiscussionsBoard className="board-card" openSidebar={(postID) => openSidebar(postID, SidebarReducerAction.OPEN_DISCUSSION)}  />
+							</Grid.Column>
+							<Grid.Column>
+								<ReferendaBoard className="board-card" openSidebar={(postID) => openSidebar(postID, SidebarReducerAction.OPEN_REFERENDA)}  />
+							</Grid.Column>
+							<Grid.Column>
+								<TipsBoard className="board-card" openSidebar={(postID) => openSidebar(postID, SidebarReducerAction.OPEN_TIP)}  />
+							</Grid.Column>
+						</Grid.Row>
+					</Grid>
+
+					{/* Create Event Sidebar */}
+					{routeWrapperHeight && sidebarState.enabled &&
 				<PostSidebar
 					closeSidebar={closeSidebar}
 					routeWrapperHeight={routeWrapperHeight}
 					sidebarState={sidebarState}
 				/>
-			}
-		</div>
+					}
+				</div> :
+				<div className={className}>
+					<h5>Feature only available for council members.</h5>
+				</div>
+			:
+			<div className={className}>
+				<Loader />
+			</div>
 	);
 
 };

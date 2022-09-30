@@ -5,25 +5,31 @@
 import styled from '@xstyled/styled-components';
 import React from 'react';
 
-import TipsPostCard from './TipsPostCard';
+// import TipsPostCard from './TipsPostCard';
 
 interface Props {
 	className?: string
 	openSidebar: (postID: number) => void
 }
 
-const TipsBoard = ({ className, openSidebar } : Props) => {
+const TipsBoard = ({ className } : Props) => {
 	return (
 		<div className={className}>
-			<h3>Tips <span className='card-count'>23</span></h3>
+			<h3>Tips <span className='card-count'></span></h3>
+			<p>Coming Soon...</p>
 
-			{[1,2,3,4].map(item => (
+			{/* {[1,2,3,4].map(item => (
 				<div key={item} className='post-card-div' onClick={() => openSidebar(item)}>
 					<TipsPostCard />
 				</div>
-			))}
+			))} */}
 		</div>
 	);
 };
 
-export default styled(TipsBoard)``;
+export default styled(TipsBoard)`
+	p {
+		font-size: 16px;
+		margin-bottom: 40px;
+	}
+`;

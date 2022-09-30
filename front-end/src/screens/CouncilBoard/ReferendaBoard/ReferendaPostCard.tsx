@@ -2,12 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import styled from '@xstyled/styled-components';
 import moment from 'moment';
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Icon } from 'semantic-ui-react';
-import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { useGetLatestReferendaPostsWithVotesQuery, useReferendumPostAndCommentsQuery } from 'src/generated/graphql';
 import { noTitle } from 'src/global/noTitle';
 import Markdown from 'src/ui-components/Markdown';
@@ -28,7 +26,7 @@ interface Props {
 
 const ReferendaPostCard = ({ className, createdAt, postStatus, referendumId, title, method } : Props) => {
 	// const { defaultAddress } = useContext(UserDetailsContext);
-	const defaultAddress = '12NLgzqfhuJkc9mZ5XUTTG85N8yhhzfptwqF1xVhtK3ZX7f6';
+	const defaultAddress = 'E35K8FV3K1vn1wJfkjUZcDnG8mmcXVre4LiDZxKWDdjtaVE';
 
 	const { data, error, loading, refetch } = useReferendumPostAndCommentsQuery({ variables: { 'id': referendumId } });
 
@@ -45,8 +43,8 @@ const ReferendaPostCard = ({ className, createdAt, postStatus, referendumId, tit
 
 	useEffect(() => {
 		if(!voteData) return;
-		console.log('voteData: ', voteData.referendumVotes);
-	},[voteData]);
+		console.log('voteData: #', referendumId, ': ', voteData.referendumVotes);
+	},[voteData, referendumId]);
 
 	const relativeCreatedAt = createdAt ?
 		moment(createdAt).isBefore(moment().subtract(1,'w')) ?
@@ -57,9 +55,17 @@ const ReferendaPostCard = ({ className, createdAt, postStatus, referendumId, tit
 	return (
 		<div className={className}>
 			<div className="vote-history">
-				{!voteLoading && !voteError && voteData && voteData.referendumVotes.length > 0 &&
+				{!voteLoading && !voteError && voteData && voteData.referendumVotes.length < 1 &&
 				<>
-					<span>Icon</span> on 22 Jul, 3:00pm
+					{referendumId ? <>
+						<div className='thumbs up'>
+							<Icon name='thumbs up' />
+						</div> Aye on 22 Jul, 3:00pm
+					</> : <>
+						<div className='thumbs down'>
+							<Icon name='thumbs down' />
+						</div> Nay on 22 Jul, 3:00pm
+					</>}
 				</>
 				}
 			</div>
@@ -104,14 +110,23 @@ export default styled(ReferendaPostCard)`
 	.vote-history {
 		font-weight: 500;
 		font-size: 12px;
-		margin-bottom: 6px;
+		margin-bottom: 9px;
 
-		&.yay {
-			color: #5BC044;
+		.thumbs {
+			display: inline-block;
+			text-align: center;
+			vertical-align: middle;
+			width: 2.5rem;
+			height: 2.5rem;
+			font-size: 1.5rem;
 		}
 
-		&.nay {
-			color: #FF0000;
+		.thumbs.up {
+			color: green_primary;
+		}
+
+		.thumbs.down {
+			color: red_primary;
 		}
 	}
 
