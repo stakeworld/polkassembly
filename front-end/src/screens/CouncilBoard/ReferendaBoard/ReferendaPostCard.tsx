@@ -52,7 +52,7 @@ const ReferendaPostCard = ({ className, createdAt, postStatus, referendumId, tit
 			<div className="vote-history">
 				{!voteLoading && !voteError && voteData && voteData.referendumVotes.length < 1 &&
 				<>
-					{voteData.referendumVotes[0]?.vote === 'aye' ? <>
+					{voteData.referendumVotes[0]?.vote.toLowerCase() === 'aye' ? <>
 						<div className='thumbs up'>
 							<Icon name='thumbs up' />
 						</div> Aye
