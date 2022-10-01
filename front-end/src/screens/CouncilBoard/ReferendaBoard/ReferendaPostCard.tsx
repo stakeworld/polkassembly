@@ -4,8 +4,9 @@
 
 import styled from '@xstyled/styled-components';
 import moment from 'moment';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Icon } from 'semantic-ui-react';
+import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { useGetLatestReferendaPostsWithVotesQuery, useReferendumPostAndCommentsQuery } from 'src/generated/graphql';
 import { noTitle } from 'src/global/noTitle';
 import Markdown from 'src/ui-components/Markdown';
@@ -25,8 +26,7 @@ interface Props {
 }
 
 const ReferendaPostCard = ({ className, createdAt, postStatus, referendumId, title, method } : Props) => {
-	// const { defaultAddress } = useContext(UserDetailsContext);
-	const defaultAddress = 'E35K8FV3K1vn1wJfkjUZcDnG8mmcXVre4LiDZxKWDdjtaVE';
+	const { defaultAddress } = useContext(UserDetailsContext);
 
 	const { data, error, loading, refetch } = useReferendumPostAndCommentsQuery({ variables: { 'id': referendumId } });
 
@@ -57,7 +57,7 @@ const ReferendaPostCard = ({ className, createdAt, postStatus, referendumId, tit
 			<div className="vote-history">
 				{!voteLoading && !voteError && voteData && voteData.referendumVotes.length < 1 &&
 				<>
-					{referendumId ? <>
+					{voteData.referendumVotes[0]?.vote === 'aye' ? <>
 						<div className='thumbs up'>
 							<Icon name='thumbs up' />
 						</div> Aye on 22 Jul, 3:00pm

@@ -70,7 +70,6 @@ const CouncilBoardContainer = ({ className } : {className?: string}) => {
 	const [members, setMembers] = useState<string[]>([]);
 	const [sidebarState, dispatch] = useReducer(reducer, initSidebarState);
 
-	// const defaultAddress = 'E35K8FV3K1vn1wJfkjUZcDnG8mmcXVre4LiDZxKWDdjtaVE';
 	const { defaultAddress } = useContext(UserDetailsContext);
 	const { api, apiReady } = useContext(ApiContext);
 
