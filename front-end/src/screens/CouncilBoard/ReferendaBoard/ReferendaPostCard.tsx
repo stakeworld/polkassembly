@@ -41,11 +41,6 @@ const ReferendaPostCard = ({ className, createdAt, postStatus, referendumId, tit
 		refetch();
 	},[refetch]);
 
-	useEffect(() => {
-		if(!voteData) return;
-		console.log('voteData: #', referendumId, ': ', voteData.referendumVotes);
-	},[voteData, referendumId]);
-
 	const relativeCreatedAt = createdAt ?
 		moment(createdAt).isBefore(moment().subtract(1,'w')) ?
 			moment(createdAt).format('DD-MM-YY') :
