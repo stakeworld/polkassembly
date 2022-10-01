@@ -55,11 +55,11 @@ const ReferendaPostCard = ({ className, createdAt, postStatus, referendumId, tit
 					{voteData.referendumVotes[0]?.vote === 'aye' ? <>
 						<div className='thumbs up'>
 							<Icon name='thumbs up' />
-						</div> Aye on 22 Jul, 3:00pm
+						</div> Aye
 					</> : <>
 						<div className='thumbs down'>
 							<Icon name='thumbs down' />
-						</div> Nay on 22 Jul, 3:00pm
+						</div> Nay
 					</>}
 				</>
 				}
