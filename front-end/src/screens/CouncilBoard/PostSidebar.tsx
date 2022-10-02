@@ -32,12 +32,12 @@ const PostSidebar = ({ className, routeWrapperHeight, closeSidebar, sidebarState
 };
 
 export default styled(PostSidebar)`
-	position: absolute;
+	position: fixed;
 	min-width: 70vw;
 	width: max-content;
 	max-width: 70vw;
 	right: 0;
-	top: 6.5rem;
+	top: 0;
 	background: #fff;
 	z-index: 100;
 	padding: 40px 24px;
@@ -68,8 +68,8 @@ export default styled(PostSidebar)`
 
 	.sidebar-content {
 		margin-top: 20px;
-		/* position: -webkit-sticky;
-		position: sticky; */
+		max-height: 92vh;
 		top: 0;
+		overflow-y: auto;
 	}
 `;

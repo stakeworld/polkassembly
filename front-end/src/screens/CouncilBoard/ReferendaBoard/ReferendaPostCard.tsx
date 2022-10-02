@@ -50,7 +50,7 @@ const ReferendaPostCard = ({ className, createdAt, postStatus, referendumId, tit
 	return (
 		<div className={className}>
 			<div className="vote-history">
-				{!voteLoading && !voteError && voteData && voteData.referendumVotes.length < 1 &&
+				{!voteLoading && !voteError && voteData && voteData.referendumVotes.length > 0 &&
 				<>
 					{voteData.referendumVotes[0]?.vote.toLowerCase() === 'aye' ? <>
 						<div className='thumbs up'>
@@ -122,6 +122,7 @@ export default styled(ReferendaPostCard)`
 
 		.thumbs.down {
 			color: red_primary;
+			margin-top: 4px;
 		}
 	}
 
