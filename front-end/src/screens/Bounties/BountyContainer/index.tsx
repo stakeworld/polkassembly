@@ -24,7 +24,7 @@ const BountyContainer = ({ className, limit }:Props) => {
 
 	const { data, error, loading, refetch } = useAllBountyPostsQuery({ variables: {
 		limit,
-		offset: offset,
+		offset,
 		postTopic: post_topic.TREASURY,
 		postType: post_type.ON_CHAIN
 	} });
