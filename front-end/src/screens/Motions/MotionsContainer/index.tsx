@@ -3,13 +3,14 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React, { useEffect, useState } from 'react';
+import { PaginationProps } from 'semantic-ui-react';
+import PaginationDiv from 'src/ui-components/PaginationDiv';
 
 import MotionsListing from '../../../components/Listings/MotionsListing';
-import { useAllMotionPostsQuery } from '../../../generated/graphql';
+import { useAllMotionPostsQuery, useGetLatestMotionsCountQuery } from '../../../generated/graphql';
 import { post_type } from '../../../global/post_types';
 import FilteredError from '../../../ui-components/FilteredError';
 import Loader from '../../../ui-components/Loader';
-import LoadMore from '../../../ui-components/LoadMore';
 
 interface Props {
 	className?: string
@@ -18,9 +19,15 @@ interface Props {
 
 const MotionsContainer = ({ className, limit }:Props) => {
 	const [page, setPage] = useState(1);
+	const [offset, setOffset] = useState(0);
 
 	const { data, error, loading, refetch } = useAllMotionPostsQuery({ variables: {
-		limit: limit * page,
+		limit,
+		offset,
+		postType: post_type.ON_CHAIN
+	} });
+
+	const { data: countData, loading:countLoading, refetch:countRefetch } = useGetLatestMotionsCountQuery({ variables: {
 		postType: post_type.ON_CHAIN
 	} });
 
@@ -28,17 +35,36 @@ const MotionsContainer = ({ className, limit }:Props) => {
 		refetch();
 	}, [refetch]);
 
-	const loadMore = () => {
-		setPage(page + 1);
+	useEffect(() => {
+		countRefetch();
+	}, [countRefetch]);
+
+	const handlePaginationChange = (event: any, { activePage }: PaginationProps) => {
+		const nextPage = Math.ceil(Number(activePage));
+		setPage(nextPage);
+		setOffset(Math.ceil(limit * (nextPage - 1)));
 	};
 
 	if (error?.message) return <FilteredError text={error.message}/>;
 
 	if (data) return (
-		<>
-			<MotionsListing className={className} data={data}/>
-			{(loading || (data.posts.length === limit * page)) && <LoadMore onClick={loadMore} loading={loading} />}
-		</>
+		loading ? <div style={{ marginTop: '20rem' }}><Loader /></div> :
+			<>
+				<MotionsListing className={className} data={data}/>
+				{
+					!countLoading && countData?.posts_aggregate.aggregate?.count &&
+				countData?.posts_aggregate.aggregate?.count > 0 && countData?.posts_aggregate.aggregate?.count > limit &&
+				<PaginationDiv
+					page={page}
+					totalPostsCount={countData.posts_aggregate.aggregate.count}
+					limit={limit}
+					handlePaginationChange={handlePaginationChange}
+					disabled={loading}
+					offset={offset}
+					currDataLength={data.posts.length}
+				/>
+				}
+			</>
 	);
 
 	return <Loader/>;
