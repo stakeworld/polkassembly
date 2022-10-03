@@ -3,9 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React, { useEffect, useState } from 'react';
-import { PaginationProps } from 'semantic-ui-react';
 import { post_type } from 'src/global/post_types';
 import PaginationDiv from 'src/ui-components/PaginationDiv';
+import paginationChange from 'src/util/paginationChange';
 
 import Referenda from '../../../components/Listings/ReferendaListing';
 import { useAllReferendaPostsQuery, useReferundumCountQuery } from '../../../generated/graphql';
@@ -39,10 +39,8 @@ const ReferendaContainer = ({ className, limit }:Props) => {
 		countRefetch();
 	}, [countRefetch]);
 
-	const handlePaginationChange = (event: any, { activePage }: PaginationProps) => {
-		const nextPage = Math.ceil(Number(activePage));
-		setPage(nextPage);
-		setOffset(Math.ceil(limit * (nextPage - 1)));
+	const handlePaginationChange = (activePage: string | number | undefined) => {
+		paginationChange({ activePage, limit, setOffset, setPage });
 	};
 
 	if (error?.message) return <FilteredError text={error.message}/>;

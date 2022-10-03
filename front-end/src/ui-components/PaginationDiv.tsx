@@ -11,19 +11,24 @@ interface Props {
 	page: number
 	totalPostsCount: number
 	limit: number
-	handlePaginationChange: ((event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, data: PaginationProps) => void) | undefined
+	handlePaginationChange: (activePage: string | number | undefined) => void
 	disabled: boolean
 	offset: number
 	currDataLength: number
 }
 
 const PaginationDiv = ({ className, page, totalPostsCount, limit, handlePaginationChange, disabled, offset, currDataLength }: Props) => {
+
+	const onPaginationChange = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, { activePage }: PaginationProps) => {
+		handlePaginationChange(activePage);
+	};
+
 	return (
 		<div className={`d-flex justify-center ${ className }`}>
 			<Pagination
 				activePage={page}
 				totalPages={Math.ceil(totalPostsCount / limit)}
-				onPageChange={handlePaginationChange}
+				onPageChange={onPaginationChange}
 				disabled={disabled}
 				firstItem={offset > 0 ? undefined : null}
 				lastItem={offset + currDataLength < totalPostsCount ? undefined : null}
@@ -36,6 +41,7 @@ const PaginationDiv = ({ className, page, totalPostsCount, limit, handlePaginati
 
 export default styled(PaginationDiv)`
 	justify-content: center;
+	margin-top: 40px;
 
 	.ui.pagination.menu {
 		font-size: 1.3rem;

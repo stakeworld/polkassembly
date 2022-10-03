@@ -3,8 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React, { useEffect, useState } from 'react';
-import { PaginationProps } from 'semantic-ui-react';
 import PaginationDiv from 'src/ui-components/PaginationDiv';
+import paginationChange from 'src/util/paginationChange';
 
 import DiscussionsListing from '../../components/Listings/DiscussionsListing';
 import { useDiscussionPostsIdAscQuery, useDiscussionPostsIdDescQuery, useDiscussionsCountQuery, useLatestDiscussionPostsQuery } from '../../generated/graphql';
@@ -44,10 +44,8 @@ const DiscussionsContainer = ({ sortBy }: Props) => {
 		countRefetch();
 	}, [countRefetch]);
 
-	const handlePaginationChange = (event: any, { activePage }: PaginationProps) => {
-		const nextPage = Math.ceil(Number(activePage));
-		setPage(nextPage);
-		setOffset(Math.ceil(LIMIT * (nextPage - 1)));
+	const handlePaginationChange = (activePage: string | number | undefined) => {
+		paginationChange({ activePage, limit:LIMIT, setOffset, setPage });
 	};
 
 	if (error?.message) {
