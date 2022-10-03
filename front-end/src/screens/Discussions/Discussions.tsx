@@ -3,13 +3,14 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React, { useEffect, useState } from 'react';
+import { PaginationProps } from 'semantic-ui-react';
+import PaginationDiv from 'src/ui-components/PaginationDiv';
 
 import DiscussionsListing from '../../components/Listings/DiscussionsListing';
-import { useDiscussionPostsIdAscQuery, useDiscussionPostsIdDescQuery, useLatestDiscussionPostsQuery } from '../../generated/graphql';
+import { useDiscussionPostsIdAscQuery, useDiscussionPostsIdDescQuery, useDiscussionsCountQuery, useLatestDiscussionPostsQuery } from '../../generated/graphql';
 import { sortValues } from '../../global/sortOptions';
 import FilteredError from '../../ui-components/FilteredError';
 import Loader from '../../ui-components/Loader';
-import LoadMore from '../../ui-components/LoadMore';
 
 const LIMIT = 20;
 
@@ -19,6 +20,8 @@ interface Props {
 
 const DiscussionsContainer = ({ sortBy }: Props) => {
 	const [page, setPage] = useState(1);
+	const [offset, setOffset] = useState(0);
+
 	let postsQuery: typeof useDiscussionPostsIdDescQuery | typeof useDiscussionPostsIdAscQuery | typeof useLatestDiscussionPostsQuery;
 
 	if (sortBy === sortValues.NEWEST)
@@ -29,30 +32,51 @@ const DiscussionsContainer = ({ sortBy }: Props) => {
 		postsQuery = useLatestDiscussionPostsQuery;
 	}
 
-	const { data, error, loading, refetch } = postsQuery({ variables: { limit: LIMIT * page } });
+	const { data, error, loading, refetch } = postsQuery({ variables: { limit: LIMIT, offset } });
+
+	const { data: countData, loading:countLoading, refetch:countRefetch } = useDiscussionsCountQuery();
 
 	useEffect(() => {
 		refetch();
 	}, [refetch]);
 
+	useEffect(() => {
+		countRefetch();
+	}, [countRefetch]);
+
+	const handlePaginationChange = (event: any, { activePage }: PaginationProps) => {
+		const nextPage = Math.ceil(Number(activePage));
+		setPage(nextPage);
+		setOffset(Math.ceil(LIMIT * (nextPage - 1)));
+	};
+
 	if (error?.message) {
 		return <FilteredError text={error.message}/>;
 	}
-
-	const loadMore = () => {
-		setPage(page + 1);
-	};
 
 	if (loading) {
 		return <Loader/>;
 	}
 
-	if (data) {
-		return <>
-			<DiscussionsListing data={data} />
-			{(loading || (data.posts.length === LIMIT * page)) && <LoadMore onClick={loadMore} loading={loading} />}
-		</>;
-	}
+	if (data) return (
+		loading ? <div style={{ marginTop: '20rem' }}><Loader /></div> :
+			<>
+				<DiscussionsListing data={data} />
+				{
+					!countLoading && countData?.posts_aggregate.aggregate?.count &&
+				countData?.posts_aggregate.aggregate?.count > 0 && countData?.posts_aggregate.aggregate?.count > LIMIT &&
+				<PaginationDiv
+					page={page}
+					totalPostsCount={countData.posts_aggregate.aggregate.count}
+					limit={LIMIT}
+					handlePaginationChange={handlePaginationChange}
+					disabled={loading}
+					offset={offset}
+					currDataLength={data.posts.length}
+				/>
+				}
+			</>
+	);
 
 	return <Loader/>;
 
