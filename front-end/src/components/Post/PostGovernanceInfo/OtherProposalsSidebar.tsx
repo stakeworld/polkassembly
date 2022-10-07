@@ -166,7 +166,7 @@ const OtherProposalsSidebar = ({ className, routeWrapperHeight, closeOtherPropos
 };
 
 export default styled(OtherProposalsSidebar)`
-	position: absolute;
+	position: fixed;
 	min-width: 250px;
 	width: 700px;
 	min-width: 30vw;
@@ -175,7 +175,7 @@ export default styled(OtherProposalsSidebar)`
 	min-height: 100vh;
 	max-height: 100vh;
 	right: 0;
-	top: 6.5rem;
+	top: 0;
 	background: #fff;
 	z-index: 1001;
 	padding: 40px 24px;

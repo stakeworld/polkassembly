@@ -22,7 +22,11 @@ const UpcomingEvents = ({ className }: Props) => {
 
 	useEffect(() => {
 		const listItems: any[] = [];
-		calendarEvents.forEach(eventObj => {
+		calendarEvents.filter((obj) => {
+			const curDate = new Date();
+			const eventDate = new Date(obj.end_time);
+			return eventDate.getTime() >= curDate.getTime();
+		}).forEach(eventObj => {
 			listItems.push(
 				<List.Item className='news-list-item' key={eventObj.id}>
 					<List.Content>
