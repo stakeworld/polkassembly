@@ -54,7 +54,7 @@ export default styled(PaginationDiv)`
 		}
 
 		@media only screen and (max-width: 576px) {
-			font-size: 0.9rem;
+			font-size: 2.3vw;
 		}
 	}
 `;
