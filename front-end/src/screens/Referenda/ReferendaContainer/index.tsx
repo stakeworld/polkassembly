@@ -4,12 +4,13 @@
 
 import React, { useEffect, useState } from 'react';
 import { post_type } from 'src/global/post_types';
+import PaginationDiv from 'src/ui-components/PaginationDiv';
+import paginationChange from 'src/util/paginationChange';
 
 import Referenda from '../../../components/Listings/ReferendaListing';
-import { useAllReferendaPostsQuery } from '../../../generated/graphql';
+import { useAllReferendaPostsQuery, useReferundumCountQuery } from '../../../generated/graphql';
 import FilteredError from '../../../ui-components/FilteredError';
 import Loader from '../../../ui-components/Loader';
-import LoadMore from '../../../ui-components/LoadMore';
 
 interface Props {
 	className?: string
@@ -18,9 +19,15 @@ interface Props {
 
 const ReferendaContainer = ({ className, limit }:Props) => {
 	const [page, setPage] = useState(1);
+	const [offset, setOffset] = useState(0);
 
 	const { data, error, loading, refetch } = useAllReferendaPostsQuery({ variables: {
-		limit: limit * page,
+		limit,
+		offset,
+		postType: post_type.ON_CHAIN
+	} });
+
+	const { data: countData, loading:countLoading, refetch:countRefetch } = useReferundumCountQuery({ variables: {
 		postType: post_type.ON_CHAIN
 	} });
 
@@ -28,17 +35,34 @@ const ReferendaContainer = ({ className, limit }:Props) => {
 		refetch();
 	}, [refetch]);
 
-	const loadMore = () => {
-		setPage(page + 1);
+	useEffect(() => {
+		countRefetch();
+	}, [countRefetch]);
+
+	const handlePaginationChange = (activePage: string | number | undefined) => {
+		paginationChange({ activePage, limit, setOffset, setPage });
 	};
 
 	if (error?.message) return <FilteredError text={error.message}/>;
 
 	if (data) return (
-		<>
-			<Referenda className={className} data={data}/>
-			{(loading || (data.posts.length === limit * page)) && <LoadMore onClick={loadMore} loading={loading} />}
-		</>
+		loading ? <div style={{ marginTop: '20rem' }}><Loader /></div> :
+			<>
+				<Referenda className={className} data={data}/>
+				{
+					!countLoading && countData?.posts_aggregate.aggregate?.count &&
+				countData?.posts_aggregate.aggregate?.count > 0 && countData?.posts_aggregate.aggregate?.count > limit &&
+				<PaginationDiv
+					page={page}
+					totalPostsCount={countData.posts_aggregate.aggregate.count}
+					limit={limit}
+					handlePaginationChange={handlePaginationChange}
+					disabled={loading}
+					offset={offset}
+					currDataLength={data.posts.length}
+				/>
+				}
+			</>
 	);
 
 	return <Loader/>;

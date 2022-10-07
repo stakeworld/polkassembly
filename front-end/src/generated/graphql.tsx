@@ -26715,6 +26715,7 @@ export type AllBountyPostsQueryVariables = Exact<{
   postType: Scalars['Int'];
   postTopic: Scalars['Int'];
   limit?: Scalars['Int'];
+  offset?: Scalars['Int'];
 }>;
 
 
@@ -26808,6 +26809,7 @@ export type AllChildBountyPostsQueryVariables = Exact<{
   postType: Scalars['Int'];
   postTopic: Scalars['Int'];
   limit?: Scalars['Int'];
+  offset?: Scalars['Int'];
 }>;
 
 
@@ -26900,6 +26902,7 @@ export type ChildBountyPostAndCommentsQuery = (
 export type AllMotionPostsQueryVariables = Exact<{
   postType: Scalars['Int'];
   limit?: Scalars['Int'];
+  offset?: Scalars['Int'];
 }>;
 
 
@@ -27053,6 +27056,7 @@ export type PostFieldsFragment = (
 
 export type LatestDiscussionPostsQueryVariables = Exact<{
   limit?: Scalars['Int'];
+  offset?: Scalars['Int'];
 }>;
 
 
@@ -27066,6 +27070,7 @@ export type LatestDiscussionPostsQuery = (
 
 export type DiscussionPostsIdDescQueryVariables = Exact<{
   limit?: Scalars['Int'];
+  offset?: Scalars['Int'];
 }>;
 
 
@@ -27079,6 +27084,7 @@ export type DiscussionPostsIdDescQuery = (
 
 export type DiscussionPostsIdAscQueryVariables = Exact<{
   limit?: Scalars['Int'];
+  offset?: Scalars['Int'];
 }>;
 
 
@@ -27904,6 +27910,7 @@ export type AllDemocracyProposalPostsQueryVariables = Exact<{
   postType: Scalars['Int'];
   postTopic: Scalars['Int'];
   limit?: Scalars['Int'];
+  offset?: Scalars['Int'];
 }>;
 
 
@@ -27948,6 +27955,7 @@ export type AllDemocracyProposalPostsQuery = (
 export type AllReferendaPostsQueryVariables = Exact<{
   postType: Scalars['Int'];
   limit?: Scalars['Int'];
+  offset?: Scalars['Int'];
 }>;
 
 
@@ -28360,6 +28368,7 @@ export type TechCommitteeProposalPostAndCommentsQuery = (
 export type AllTechCommitteeProposalPostsQueryVariables = Exact<{
   postType: Scalars['Int'];
   limit?: Scalars['Int'];
+  offset?: Scalars['Int'];
 }>;
 
 
@@ -28456,6 +28465,7 @@ export type AllTipPostsQueryVariables = Exact<{
   postType: Scalars['Int'];
   postTopic: Scalars['Int'];
   limit?: Scalars['Int'];
+  offset?: Scalars['Int'];
 }>;
 
 
@@ -28797,6 +28807,7 @@ export type AllDemocracyTreasuryProposalPostsQueryVariables = Exact<{
   postType: Scalars['Int'];
   postTopic: Scalars['Int'];
   limit?: Scalars['Int'];
+  offset?: Scalars['Int'];
 }>;
 
 
@@ -31571,9 +31582,10 @@ export type GetUsersProposalsQueryHookResult = ReturnType<typeof useGetUsersProp
 export type GetUsersProposalsLazyQueryHookResult = ReturnType<typeof useGetUsersProposalsLazyQuery>;
 export type GetUsersProposalsQueryResult = ApolloReactCommon.QueryResult<GetUsersProposalsQuery, GetUsersProposalsQueryVariables>;
 export const AllBountyPostsDocument = gql`
-    query AllBountyPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
+    query AllBountyPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5, $offset: Int! = 0) {
   posts(
     limit: $limit
+    offset: $offset
     where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_bounty_id: {_is_null: false}}}
     order_by: {onchain_link: {id: desc}}
   ) {
@@ -31629,6 +31641,7 @@ export const AllBountyPostsDocument = gql`
  *      postType: // value for 'postType'
  *      postTopic: // value for 'postTopic'
  *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
  *   },
  * });
  */
@@ -31675,9 +31688,10 @@ export type BountyPostAndCommentsQueryHookResult = ReturnType<typeof useBountyPo
 export type BountyPostAndCommentsLazyQueryHookResult = ReturnType<typeof useBountyPostAndCommentsLazyQuery>;
 export type BountyPostAndCommentsQueryResult = ApolloReactCommon.QueryResult<BountyPostAndCommentsQuery, BountyPostAndCommentsQueryVariables>;
 export const AllChildBountyPostsDocument = gql`
-    query AllChildBountyPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
+    query AllChildBountyPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5, $offset: Int! = 0) {
   posts(
     limit: $limit
+    offset: $offset
     where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_child_bounty_id: {_is_null: false}}}
     order_by: {onchain_link: {id: desc}}
   ) {
@@ -31733,6 +31747,7 @@ export const AllChildBountyPostsDocument = gql`
  *      postType: // value for 'postType'
  *      postTopic: // value for 'postTopic'
  *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
  *   },
  * });
  */
@@ -31779,9 +31794,10 @@ export type ChildBountyPostAndCommentsQueryHookResult = ReturnType<typeof useChi
 export type ChildBountyPostAndCommentsLazyQueryHookResult = ReturnType<typeof useChildBountyPostAndCommentsLazyQuery>;
 export type ChildBountyPostAndCommentsQueryResult = ApolloReactCommon.QueryResult<ChildBountyPostAndCommentsQuery, ChildBountyPostAndCommentsQueryVariables>;
 export const AllMotionPostsDocument = gql`
-    query AllMotionPosts($postType: Int!, $limit: Int! = 5) {
+    query AllMotionPosts($postType: Int!, $limit: Int! = 5, $offset: Int! = 0) {
   posts(
     limit: $limit
+    offset: $offset
     where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_motion_id: {_is_null: false}}}
     order_by: {onchain_link: {onchain_motion_id: desc}}
   ) {
@@ -31839,6 +31855,7 @@ export const AllMotionPostsDocument = gql`
  *   variables: {
  *      postType: // value for 'postType'
  *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
  *   },
  * });
  */
@@ -31992,10 +32009,11 @@ export type DiscussionPostAndCommentsQueryHookResult = ReturnType<typeof useDisc
 export type DiscussionPostAndCommentsLazyQueryHookResult = ReturnType<typeof useDiscussionPostAndCommentsLazyQuery>;
 export type DiscussionPostAndCommentsQueryResult = ApolloReactCommon.QueryResult<DiscussionPostAndCommentsQuery, DiscussionPostAndCommentsQueryVariables>;
 export const LatestDiscussionPostsDocument = gql`
-    query LatestDiscussionPosts($limit: Int! = 20) {
+    query LatestDiscussionPosts($limit: Int! = 20, $offset: Int! = 0) {
   posts(
     order_by: {last_update: {last_update: desc}}
     limit: $limit
+    offset: $offset
     where: {type: {id: {_eq: 1}}}
   ) {
     ...postFields
@@ -32016,6 +32034,7 @@ export const LatestDiscussionPostsDocument = gql`
  * const { data, loading, error } = useLatestDiscussionPostsQuery({
  *   variables: {
  *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
  *   },
  * });
  */
@@ -32029,8 +32048,13 @@ export type LatestDiscussionPostsQueryHookResult = ReturnType<typeof useLatestDi
 export type LatestDiscussionPostsLazyQueryHookResult = ReturnType<typeof useLatestDiscussionPostsLazyQuery>;
 export type LatestDiscussionPostsQueryResult = ApolloReactCommon.QueryResult<LatestDiscussionPostsQuery, LatestDiscussionPostsQueryVariables>;
 export const DiscussionPostsIdDescDocument = gql`
-    query DiscussionPostsIdDesc($limit: Int! = 20) {
-  posts(order_by: {id: desc}, limit: $limit, where: {type: {id: {_eq: 1}}}) {
+    query DiscussionPostsIdDesc($limit: Int! = 20, $offset: Int! = 0) {
+  posts(
+    order_by: {id: desc}
+    limit: $limit
+    offset: $offset
+    where: {type: {id: {_eq: 1}}}
+  ) {
     ...postFields
   }
 }
@@ -32049,6 +32073,7 @@ export const DiscussionPostsIdDescDocument = gql`
  * const { data, loading, error } = useDiscussionPostsIdDescQuery({
  *   variables: {
  *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
  *   },
  * });
  */
@@ -32062,8 +32087,13 @@ export type DiscussionPostsIdDescQueryHookResult = ReturnType<typeof useDiscussi
 export type DiscussionPostsIdDescLazyQueryHookResult = ReturnType<typeof useDiscussionPostsIdDescLazyQuery>;
 export type DiscussionPostsIdDescQueryResult = ApolloReactCommon.QueryResult<DiscussionPostsIdDescQuery, DiscussionPostsIdDescQueryVariables>;
 export const DiscussionPostsIdAscDocument = gql`
-    query DiscussionPostsIdAsc($limit: Int! = 20) {
-  posts(order_by: {id: asc}, limit: $limit, where: {type: {id: {_eq: 1}}}) {
+    query DiscussionPostsIdAsc($limit: Int! = 20, $offset: Int! = 0) {
+  posts(
+    order_by: {id: asc}
+    limit: $limit
+    offset: $offset
+    where: {type: {id: {_eq: 1}}}
+  ) {
     ...postFields
   }
 }
@@ -32082,6 +32112,7 @@ export const DiscussionPostsIdAscDocument = gql`
  * const { data, loading, error } = useDiscussionPostsIdAscQuery({
  *   variables: {
  *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
  *   },
  * });
  */
@@ -33442,9 +33473,10 @@ export type ProposalPostAndCommentsQueryHookResult = ReturnType<typeof usePropos
 export type ProposalPostAndCommentsLazyQueryHookResult = ReturnType<typeof useProposalPostAndCommentsLazyQuery>;
 export type ProposalPostAndCommentsQueryResult = ApolloReactCommon.QueryResult<ProposalPostAndCommentsQuery, ProposalPostAndCommentsQueryVariables>;
 export const AllDemocracyProposalPostsDocument = gql`
-    query AllDemocracyProposalPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
+    query AllDemocracyProposalPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5, $offset: Int! = 0) {
   posts(
     limit: $limit
+    offset: $offset
     where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_proposal_id: {_is_null: false}}}
     order_by: {onchain_link: {onchain_proposal_id: desc}}
   ) {
@@ -33503,6 +33535,7 @@ export const AllDemocracyProposalPostsDocument = gql`
  *      postType: // value for 'postType'
  *      postTopic: // value for 'postTopic'
  *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
  *   },
  * });
  */
@@ -33516,9 +33549,10 @@ export type AllDemocracyProposalPostsQueryHookResult = ReturnType<typeof useAllD
 export type AllDemocracyProposalPostsLazyQueryHookResult = ReturnType<typeof useAllDemocracyProposalPostsLazyQuery>;
 export type AllDemocracyProposalPostsQueryResult = ApolloReactCommon.QueryResult<AllDemocracyProposalPostsQuery, AllDemocracyProposalPostsQueryVariables>;
 export const AllReferendaPostsDocument = gql`
-    query AllReferendaPosts($postType: Int!, $limit: Int! = 5) {
+    query AllReferendaPosts($postType: Int!, $limit: Int! = 5, $offset: Int! = 0) {
   posts(
     limit: $limit
+    offset: $offset
     where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_referendum_id: {_is_null: false}}}
     order_by: {onchain_link: {onchain_referendum_id: desc}}
   ) {
@@ -33577,6 +33611,7 @@ export const AllReferendaPostsDocument = gql`
  *   variables: {
  *      postType: // value for 'postType'
  *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
  *   },
  * });
  */
@@ -34214,9 +34249,10 @@ export type TechCommitteeProposalPostAndCommentsQueryHookResult = ReturnType<typ
 export type TechCommitteeProposalPostAndCommentsLazyQueryHookResult = ReturnType<typeof useTechCommitteeProposalPostAndCommentsLazyQuery>;
 export type TechCommitteeProposalPostAndCommentsQueryResult = ApolloReactCommon.QueryResult<TechCommitteeProposalPostAndCommentsQuery, TechCommitteeProposalPostAndCommentsQueryVariables>;
 export const AllTechCommitteeProposalPostsDocument = gql`
-    query AllTechCommitteeProposalPosts($postType: Int!, $limit: Int! = 5) {
+    query AllTechCommitteeProposalPosts($postType: Int!, $limit: Int! = 5, $offset: Int! = 0) {
   posts(
     limit: $limit
+    offset: $offset
     where: {type: {id: {_eq: $postType}}, onchain_link: {onchain_tech_committee_proposal_id: {_is_null: false}}}
     order_by: {onchain_link: {onchain_tech_committee_proposal_id: desc}}
   ) {
@@ -34275,6 +34311,7 @@ export const AllTechCommitteeProposalPostsDocument = gql`
  *   variables: {
  *      postType: // value for 'postType'
  *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
  *   },
  * });
  */
@@ -34321,9 +34358,10 @@ export type TipPostAndCommentsQueryHookResult = ReturnType<typeof useTipPostAndC
 export type TipPostAndCommentsLazyQueryHookResult = ReturnType<typeof useTipPostAndCommentsLazyQuery>;
 export type TipPostAndCommentsQueryResult = ApolloReactCommon.QueryResult<TipPostAndCommentsQuery, TipPostAndCommentsQueryVariables>;
 export const AllTipPostsDocument = gql`
-    query AllTipPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
+    query AllTipPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5, $offset: Int! = 0) {
   posts(
     limit: $limit
+    offset: $offset
     where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_tip_id: {_is_null: false}}}
     order_by: {onchain_link: {id: desc}}
   ) {
@@ -34379,6 +34417,7 @@ export const AllTipPostsDocument = gql`
  *      postType: // value for 'postType'
  *      postTopic: // value for 'postTopic'
  *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
  *   },
  * });
  */
@@ -34886,9 +34925,10 @@ export type TrackerDemocracyTreasuryProposalPostsQueryHookResult = ReturnType<ty
 export type TrackerDemocracyTreasuryProposalPostsLazyQueryHookResult = ReturnType<typeof useTrackerDemocracyTreasuryProposalPostsLazyQuery>;
 export type TrackerDemocracyTreasuryProposalPostsQueryResult = ApolloReactCommon.QueryResult<TrackerDemocracyTreasuryProposalPostsQuery, TrackerDemocracyTreasuryProposalPostsQueryVariables>;
 export const AllDemocracyTreasuryProposalPostsDocument = gql`
-    query AllDemocracyTreasuryProposalPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
+    query AllDemocracyTreasuryProposalPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5, $offset: Int! = 0) {
   posts(
     limit: $limit
+    offset: $offset
     where: {type: {id: {_eq: $postType}}, topic: {id: {_eq: $postTopic}}, onchain_link: {onchain_treasury_proposal_id: {_is_null: false}}}
     order_by: {onchain_link: {onchain_treasury_proposal_id: desc}}
   ) {
@@ -34943,6 +34983,7 @@ export const AllDemocracyTreasuryProposalPostsDocument = gql`
  *      postType: // value for 'postType'
  *      postTopic: // value for 'postTopic'
  *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
  *   },
  * });
  */

@@ -170,11 +170,7 @@ const OtherProposalsSidebar = ({ className, routeWrapperHeight, closeOtherPropos
 
 export default styled(OtherProposalsSidebar)`
 
-	&.is-council-board-route{
-		top: 0 !important;
-	}
-
-	position: absolute;
+	position: fixed;
 	min-width: 250px;
 	width: 700px;
 	min-width: 30vw;
@@ -183,12 +179,16 @@ export default styled(OtherProposalsSidebar)`
 	min-height: 100vh;
 	max-height: 100vh;
 	right: 0;
-	top: 6.5rem;
+	top: 0;
 	background: #fff;
 	z-index: 1001;
 	padding: 40px 24px;
 	box-shadow: -5px 0 15px -12px #888;
 	overflow-y: auto;
+
+	&.is-council-board-route{
+		top: 0 !important;
+	}
 
 	@media only screen and (max-width: 768px) {
 		max-width: 90vw;
@@ -285,7 +285,7 @@ export default styled(OtherProposalsSidebar)`
 		align-items: center;
 		justify-content: center;
 		margin-top: 84px;
-		
+
 		.text {
 			margin-top: 24px;
 		}

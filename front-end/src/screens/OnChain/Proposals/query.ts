@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import { authorFields } from 'src/fragments/author';
 
 export const QUERY_LATEST_PROPOSALS = gql`
-    query GetLatestDemocracyProposalPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5 ) {
+    query GetLatestDemocracyProposalPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5) {
         posts(limit: $limit, where: {
             type: {
                 id: {

@@ -7,7 +7,7 @@ import { authorFields } from 'src/fragments/author';
 
 // for techCommitteeProposal postType shoud be 2, postTopic should be 3
 export const QUERY_LATEST_TECH_COMMITTEE_PROPOSALS = gql`
-    query LatestTechCommitteeProposalPosts($postType: Int!, $limit: Int! = 5 ) {
+    query LatestTechCommitteeProposalPosts($postType: Int!, $limit: Int! = 5) {
         posts(limit: $limit, where: {
             type: {
                 id: {
