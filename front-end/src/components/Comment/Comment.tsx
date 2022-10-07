@@ -69,6 +69,7 @@ export const Comment = ({ className, comment, refetch } : Props) => {
 				className='avatar'
 				username={author.username}
 				size={'lg'}
+				id={author.id}
 			/>
 			<div className='comment-box'>
 				<CreationLabel
