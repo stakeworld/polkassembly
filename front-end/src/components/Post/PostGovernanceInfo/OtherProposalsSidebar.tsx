@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { Accordion, Icon, Message } from 'semantic-ui-react';
 import { ReactComponent as NoProposalsSVG } from 'src/assets/no-proposal.svg';
 import { useGetUsersProposalsQuery } from 'src/generated/graphql';
+import { useRouter } from 'src/hooks';
 import StatusTag from 'src/ui-components/StatusTag';
 
 import AddressComponent from '../../../ui-components/Address';
@@ -27,6 +28,8 @@ interface PostsObj {
 }
 
 const OtherProposalsSidebar = ({ className, routeWrapperHeight, closeOtherProposalsSidebar, currPostOnchainID, proposerAddress }:Props) => {
+	const { pathname } = useRouter();
+
 	const { data, loading, error } = useGetUsersProposalsQuery({
 		variables: {
 			proposer_address: proposerAddress
@@ -70,7 +73,7 @@ const OtherProposalsSidebar = ({ className, routeWrapperHeight, closeOtherPropos
 	};
 
 	return (
-		<div className={className} style={ { maxHeight: `${routeWrapperHeight}px`, minHeight: `${routeWrapperHeight}px` } }>
+		<div className={`${className} ${pathname === '/council-board' ? 'is-council-board-route' : ''}`} style={ { maxHeight: `${routeWrapperHeight}px`, minHeight: `${routeWrapperHeight}px` } }>
 			<Icon className='close-icon' name='close' onClick={closeOtherProposalsSidebar} />
 			<div className="d-flex other-proposals-heading">
 				Other Proposals by <span className='addr-cont'><AddressComponent address={proposerAddress} shortenAddressLength={7}/></span>
@@ -166,6 +169,7 @@ const OtherProposalsSidebar = ({ className, routeWrapperHeight, closeOtherPropos
 };
 
 export default styled(OtherProposalsSidebar)`
+
 	position: fixed;
 	min-width: 250px;
 	width: 700px;
@@ -181,6 +185,10 @@ export default styled(OtherProposalsSidebar)`
 	padding: 40px 24px;
 	box-shadow: -5px 0 15px -12px #888;
 	overflow-y: auto;
+
+	&.is-council-board-route{
+		top: 0 !important;
+	}
 
 	@media only screen and (max-width: 768px) {
 		max-width: 90vw;
@@ -277,7 +285,7 @@ export default styled(OtherProposalsSidebar)`
 		align-items: center;
 		justify-content: center;
 		margin-top: 84px;
-		
+
 		.text {
 			margin-top: 24px;
 		}

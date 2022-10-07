@@ -9,6 +9,7 @@ import CalendarView from 'src/screens/CalendarView';
 import ChildBounties from 'src/screens/ChildBounties';
 import ChildPostBounty from 'src/screens/ChildBountyPost';
 import Council from 'src/screens/Council';
+import CouncilBoard from 'src/screens/CouncilBoard';
 import CreatePost from 'src/screens/CreatePost';
 import PostDiscussion from 'src/screens/DiscussionPost';
 import Discussions from 'src/screens/Discussions';
@@ -152,6 +153,9 @@ function SwitchRoutes() {
 			</Route>
 			<Route path="/council">
 				<Council/>
+			</Route>
+			<Route path="/council-board">
+				<CouncilBoard/>
 			</Route>
 			<Route path="/profile/:address">
 				<Profile/>

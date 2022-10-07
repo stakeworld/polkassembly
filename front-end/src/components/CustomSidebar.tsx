@@ -3,9 +3,11 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from '@xstyled/styled-components';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Divider, Icon, List, Responsive } from 'semantic-ui-react';
+import { ApiContext } from 'src/context/ApiContext';
+import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { useRouter } from 'src/hooks';
 import NetworkDropdown from 'src/ui-components/NetworkDropdown';
 
@@ -21,7 +23,35 @@ import { ReactComponent as ReferendaIcon } from '../assets/sidebar/referenda.svg
 import { ReactComponent as TipIcon } from '../assets/sidebar/tips.svg';
 import { ReactComponent as TreasuryProposalIcon } from '../assets/sidebar/treasury_proposals.svg';
 
-const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHidden } : { className?: string, setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>, sidebarHidden: boolean, setSidebarHidden: React.Dispatch<React.SetStateAction<boolean>> }): JSX.Element => {
+interface Props {
+	className?: string
+	setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>
+	sidebarHidden: boolean
+	setSidebarHidden: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHidden } : Props): JSX.Element => {
+	const [members, setMembers] = useState<string[]>([]);
+
+	const { defaultAddress } = useContext(UserDetailsContext);
+
+	const { api, apiReady } = useContext(ApiContext);
+
+	useEffect(() => {
+		if (!api) {
+			return;
+		}
+
+		if (!apiReady) {
+			return;
+		}
+
+		api.query.council.members().then((memberAccounts) => {
+			setMembers(memberAccounts.map(member => member.toString()));
+		});
+
+	}, [api, apiReady]);
+
 	const SidebarItems = [
 		{
 			icon: <OverviewIcon />,
@@ -227,6 +257,15 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 								))
 								:
 								null
+						}
+						{
+							defaultAddress && members.length > 0 && members.includes(defaultAddress) &&
+							<List.Item onClick={() => gotoRoute('/council-board')} className={`sidebar-item ${activeRoute == '/council-board' ? 'active' : ''}`}>
+								<Icon name='columns' />
+								<List.Content style={ sidebarCollapsed ? { display: 'none' } : {} }>
+									<List.Header>Council Board</List.Header>
+								</List.Content>
+							</List.Item>
 						}
 
 						{/* Treasury */}

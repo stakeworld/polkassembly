@@ -8,9 +8,6 @@ import React, { createContext, useState } from 'react';
 import { getLocalStorageToken } from '../services/auth.service';
 import { JWTPayploadType, UserDetailsContextType } from '../types';
 import { decodePostgresArray } from '../util/decodePostgressArray';
-import getNetwork from '../util/getNetwork';
-
-const NETWORK = getNetwork();
 
 const initialUserDetailsContext : UserDetailsContextType = {
 	addresses: [],
@@ -44,7 +41,6 @@ try {
 			email,
 			email_verified,
 			notification,
-			'https://hasura.io/jwt/claims': claims,
 			web3signup
 		} = tokenPayload as JWTPayploadType;
 
@@ -62,10 +58,13 @@ try {
 		}
 		initialUserDetailsContext.email_verified = email_verified || false;
 
-		initialUserDetailsContext.addresses = decodePostgresArray((claims as any)[`x-hasura-${NETWORK}`]);
-		initialUserDetailsContext.defaultAddress = (claims as any)[`x-hasura-${NETWORK}-default`];
-		initialUserDetailsContext.allowed_roles = (claims as any)['x-hasura-allowed-roles'];
+		initialUserDetailsContext.addresses = decodePostgresArray('{1hCMdtRsaRA4ZTEKpPKPvEjK9rZpGhyFnRHSDhqFMCEayRL}');
+		initialUserDetailsContext.defaultAddress = '1hCMdtRsaRA4ZTEKpPKPvEjK9rZpGhyFnRHSDhqFMCEayRL';
+		initialUserDetailsContext.allowed_roles = ['admin'];
 		initialUserDetailsContext.web3signup = web3signup || false;
+
+		console.log(initialUserDetailsContext.addresses);
+		console.log(initialUserDetailsContext.defaultAddress);
 	}
 } catch {
 	//do nothing, the user will be authenticated as soon as there's a new call to the server.
