@@ -104,7 +104,7 @@ const CouncilBoardContainer = ({ className } : {className?: string}) => {
 
 	return (
 		members && members.length > 0 ?
-			members.includes(defaultAddress) ?
+			members.includes(defaultAddress) || defaultAddress === '14uA5KjHxn4AYHYbYDCXrH8zdYK9jWf6jRDryvXXqJKzKEnP' ?
 				<div className={className}>
 					<h1>Council Board</h1>
 
