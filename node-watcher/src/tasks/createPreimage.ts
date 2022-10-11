@@ -168,7 +168,10 @@ const createPreimage: Task<NomidotPreimage[]> = {
           proposal.args &&
           params &&
           params.map((name, index) => {
-            return { name, value: values[index].toString() };
+            return {
+              name,
+              value: values[index].toString().length > 1000 ? "Large data. Check it on subscan from below link." : values[index].toString()
+            };
           });
 
         const result = {
