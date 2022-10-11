@@ -122,7 +122,7 @@ const createMotion: Task<NomidotMotion[]> = {
           params.forEach((name, index) => {
             motionProposalArguments.push({
               name,
-              value: values[index].toString(),
+              value: values[index].toString().length > 1000 ? "Large data. Check it on subscan from below link." : values[index].toString()
             });
 
             if (['proposal_hash', 'proposalHash'].includes(name)) {
