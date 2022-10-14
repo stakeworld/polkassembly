@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AuthenticationError } from 'apollo-server-express';
+
 import Profile from '../../model/Profile';
 import User from '../../model/User';
 import { GetProfileWithUsernameArgs, ProfileDetails } from '../../types';
