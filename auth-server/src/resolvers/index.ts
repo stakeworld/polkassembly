@@ -44,6 +44,7 @@ import subscription from './query/subscription';
 import token from './query/token';
 import user from './query/user';
 import userDetails from './query/userDetails';
+import userWithUsername from './query/userWithUsername';
 
 export default {
 	Mutation: {
@@ -90,6 +91,7 @@ export default {
 		subscription,
 		token,
 		user,
-		userDetails
+		userDetails,
+		userWithUsername
 	}
 };

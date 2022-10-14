@@ -46,6 +46,7 @@ import subscription from './query/subscription';
 import tokenQuery from './query/token';
 import userQuery from './query/user';
 import userDetailsQuery from './query/userDetails';
+import userWithUsername from './query/userWithUsername';
 import about from './type/about';
 import address from './type/address';
 import addressLinkType from './type/addressLinkType';
@@ -86,6 +87,7 @@ export default gql`
 		${tokenQuery}
 		${userQuery}
 		${userDetailsQuery}
+		${userWithUsername}
 	}
 
 	type Mutation {
