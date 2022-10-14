@@ -7964,6 +7964,7 @@ export type Query = {
   token?: Maybe<Token>;
   user?: Maybe<User>;
   userDetails?: Maybe<Profile>;
+  userWithUsername?: Maybe<Profile>;
 };
 
 
@@ -7990,6 +7991,11 @@ export type QueryUserArgs = {
 
 export type QueryUserDetailsArgs = {
   user_id: Scalars['Int'];
+};
+
+
+export type QueryUserWithUsernameArgs = {
+  username: Scalars['String'];
 };
 
 export type Referendum = {
@@ -23036,6 +23042,7 @@ export type Query_Root = {
   treasuryStatusesConnection: TreasuryStatusConnection;
   user?: Maybe<User>;
   userDetails?: Maybe<Profile>;
+  userWithUsername?: Maybe<Profile>;
   validator?: Maybe<Validator>;
   validators: Array<Maybe<Validator>>;
   validatorsConnection: ValidatorConnection;
@@ -24618,6 +24625,12 @@ export type Query_RootUserArgs = {
 /** query root */
 export type Query_RootUserDetailsArgs = {
   user_id: Scalars['Int'];
+};
+
+
+/** query root */
+export type Query_RootUserWithUsernameArgs = {
+  username: Scalars['String'];
 };
 
 
@@ -26682,6 +26695,19 @@ export type GetUsersProposalsQuery = (
       { __typename?: 'post_topics' }
       & Pick<Post_Topics, 'id' | 'name'>
     ) }
+  )> }
+);
+
+export type UserWithUsernameQueryVariables = Exact<{
+  username: Scalars['String'];
+}>;
+
+
+export type UserWithUsernameQuery = (
+  { __typename?: 'query_root' }
+  & { userWithUsername?: Maybe<(
+    { __typename?: 'Profile' }
+    & Pick<Profile, 'badges' | 'bio' | 'id' | 'image' | 'title' | 'user_id'>
   )> }
 );
 
@@ -31581,6 +31607,44 @@ export function useGetUsersProposalsLazyQuery(baseOptions?: ApolloReactHooks.Laz
 export type GetUsersProposalsQueryHookResult = ReturnType<typeof useGetUsersProposalsQuery>;
 export type GetUsersProposalsLazyQueryHookResult = ReturnType<typeof useGetUsersProposalsLazyQuery>;
 export type GetUsersProposalsQueryResult = ApolloReactCommon.QueryResult<GetUsersProposalsQuery, GetUsersProposalsQueryVariables>;
+export const UserWithUsernameDocument = gql`
+    query userWithUsername($username: String!) {
+  userWithUsername(username: $username) {
+    badges
+    bio
+    id
+    image
+    title
+    user_id
+  }
+}
+    `;
+
+/**
+ * __useUserWithUsernameQuery__
+ *
+ * To run a query within a React component, call `useUserWithUsernameQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserWithUsernameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserWithUsernameQuery({
+ *   variables: {
+ *      username: // value for 'username'
+ *   },
+ * });
+ */
+export function useUserWithUsernameQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UserWithUsernameQuery, UserWithUsernameQueryVariables>) {
+        return ApolloReactHooks.useQuery<UserWithUsernameQuery, UserWithUsernameQueryVariables>(UserWithUsernameDocument, baseOptions);
+      }
+export function useUserWithUsernameLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UserWithUsernameQuery, UserWithUsernameQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<UserWithUsernameQuery, UserWithUsernameQueryVariables>(UserWithUsernameDocument, baseOptions);
+        }
+export type UserWithUsernameQueryHookResult = ReturnType<typeof useUserWithUsernameQuery>;
+export type UserWithUsernameLazyQueryHookResult = ReturnType<typeof useUserWithUsernameLazyQuery>;
+export type UserWithUsernameQueryResult = ApolloReactCommon.QueryResult<UserWithUsernameQuery, UserWithUsernameQueryVariables>;
 export const AllBountyPostsDocument = gql`
     query AllBountyPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5, $offset: Int! = 0) {
   posts(

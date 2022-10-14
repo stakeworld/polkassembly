@@ -370,6 +370,10 @@ export interface GetProfileArgs {
     user_id: number;
 }
 
+export interface GetProfileWithUsernameArgs {
+    username: string;
+}
+
 export interface ProfileDetails {
     id: number;
     user_id: number;

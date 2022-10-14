@@ -208,3 +208,16 @@ query GetUsersProposals($proposer_address: String!) {
     }
   }
 `;
+
+export const GET_USER_WITH_USERNAME = gql`
+    query userWithUsername($username: String!){
+        userWithUsername(username: $username) {
+            badges
+            bio
+            id
+            image
+            title
+            user_id
+        }
+    }
+`;
