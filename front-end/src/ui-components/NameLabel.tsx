@@ -4,6 +4,7 @@
 
 import styled from '@xstyled/styled-components';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import Address from './Address';
 
@@ -20,7 +21,7 @@ const NameLabel = ({ className, defaultAddress, username } : Props) => {
 			{
 				defaultAddress
 					? <Address address={defaultAddress} displayInline popupContent={username}/>
-					: <span>{username}</span>
+					: <Link to={`/user/${username}`}>{username}</Link>
 			}
 		</div>
 	</div>;
@@ -32,10 +33,14 @@ export default styled(NameLabel)`
 	font-size: sm;
 	display: inline-flex;
 
-	span {
+	a {
 		color: black_text;
 		font-weight: 500;
 		margin-right: 0.3rem;
 		line-height: 1.3rem;
+
+		&:hover {
+			color: pink_primary;
+		}
 	}
 `;

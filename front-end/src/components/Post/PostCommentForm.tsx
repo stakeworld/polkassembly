@@ -124,7 +124,6 @@ const PostCommentForm = ({ className, postId, refetch }: Props) => {
 				className='avatar'
 				username={username || ''}
 				size={'lg'}
-				id={id}
 			/>
 
 			<div className='comment-box'>

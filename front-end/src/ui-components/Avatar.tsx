@@ -4,28 +4,28 @@
 
 import styled from '@xstyled/styled-components';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Image } from 'semantic-ui-react';
-import { Profile, useGetUserDetailsQuery } from 'src/generated/graphql';
+import { Profile, useUserWithUsernameQuery } from 'src/generated/graphql';
 
 interface Props {
 	className?: string
 	username: string | null
 	size?: 'sm' | 'md' | 'lg'
-	id: number | null
 }
 
-const Avatar = ({ className, id, username, size }: Props) => {
+const Avatar = ({ className, username, size }: Props) => {
 	const [userProfileData, setUserProfileData] = useState<Profile | null>(null);
 
-	const { data, refetch } = useGetUserDetailsQuery({
+	const { data, refetch } = useUserWithUsernameQuery({
 		variables: {
-			user_id: Number(id)
+			username: `${username}`
 		}
 	});
 
 	useEffect(() => {
-		if(!data?.userDetails) return;
-		setUserProfileData(data?.userDetails);
+		if(!data?.userWithUsername) return;
+		setUserProfileData(data?.userWithUsername);
 	}, [data]);
 
 	useEffect(() => {
@@ -33,9 +33,9 @@ const Avatar = ({ className, id, username, size }: Props) => {
 	}, [refetch]);
 
 	return (
-		<div className={size? `${className} ${size}` : className}>
+		<Link to={`/user/${username}`} className={size? `${className} ${size}` : className}>
 			{userProfileData?.image? <Image src={userProfileData?.image} avatar /> :  username?.substring(0, 1)}
-		</div>
+		</Link>
 	);
 };
 
@@ -49,10 +49,26 @@ export default styled(Avatar)`
 	background-color: grey_primary;
 	color: white;
 
+	&:hover {
+		color: white;
+	}
 	&.avatar:has(img) {
 		display: flex !important;
 		align-items: center !important;
 		background-color: transparent;
+	}
+	&.avatar.sm > .image {
+		width: 2rem;
+		height: 2rem;
+	}
+	&.avatar.md > .image {
+		width: 3rem;
+		height: 3rem;
+	}
+	
+	&.avatar.lg > .image {
+		width: 4rem;
+		height: 4rem;
 	}
 
 	&.sm {
