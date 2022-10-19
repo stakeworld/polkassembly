@@ -343,8 +343,6 @@ export default class AuthService {
 		await redisDel(getAddressSignupKey(address));
 		await this.createAndSendEmailVerificationToken(user);
 
-		console.log('token', await this.getSignedToken(user));
-
 		return {
 			refreshToken: await this.getRefreshToken(user),
 			token: await this.getSignedToken(user)
