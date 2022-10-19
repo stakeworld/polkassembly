@@ -24,6 +24,7 @@ interface Props {
 	referendumId: number
 	threshold?: VoteThreshold
 	setLastVote: React.Dispatch<React.SetStateAction<string | null | undefined>>
+	isPassingInfoShow?: boolean;
 }
 
 const ZERO = new BN(0);
@@ -31,7 +32,7 @@ const ZERO = new BN(0);
 const sizing = ['0.1x', '1x', '2x', '3x', '4x', '5x', '6x'];
 const LOCKS = [1, 10, 20, 30, 40, 50, 60];
 
-const ReferendumVoteInfo = ({ className, referendumId, threshold, setLastVote }: Props) => {
+const ReferendumVoteInfo = ({ className, referendumId, threshold, setLastVote, isPassingInfoShow = true }: Props) => {
 	const { api, apiReady } = useContext(ApiContext);
 	const [turnout, setTurnout] = useState(ZERO);
 	const [totalIssuance, setTotalIssuance] = useState(ZERO);
@@ -175,7 +176,7 @@ const ReferendumVoteInfo = ({ className, referendumId, threshold, setLastVote }:
 
 	return (
 		<>
-			<PassingInfo isPassing={isPassing}/>
+			{isPassingInfoShow && <PassingInfo isPassing={isPassing}/>}
 			<Card className={loadingStatus.isLoading ? `LoaderWrapper ${className}` : className}>
 				{loadingStatus.isLoading
 					? <Loader text={loadingStatus.message} timeout={30000} timeoutText='Api is unresponsive.'/>
