@@ -25,6 +25,7 @@ import editPostConfirm from './mutation/editPostConfirm';
 import editPostStart from './mutation/editPostStart';
 import loginMutation from './mutation/login';
 import logoutMutation from './mutation/logout';
+import markUserNotification from './mutation/markUserNotification';
 import multisigLinkConfirm from './mutation/multisigLinkConfirm';
 import multisigLinkStart from './mutation/multisigLinkStart';
 import postSubscribe from './mutation/postSubscribe';
@@ -46,6 +47,7 @@ import subscription from './query/subscription';
 import tokenQuery from './query/token';
 import userQuery from './query/user';
 import userDetailsQuery from './query/userDetails';
+import userNotificationQuery from './query/userNotification';
 import userWithUsername from './query/userWithUsername';
 import about from './type/about';
 import address from './type/address';
@@ -62,6 +64,7 @@ import subscriptionType from './type/subscription';
 import tokenType from './type/token';
 import undoEmailChangeResponse from './type/undoEmailChangeResponse';
 import userType from './type/user';
+import userNotification from './type/userNotification';
 
 export default gql`
 	${about}
@@ -79,6 +82,7 @@ export default gql`
 	${undoEmailChangeResponse}
 	${userType}
 	${profile}
+	${userNotification}
 
 	type Query {
 		${aboutQuery}
@@ -87,6 +91,7 @@ export default gql`
 		${tokenQuery}
 		${userQuery}
 		${userDetailsQuery}
+		${userNotificationQuery}
 		${userWithUsername}
 	}
 
@@ -112,6 +117,7 @@ export default gql`
 		${deleteAccount}
 		${loginMutation}
 		${logoutMutation}
+		${markUserNotification}
 		${multisigLinkConfirm}
 		${multisigLinkStart}
 		${postSubscribe}

@@ -5180,6 +5180,7 @@ export type Mutation = {
   editPostStart?: Maybe<AddressLoginType>;
   login?: Maybe<LoginResponse>;
   logout?: Maybe<Message>;
+  markUserNotification?: Maybe<Message>;
   multisigLinkConfirm?: Maybe<ChangeResponse>;
   multisigLinkStart?: Maybe<AddressLoginType>;
   postSubscribe?: Maybe<Message>;
@@ -5327,6 +5328,11 @@ export type MutationEditPostStartArgs = {
 export type MutationLoginArgs = {
   password: Scalars['String'];
   username: Scalars['String'];
+};
+
+
+export type MutationMarkUserNotificationArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -7964,6 +7970,7 @@ export type Query = {
   token?: Maybe<Token>;
   user?: Maybe<User>;
   userDetails?: Maybe<Profile>;
+  userNotifications?: Maybe<UserNotification>;
   userWithUsername?: Maybe<Profile>;
 };
 
@@ -7990,6 +7997,11 @@ export type QueryUserArgs = {
 
 
 export type QueryUserDetailsArgs = {
+  user_id: Scalars['Int'];
+};
+
+
+export type QueryUserNotificationsArgs = {
   user_id: Scalars['Int'];
 };
 
@@ -13178,6 +13190,15 @@ export type User = {
   web3signup?: Maybe<Scalars['Boolean']>;
 };
 
+export type UserNotification = {
+  __typename?: 'UserNotification';
+  content?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  is_read?: Maybe<Scalars['Boolean']>;
+  link?: Maybe<Scalars['String']>;
+  user_id: Scalars['Int'];
+};
+
 export type Validator = Node & {
   __typename?: 'Validator';
   controller: Scalars['String'];
@@ -15190,6 +15211,7 @@ export type Mutation_Root = {
   insert_replies_one?: Maybe<Replies>;
   login?: Maybe<LoginResponse>;
   logout?: Maybe<Message>;
+  markUserNotification?: Maybe<Message>;
   multisigLinkConfirm?: Maybe<ChangeResponse>;
   multisigLinkStart?: Maybe<AddressLoginType>;
   postSubscribe?: Maybe<Message>;
@@ -16650,6 +16672,12 @@ export type Mutation_RootInsert_Replies_OneArgs = {
 export type Mutation_RootLoginArgs = {
   password: Scalars['String'];
   username: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootMarkUserNotificationArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -23042,6 +23070,7 @@ export type Query_Root = {
   treasuryStatusesConnection: TreasuryStatusConnection;
   user?: Maybe<User>;
   userDetails?: Maybe<Profile>;
+  userNotifications?: Maybe<UserNotification>;
   userWithUsername?: Maybe<Profile>;
   validator?: Maybe<Validator>;
   validators: Array<Maybe<Validator>>;
@@ -24624,6 +24653,12 @@ export type Query_RootUserArgs = {
 
 /** query root */
 export type Query_RootUserDetailsArgs = {
+  user_id: Scalars['Int'];
+};
+
+
+/** query root */
+export type Query_RootUserNotificationsArgs = {
   user_id: Scalars['Int'];
 };
 
@@ -26708,6 +26743,32 @@ export type UserWithUsernameQuery = (
   & { userWithUsername?: Maybe<(
     { __typename?: 'Profile' }
     & Pick<Profile, 'badges' | 'bio' | 'id' | 'image' | 'title' | 'user_id'>
+  )> }
+);
+
+export type UserNotificationsQueryVariables = Exact<{
+  user_id: Scalars['Int'];
+}>;
+
+
+export type UserNotificationsQuery = (
+  { __typename?: 'query_root' }
+  & { userNotifications?: Maybe<(
+    { __typename?: 'UserNotification' }
+    & Pick<UserNotification, 'content' | 'id' | 'is_read' | 'link' | 'user_id'>
+  )> }
+);
+
+export type MarkUserNotificationMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type MarkUserNotificationMutation = (
+  { __typename?: 'mutation_root' }
+  & { markUserNotification?: Maybe<(
+    { __typename?: 'Message' }
+    & Pick<Message, 'message'>
   )> }
 );
 
@@ -31645,6 +31706,75 @@ export function useUserWithUsernameLazyQuery(baseOptions?: ApolloReactHooks.Lazy
 export type UserWithUsernameQueryHookResult = ReturnType<typeof useUserWithUsernameQuery>;
 export type UserWithUsernameLazyQueryHookResult = ReturnType<typeof useUserWithUsernameLazyQuery>;
 export type UserWithUsernameQueryResult = ApolloReactCommon.QueryResult<UserWithUsernameQuery, UserWithUsernameQueryVariables>;
+export const UserNotificationsDocument = gql`
+    query userNotifications($user_id: Int!) {
+  userNotifications(user_id: $user_id) {
+    content
+    id
+    is_read
+    link
+    user_id
+  }
+}
+    `;
+
+/**
+ * __useUserNotificationsQuery__
+ *
+ * To run a query within a React component, call `useUserNotificationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserNotificationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserNotificationsQuery({
+ *   variables: {
+ *      user_id: // value for 'user_id'
+ *   },
+ * });
+ */
+export function useUserNotificationsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UserNotificationsQuery, UserNotificationsQueryVariables>) {
+        return ApolloReactHooks.useQuery<UserNotificationsQuery, UserNotificationsQueryVariables>(UserNotificationsDocument, baseOptions);
+      }
+export function useUserNotificationsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UserNotificationsQuery, UserNotificationsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<UserNotificationsQuery, UserNotificationsQueryVariables>(UserNotificationsDocument, baseOptions);
+        }
+export type UserNotificationsQueryHookResult = ReturnType<typeof useUserNotificationsQuery>;
+export type UserNotificationsLazyQueryHookResult = ReturnType<typeof useUserNotificationsLazyQuery>;
+export type UserNotificationsQueryResult = ApolloReactCommon.QueryResult<UserNotificationsQuery, UserNotificationsQueryVariables>;
+export const MarkUserNotificationDocument = gql`
+    mutation markUserNotification($id: Int!) {
+  markUserNotification(id: $id) {
+    message
+  }
+}
+    `;
+export type MarkUserNotificationMutationFn = ApolloReactCommon.MutationFunction<MarkUserNotificationMutation, MarkUserNotificationMutationVariables>;
+
+/**
+ * __useMarkUserNotificationMutation__
+ *
+ * To run a mutation, you first call `useMarkUserNotificationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMarkUserNotificationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [markUserNotificationMutation, { data, loading, error }] = useMarkUserNotificationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useMarkUserNotificationMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<MarkUserNotificationMutation, MarkUserNotificationMutationVariables>) {
+        return ApolloReactHooks.useMutation<MarkUserNotificationMutation, MarkUserNotificationMutationVariables>(MarkUserNotificationDocument, baseOptions);
+      }
+export type MarkUserNotificationMutationHookResult = ReturnType<typeof useMarkUserNotificationMutation>;
+export type MarkUserNotificationMutationResult = ApolloReactCommon.MutationResult<MarkUserNotificationMutation>;
+export type MarkUserNotificationMutationOptions = ApolloReactCommon.BaseMutationOptions<MarkUserNotificationMutation, MarkUserNotificationMutationVariables>;
 export const AllBountyPostsDocument = gql`
     query AllBountyPosts($postType: Int!, $postTopic: Int!, $limit: Int! = 5, $offset: Int! = 0) {
   posts(

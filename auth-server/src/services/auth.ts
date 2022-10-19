@@ -17,6 +17,7 @@ import PostSubscription from '../model/PostSubscription';
 import RefreshToken from '../model/RefreshToken';
 import UndoEmailChangeToken from '../model/UndoEmailChangeToken';
 import User from '../model/User';
+import UserNotification from '../model/UserNotification';
 import { redisDel, redisGet, redisSetex } from '../redis';
 import { AuthObjectType, HashedPassword, JWTPayploadType, Network, NotificationPreferencesType, Role } from '../types';
 import getMultisigAddress from '../utils/getMultisigAddress';
@@ -341,6 +342,8 @@ export default class AuthService {
 		await this.createAddress(network, address, true, user.id);
 		await redisDel(getAddressSignupKey(address));
 		await this.createAndSendEmailVerificationToken(user);
+
+		console.log('token', await this.getSignedToken(user));
 
 		return {
 			refreshToken: await this.getRefreshToken(user),
@@ -1502,5 +1505,25 @@ export default class AuthService {
 			console.log(CalenderJson.errors);
 			throw new ForbiddenError(messages.ERROR_IN_ADDING_EVENT);
 		}
+	}
+
+	public async MarkUserNotificationAsRead (id: number, token: string): Promise<void> {
+		if (!id) {
+			throw new ForbiddenError(messages.NOTIFICATION_ID_NOT_FOUND);
+		}
+		const user = await this.GetUser(token);
+		const user_id = user.id;
+
+		const notification = await UserNotification.query()
+			.where({ id: id, is_read: false, user_id: user_id })
+			.first();
+
+		if (!notification) {
+			throw new ForbiddenError(messages.NOTIFICATION_NOT_FOUND);
+		}
+
+		await UserNotification.query()
+			.patch({ is_read: true })
+			.findById(id);
 	}
 }

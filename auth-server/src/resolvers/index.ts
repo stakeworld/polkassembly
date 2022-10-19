@@ -23,6 +23,7 @@ import editPostConfirm from './mutation/editPostConfirm';
 import editPostStart from './mutation/editPostStart';
 import login from './mutation/login';
 import logout from './mutation/logout';
+import markUserNotification from './mutation/markUserNotification';
 import multisigLinkConfirm from './mutation/multisigLinkConfirm';
 import multisigLinkStart from './mutation/multisigLinkStart';
 import postSubscribe from './mutation/postSubscribe';
@@ -44,6 +45,7 @@ import subscription from './query/subscription';
 import token from './query/token';
 import user from './query/user';
 import userDetails from './query/userDetails';
+import userNotifications from './query/userNotifications';
 import userWithUsername from './query/userWithUsername';
 
 export default {
@@ -69,6 +71,7 @@ export default {
 		editPostStart,
 		login,
 		logout,
+		markUserNotification,
 		multisigLinkConfirm,
 		multisigLinkStart,
 		postSubscribe,
@@ -92,6 +95,7 @@ export default {
 		token,
 		user,
 		userDetails,
+		userNotifications,
 		userWithUsername
 	}
 };

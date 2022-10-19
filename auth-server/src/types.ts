@@ -132,6 +132,14 @@ export interface CommentCreationHookDataType {
     post_id: number;
 }
 
+// export interface ReplyCreationHookDataType {
+//     author_id: number;
+//     content: string;
+//     id: string;
+//     post_id: number;
+//     comment_id: string;
+// }
+
 export interface OnchainLinkType {
     proposer_address?: string;
     post_id: number;
@@ -395,4 +403,16 @@ export interface CreateProposalTrackerArgs {
 export interface UpdateProposalTrackerArgs {
     id: number;
     status: string;
+}
+
+export interface UpdateUserNotificationArgs {
+    id: number;
+}
+
+export interface UserNotifications {
+    id: number;
+    link: string | undefined;
+    content: string;
+    is_read: boolean;
+    user_id: number;
 }

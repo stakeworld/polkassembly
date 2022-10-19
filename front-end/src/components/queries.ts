@@ -221,3 +221,23 @@ export const GET_USER_WITH_USERNAME = gql`
         }
     }
 `;
+
+export const GET_USER_NOTIFICATIONS = gql`
+    query userNotifications($user_id: Int!) {
+        userNotifications(user_id: $user_id) {
+            content
+            id
+            is_read
+            link
+            user_id
+        }
+    }
+`;
+
+export const MARK_USER_NOTIFICATION_READ = gql`
+    mutation markUserNotification($id: Int!) {
+        markUserNotification(id: $id) {
+            message
+        }
+    }
+`;

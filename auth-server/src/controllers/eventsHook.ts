@@ -10,6 +10,7 @@ import PostSubscription from '../model/PostSubscription';
 import User from '../model/User';
 import { sendCommentMentionMail, sendNewProposalCreatedEmail, sendOwnProposalCreatedEmail, sendPostSubscriptionMail } from '../services/email';
 import { CommentCreationHookDataType, HookResponseMessageType, MessageType, OnchainLinkType, PostTypeEnum } from '../types';
+import addNewNotification from '../utils/addNewNotification';
 import getMentions from '../utils/getMentions';
 import getPostCommentLink from '../utils/getPostCommentLink';
 import getPostId from '../utils/getPostId';
@@ -53,6 +54,8 @@ const sendPostCommentSubscription = async (data: CommentCreationHookDataType): P
 			getUserFromUserId(subscription.user_id)
 				.then((user) => {
 					const url = getPostCommentLink(PostTypeEnum.POST, data);
+					const content = `${author.username} commented on a post you are subscribed to`;
+					addNewNotification(user.id, url, content);
 					sendPostSubscriptionMail(user, author, data, url);
 				})
 				.catch((error) => console.error(error));
@@ -69,6 +72,8 @@ const sendPostCommentSubscription = async (data: CommentCreationHookDataType): P
 				}
 
 				const url = getPostCommentLink(PostTypeEnum.POST, data);
+				const content = `${author.username} has mentioned you in a comment.`;
+				addNewNotification(user.id, url, content);
 				sendCommentMentionMail(user, author, data, url);
 			})
 			.catch((error) => console.error(error));
@@ -195,6 +200,14 @@ const sendNewProposalCreated = async (onchainLink: OnchainLinkType, responseMess
 			return;
 		}
 
+		const type = getPostType(onchainLink);
+		const id = getPostId(type, onchainLink);
+		const url = getPostLink(type, id);
+
+		const content = `New ${type} created on chain`;
+
+		addNewNotification(user.id, url, content);
+
 		if (!user.email) {
 			// aborting for this user in the promise
 			// not logging anything to prevent spamming the logs
@@ -206,10 +219,6 @@ const sendNewProposalCreated = async (onchainLink: OnchainLinkType, responseMess
 			// not logging anything to prevent spamming the logs
 			return;
 		}
-
-		const type = getPostType(onchainLink);
-		const id = getPostId(type, onchainLink);
-		const url = getPostLink(type, id);
 
 		sendNewProposalCreatedEmail(user, type, url, id);
 	});

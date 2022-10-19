@@ -11,6 +11,7 @@ import { Request } from 'express';
 export default (req: Request): string => {
 	// Authorization header is of format:
 	// Authorization: Bearer $asdnkjadj32j23kj@#adslkads
+	console.log('req', req);
 	const authHeader = req.headers.authorization;
 
 	if (!authHeader) {
