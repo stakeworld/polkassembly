@@ -85,8 +85,23 @@ const TipInfo = ({ className, onChainId, who }: Props) => {
 	const [tippers, setTippers] = useState<any[]>([]);
 
 	useEffect(() => {
+		if (!api || !apiReady) {
+			return;
+		}
+		let cancel = false;
+		api.query.council.members().then((members) => {
+			if (cancel) return;
+			setMembers(members?.map(member => member.toString()));
+		});
+		return () => {
+			cancel = true;
+		};
+	},[api, apiReady]);
+	useEffect(() => {
+		let cancel = false;
 		// eslint-disable-next-line quotes
 		fetch(`https://${getNetwork()}.api.subscan.io/api/scan/treasury/tippers`, { body: JSON.stringify({ hash: onChainId }) as unknown as BodyInit, method: 'POST' }).then(async (res) => {
+			if (cancel) return;
 			try {
 				const response = await res.json();
 				setTippers(response?.data?.list);
@@ -98,24 +113,16 @@ const TipInfo = ({ className, onChainId, who }: Props) => {
 		}).catch(() => {
 			setTippers([]);
 		});
+		return () => {
+			cancel = true;
+		};
 	},[onChainId]);
 
 	useEffect(() => {
-		if (!api) {
-			return;
-		}
-
-		if (!apiReady) {
-			return;
-		}
-
-		let unsubscribe: () => void;
-
-		api.query.council.members().then((members) => {
-			setMembers(members.map(member => member.toString()));
-		});
-
+		if (!api || !apiReady || members.length === 0) return;
+		let cancel = false;
 		api.query.tips.tips.multi([onChainId]).then(tip => {
+			if (cancel) return;
 			setTips(tip[0]?.toJSON());
 			setIsTippersLoading(false);
 			const [adjustedMedian, findersFee, finder, receiver] = Median(tip[0]?.toJSON(), members);
@@ -126,8 +133,10 @@ const TipInfo = ({ className, onChainId, who }: Props) => {
 
 		});
 
-		return () => unsubscribe && unsubscribe();
-	}, [api, apiReady, isTippersLoading, onChainId, members]);
+		return () => {
+			cancel = true;
+		};
+	}, [api, apiReady, onChainId, members]);
 
 	const pendingTippers = members.filter(item => !tips?.tips.find((tip: any[]) => tip[0] == item));
 
