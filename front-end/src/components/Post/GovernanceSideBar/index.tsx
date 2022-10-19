@@ -56,6 +56,7 @@ const GovernanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferen
 
 	const canVote = !!status && !![proposalStatus.PROPOSED, referendumStatus.STARTED, motionStatus.PROPOSED, tipStatus.OPENED].includes(status);
 	const isVoteInfoShow = !!status && !![referendumStatus.EXECUTED, referendumStatus.PASSED].includes(status) && !canVote;
+	const { onchain_tip: onchainTipProposal } = onchainLink as OnchainLinkTipFragment;
 
 	const onAccountChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
 		const addressValue = data.value as string;
@@ -300,7 +301,7 @@ const GovernanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferen
 						}
 						{isTipProposal && canVote &&
 						<div>
-							<TipInfo onChainId={onchainId as string}/>
+							<TipInfo who={onchainTipProposal?onchainTipProposal?.[0]?.who: ''} onChainId={onchainId as string}/>
 							<EndorseTip
 								accounts={accounts}
 								address={address}
