@@ -111,7 +111,7 @@ const ReferendumVoteInfo = ({ className, referendumId, threshold, setLastVote, i
 	);
 	useEffect(() => {
 		// eslint-disable-next-line quotes
-		fetch(`https://${getNetwork()}.api.subscan.io/api/scan/democracy/referendum`, { body: JSON.stringify({ referendum_index: referendumId }), method: 'POST' }).then(async (res)=>{
+		fetch(`https://${getNetwork()}.api.subscan.io/api/scan/democracy/referendum`, { body: JSON.stringify({ referendum_index: referendumId }), method: 'POST' }).then(async (res) => {
 			try {
 				const response = await res.json();
 				const info = response?.data?.info;
