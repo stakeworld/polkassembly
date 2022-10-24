@@ -55,7 +55,6 @@ const GovernanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferen
 	const [lastVote, setLastVote] = useState<string | null | undefined>(undefined);
 
 	const canVote = !!status && !![proposalStatus.PROPOSED, referendumStatus.STARTED, motionStatus.PROPOSED, tipStatus.OPENED].includes(status);
-	const isVoteInfoShow = !!status && !![referendumStatus.EXECUTED, referendumStatus.PASSED].includes(status) && !canVote;
 	const onchainTipProposal = (onchainLink as OnchainLinkTipFragment)?.onchain_tip;
 
 	const onAccountChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
@@ -228,6 +227,18 @@ const GovernanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferen
 
 	return (
 		<>
+			{(onchainId || onchainId === 0) &&
+				<div className={className}>
+					<Form standalone={false}>
+						<ReferendumVoteInfo
+							referendumId={onchainId as number}
+							threshold={((onchainLink as OnchainLinkReferendumFragment).onchain_referendum[0]?.voteThreshold) as VoteThreshold}
+							setLastVote={setLastVote}
+							isPassingInfoShow={true}
+						/>
+					</Form>
+				</div>
+			}
 			{ canVote
 				? <div className={className}>
 					<Form standalone={false}>
@@ -267,14 +278,6 @@ const GovernanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferen
 						}
 						{isReferendum &&
 							<>
-								{(onchainId || onchainId === 0) &&
-									<ReferendumVoteInfo
-										referendumId={onchainId as number}
-										threshold={((onchainLink as OnchainLinkReferendumFragment).onchain_referendum[0]?.voteThreshold) as VoteThreshold}
-										setLastVote={setLastVote}
-									/>
-								}
-
 								<div className='vote-div vote-card'>
 									{lastVote != undefined ? lastVote == null ?
 										<div className='vote-reminder-text'>You haven&apos;t voted yet, vote now and do your bit for the community</div>
@@ -315,18 +318,6 @@ const GovernanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferen
 				</div>
 				: null
 			}
-			{(isVoteInfoShow && (onchainId || onchainId === 0)) &&
-				<div className={className}>
-					<Form standalone={false}>
-						<ReferendumVoteInfo
-							referendumId={onchainId as number}
-							threshold={((onchainLink as OnchainLinkReferendumFragment).onchain_referendum[0]?.voteThreshold) as VoteThreshold}
-							setLastVote={setLastVote}
-							isPassingInfoShow={false}
-						/>
-					</Form>
-				</div>
-			}
 		</>
 	);
 };
@@ -346,7 +337,7 @@ export default styled(GovernanceSideBar)`
 			padding: 14px 28px;
 			box-shadow: rgba(83, 89, 92, 0.15) 0px 2px 4px 0px;
 		}
-		
+
 		.vote-reminder-text, .last-vote-text-cont {
 			color: #000000;
 			font-size: 16px;
@@ -361,7 +352,7 @@ export default styled(GovernanceSideBar)`
 			.red-text {
 				color: #D94C3D;
 			}
-			
+
 			.icon {
 				margin-left: 12px;
 				margin-right: 4px;
