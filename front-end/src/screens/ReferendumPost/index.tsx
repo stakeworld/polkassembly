@@ -10,7 +10,7 @@ import { useReferendumPostAndCommentsQuery } from '../../generated/graphql';
 import FilteredError from '../../ui-components/FilteredError';
 import Loader from '../../ui-components/Loader';
 
-export default ({ postID }: {postID?: number}) => {
+const ReferendumPost = ({ postID }: {postID?: number}) => {
 	const { query } = useRouter();
 	const id = query['id'];
 	const idNumber = Number(id) || Number(postID) || 0;
@@ -22,3 +22,5 @@ export default ({ postID }: {postID?: number}) => {
 
 	return <Loader/>;
 };
+
+export default ReferendumPost;

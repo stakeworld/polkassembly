@@ -43,11 +43,11 @@ const UndoEmailChange = ({ className }:Props): JSX.Element => {
 				});
 			}
 
-			router.history.push('/');
+			router.navigate('/');
 		}).catch((e) => {
 			console.error('Undo email Change error', e);
 		});
-	},[currentUser, queueNotification, router.history, undoEmailChangeMutation]);
+	},[currentUser, queueNotification, router, undoEmailChangeMutation]);
 
 	return (
 		<>

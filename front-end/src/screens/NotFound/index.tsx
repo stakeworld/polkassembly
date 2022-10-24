@@ -14,9 +14,9 @@ interface Props {
 }
 
 const NotFound = ({ className }:Props): JSX.Element => {
-	const { history } = useRouter();
+	const { navigate } = useRouter();
 	const navigateHome = () => {
-		history.push('/');
+		navigate('/');
 	};
 
 	return (

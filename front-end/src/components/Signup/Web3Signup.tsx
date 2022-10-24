@@ -43,7 +43,7 @@ const SignupForm = ({ className, setDisplayWeb2, chosenWallet, setWalletError }:
 	const [isAccountLoading, setIsAccountLoading] = useState(true);
 	const [extensionNotFound, setExtensionNotFound] = useState(false);
 	const [accountsNotFound, setAccountsNotFound] = useState(false);
-	const { history } = useRouter();
+	const { navigate } = useRouter();
 	const [addressSignupStartMutation] = useAddressSignupStartMutation();
 	const [addressSignupConfirmMutation, { loading }] = useAddressSignupConfirmMutation();
 	const currentUser = useContext(UserDetailsContext);
@@ -202,7 +202,7 @@ const SignupForm = ({ className, setDisplayWeb2, chosenWallet, setWalletError }:
 					content: 'Add an email in settings if you want to be able to recover your account!',
 					title: 'Add optional email'
 				});
-				history.goBack();
+				navigate(-1);
 			} else {
 				throw new Error('Web3 Login failed');
 			}
@@ -282,7 +282,7 @@ const SignupForm = ({ className, setDisplayWeb2, chosenWallet, setWalletError }:
 			<Divider horizontal>Or</Divider>
 			<div className={'mainButtonContainer'}>
 				<div className='text-center'> Already have an account ? Log In! </div>
-				<Button secondary onClick={() => history.push('/login')} type='button' className='button pink_primary-text'>
+				<Button secondary onClick={() => navigate('/login')} type='button' className='button pink_primary-text'>
 					Login
 				</Button>
 			</div>

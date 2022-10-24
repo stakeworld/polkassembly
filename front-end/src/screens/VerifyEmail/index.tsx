@@ -43,7 +43,7 @@ const VerifyEmail = ({ className }:Props): JSX.Element => {
 				});
 			}
 
-			router.history.push('/');
+			router.navigate('/');
 		}).catch((e) => {
 			console.error('Email verification error', e);
 		});

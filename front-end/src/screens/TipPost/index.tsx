@@ -10,7 +10,7 @@ import { useTipPostAndCommentsQuery } from '../../generated/graphql';
 import FilteredError from '../../ui-components/FilteredError';
 import Loader from '../../ui-components/Loader';
 
-export default () => {
+const TipPost = () => {
 	const { query } = useRouter();
 	const hash = query['hash'] as string;
 	const { data, error, refetch } = useTipPostAndCommentsQuery({ variables: { hash } });
@@ -21,3 +21,5 @@ export default () => {
 
 	return <Loader/>;
 };
+
+export default TipPost;

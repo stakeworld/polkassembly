@@ -4,13 +4,13 @@
 
 import { DeriveReferendumVote } from '@polkadot/api-derive/types';
 import { Balance } from '@polkadot/types/interfaces';
-import { getFailingThreshold, getPassingThreshold } from '@polkassembly/util';
 import styled from '@xstyled/styled-components';
 import BN from 'bn.js';
 import React, { useContext, useEffect, useMemo,useState } from 'react';
 import { Grid } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
+import { getFailingThreshold, getPassingThreshold } from 'src/polkassemblyutils';
 import { LoadingStatusType, VoteThreshold } from 'src/types';
 import Card from 'src/ui-components/Card';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
@@ -72,7 +72,7 @@ const ReferendumVoteInfo = ({ className, referendumId, threshold, setLastVote, i
 	};
 
 	const getThreshold = useMemo(
-		() => {
+		(): BN => {
 			if (!threshold || isPassing === null) return ZERO;
 			// if the referendum is passing, we're interesed in the failing threshold
 			if (isPassing) {

@@ -5,6 +5,7 @@
 import styled from '@xstyled/styled-components';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface Props {
 	className?: string
@@ -13,7 +14,13 @@ interface Props {
 }
 
 const Markdown = ({ className, isPreview=false, md }: Props) => {
-	return <ReactMarkdown className={isPreview ? `${className} mde-preview-content` : className} source={md} linkTarget='_blank' />;
+	return (
+		<ReactMarkdown
+			className={isPreview ? `${className} mde-preview-content` : className}
+			remarkPlugins={[remarkGfm]}
+			linkTarget='_blank'
+		>{md}</ReactMarkdown>
+	);
 };
 
 export default styled(Markdown)`

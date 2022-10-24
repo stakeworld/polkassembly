@@ -51,7 +51,7 @@ const LatestActivityCard = function ({
 	username,
 	hideSerialNum
 }:LatestActivityCardProps) {
-	const { history } = useRouter();
+	const { navigate } = useRouter();
 	const [postTypeIcon, setPostTypeIcon] = useState<any>();
 	const [postSerialID, setPostSerialID] = useState<any>();
 
@@ -145,7 +145,7 @@ const LatestActivityCard = function ({
 			break;
 		}
 
-		history.push(`/${path}/${onchainId}`);
+		navigate(`/${path}/${onchainId}`);
 	};
 
 	return (
@@ -272,5 +272,5 @@ export default styled(LatestActivityCard)`
 		font-weight: 400 !important;
 	}
 
-				
+
 `;

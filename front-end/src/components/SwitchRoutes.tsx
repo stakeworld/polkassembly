@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Bounties from 'src/screens/Bounties';
 import PostBounty from 'src/screens/BountyPost';
 import CalendarView from 'src/screens/CalendarView';
@@ -45,131 +45,90 @@ import VerifyEmail from 'src/screens/VerifyEmail';
 
 function SwitchRoutes() {
 	return (
-		<Switch>
-			<Route exact path="/">
-				<Home/>
-			</Route>
-			<Route path="/discussions">
-				<Discussions/>
-			</Route>
-			<Route path="/login">
-				<LoginForm/>
-			</Route>
-			<Route path="/post/create">
-				<CreatePost/>
-			</Route>
-			<Route exact path="/bounty/:id">
-				<PostBounty/>
-			</Route>
-			<Route exact path="/child_bounty/:id">
-				<ChildPostBounty/>
-			</Route>
-			<Route exact path="/motion/:id">
-				<PostMotion/>
-			</Route>
-			<Route exact path="/proposal/:id">
-				<PostProposal/>
-			</Route>
-			<Route exact path="/referendum/:id">
-				<PostReferendum/>
-			</Route>
-			<Route exact path="/treasury/:id">
-				<PostTreasury/>
-			</Route>
-			<Route exact path="/tech/:id">
-				<PostTechCommitteeProposal/>
-			</Route>
-			<Route exact path="/tip/:hash">
-				<PostTip/>
-			</Route>
-			<Route exact path="/post/:id">
-				<PostDiscussion/>
-			</Route>
-			<Route path="/onchain">
-				<OnChain/>
-			</Route>
-			<Route path="/bounties">
-				<Bounties/>
-			</Route>
-			<Route path="/child_bounties">
-				<ChildBounties/>
-			</Route>
-			<Route path="/referenda">
-				<Referenda/>
-			</Route>
-			<Route path="/proposals">
-				<Proposals/>
-			</Route>
-			<Route path="/motions">
-				<Motions/>
-			</Route>
-			<Route path="/treasury-proposals">
-				<Treasury/>
-			</Route>
-			<Route path="/tech-comm-proposals">
-				<TechCommitteeProposals/>
-			</Route>
-			<Route path="/tips">
-				<Tips/>
-			</Route>
-			<Route path="/request-reset-password">
-				<RequestResetPassword/>
-			</Route>
-			<Route path="/reset-password">
-				<ResetPassword/>
-			</Route>
-			<Route path="/signup">
-				<SignupForm/>
-			</Route>
-			<Route path="/verify-email/:token">
-				<VerifyEmail/>
-			</Route>
-			<Route path="/undo-email-change/:token">
-				<UndoEmailChange/>
-			</Route>
-			<Route path="/settings">
-				<Settings/>
-			</Route>
-			<Route path="/notification-settings">
-				<NotificationSettings/>
-			</Route>
-			<Route path="/terms-and-conditions">
-				<TermsAndConditions/>
-			</Route>
-			<Route path="/terms-of-website">
-				<TermsOfWebsite/>
-			</Route>
-			<Route path="/privacy">
-				<PrivacyPolicy/>
-			</Route>
-			<Route path="/user/:username">
-				<UserProfile />
-			</Route>
-			<Route path="/search">
-				<Search/>
-			</Route>
-			<Route path="/tracker">
-				<Tracker/>
-			</Route>
-			<Route path="/council">
-				<Council/>
-			</Route>
-			<Route path="/council-board">
-				<CouncilBoard/>
-			</Route>
-			<Route path="/profile/:address">
-				<Profile/>
-			</Route>
-			<Route path="/calendar">
-				<CalendarView/>
-			</Route>
-			<Route path="/news">
-				<NewsView/>
-			</Route>
-			<Route path="*">
-				<NotFound/>
-			</Route>
-		</Switch>
+		<Routes>
+			<Route path="/" element={<Home/>} />
+
+			<Route path="/discussions" element={<Discussions/>} />
+
+			<Route path="/login" element={<LoginForm/>} />
+
+			<Route path="/post/create" element={<CreatePost/>} />
+
+			<Route path="/bounty/:id" element={<PostBounty/>} />
+
+			<Route path="/child_bounty/:id" element={<ChildPostBounty/>} />
+
+			<Route path="/motion/:id" element={<PostMotion/>} />
+
+			<Route path="/proposal/:id" element={<PostProposal/>} />
+
+			<Route path="/referendum/:id" element={<PostReferendum/>} />
+
+			<Route path="/treasury/:id" element={<PostTreasury/>} />
+
+			<Route path="/tech/:id" element={<PostTechCommitteeProposal/>} />
+
+			<Route path="/tip/:hash" element={<PostTip/>} />
+
+			<Route path="/post/:id" element={<PostDiscussion/>} />
+
+			<Route path="/onchain" element={<OnChain/>} />
+
+			<Route path="/bounties" element={<Bounties/>} />
+
+			<Route path="/child_bounties" element={<ChildBounties/>} />
+
+			<Route path="/referenda" element={<Referenda/>} />
+
+			<Route path="/proposals" element={<Proposals/>} />
+
+			<Route path="/motions" element={<Motions/>} />
+
+			<Route path="/treasury-proposals" element={<Treasury/>} />
+
+			<Route path="/tech-comm-proposals" element={<TechCommitteeProposals/>} />
+
+			<Route path="/tips" element={<Tips/>} />
+
+			<Route path="/request-reset-password" element={<RequestResetPassword/>} />
+
+			<Route path="/reset-password" element={<ResetPassword/>} />
+
+			<Route path="/signup" element={<SignupForm/>} />
+
+			<Route path="/verify-email/:token" element={<VerifyEmail/>} />
+
+			<Route path="/undo-email-change/:token" element={<UndoEmailChange/>} />
+
+			<Route path="/settings" element={<Settings/>} />
+
+			<Route path="/notification-settings" element={<NotificationSettings/>} />
+
+			<Route path="/terms-and-conditions" element={<TermsAndConditions/>} />
+
+			<Route path="/terms-of-website" element={<TermsOfWebsite/>} />
+
+			<Route path="/privacy" element={<PrivacyPolicy/>} />
+
+			<Route path="/user/:username" element={<UserProfile />} />
+
+			<Route path="/search" element={<Search/>} />
+
+			<Route path="/tracker" element={<Tracker/>} />
+
+			<Route path="/council" element={<Council/>} />
+
+			<Route path="/council-board" element={<CouncilBoard/>} />
+
+			<Route path="/profile/:address" element={<Profile/>} />
+
+			<Route path="/calendar" element={<CalendarView/>} />
+
+			<Route path="/news" element={<NewsView/>} />
+
+			<Route path="*" element={<NotFound/>} />
+
+		</Routes>
 	);
 }
 

@@ -246,7 +246,7 @@ const EditProfileSidebar = ({ className, data, routeWrapperHeight, refetch, setE
 							rows={4}
 							className='textarea-input text-input'
 							disabled={loading}
-							onChange={(e) => setBio((e.target as HTMLInputElement).value)}
+							onChange={(e) => setBio(e.target.value)}
 							value={bio}
 							error={errorsFound.includes('bio')}
 						/>

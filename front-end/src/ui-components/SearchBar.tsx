@@ -4,7 +4,7 @@
 
 import debounce from 'lodash/debounce';
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Search, SearchProps, SearchResultData } from 'semantic-ui-react';
 
 import DiscussionCard from '../components/DiscussionCard';
@@ -33,14 +33,14 @@ const resultRenderer = (post: any) => (
 );
 
 const SearchBar = ({ className, placeholder, size }: Props) => {
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	const [results, setResults] = useState<any[]>([]);
 	const [value, setValue] = useState<string>('');
 	const [searchPostsQuery, { data, loading }] = useSearchPostsLazyQuery();
 
 	const handleResultSelect = (e: React.MouseEvent<HTMLElement, MouseEvent>, { result }: SearchResultData) => {
-		history.push(`/post/${result.id}`);
+		navigate(`/post/${result.id}`);
 	};
 
 	const handleSearchChange = (e: React.MouseEvent<HTMLElement, MouseEvent>, { value }: SearchProps) => {

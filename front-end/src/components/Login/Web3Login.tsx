@@ -37,7 +37,7 @@ const LoginForm = ({ className, setDisplayWeb2, setWalletError, chosenWallet }:P
 	const [isAccountLoading, setIsAccountLoading] = useState(true);
 	const [extensionNotFound, setExtensionNotFound] = useState(false);
 	const [accountsNotFound, setAccountsNotFound] = useState(false);
-	const { history } = useRouter();
+	const { navigate } = useRouter();
 	const [addressLoginStartMutation] = useAddressLoginStartMutation();
 	const [addressLoginMutation, { loading }] = useAddressLoginMutation();
 	const currentUser = useContext(UserDetailsContext);
@@ -189,7 +189,7 @@ const LoginForm = ({ className, setDisplayWeb2, setWalletError, chosenWallet }:P
 
 			if (loginResult?.addressLogin?.token) {
 				handleTokenChange(loginResult.addressLogin.token, currentUser);
-				history.goBack();
+				navigate(-1);
 			} else {
 				throw new Error('Web3 Login failed');
 			}
@@ -259,7 +259,7 @@ const LoginForm = ({ className, setDisplayWeb2, setWalletError, chosenWallet }:P
 			<div className='text-center'> Haven&apos;t used Polkassembly before? Sign up! </div>
 
 			<div className={'mainButtonContainer'}>
-				<Button secondary onClick={() => history.push('/signup')} type='button' className='button pink_primary-text'>
+				<Button secondary onClick={() => navigate('/signup')} type='button' className='button pink_primary-text'>
 					Sign-up
 				</Button>
 			</div>
