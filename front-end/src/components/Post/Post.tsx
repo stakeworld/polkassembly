@@ -61,7 +61,7 @@ import SubscriptionButton from '../SubscriptionButton/SubscriptionButton';
 import Timeline from '../Timeline';
 import TrackerButton from '../TrackerButton';
 import ClaimPayoutModal from './ClaimPayoutModal';
-import GovenanceSideBar from './GovernanceSideBar';
+import GovernanceSideBar from './GovernanceSideBar';
 import Poll from './Poll';
 import CreatePostComment from './PostCommentForm';
 import OtherProposalsSidebar from './PostGovernanceInfo/OtherProposalsSidebar';
@@ -284,7 +284,7 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 	);
 
 	const Sidebar = () => <>
-		<GovenanceSideBar
+		<GovernanceSideBar
 			isBounty={isBounty}
 			isChildBounty={isChildBounty}
 			isMotion={isMotion}

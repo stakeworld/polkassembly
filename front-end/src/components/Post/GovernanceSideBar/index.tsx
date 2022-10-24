@@ -43,7 +43,7 @@ interface Props {
 	startTime: string
 }
 
-const GovenanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferendum, isTipProposal, isTreasuryProposal, onchainId, onchainLink, startTime, status }: Props) => {
+const GovernanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferendum, isTipProposal, isTreasuryProposal, onchainId, onchainLink, startTime, status }: Props) => {
 	const [address, setAddress] = useState<string>('');
 	const [accounts, setAccounts] = useState<InjectedAccount[]>([]);
 	const [extensionNotFound, setExtensionNotFound] = useState(false);
@@ -55,6 +55,8 @@ const GovenanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferend
 	const [lastVote, setLastVote] = useState<string | null | undefined>(undefined);
 
 	const canVote = !!status && !![proposalStatus.PROPOSED, referendumStatus.STARTED, motionStatus.PROPOSED, tipStatus.OPENED].includes(status);
+	const isVoteInfoShow = !!status && !![referendumStatus.EXECUTED, referendumStatus.PASSED].includes(status) && !canVote;
+	const onchainTipProposal = (onchainLink as OnchainLinkTipFragment)?.onchain_tip;
 
 	const onAccountChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
 		const addressValue = data.value as string;
@@ -299,7 +301,7 @@ const GovenanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferend
 						}
 						{isTipProposal && canVote &&
 						<div>
-							<TipInfo onChainId={onchainId as string}/>
+							<TipInfo who={onchainTipProposal?onchainTipProposal?.[0]?.who: ''} onChainId={onchainId as string}/>
 							<EndorseTip
 								accounts={accounts}
 								address={address}
@@ -313,11 +315,23 @@ const GovenanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferend
 				</div>
 				: null
 			}
+			{(isVoteInfoShow && (onchainId || onchainId === 0)) &&
+				<div className={className}>
+					<Form standalone={false}>
+						<ReferendumVoteInfo
+							referendumId={onchainId as number}
+							threshold={((onchainLink as OnchainLinkReferendumFragment).onchain_referendum[0]?.voteThreshold) as VoteThreshold}
+							setLastVote={setLastVote}
+							isPassingInfoShow={false}
+						/>
+					</Form>
+				</div>
+			}
 		</>
 	);
 };
 
-export default styled(GovenanceSideBar)`
+export default styled(GovernanceSideBar)`
 
 	@media only screen and (max-width: 768px) {
 		.ui.form {
