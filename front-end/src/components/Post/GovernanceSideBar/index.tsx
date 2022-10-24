@@ -227,96 +227,94 @@ const GovernanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferen
 
 	return (
 		<>
-			{(onchainId || onchainId === 0) &&
-				<div className={className}>
-					<Form standalone={false}>
-						<ReferendumVoteInfo
-							referendumId={onchainId as number}
-							threshold={((onchainLink as OnchainLinkReferendumFragment).onchain_referendum[0]?.voteThreshold) as VoteThreshold}
-							setLastVote={setLastVote}
-							isPassingInfoShow={true}
+			{<div className={className}>
+				<Form standalone={false}>
+					{isMotion && <>
+						{(onchainId || onchainId === 0) &&
+							<MotionVoteInfo
+								motionId={onchainId as number}
+							/>
+						}
+						{canVote &&
+							<VoteMotion
+								accounts={accounts}
+								address={address}
+								getAccounts={getAccounts}
+								motionId={onchainId as number}
+								motionProposalHash={(onchainLink as OnchainLinkMotionFragment)?.onchain_motion?.[0]?.motionProposalHash}
+								onAccountChange={onAccountChange}
+							/>
+						}
+					</>}
+					{isProposal &&
+						<ProposalDisplay
+							accounts={accounts}
+							address={address}
+							canVote={canVote}
+							getAccounts={getAccounts}
+							onAccountChange={onAccountChange}
+							proposalId={onchainId  as number}
 						/>
-					</Form>
-				</div>
-			}
-			{ canVote
-				? <div className={className}>
-					<Form standalone={false}>
-						{isMotion && <>
+					}
+					{isTreasuryProposal &&
+						<EditProposalStatus
+							proposalId={onchainId  as number}
+							canEdit={canEdit}
+							startTime={startTime}
+						/>
+					}
+					{isReferendum &&
+						<>
 							{(onchainId || onchainId === 0) &&
-								<MotionVoteInfo
-									motionId={onchainId as number}
-								/>
+								<div className={className}>
+									<Form standalone={false}>
+										<ReferendumVoteInfo
+											referendumId={onchainId as number}
+											threshold={((onchainLink as OnchainLinkReferendumFragment).onchain_referendum[0]?.voteThreshold) as VoteThreshold}
+											setLastVote={setLastVote}
+											isPassingInfoShow={true}
+										/>
+									</Form>
+								</div>
 							}
-							{canVote &&
-								<VoteMotion
+							<div className='vote-div vote-card'>
+								{lastVote != undefined ? lastVote == null ?
+									<div className='vote-reminder-text'>You haven&apos;t voted yet, vote now and do your bit for the community</div>
+									:
+									<div className='last-vote-text-cont'>
+										You Voted: { lastVote == 'aye' ? <Icon name='thumbs up' className='green-text' /> : <Icon name='thumbs down' className='red-text' /> }
+										<span className={`last-vote-text ${lastVote == 'aye' ? 'green-text' : 'red-text'}`}>{lastVote}</span>
+									</div>
+									: <div className="spacer"></div>
+								}
+
+								{canVote && <VoteReferendum
+									lastVote={lastVote}
+									setLastVote={setLastVote}
 									accounts={accounts}
 									address={address}
 									getAccounts={getAccounts}
-									motionId={onchainId as number}
-									motionProposalHash={(onchainLink as OnchainLinkMotionFragment)?.onchain_motion?.[0]?.motionProposalHash}
 									onAccountChange={onAccountChange}
+									referendumId={onchainId  as number}
 								/>
-							}
-						</>}
-						{isProposal &&
-							<ProposalDisplay
-								accounts={accounts}
-								address={address}
-								canVote={canVote}
-								getAccounts={getAccounts}
-								onAccountChange={onAccountChange}
-								proposalId={onchainId  as number}
-							/>
-						}
-						{isTreasuryProposal &&
-							<EditProposalStatus
-								proposalId={onchainId  as number}
-								canEdit={canEdit}
-								startTime={startTime}
-							/>
-						}
-						{isReferendum &&
-							<>
-								<div className='vote-div vote-card'>
-									{lastVote != undefined ? lastVote == null ?
-										<div className='vote-reminder-text'>You haven&apos;t voted yet, vote now and do your bit for the community</div>
-										:
-										<div className='last-vote-text-cont'>
-											You Voted: { lastVote == 'aye' ? <Icon name='thumbs up' className='green-text' /> : <Icon name='thumbs down' className='red-text' /> }
-											<span className={`last-vote-text ${lastVote == 'aye' ? 'green-text' : 'red-text'}`}>{lastVote}</span>
-										</div>
-										: <div className="spacer"></div>
-									}
-
-									{canVote && <VoteReferendum
-										lastVote={lastVote}
-										setLastVote={setLastVote}
-										accounts={accounts}
-										address={address}
-										getAccounts={getAccounts}
-										onAccountChange={onAccountChange}
-										referendumId={onchainId  as number}
-									/>
-									}
-								</div>
-							</>
-						}
-						{isTipProposal && canVote &&
-						<div>
-							<TipInfo who={onchainTipProposal?onchainTipProposal?.[0]?.who: ''} onChainId={onchainId as string}/>
-							<EndorseTip
-								accounts={accounts}
-								address={address}
-								getAccounts={getAccounts}
-								tipHash={onchainId as string}
-								onAccountChange={onAccountChange}
-							/>
-						</div>
-						}
-					</Form>
-				</div>
-				: null
+								}
+							</div>
+						</>
+					}
+					{isTipProposal && canVote &&
+					<div>
+						<TipInfo who={onchainTipProposal?onchainTipProposal?.[0]?.who: ''} onChainId={onchainId as string}/>
+						<EndorseTip
+							accounts={accounts}
+							address={address}
+							getAccounts={getAccounts}
+							tipHash={onchainId as string}
+							onAccountChange={onAccountChange}
+						/>
+					</div>
+					}
+				</Form>
+			</div>
 			}
 		</>
 	);
