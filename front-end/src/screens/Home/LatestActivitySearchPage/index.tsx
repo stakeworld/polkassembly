@@ -13,7 +13,7 @@ interface Props {
 
 const LatestActivitySearchPage = ({ className }:Props) => {
 	return <Tab.Pane className={className}>
-		<SearchBar placeholder='Search' className='search-bar' />
+		<SearchBar />
 	</Tab.Pane>;
 };
 

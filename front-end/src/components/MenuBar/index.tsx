@@ -100,7 +100,7 @@ const MenuBar = ({ className, toggleSidebarHidden, setSidebarHidden } : Props): 
 
 						{username && <Menu.Item title='Create Post' as={NavLink} to="/post/create"><Icon className='create-post-btn' name='add circle' size='large' /></Menu.Item>}
 
-						<SearchBar className='search-bar' />
+						<SearchBar  />
 						<NetworkDropdown />
 						{username
 							? <>
@@ -122,6 +122,44 @@ const MenuBar = ({ className, toggleSidebarHidden, setSidebarHidden } : Props): 
 };
 
 export default styled(MenuBar)`
+	.gsc-control-cse {
+		background: #1e1e28 !important;
+		border: none !important;
+		padding: 0 !important;
+	}
+	.gsc-search-button {
+		display: none;
+	}
+	.gsc-input-box {
+		border: none !important;
+		background: none !important;
+		width: 26rem;
+		margin-right: 1em;
+	}
+	table.gsc-search-box {
+		margin-bottom: 0 !important;
+	}
+	table.gsc-search-box td.gsc-input {
+		padding-right: 0 !important;
+	}
+	.gsib_a {
+		padding: 0 !important;
+		position: relative !important;
+	}
+	.gsib_a input.gsc-input {
+		background-color: rgba(255, 255, 255, 0.25) !important;
+		padding: 15px 15px 15px 35px !important;
+		font-size: 1em !important;
+		border-radius: 10px !important;
+		color: rgb(211, 211, 211) !important;
+	}
+	.gsib_b {
+		display: none !important;
+	}
+	form.gsc-search-box {
+		margin-bottom: 0 !important;
+	}
+	
 	#title, .item {
 		padding-left: 0 !important;
 		margin-left: 0 !important;
@@ -189,7 +227,6 @@ export default styled(MenuBar)`
 				width: 26rem;
 				font-family: 'Roboto' !important;
 			}
-
 			.results {
 				width: 35.5vw !important;
 				overflow-y: auto;
