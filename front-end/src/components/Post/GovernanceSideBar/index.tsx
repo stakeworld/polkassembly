@@ -265,7 +265,7 @@ const GovernanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferen
 					}
 					{isReferendum &&
 						<>
-							{(onchainId || onchainId === 0) &&
+							{(onchainId || onchainId === 0) && (onchainLink as OnchainLinkReferendumFragment).onchain_referendum &&
 								<div className={className}>
 									<Form standalone={false}>
 										<ReferendumVoteInfo
