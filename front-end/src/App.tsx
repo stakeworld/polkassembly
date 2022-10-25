@@ -15,31 +15,35 @@ import { MetaProvider } from './context/MetaContext';
 import { ModalProvider } from './context/ModalContext';
 import { NotificationProvider } from './context/NotificationContext';
 import { UserDetailsProvider } from './context/UserDetailsContext';
+import { MediaContextProvider, mediaStyles } from './Media';
 import { theme } from './themes/theme';
 import { GlobalStyle } from './ui-components/GlobalStyle';
 
 const App = () => {
 	return (
 		<>
+			<style>{mediaStyles}</style>
 			<Router>
-				<ThemeProvider theme={theme}>
-					<NotificationProvider>
-						<ModalProvider>
-							<UserDetailsProvider>
-								<MetaProvider>
-									<Apollo>
-										<GlobalStyle />
-										<Notifications/>
-										<Modal/>
-										<ApiContextProvider>
-											<AppLayout />
-										</ApiContextProvider>
-									</Apollo>
-								</MetaProvider>
-							</UserDetailsProvider>
-						</ModalProvider>
-					</NotificationProvider>
-				</ThemeProvider>
+				<MediaContextProvider>
+					<ThemeProvider theme={theme}>
+						<NotificationProvider>
+							<ModalProvider>
+								<UserDetailsProvider>
+									<MetaProvider>
+										<Apollo>
+											<GlobalStyle />
+											<Notifications/>
+											<Modal/>
+											<ApiContextProvider>
+												<AppLayout />
+											</ApiContextProvider>
+										</Apollo>
+									</MetaProvider>
+								</UserDetailsProvider>
+							</ModalProvider>
+						</NotificationProvider>
+					</ThemeProvider>
+				</MediaContextProvider>
 			</Router>
 		</>
 	);

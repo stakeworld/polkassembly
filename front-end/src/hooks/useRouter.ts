@@ -4,14 +4,13 @@
 
 import queryString from 'query-string';
 import { useMemo } from 'react';
-import { useHistory, useLocation, useParams, useRouteMatch } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 export default function () {
 
 	const params = useParams();
 	const location = useLocation();
-	const history = useHistory();
-	const match = useRouteMatch();
+	const navigate = useNavigate();
 
 	// Return a custom router object
 	// Memoize so that a new object is only returned if something changes
@@ -25,11 +24,10 @@ export default function () {
 		};
 
 		return {
-			history,
 			location,
-			match,
+			navigate,
 			pathname: location.pathname,
 			query
 		};
-	}, [params, match, location, history]);
+	}, [params, navigate, location]);
 }

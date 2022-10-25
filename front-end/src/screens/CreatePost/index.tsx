@@ -37,7 +37,7 @@ const CreatePost = ({ className }:Props): JSX.Element => {
 	const [createPollMutation] = useCreatePollMutation();
 	const [postSubscribeMutation] = usePostSubscribeMutation();
 	const [isSending, setIsSending] = useState(false);
-	const { history } = useRouter();
+	const { navigate } = useRouter();
 
 	const createSubscription = (postId: number) => {
 		if (!currentUser.email_verified) {
@@ -95,7 +95,7 @@ const CreatePost = ({ className }:Props): JSX.Element => {
 			} }).then(({ data }) => {
 				if (data?.insert_posts?.affected_rows && data?.insert_posts?.affected_rows > 0 && data?.insert_posts?.returning?.length && data?.insert_posts?.returning?.[0]?.id) {
 					const postId = data?.insert_posts?.returning?.[0]?.id;
-					history.push(`/post/${postId}`);
+					navigate(`/post/${postId}`);
 					queueNotification({
 						header: 'Thanks for sharing!',
 						message: 'Post created successfully.',

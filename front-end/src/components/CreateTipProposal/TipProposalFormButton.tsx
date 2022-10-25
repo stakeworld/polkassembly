@@ -85,8 +85,8 @@ const TipProposalFormButton = ({
 			return;
 		}
 
-		api.query.council.members().then((members) => {
-			setCurrentCouncil(members.map(member => member.toString()));
+		api.query.council.members().then((members: any) => {
+			setCurrentCouncil(members.map((member: any) => member.toString()));
 		});
 
 	}, [api, apiReady, councilQueryresult]);
@@ -483,7 +483,7 @@ export default styled(TipProposalFormButton)`
 	.topMargin {
 		margin-top: 2em;
 	}
-	
+
 	.input-label {
 		margin-left: 1.4em !important;
 	}
@@ -502,12 +502,12 @@ export default styled(TipProposalFormButton)`
 		cursor: pointer;
 	}
 
-	.availableAddressOptions{ 
+	.availableAddressOptions{
 		display: flex;
 		justify-content: space-between;
 		margin-bottom: 1em;
 	}
-	
+
 	.availableAddressToggle {
 		color: pink_primary;
 		cursor: pointer;
@@ -515,7 +515,7 @@ export default styled(TipProposalFormButton)`
 		margin-top: 0.25em;
 	}
 
-	.accountInputDiv { 
+	.accountInputDiv {
 		display: flex;
 		align-items: center;
 

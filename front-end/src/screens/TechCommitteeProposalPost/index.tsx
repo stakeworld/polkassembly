@@ -10,7 +10,7 @@ import { useTechCommitteeProposalPostAndCommentsQuery } from '../../generated/gr
 import FilteredError from '../../ui-components/FilteredError';
 import Loader from '../../ui-components/Loader';
 
-export default () => {
+const TechCommitteeProposalPost = () => {
 	const { query } = useRouter();
 	const id = query['id'] as string;
 	const idNumber = Number(id) || 0;
@@ -22,3 +22,5 @@ export default () => {
 
 	return <Loader/>;
 };
+
+export default TechCommitteeProposalPost;

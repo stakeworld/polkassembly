@@ -29,7 +29,7 @@ interface Props {
 }
 
 const SignupForm = ({ className, onWalletSelect, walletError }:Props): JSX.Element => {
-	const { history } = useRouter();
+	const { navigate } = useRouter();
 	const currentUser = useContext(UserDetailsContext);
 	const [signupMutation, { loading, error }] = useSignupMutation();
 	const { errors, handleSubmit, register } = useForm();
@@ -53,7 +53,7 @@ const SignupForm = ({ className, onWalletSelect, walletError }:Props): JSX.Eleme
 						if (email) {
 							setModal({ content: 'We sent you an email to verify your address. Click on the link in the email.', title: 'You\'ve got some mail' });
 						}
-						history.goBack();
+						navigate(-1);
 					}}
 
 				).catch((e) => {
@@ -151,7 +151,7 @@ const SignupForm = ({ className, onWalletSelect, walletError }:Props): JSX.Eleme
 			<Divider horizontal>Or</Divider>
 			<div className={'mainButtonContainer'}>
 				<div className='text-center'> Already have an account ? Log In! </div>
-				<Button secondary onClick={() => history.push('/login')} type='button' className='button pink_primary-text'>
+				<Button secondary onClick={() => navigate('/login')} type='button' className='button pink_primary-text'>
 					Login
 				</Button>
 			</div>

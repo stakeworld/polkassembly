@@ -51,7 +51,7 @@ const ResetPassword = ({ className }:Props): JSX.Element => {
 						message: data.resetPassword.message,
 						status: NotificationStatus.SUCCESS
 					});
-					router.history.push('/login');
+					router.navigate('/login');
 				}
 			}).catch((e) => {
 				console.error('Reset password error', e);
