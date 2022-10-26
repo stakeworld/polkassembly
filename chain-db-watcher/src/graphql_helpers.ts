@@ -6,12 +6,15 @@
 import chalk from 'chalk';
 import dotenv from 'dotenv';
 import { GraphQLClient } from 'graphql-request';
+import jwt from 'jsonwebtoken';
 import pRetry from 'p-retry';
 
 import { getSdk as getOnchainSdk } from './generated/chain-db-graphql';
 import { getSdk as getDiscussionSdk } from './generated/discussion-db-graphql';
 
 dotenv.config();
+
+process.env.JWT_PRIVATE_KEY = process.env.JWT_PRIVATE_KEY && process.env.JWT_PRIVATE_KEY.split('\\n').join('\n');
 
 const discussionGraphqlUrl = process.env.REACT_APP_HASURA_GRAPHQL_URL;
 const treasuryTopicId = process.env.TREASURY_TOPIC_ID;
@@ -23,6 +26,16 @@ const proposalBotUsername = process.env.PROPOSAL_BOT_USERNAME;
 const proposalBotPassword = process.env.PROPOSAL_BOT_PASSWORD;
 const chainDBGraphqlUrl = process.env.CHAIN_DB_GRAPHQL_URL;
 const councilTopicId = process.env.COUNCIL_TOPIC_ID;
+const privateKey = process.env.NODE_ENV === 'test' ? process.env.JWT_PRIVATE_KEY_TEST : process.env.JWT_PRIVATE_KEY;
+const passphrase = process.env.NODE_ENV === 'test' ? process.env.JWT_KEY_PASSPHRASE_TEST : process.env.JWT_KEY_PASSPHRASE;
+const botRole = process.env.BOT_ROLE;
+
+const NOTIFICATION_DEFAULTS = {
+	new_proposal: false,
+	own_proposal: false,
+	post_created: false,
+	post_participated: false
+};
 
 const getDescription = (type: string, address: string): string => `This is a ${type} whose proposer address (${address}) is shown in on-chain info below. Only this user can edit this description and the title. If you own this account, login and tell us more about your proposal.`;
 
@@ -32,7 +45,57 @@ const getDescription = (type: string, address: string): string => `This is a ${t
  * it's ok for proposals since there are rarely more than 1 proposal per 15min.
  */
 
-const getTokenRetried = async (): Promise<string | void> => {
+const getSignedToken = (id: number, username: string): string => {
+	if (!privateKey) {
+		const key = process.env.NODE_ENV === 'test' ? 'JWT_PRIVATE_KEY_TEST' : 'JWT_PRIVATE_KEY';
+		throw new Error(`${key} not set. Aborting.`);
+	}
+
+	if (!passphrase) {
+		const key = process.env.NODE_ENV === 'test' ? 'JWT_KEY_PASSPHRASE_TEST' : 'JWT_KEY_PASSPHRASE';
+		throw new Error(`${key} not set. Aborting.`);
+	}
+
+	if (!botRole) {
+		throw new Error('role not set. Aborting.');
+	}
+
+	// const networkUserAddressInfo = await getNetworkUserAddressInfoFromUserId(id);
+
+	// const notification = await getNotificationPreferencesFromUserId(id);
+
+	const allowedRoles = [botRole];
+	const currentRole = botRole;
+
+	const tokenContent = {
+		NOTIFICATION_DEFAULTS,
+		email: '',
+		email_verified: false,
+		'https://hasura.io/jwt/claims': {
+			'x-hasura-allowed-roles': allowedRoles,
+			'x-hasura-default-role': currentRole,
+			'x-hasura-kusama': '',
+			'x-hasura-kusama-default': '',
+			'x-hasura-polkadot': '',
+			'x-hasura-polkadot-default': '',
+			'x-hasura-user-email': '',
+			'x-hasura-user-id': `${id}`
+		},
+		iat: Math.floor(Date.now() / 1000),
+		notification: NOTIFICATION_DEFAULTS,
+		sub: `${id}`,
+		username: username,
+		web3signup: false
+	};
+
+	return jwt.sign(
+		tokenContent,
+		{ key: privateKey, passphrase },
+		{ algorithm: 'RS256', expiresIn: '1h' }
+	);
+};
+
+const getTokenRetried = (): string | void => {
 	if (!discussionGraphqlUrl) {
 		throw new pRetry.AbortError(
 			new Error('Environment variable for the REACT_APP_HASURA_GRAPHQL_URL not set.')
@@ -45,12 +108,19 @@ const getTokenRetried = async (): Promise<string | void> => {
 		);
 	}
 
-	const client = new GraphQLClient(discussionGraphqlUrl, { headers: {} });
-	const discussionSdk = getDiscussionSdk(client);
-	const data = await discussionSdk.loginMutation({ password: proposalBotPassword, username: proposalBotUsername });
+	if (!proposalBotUserId) {
+		throw new pRetry.AbortError(
+			new Error('PROPOSAL_BOT_USER_ID environment variable not set.')
+		);
+	}
 
-	if (data.login?.token) {
-		return data?.login?.token;
+	// const client = new GraphQLClient(discussionGraphqlUrl, { headers: {} });
+	// const discussionSdk = getDiscussionSdk(client);
+	// const data = await discussionSdk.loginMutation({ password: proposalBotPassword, username: proposalBotUsername });
+	const data = getSignedToken(parseInt(proposalBotUserId), proposalBotUsername);
+
+	if (data) {
+		return data;
 	} else {
 		throw new pRetry.AbortError(
 			new Error(`Unexpected data at proposal bot login: ${data}`)
