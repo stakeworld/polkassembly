@@ -189,7 +189,7 @@ const TreasuryProposalFormButton = ({
 			return;
 		}
 
-		const proposalId: number = (await api.query.treasury.proposalCount()).toNumber();
+		const proposalId: number = ((await api.query.treasury.proposalCount()) as any).toNumber();
 
 		addPolkassemblyProposalMutation({ variables: { authorId, content, proposalHash, proposalId, proposalType, proposerAddress, title } }).catch((e) => console.error('Error creating to proposal',e));
 	};
@@ -488,7 +488,7 @@ export default styled(TreasuryProposalFormButton)`
 	.topMargin {
 		margin-top: 2em;
 	}
-	
+
 	.input-label {
 		margin-left: 1.4em !important;
 		display: flex !important;
@@ -509,12 +509,12 @@ export default styled(TreasuryProposalFormButton)`
 		cursor: pointer;
 	}
 
-	.availableAddressOptions{ 
+	.availableAddressOptions{
 		display: flex;
 		justify-content: space-between;
 		margin-bottom: 1em;
 	}
-	
+
 	.availableAddressToggle {
 		color: pink_primary;
 		cursor: pointer;
@@ -522,7 +522,7 @@ export default styled(TreasuryProposalFormButton)`
 		margin-top: 0.25em;
 	}
 
-	.accountInputDiv { 
+	.accountInputDiv {
 		display: flex;
 		align-items: center;
 

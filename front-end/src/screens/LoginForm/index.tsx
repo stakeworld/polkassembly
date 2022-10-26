@@ -17,7 +17,7 @@ interface Props {
 
 const Login = ({ className }: Props) => {
 	const currentUser = useContext(UserDetailsContext);
-	const { history } = useRouter();
+	const { navigate } = useRouter();
 	const [displayWeb, setDisplayWeb] = useState(2);
 	const [chosenWallet, setChosenWallet] = useState<Wallet>();
 	const [walletError, setWalletError] =  useState<string | undefined>();
@@ -31,9 +31,9 @@ const Login = ({ className }: Props) => {
 
 	useEffect(() => {
 		if (currentUser?.id) {
-			history.push('/');
+			navigate('/');
 		}
-	}, [history, currentUser, currentUser?.id]);
+	}, [navigate, currentUser, currentUser?.id]);
 
 	return (
 		<>

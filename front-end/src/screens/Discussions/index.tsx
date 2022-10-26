@@ -4,7 +4,7 @@
 
 import styled from '@xstyled/styled-components';
 import React, { useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Dropdown, DropdownProps, Grid } from 'semantic-ui-react';
 import DefaultAddressInfoBox from 'src/components/DefaultAddressInfoBox';
 import getNetwork from 'src/util/getNetwork';
@@ -18,11 +18,11 @@ import DiscussionsContainer from './Discussions';
 const NETWORK = getNetwork();
 
 const Discussions = ({ className } : {className?: string}) => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const [sortBy, setSortBy] = useState(sortValues.COMMENTED);
 	const currentUser = useContext(UserDetailsContext);
 	const handleCreatePost = () => {
-		history.push('/post/create');
+		navigate('/post/create');
 	};
 
 	const onSortChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {

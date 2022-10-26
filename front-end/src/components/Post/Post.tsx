@@ -6,7 +6,7 @@ import styled from '@xstyled/styled-components';
 import { ApolloQueryResult } from 'apollo-client';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Grid, Icon, Responsive } from 'semantic-ui-react';
+import { Grid, Icon } from 'semantic-ui-react';
 
 import { MetaContext } from '../../context/MetaContext';
 import { UserDetailsContext } from '../../context/UserDetailsContext';
@@ -46,6 +46,7 @@ import {
 	TreasuryProposalPostAndCommentsQuery,
 	TreasuryProposalPostAndCommentsQueryHookResult,
 	TreasuryProposalPostFragment } from '../../generated/graphql';
+import { Media } from '../../Media';
 import Button from '../../ui-components/Button';
 import Card from '../../ui-components/Card';
 import ScrollToTop from '../../ui-components/ScrollToTop';
@@ -61,7 +62,7 @@ import SubscriptionButton from '../SubscriptionButton/SubscriptionButton';
 import Timeline from '../Timeline';
 import TrackerButton from '../TrackerButton';
 import ClaimPayoutModal from './ClaimPayoutModal';
-import GovenanceSideBar from './GovernanceSideBar';
+import GovernanceSideBar from './GovernanceSideBar';
 import Poll from './Poll';
 import CreatePostComment from './PostCommentForm';
 import OtherProposalsSidebar from './PostGovernanceInfo/OtherProposalsSidebar';
@@ -284,7 +285,7 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 	);
 
 	const Sidebar = () => <>
-		<GovenanceSideBar
+		<GovernanceSideBar
 			isBounty={isBounty}
 			isChildBounty={isChildBounty}
 			isMotion={isMotion}
@@ -476,9 +477,9 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 							<Icon name='forward'/> Became <Link className='redirection' to={redirection.link}><span className='redirectionText'>{redirection.text}</span></Link>
 						</Card>
 					}
-					<Responsive maxWidth={Responsive.onlyTablet.maxWidth}>
+					<Media lessThan="computer">
 						<Sidebar />
-					</Responsive>
+					</Media>
 					{ !!post.comments?.length &&
 						<Comments
 							comments={post.comments}
@@ -488,9 +489,9 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 					{ id && <CreatePostComment postId={post.id} refetch={refetch} /> }
 				</Grid.Column>
 				<Grid.Column mobile={16} tablet={16} computer={6} largeScreen={6}>
-					<Responsive minWidth={Responsive.onlyComputer.minWidth}>
+					<Media greaterThanOrEqual="computer">
 						<Sidebar />
-					</Responsive>
+					</Media>
 					<ScrollToTop/>
 				</Grid.Column>
 			</Grid>
@@ -584,7 +585,7 @@ export default styled(Post)`
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		
+
 		span {
 			margin-top: 4px;
 		}

@@ -24,7 +24,7 @@ const DeleteAccount = (): JSX.Element => {
 	const [deleteAccountMutation, { loading, error }] = useDeleteAccountMutation();
 	const [logoutMutation] = useLogoutMutation();
 	const { setUserDetailsContextState } = currentUser;
-	const { history } = useRouter();
+	const { navigate } = useRouter();
 
 	const handleLogout = async () => {
 		try {
@@ -33,7 +33,7 @@ const DeleteAccount = (): JSX.Element => {
 			console.error(error);
 		}
 		logout(setUserDetailsContextState);
-		history.push('/');
+		navigate('/');
 	};
 
 	const deleteAccount = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>):void => {

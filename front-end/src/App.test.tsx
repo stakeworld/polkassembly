@@ -3,12 +3,12 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import App from './App';
 
 it('renders without crashing', () => {
 	const div = document.createElement('div');
-	ReactDOM.render(<App />, div);
-	ReactDOM.unmountComponentAtNode(div);
+	const root = createRoot(div); // createRoot(container!) if you use TypeScript
+	root.render(<App />);
 });

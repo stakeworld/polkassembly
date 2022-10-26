@@ -31,7 +31,7 @@ const PostReferendumInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props
 		return null;
 	}
 
-	const { delay, end, referendumStatus, preimage, voteThreshold } = onchainReferendum?.[0];
+	const { delay, end, referendumStatus, preimage, voteThreshold } = onchainReferendum[0];
 	const { metaDescription, method, preimageArguments } = preimage || {};
 	const { blockNumber, status } = referendumStatus?.[0] || {};
 
