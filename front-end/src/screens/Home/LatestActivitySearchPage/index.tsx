@@ -25,26 +25,5 @@ export default styled(LatestActivitySearchPage)`
 			justify-content: center;
 			height: 40vh;
 			overflow-y: hidden !important;
-
-			.search-bar {
-				margin-right: 1em;
-				margin-top: 2em;
-	
-				input {
-					color: #333;
-					background: rgba(255, 255, 255, 0.25);
-					border-radius: 0.7em !important;
-					padding-top: 0.7em;
-					padding-bottom: 0.7em;
-					width: 69rem;
-					max-width: 70vw !important;
-				}
-	
-				.results {
-					width: 47vw !important;
-					overflow-y: auto;
-					height: 70vh;
-				}
-			}
 	}
 `;

@@ -215,25 +215,6 @@ export default styled(MenuBar)`
 		display: flex;
 		align-items: center;
 
-		.search-bar {
-			margin-right: 1em;
-
-			input {
-				color: #ddd;
-				background: rgba(255, 255, 255, 0.25);
-				border-radius: 0.7em !important;
-				padding-top: 1em;
-				padding-bottom: 1em;
-				width: 26rem;
-				font-family: 'Roboto' !important;
-			}
-			.results {
-				width: 35.5vw !important;
-				overflow-y: auto;
-				height: 70vh;
-			}
-		}
-
 		.logged-in-dropdown, i.icon.caret {
 			color: #fff !important;
 		}

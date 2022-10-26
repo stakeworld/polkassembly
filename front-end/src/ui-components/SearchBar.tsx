@@ -2,9 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-// import debounce from 'lodash/debounce';
 import React from 'react';
-// import { useHistory } from 'react-router-dom';
 import { Icon } from 'semantic-ui-react';
 
 const SearchBar = () : JSX.Element => {
