@@ -16,9 +16,6 @@ import Button from '../../../../ui-components/Button';
 import Card from '../../../../ui-components/Card';
 import { Form } from '../../../../ui-components/Form';
 
-export interface ChainProps {
-	seconds: number
-}
 export interface SecondProposalProps {
 	accounts: InjectedAccount[]
 	address: string
@@ -28,9 +25,9 @@ export interface SecondProposalProps {
 	onAccountChange: (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => void
 }
 
-type Props = SecondProposalProps & ChainProps
+type Props = SecondProposalProps
 
-const SecondProposal = ({ className, proposalId, address, accounts, onAccountChange, getAccounts, seconds }: Props) => {
+const SecondProposal = ({ className, proposalId, address, accounts, onAccountChange, getAccounts }: Props) => {
 	const [loadingStatus, setLoadingStatus] = useState<LoadingStatusType>({ isLoading: false, message:'' });
 	const { queueNotification } = useContext(NotificationContext);
 	const { api, apiReady } = useContext(ApiContext);
@@ -51,7 +48,7 @@ const SecondProposal = ({ className, proposalId, address, accounts, onAccountCha
 
 		setLoadingStatus({ isLoading: true, message: 'Waiting for signature' });
 
-		const second = api.tx.democracy.second(proposalId, seconds);
+		const second = api.tx.democracy.second(proposalId);
 
 		second.signAndSend(address, ({ status }: any) => {
 			if (status.isInBlock) {

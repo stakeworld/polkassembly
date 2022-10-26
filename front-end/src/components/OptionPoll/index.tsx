@@ -14,7 +14,7 @@ interface Props {
 	canEdit: boolean
 }
 
-export default ({ postId, canEdit }: Props) => {
+const OptionPollComponent = ({ postId, canEdit }: Props) => {
 	const { data, error } = useOptionPollQuery({ variables: { postId } });
 
 	if (error?.message) return <Card><FilteredError text={error.message}/></Card>;
@@ -36,3 +36,5 @@ export default ({ postId, canEdit }: Props) => {
 		))}
 	</>;
 };
+
+export default OptionPollComponent;

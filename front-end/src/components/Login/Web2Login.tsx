@@ -28,7 +28,7 @@ interface Props {
 
 const LoginForm = ({ className, onWalletSelect, walletError }:Props): JSX.Element => {
 	const currentUser = useContext(UserDetailsContext);
-	const { history } = useRouter();
+	const { navigate } = useRouter();
 	const [loginMutation, { loading, error }] = useLoginMutation();
 	const { errors, handleSubmit, register } = useForm();
 
@@ -44,7 +44,7 @@ const LoginForm = ({ className, onWalletSelect, walletError }:Props): JSX.Elemen
 			}).then(({ data }) => {
 				if (data && data.login && data.login.token) {
 					handleTokenChange(data.login.token, currentUser);
-					history.goBack();
+					navigate(-1);
 				}
 			}).catch((e) => {
 				console.error('Login error', e);
@@ -120,7 +120,7 @@ const LoginForm = ({ className, onWalletSelect, walletError }:Props): JSX.Elemen
 			<div className='text-center'> Haven&apos;t used Polkassembly before? Sign up! </div>
 
 			<div className={'mainButtonContainer'}>
-				<Button secondary onClick={() => history.push('/signup')} type='button' className='button pink_primary-text'>
+				<Button secondary onClick={() => navigate('/signup')} type='button' className='button pink_primary-text'>
 						Sign-up
 				</Button>
 			</div>

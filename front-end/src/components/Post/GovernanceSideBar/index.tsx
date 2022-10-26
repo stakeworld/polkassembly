@@ -43,7 +43,7 @@ interface Props {
 	startTime: string
 }
 
-const GovenanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferendum, isTipProposal, isTreasuryProposal, onchainId, onchainLink, startTime, status }: Props) => {
+const GovernanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferendum, isTipProposal, isTreasuryProposal, onchainId, onchainLink, startTime, status }: Props) => {
 	const [address, setAddress] = useState<string>('');
 	const [accounts, setAccounts] = useState<InjectedAccount[]>([]);
 	const [extensionNotFound, setExtensionNotFound] = useState(false);
@@ -55,6 +55,7 @@ const GovenanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferend
 	const [lastVote, setLastVote] = useState<string | null | undefined>(undefined);
 
 	const canVote = !!status && !![proposalStatus.PROPOSED, referendumStatus.STARTED, motionStatus.PROPOSED, tipStatus.OPENED].includes(status);
+	const onchainTipProposal = (onchainLink as OnchainLinkTipFragment)?.onchain_tip;
 
 	const onAccountChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
 		const addressValue = data.value as string;
@@ -226,98 +227,100 @@ const GovenanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferend
 
 	return (
 		<>
-			{ canVote
-				? <div className={className}>
-					<Form standalone={false}>
-						{isMotion && <>
-							{(onchainId || onchainId === 0) &&
-								<MotionVoteInfo
-									motionId={onchainId as number}
-								/>
+			{<div className={className}>
+				<Form standalone={false}>
+					{isMotion && <>
+						{(onchainId || onchainId === 0) &&
+							<MotionVoteInfo
+								motionId={onchainId as number}
+							/>
+						}
+						{canVote &&
+							<VoteMotion
+								accounts={accounts}
+								address={address}
+								getAccounts={getAccounts}
+								motionId={onchainId as number}
+								motionProposalHash={(onchainLink as OnchainLinkMotionFragment)?.onchain_motion?.[0]?.motionProposalHash}
+								onAccountChange={onAccountChange}
+							/>
+						}
+					</>}
+					{isProposal &&
+						<ProposalDisplay
+							accounts={accounts}
+							address={address}
+							canVote={canVote}
+							getAccounts={getAccounts}
+							onAccountChange={onAccountChange}
+							proposalId={onchainId  as number}
+						/>
+					}
+					{isTreasuryProposal &&
+						<EditProposalStatus
+							proposalId={onchainId  as number}
+							canEdit={canEdit}
+							startTime={startTime}
+						/>
+					}
+					{isReferendum &&
+						<>
+							{(onchainId || onchainId === 0) && (onchainLink as OnchainLinkReferendumFragment).onchain_referendum &&
+								<div className={className}>
+									<Form standalone={false}>
+										<ReferendumVoteInfo
+											referendumId={onchainId as number}
+											threshold={((onchainLink as OnchainLinkReferendumFragment).onchain_referendum[0]?.voteThreshold) as VoteThreshold}
+											setLastVote={setLastVote}
+											isPassingInfoShow={true}
+										/>
+									</Form>
+								</div>
 							}
-							{canVote &&
-								<VoteMotion
+							<div className='vote-div vote-card'>
+								{lastVote != undefined ? lastVote == null ?
+									<div className='vote-reminder-text'>You haven&apos;t voted yet, vote now and do your bit for the community</div>
+									:
+									<div className='last-vote-text-cont'>
+										You Voted: { lastVote == 'aye' ? <Icon name='thumbs up' className='green-text' /> : <Icon name='thumbs down' className='red-text' /> }
+										<span className={`last-vote-text ${lastVote == 'aye' ? 'green-text' : 'red-text'}`}>{lastVote}</span>
+									</div>
+									: <div className="spacer"></div>
+								}
+
+								{canVote && <VoteReferendum
+									lastVote={lastVote}
+									setLastVote={setLastVote}
 									accounts={accounts}
 									address={address}
 									getAccounts={getAccounts}
-									motionId={onchainId as number}
-									motionProposalHash={(onchainLink as OnchainLinkMotionFragment)?.onchain_motion?.[0]?.motionProposalHash}
 									onAccountChange={onAccountChange}
+									referendumId={onchainId  as number}
 								/>
-							}
-						</>}
-						{isProposal &&
-							<ProposalDisplay
-								accounts={accounts}
-								address={address}
-								canVote={canVote}
-								getAccounts={getAccounts}
-								onAccountChange={onAccountChange}
-								proposalId={onchainId  as number}
-							/>
-						}
-						{isTreasuryProposal &&
-							<EditProposalStatus
-								proposalId={onchainId  as number}
-								canEdit={canEdit}
-								startTime={startTime}
-							/>
-						}
-						{isReferendum &&
-							<>
-								{(onchainId || onchainId === 0) &&
-									<ReferendumVoteInfo
-										referendumId={onchainId as number}
-										threshold={((onchainLink as OnchainLinkReferendumFragment).onchain_referendum[0]?.voteThreshold) as VoteThreshold}
-										setLastVote={setLastVote}
-									/>
 								}
-
-								<div className='vote-div vote-card'>
-									{lastVote != undefined ? lastVote == null ?
-										<div className='vote-reminder-text'>You haven&apos;t voted yet, vote now and do your bit for the community</div>
-										:
-										<div className='last-vote-text-cont'>
-											You Voted: { lastVote == 'aye' ? <Icon name='thumbs up' className='green-text' /> : <Icon name='thumbs down' className='red-text' /> }
-											<span className={`last-vote-text ${lastVote == 'aye' ? 'green-text' : 'red-text'}`}>{lastVote}</span>
-										</div>
-										: <div className="spacer"></div>
-									}
-
-									{canVote && <VoteReferendum
-										lastVote={lastVote}
-										setLastVote={setLastVote}
-										accounts={accounts}
-										address={address}
-										getAccounts={getAccounts}
-										onAccountChange={onAccountChange}
-										referendumId={onchainId  as number}
-									/>
-									}
-								</div>
-							</>
-						}
-						{isTipProposal && canVote &&
-						<div>
-							<TipInfo onChainId={onchainId as string}/>
-							<EndorseTip
-								accounts={accounts}
-								address={address}
-								getAccounts={getAccounts}
-								tipHash={onchainId as string}
-								onAccountChange={onAccountChange}
-							/>
-						</div>
-						}
-					</Form>
-				</div>
-				: null
+							</div>
+						</>
+					}
+					{isTipProposal && canVote &&
+					<div>
+						<TipInfo who={onchainTipProposal?onchainTipProposal?.[0]?.who: ''} onChainId={onchainId as string}/>
+						<EndorseTip
+							accounts={accounts}
+							address={address}
+							getAccounts={getAccounts}
+							tipHash={onchainId as string}
+							onAccountChange={onAccountChange}
+						/>
+					</div>
+					}
+				</Form>
+			</div>
 			}
 		</>
 	);
 };
 
-export default styled(GovenanceSideBar)`
+export default styled(GovernanceSideBar)`
 
 	@media only screen and (max-width: 768px) {
 		.ui.form {
@@ -332,7 +335,7 @@ export default styled(GovenanceSideBar)`
 			padding: 14px 28px;
 			box-shadow: rgba(83, 89, 92, 0.15) 0px 2px 4px 0px;
 		}
-		
+
 		.vote-reminder-text, .last-vote-text-cont {
 			color: #000000;
 			font-size: 16px;
@@ -347,7 +350,7 @@ export default styled(GovenanceSideBar)`
 			.red-text {
 				color: #D94C3D;
 			}
-			
+
 			.icon {
 				margin-left: 12px;
 				margin-right: 4px;

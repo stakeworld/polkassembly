@@ -5,10 +5,11 @@
 import styled from '@xstyled/styled-components';
 import React, { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Divider, Icon, List, Responsive } from 'semantic-ui-react';
+import { Divider, Icon, List } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { useRouter } from 'src/hooks';
+import { Media } from 'src/Media';
 import NetworkDropdown from 'src/ui-components/NetworkDropdown';
 
 import { ReactComponent as BountyIcon } from '../assets/sidebar/bounties.svg';
@@ -46,8 +47,8 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 			return;
 		}
 
-		api.query.council.members().then((memberAccounts) => {
-			setMembers(memberAccounts.map(member => member.toString()));
+		api.query.council.members().then((memberAccounts: any) => {
+			setMembers(memberAccounts.map((member: any) => member.toString()));
 		});
 
 	}, [api, apiReady]);
@@ -146,7 +147,7 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 		}
 	];
 
-	const { history } = useRouter();
+	const { navigate } = useRouter();
 	const location = useLocation();
 
 	const [activeRoute, setActiveRoute] = useState<string>('/');
@@ -181,7 +182,7 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 		if(link == 'https://parachains.polkassembly.io/'){
 			window.location.href = link;
 		}else{
-			history.push(link);
+			navigate(link);
 			setSidebarHidden(true);
 		}
 	}
@@ -202,10 +203,10 @@ const CustomSidebar = ({ className,  setIsCollapsed, sidebarHidden, setSidebarHi
 						<Icon size='small' name={sidebarCollapsed ? 'chevron up': 'chevron down' } />
 					</div>
 
-					<Responsive maxWidth={Responsive.onlyTablet.maxWidth}>
+					<Media lessThan="computer">
 						<NetworkDropdown className='mobile-network-dropdown' />
 						<Divider />
-					</Responsive>
+					</Media>
 
 					<List size='large' verticalAlign='middle'>
 						{/* Uncategorized */}
@@ -319,8 +320,8 @@ export default styled(CustomSidebar)`
 	min-width: 230px;
 	padding: 1.5em 0.8em 0 0.8em;
 	box-shadow: 0.5px 0 5px -2px #888;
-	
-	.header { 
+
+	.header {
 		font-family: 'Roboto' !important;
 	}
 
@@ -371,12 +372,12 @@ export default styled(CustomSidebar)`
 		cursor: pointer;
 		display: flex !important;
 		align-items: center;
-		
+
 		&.active {
 			background: #E5007A !important;
 			color: #fff;
 			margin: 0.6em 0;
-			
+
 			.header{
 				color: #fff !important;
 			}
@@ -395,7 +396,7 @@ export default styled(CustomSidebar)`
 						&:nth-of-type(2) {
 							fill: #fff;
 						}
-						
+
 					}
 				}
 			}
@@ -409,7 +410,7 @@ export default styled(CustomSidebar)`
 			color: #778192 !important;
 			margin-left: 5px !important;
 		}
-		
+
 		&:hover {
 			background: #eee;
 		}

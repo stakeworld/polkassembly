@@ -19,7 +19,7 @@ interface Props {
 
 const RequestResetPassword = ({ className }:Props): JSX.Element => {
 	const [email, setEmail] = useState<string | undefined>('');
-	const { history } = useRouter();
+	const { navigate } = useRouter();
 	const { setModal } = useContext(ModalContext);
 	const [requestResetPasswordMutation, { loading, error }] = useRequestResetPasswordMutation();
 
@@ -36,7 +36,7 @@ const RequestResetPassword = ({ className }:Props): JSX.Element => {
 				}
 			}).then(({ data }) => {
 				if (data && data.requestResetPassword && data.requestResetPassword.message){
-					history.push('/');
+					navigate('/');
 					setModal({ content: data.requestResetPassword.message ,title: 'Check your emails' });
 				}
 			}).catch((e) => {

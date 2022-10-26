@@ -73,7 +73,6 @@ const ProposalDisplay = ({ proposalId, accounts, address, canVote, getAccounts, 
 					getAccounts={getAccounts}
 					onAccountChange={onAccountChange}
 					proposalId={proposalId}
-					seconds={seconds}
 				/>}
 		</>
 	);

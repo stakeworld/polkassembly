@@ -10,7 +10,7 @@ import { useMotionPostAndCommentsQuery } from '../../generated/graphql';
 import FilteredError from '../../ui-components/FilteredError';
 import Loader from '../../ui-components/Loader';
 
-export default () => {
+const MotionPost = () => {
 	const { query } = useRouter();
 	const id = query['id'] as string;
 	const idNumber = Number(id) || 0;
@@ -22,3 +22,5 @@ export default () => {
 
 	return <Loader/>;
 };
+
+export default MotionPost;

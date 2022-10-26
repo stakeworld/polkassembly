@@ -4,11 +4,12 @@
 
 import styled from '@xstyled/styled-components';
 import React, { useContext } from 'react';
-import { Icon, Responsive, Segment } from 'semantic-ui-react';
+import { Icon, Segment } from 'semantic-ui-react';
 import BlockCountdown from 'src/components/BlockCountdown';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { noTitle } from 'src/global/noTitle';
 import useCurrentBlock from 'src/hooks/useCurrentBlock';
+import { Media } from 'src/Media';
 
 import OnchainCreationLabel from '../ui-components/OnchainCreationLabel';
 import StatusTag from '../ui-components/StatusTag';
@@ -63,7 +64,7 @@ const GovernanceCard = function ({
 					)
 				}
 				<Segment>
-					<Responsive maxWidth={Responsive.onlyMobile.maxWidth}>
+					<Media lessThan="computer">
 						<div className='title-wrapper title-mobile'>
 							{mainTitle}
 							{subTitle}
@@ -73,8 +74,8 @@ const GovernanceCard = function ({
 							topic={topic}
 						/>
 						{status && <StatusTag className='statusTag' status={status}/>}
-					</Responsive>
-					<Responsive minWidth={Responsive.onlyTablet.minWidth}>
+					</Media>
+					<Media greaterThanOrEqual="computer">
 						<div className='title-wrapper'>
 							{mainTitle}
 							<OnchainCreationLabel
@@ -84,7 +85,7 @@ const GovernanceCard = function ({
 						</div>
 						{status && <StatusTag className='statusTag' status={status}/>}
 						{subTitle}
-					</Responsive>
+					</Media>
 					<ul>
 						{!!end && !!currentBlock && <li><Icon name='clock'/>
 							{

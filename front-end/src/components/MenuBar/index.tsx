@@ -6,7 +6,8 @@ import styled from '@xstyled/styled-components';
 import React from 'react';
 import { ReactNode, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Dropdown, Icon, Menu, Responsive } from 'semantic-ui-react';
+import { Dropdown, Icon, Menu } from 'semantic-ui-react';
+import { Media } from 'src/Media';
 import NetworkDropdown from 'src/ui-components/NetworkDropdown';
 import SearchBar from 'src/ui-components/SearchBar';
 
@@ -27,7 +28,7 @@ interface Props {
 const MenuBar = ({ className, toggleSidebarHidden, setSidebarHidden } : Props): JSX.Element => {
 	const currentUser = useContext(UserDetailsContext);
 	const [logoutMutation] = useLogoutMutation();
-	const { history } = useRouter();
+	const { navigate } = useRouter();
 	const { setUserDetailsContextState, username } = currentUser;
 
 	const handleLogout = async () => {
@@ -37,7 +38,7 @@ const MenuBar = ({ className, toggleSidebarHidden, setSidebarHidden } : Props): 
 			console.error(error);
 		}
 		logout(setUserDetailsContextState);
-		history.push('/');
+		navigate('/');
 	};
 
 	const loggedOutItems = [
@@ -69,7 +70,7 @@ const MenuBar = ({ className, toggleSidebarHidden, setSidebarHidden } : Props): 
 
 	return (
 		<>
-			<Responsive maxWidth={Responsive.onlyTablet.maxWidth}>
+			<Media lessThan="computer">
 				<Menu className={className} inverted widths={3} id='menubar'>
 					<Menu.Menu position="left" className='sidebar-btn'>
 						<Icon onClick={toggleSidebar} name="sidebar" size='large' />
@@ -86,14 +87,14 @@ const MenuBar = ({ className, toggleSidebarHidden, setSidebarHidden } : Props): 
 							</>
 							:
 							<>
-								<Menu.Item as={NavLink} activeClassName="pink_primary-text" className='user_items' content='Login' icon='sign in' to='/login' />
+								<Menu.Item as={NavLink} className='user_items' content='Login' icon='sign in' to='/login' />
 							</>
 						}
 					</Menu.Menu>
 				</Menu>
-			</Responsive>
+			</Media>
 
-			<Responsive minWidth={Responsive.onlyComputer.minWidth}>
+			<Media greaterThanOrEqual="computer">
 				<Menu className={className} stackable inverted borderless>
 					<Menu.Item as={NavLink} to="/" className='logo' id='title'><img alt='Polkassembly Logo' src={logo} /></Menu.Item>
 					<Menu.Menu className='right-menu' position="right">
@@ -111,12 +112,12 @@ const MenuBar = ({ className, toggleSidebarHidden, setSidebarHidden } : Props): 
 								</Dropdown>
 							</>
 							: <>
-								{loggedOutItems.map((item, index) => <Menu.Item as={NavLink} activeClassName="pink_primary-text" className='user_items' key={index} {...item} />)}
+								{loggedOutItems.map((item, index) => <Menu.Item as={NavLink} className='user_items' key={index} {...item} />)}
 							</>
 						}
 					</Menu.Menu>
 				</Menu>
-			</Responsive>
+			</Media>
 		</>
 	);
 };
@@ -166,7 +167,7 @@ export default styled(MenuBar)`
 	}
 
 	.create-post-btn {
-		cursor: pointer; 
+		cursor: pointer;
 	}
 
 	.pink_primary-text{

@@ -49,7 +49,7 @@ const LatestActivityTableRow = function ({
 	postType,
 	username
 }:LatestActivityTableRowProps) {
-	const { history } = useRouter();
+	const { navigate } = useRouter();
 	const [postTypeIcon, setPostTypeIcon] = useState<any>();
 	const [postSerialID, setPostSerialID] = useState<any>();
 
@@ -143,7 +143,7 @@ const LatestActivityTableRow = function ({
 			break;
 		}
 
-		history.push(`/${path}/${onchainId}`);
+		navigate(`/${path}/${onchainId}`);
 	};
 
 	return (
@@ -191,7 +191,7 @@ export default styled(LatestActivityTableRow)`
 	cursor: pointer !important;
 	min-height: 89px;
 	height: 89px;
-	
+
 	td {
 		padding-top: 0.5em !important;
 		padding-bottom: 0.5em !important;
@@ -251,7 +251,7 @@ export default styled(LatestActivityTableRow)`
 
 		.flex {
 			display: flex;
-			
+
 			svg {
 				margin-right: 6px;
 

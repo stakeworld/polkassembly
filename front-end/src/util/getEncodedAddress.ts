@@ -13,7 +13,7 @@ import getNetwork from 'src/util/getNetwork';
  *
  */
 
-export default function (address: string): string | null {
+function getEncodedAddress (address: string): string | null {
 	const network = getNetwork();
 	const ss58Format = chainProperties?.[network]?.ss58Format;
 
@@ -28,3 +28,5 @@ export default function (address: string): string | null {
 		return null;
 	}
 }
+
+export default getEncodedAddress;
