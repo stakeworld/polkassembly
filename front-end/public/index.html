@@ -31,10 +31,11 @@
         location.protocol !== "https:" &&
         ["localhost", "127.0.0.1", "::1"].includes(window.location.hostname) === false
       ) {
-        location.replace(`https:${location.href.substring(location.protocol.length)}`);
+        const url = location.href;
+        const updatedURL = url.replace(/^http:\/\//i, "https://");
+        location.replace(updatedURL);
       }
     </script>
-    <script async src="https://cse.google.com/cse.js?cx=27ceb2d02ebf44c39"></script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -49,5 +50,6 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script async src="https://cse.google.com/cse.js?cx=27ceb2d02ebf44c39"></script>
   </body>
 </html>
