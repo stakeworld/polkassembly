@@ -31,7 +31,8 @@ import createTechCommitteeProposalStatus from './createTechCommitteeProposalStat
 import createCouncilMotionVotes from './createCouncilMotionVotes';
 import createReferendumVote from './createReferendumVotes';
 import { NomidotTask } from './types';
-
+import createReferendumV2 from './createReferendumV2';
+import createReferendumStatusV2 from './createReferendumStatusV2';
 // N.B. Order of tasks matters here
 export const nomidotTasks: NomidotTask[] = [
   createBlockNumber,
@@ -61,5 +62,7 @@ export const nomidotTasks: NomidotTask[] = [
   createChildBounty,
   createChildBountyStatus,
   createCouncilMotionVotes,
-  createReferendumVote
+  createReferendumVote,
+  createReferendumV2,
+  createReferendumStatusV2,
 ];

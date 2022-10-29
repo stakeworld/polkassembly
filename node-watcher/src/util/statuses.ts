@@ -10,6 +10,12 @@ export const preimageStatus = {
   USED: 'PreimageUsed',
 };
 
+export const preimageStatusV2 = {
+  NOTED: 'Noted',
+  UNREQUESTED: 'Unrequested',
+  REQUESTED: 'Requested',
+};
+
 export const proposalStatus = {
   PROPOSED: 'Proposed',
   TABLED: 'Tabled',
@@ -22,6 +28,15 @@ export const referendumStatus = {
   NOTPASSED: 'NotPassed',
   PASSED: 'Passed',
   STARTED: 'Started',
+};
+
+export const referendumStatusV2 = {
+  ONGOING: 'Ongoing',
+  APPROVED: 'Approved',
+  REJECTED: 'Rejected',
+  CANCELLED: 'Cancelled',
+  TIMEDOUT: 'TimedOut',
+  KILLED: 'Killed',
 };
 
 export const motionStatus = {

@@ -20,12 +20,14 @@ import {
   ValidatorPrefs,
   VoteThreshold,
 } from '@polkadot/types/interfaces';
+import { Json } from 'src/generated/prisma-client';
 
 import {
   motionStatus,
   preimageStatus,
   proposalStatus,
   referendumStatus,
+  referendumStatusV2,
   techCommitteeStatus,
 } from '../util/statuses';
 
@@ -131,7 +133,9 @@ export type Nomidot =
   | NomidotReferendumRawVoteEvent[]
   | NomidotReferendumVote[]
   | NomidotCouncilMotionRawVoteEvent[]
-  | NomidotCouncilMotionVote[];
+  | NomidotCouncilMotionVote[]
+  | NomidotReferendumV2[]
+  | NomidotReferendumV2RawEvent[];
 
 
 export type NomidotTask = Task<Nomidot>;
@@ -250,9 +254,28 @@ export interface NomidotReferendum {
   voteThreshold: VoteThreshold;
 }
 
+export interface NomidotReferendumV2 {
+  referendumIndex: number;
+  trackNumber: number;
+  track: string;
+  preimageHash: Hash;
+  status: ReferendumStatusV2;
+  enactmentAt?: string;
+  SubmittedAt: string;
+  submitted?: Json;
+  decisionDeposit?: Json;
+  deciding: Json;
+}
+
 export interface NomidotReferendumRawEvent {
   ReferendumIndex?: number;
   VoteThreshold?: VoteThreshold;
+}
+
+export interface NomidotReferendumV2RawEvent {
+  ReferendumIndex?: number;
+  TrackNumber?: number;
+  HashInfo?: any;
 }
 
 export interface NomidotArgument {
@@ -266,6 +289,8 @@ type ProposalStatus = typeof proposalStatus[keyof typeof proposalStatus];
 type PreimageStatus = typeof preimageStatus[keyof typeof preimageStatus];
 
 type ReferendumStatus = typeof referendumStatus[keyof typeof referendumStatus];
+
+type ReferendumStatusV2 = typeof referendumStatusV2[keyof typeof referendumStatusV2];
 
 type TechCommitteeStatus = typeof techCommitteeStatus[keyof typeof techCommitteeStatus];
 
