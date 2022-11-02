@@ -23,6 +23,7 @@ import createProposalTracker from './mutation/createProposalTracker';
 import deleteAccount from './mutation/deleteAccount';
 import editPostConfirm from './mutation/editPostConfirm';
 import editPostStart from './mutation/editPostStart';
+import linkProxyAddress from './mutation/linkProxyAddress';
 import loginMutation from './mutation/login';
 import logoutMutation from './mutation/logout';
 import multisigLinkConfirm from './mutation/multisigLinkConfirm';
@@ -110,6 +111,7 @@ export default gql`
 		${editPostConfirm}
 		${editPostStart}
 		${deleteAccount}
+		${linkProxyAddress}
 		${loginMutation}
 		${logoutMutation}
 		${multisigLinkConfirm}

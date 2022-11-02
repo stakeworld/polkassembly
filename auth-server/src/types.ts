@@ -396,3 +396,11 @@ export interface UpdateProposalTrackerArgs {
     id: number;
     status: string;
 }
+
+export interface LinkProxyAddressArgs {
+    network: Network;
+    proxied: string;
+    proxy: string;
+    message: string;
+    signature: string;
+}
