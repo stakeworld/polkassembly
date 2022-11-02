@@ -12,6 +12,7 @@ import DeleteAccount from './deleteAccount';
 import Email from './email';
 import Multisig from './multisig';
 import Password from  './password';
+import Proxy from './proxy';
 import SetCredentials from './setCredentials';
 import SetOnChainIdentityButton from './setOnChainIdentityButton';
 import Username from './username';
@@ -36,6 +37,8 @@ const Settings = ({ className }:Props): JSX.Element => {
 				<Divider/>
 				<Multisig/>
 				<Divider/>
+				<Proxy />
+				<Divider />
 				<DeleteAccount/>
 			</Grid.Column>
 			<Grid.Column className='col-right' mobile={16} tablet={16} computer={5} largeScreen={5} widescreen={5}>
