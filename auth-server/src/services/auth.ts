@@ -52,6 +52,10 @@ const NOTIFICATION_DEFAULTS = {
 	post_participated: true
 };
 
+const getProxiesEndpoint = (network: Network, address: string): string => {
+	return `https://us-central1-polkassembly-home.cloudfunctions.net/proxies?network=${network}&address=${address}`;
+};
+
 export const getPwdResetTokenKey = (userId: number): string => `PRT-${userId}`;
 export const getAddressLoginKey = (address: string): string => `ALN-${address}`;
 export const getAddressSignupKey = (address: string): string => `ASU-${address}`;
@@ -309,6 +313,64 @@ export default class AuthService {
 		await redisSetex(getAddressSignupKey(address), ADDRESS_LOGIN_TTL, signMessage);
 
 		return signMessage;
+	}
+
+	public async LinkProxyAddress (token: string, network: Network, proxied: string, proxy: string, message: string, signature: string): Promise<string> {
+		const userId = getUserIdFromJWT(token, jwtPublicKey);
+		const user = await getUserFromUserId(userId);
+
+		const networkEndpoint = getProxiesEndpoint(network, proxied);
+
+		const post = await fetch(networkEndpoint, {
+			headers: {
+				'content-type': 'application/json'
+			},
+			method: 'GET'
+		});
+
+		const { proxies } = await post.json();
+
+		if (!proxies || proxies.length === 0) {
+			throw new ForbiddenError(`Address ${proxy} has no proxy accounts.`);
+		}
+
+		if (proxies.includes(proxy) === false) {
+			throw new ForbiddenError(`Address ${proxy} is not a proxy of ${proxied}`);
+		}
+
+		if (!message) {
+			throw new ForbiddenError('Sign message not provided');
+		}
+
+		const isValidSr = verifySignature(message, proxy, signature);
+
+		if (!isValidSr) {
+			throw new ForbiddenError('Proxy address linking failed. Invalid signature');
+		}
+
+		const addressObj = await Address
+			.query()
+			.where('address', proxied)
+			.first();
+
+		if (addressObj) {
+			throw new ForbiddenError('There is already an account associated with this proxied address');
+		}
+
+		// If this linked address is the first address to be linked. Then set it as default.
+		// querying other verified addresses of user to check the same.
+		const otherAddresses = await Address
+			.query()
+			.where({
+				user_id: userId,
+				verified: true
+			});
+
+		const setAsDefault = otherAddresses.length === 0;
+
+		await this.createAddress(network, proxied, setAsDefault, user.id);
+
+		return this.getSignedToken(user);
 	}
 
 	public async AddressSignupConfirm (network: Network, address: string, signature: string): Promise<AuthObjectType> {
@@ -1257,8 +1319,6 @@ export default class AuthService {
 			},
 			method: 'POST'
 		};
-
-		console.log(api, request);
 
 		const result = await fetch(api, request);
 
