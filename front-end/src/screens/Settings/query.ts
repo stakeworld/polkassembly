@@ -118,3 +118,12 @@ export const MULTISIG_LINK_CONFIRM = gql`
 		}
 	}
 `;
+
+export const LINK_PROXY_ADDRESS = gql`
+	mutation linkProxyAddress($network: String!, $proxied: String!, $proxy: String!, $message: String!, $signature: String!) {
+		linkProxyAddress(network: $network, proxied: $proxied, proxy: $proxy, message:  $message, signature: $signature) {
+			message
+			token
+		}
+	}
+`;
