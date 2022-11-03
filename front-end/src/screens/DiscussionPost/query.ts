@@ -37,16 +37,16 @@ const discussionPost = gql`
         }
         onchain_link{
             ...onchainLinkDiscussion
-            onchain_post_discussion_links {
-                discussion_post_id
-                onchain_link{
-                    ...onchainLinkTreasurySpendProposal
-                    ...onchainLinkProposalPost
-                    ...onchainLinkMotionPost
-                    ...onchainLinkBountyPost
-                    ...onchainLinkReferendumPost
-                    ...onchainLinkTechCommitteeProposalPost
-                }
+        }
+        onchain_post_discussion_links {
+            discussion_post_id
+            onchain_link{
+                ...onchainLinkTreasurySpendProposal
+                ...onchainLinkProposalPost
+                ...onchainLinkMotionPost
+                ...onchainLinkBountyPost
+                ...onchainLinkReferendumPost
+                ...onchainLinkTechCommitteeProposalPost
             }
         }
         title

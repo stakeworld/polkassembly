@@ -7,20 +7,20 @@ import gql from 'graphql-tag';
 export const onchainLinkProposalPost = gql`
     fragment onchainLinkProposalPost on onchain_links {
         onchain_proposal {
-            id
+            proposalId
             proposalStatus(first: 1) {
-              blockNumber {
-                number
-              }
+                blockNumber {
+                    number
+                }
             }
-          }
+        }
     }
 `;
 
 export const onchainLinkBountyPost = gql`
     fragment onchainLinkBountyPost on onchain_links {
         onchain_bounty {
-            id
+            bountyId
             bountyStatus(first: 1) {
                 blockNumber {
                     number
@@ -33,7 +33,7 @@ export const onchainLinkBountyPost = gql`
 export const onchainLinkMotionPost = gql`
     fragment onchainLinkMotionPost on onchain_links {
         onchain_motion {
-            id
+            motionProposalId
             motionStatus(first: 1) {
                 blockNumber {
                     number
@@ -46,7 +46,7 @@ export const onchainLinkMotionPost = gql`
 export const onchainLinkReferendumPost = gql`
     fragment onchainLinkReferendumPost on onchain_links {
         onchain_referendum {
-            id
+            referendumId
             referendumStatus(first: 1) {
                 blockNumber {
                     number
@@ -59,7 +59,7 @@ export const onchainLinkReferendumPost = gql`
 export const onchainLinkTechCommitteeProposalPost = gql`
     fragment onchainLinkTechCommitteeProposalPost on onchain_links {
         onchain_tech_committee_proposal {
-            id
+            proposalId
             status(first: 1) {
                 blockNumber {
                     number
@@ -72,7 +72,7 @@ export const onchainLinkTechCommitteeProposalPost = gql`
 export const onchainLinkTreasurySpendProposal = gql`
     fragment onchainLinkTreasurySpendProposal on onchain_links {
         onchain_treasury_spend_proposal {
-            id
+            treasuryProposalId
             treasuryStatus(first: 1) {
                 blockNumber {
                     number

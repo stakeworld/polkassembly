@@ -26736,7 +26736,103 @@ export type CommentFieldsFragment = (
     & ReplyFieldsFragment
   )> }
 );
+export type OnchainLinkProposalPostFragment = (
+  { __typename?: 'onchain_links' }
+  & { onchain_proposal: Array<Maybe<(
+    { __typename?: 'Proposal' }
+    & Pick<Proposal, 'proposalId'>
+    & { proposalStatus?: Maybe<Array<(
+      { __typename?: 'ProposalStatus' }
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'number'>
+      ) }
+    )>> }
+  )>> }
+);
 
+export type OnchainLinkBountyPostFragment = (
+  { __typename?: 'onchain_links' }
+  & { onchain_bounty: Array<Maybe<(
+    { __typename?: 'Bounty' }
+    & Pick<Bounty, 'bountyId'>
+    & { bountyStatus?: Maybe<Array<(
+      { __typename?: 'BountyStatus' }
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'number'>
+      ) }
+    )>> }
+  )>> }
+);
+
+export type OnchainLinkMotionPostFragment = (
+  { __typename?: 'onchain_links' }
+  & { onchain_motion: Array<Maybe<(
+    { __typename?: 'Motion' }
+    & Pick<Motion, 'motionProposalId'>
+    & { motionStatus?: Maybe<Array<(
+      { __typename?: 'MotionStatus' }
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'number'>
+      ) }
+    )>> }
+  )>> }
+);
+
+export type OnchainLinkReferendumPostFragment = (
+  { __typename?: 'onchain_links' }
+  & { onchain_referendum: Array<Maybe<(
+    { __typename?: 'Referendum' }
+    & Pick<Referendum, 'referendumId'>
+    & { referendumStatus?: Maybe<Array<(
+      { __typename?: 'ReferendumStatus' }
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'number'>
+      ) }
+    )>> }
+  )>> }
+);
+
+export type OnchainLinkTechCommitteeProposalPostFragment = (
+  { __typename?: 'onchain_links' }
+  & { onchain_tech_committee_proposal: Array<Maybe<(
+    { __typename?: 'TechCommitteeProposal' }
+    & Pick<TechCommitteeProposal, 'proposalId'>
+    & { status?: Maybe<Array<(
+      { __typename?: 'TechCommitteeProposalStatus' }
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'number'>
+      ) }
+    )>> }
+  )>> }
+);
+
+export type OnchainLinkTreasurySpendProposalFragment = (
+  { __typename?: 'onchain_links' }
+  & { onchain_treasury_spend_proposal: Array<Maybe<(
+    { __typename?: 'TreasurySpendProposal' }
+    & Pick<TreasurySpendProposal, 'treasuryProposalId'>
+    & { treasuryStatus?: Maybe<Array<(
+      { __typename?: 'TreasuryStatus' }
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'number'>
+      ) }
+    )>> }
+  )>> }
+);
+
+export type OnchainLinkDiscussionPostFragment = (
+  { __typename?: 'onchain_links' }
+  & { onchain_post_discussion_links: Array<(
+    { __typename?: 'onchain_post_discussion_link' }
+    & Pick<Onchain_Post_Discussion_Link, 'discussion_post_id'>
+  )> }
+);
 export type AllBountyPostsQueryVariables = Exact<{
   postType: Scalars['Int'];
   postTopic: Scalars['Int'];
@@ -26809,6 +26905,12 @@ export type BountyPostFragment = (
   )>, onchain_link?: Maybe<(
     { __typename?: 'onchain_links' }
     & OnchainLinkBountyFragment
+    & OnchainLinkProposalPostFragment
+    & OnchainLinkDiscussionPostFragment
+    & OnchainLinkMotionPostFragment
+    & OnchainLinkReferendumPostFragment
+    & OnchainLinkTechCommitteeProposalPostFragment
+    & OnchainLinkTreasurySpendProposalFragment
   )>, topic: (
     { __typename?: 'post_topics' }
     & Pick<Post_Topics, 'id' | 'name'>
@@ -27037,6 +27139,18 @@ export type DiscussionPostFragment = (
   )>, onchain_link?: Maybe<(
     { __typename?: 'onchain_links' }
     & OnchainLinkDiscussionFragment
+  )>, onchain_post_discussion_links: Array<(
+    { __typename?: 'onchain_post_discussion_link' }
+    & Pick<Onchain_Post_Discussion_Link, 'discussion_post_id'>
+    & { onchain_link: (
+      { __typename?: 'onchain_links' }
+      & OnchainLinkTreasurySpendProposalFragment
+      & OnchainLinkProposalPostFragment
+      & OnchainLinkMotionPostFragment
+      & OnchainLinkBountyPostFragment
+      & OnchainLinkReferendumPostFragment
+      & OnchainLinkTechCommitteeProposalPostFragment
+    ) }
   )>, topic: (
     { __typename?: 'post_topics' }
     & Pick<Post_Topics, 'id' | 'name'>
@@ -27174,6 +27288,12 @@ export type MotionPostFragment = (
   )>, onchain_link?: Maybe<(
     { __typename?: 'onchain_links' }
     & OnchainLinkMotionFragment
+    & OnchainLinkBountyPostFragment
+    & OnchainLinkProposalPostFragment
+    & OnchainLinkDiscussionPostFragment
+    & OnchainLinkReferendumPostFragment
+    & OnchainLinkTechCommitteeProposalPostFragment
+    & OnchainLinkTreasurySpendProposalFragment
   )>, topic: (
     { __typename?: 'post_topics' }
     & Pick<Post_Topics, 'id' | 'name'>
@@ -27910,6 +28030,12 @@ export type ProposalPostFragment = (
   )>, onchain_link?: Maybe<(
     { __typename?: 'onchain_links' }
     & OnchainLinkProposalFragment
+    & OnchainLinkMotionPostFragment
+    & OnchainLinkBountyPostFragment
+    & OnchainLinkDiscussionPostFragment
+    & OnchainLinkReferendumPostFragment
+    & OnchainLinkTechCommitteeProposalPostFragment
+    & OnchainLinkTreasurySpendProposalFragment
   )>, topic: (
     { __typename?: 'post_topics' }
     & Pick<Post_Topics, 'id' | 'name'>
@@ -28059,6 +28185,12 @@ export type ReferendumPostFragment = (
   )>, onchain_link?: Maybe<(
     { __typename?: 'onchain_links' }
     & OnchainLinkReferendumFragment
+    & OnchainLinkProposalPostFragment
+    & OnchainLinkMotionPostFragment
+    & OnchainLinkBountyPostFragment
+    & OnchainLinkDiscussionPostFragment
+    & OnchainLinkTechCommitteeProposalPostFragment
+    & OnchainLinkTreasurySpendProposalFragment
   )>, topic: (
     { __typename?: 'post_topics' }
     & Pick<Post_Topics, 'id' | 'name'>
@@ -28369,6 +28501,12 @@ export type TechCommitteeProposalPostFragment = (
   )>, onchain_link?: Maybe<(
     { __typename?: 'onchain_links' }
     & OnchainLinkTechCommitteeProposalFragment
+    & OnchainLinkProposalPostFragment
+    & OnchainLinkMotionPostFragment
+    & OnchainLinkBountyPostFragment
+    & OnchainLinkDiscussionPostFragment
+    & OnchainLinkReferendumPostFragment
+    & OnchainLinkTreasurySpendProposalFragment
   )>, topic: (
     { __typename?: 'post_topics' }
     & Pick<Post_Topics, 'id' | 'name'>
@@ -28901,6 +29039,12 @@ export type TreasuryProposalPostFragment = (
   )>, onchain_link?: Maybe<(
     { __typename?: 'onchain_links' }
     & OnchainLinkTreasuryProposalFragment
+    & OnchainLinkProposalPostFragment
+    & OnchainLinkMotionPostFragment
+    & OnchainLinkBountyPostFragment
+    & OnchainLinkDiscussionPostFragment
+    & OnchainLinkReferendumPostFragment
+    & OnchainLinkTechCommitteeProposalPostFragment
   )>, topic: (
     { __typename?: 'post_topics' }
     & Pick<Post_Topics, 'id' | 'name'>
@@ -29092,6 +29236,73 @@ export const OnchainLinkBountyFragmentDoc = gql`
   }
 }
     `;
+    export const OnchainLinkProposalPostFragmentDoc = gql`
+    fragment onchainLinkProposalPost on onchain_links {
+  onchain_proposal {
+    proposalId
+    proposalStatus(first: 1) {
+      blockNumber {
+        number
+      }
+    }
+  }
+}
+    `;
+export const OnchainLinkDiscussionPostFragmentDoc = gql`
+    fragment onchainLinkDiscussionPost on onchain_links {
+  onchain_post_discussion_links {
+    discussion_post_id
+  }
+}
+    `;
+export const OnchainLinkMotionPostFragmentDoc = gql`
+    fragment onchainLinkMotionPost on onchain_links {
+  onchain_motion {
+    motionProposalId
+    motionStatus(first: 1) {
+      blockNumber {
+        number
+      }
+    }
+  }
+}
+    `;
+export const OnchainLinkReferendumPostFragmentDoc = gql`
+    fragment onchainLinkReferendumPost on onchain_links {
+  onchain_referendum {
+    referendumId
+    referendumStatus(first: 1) {
+      blockNumber {
+        number
+      }
+    }
+  }
+}
+    `;
+export const OnchainLinkTechCommitteeProposalPostFragmentDoc = gql`
+    fragment onchainLinkTechCommitteeProposalPost on onchain_links {
+  onchain_tech_committee_proposal {
+    proposalId
+    status(first: 1) {
+      blockNumber {
+        number
+      }
+    }
+  }
+}
+    `;
+export const OnchainLinkTreasurySpendProposalFragmentDoc = gql`
+    fragment onchainLinkTreasurySpendProposal on onchain_links {
+  onchain_treasury_spend_proposal {
+    treasuryProposalId
+    treasuryStatus(first: 1) {
+      blockNumber {
+        number
+      }
+    }
+  }
+}
+    `;
 export const BountyPostFragmentDoc = gql`
     fragment bountyPost on posts {
   author {
@@ -29106,6 +29317,12 @@ export const BountyPostFragmentDoc = gql`
   }
   onchain_link {
     ...onchainLinkBounty
+    ...onchainLinkProposalPost
+    ...onchainLinkDiscussionPost
+    ...onchainLinkMotionPost
+    ...onchainLinkReferendumPost
+    ...onchainLinkTechCommitteeProposalPost
+    ...onchainLinkTreasurySpendProposal
   }
   title
   topic {
@@ -29119,7 +29336,13 @@ export const BountyPostFragmentDoc = gql`
 }
     ${AuthorFieldsFragmentDoc}
 ${CommentFieldsFragmentDoc}
-${OnchainLinkBountyFragmentDoc}`;
+${OnchainLinkBountyFragmentDoc}
+${OnchainLinkProposalPostFragmentDoc}
+${OnchainLinkDiscussionPostFragmentDoc}
+${OnchainLinkMotionPostFragmentDoc}
+${OnchainLinkReferendumPostFragmentDoc}
+${OnchainLinkTechCommitteeProposalPostFragmentDoc}
+${OnchainLinkTreasurySpendProposalFragmentDoc}`;
 export const OnchainLinkChildBountyFragmentDoc = gql`
     fragment onchainLinkChildBounty on onchain_links {
   id
@@ -29190,6 +29413,18 @@ export const OnchainLinkDiscussionFragmentDoc = gql`
   onchain_treasury_proposal_id
 }
     `;
+export const OnchainLinkBountyPostFragmentDoc = gql`
+    fragment onchainLinkBountyPost on onchain_links {
+  onchain_bounty {
+    bountyId
+    bountyStatus(first: 1) {
+      blockNumber {
+        number
+      }
+    }
+  }
+}
+    `;
 export const DiscussionPostFragmentDoc = gql`
     fragment discussionPost on posts {
   author {
@@ -29205,6 +29440,17 @@ export const DiscussionPostFragmentDoc = gql`
   onchain_link {
     ...onchainLinkDiscussion
   }
+  onchain_post_discussion_links {
+    discussion_post_id
+    onchain_link {
+      ...onchainLinkTreasurySpendProposal
+      ...onchainLinkProposalPost
+      ...onchainLinkMotionPost
+      ...onchainLinkBountyPost
+      ...onchainLinkReferendumPost
+      ...onchainLinkTechCommitteeProposalPost
+    }
+  }
   title
   topic {
     id
@@ -29217,7 +29463,13 @@ export const DiscussionPostFragmentDoc = gql`
 }
     ${AuthorFieldsFragmentDoc}
 ${CommentFieldsFragmentDoc}
-${OnchainLinkDiscussionFragmentDoc}`;
+${OnchainLinkDiscussionFragmentDoc}
+${OnchainLinkTreasurySpendProposalFragmentDoc}
+${OnchainLinkProposalPostFragmentDoc}
+${OnchainLinkMotionPostFragmentDoc}
+${OnchainLinkBountyPostFragmentDoc}
+${OnchainLinkReferendumPostFragmentDoc}
+${OnchainLinkTechCommitteeProposalPostFragmentDoc}`;
 export const PostFieldsFragmentDoc = gql`
     fragment postFields on posts {
   id
@@ -29307,6 +29559,12 @@ export const MotionPostFragmentDoc = gql`
   }
   onchain_link {
     ...onchainLinkMotion
+    ...onchainLinkBountyPost
+    ...onchainLinkProposalPost
+    ...onchainLinkDiscussionPost
+    ...onchainLinkReferendumPost
+    ...onchainLinkTechCommitteeProposalPost
+    ...onchainLinkTreasurySpendProposal
   }
   title
   topic {
@@ -29320,7 +29578,13 @@ export const MotionPostFragmentDoc = gql`
 }
     ${AuthorFieldsFragmentDoc}
 ${CommentFieldsFragmentDoc}
-${OnchainLinkMotionFragmentDoc}`;
+${OnchainLinkMotionFragmentDoc}
+${OnchainLinkBountyPostFragmentDoc}
+${OnchainLinkProposalPostFragmentDoc}
+${OnchainLinkDiscussionPostFragmentDoc}
+${OnchainLinkReferendumPostFragmentDoc}
+${OnchainLinkTechCommitteeProposalPostFragmentDoc}
+${OnchainLinkTreasurySpendProposalFragmentDoc}`;
 export const OnchainLinkProposalFragmentDoc = gql`
     fragment onchainLinkProposal on onchain_links {
   id
@@ -29365,6 +29629,12 @@ export const ProposalPostFragmentDoc = gql`
   }
   onchain_link {
     ...onchainLinkProposal
+    ...onchainLinkMotionPost
+    ...onchainLinkBountyPost
+    ...onchainLinkDiscussionPost
+    ...onchainLinkReferendumPost
+    ...onchainLinkTechCommitteeProposalPost
+    ...onchainLinkTreasurySpendProposal
   }
   title
   topic {
@@ -29378,7 +29648,13 @@ export const ProposalPostFragmentDoc = gql`
 }
     ${AuthorFieldsFragmentDoc}
 ${CommentFieldsFragmentDoc}
-${OnchainLinkProposalFragmentDoc}`;
+${OnchainLinkProposalFragmentDoc}
+${OnchainLinkMotionPostFragmentDoc}
+${OnchainLinkBountyPostFragmentDoc}
+${OnchainLinkDiscussionPostFragmentDoc}
+${OnchainLinkReferendumPostFragmentDoc}
+${OnchainLinkTechCommitteeProposalPostFragmentDoc}
+${OnchainLinkTreasurySpendProposalFragmentDoc}`;
 export const OnchainLinkReferendumFragmentDoc = gql`
     fragment onchainLinkReferendum on onchain_links {
   id
@@ -29425,6 +29701,12 @@ export const ReferendumPostFragmentDoc = gql`
   }
   onchain_link {
     ...onchainLinkReferendum
+    ...onchainLinkProposalPost
+    ...onchainLinkMotionPost
+    ...onchainLinkBountyPost
+    ...onchainLinkDiscussionPost
+    ...onchainLinkTechCommitteeProposalPost
+    ...onchainLinkTreasurySpendProposal
   }
   title
   topic {
@@ -29438,7 +29720,13 @@ export const ReferendumPostFragmentDoc = gql`
 }
     ${AuthorFieldsFragmentDoc}
 ${CommentFieldsFragmentDoc}
-${OnchainLinkReferendumFragmentDoc}`;
+${OnchainLinkReferendumFragmentDoc}
+${OnchainLinkProposalPostFragmentDoc}
+${OnchainLinkMotionPostFragmentDoc}
+${OnchainLinkBountyPostFragmentDoc}
+${OnchainLinkDiscussionPostFragmentDoc}
+${OnchainLinkTechCommitteeProposalPostFragmentDoc}
+${OnchainLinkTreasurySpendProposalFragmentDoc}`;
 export const SearchPostFieldsFragmentDoc = gql`
     fragment searchPostFields on posts {
   id
@@ -29517,6 +29805,12 @@ export const TechCommitteeProposalPostFragmentDoc = gql`
   }
   onchain_link {
     ...onchainLinkTechCommitteeProposal
+    ...onchainLinkProposalPost
+    ...onchainLinkMotionPost
+    ...onchainLinkBountyPost
+    ...onchainLinkDiscussionPost
+    ...onchainLinkReferendumPost
+    ...onchainLinkTreasurySpendProposal
   }
   title
   topic {
@@ -29530,7 +29824,13 @@ export const TechCommitteeProposalPostFragmentDoc = gql`
 }
     ${AuthorFieldsFragmentDoc}
 ${CommentFieldsFragmentDoc}
-${OnchainLinkTechCommitteeProposalFragmentDoc}`;
+${OnchainLinkTechCommitteeProposalFragmentDoc}
+${OnchainLinkProposalPostFragmentDoc}
+${OnchainLinkMotionPostFragmentDoc}
+${OnchainLinkBountyPostFragmentDoc}
+${OnchainLinkDiscussionPostFragmentDoc}
+${OnchainLinkReferendumPostFragmentDoc}
+${OnchainLinkTreasurySpendProposalFragmentDoc}`;
 export const OnchainLinkTipFragmentDoc = gql`
     fragment onchainLinkTip on onchain_links {
   id
@@ -29618,6 +29918,12 @@ export const TreasuryProposalPostFragmentDoc = gql`
   }
   onchain_link {
     ...onchainLinkTreasuryProposal
+    ...onchainLinkProposalPost
+    ...onchainLinkMotionPost
+    ...onchainLinkBountyPost
+    ...onchainLinkDiscussionPost
+    ...onchainLinkReferendumPost
+    ...onchainLinkTechCommitteeProposalPost
   }
   title
   topic {
@@ -29631,7 +29937,13 @@ export const TreasuryProposalPostFragmentDoc = gql`
 }
     ${AuthorFieldsFragmentDoc}
 ${CommentFieldsFragmentDoc}
-${OnchainLinkTreasuryProposalFragmentDoc}`;
+${OnchainLinkTreasuryProposalFragmentDoc}
+${OnchainLinkProposalPostFragmentDoc}
+${OnchainLinkMotionPostFragmentDoc}
+${OnchainLinkBountyPostFragmentDoc}
+${OnchainLinkDiscussionPostFragmentDoc}
+${OnchainLinkReferendumPostFragmentDoc}
+${OnchainLinkTechCommitteeProposalPostFragmentDoc}`;
 export const EditCommentDocument = gql`
     mutation EditComment($id: uuid!, $content: String!) {
   update_comments(where: {id: {_eq: $id}}, _set: {content: $content}) {
