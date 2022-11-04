@@ -7,7 +7,7 @@ import React from 'react';
 import { noTitle } from 'src/global/noTitle';
 import getDefaultAddressField from 'src/util/getDefaultAddressField';
 
-import { DiscussionPostFragment, MotionPostFragment,ProposalPostFragment, ReferendumPostFragment, TipPostFragment, TreasuryProposalPostFragment } from '../../generated/graphql';
+import { DiscussionPostFragment, MotionPostFragment,ProposalPostFragment, ReferendumPostFragment, TreasuryProposalPostFragment } from '../../generated/graphql';
 import CreationLabel from '../../ui-components/CreationLabel';
 import Markdown from '../../ui-components/Markdown';
 import StatusTag from '../../ui-components/StatusTag';
@@ -17,7 +17,7 @@ interface Props {
 	className?: string,
 	isTipProposal: boolean,
 	onchainId?: string | number | null
-	post: DiscussionPostFragment | ProposalPostFragment | ReferendumPostFragment| TipPostFragment| TreasuryProposalPostFragment| MotionPostFragment
+	post: DiscussionPostFragment | ProposalPostFragment | ReferendumPostFragment| TreasuryProposalPostFragment| MotionPostFragment
 	postStatus?: string
 }
 const PostContent = ({ className, isTipProposal, onchainId, post, postStatus }:Props) => {

@@ -1,13 +1,15 @@
 // Copyright 2019-2020 @Premiurly/polkassembly authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
+
+import { QueryResult } from '@apollo/react-common';
 import styled from '@xstyled/styled-components';
 import React, { useEffect, useState } from 'react';
 import { Grid, Icon } from 'semantic-ui-react';
 import useCurrentBlock from 'src/hooks/useCurrentBlock';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
 
-import { PollVotesQuery, useCouncilAtBlockNumberQuery } from '../../../generated/graphql';
+import { CouncilAtBlockNumberQuery, CouncilAtBlockNumberQueryVariables, PollVotesQuery, useCouncilAtBlockNumberQuery } from '../../../generated/graphql';
 import { CouncilVote, Vote } from '../../../types';
 import Address from '../../../ui-components/Address';
 import Card from '../../../ui-components/Card';
@@ -31,9 +33,9 @@ const CouncilSignals = ({ className, endBlock, data }: Props) => {
 	const councilAtPollEndBlockNumber = useCouncilAtBlockNumberQuery({ variables: { blockNumber: endBlock } });
 	const councilAtCurrentBlockNumber = useCouncilAtBlockNumberQuery({ variables: { blockNumber: currentBlockNumber } });
 
-	const getCouncilMembers = (councilAtBlockNumber: any): Set<string> => {
+	const getCouncilMembers = (councilAtBlockNumber: QueryResult<CouncilAtBlockNumberQuery, CouncilAtBlockNumberQueryVariables>): Set<string> => {
 		const memberSet = new Set<string>();
-		councilAtBlockNumber?.data?.councils?.[0]?.members?.forEach((member: any) => {
+		councilAtBlockNumber?.data?.councils?.[0]?.members?.forEach((member) => {
 			const address = getEncodedAddress(member.address);
 			if (address) {
 				memberSet.add(address);

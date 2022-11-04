@@ -53,7 +53,7 @@ const LatestActivityPostReactions = function ({ className, postId, gotoPost }: P
 				reaction={reactions[0]}
 				reactionMap={reactionMap}
 				postId={postId}
-				refetch={refetch as any}
+				refetch={refetch}
 				reactionsDisabled={reactionsDisabled}
 				setReactionsDisabled={setReactionsDisabled}
 			/>
