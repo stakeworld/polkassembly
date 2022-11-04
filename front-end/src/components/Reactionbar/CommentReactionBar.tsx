@@ -53,7 +53,7 @@ const CommentReactionBar = function ({ className, commentId }: Props) {
 						reaction={reaction}
 						reactionMap={reactionMap}
 						commentId={commentId}
-						refetch={refetch}
+						refetch={refetch as any}
 						reactionsDisabled={reactionsDisabled}
 						setReactionsDisabled={setReactionsDisabled}
 					/>
