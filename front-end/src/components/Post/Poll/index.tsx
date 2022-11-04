@@ -25,7 +25,7 @@ const PollComponent = ({ postId, canEdit }: Props) => {
 
 	return (
 		<>
-			<Poll pollId={data?.poll?.[0]?.id} endBlock={data?.poll?.[0]?.block_end} canEdit={canEdit} pollRefetch={refetch as any} />
+			<Poll pollId={data?.poll?.[0]?.id} endBlock={data?.poll?.[0]?.block_end} canEdit={canEdit} pollRefetch={refetch} />
 		</>
 	);
 };

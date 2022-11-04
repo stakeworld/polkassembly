@@ -330,9 +330,9 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 							isEditing={isEditing}
 							isTipProposal={isTipProposal}
 							onchainId={onchainId}
-							post={post as any}
+							post={post}
 							postStatus={postStatus}
-							refetch={refetch as any}
+							refetch={refetch}
 							toggleEdit={toggleEdit}
 						/>
 						<div className='actions-bar'>
@@ -483,10 +483,10 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 					{ !!post.comments?.length &&
 						<Comments
 							comments={post.comments}
-							refetch={refetch as any}
+							refetch={refetch}
 						/>
 					}
-					{ id && <CreatePostComment postId={post.id} refetch={refetch as any} /> }
+					{ id && <CreatePostComment postId={post.id} refetch={refetch} /> }
 				</Grid.Column>
 				<Grid.Column mobile={16} tablet={16} computer={6} largeScreen={6}>
 					<Media greaterThanOrEqual="computer">

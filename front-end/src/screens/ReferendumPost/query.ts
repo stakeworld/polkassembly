@@ -4,14 +4,8 @@
 
 import gql from 'graphql-tag';
 import { authorFields } from 'src/fragments/author';
-import { onchainLinkDiscussionPost } from 'src/fragments/posts';
-import { onchainLinkProposalPost } from 'src/fragments/posts';
-import { onchainLinkTechCommitteeProposalPost } from 'src/fragments/posts';
-import { onchainLinkTreasurySpendProposal } from 'src/fragments/posts';
 
 import { commentFields } from '../../fragments/comments';
-import { onchainLinkBountyPost } from '../../fragments/posts';
-import { onchainLinkMotionPost } from '../../fragments/posts';
 
 const onchainLinkReferendum = gql`
     fragment onchainLinkReferendum on onchain_links {
@@ -60,12 +54,6 @@ const referendumPost = gql`
         }
         onchain_link{
             ...onchainLinkReferendum
-            ...onchainLinkProposalPost
-            ...onchainLinkMotionPost
-            ...onchainLinkBountyPost
-            ...onchainLinkDiscussionPost
-            ...onchainLinkTechCommitteeProposalPost
-            ...onchainLinkTreasurySpendProposal
         }
         title
         topic {
@@ -80,12 +68,6 @@ const referendumPost = gql`
     ${authorFields}
     ${commentFields}
     ${onchainLinkReferendum}
-    ${onchainLinkProposalPost}
-    ${onchainLinkMotionPost}
-    ${onchainLinkBountyPost}
-    ${onchainLinkDiscussionPost}
-    ${onchainLinkTechCommitteeProposalPost}
-    ${onchainLinkTreasurySpendProposal}
 `;
 
 export const QUERY_REFERENDUM_POST_AND_COMMENTS = gql`

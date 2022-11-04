@@ -4,12 +4,6 @@
 
 import gql from 'graphql-tag';
 import { authorFields } from 'src/fragments/author';
-import { onchainLinkProposalPost } from 'src/fragments/posts';
-import { onchainLinkDiscussionPost } from 'src/fragments/posts';
-import { onchainLinkMotionPost } from 'src/fragments/posts';
-import { onchainLinkReferendumPost } from 'src/fragments/posts';
-import { onchainLinkTechCommitteeProposalPost } from 'src/fragments/posts';
-import { onchainLinkTreasurySpendProposal } from 'src/fragments/posts';
 
 import { commentFields } from '../../fragments/comments';
 
@@ -54,12 +48,6 @@ const bountyPost = gql`
         }
         onchain_link{
             ...onchainLinkBounty
-            ...onchainLinkProposalPost
-            ...onchainLinkDiscussionPost
-            ...onchainLinkMotionPost
-            ...onchainLinkReferendumPost
-            ...onchainLinkTechCommitteeProposalPost
-            ...onchainLinkTreasurySpendProposal
         }
         title
         topic {
@@ -74,12 +62,6 @@ const bountyPost = gql`
     ${authorFields}
     ${commentFields}
     ${onchainLinkBounty}
-    ${onchainLinkProposalPost}
-    ${onchainLinkDiscussionPost}
-    ${onchainLinkMotionPost}
-    ${onchainLinkReferendumPost}
-    ${onchainLinkTechCommitteeProposalPost}
-    ${onchainLinkTreasurySpendProposal}
 `;
 
 export const QUERY_BOUNTY_POST_AND_COMMENTS = gql`

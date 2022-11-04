@@ -3,15 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import gql from 'graphql-tag';
-import { onchainLinkTreasurySpendProposal } from 'src/fragments/posts';
-import { onchainLinkProposalPost } from 'src/fragments/posts';
-import { onchainLinkReferendumPost } from 'src/fragments/posts';
-import { onchainLinkTechCommitteeProposalPost } from 'src/fragments/posts';
 
 import { authorFields } from '../../fragments/author';
 import { commentFields } from '../../fragments/comments';
-import { onchainLinkBountyPost } from '../../fragments/posts';
-import { onchainLinkMotionPost } from '../../fragments/posts';
 
 const onchainLinkDiscussion = gql`
     fragment onchainLinkDiscussion on onchain_links {
@@ -38,17 +32,6 @@ const discussionPost = gql`
         onchain_link{
             ...onchainLinkDiscussion
         }
-        onchain_post_discussion_links {
-            discussion_post_id
-            onchain_link{
-                ...onchainLinkTreasurySpendProposal
-                ...onchainLinkProposalPost
-                ...onchainLinkMotionPost
-                ...onchainLinkBountyPost
-                ...onchainLinkReferendumPost
-                ...onchainLinkTechCommitteeProposalPost
-            }
-        }
         title
         topic {
             id
@@ -62,12 +45,6 @@ const discussionPost = gql`
     ${authorFields}
     ${commentFields}
     ${onchainLinkDiscussion}
-    ${onchainLinkTreasurySpendProposal}
-    ${onchainLinkProposalPost}
-    ${onchainLinkMotionPost}
-    ${onchainLinkBountyPost}
-    ${onchainLinkReferendumPost}
-    ${onchainLinkTechCommitteeProposalPost}
 `;
 
 export const QUERY_DISCUSSION_POST_AND_COMMENTS = gql`
