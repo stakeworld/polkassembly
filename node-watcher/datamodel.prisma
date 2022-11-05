@@ -336,7 +336,7 @@ type ReferendumV2 {
   referendumId: Int! @unique
   referendumStatus: [ReferendumStatusV2]! @relation(name: "ReferendumStatusV2FromReferendumV2")
   enactmentAt: String
-  SubmittedAt: String!
+  submittedAt: String!
   submitted: Json
   decisionDeposit: Json
   deciding: Json
@@ -353,14 +353,17 @@ type ReferendumStatusV2 {
 type PreimageV2 {
   id: ID! @id
   author: String!
-  depositAmount: String!
+  depositAmount: String
   hash: String!
   metaDescription: String!
   method: String!
+  enactmentPeriod: String
+  origin: String
   preimageArguments: [PreimageArgumentV2]! @relation(name: "ArgumentForPreimageV2")
   preimageStatus: [PreimageStatusV2]! @relation(name: "PreimageStatusV2FromPreimage")
   referendum: ReferendumV2 @relation(name: "PreimageV2ForReferendumV2", link: INLINE)
   section: String!
+  length: Int!
 }
 
 type PreimageStatusV2 {

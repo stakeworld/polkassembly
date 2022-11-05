@@ -4875,14 +4875,17 @@ input PreimageUpsertWithoutReferendumInput {
 type PreimageV2 {
   id: ID!
   author: String!
-  depositAmount: String!
+  depositAmount: String
   hash: String!
   metaDescription: String!
   method: String!
+  enactmentPeriod: String
+  origin: String
   preimageArguments(where: PreimageArgumentV2WhereInput, orderBy: PreimageArgumentV2OrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PreimageArgumentV2!]
   preimageStatus(where: PreimageStatusV2WhereInput, orderBy: PreimageStatusV2OrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PreimageStatusV2!]
   referendum: ReferendumV2
   section: String!
+  length: Int!
 }
 
 type PreimageV2Connection {
@@ -4894,14 +4897,17 @@ type PreimageV2Connection {
 input PreimageV2CreateInput {
   id: ID
   author: String!
-  depositAmount: String!
+  depositAmount: String
   hash: String!
   metaDescription: String!
   method: String!
+  enactmentPeriod: String
+  origin: String
   preimageArguments: PreimageArgumentV2CreateManyWithoutPreimageInput
   preimageStatus: PreimageStatusV2CreateManyWithoutPreimageInput
   referendum: ReferendumV2CreateOneWithoutPreimageInput
   section: String!
+  length: Int!
 }
 
 input PreimageV2CreateOneWithoutPreimageArgumentsInput {
@@ -4922,37 +4928,46 @@ input PreimageV2CreateOneWithoutReferendumInput {
 input PreimageV2CreateWithoutPreimageArgumentsInput {
   id: ID
   author: String!
-  depositAmount: String!
+  depositAmount: String
   hash: String!
   metaDescription: String!
   method: String!
+  enactmentPeriod: String
+  origin: String
   preimageStatus: PreimageStatusV2CreateManyWithoutPreimageInput
   referendum: ReferendumV2CreateOneWithoutPreimageInput
   section: String!
+  length: Int!
 }
 
 input PreimageV2CreateWithoutPreimageStatusInput {
   id: ID
   author: String!
-  depositAmount: String!
+  depositAmount: String
   hash: String!
   metaDescription: String!
   method: String!
+  enactmentPeriod: String
+  origin: String
   preimageArguments: PreimageArgumentV2CreateManyWithoutPreimageInput
   referendum: ReferendumV2CreateOneWithoutPreimageInput
   section: String!
+  length: Int!
 }
 
 input PreimageV2CreateWithoutReferendumInput {
   id: ID
   author: String!
-  depositAmount: String!
+  depositAmount: String
   hash: String!
   metaDescription: String!
   method: String!
+  enactmentPeriod: String
+  origin: String
   preimageArguments: PreimageArgumentV2CreateManyWithoutPreimageInput
   preimageStatus: PreimageStatusV2CreateManyWithoutPreimageInput
   section: String!
+  length: Int!
 }
 
 type PreimageV2Edge {
@@ -4973,18 +4988,27 @@ enum PreimageV2OrderByInput {
   metaDescription_DESC
   method_ASC
   method_DESC
+  enactmentPeriod_ASC
+  enactmentPeriod_DESC
+  origin_ASC
+  origin_DESC
   section_ASC
   section_DESC
+  length_ASC
+  length_DESC
 }
 
 type PreimageV2PreviousValues {
   id: ID!
   author: String!
-  depositAmount: String!
+  depositAmount: String
   hash: String!
   metaDescription: String!
   method: String!
+  enactmentPeriod: String
+  origin: String
   section: String!
+  length: Int!
 }
 
 type PreimageV2SubscriptionPayload {
@@ -5011,10 +5035,13 @@ input PreimageV2UpdateInput {
   hash: String
   metaDescription: String
   method: String
+  enactmentPeriod: String
+  origin: String
   preimageArguments: PreimageArgumentV2UpdateManyWithoutPreimageInput
   preimageStatus: PreimageStatusV2UpdateManyWithoutPreimageInput
   referendum: ReferendumV2UpdateOneWithoutPreimageInput
   section: String
+  length: Int
 }
 
 input PreimageV2UpdateManyMutationInput {
@@ -5023,7 +5050,10 @@ input PreimageV2UpdateManyMutationInput {
   hash: String
   metaDescription: String
   method: String
+  enactmentPeriod: String
+  origin: String
   section: String
+  length: Int
 }
 
 input PreimageV2UpdateOneRequiredWithoutPreimageArgumentsInput {
@@ -5055,9 +5085,12 @@ input PreimageV2UpdateWithoutPreimageArgumentsDataInput {
   hash: String
   metaDescription: String
   method: String
+  enactmentPeriod: String
+  origin: String
   preimageStatus: PreimageStatusV2UpdateManyWithoutPreimageInput
   referendum: ReferendumV2UpdateOneWithoutPreimageInput
   section: String
+  length: Int
 }
 
 input PreimageV2UpdateWithoutPreimageStatusDataInput {
@@ -5066,9 +5099,12 @@ input PreimageV2UpdateWithoutPreimageStatusDataInput {
   hash: String
   metaDescription: String
   method: String
+  enactmentPeriod: String
+  origin: String
   preimageArguments: PreimageArgumentV2UpdateManyWithoutPreimageInput
   referendum: ReferendumV2UpdateOneWithoutPreimageInput
   section: String
+  length: Int
 }
 
 input PreimageV2UpdateWithoutReferendumDataInput {
@@ -5077,9 +5113,12 @@ input PreimageV2UpdateWithoutReferendumDataInput {
   hash: String
   metaDescription: String
   method: String
+  enactmentPeriod: String
+  origin: String
   preimageArguments: PreimageArgumentV2UpdateManyWithoutPreimageInput
   preimageStatus: PreimageStatusV2UpdateManyWithoutPreimageInput
   section: String
+  length: Int
 }
 
 input PreimageV2UpsertWithoutPreimageArgumentsInput {
@@ -5182,6 +5221,34 @@ input PreimageV2WhereInput {
   method_not_starts_with: String
   method_ends_with: String
   method_not_ends_with: String
+  enactmentPeriod: String
+  enactmentPeriod_not: String
+  enactmentPeriod_in: [String!]
+  enactmentPeriod_not_in: [String!]
+  enactmentPeriod_lt: String
+  enactmentPeriod_lte: String
+  enactmentPeriod_gt: String
+  enactmentPeriod_gte: String
+  enactmentPeriod_contains: String
+  enactmentPeriod_not_contains: String
+  enactmentPeriod_starts_with: String
+  enactmentPeriod_not_starts_with: String
+  enactmentPeriod_ends_with: String
+  enactmentPeriod_not_ends_with: String
+  origin: String
+  origin_not: String
+  origin_in: [String!]
+  origin_not_in: [String!]
+  origin_lt: String
+  origin_lte: String
+  origin_gt: String
+  origin_gte: String
+  origin_contains: String
+  origin_not_contains: String
+  origin_starts_with: String
+  origin_not_starts_with: String
+  origin_ends_with: String
+  origin_not_ends_with: String
   preimageArguments_every: PreimageArgumentV2WhereInput
   preimageArguments_some: PreimageArgumentV2WhereInput
   preimageArguments_none: PreimageArgumentV2WhereInput
@@ -5203,6 +5270,14 @@ input PreimageV2WhereInput {
   section_not_starts_with: String
   section_ends_with: String
   section_not_ends_with: String
+  length: Int
+  length_not: Int
+  length_in: [Int!]
+  length_not_in: [Int!]
+  length_lt: Int
+  length_lte: Int
+  length_gt: Int
+  length_gte: Int
   AND: [PreimageV2WhereInput!]
   OR: [PreimageV2WhereInput!]
   NOT: [PreimageV2WhereInput!]
@@ -6580,7 +6655,7 @@ type ReferendumV2 {
   referendumId: Int!
   referendumStatus(where: ReferendumStatusV2WhereInput, orderBy: ReferendumStatusV2OrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ReferendumStatusV2!]
   enactmentAt: String
-  SubmittedAt: String!
+  submittedAt: String!
   submitted: Json
   decisionDeposit: Json
   deciding: Json
@@ -6600,7 +6675,7 @@ input ReferendumV2CreateInput {
   referendumId: Int!
   referendumStatus: ReferendumStatusV2CreateManyWithoutReferendumInput
   enactmentAt: String
-  SubmittedAt: String!
+  submittedAt: String!
   submitted: Json
   decisionDeposit: Json
   deciding: Json
@@ -6623,7 +6698,7 @@ input ReferendumV2CreateWithoutPreimageInput {
   referendumId: Int!
   referendumStatus: ReferendumStatusV2CreateManyWithoutReferendumInput
   enactmentAt: String
-  SubmittedAt: String!
+  submittedAt: String!
   submitted: Json
   decisionDeposit: Json
   deciding: Json
@@ -6636,7 +6711,7 @@ input ReferendumV2CreateWithoutReferendumStatusInput {
   preimageHash: String!
   referendumId: Int!
   enactmentAt: String
-  SubmittedAt: String!
+  submittedAt: String!
   submitted: Json
   decisionDeposit: Json
   deciding: Json
@@ -6660,8 +6735,8 @@ enum ReferendumV2OrderByInput {
   referendumId_DESC
   enactmentAt_ASC
   enactmentAt_DESC
-  SubmittedAt_ASC
-  SubmittedAt_DESC
+  submittedAt_ASC
+  submittedAt_DESC
   submitted_ASC
   submitted_DESC
   decisionDeposit_ASC
@@ -6677,7 +6752,7 @@ type ReferendumV2PreviousValues {
   preimageHash: String!
   referendumId: Int!
   enactmentAt: String
-  SubmittedAt: String!
+  submittedAt: String!
   submitted: Json
   decisionDeposit: Json
   deciding: Json
@@ -6709,7 +6784,7 @@ input ReferendumV2UpdateInput {
   referendumId: Int
   referendumStatus: ReferendumStatusV2UpdateManyWithoutReferendumInput
   enactmentAt: String
-  SubmittedAt: String
+  submittedAt: String
   submitted: Json
   decisionDeposit: Json
   deciding: Json
@@ -6721,7 +6796,7 @@ input ReferendumV2UpdateManyMutationInput {
   preimageHash: String
   referendumId: Int
   enactmentAt: String
-  SubmittedAt: String
+  submittedAt: String
   submitted: Json
   decisionDeposit: Json
   deciding: Json
@@ -6750,7 +6825,7 @@ input ReferendumV2UpdateWithoutPreimageDataInput {
   referendumId: Int
   referendumStatus: ReferendumStatusV2UpdateManyWithoutReferendumInput
   enactmentAt: String
-  SubmittedAt: String
+  submittedAt: String
   submitted: Json
   decisionDeposit: Json
   deciding: Json
@@ -6763,7 +6838,7 @@ input ReferendumV2UpdateWithoutReferendumStatusDataInput {
   preimageHash: String
   referendumId: Int
   enactmentAt: String
-  SubmittedAt: String
+  submittedAt: String
   submitted: Json
   decisionDeposit: Json
   deciding: Json
@@ -6850,20 +6925,20 @@ input ReferendumV2WhereInput {
   enactmentAt_not_starts_with: String
   enactmentAt_ends_with: String
   enactmentAt_not_ends_with: String
-  SubmittedAt: String
-  SubmittedAt_not: String
-  SubmittedAt_in: [String!]
-  SubmittedAt_not_in: [String!]
-  SubmittedAt_lt: String
-  SubmittedAt_lte: String
-  SubmittedAt_gt: String
-  SubmittedAt_gte: String
-  SubmittedAt_contains: String
-  SubmittedAt_not_contains: String
-  SubmittedAt_starts_with: String
-  SubmittedAt_not_starts_with: String
-  SubmittedAt_ends_with: String
-  SubmittedAt_not_ends_with: String
+  submittedAt: String
+  submittedAt_not: String
+  submittedAt_in: [String!]
+  submittedAt_not_in: [String!]
+  submittedAt_lt: String
+  submittedAt_lte: String
+  submittedAt_gt: String
+  submittedAt_gte: String
+  submittedAt_contains: String
+  submittedAt_not_contains: String
+  submittedAt_starts_with: String
+  submittedAt_not_starts_with: String
+  submittedAt_ends_with: String
+  submittedAt_not_ends_with: String
   AND: [ReferendumV2WhereInput!]
   OR: [ReferendumV2WhereInput!]
   NOT: [ReferendumV2WhereInput!]

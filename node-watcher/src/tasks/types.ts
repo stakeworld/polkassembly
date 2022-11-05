@@ -21,10 +21,10 @@ import {
   VoteThreshold,
 } from '@polkadot/types/interfaces';
 import { Json } from 'src/generated/prisma-client';
-
 import {
   motionStatus,
   preimageStatus,
+  preimageStatusV2,
   proposalStatus,
   referendumStatus,
   referendumStatusV2,
@@ -135,7 +135,9 @@ export type Nomidot =
   | NomidotCouncilMotionRawVoteEvent[]
   | NomidotCouncilMotionVote[]
   | NomidotReferendumV2[]
-  | NomidotReferendumV2RawEvent[];
+  | NomidotReferendumV2RawEvent[]
+  | NomidotPreimageV2[];
+
 
 
 export type NomidotTask = Task<Nomidot>;
@@ -288,6 +290,8 @@ type ProposalStatus = typeof proposalStatus[keyof typeof proposalStatus];
 
 type PreimageStatus = typeof preimageStatus[keyof typeof preimageStatus];
 
+type PreimageStatusV2 = typeof preimageStatusV2[keyof typeof preimageStatusV2];
+
 type ReferendumStatus = typeof referendumStatus[keyof typeof referendumStatus];
 
 type ReferendumStatusV2 = typeof referendumStatusV2[keyof typeof referendumStatusV2];
@@ -301,11 +305,28 @@ export interface NomidotPreimage extends NomidotPreimageEvent {
   section: string;
   status: PreimageStatus;
 }
+export interface NomidotPreimageV2 {
+  preImageArguments: NomidotArgument[];
+  preimageHash: Hash;
+  metaDescription: string;
+  method: string;
+  section: string;
+  origin: string;
+  enactmentPeriod: string;
+  status: PreimageStatusV2;
+  author: AccountId;
+  depositAmount: Balance;
+  length: number;
+}
 
 export interface NomidotPreimageEvent {
   hash: Hash;
   author: AccountId;
   depositAmount: Balance;
+}
+
+export interface NomidotPreimageEventV2 {
+  hash: Hash;
 }
 
 export interface NomidotPreimageRawEvent {

@@ -74,12 +74,14 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
           );
           return null;
         }
-        if (!referendumRawEvent.HashInfo?.legacy?.hash) {
+        if (!referendumRawEvent.HashInfo?.legacy?.hash && !referendumRawEvent.HashInfo?.lookup?.hash) {
           l.error(
             `Expected preimageHash is missing in the event: ${referendumRawEvent.ReferendumIndex}`
           );
           return null;
         }
+
+        const preimageHash = referendumRawEvent.HashInfo?.legacy?.hash || referendumRawEvent.HashInfo?.lookup?.hash;
 
         const referendumInfoRaw: Option<PalletReferendaReferendumInfoConvictionVotingTally> = await api.query.referenda.referendumInfoFor(referendumRawEvent.ReferendumIndex);
 
@@ -99,7 +101,7 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
             referendumIndex: referendumRawEvent.ReferendumIndex,
             trackNumber: referendumInfo.ongoing?.track,
             track: referendumInfo.ongoing?.origin?.origins,
-            preimageHash: referendumRawEvent.HashInfo?.legacy.hash,
+            preimageHash: preimageHash,
             status: referendumStatusV2.ONGOING,
             enactmentAt: referendumInfo.ongoing?.enactment?.at,
             SubmittedAt: referendumInfo.ongoing?.submitted,
@@ -131,7 +133,8 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
           enactmentAt,
           SubmittedAt,
           decisionDeposit,
-          deciding
+          deciding,
+          submitted,
         } = referendum;
 
         const preimages = await prisma.preimageV2s({
@@ -177,7 +180,8 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
                 preimageHash: preimageHash.toString(),
                 referendumId: referendumIndex,
                 enactmentAt: enactmentAt,
-                SubmittedAt: SubmittedAt,
+                submittedAt: SubmittedAt.toString(),
+                submitted: submitted,
                 decisionDeposit: decisionDeposit,
                 deciding: deciding,
             },
@@ -205,9 +209,10 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
                     },
                 },
                 enactmentAt: enactmentAt,
-                SubmittedAt: SubmittedAt,
+                submittedAt: SubmittedAt?.toString(),
                 decisionDeposit: decisionDeposit,
                 deciding: deciding,
+                submitted: submitted,
             }
         });
       })

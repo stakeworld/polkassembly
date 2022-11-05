@@ -33,6 +33,7 @@ import createReferendumVote from './createReferendumVotes';
 import { NomidotTask } from './types';
 import createReferendumV2 from './createReferendumV2';
 import createReferendumStatusV2 from './createReferendumStatusV2';
+import createPreimageV2 from './createPreimageV2';
 // N.B. Order of tasks matters here
 export const nomidotTasks: NomidotTask[] = [
   createBlockNumber,
@@ -65,4 +66,5 @@ export const nomidotTasks: NomidotTask[] = [
   createReferendumVote,
   createReferendumV2,
   createReferendumStatusV2,
+  createPreimageV2,
 ];
