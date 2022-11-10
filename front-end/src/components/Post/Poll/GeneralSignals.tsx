@@ -3,7 +3,6 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from '@xstyled/styled-components';
-import { ApolloQueryResult } from 'apollo-client';
 import React, { useCallback, useContext, useState } from 'react';
 import BlockCountdown from 'src/components/BlockCountdown';
 import useCurrentBlock from 'src/hooks/useCurrentBlock';
@@ -12,7 +11,7 @@ import ButtonLink from 'src/ui-components/ButtonLink';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
 
 import { UserDetailsContext } from '../../../context/UserDetailsContext';
-import { PollQuery, PollQueryVariables, PollVotesQuery, PollVotesQueryVariables, useAddPollVoteMutation, useDeleteVoteMutation, useEditPollMutation } from '../../../generated/graphql';
+import { useAddPollVoteMutation, useDeleteVoteMutation, useEditPollMutation } from '../../../generated/graphql';
 import { Vote } from '../../../types';
 import AyeNayButtons from '../../../ui-components/AyeNayButtons';
 import Card from '../../../ui-components/Card';
@@ -28,8 +27,8 @@ interface Props {
 	ownVote?: Vote | null
 	pollId: number
 	canEdit: boolean
-	pollRefetch: (variables?: PollQueryVariables | undefined) => Promise<ApolloQueryResult<PollQuery>>
-	votesRefetch: (variables?: PollVotesQueryVariables | undefined) => Promise<ApolloQueryResult<PollVotesQuery>>
+	pollRefetch: any
+	votesRefetch: any
 }
 
 const CouncilSignals = ({ ayes, className, endBlock, nays, ownVote, pollId, canEdit, pollRefetch, votesRefetch }: Props) => {

@@ -371,7 +371,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 			{routeWrapperHeight && sidebarCreateEvent &&
 				<CreateEventSidebar
 					setSidebarCreateEvent={setSidebarCreateEvent}
-					refetch={refetch}
+					refetch={refetch as any}
 					routeWrapperHeight={routeWrapperHeight}
 					selectedNetwork={selectedNetwork}
 					className='create-event-sidebar'

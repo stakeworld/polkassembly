@@ -113,7 +113,7 @@ const UserProfile = ({ className }: Props): JSX.Element => {
 			{routeWrapperHeight && editProfile &&
 				<EditProfileSidebar
 					setEditProfileSidebar={setEditProfile}
-					refetch={refetch}
+					refetch={refetch as any}
 					routeWrapperHeight={routeWrapperHeight}
 					className='edit-profile-sidebar'
 					id={id}
