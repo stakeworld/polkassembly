@@ -4,50 +4,52 @@
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
+import { DownOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
+import type { MenuProps } from 'antd';
+import { Button, Dropdown, Space, Tooltip } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Button, Dropdown, DropdownProps, Popup } from 'semantic-ui-react';
 
 import calendar_today from '../../assets/calendar_today.png';
 import NetworkSelect from './NetworkSelect';
 
 function CustomToolbar(props: any) {
-	let months = [
-		{ key: '0', text: 'January', value: 0 },
-		{ key: '1', text: 'February', value: 1 },
-		{ key: '2', text: 'March', value: 2 },
-		{ key: '3', text: 'April', value: 3 },
-		{ key: '4', text: 'May', value: 4 },
-		{ key: '5', text: 'June', value: 5 },
-		{ key: '6', text: 'July', value: 6 },
-		{ key: '7', text: 'August', value: 7 },
-		{ key: '8', text: 'September', value: 8 },
-		{ key: '9', text: 'October', value: 9 },
-		{ key: '10', text: 'November', value: 10 },
-		{ key: '11', text: 'December', value: 11 }
+	let months : MenuProps['items'] = [
+		{ key: '0', label: 'January' },
+		{ key: '1', label: 'February' },
+		{ key: '2', label: 'March' },
+		{ key: '3', label: 'April' },
+		{ key: '4', label: 'May' },
+		{ key: '5', label: 'June' },
+		{ key: '6', label: 'July' },
+		{ key: '7', label: 'August' },
+		{ key: '8', label: 'September' },
+		{ key: '9', label: 'October' },
+		{ key: '10', label: 'November' },
+		{ key: '11', label: 'December' }
 	];
 
-	const viewStateOptions = [
-		{ key: 'month', text: 'Month', value: 'month' },
-		{ key: 'week', text: 'Week', value: 'week' },
-		{ key: 'day', text: 'Day', value: 'day' },
-		{ key: 'agenda', text: 'Agenda', value: 'agenda' }
+	const viewStateOptions : MenuProps['items'] = [
+		{ key: 'month', label: 'Month' },
+		{ key: 'week', label: 'Week' },
+		{ key: 'day', label: 'Day' },
+		{ key: 'agenda', label: 'Agenda' }
 	];
 
 	if(props.small) {
 		months = [
-			{ key: '0', text: 'Jan', value: 0 },
-			{ key: '1', text: 'Feb', value: 1 },
-			{ key: '2', text: 'Mar', value: 2 },
-			{ key: '3', text: 'Apr', value: 3 },
-			{ key: '4', text: 'May', value: 4 },
-			{ key: '5', text: 'Jun', value: 5 },
-			{ key: '6', text: 'Jul', value: 6 },
-			{ key: '7', text: 'Aug', value: 7 },
-			{ key: '8', text: 'Sep', value: 8 },
-			{ key: '9', text: 'Oct', value: 9 },
-			{ key: '10', text: 'Nov', value: 10 },
-			{ key: '11', text: 'Dec', value: 11 }
+			{ key: '0', label: 'Jan' },
+			{ key: '1', label: 'Feb' },
+			{ key: '2', label: 'Mar' },
+			{ key: '3', label: 'Apr' },
+			{ key: '4', label: 'May' },
+			{ key: '5', label: 'Jun' },
+			{ key: '6', label: 'Jul' },
+			{ key: '7', label: 'Aug' },
+			{ key: '8', label: 'Sep' },
+			{ key: '9', label: 'Oct' },
+			{ key: '10', label: 'Nov' },
+			{ key: '11', label: 'Dec' }
 		];
 	}
 
@@ -107,18 +109,18 @@ function CustomToolbar(props: any) {
 		props.onNavigate('current');
 	};
 
-	const onSelectMonthChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-		setSelectedMonth(Number(data.value));
+	const onSelectMonthChange : MenuProps['onClick']  = ( { key } ) => {
+		setSelectedMonth(Number(key));
 		const now = new Date();
-		props.date.setMonth(data.value);
+		props.date.setMonth(key);
 		props.date.setYear(now.getFullYear());
 		props.date.setDate(now.getDate());
 		props.onNavigate('current');
 	};
 
-	const onViewStateChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-		setViewState(`${data.value}`);
-		props.onView(`${data.value}`);
+	const onViewStateChange : MenuProps['onClick'] = ({ key }) => {
+		setViewState(`${key}`);
+		props.onView(`${key}`);
 	};
 
 	useEffect(() => {
@@ -135,7 +137,7 @@ function CustomToolbar(props: any) {
 	},[props.view]);
 
 	function createEventButton(disabled:boolean = false){
-		return <Button basic className={`${disabled ? 'btn-disabled' : ''} create-event-btn`} onClick={() => { if(!disabled) props.setSidebarCreateEvent(true); } }>Create Event</Button>;
+		return <Button type='primary' className='ml-3' disabled={disabled} onClick={() => { if(!disabled) props.setSidebarCreateEvent(true); } }>Create Event</Button>;
 	}
 
 	return (
@@ -145,19 +147,21 @@ function CustomToolbar(props: any) {
 					<NetworkSelect selectedNetwork={props.selectedNetwork} setSelectedNetwork={props.setSelectedNetwork} />
 					<div className='select-div'>
 						<label>Type</label>
-						<Dropdown compact value={viewState} onChange={onViewStateChange} options={viewStateOptions} />
+						<Dropdown trigger={['click']} menu={{ items:viewStateOptions, onClick: onViewStateChange }} ><Space className='text-pink_primary cursor-pointer capitalize'>{viewState}<DownOutlined className='text-pink_primary align-middle'/></Space></Dropdown>
 					</div>
-					<span className='date-text'>{moment(props.date).format('MMMM YYYY')}</span>
-					<Button onClick={goToBack} icon='chevron left' />
-					<Button onClick={goToNext} icon='chevron right' />
+					<div className='flex items-center'>
+						<span className='text-sidebarBlue ml-5 text-lg mr-5'>{moment(props.date).format('MMMM YYYY')}</span>
+						<LeftOutlined onClick={goToBack} className='text-md cursor-pointer hover:text-sidebarBlue hover:font-semibold mr-3' />
+						<RightOutlined onClick={goToNext} className='text-md cursor-pointer hover:text-sidebarBlue hover:font-semibold' />
+					</div>
 
 					{/* <Button className='search-btn' icon='search' /> */}
-					<div className="right-actions">
-						<Button basic className='today-btn' onClick={goToToday}>Today</Button>
+					<div className='flex items-center ml-auto'>
+						<Button onClick={goToToday}>Today</Button>
 
 						{
 							!props.isLoggedIn ?
-								<Popup content='Please login to create an event' position='left center' size='large' trigger={createEventButton(true)} />
+								<Tooltip title='Please login to create an event' placement='left' >{createEventButton(true)}</Tooltip>
 								:
 								createEventButton()
 						}
@@ -166,11 +170,11 @@ function CustomToolbar(props: any) {
 				:
 				<>
 					<div className='d-flex'>
-						<Dropdown compact className='select-month-dropdown' value={selectedMonth} onChange={onSelectMonthChange} options={months} />
+						<Dropdown trigger={[ 'click' ]} className='select-month-dropdown' menu={{ items:months, onClick:onSelectMonthChange }} ><Space className='text-pink_primary cursor-pointer capitalize'>{selectedMonth}<DownOutlined className='text-pink_primary align-middle'/></Space></Dropdown>
 
-						<div className='mobile-cal-nav'>
-							<Button onClick={goToBack} icon='chevron left' />
-							<Button onClick={goToNext} icon='chevron right' />
+						<div className='flex ml-2'>
+							<LeftOutlined onClick={goToBack} className='text-md cursor-pointer hover:text-sidebarBlue hover:font-semibold mr-3' />
+							<RightOutlined onClick={goToNext} className='text-md cursor-pointer hover:text-sidebarBlue hover:font-semibold' />
 						</div>
 					</div>
 
@@ -179,11 +183,11 @@ function CustomToolbar(props: any) {
 					<div className='actions-right'>
 						{/* <Button className='search-btn' icon='search' /> */}
 						<img className='today-btn-img' onClick={goToToday} src={calendar_today} height={16} width={16} title='Today' alt='Today' />
-						<Dropdown upward={false} compact className='select-view-dropdown' value={viewState} onChange={onViewStateChange} options={viewStateOptions} />
+						<Dropdown trigger={[ 'click' ]} className='select-view-dropdown' menu={{ items:viewStateOptions, onClick:onViewStateChange }} ><Space className='text-pink_primary cursor-pointer capitalize'>{viewState}<DownOutlined className='text-pink_primary align-middle'/></Space></Dropdown>
 
 						{!props.small ?
 							!props.isLoggedIn ?
-								<Popup content='Please login to create an event' position='left center' size='large' trigger={createEventButton(true)} />
+								<Tooltip title='Please login to create an event' placement='left' >{createEventButton(true)}</Tooltip>
 								:
 								createEventButton()
 							: null

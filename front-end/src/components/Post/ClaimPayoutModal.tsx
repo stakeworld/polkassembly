@@ -2,40 +2,39 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { LoadingOutlined } from '@ant-design/icons';
 import { web3Accounts, web3Enable, web3FromSource } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
-import Identicon from '@polkadot/react-identicon';
-import React, { useContext, useState } from 'react';
-import { Button, Form, Icon, Input, Message, Modal } from 'semantic-ui-react';
+import { Alert, Button, Modal, Spin } from 'antd';
+import React, { useContext, useEffect, useState } from 'react';
 import { ApiContext } from 'src/context/ApiContext';
-import { NotificationContext } from 'src/context/NotificationContext';
 import { APPNAME } from 'src/global/appName';
 import { NotificationStatus } from 'src/types';
-import getEncodedAddress from 'src/util/getEncodedAddress';
-import styled from 'styled-components';
+import AccountSelectionForm from 'src/ui-components/AccountSelectionForm';
+import queueNotification from 'src/ui-components/QueueNotification';
 
-import AddressComponent from '../../ui-components/Address';
+interface Props {
+	className?: string;
+	parentBountyId:number | undefined;
+	childBountyId:number | undefined;
+}
 
-const ClaimPayoutModal = ({ className, parentBountyId, childBountyId } : { className?: string, parentBountyId:number | undefined, childBountyId:number | undefined }) => {
+const ClaimPayoutModal = ({ className, parentBountyId, childBountyId } : Props) => {
 	const { api, apiReady } = useContext(ApiContext);
-	const { queueNotification } = useContext(NotificationContext);
 
-	const [modalopen, setModalOpen] = useState<boolean>(false);
-	const [beneficiaryAccount, setBeneficiaryAccount] = useState<string>('');
+	const [showModal, setShowModal] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [availableAccounts, setAvailableAccounts] = useState<InjectedAccountWithMeta[]>([]);
 	const [extensionNotAvailable, setExtensionNotAvailable] = useState<boolean>(false);
-	const [showAvailableAccounts, setShowAvailableAccounts] = useState<boolean>(false);
-	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [selectedAddress, setSelectedAddress] = useState<string>('');
 
-	const handleDetect = async () => {
-		if(showAvailableAccounts){
-			setShowAvailableAccounts(false);
-			return;
-		}
-
+	const getAccounts = async () => {
+		setIsLoading(true);
 		const extensions = await web3Enable(APPNAME);
+
 		if (extensions.length === 0) {
 			setExtensionNotAvailable(true);
+			setIsLoading(false);
 			return;
 		} else {
 			setExtensionNotAvailable(false);
@@ -43,17 +42,20 @@ const ClaimPayoutModal = ({ className, parentBountyId, childBountyId } : { class
 
 		const allAccounts = await web3Accounts();
 		setAvailableAccounts(allAccounts);
-		setShowAvailableAccounts(true);
+		setIsLoading(false);
 	};
 
-	const handleSelectAvailableAccount = (address: string) => {
-		if(isLoading) return;
-		setBeneficiaryAccount(address);
-		setShowAvailableAccounts(true);
+	useEffect(() => {
+		getAccounts();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	const onAccountChange = (e: any, address:string) => {
+		setSelectedAddress(address);
 	};
 
 	const handleSignAndSubmit = async () => {
-		if(!beneficiaryAccount || !parentBountyId || !childBountyId || isLoading) return;
+		if(!selectedAddress || !parentBountyId || !childBountyId || isLoading) return;
 
 		if (!api) {
 			return;
@@ -71,7 +73,7 @@ const ClaimPayoutModal = ({ className, parentBountyId, childBountyId } : { class
 
 		try {
 			const claim = api.tx.childBounties.claimChildBounty(parentBountyId, childBountyId);
-			claim.signAndSend(beneficiaryAccount, ({ status }) => {
+			claim.signAndSend(selectedAddress, ({ status }) => {
 				if (status.isInBlock) {
 					queueNotification({
 						header: 'Success!',
@@ -83,12 +85,12 @@ const ClaimPayoutModal = ({ className, parentBountyId, childBountyId } : { class
 					console.log(`Current status: ${status.type}`);
 				}
 				setIsLoading(false);
-				setModalOpen(false);
+				setShowModal(false);
 			}).catch((error) => {
 				setIsLoading(false);
 				console.log(':( transaction failed');
 				console.error('ERROR:', error);
-				setModalOpen(false);
+				setShowModal(false);
 				queueNotification({
 					header: 'Payout Claim Failed!',
 					message: error.message,
@@ -100,7 +102,7 @@ const ClaimPayoutModal = ({ className, parentBountyId, childBountyId } : { class
 			setIsLoading(false);
 			console.log(':( transaction failed');
 			console.error('ERROR:', error);
-			setModalOpen(false);
+			setShowModal(false);
 			queueNotification({
 				header: 'Payout Claim Failed!',
 				message: error.message,
@@ -109,151 +111,45 @@ const ClaimPayoutModal = ({ className, parentBountyId, childBountyId } : { class
 		}
 	};
 
-	const getAvailableAccounts = () => {
-		return (
-			<Form.Group className='availableAccountsForm'>
-				<Form.Field width={16}>
-					{availableAccounts.map(account => {
-						const address = getEncodedAddress(account.address);
-
-						return address &&
-							<div key={address} onClick={() => handleSelectAvailableAccount(address)} className='availableAddressItem'>
-								<div style={ isLoading ? { opacity: '0.5' } : {} } className='item'>
-									<AddressComponent className='item' address={address} extensionName={account.meta.name} />
-								</div>
-								{beneficiaryAccount === address ? <Icon name='check circle' /> : <Icon name='circle outline' />}
-							</div>;
-					})}
-				</Form.Field>
-			</Form.Group>
-		);
-	};
-
-	const primaryBtnStyle = { background: '#E5007A', color: '#fff', fontSize: '12px',  marginBottom: '4px', marginTop: '6px' };
-
-	const triggerBtn = <Button style={ primaryBtnStyle }>Claim Payout</Button>;
-
 	return (
-		<Modal
-			open={modalopen}
-			onClose={() => { if(!isLoading) setModalOpen(false);}}
-			onOpen={() => setModalOpen(true)}
-			trigger={triggerBtn}
-			size='tiny'
-			className={className}
-		>
-			<Modal.Header> <h5 className='text-center' >Confirm payout claim</h5> </Modal.Header>
-			<Modal.Content>
+		<div className={className}>
+			<Button
+				className='bg-pink_primary hover:bg-pink_secondary text-base text-white border-pink_primary hover:border-pink_primary rounded-md inline'
+				onClick={() => setShowModal(true)}
+			>
+				Claim Payout
+			</Button>
+			<Modal
+				title="Confirm Payout Claim"
+				open={showModal}
+				onCancel={() => setShowModal(false)}
+				footer={[
+					<Button className='bg-pink_primary text-white border-pink_primary hover:bg-pink_secondary' key="second" onClick={handleSignAndSubmit} loading={isLoading} disabled={extensionNotAvailable || !apiReady}>
+            Sign &amp; Submit
+					</Button>
+				]}
+			>
+				<Spin spinning={isLoading} indicator={<LoadingOutlined />}>
 
-				<Message info>
-					<Message.Header>
-						Thank you for your work to support the community. Please submit the transaction to claim the transaction.
-					</Message.Header>
-				</Message>
+					<Alert className='mb-6' type='success' message='Thank you for your work to support the community. Please submit the transaction to claim the transaction.' />
 
-				<Form.Group>
-					<Form.Field width={16}>
-						<label className='input-label'>Please select your account</label>
+					{extensionNotAvailable && <Alert className='mb-6' type='warning' message='Please install polkadot.js extension to claim.' />}
 
-						<div className='accountInputDiv'>
-							<Identicon
-								className='identicon'
-								value={beneficiaryAccount}
-								size={26}
-								theme={'polkadot'}
-							/>
-							<Input
-								size='big'
-								value={beneficiaryAccount}
-								onChange={ (e) => setBeneficiaryAccount(e.target.value)}
-								placeholder='Account Address'
-								disabled={isLoading}
-								// error={errorsFound.includes('beneficiaryAccount')}
-							/>
-						</div>
-
-						{!extensionNotAvailable && <div className='availableAddressOptions'>
-							<div onClick={() => handleDetect()} className='availableAddressToggle'>
-								or choose from available addresses
-								{showAvailableAccounts ? <Icon name='chevron up' /> : <Icon name='chevron down' />}
-							</div>
-						</div>}
-						{extensionNotAvailable && <div className="error">Please install polkadot.js extension</div>}
-						{showAvailableAccounts && availableAccounts.length > 0 && getAvailableAccounts()}
-					</Form.Field>
-				</Form.Group>
-			</Modal.Content>
-			<Modal.Actions>
-				<Button style={ { fontSize: '12px' } } loading={isLoading} disabled={isLoading} onClick={() => setModalOpen(false)}>Cancel</Button>
-				<Button floated='right' className='submitBtn' disabled={isLoading} loading={isLoading} onClick={() => handleSignAndSubmit()}>Sign &amp; Submit</Button>
-			</Modal.Actions>
-		</Modal>
+					{!extensionNotAvailable &&
+					<>
+						<AccountSelectionForm
+							title='Please select your account'
+							accounts={availableAccounts}
+							address={selectedAddress}
+							withBalance
+							onAccountChange={onAccountChange}
+						/>
+					</>
+					}
+				</Spin>
+			</Modal>
+		</div>
 	);
 };
 
-export default styled(ClaimPayoutModal)`
-	padding: 8px;
-
-	.text-center {
-		text-align: center;
-	}
-
-	.message {
-		font-size: 10px;
-		margin-bottom: 16px;
-	}
-
-	.input-label {
-		margin-left: 1.6em !important;
-		display: flex !important;
-		align-items: center !important;
-		font-size: 10px;
-	}
-
-	.availableAccountsForm {
-		width: 100%;
-		padding-left: 1.5em;
-		padding-right: 1em;
-	}
-
-	.availableAddressItem {
-		margin-bottom: 10px;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		cursor: pointer;
-	}
-
-	.availableAddressOptions{ 
-		display: flex;
-		justify-content: space-between;
-		margin-bottom: 1em;
-	}
-	
-	.availableAddressToggle {
-		color: pink_primary;
-		cursor: pointer;
-		margin-left: 1.5em;
-		margin-top: 0.25em;
-	}
-
-	.accountInputDiv { 
-		display: flex;
-		align-items: center;
-
-		.input {
-			width: 100%;
-		}
-
-		.identicon {
-			margin-right: -1.2em;
-			z-index: 10;
-		}
-	}
-
-	.submitBtn{
-		background-color: #E5007A;
-		color: #fff;
-		font-size: 12px;
-	}
-`;
+export default ClaimPayoutModal;

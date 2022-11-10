@@ -2,18 +2,20 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { DownOutlined } from '@ant-design/icons';
 import styled from '@xstyled/styled-components';
+import type { MenuProps } from 'antd';
+import type { DatePickerProps } from 'antd';
+import { Button, DatePicker, Dropdown,Form, Space } from 'antd';
 import moment from 'moment';
-import React, { useContext, useEffect,useState } from 'react';
-import DatePicker from 'react-date-picker';
-import { Button, Card, Dropdown, DropdownProps, Form, Message } from 'semantic-ui-react';
-import { NotificationContext } from 'src/context/NotificationContext';
-import { useCreateProposalTrackerMutation, useGetProposalStatusQuery, useUpdateProposalTrackerMutation } from 'src/generated/graphql';
+import React, { useEffect,useState } from 'react';
+import { useCreateProposalTrackerMutation, useGetProposalStatusLazyQuery, useUpdateProposalTrackerMutation } from 'src/generated/graphql';
 import { NotificationStatus } from 'src/types';
+import ErrorAlert from 'src/ui-components/ErrorAlert';
+import GovSidebarCard from 'src/ui-components/GovSidebarCard';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
+import queueNotification from 'src/ui-components/QueueNotification';
 import getNetwork from 'src/util/getNetwork';
-
-import { ReactComponent as CalendarIcon } from '../../../../assets/sidebar/calendar.svg';
 
 interface Props {
 	canEdit?: boolean | '' | undefined
@@ -22,10 +24,10 @@ interface Props {
 	startTime: string
 }
 
-const statusOptions = [
-	{ key: 'overdue', text: 'Overdue', value: 'overdue' },
-	{ key: 'completed', text: 'Completed', value: 'completed' },
-	{ key: 'in_progress', text: 'In Progress', value: 'in_progress' }
+const statusOptions : MenuProps['items'] = [
+	{ key: 'overdue', label: 'Overdue' },
+	{ key: 'completed', label: 'Completed' },
+	{ key: 'in_progress', label: 'In Progress' }
 ];
 
 const EditProposalStatus = ({ canEdit, className, proposalId, startTime } : Props) => {
@@ -37,9 +39,7 @@ const EditProposalStatus = ({ canEdit, className, proposalId, startTime } : Prop
 
 	const NETWORK = getNetwork();
 
-	const { queueNotification } = useContext(NotificationContext);
-
-	const { data, refetch } = useGetProposalStatusQuery({ variables: {
+	const [refetch, { data }] = useGetProposalStatusLazyQuery({ variables: {
 		onchain_proposal_id: Number(proposalId)
 	} });
 
@@ -63,8 +63,8 @@ const EditProposalStatus = ({ canEdit, className, proposalId, startTime } : Prop
 
 	}, [canEdit, data]);
 
-	const onStatusChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-		const status = data.value as string;
+	const onStatusChange : MenuProps['onClick'] = ({ key }) => {
+		const status = key as string;
 		setStatus(status);
 	};
 
@@ -143,96 +143,71 @@ const EditProposalStatus = ({ canEdit, className, proposalId, startTime } : Prop
 		setLoading(false);
 	};
 
+	const onChange : DatePickerProps['onChange'] = (date) => {
+		setDeadlineDate(moment(date).toDate());
+	};
+
 	return (
-		<Card
+		<GovSidebarCard
 			className={className}
 		>
-			<Card.Content>
-				<div className='card-description'>
-					{errorsFound.includes('proposalTracker') && <Message negative>
-						<Message.Header>Error in updating proposal status, please try again.</Message.Header>
-					</Message>}
+			<div className=' flex flex-col'>
+				{errorsFound.includes('proposalTracker') && <ErrorAlert errorMsg='Error in updating proposal status, please try again.' />}
 
-					<Form.Group>
-						<Form.Field width={16} className='date-input-form-field'>
-							<label className='input-label'>
+				<Form>
+					<Form.Item className='date-input-form-field'>
+						<label className=' flex items-center text-md text-sidebarBlue font-medium'>
 								Deadline Date
-								<HelperTooltip content='This timeline will be used by the community to track the progress of the proposal. The team will be responsible for delivering the proposed items before the deadline.' iconSize='small' />
-							</label>
+							<HelperTooltip className='align-middle ml-2' text='This timeline will be used by the community to track the progress of the proposal. The team will be responsible for delivering the proposed items before the deadline.' />
+						</label>
 
-							{(canEdit && !isUpdate) ?
-								<DatePicker className={`date-input ${errorsFound.includes('deadlineDate') ? 'deadline-date-error' : ''}`} disabled={loading} onChange={setDeadlineDate} value={deadlineDate} calendarIcon={<CalendarIcon />} format='d-M-yyyy' />
-								:
-								<span className='deadline-date'>{deadlineDate==null ? 'Not Set' : moment(deadlineDate).format('MMMM Do YYYY')}</span>
-							}
-						</Form.Field>
+						{(canEdit && !isUpdate) ?
+							<DatePicker
+								className={`date-input ${errorsFound.includes('deadlineDate') ? 'deadline-date-error' : ''}`}
+								disabled={loading}
+								onChange={onChange}
+								format='DD-MM-YYYY'
+							/>
+							:
+							(canEdit && isUpdate) ? <><div className='mb-3 text-sidebarBlue'>Deadline: {moment(deadlineDate).format('MMMM Do YYYY')}</div>
+								<DatePicker
+									className={`date-input ${errorsFound.includes('deadlineDate') ? 'deadline-date-error' : ''}`}
+									disabled={loading}
+									onChange={onChange}
+									format='DD-MM-YYYY'
+									value={moment(deadlineDate, 'DD-MM-YYYY')}
+								/></> : <span className='deadline-date text-sidebarBlue'>{deadlineDate==null ? 'Not Set' : moment(deadlineDate).format('MMMM Do YYYY')}</span>
+						}
+					</Form.Item>
 
-						<Form.Field width={16} className='status-input-form-field'>
-							<label className='input-label'>
+					<Form.Item className='status-input-form-field'>
+						<label className=' flex items-center text-md text-sidebarBlue font-medium'>
 								Status
-							</label>
+						</label>
 
-							{canEdit ?
-								<Dropdown placeholder='Status' className='status-dropdown' disabled={loading} selection options={statusOptions} value={status} onChange={onStatusChange} error={errorsFound.includes('status')} />
-								:
-								<span>{status=='Not Set' ? status :statusOptions.find(o => o.value === status)?.text}</span>
-							}
-						</Form.Field>
-					</Form.Group>
-				</div>
+						{canEdit ?
+						// eslint-disable-next-line sort-keys
+							<><Dropdown className='status-dropdown' disabled={loading} menu={{ items: statusOptions, onClick: onStatusChange }} ><Space className='cursor-pointer'>{status.toString().split('_').map((s:string) => s.charAt(0).toUpperCase() + s.slice(1)).join(' ')} <DownOutlined className='align-middle'/></Space></Dropdown></>
+							:
+							<span className='text-sidebarBlue'>{status=='Not Set' ? status :statusOptions.find(o => o?.key === status)?.key?.toString().split('_').map((s:string) => s.charAt(0).toUpperCase() + s.slice(1)).join(' ')}</span>
+						}
+					</Form.Item>
+				</Form>
+			</div>
 
-				{ canEdit && <div className='card-actions'>
-					<Button onClick={handleSave} loading={loading} disabled={loading}>
+			{ canEdit && <div className=' mt-[10px] flex justify-end '>
+				<Button className='bg-pink_primary hover:bg-pink_secondary transition-colors duration-300 text-white' onClick={handleSave} loading={loading} disabled={loading}>
 						Save
-					</Button>
-				</div>
-				}
-			</Card.Content>
-		</Card>
+				</Button>
+			</div>
+			}
+		</GovSidebarCard>
 
 	);
 
 };
 
 export default styled(EditProposalStatus)`
-	width: 100% !important;
-	padding: 2% 3% !important;
-
-	.header{
-		border-bottom: 1px solid #eee;
-		padding-bottom: 5px;
-		margin-bottom: 16px;
-	}
-
-	.card-description {
-		display: flex;
-		flex-direction: column;
-
-		.fields {
-			display: block;
-		}
-	}
-
-	.card-actions {
-		margin-top: 10px;
-		display: flex;
-		justify-content: end;
-		
-		.button {
-			background: #E5007A !important;
-			color: #fff;
-		}
-	}
-
-	.input-label {
-		display: flex !important;
-		align-items: center !important;
-		font-size: 12px;
-
-		span {
-			margin-top: -5px;
-		}
-	}
 
 	.deadline-date {
 		font-size: 14px;

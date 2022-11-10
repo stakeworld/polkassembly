@@ -2,42 +2,44 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import styled from '@xstyled/styled-components';
-import React, { useContext, useState } from 'react';
-import { Controller,useForm } from 'react-hook-form';
-import { Checkbox, CheckboxProps, Grid, Icon } from 'semantic-ui-react';
+import { Button, Form, Input, Switch } from 'antd';
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ContentForm from 'src/components/ContentForm';
+import { UserDetailsContext } from 'src/context/UserDetailsContext';
+import { useCreatePollMutation, useCreatePostMutation, usePostSubscribeMutation } from 'src/generated/graphql';
+import { PostCategory } from 'src/global/post_categories';
+import { usePollEndBlock } from 'src/hooks';
+import { NotificationStatus } from 'src/types';
+import BackToListingView from 'src/ui-components/BackToListingView';
+import ErrorAlert from 'src/ui-components/ErrorAlert';
+import queueNotification from 'src/ui-components/QueueNotification';
 
-import ContentForm from '../../components/ContentForm';
-import TitleForm from '../../components/TitleForm';
-import { NotificationContext } from '../../context/NotificationContext';
-import { UserDetailsContext } from '../../context/UserDetailsContext';
-import { useCreatePollMutation, useCreatePostMutation, usePostSubscribeMutation } from '../../generated/graphql';
-import { usePollEndBlock, useRouter } from '../../hooks';
-import { NotificationStatus } from '../../types';
-import Button from '../../ui-components/Button';
-import FilteredError from '../../ui-components/FilteredError';
-import { Form } from '../../ui-components/Form';
 import TopicsRadio from './TopicsRadio';
 
 interface Props {
 	className?: string
 }
 
-const CreatePost = ({ className }:Props): JSX.Element => {
-	const [title, setTitle] = useState('');
-	const [content, setContent] = useState('');
-	const [hasPoll, setHasPoll] = useState(false);
-	const { queueNotification } = useContext(NotificationContext);
-	const [selectedTopic, setSetlectedTopic] = useState(1);
+const CreatePost = ({ className } : Props) => {
+	const navigate = useNavigate();
 	const currentUser = useContext(UserDetailsContext);
-	const { control, errors, handleSubmit } = useForm();
 
+	const [form] = Form.useForm();
 	const pollEndBlock = usePollEndBlock();
-	const [createPostMutation, { loading, error }] = useCreatePostMutation();
-	const [createPollMutation] = useCreatePollMutation();
 	const [postSubscribeMutation] = usePostSubscribeMutation();
-	const [isSending, setIsSending] = useState(false);
-	const { navigate } = useRouter();
+	const [createPollMutation] = useCreatePollMutation();
+	const [createPostMutation, { loading, error }] = useCreatePostMutation();
+
+	const [topicId, setTopicId] = useState<number>(1);
+	const [hasPoll, setHasPoll] = useState<boolean>(false);
+	const [formDisabled, setFormDisabled] = useState<boolean>(false);
+
+	useEffect(() => {
+		if (!currentUser?.id) {
+			navigate('/');
+		}
+	}, [currentUser?.id, navigate]);
 
 	const createSubscription = (postId: number) => {
 		if (!currentUser.email_verified) {
@@ -81,16 +83,28 @@ const CreatePost = ({ className }:Props): JSX.Element => {
 				postId
 			}
 		})
-			.catch((e) => console.error('Error subscribing to post',e));
+			.catch((e) => console.error('Error creating a poll', e));
 	};
 
-	const handleSend = () => {
-		if (currentUser.id && title && content && selectedTopic){
-			setIsSending(true);
+	const handleSend = async () => {
+		if(!currentUser.id) return;
+
+		try {
+			await form.validateFields();
+			// Validation is successful
+			const content = form.getFieldValue('content');
+			const title = form.getFieldValue('title');
+
+			console.log('content : ', content);
+			console.log('title : ', title);
+
+			if(!title || !content) return;
+
+			setFormDisabled(true);
 			createPostMutation({ variables: {
 				content,
 				title,
-				topicId: selectedTopic,
+				topicId,
 				userId: currentUser.id
 			} }).then(({ data }) => {
 				if (data?.insert_posts?.affected_rows && data?.insert_posts?.affected_rows > 0 && data?.insert_posts?.returning?.length && data?.insert_posts?.returning?.[0]?.id) {
@@ -106,74 +120,66 @@ const CreatePost = ({ className }:Props): JSX.Element => {
 				} else {
 					throw Error('Error in post creation');
 				}
-			}).catch( e => console.error(e));
-		} else {
-			console.error('Current userid, title, content or selected topic missing',currentUser.id, title, content, selectedTopic);
+			}).catch( e => {
+				queueNotification({
+					header: 'Error',
+					message: 'There was an error creating your post.',
+					status: NotificationStatus.ERROR
+				});
+				console.error(e);
+			});
+		} catch {
+		//do nothing, await form.validateFields(); will automatically highlight the error ridden fields
+		} finally {
+			setFormDisabled(false);
 		}
 	};
 
-	const onTitleChange = (event: React.ChangeEvent<HTMLInputElement>[]) => {setTitle(event[0].currentTarget.value); return event[0].currentTarget.value;};
-	const onContentChange = (data: Array<string>) => {setContent(data[0]); return data[0].length ? data[0] : null;};
-	const onPollChanged = (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => { setHasPoll(data.checked || false);};
-
 	return (
-		<Grid>
-			<Grid.Column mobile={16} tablet={16} computer={12} largeScreen={10} widescreen={10}>
-				<Form className={className}>
-					<h3>New post</h3>
-					<Controller
-						as={<TitleForm
-							errorTitle={errors.title}
-						/>}
-						control={control}
-						name='title'
-						onChange={onTitleChange}
-						rules={{ required: true }}
-					/>
-					<Controller
-						as={<ContentForm
-							errorContent={errors.content}
-						/>}
-						control={control}
-						name='content'
-						onChange={onContentChange}
-						rules={{ required: true }}
-					/>
+		<div className={className}>
+			<BackToListingView postCategory={PostCategory.DISCUSSION} />
 
-					<Form.Group>
-						<Form.Field>
-							<Checkbox label='Add a poll to this discussion' checked={hasPoll} toggle onChange={onPollChanged} />
-						</Form.Field>
-					</Form.Group>
+			<div className="flex flex-col mt-6 bg-white p-4 md:p-8 rounded-md w-full shadow-md mb-4">
+				<h2 className="dashboard-heading mb-8">New Post</h2>
+				{error && <ErrorAlert errorMsg={error.message} className='mb-4' />}
 
-					<TopicsRadio
-						onTopicSelection={(id: number) => setSetlectedTopic(id)}
-					/>
+				<Form
+					form={form}
+					name="create-post-form"
+					onFinish={handleSend}
+					layout="vertical"
+					disabled={formDisabled || loading}
+					validateMessages= {
+						{ required: "Please add the '${name}'" }
+					}
+				>
+					<Form.Item name="title" label='Title' rules={[{ required: true }]}>
+						<Input name='title' autoFocus placeholder='Enter Title' className='text-black' />
+					</Form.Item>
 
-					<div className={'mainButtonContainer'}>
-						<Button
-							primary
-							onClick={handleSubmit(handleSend)}
-							disabled={isSending || loading}
-							type='submit'
-						>
-							{isSending || loading ? <><Icon name='spinner'/>Creating</> : 'Create'}
-						</Button>
+					<ContentForm />
+
+					<div className="flex items-center">
+						<Switch size="small" onChange={checked => setHasPoll(checked)} />
+						<span className='ml-2 text-sidebarBlue text-sm'>Add poll to discussion</span>
 					</div>
-					{error?.message && <FilteredError text={error.message}/>}
+
+					<div className='mt-8'>
+						<div className="text-sidebarBlue text-sm mb-3">
+							Select Topic
+						</div>
+						<TopicsRadio onTopicSelection={(id) => setTopicId(id)} />
+					</div>
+
+					<Form.Item>
+						<Button htmlType="submit" disabled={!currentUser.id || formDisabled || loading} className='mt-16 bg-pink_primary text-white border-white hover:bg-pink_secondary flex items-center justify-center rounded-md text-lg h-[50px] w-[215px]'>
+							Create Post
+						</Button>
+					</Form.Item>
 				</Form>
-			</Grid.Column>
-			<Grid.Column only='computer' computer={4} largeScreen={6} widescreen={6}/>
-		</Grid>
+			</div>
+		</div>
 	);
 };
 
-export default styled(CreatePost)`
-	.mainButtonContainer{
-		align-items: center;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		margin-top: 3rem;
-	}
-`;
+export default CreatePost;

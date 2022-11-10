@@ -3,8 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from '@xstyled/styled-components';
+import { Col, Row } from 'antd';
 import React, { useContext, useEffect, useReducer, useState } from 'react';
-import { Grid } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import Loader from 'src/ui-components/Loader';
@@ -59,13 +59,6 @@ function reducer(state: any, action: any) {
 }
 
 const CouncilBoardContainer = ({ className } : {className?: string}) => {
-	// calculate #route-wrapper height with margin for sidebar.
-	const routeWrapperEl = document.getElementById('route-wrapper');
-	let routeWrapperHeight = routeWrapperEl?.offsetHeight;
-	if(routeWrapperEl && routeWrapperHeight) {
-		routeWrapperHeight += parseInt(window.getComputedStyle(routeWrapperEl).getPropertyValue('margin-top'));
-		routeWrapperHeight += parseInt(window.getComputedStyle(routeWrapperEl).getPropertyValue('margin-bottom'));
-	}
 
 	const [members, setMembers] = useState<string[]>([]);
 	const [sidebarState, dispatch] = useReducer(reducer, initSidebarState);
@@ -89,6 +82,7 @@ const CouncilBoardContainer = ({ className } : {className?: string}) => {
 	}, [api, apiReady]);
 
 	const openSidebar = (postID: number, type: SidebarReducerAction) => {
+		console.log(type, postID);
 		dispatch({ postID, type });
 	};
 
@@ -106,33 +100,32 @@ const CouncilBoardContainer = ({ className } : {className?: string}) => {
 		members && members.length > 0 ?
 			members.includes(defaultAddress) || defaultAddress === 'GUUbJp6jMocrQMXMGxac5fqvWbjqsv97JL8DHp8m1Wxszmp' ?
 				<div className={className}>
-					<h1>Council Board</h1>
+					<div className='dashboard-heading mb-4'>Council Board</div>
 
-					<Grid>
-						<Grid.Row columns={1} only='mobile tablet'>
-							<Grid.Column>
-								<h3>Feature available in desktop site only.</h3>
-							</Grid.Column>
-						</Grid.Row>
-						<Grid.Row columns={3} only='computer'>
-							<Grid.Column>
-								<DiscussionsBoard className="board-card" openSidebar={(postID) => openSidebar(postID, SidebarReducerAction.OPEN_DISCUSSION)}  />
-							</Grid.Column>
-							<Grid.Column>
-								<ReferendaBoard className="board-card" openSidebar={(postID) => openSidebar(postID, SidebarReducerAction.OPEN_REFERENDA)}  />
-							</Grid.Column>
-							<Grid.Column>
-								<TipsBoard className="board-card" openSidebar={(postID) => openSidebar(postID, SidebarReducerAction.OPEN_TIP)}  />
-							</Grid.Column>
-						</Grid.Row>
-					</Grid>
+					<Row className='md:hidden'>
+						<Col span={24}>
+							<h3>Feature available in desktop site only.</h3>
+						</Col>
+					</Row>
+					<Row gutter={8} className=''>
+						<Col span={8}>
+							<DiscussionsBoard className="board-card" openSidebar={(postID) => openSidebar(postID, SidebarReducerAction.OPEN_DISCUSSION)}  />
+						</Col>
+						<Col span={8}>
+							<ReferendaBoard className="board-card" openSidebar={(postID) => openSidebar(postID, SidebarReducerAction.OPEN_REFERENDA)}  />
+						</Col>
+						<Col span={8}>
+							<TipsBoard className="board-card" openSidebar={(postID) => openSidebar(postID, SidebarReducerAction.OPEN_TIP)}  />
+						</Col>
+					</Row>
 
 					{/* Create Event Sidebar */}
-					{routeWrapperHeight && sidebarState.enabled &&
+					{ sidebarState.enabled &&
 				<PostSidebar
 					closeSidebar={closeSidebar}
-					routeWrapperHeight={routeWrapperHeight}
+					// routeWrapperHeight={routeWrapperHeight}
 					sidebarState={sidebarState}
+					open={sidebarState.enabled}
 				/>
 					}
 				</div> :

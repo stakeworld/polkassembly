@@ -2,89 +2,97 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import styled from '@xstyled/styled-components';
-import React, { useContext,useState } from 'react';
-import { Grid } from 'semantic-ui-react';
+import { Button,Form ,Input, Row } from 'antd';
+import React, { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useModalContext } from 'src/context';
+import AuthForm from 'src/ui-components/AuthForm';
+import messages from 'src/util/messages';
+import * as validation from 'src/util/validation';
 
-import { ModalContext } from '../../context/ModalContext';
 import { useRequestResetPasswordMutation } from '../../generated/graphql';
-import { useRouter } from '../../hooks';
-import Button from '../../ui-components/Button';
 import FilteredError from '../../ui-components/FilteredError';
-import { Form } from '../../ui-components/Form';
 
-interface Props {
-	className?: string
-}
+interface Props {}
 
-const RequestResetPassword = ({ className }:Props): JSX.Element => {
-	const [email, setEmail] = useState<string | undefined>('');
-	const { navigate } = useRouter();
-	const { setModal } = useContext(ModalContext);
-	const [requestResetPasswordMutation, { loading, error }] = useRequestResetPasswordMutation();
+const RequestResetPassword: FC<Props> = () => {
+	const navigate = useNavigate();
+	const { setModal } = useModalContext();
+	const [requestResetPasswordMutation, { loading, error }] =
+    useRequestResetPasswordMutation();
 
-	const onEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => setEmail(event.currentTarget.value);
-
-	const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>):void => {
-		event.preventDefault();
-		event.stopPropagation();
-
-		if (email){
+	const handleSubmitForm = (data: any): void => {
+		const { email } = data;
+		if (email) {
 			requestResetPasswordMutation({
 				variables: {
 					email
 				}
-			}).then(({ data }) => {
-				if (data && data.requestResetPassword && data.requestResetPassword.message){
-					navigate('/');
-					setModal({ content: data.requestResetPassword.message ,title: 'Check your emails' });
-				}
-			}).catch((e) => {
-				console.error('Request password reset error', e);
-			});
+			})
+				.then(({ data }) => {
+					if (
+						data &&
+            data.requestResetPassword &&
+            data.requestResetPassword.message
+					) {
+						navigate('/');
+						console.log(data.requestResetPassword.message);
+						setModal({
+							content: data.requestResetPassword.message,
+							title: 'Check your emails'
+						});
+					}
+				})
+				.catch((e) => {
+					console.error('Request password reset error', e);
+				});
 		}
 	};
 
 	return (
-		<Grid className={className}>
-			<Grid.Column only='tablet computer' tablet={2} computer={4} largeScreen={5} widescreen={5}/>
-			<Grid.Column mobile={16} tablet={12} computer={8} largeScreen={6} widescreen={6}>
-				<Form>
-					<h3>Request Password Reset</h3>
-					<Form.Group>
-						<Form.Field width={16}>
-							<label>Email</label>
-							<input
-								onChange={onEmailChange}
-								placeholder='email@example.com'
-								type="text"
-							/>
-						</Form.Field>
-					</Form.Group>
-
-					<div className={'mainButtonContainer'}>
-						<Button
-							primary
-							disabled={loading}
-							onClick={handleClick}
-							type="submit"
+		<Row justify='center' align='middle' className='h-full -mt-16'>
+			<article className="bg-white shadow-md rounded-md p-8 flex flex-col gap-y-6 md:min-w-[500px]">
+				<h3 className='text-2xl font-semibold text-[#1E232C]'>Request Password Reset</h3>
+				<AuthForm
+					onSubmit={handleSubmitForm}
+					className="flex flex-col gap-y-6"
+				>
+					<div className="flex flex-col gap-y-1">
+						<label
+							htmlFor="email"
+							className="text-base text-sidebarBlue font-medium"
 						>
-							Request reset
-						</Button>
-						{error?.message && <FilteredError text={error.message}/>}
+            Email
+						</label>
+						<Form.Item
+							name="email"
+							rules={
+								[
+									{
+										message: messages.VALIDATION_EMAIL_ERROR,
+										pattern: validation.email.pattern
+									}
+								]
+							}
+						>
+							<Input
+								placeholder="email@example.com"
+								className="rounded-md py-3 px-4"
+								id="email"
+							/>
+						</Form.Item>
 					</div>
-				</Form>
-			</Grid.Column>
-			<Grid.Column only='tablet computer' tablet={2} computer={4} largeScreen={5} widescreen={5}/>
-		</Grid>
+
+					<div className='flex justify-center items-center'>
+						<Button disabled={loading} htmlType="submit" size='large' className='bg-pink_primary w-56 rounded-md outline-none border-none text-white'>
+            Request reset
+						</Button>
+					</div>
+					{error?.message && <FilteredError text={error.message} />}
+				</AuthForm>
+			</article>
+		</Row>
 	);
 };
 
-export default styled(RequestResetPassword)`
-	.mainButtonContainer{
-		align-items: center;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-	}
-`;
+export default RequestResetPassword;

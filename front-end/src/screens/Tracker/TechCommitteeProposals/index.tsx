@@ -3,18 +3,13 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React, { useEffect } from 'react';
+import TechCommitteeProposalsListing from 'src/components/Listing/TechCommProposals/TechCommProposalsListing';
+import { useTrackerTechCommitteeProposalPostsLazyQuery } from 'src/generated/graphql';
+import { post_type } from 'src/global/post_types';
+import { ErrorState } from 'src/ui-components/UIStates';
 
-import TechCommitteeProposalsListing from '../../../components/Listings/TechCommitteeProposalsListing';
-import { useTrackerTechCommitteeProposalPostsQuery } from '../../../generated/graphql';
-import { post_type } from '../../../global/post_types';
-import FilteredError from '../../../ui-components/FilteredError';
-import Loader from '../../../ui-components/Loader';
+const TechCommitteeProposalsContainer = ({ className } : { className?:string }) => {
 
-interface Props {
-	className?: string
-}
-
-const TechCommitteeProposalsContainer = ({ className }:Props) => {
 	let trackMap: any = {};
 
 	try {
@@ -25,7 +20,7 @@ const TechCommitteeProposalsContainer = ({ className }:Props) => {
 
 	const onchainTechCommitteeProposalIds = Object.keys(trackMap.techCommitteeProposal || {}).map(key => Number(key));
 
-	const { data, error, refetch } = useTrackerTechCommitteeProposalPostsQuery({ variables: {
+	const [refetch, { data, error, loading }] = useTrackerTechCommitteeProposalPostsLazyQuery({ variables: {
 		onchainTechCommitteeProposalIds,
 		postType: post_type.ON_CHAIN
 	} });
@@ -34,11 +29,19 @@ const TechCommitteeProposalsContainer = ({ className }:Props) => {
 		refetch();
 	}, [refetch]);
 
-	if (error?.message) return <FilteredError text={error.message}/>;
+	if (error?.message) {
+		return <ErrorState errorMessage={error.message} />;
+	}
 
-	if (data) return <TechCommitteeProposalsListing className={className} data={data}/>;
+	return (
+		<div className={`${className} shadow-md bg-white p-3 md:p-8 rounded-md`}>
+			<div className='flex items-center justify-between'>
+				<h1 className='dashboard-heading'>Tech Committee Proposals</h1>
+			</div>
 
-	return <Loader/>;
+			<TechCommitteeProposalsListing loading={loading} data={data} />
+		</div>
+	);
 };
 
 export default TechCommitteeProposalsContainer;

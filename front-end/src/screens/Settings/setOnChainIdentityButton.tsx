@@ -2,6 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { CheckCircleFilled,DownOutlined, UpOutlined } from '@ant-design/icons';
 import { web3Accounts, web3Enable, web3FromSource } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import Identicon from '@polkadot/react-identicon';
@@ -10,10 +11,9 @@ import type { Registration } from '@polkadot/types/interfaces';
 import { u8aToString } from '@polkadot/util';
 import { checkAddress } from '@polkadot/util-crypto';
 import styled from '@xstyled/styled-components';
+import { Button, Form, Input, Modal, Tooltip } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Form, Grid, Icon, Input, Modal, Popup } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
-import { NotificationContext } from 'src/context/NotificationContext';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { APPNAME } from 'src/global/appName';
 import { addressPrefix } from 'src/global/networkConstants';
@@ -22,6 +22,7 @@ import { LoadingStatusType, NotificationStatus } from 'src/types';
 import Card from 'src/ui-components/Card';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
 import Loader from 'src/ui-components/Loader';
+import queueNotification from 'src/ui-components/QueueNotification';
 import getEncodedAddress from 'src/util/getEncodedAddress';
 import getNetwork from 'src/util/getNetwork';
 
@@ -92,7 +93,6 @@ const SetOnChainIdentityButton = ({
 
 	const [modalOpen, setModalOpen] = useState<boolean>(false);
 	const [validAddress, setValidAddress] = useState<boolean>(false);
-	const { queueNotification } = useContext(NotificationContext);
 
 	const [displayName, setDisplayName] = useState<string>('');
 	const [legalName, setLegalName] = useState<string>('');
@@ -187,21 +187,19 @@ const SetOnChainIdentityButton = ({
 
 	const getAvailableAccounts = (updateForInput: AvailableAccountsInput) => {
 		return (
-			<Form.Group className='availableAccountsForm'>
-				<Form.Field width={16}>
-					{availableAccounts.map(account => {
-						const address = getEncodedAddress(account.address);
+			<div className=' w-full pl-[1.5em] pr-[1em]'>
+				{availableAccounts.map(account => {
+					const address = getEncodedAddress(account.address);
 
-						return address &&
-							<div key={address} onClick={() => handleSelectAvailableAccount(updateForInput, address)} className='availableAddressItem'>
+					return address &&
+							<div key={address} onClick={() => handleSelectAvailableAccount(updateForInput, address)} className=' mb-[10px] flex justify-between items-center cursor-pointer'>
 								<div className='item'>
 									<AddressComponent className='item' address={address} extensionName={account.meta.name} />
 								</div>
-								{isSelected(updateForInput, address) ? <Icon name='check circle' /> : <Icon name='circle outline' />}
+								{isSelected(updateForInput, address) ? <CheckCircleFilled style={{ color:'green' }} />: <div style={{ border:'1px solid grey', borderRadius:'50%', height:'1em', width:'1em' }}></div>}
 							</div>;
-					})}
-				</Form.Field>
-			</Form.Group>
+				})}
+			</div>
 		);
 	};
 
@@ -354,294 +352,197 @@ const SetOnChainIdentityButton = ({
 		});
 	};
 
-	const triggerBtn = <Button disabled={!id} style={ { background: '#E5007A', color:'#fff', textTransform: 'capitalize' } } size='huge'> <Icon name='linkify' /> Set On-Chain Identity</Button>;
-	const triggerBtnLoginDisabled = <Popup position='bottom center' content='Please signup/login to set on-chain identity' trigger={<Button style={ {  background: '#E5007A', backgroundImage: 'none', boxShadow: 'none',  color:'#fff', cursor: 'default', opacity: '.45', textTransform: 'capitalize' } } size='huge'> <Icon name='linkify' /> Set On-Chain Identity</Button> } />;
+	const triggerBtn = <Button disabled={!id} className='mt-5 bg-pink_primary  hover:bg-pink_secondary text-white transition-colors duration-300' onClick={() => setModalOpen(true)}> Set On-Chain Identity</Button>;
+	const triggerBtnLoginDisabled = <Tooltip  color='#E5007A' title='Please signup/login to set on-chain identity'> <Button type='primary' disabled={true} className='mt-5 w-full ' > Set On-Chain Identity</Button></Tooltip>;
 
 	return (
 		loadingStatus.isLoading
 			? <Card className={'LoaderWrapper'}>
 				<Loader text={loadingStatus.message}/>
 			</Card>:
-			<Modal
-				className={className}
-				closeOnEscape={false}
-				closeOnDimmerClick={false}
-				onClose={() => setModalOpen(false)}
-				onOpen={() => setModalOpen(true)}
-				open={modalOpen}
-				size='small'
-				trigger={!id ? triggerBtnLoginDisabled : triggerBtn}
-			>
-				<Modal.Header className='text-center modal-header'>
-				Set On-Chain Identity
-				</Modal.Header>
-				<Modal.Content scrolling>
-					<Modal.Description className='modal-desc'>
-						<Grid centered stackable verticalAlign='middle' reversed='mobile tablet'>
-							<Grid.Column mobile={13} tablet={13} computer={12}>
-								<Form className='identity-form'>
-									{/* Select account */}
-									<Form.Group>
-										<Form.Field width={16}>
-											<label className='input-label-div'>
+			<>
+				{!id ? triggerBtnLoginDisabled : triggerBtn}
+
+				<Modal
+					className={className}
+					title={'Set On-Chain Identity'}
+					open={modalOpen}
+					centered
+					footer={[<Button key='close' onClick={() => setModalOpen(false)}>Close</Button>, <Button key='submit' disabled={!okAll} className='submitBtn' onClick={ handleSignAndSubmit }>Set Identity</Button>]}
+					onCancel={() => setModalOpen(false)}
+				>
+					<div>
+						<div className='modal-desc'>
+							<Form className='identity-form'>
+								{/* Select account */}
+								<div className=' mb-[1.5em]'>
+									<div className=' flex justify-between mb-[0.5em] px-[0.5em]'>
+										<label className='font-bold text-sidebarBlue' >
 												Submit with account
-												<HelperTooltip content='Set identity for account' />
-											</label>
+											<HelperTooltip className='ml-1 align-middle' text='Set identity for account' />
+										</label>
 
-											<div className='accountInputDiv'>
-												<Identicon
-													className='identicon'
-													value={submitWithAccount}
-													size={26}
-													theme={'polkadot'}
-												/>
-												<Input
-													size='big'
-													value={submitWithAccount}
-													onChange={ (e) => onSubmitWithAccountChange(e.target.value)}
-													placeholder='Account Address'
-													error={!validAddress}
-												/>
-											</div>
+									</div>
 
-											{!extensionNotAvailable && <div className='availableAddressOptions'>
-												<div onClick={() => handleDetect(AvailableAccountsInput.submitWithAccount)} className='availableAddressToggle'>
+									<div className='accountInputDiv flex items-center'>
+										<Identicon
+											className='z-10 absolute left-8'
+											value={submitWithAccount}
+											size={26}
+											theme={'polkadot'}
+										/>
+										<Form.Item className=' mb-0 w-full' validateStatus={!validAddress ? 'error' : ''} >
+											<Input
+												value={submitWithAccount}
+												className={`${submitWithAccount === '' ? 'px-[0.5em]' : 'pl-10'}`}
+												onChange={ (e) => onSubmitWithAccountChange(e.target.value)}
+												placeholder='Account Address'
+											/>
+										</Form.Item>
+									</div>
+
+									{!extensionNotAvailable && <div className=' flex justify-between mb-[1em]'>
+										<div onClick={() => handleDetect(AvailableAccountsInput.submitWithAccount)} className=' text-pink_primary cursor-pointer ml-[1.5em] mt-[0.25em]'>
 													or choose from available addresses
-													{showAvailableAccountsObj['submitWithAccount'] ? <Icon name='chevron up' /> : <Icon name='chevron down' />}
-												</div>
-											</div>}
-											{extensionNotAvailable && <div className="error">Please install polkadot.js extension</div>}
-											{showAvailableAccountsObj['submitWithAccount'] && availableAccounts.length > 0 && getAvailableAccounts(AvailableAccountsInput.submitWithAccount)}
-										</Form.Field>
-									</Form.Group>
-									{/* Display Name */}
-									<Form.Group className='form-group'>
-										<Form.Field width={16}>
-											<div className='input-label-div'>
-												<label>Display Name</label>
-											</div>
+											{showAvailableAccountsObj['submitWithAccount'] ? <UpOutlined className='ml-1 align-middle' /> : <DownOutlined className='ml-1 align-middle'/>}
+										</div>
+									</div>}
+									{extensionNotAvailable && <div className="error">Please install polkadot.js extension</div>}
+									{showAvailableAccountsObj['submitWithAccount'] && availableAccounts.length > 0 && getAvailableAccounts(AvailableAccountsInput.submitWithAccount)}
+								</div>
+								{/* Display Name */}
+								<div className=' mb-[1.5em]'>
+									<div className=' flex justify-between mb-[0.5em] px-[0.5em]'>
+										<label className='font-bold text-sidebarBlue'>Display Name</label>
+									</div>
+									<Form.Item name='Name' rules={[{ required:true }]} className=' mb-0' validateStatus={!okDisplay ? 'error' : ''} >
+										<Input
+											className='px-[0.5em]'
+											value={displayName}
+											placeholder='My On-Chain Name'
+											onChange={ (e) => setDisplayName(e.target.value)}
+										// error={!okDisplay}
+										/>
+									</Form.Item>
+								</div>
+
+								{/* Legal Name */}
+								<div className=' mb-[1.5em]'>
+									<div className=' flex justify-between mb-[0.5em] px-[0.5em]'>
+										<label className='font-bold text-sidebarBlue'>Legal Name</label>
+										<span>*Optional</span>
+									</div>
+									<Form.Item name='Legal name' className=' mb-0' validateStatus={!okLegal ? 'error' : ''}>
+
+										<Input
+											className='px-[0.5em]'
+											placeholder='Full Legal Name'
+											value={legalName}
+											onChange={ (e) => setLegalName(e.target.value)}
+										/>
+									</Form.Item>
+								</div>
+
+								{/* Email */}
+								<div className=' mb-[1.5em]'>
+									<div className=' flex justify-between mb-[0.5em] px-[0.5em]'>
+										<label className='font-bold text-sidebarBlue'>Email</label>
+										<span>*Optional</span>
+									</div>
+									<Form.Item name='Email' className=' mb-0' validateStatus={!okEmail ? 'error' : ''}>
+
+										<Input
+											className='px-[0.5em]'
+											value={email}
+											placeholder='somebody@example.com'
+											onChange={ (e) => setEmail(e.target.value.toLowerCase())}
+										/>
+									</Form.Item>
+								</div>
+
+								{/* Website */}
+								<div className=' mb-[1.5em]'>
+									<div className=' flex justify-between mb-[0.5em] px-[0.5em]'>
+										<label className='font-bold text-sidebarBlue'>Website</label>
+										<span>*Optional</span>
+									</div>
+									<Form.Item name='Website' className=' mb-0' validateStatus={!okWeb ? 'error' : ''} >
+
+										<Input
+											className='px-[0.5em]'
+											value={website}
+											placeholder='https://example.com'
+											onChange={ (e) => setWebsite(e.target.value)}
+										// error={!okWeb}
+										/>
+									</Form.Item>
+								</div>
+
+								{/* Twitter */}
+								<div className=' mb-[1.5em]'>
+									<div className=' flex justify-between mb-[0.5em] px-[0.5em]'>
+										<label className='font-bold text-sidebarBlue'>Twitter</label>
+										<span>*Optional</span>
+									</div>
+									<Form.Item name='Twitter' className=' mb-0' validateStatus={!okTwitter ? 'error' : ''} >
+										<Input
+											className='px-[0.5em]'
+											value={twitter}
+											placeholder='@YourTwitterName'
+											onChange={ (e) => setTwitter(e.target.value)}
+										/>
+
+									</Form.Item>
+								</div>
+
+								{/* Riot Name */}
+								<div className=' mb-[1.5em]'>
+									<div className=' flex justify-between mb-[0.5em] px-[0.5em]'>
+										<label className='font-bold text-sidebarBlue'>Riot Name</label>
+										<span>*Optional</span>
+									</div>
+									<Form.Item name='Riot' className=' mb-0' validateStatus={!okRiot ? 'error' : ''} >
+										<Input
+											className='px-[0.5em]'
+											value={riotName}
+											placeholder='@yourname:matrix.org'
+											onChange={ (e) => setRiotName(e.target.value)}
+										/>
+
+									</Form.Item>
+								</div>
+
+								{/* Total Deposit */}
+								<div className=' mb-[1.5em]'>
+									<div className=' flex justify-between mb-[0.5em] px-[0.5em]'>
+										<label className='font-bold text-sidebarBlue'>Total Deposit</label>
+									</div>
+
+									<div className="balance-input flex items-center">
+										<Form.Item  className='flex-1 mb-0' name='Deposit' rules={[{ required:true }]}>
 											<Input
-												className='custom-input'
-												fluid size='large'
-												value={displayName}
-												placeholder='My On-Chain Name'
-												onChange={ (e) => setDisplayName(e.target.value)}
-												error={!okDisplay}
+												type='number'
+												placeholder={'0'}
+												className='px-[0.5em]'
+												// onChange={onBalanceChange}
+												value={DEPOSIT[currentNetwork]}
 											/>
-										</Form.Field>
-									</Form.Group>
-
-									{/* Legal Name */}
-									<Form.Group className='form-group'>
-										<Form.Field width={16}>
-											<div className='input-label-div'>
-												<label>Legal Name</label>
-												<span>*Optional</span>
-											</div>
-											<Input
-												className='custom-input'
-												placeholder='Full Legal Name'
-												value={legalName}
-												onChange={ (e) => setLegalName(e.target.value)}
-												error={!okLegal}
-											/>
-										</Form.Field>
-									</Form.Group>
-
-									{/* Email */}
-									<Form.Group className='form-group'>
-										<Form.Field width={16}>
-											<div className='input-label-div'>
-												<label>Email</label>
-												<span>*Optional</span>
-											</div>
-											<Input
-												className='custom-input'
-												fluid size='large'
-												value={email}
-												placeholder='somebody@example.com'
-												onChange={ (e) => setEmail(e.target.value.toLowerCase())}
-												error={!okEmail}
-											/>
-										</Form.Field>
-									</Form.Group>
-
-									{/* Website */}
-									<Form.Group className='form-group'>
-										<Form.Field width={16}>
-											<div className='input-label-div'>
-												<label>Website</label>
-												<span>*Optional</span>
-											</div>
-											<Input
-												className='custom-input'
-												fluid size='large'
-												value={website}
-												placeholder='https://example.com'
-												onChange={ (e) => setWebsite(e.target.value)}
-												error={!okWeb}
-											/>
-										</Form.Field>
-									</Form.Group>
-
-									{/* Twitter */}
-									<Form.Group className='form-group'>
-										<Form.Field width={16}>
-											<div className='input-label-div'>
-												<label>Twitter</label>
-												<span>*Optional</span>
-											</div>
-											<Input
-												className='custom-input'
-												fluid size='large'
-												value={twitter}
-												placeholder='@YourTwitterName'
-												onChange={ (e) => setTwitter(e.target.value)}
-												error={!okTwitter}
-											/>
-										</Form.Field>
-									</Form.Group>
-
-									{/* Riot Name */}
-									<Form.Group className='form-group'>
-										<Form.Field width={16}>
-											<div className='input-label-div'>
-												<label>Riot Name</label>
-												<span>*Optional</span>
-											</div>
-											<Input
-												className='custom-input'
-												fluid size='large'
-												value={riotName}
-												placeholder='@yourname:matrix.org'
-												onChange={ (e) => setRiotName(e.target.value)}
-												error={!okRiot}
-											/>
-										</Form.Field>
-									</Form.Group>
-
-									{/* Total Deposit */}
-									<Form.Group className='form-group'>
-										<Form.Field width={16}>
-											<div className='input-label-div'>
-												<label>Total Deposit</label>
-											</div>
-
-											<div className="balance-input">
-												<Input
-													placeholder={'0'}
-													className='custom-input'
-													fluid size='large'
-													// onChange={onBalanceChange}
-													value={DEPOSIT[currentNetwork]}
-												/>
-												<span>
-													{chainProperties[currentNetwork].tokenSymbol}
-												</span>
-											</div>
-										</Form.Field>
-									</Form.Group>
-								</Form>
-							</Grid.Column>
-						</Grid>
-					</Modal.Description>
-				</Modal.Content>
-				<Modal.Actions className='modal-actions'>
-					<Button disabled={!okAll} floated='right' className='submitBtn' onClick={ handleSignAndSubmit }>Set Identity</Button>
-					<Button floated='right' onClick={() => setModalOpen(false)}>Close</Button>
-				</Modal.Actions>
-			</Modal>
+										</Form.Item>
+										<span className='ml-1'>
+											{chainProperties[currentNetwork].tokenSymbol}
+										</span>
+									</div>
+								</div>
+							</Form>
+						</div>
+					</div>
+				</Modal>
+			</>
 	);
 
 };
 
 export default styled(SetOnChainIdentityButton)`
-	.text-center  {
-		text-align : center;
-	}
-	.modal-header{
-		text-transform: capitalize;
-	}
-	.modal-desc{
-		margin-left: -1.8em;
-	}
-
-	.form-group{
-		margin-bottom: 1.5em !important;
-
-		.custom-input { 
-			padding-left: 0.5em;
-			padding-right: 0.5em;
-
-			&.error > input {
-				border-color: #e0b4b4 !important;
-				color: #9f3a38 !important;
-			}
-		}
-	}
-
-	.input-label-div {
-		display: flex;
-		justify-content: space-between;
-		margin-bottom: 0.5em !important;
-		padding-left: 0.5em;
-		padding-right: 0.5em;
-
-		label {
-			font-weight: bold;
-		}
-	}
-
-	.availableAccountsForm {
-		width: 100%;
-		padding-left: 1.5em;
-		padding-right: 1em;
-	}
-	.availableAddressItem {
-		margin-bottom: 10px;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		cursor: pointer;
-	}
-	.availableAddressOptions{ 
-		display: flex;
-		justify-content: space-between;
-		margin-bottom: 1em;
-	}
-	
-	.availableAddressToggle {
-		color: pink_primary;
-		cursor: pointer;
-		margin-left: 1.5em;
-		margin-top: 0.25em;
-	}
-	.accountInputDiv { 
-		display: flex;
-		align-items: center;
-		.identicon {
-			margin-right: -1.2em;
-			z-index: 10;
-		}
-	}
-	.input-form-field {
-		margin-right: 1.5em !important;
-	}
-	.value-form-group{
-		display: flex !important;
-		align-items: center;
-		margin-left: 0.45em !important;
-	}
-	.text-input{
-		margin-left: 1.5em;
-	}
-	.textarea-input {
-		min-height: 100;
-		margin-left: 1.5em !important;
-	}
-	.hide-pointer{
-		pointer-events:none;
-	}
 	/* Hides Increment Arrows in number input */
 	input::-webkit-outer-spin-button,
 	input::-webkit-inner-spin-button {
@@ -651,24 +552,9 @@ export default styled(SetOnChainIdentityButton)`
 	input[type=number] {
 		-moz-appearance: textfield;
 	}
-	.post-form-div {
-		border-top: 1px solid #ddd;
-		padding-top: 2em;
-		margin-left: 1em;
-		margin-top: 2.5em;
-	}
-	.modal-actions{
-		margin-bottom: 2.4em !important;
-	}
+
 	.submitBtn{
 		background-color: pink_primary;
 		color: #fff;
-	}
-	.balance-input {
-		display: flex;
-		align-items: center;
-		span {
-			margin-top: -0.9em;
-		}
 	}
 `;

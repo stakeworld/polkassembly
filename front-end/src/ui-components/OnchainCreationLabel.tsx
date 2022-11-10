@@ -20,7 +20,7 @@ const OnchainCreationLabel = ({ address, className, topic }:Props ) => {
 			by
 			<Address
 				address={address}
-				className='address'
+				className='address ml-2'
 				displayInline={true}
 			/>
 				from <TopicTag className={'topic-tag'} topic={topic} />

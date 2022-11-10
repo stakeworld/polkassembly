@@ -4,21 +4,20 @@
 
 import { InjectedAccount } from '@polkadot/extension-inject/types';
 import styled from '@xstyled/styled-components';
+import { Alert, Button, Form } from 'antd';
 import BN from 'bn.js';
 import React, { useContext, useEffect,useState } from 'react';
-import { DropdownProps } from 'semantic-ui-react';
+import frowningFace from 'src/assets/frowning-face.png';
 import { ApiContext } from 'src/context/ApiContext';
-import { NotificationContext } from 'src/context/NotificationContext';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { useGetCouncilMembersQuery } from 'src/generated/graphql';
 import { LoadingStatusType, NotificationStatus } from 'src/types';
 import AccountSelectionForm from 'src/ui-components/AccountSelectionForm';
 import BalanceInput from 'src/ui-components/BalanceInput';
-import Button from 'src/ui-components/Button';
-import ButtonLink from 'src/ui-components/ButtonLink';
 import Card from 'src/ui-components/Card';
-import { Form } from 'src/ui-components/Form';
+import GovSidebarCard from 'src/ui-components/GovSidebarCard';
 import Loader from 'src/ui-components/Loader';
+import queueNotification from 'src/ui-components/QueueNotification';
 
 interface Props {
 	accounts: InjectedAccount[]
@@ -26,7 +25,7 @@ interface Props {
 	className?: string
 	getAccounts: () => Promise<undefined>
 	tipHash?: string
-	onAccountChange: (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => void
+	onAccountChange: (event: React.SyntheticEvent<HTMLElement, Event>, data: any) => void
 }
 
 const EndorseTip = ({
@@ -35,10 +34,10 @@ const EndorseTip = ({
 	className,
 	getAccounts,
 	tipHash,
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	onAccountChange
 }: Props) => {
 	const ZERO = new BN(0);
-	const { queueNotification } = useContext(NotificationContext);
 	const [loadingStatus, setLoadingStatus] = useState<LoadingStatusType>({ isLoading: false, message:'' });
 	const [endorseValue, setEndorseValue] = useState<BN>(ZERO);
 	const [isCouncil, setIsCouncil] = useState(false);
@@ -113,17 +112,16 @@ const EndorseTip = ({
 	};
 
 	const GetAccountsButton = () =>
-		<Form.Group>
-			<Form.Field className='button-container'>
+		<Form>
+			<Form.Item className='button-container'>
 				<div>Only council members can endorse tips.</div><br/>
 				<Button
-					primary
 					onClick={getAccounts}
 				>
 					Endorse
 				</Button>
-			</Form.Field>
-		</Form.Group>;
+			</Form.Item>
+		</Form>;
 
 	const noAccount = accounts.length === 0;
 
@@ -148,19 +146,23 @@ const EndorseTip = ({
 					onChange={onValueChange}
 				/>
 				<Button
-					primary
 					disabled={!apiReady}
 					onClick={handleEndorse}
 				>
 					Endorse
 				</Button>
 			</Card>;
-
 	const NotCouncil = () =>
-		<>
-			<div>No account found from the council :(</div>
-			<ButtonLink onClick={() => setForceEndorse(true)}>Let me try still.</ButtonLink>
-		</>;
+		<GovSidebarCard>
+			<h3 className='dashboard-heading mb-6'>Endorse with account!</h3>
+			<Alert className='mb-6' type='warning' message={<div className='flex items-center gap-x-2'>
+				<span>
+					No account found from the council
+				</span>
+				<img width={25} height={25} src={frowningFace} alt="frowning face" />
+			</div>} />
+			<Button onClick={() => setForceEndorse(true)}>Let me try still.</Button>
+		</GovSidebarCard>;
 
 	return (
 		<div className={className}>

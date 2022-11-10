@@ -2,98 +2,54 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import styled from '@xstyled/styled-components';
-import React from 'react';
-import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
+import { DownOutlined } from '@ant-design/icons';
+import { Dropdown, Menu } from 'antd';
+import React, { FC } from 'react';
 import chainLogo from 'src/assets/parachain-logos/chain-logo.jpg';
 import { chainProperties, network } from 'src/global/networkConstants';
 import getNetwork from 'src/util/getNetwork';
 
-const NETWORK = getNetwork();
-const StyledDiv = styled.div`
-    display: flex;
-    align-items: center;
-    text-transform: capitalize;
-
-    img {
-			width: 2rem;
-			@media only screen and (min-width: 992px) {
-      	width: 4rem;
-			}
-        border-radius: 50%;
-        margin-right: 0.5rem;
-    }
-`;
-
-const StyledNetworkItem = ({ showNetwork }: {showNetwork: string}) => {
-	return <StyledDiv>
-		<img
-			src={chainProperties[showNetwork]?.logo ? chainProperties[showNetwork].logo : chainLogo}
-			alt={showNetwork}
-		/>
-		{showNetwork}
-	</StyledDiv>;
-};
-
-const NetworkOptions: DropdownItemProps[] = [];
+const dropdownMenuItems = [];
+const currentNetwork = getNetwork();
 
 for (const key of Object.keys(network)) {
+	const keyVal = network[key as keyof typeof network];
+	const link = ['MOONBASE', 'MOONRIVER', 'MOONBEAM', 'KILT'].includes(key) ? `https://${key}.polkassembly.network` : `https://${key}.polkassembly.io`;
 	const optionObj = {
-		children: <StyledNetworkItem showNetwork={network[key as keyof typeof network]} />,
-		value: network[key as keyof typeof network]
+		key,
+		label: <a href={link} className='flex items-center my-2'>
+			<img
+				className='w-10 h-10 mr-3 rounded-full'
+				src={chainProperties[keyVal]?.logo ? chainProperties[keyVal].logo : chainLogo}
+				alt='Logo'
+			/>
+			<span className='capitalize'> {keyVal == 'hydradx' ? 'HydraDX' : keyVal} </span>
+		</a>
 	};
 
-	NetworkOptions.push(optionObj);
+	dropdownMenuItems.push(optionObj);
 }
 
-interface Props {
-    className?: string
-		setSidebarHiddenFunc?: () => void
-}
+const menu = <Menu className='max-h-96 overflow-y-auto' items={dropdownMenuItems} />;
 
-const NetworkDropdown = ({ className, setSidebarHiddenFunc }: Props) =>  {
-
-	const navigate = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-		if (data.value === NETWORK){
-			return null;
-		}
-
-		if (data.value === 'moonbase' || data.value === 'moonriver' || data.value === 'moonbeam' || data.value === 'kilt' || data.value === 'automata') {
-			window.location.href = `https://${data.value}.polkassembly.network`;
-		} else {
-			window.location.href = `https://${data.value}.polkassembly.io`;
-		}
-		return null;
-	};
-
-	return <Dropdown
-		onClick={setSidebarHiddenFunc}
-		className={className}
-		pointing='top'
-		onChange={navigate}
-		options={NetworkOptions}
-		trigger={<StyledNetworkItem showNetwork={NETWORK}/>}
-		value={NETWORK}
-		scrolling
-	/>;
+const NetworkDropdown: FC<{setSidebarCollapsed: React.Dispatch<React.SetStateAction<boolean>>}> = ({ setSidebarCollapsed }) => {
+	return (
+		<Dropdown overlay={menu} trigger={['click']}>
+			<a className='flex items-center justify-between text-navBlue hover:text-pink_primary' onClick={e => {
+				e.preventDefault();
+				setSidebarCollapsed(true);
+			}}
+			>
+				<img
+					className='w-[20px] h-[20px] mr-2 rounded-full'
+					src={chainProperties[currentNetwork]?.logo ? chainProperties[currentNetwork].logo : chainLogo}
+					alt='Logo'
+				/>
+				<span className='mr-2 capitalize font-medium hidden md:inline-block'>{currentNetwork == 'hydradx' ? 'HydraDX' : currentNetwork}</span>
+				<DownOutlined />
+			</a>
+		</Dropdown>
+	);
 };
 
-export default styled(NetworkDropdown)`
-    color: #fff;
-    display: flex !important;
-    align-items: center;
-		margin: 0 1.2rem;
-
-		@media only screen and (max-width: 768px) {
-			font-size: 13px;
-		}
-
-		i.icon {
-			color: #fff !important;
-		}
-
-		.menu {
-			z-index: 201 !important;
-			min-height: 70vh !important;
-		}
-`;
+export default NetworkDropdown;

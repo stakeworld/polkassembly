@@ -4,8 +4,10 @@
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
+import { DownOutlined } from '@ant-design/icons';
+import { MenuProps, Space } from 'antd';
+import { Dropdown } from 'antd';
 import React, { useState } from 'react';
-import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import chainLogo from 'src/assets/parachain-logos/chain-logo.jpg';
 import { chainProperties, network } from 'src/global/networkConstants';
 import styled from 'styled-components';
@@ -23,8 +25,8 @@ function NetworkSelect({ selectedNetwork, setSelectedNetwork }: {selectedNetwork
     }
 `;
 
-	const StyledNetworkItem = ({ showNetwork }: {showNetwork: string}) => {
-		return <StyledDiv>
+	const StyledNetworkItem = ({ className, showNetwork }: {className?: string,showNetwork: string}) => {
+		return <StyledDiv className={className}>
 			<img
 				src={chainProperties[showNetwork]?.logo ? chainProperties[showNetwork].logo : chainLogo}
 				alt={showNetwork}
@@ -33,27 +35,28 @@ function NetworkSelect({ selectedNetwork, setSelectedNetwork }: {selectedNetwork
 		</StyledDiv>;
 	};
 
-	const networkOptions: DropdownItemProps[] = [];
+	const networkOptions: MenuProps['items'] = [];
 	for (const key of Object.keys(network)) {
 		const optionObj = {
-			children: <StyledNetworkItem showNetwork={network[key as keyof typeof network]} />,
-			value: network[key as keyof typeof network]
+			key: network[key as keyof typeof network],
+			label: <StyledNetworkItem showNetwork={network[key as keyof typeof network]} />
 		};
 
 		networkOptions.push(optionObj);
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [selectedNetworkToolbar, setSelectedNetworkToolbar] = useState<any>(selectedNetwork);
 
-	const handleSetSelectedNetwork = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-		setSelectedNetworkToolbar(data.value);
-		setSelectedNetwork(`${data.value}`);
+	const handleSetSelectedNetwork : MenuProps['onClick'] = ({ key }) => {
+		setSelectedNetworkToolbar(key);
+		setSelectedNetwork(`${key}`);
 	};
 
 	return (
 		<div className='select-div filter-by-chain-div'>
 			<label>Filter by</label>
-			<Dropdown compact scrolling value={selectedNetworkToolbar} onChange={handleSetSelectedNetwork} options={networkOptions} trigger={<StyledNetworkItem showNetwork={selectedNetwork}/>} />
+			<Dropdown trigger={['click']} dropdownRender={menus => (<div className='max-h-[20rem] rounded-md drop-shadow-xl overflow-auto'>{menus}</div>)} menu={{ items:networkOptions, onClick:handleSetSelectedNetwork }} ><Space className='cursor-pointer'><StyledNetworkItem className='text-pink_primary' showNetwork={selectedNetwork}/><DownOutlined className='text-pink_primary align-middle' /></Space></Dropdown>
 		</div>
 	);
 }

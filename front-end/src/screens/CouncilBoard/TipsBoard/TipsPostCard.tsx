@@ -2,9 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { ClockCircleOutlined } from '@ant-design/icons';
 import styled from '@xstyled/styled-components';
 import React from 'react';
-import { Icon } from 'semantic-ui-react';
 
 const TipsPostCard = ({ className } : { className?: string }) => {
 	return (
@@ -23,7 +23,7 @@ const TipsPostCard = ({ className } : { className?: string }) => {
 
 				<div className="right-info d-flex">
 					<div className="time">
-						<Icon name='clock outline' />
+						<ClockCircleOutlined/>
 						20h ago
 					</div>
 				</div>

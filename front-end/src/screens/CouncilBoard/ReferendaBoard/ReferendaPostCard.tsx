@@ -2,12 +2,11 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import styled from '@xstyled/styled-components';
+import { ClockCircleOutlined, DislikeOutlined,LikeOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import React, { useContext, useEffect } from 'react';
-import { Icon } from 'semantic-ui-react';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
-import { useGetLatestReferendaPostsWithVotesQuery, useReferendumPostAndCommentsQuery } from 'src/generated/graphql';
+import { useGetLatestReferendaPostsWithVotesLazyQuery, useReferendumPostAndCommentsLazyQuery } from 'src/generated/graphql';
 import { noTitle } from 'src/global/noTitle';
 import Markdown from 'src/ui-components/Markdown';
 import StatusTag from 'src/ui-components/StatusTag';
@@ -28,9 +27,9 @@ interface Props {
 const ReferendaPostCard = ({ className, createdAt, postStatus, referendumId, title, method } : Props) => {
 	const { defaultAddress } = useContext(UserDetailsContext);
 
-	const { data, error, loading, refetch } = useReferendumPostAndCommentsQuery({ variables: { 'id': referendumId } });
+	const [ refetch, { data, error, loading } ] = useReferendumPostAndCommentsLazyQuery({ variables: { 'id': referendumId } });
 
-	const { data:voteData, loading:voteLoading, error:voteError } = useGetLatestReferendaPostsWithVotesQuery({
+	const [ , { data:voteData, loading:voteLoading, error:voteError } ] = useGetLatestReferendaPostsWithVotesLazyQuery({
 		variables: {
 			referendumId: referendumId,
 			voter: `${defaultAddress}`
@@ -48,17 +47,17 @@ const ReferendaPostCard = ({ className, createdAt, postStatus, referendumId, tit
 		null;
 
 	return (
-		<div className={className}>
-			<div className="vote-history">
+		<div className={`${className} bg-white drop-shadow-md p-3 lg:p-6 rounded-md`}>
+			<div className="font-medium text-sm mb-[9px]">
 				{!voteLoading && !voteError && voteData && voteData.referendumVotes.length > 0 &&
 				<>
 					{voteData.referendumVotes[0]?.vote.toLowerCase() === 'aye' ? <>
-						<div className='thumbs up'>
-							<Icon name='thumbs up' />
+						<div className='inline-block text-center algin-middle w-[2.5rem] height-[2.5rem] text-[1.5rem] text-green_primary'>
+							<LikeOutlined/>
 						</div> Aye
 					</> : <>
-						<div className='thumbs down'>
-							<Icon name='thumbs down' />
+						<div className='inline-block text-center algin-middle w-[2.5rem] height-[2.5rem] text-[1.5rem] text-red_primary'>
+							<DislikeOutlined/>
 						</div> Nay
 					</>}
 				</>
@@ -71,77 +70,20 @@ const ReferendaPostCard = ({ className, createdAt, postStatus, referendumId, tit
 				!loading && !error && data?.posts && data.posts.length > 0 && <Markdown md={`${(data.posts[0].content as string).split(' ').splice(0, 30).join(' ')}...` } />
 			}
 
-			<div className="info-bar">
+			<div className="flex justify-between items-center">
 				<div className="referenda-post-status">
 					{postStatus && <StatusTag className='post_tags' status={postStatus}/>}
 				</div>
 
-				<div className="right-info d-flex">
-					<div className="time">
-						<Icon name='clock outline' />
+				<div className="">
+					<span className="">
+						<ClockCircleOutlined className='align-middle mr-1'/>
 						{relativeCreatedAt}
-					</div>
+					</span>
 				</div>
 			</div>
 		</div>
 	);
 };
 
-export default styled(ReferendaPostCard)`
-	background: #FFFFFF;
-	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.16);
-	border-radius: 8px;
-	padding: 15px 20px;
-
-	h5 {
-		font-size: 16px;
-	}
-
-	p {
-		font-size: 14px;
-		margin: 12px auto;
-	}
-
-	.vote-history {
-		font-weight: 500;
-		font-size: 12px;
-		margin-bottom: 9px;
-
-		.thumbs {
-			display: inline-block;
-			text-align: center;
-			vertical-align: middle;
-			width: 2.5rem;
-			height: 2.5rem;
-			font-size: 1.5rem;
-		}
-
-		.thumbs.up {
-			color: green_primary;
-		}
-
-		.thumbs.down {
-			color: red_primary;
-			margin-top: 4px;
-		}
-	}
-
-	.info-bar {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-
-		.referenda-post-status {
-			font-size: 14px;
-			/* padding: 4px 8px; */
-			border-radius: 4px;
-			color: #FFFFFF;
-		}
-
-		.right-info {
-			.time {
-				margin-left: 24px;
-			}
-		}
-	}
-`;
+export default ReferendaPostCard;

@@ -1,23 +1,17 @@
 // Copyright 2019-2020 @Premiurly/polkassembly authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-
-import React, { useContext, useEffect,useState } from 'react';
-import { Grid } from 'semantic-ui-react';
+import { Col, Row } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Web2Login from 'src/components/Login/Web2Login';
+import Web3Login from 'src/components/Login/Web3Login';
+import { useUserDetailsContext } from 'src/context';
 import { Wallet } from 'src/types';
 
-import Web2Login from '../../components/Login/Web2Login';
-import Web3Login from '../../components/Login/Web3Login';
-import { UserDetailsContext } from '../../context/UserDetailsContext';
-import { useRouter } from '../../hooks';
-
-interface Props {
-	className?: string
-}
-
-const Login = ({ className }: Props) => {
-	const currentUser = useContext(UserDetailsContext);
-	const { navigate } = useRouter();
+const Login = () => {
+	const currentUser = useUserDetailsContext();
+	const navigate = useNavigate();
 	const [displayWeb, setDisplayWeb] = useState(2);
 	const [chosenWallet, setChosenWallet] = useState<Wallet>();
 	const [walletError, setWalletError] =  useState<string | undefined>();
@@ -33,18 +27,23 @@ const Login = ({ className }: Props) => {
 		if (currentUser?.id) {
 			navigate('/');
 		}
-	}, [navigate, currentUser, currentUser?.id]);
-
+	}, [currentUser?.id, navigate]);
 	return (
-		<>
-			<Grid centered className={className}>
-				<Grid.Column mobile={16} tablet={14} computer={8} style={ { minWidth: 'min-content' } }>
-					{ displayWeb === 2 ? <Web2Login onWalletSelect={onWalletSelect} walletError={walletError} /> : null}
+		<Row justify='center' align='middle' className='h-full -mt-5'>
+			<Col className='min-w-full sm:min-w-[500px]'>
+				{displayWeb === 2 ? (
+					<Web2Login onWalletSelect={onWalletSelect} walletError={walletError} />
+				) : null}
 
-					{displayWeb === 3 && chosenWallet ? <Web3Login chosenWallet={chosenWallet} setDisplayWeb2={setDisplayWeb2} setWalletError={setWalletError} /> : null}
-				</Grid.Column>
-			</Grid>
-		</>
+				{displayWeb === 3 && chosenWallet ? (
+					<Web3Login
+						chosenWallet={chosenWallet}
+						setDisplayWeb2={setDisplayWeb2}
+						setWalletError={setWalletError}
+					/>
+				) : null}
+			</Col>
+		</Row>
 	);
 };
 

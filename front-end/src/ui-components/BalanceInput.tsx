@@ -2,14 +2,14 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import styled from '@xstyled/styled-components';
+import { Form, InputNumber } from 'antd';
 import BN from 'bn.js';
 import React, { useState } from 'react';
+import { chainProperties } from 'src/global/networkConstants';
+import getNetwork from 'src/util/getNetwork';
 
 import { inputToBn } from '../util/inputToBn';
-import { Form } from './Form';
 import HelperTooltip from './HelperTooltip';
-import Input from './Input';
 
 interface Props{
 	className?: string
@@ -17,13 +17,21 @@ interface Props{
 	helpText?: string
 	onChange: (balance: BN) => void
 	placeholder?: string
-	iconSize?: 'small' | 'normal'
+	size?: 'large' | 'small' | 'middle'
 }
 
-const BalanceInput = ({ className, label = '', helpText = '', onChange, placeholder = '', iconSize }: Props) => {
+const currentNetwork = getNetwork();
+
+const BalanceInput = ({ className, label = '', helpText = '', onChange, placeholder = '', size }: Props) => {
 	const [isValidInput, setIsValidInput] = useState(true);
-	const onBalanceChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-		const [balance, isValid] = inputToBn(event.currentTarget.value, false);
+
+	const onBalanceChange = (value: number | null): void => {
+		if(!value || value <= 0) {
+			setIsValidInput(false);
+			return;
+		}
+
+		const [balance, isValid] = inputToBn(`${value}`, false);
 		setIsValidInput(isValid);
 
 		if(isValid){
@@ -31,28 +39,22 @@ const BalanceInput = ({ className, label = '', helpText = '', onChange, placehol
 		}
 	};
 
-	return <Form.Field className={className} width={16}>
-		<label>
-			{label}
-			{helpText && <HelperTooltip content={helpText} iconSize={iconSize}/>}
-		</label>
-		<Input
-			className={'balanceInput'}
-			invalid={isValidInput}
+	return <Form.Item
+		className={className}
+		name="balance"
+		rules={[{ required: true }, {  }]}
+		validateStatus={isValidInput ? 'success' : 'error'}
+		help={!isValidInput && 'Please input a valid value'}
+	>
+		<label className='mb-3 font-bold flex items-center text-sm text-sidebarBlue'> {label} {helpText && <HelperTooltip className='ml-2' text={helpText}/> } </label>
+
+		<InputNumber
+			className='text-sm text-sidebarBlue w-full'
 			onChange={onBalanceChange}
-			placeholder={placeholder}
-			type='number'
+			placeholder={`${placeholder} ${chainProperties[currentNetwork].tokenSymbol}`}
+			size={size || 'large'}
 		/>
-	</Form.Field>;
+	</Form.Item>;
 };
 
-export default styled(BalanceInput)`
-	label {
-		display: flex !important;
-    align-items: center !important;
-	}
-
-	.ui.selection.dropdown {
-		border-color: grey_light;
-	}
-`;
+export default BalanceInput;
