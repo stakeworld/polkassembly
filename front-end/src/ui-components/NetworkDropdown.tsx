@@ -3,23 +3,31 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DownOutlined } from '@ant-design/icons';
-import { Dropdown, Menu } from 'antd';
+import { Card, Col, Dropdown, Row } from 'antd';
 import React, { FC } from 'react';
 import chainLogo from 'src/assets/parachain-logos/chain-logo.jpg';
 import { chainProperties, network } from 'src/global/networkConstants';
 import getNetwork from 'src/util/getNetwork';
 
-const dropdownMenuItems = [];
+type DropdownMenuItemType = {
+	key: any,
+	label: any
+}
+
+const polkadotChains: DropdownMenuItemType[] = [];
+const kusamaChains: DropdownMenuItemType[] = [];
+const soloChains: DropdownMenuItemType[] = [];
+
 const currentNetwork = getNetwork();
 
 for (const key of Object.keys(network)) {
 	const keyVal = network[key as keyof typeof network];
 	const link = ['MOONBASE', 'MOONRIVER', 'MOONBEAM', 'KILT'].includes(key) ? `https://${key}.polkassembly.network` : `https://${key}.polkassembly.io`;
-	const optionObj = {
+	const optionObj: DropdownMenuItemType = {
 		key,
 		label: <a href={link} className='flex items-center my-2'>
 			<img
-				className='w-10 h-10 mr-3 rounded-full'
+				className='w-5 h-5 mr-3 rounded-full'
 				src={chainProperties[keyVal]?.logo ? chainProperties[keyVal].logo : chainLogo}
 				alt='Logo'
 			/>
@@ -27,14 +35,57 @@ for (const key of Object.keys(network)) {
 		</a>
 	};
 
-	dropdownMenuItems.push(optionObj);
+	switch(chainProperties[keyVal]?.category) {
+	case 'polkadot':
+		polkadotChains.push(optionObj);
+		break;
+	case 'kusama':
+		kusamaChains.push(optionObj);
+		break;
+	default:
+		soloChains.push(optionObj);
+	}
 }
-
-const menu = <Menu className='max-h-96 overflow-y-auto' items={dropdownMenuItems} />;
 
 const NetworkDropdown: FC<{setSidebarCollapsed: React.Dispatch<React.SetStateAction<boolean>>}> = ({ setSidebarCollapsed }) => {
 	return (
-		<Dropdown overlay={menu} trigger={['click']}>
+		<Dropdown
+			trigger={['click']}
+			dropdownRender={() => {
+				return (
+					<Card className='max-w-[356px] max-h-[52vh] overflow-y-auto'>
+						<>
+							<div className='text-navBlue font-medium'>Polkadot &amp; Parachains</div>
+							<Row className="mt-2">
+								{
+									polkadotChains.map(optionObj => (
+										<Col span={12} key={optionObj.key} className="flex">{optionObj.label}</Col>
+									))
+								}
+							</Row>
+
+							<div className='text-navBlue font-medium mt-4'>Kusama &amp; Parachains</div>
+							<Row className="mt-2">
+								{
+									kusamaChains.map(optionObj => (
+										<Col span={12} key={optionObj.key} className="flex">{optionObj.label}</Col>
+									))
+								}
+							</Row>
+
+							<div className='text-navBlue font-medium mt-4'>Solochains</div>
+							<Row className="mt-2">
+								{
+									soloChains.map(optionObj => (
+										<Col span={12} key={optionObj.key} className="flex">{optionObj.label}</Col>
+									))
+								}
+							</Row>
+						</>
+					</Card>
+				);}
+			}
+		>
 			<a className='flex items-center justify-between text-navBlue hover:text-pink_primary' onClick={e => {
 				e.preventDefault();
 				setSidebarCollapsed(true);

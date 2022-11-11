@@ -114,6 +114,7 @@ export const tokenSymbol = {
 export const chainProperties: types.ChainPropType = {
 	[network.POLKADOT]: {
 		blockTime: 6000,
+		category: 'polkadot',
 		chainId: 0,
 		logo: polkadotLogo,
 		rpcEndpoint: 'wss://rpc.polkadot.io',
@@ -123,6 +124,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.KUSAMA]: {
 		blockTime: 6000,
+		category: 'kusama',
 		chainId: 0,
 		logo: kusamaLogo,
 		rpcEndpoint: 'wss://kusama-rpc.polkadot.io',
@@ -132,6 +134,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.ACUITY]: {
 		blockTime: 6000,
+		category: 'solo',
 		chainId: 0,
 		logo: acuityLogo,
 		rpcEndpoint: 'wss://freemont.acuity.social',
@@ -141,6 +144,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.ALTAIR]: {
 		blockTime: 12000,
+		category: 'kusama',
 		chainId: 0,
 		logo: altairLogo,
 		rpcEndpoint: 'wss://altair.api.onfinality.io/public-ws',
@@ -150,6 +154,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.AMPLITUDE]: {
 		blockTime: 12000,
+		category: 'kusama',
 		chainId: 0,
 		logo: amplitudeLogo,
 		rpcEndpoint: 'wss://altair.api.onfinality.io/public-ws',
@@ -159,6 +164,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.ASTAR]: {
 		blockTime: 12000,
+		category: 'polkadot',
 		chainId: 592,
 		logo: astarLogo,
 		rpcEndpoint: 'wss://astar.api.onfinality.io/public-ws',
@@ -168,6 +174,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.AUTOMATA]: {
 		blockTime: 6000,
+		category: 'solo',
 		chainId: 0,
 		logo: automataLogo,
 		rpcEndpoint: 'wss://automata.api.onfinality.io/public-ws',
@@ -177,6 +184,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.BASILISK]: {
 		blockTime: 12000,
+		category: 'kusama',
 		chainId: 2090,
 		logo: basiliskLogo,
 		rpcEndpoint: 'wss://basilisk.api.onfinality.io/public-ws',
@@ -186,6 +194,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.PIONEER]: {
 		blockTime: 12000,
+		category: 'solo',
 		chainId: 0,
 		logo: pioneerLogo,
 		rpcEndpoint: 'wss://pioneer.api.onfinality.io/public-ws',
@@ -195,6 +204,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.CALAMARI]: {
 		blockTime: 12000,
+		category: 'kusama',
 		chainId: 2084,
 		logo: calamariLogo,
 		rpcEndpoint: 'wss://calamari.api.onfinality.io/public-ws',
@@ -204,6 +214,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.CENTRIFUGE]: {
 		blockTime: 12000,
+		category: 'polkadot',
 		chainId: 0,
 		logo: centrifugeLogo,
 		rpcEndpoint: 'wss://centrifuge-parachain.api.onfinality.io/public-ws',
@@ -213,6 +224,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.COMPOSABLE]: {
 		blockTime: 12000,
+		category: 'polkadot',
 		chainId: 0,
 		logo: composableFinanceLogo,
 		rpcEndpoint: 'wss://rpc.composable.finance',
@@ -222,6 +234,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.CRUST]: {
 		blockTime: 12000,
+		category: 'solo',
 		chainId: 0,
 		logo: crustLogo,
 		rpcEndpoint: 'wss://rpc.crust.network',
@@ -231,6 +244,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.CRUSTSHADOW]: {
 		blockTime: 12000,
+		category: 'kusama',
 		chainId: 0,
 		logo: crustLogo,
 		rpcEndpoint: 'wss://rpc-shadow.crust.network',
@@ -240,6 +254,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.GEAR]: {
 		blockTime: 1000,
+		category: 'solo',
 		chainId: 0,
 		logo: gearLogo,
 		rpcEndpoint: 'wss://rpc-node.gear-tech.io:443',
@@ -249,6 +264,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.HEIKO]: {
 		blockTime: 13000,
+		category: 'kusama',
 		chainId: 0,
 		logo: heikoLogo,
 		rpcEndpoint: 'wss://heiko-rpc.parallel.fi',
@@ -258,6 +274,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.HYDRADX]: {
 		blockTime: 12000,
+		category: 'polkadot',
 		chainId: 0,
 		logo: hydradxLogo,
 		rpcEndpoint: 'wss://hydradx-rpc.dwellir.com',
@@ -267,6 +284,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.KARURA]: {
 		blockTime: 12000,
+		category: 'kusama',
 		chainId: 0,
 		logo: karuraLogo,
 		rpcEndpoint: 'wss://karura.api.onfinality.io/public-ws',
@@ -276,6 +294,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.KYLIN]: {
 		blockTime: 12000,
+		category: 'polkadot',
 		chainId: 0,
 		logo: kylinLogo,
 		rpcEndpoint: 'wss://polkadot.kylin-node.co.uk',
@@ -285,6 +304,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.KHALA]: {
 		blockTime: 12000,
+		category: 'kusama',
 		chainId: 0,
 		logo: khalaLogo,
 		rpcEndpoint: 'wss://khala.api.onfinality.io/public-ws',
@@ -294,6 +314,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.KILT]: {
 		blockTime: 12000,
+		category: 'polkadot',
 		chainId: 0,
 		logo: kiltLogo,
 		rpcEndpoint: 'wss://kusama-rpc.polkadot.io',
@@ -303,6 +324,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.MANTA]: {
 		blockTime: 12000,
+		category: 'solo',
 		chainId: 1287,
 		logo: mantaLogo,
 		rpcEndpoint: 'wss://ws.rococo.dolphin.engineering',
@@ -312,6 +334,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.MOONBASE]: {
 		blockTime: 12000,
+		category: 'solo',
 		chainId: 1287,
 		logo: moonbaseLogo,
 		rpcEndpoint: 'wss://moonbeam-alpha.api.onfinality.io/public-ws',
@@ -321,6 +344,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.MOONBEAM]: {
 		blockTime: 12000,
+		category: 'polkadot',
 		chainId: 1284,
 		logo: moonbeamLogo,
 		rpcEndpoint: 'wss://moonbeam.api.onfinality.io/public-ws',
@@ -330,6 +354,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.MOONRIVER]: {
 		blockTime: 12000,
+		category: 'kusama',
 		chainId: 1285,
 		logo: moonriverLogo,
 		rpcEndpoint: 'wss://moonriver.api.onfinality.io/public-ws',
@@ -339,6 +364,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.PARALLEL]: {
 		blockTime: 12000,
+		category: 'polkadot',
 		chainId: 172,
 		logo: parallelLogo,
 		rpcEndpoint: 'wss://rpc.parallel.fi',
@@ -348,6 +374,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.PENDULUM]: {
 		blockTime: 6000,
+		category: 'solo',
 		chainId: 0,
 		logo: pendulumLogo,
 		rpcEndpoint: 'wss://kusama-rpc.polkadot.io',
@@ -357,6 +384,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.POLKADEX]: {
 		blockTime: 12000,
+		category: 'solo',
 		chainId: 0,
 		logo: polkadexLogo,
 		rpcEndpoint: 'wss://polkadex.api.onfinality.io/public-ws',
@@ -366,6 +394,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.ROBONOMICS]: {
 		blockTime: 12000,
+		category: 'kusama',
 		chainId: 2048,
 		logo: robonomicsLogo,
 		rpcEndpoint: 'wss://robonomics.api.onfinality.io/public-ws',
@@ -375,6 +404,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.SHIBUYA]: {
 		blockTime: 12000,
+		category: 'solo',
 		chainId: 81,
 		logo: shidenLogo,
 		rpcEndpoint: 'wss://shibuya-rpc.dwellir.com',
@@ -384,6 +414,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.SHIDEN]: {
 		blockTime: 12000,
+		category: 'kusama',
 		chainId: 336,
 		logo: shidenLogo,
 		rpcEndpoint: 'wss://shiden.api.onfinality.io/public-ws',
@@ -393,6 +424,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.TANGANIKA]: {
 		blockTime: 12000,
+		category: 'kusama',
 		chainId: 336,
 		logo: tanganikaLogo,
 		rpcEndpoint: 'wss://tanganika.datahighway.com',
@@ -402,6 +434,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.TURING]: {
 		blockTime: 12000,
+		category: 'kusama',
 		chainId: 2114,
 		logo: turingLogo,
 		rpcEndpoint: 'wss://turing-rpc.dwellir.com',
@@ -411,6 +444,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.WESTEND]: {
 		blockTime: 6000,
+		category: 'solo',
 		chainId: 0,
 		logo: westendLogo,
 		rpcEndpoint: 'wss://kusama-rpc.polkadot.io',

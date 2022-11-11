@@ -106,6 +106,7 @@ export interface ChainProps {
   'tokenSymbol': TokenSymbol;
   'chainId': number;
   'rpcEndpoint': string;
+  'category': string;
 }
 
 export type ChainLinksType = {
