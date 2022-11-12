@@ -92,7 +92,7 @@ const SecondProposal = ({ className, proposalId, address, accounts, onAccountCha
 				open={showModal}
 				onCancel={() => setShowModal(false)}
 				footer={[
-					<Button className='bg-pink_primary text-white border-pink_primary hover:bg-pink_secondary' key="second" loading={loadingStatus.isLoading} disabled={!apiReady} onClick={secondProposal}>
+					<Button className='bg-pink_primary text-white border-pink_primary hover:bg-pink_secondary my-1' key="second" loading={loadingStatus.isLoading} disabled={!apiReady} onClick={secondProposal}>
             Second
 					</Button>
 				]}
@@ -112,7 +112,6 @@ const SecondProposal = ({ className, proposalId, address, accounts, onAccountCha
 };
 
 export default styled(SecondProposal)`
-
 	.LoaderWrapper {
 		height: 15rem;
 		position: absolute;

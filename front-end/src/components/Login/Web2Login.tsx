@@ -89,12 +89,13 @@ const Web2Login: FC<Props> = ({ walletError, onWalletSelect }) => {
 						/>
 					</Form.Item>
 				</div>
-				<div className="flex flex-col gap-y-1">
+
+				<div className="flex flex-col gap-y-1 -mt-6">
 					<label
 						className="text-base text-sidebarBlue font-medium"
 						htmlFor="password"
 					>
-                        Password
+						Password
 					</label>
 					<Form.Item
 						name="password"
@@ -115,7 +116,7 @@ const Web2Login: FC<Props> = ({ walletError, onWalletSelect }) => {
 							id="password"
 						/>
 					</Form.Item>
-					<div className="text-right text-pink_primary my-3">
+					<div className="text-right text-pink_primary">
 						<Link to="/request-reset-password">Forgot Password?</Link>
 					</div>
 				</div>

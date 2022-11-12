@@ -16,7 +16,7 @@ interface Props {
 const NameLabel = ({ className, defaultAddress, username, disableIdenticon = false } : Props) => {
 	return (
 		<div className={className}>
-			{!defaultAddress ? <span className='username text-sidebarBlue'> { username } </span> :
+			{!defaultAddress ? <span className='username text-sidebarBlue mr-1.5'> { username } </span> :
 				<Address
 					address={defaultAddress}
 					className='text-sm'

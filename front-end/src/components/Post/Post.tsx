@@ -4,6 +4,7 @@
 
 /* eslint-disable sort-keys */
 import { QueryLazyOptions } from '@apollo/client';
+import styled from '@xstyled/styled-components';
 import { Tabs } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -419,6 +420,7 @@ const Post = ({
 
 							<Tabs
 								type="card"
+								className='ant-tabs-tab-bg-white text-sidebarBlue font-medium'
 								items={tabItems}
 							/>
 						</>}
@@ -439,4 +441,21 @@ const Post = ({
 	);
 };
 
-export default Post;
+export default styled(Post)`
+	.ant-tabs-tab-bg-white .ant-tabs-tab:not(.ant-tabs-tab-active) {
+		background-color: white;
+		border-top-color: white;
+		border-left-color: white;
+		border-right-color: white;
+		border-bottom-color: #E1E6EB;
+	}
+	.ant-tabs-tab-bg-white .ant-tabs-tab-active{
+		border-top-color: #E1E6EB;
+		border-left-color: #E1E6EB;
+		border-right-color: #E1E6EB;
+		border-radius: 6px 6px 0 0 !important;
+	}
+	.ant-tabs-tab-bg-white .ant-tabs-nav:before{
+		border-bottom: 1px solid #E1E6EB;
+	}
+`;

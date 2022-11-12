@@ -1,8 +1,11 @@
 // Copyright 2019-2020 @Premiurly/polkassembly authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
+
 import React, { FC } from 'react';
 import { TwitterTimelineEmbed } from 'react-twitter-embed';
+import kusamaLogo from 'src/assets/kusama-logo.gif';
+import polkadotLogo from 'src/assets/parachain-logos/polkadot-logo.jpg';
 import { chainLinks } from 'src/global/networkConstants';
 import getNetwork from 'src/util/getNetwork';
 
@@ -27,7 +30,10 @@ const News: FC = () => {
 			</h3>
 			<section className='mt-6 w-full flex flex-col md:flex-row gap-5'>
 				<article className='flex-1'>
-					{isPolkadotOrKusama && <h4>{profile === Profile.Kusama? 'Kusama': 'Polkadot'}</h4>}
+					{isPolkadotOrKusama && <div className='flex items-center mb-2'>
+						<img src={profile === Profile.Kusama? kusamaLogo : polkadotLogo} className='rounded-full' height={28} width={28} alt={`${profile === Profile.Kusama? 'Kusama': 'Polkadot'} Logo`} />
+						<h4 className='text-[18px] font-medium text-sidebarBlue ml-2'>{profile === Profile.Kusama? 'Kusama': 'Polkadot'}</h4>
+					</div>}
 					<TwitterTimelineEmbed
 						sourceType="profile"
 						screenName={profile}
@@ -39,7 +45,10 @@ const News: FC = () => {
 					/>
 				</article>
 				{isPolkadotOrKusama && (<article className='flex-1'>
-					<h4>{profile2 === Profile.Kusama ? 'Kusama' : 'Polkadot'}</h4>
+					{isPolkadotOrKusama && <div className='flex items-center mb-2'>
+						<img src={profile2 === Profile.Kusama? kusamaLogo : polkadotLogo} className='rounded-full' height={28} width={28} alt={`${profile2 === Profile.Kusama? 'Kusama': 'Polkadot'} Logo`} />
+						<h4 className='text-[18px] font-medium text-sidebarBlue ml-2'>{profile2 === Profile.Kusama? 'Kusama': 'Polkadot'}</h4>
+					</div>}
 					<TwitterTimelineEmbed
 						sourceType="profile"
 						screenName={profile2}

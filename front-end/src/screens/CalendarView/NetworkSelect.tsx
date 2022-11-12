@@ -7,7 +7,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { DownOutlined } from '@ant-design/icons';
 import { MenuProps, Space } from 'antd';
 import { Dropdown } from 'antd';
-import React, { useState } from 'react';
+import React from 'react';
 import chainLogo from 'src/assets/parachain-logos/chain-logo.jpg';
 import { chainProperties, network } from 'src/global/networkConstants';
 import styled from 'styled-components';
@@ -45,11 +45,7 @@ function NetworkSelect({ selectedNetwork, setSelectedNetwork }: {selectedNetwork
 		networkOptions.push(optionObj);
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [selectedNetworkToolbar, setSelectedNetworkToolbar] = useState<any>(selectedNetwork);
-
 	const handleSetSelectedNetwork : MenuProps['onClick'] = ({ key }) => {
-		setSelectedNetworkToolbar(key);
 		setSelectedNetwork(`${key}`);
 	};
 

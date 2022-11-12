@@ -123,7 +123,7 @@ const Web2Signup: FC<Props> = ({ walletError, onWalletSelect }) => {
 									/>
 								</Form.Item>
 							</div>
-							<div className="flex flex-col gap-y-1">
+							<div className="flex flex-col gap-y-1 -mt-6">
 								<label
 									className="text-base text-sidebarBlue font-medium"
 									htmlFor="second_password"
@@ -189,7 +189,7 @@ const Web2Signup: FC<Props> = ({ walletError, onWalletSelect }) => {
 									/>
 								</Form.Item>
 							</div>
-							<div className="flex flex-col gap-y-1">
+							<div className="flex flex-col gap-y-1 -mt-6">
 								<label
 									htmlFor="email"
 									className="text-base text-sidebarBlue font-medium tracking-wide"

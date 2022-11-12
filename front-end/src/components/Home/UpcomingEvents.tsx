@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { CalendarFilled } from '@ant-design/icons';
+import styled from '@xstyled/styled-components';
 import { Badge, Calendar, List, Tooltip } from 'antd';
 import moment, { Moment } from 'moment';
 import React, { useEffect, useState } from 'react';
@@ -12,7 +13,11 @@ import getNetwork from 'src/util/getNetwork';
 
 const currentNetwork = getNetwork();
 
-const UpcomingEvents = () => {
+interface Props{
+	className?: string
+}
+
+const UpcomingEvents = ({ className }:Props) => {
 	const [showCalendar, setShowCalendar] = useState<boolean>(false);
 	const [calendarEvents, setCalendarEvents] = useState<any[]>([]);
 	const [eventDates, setEventDates] = useState<string[]>([]);
@@ -85,7 +90,7 @@ const UpcomingEvents = () => {
 
 			return (
 				<Tooltip color='#E5007A' title={eventList}>
-					<Badge color='#E5007A' className='absolute ml-[-2px] mt-[-6px]' />
+					<Badge count={value.format('D')} color='transparent' className='bg-pink-400 rounded-full absolute -ml-3 mt-[-22px] w-full' />
 				</Tooltip>
 			);
 		}
@@ -110,9 +115,9 @@ const UpcomingEvents = () => {
 				renderItem={item => {
 					return (<List.Item className='cursor-pointer text-sidebarBlue'>
 						<a href={item.url} target='_blank' rel='noreferrer'>
-							<div className='text-xs mb-1 flex items-center'>
+							<div className='text-xs mb-1 flex items-center text-navBlue'>
 								{moment(item.end_time).format('MMM D, YYYY')}
-								<span className="h-[4px] w-[4px] bg-sidebarBlue mx-2 rounded-full inline-block"></span>
+								<span className="h-[4px] w-[4px] bg-navBlue mx-2 rounded-full inline-block"></span>
 								{moment(item.end_time).format('h:mm a')}
 							</div>
 
@@ -128,7 +133,7 @@ const UpcomingEvents = () => {
 	);
 
 	return (
-		<div className='bg-white drop-shadow-md p-2 md:p-6 rounded-md h-[520px] lg:h-[550px]'>
+		<div className={`${className} bg-white drop-shadow-md p-2 md:p-6 rounded-md h-[520px] lg:h-[550px]`}>
 			<div className="flex items-center justify-between mb-5">
 				<h2 className='dashboard-heading'>Upcoming Events</h2>
 				<CalendarFilled className='cursor-pointer inline-block lg:hidden' onClick={() => setShowCalendar(!showCalendar)} />
@@ -138,7 +143,7 @@ const UpcomingEvents = () => {
 			<div className="hidden lg:flex lg:flex-row h-[520px] lg:h-[450px]">
 				<div className="w-full lg:w-[55%] p-3">
 					<CalendarElement />
-					<span>*DateTime in UTC</span>
+					<span className='text-xs text-navBlue'>*DateTime in UTC</span>
 				</div>
 
 				<div className="w-[45%] ml-4 p-2">
@@ -152,7 +157,7 @@ const UpcomingEvents = () => {
 					showCalendar ?
 						<div className="w-full lg:w-[55%] p-3">
 							<CalendarElement />
-							<span>*DateTime in UTC</span>
+							<span className='text-xs text-navBlue'>*DateTime in UTC</span>
 						</div>
 						:
 						<div className="w-full h-[430px] ml-4 p-2">
@@ -164,4 +169,12 @@ const UpcomingEvents = () => {
 	);
 };
 
-export default UpcomingEvents;
+export default styled(UpcomingEvents)`
+	.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner {
+		border-radius: 50%;
+	}
+	
+	.ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+		border-radius: 50%;
+	}
+`;

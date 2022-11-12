@@ -112,4 +112,13 @@ export const GlobalStyle = createGlobalStyle`
 	.ant-segmented-item-selected .ant-segmented-item-label {
 		color: pink_primary !important;
 	}
+
+
+	.ant-modal-header {
+		border-radius: 10px 10px 0 0;
+	}
+
+	.ant-modal-content {
+		border-radius: 10px;
+	}
 `;

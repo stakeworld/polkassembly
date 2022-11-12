@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 /* eslint-disable sort-keys */
+import styled from '@xstyled/styled-components';
 import { Tabs } from 'antd';
 import * as React from 'react';
 import ReactJson from 'react-json-view';
@@ -49,6 +50,7 @@ const ArgumentsTableJSONView = ({ className, postArguments, showAccountArguments
 		return (
 			<div className={className}>
 				<Tabs
+					className='onchain-tabs'
 					defaultActiveKey="table"
 					items={tabItems}
 				/>
@@ -68,4 +70,8 @@ const ArgumentsTableJSONView = ({ className, postArguments, showAccountArguments
 
 };
 
-export default ArgumentsTableJSONView;
+export default styled(ArgumentsTableJSONView)`
+	.onchain-tabs .ant-tabs-tab{
+		background: transparent !important;
+	}
+`;
