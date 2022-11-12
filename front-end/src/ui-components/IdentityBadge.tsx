@@ -38,7 +38,7 @@ const IdentityBadge = ({ className, identity, flags }: {className?: string, iden
 	const infoElem = <span className='flex items-center'>
 		{isGood ? <CheckCircleFilled style={ { color } } /> : <MinusCircleFilled style={ { color } } />}
 		<span className='w-1'></span>
-		{!flags?.isCouncil && <CouncilEmoji/>}
+		{flags?.isCouncil && <CouncilEmoji/>}
 	</span>;
 
 	const displayJudgements = JSON.stringify(judgements.map(([,jud]) => jud.toString()));
