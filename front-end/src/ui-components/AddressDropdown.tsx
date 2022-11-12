@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 import { DownOutlined } from '@ant-design/icons';
 import { InjectedAccount } from '@polkadot/extension-inject/types';
-import { Dropdown, Menu } from 'antd';
+import { Dropdown } from 'antd';
 import { ItemType } from 'antd/lib/menu/hooks/useItems';
 import React, { useState } from 'react';
 import Address from 'src/ui-components/Address';
@@ -50,15 +50,13 @@ const AddressDropdown = ({
 		<Dropdown
 			trigger={['click']}
 			className={className}
-			overlay={
-				<Menu
-					onClick={(e) => {
-						setSelectedAddress(e.key);
-						onAccountChange(e.domEvent, e.key);
-					}}
-					items={addressItems}
-				/>
-			}
+			menu={{
+				items: addressItems,
+				onClick: (e) => {
+					setSelectedAddress(e.key);
+					onAccountChange(e.domEvent, e.key);
+				}
+			}}
 		>
 			<div className="flex justify-between items-center">
 				<Address
