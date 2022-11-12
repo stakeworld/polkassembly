@@ -25,7 +25,7 @@ interface Props {
 	className?: string
 	getAccounts: () => Promise<undefined>
 	tipHash?: string
-	onAccountChange: (event: React.SyntheticEvent<HTMLElement, Event>, data: any) => void
+	onAccountChange: (address: string) => void
 }
 
 const EndorseTip = ({

@@ -45,7 +45,7 @@ const MultiSignatureAddress: FC<Props> = ({ open, dismissModal }) => {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [multisigLinkConfirmMutation, { loading, error }] = useMultisigLinkConfirmMutation();
 
-	const onAccountChange = (event: React.SyntheticEvent<HTMLElement, Event>, address: string) => {
+	const onAccountChange = (address: string) => {
 		setSignatory(address);
 	};
 

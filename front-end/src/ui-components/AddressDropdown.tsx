@@ -11,19 +11,17 @@ import Address from 'src/ui-components/Address';
 interface Props {
   accounts: InjectedAccount[];
   className?: string;
-  defaultAddress: string
   filterAccounts?: string[]
-  onAccountChange: (
-    event: React.SyntheticEvent<HTMLElement, Event>,
-    address: string
-  ) => void;
+  onAccountChange: (address: string) => void;
 }
 
 const AddressDropdown = ({
 	className = 'px-4 py-2 border-2 rounded-md',
-	accounts, defaultAddress, filterAccounts, onAccountChange
+	accounts,
+	filterAccounts,
+	onAccountChange
 }: Props) => {
-	const [selectedAddress, setSelectedAddress] = useState(() => defaultAddress);
+	const [selectedAddress, setSelectedAddress] = useState('');
 	const filteredAccounts = !filterAccounts
 		? accounts
 		: accounts.filter( elem =>
@@ -50,11 +48,12 @@ const AddressDropdown = ({
 		<Dropdown
 			trigger={['click']}
 			className={className}
+
 			menu={{
 				items: addressItems,
 				onClick: (e) => {
 					setSelectedAddress(e.key);
-					onAccountChange(e.domEvent, e.key);
+					onAccountChange(e.key);
 				}
 			}}
 		>
