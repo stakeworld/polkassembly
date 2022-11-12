@@ -18,6 +18,7 @@ import getEncodedAddress from 'src/util/getEncodedAddress';
 import styled from 'styled-components';
 
 import ExtensionNotDetected from '../../ExtensionNotDetected';
+import BountyChildBounties from './Bounty/BountyChildBounties';
 import MotionVoteInfo from './Motions/MotionVoteInfo';
 import VoteMotion from './Motions/VoteMotion';
 import ProposalDisplay from './Proposals';
@@ -44,7 +45,7 @@ interface Props {
 	startTime: string
 }
 
-const GovernanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferendum, isTipProposal, isTreasuryProposal, onchainId, onchainLink, startTime, status }: Props) => {
+const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal, isReferendum, isTipProposal, isTreasuryProposal, onchainId, onchainLink, startTime, status }: Props) => {
 	const [address, setAddress] = useState<string>('');
 	const [accounts, setAccounts] = useState<InjectedAccount[]>([]);
 	const [extensionNotFound, setExtensionNotFound] = useState(false);
@@ -320,6 +321,11 @@ const GovernanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferen
 						/>
 						<TipInfo who={onchainTipProposal?onchainTipProposal?.[0]?.who: ''} onChainId={onchainId as string}/>
 					</div>
+					}
+
+					{isBounty && <>
+						<BountyChildBounties onchainId={Number(onchainId)} />
+					</>
 					}
 				</Form>
 			</div>
