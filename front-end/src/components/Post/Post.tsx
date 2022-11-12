@@ -365,6 +365,8 @@ const Post = ({
 		return latestState;
 	};
 
+	const isSidebarAvailable = isMotion || isProposal || isTreasuryProposal || isReferendum || isTipProposal;
+
 	return (
 		<>
 			<div className={`${className} flex flex-col lg:flex-row`}>
@@ -426,7 +428,7 @@ const Post = ({
 					</div>
 				</div>
 
-				{!isEditing && <Sidebar className='hidden lg:block' />}
+				{!isEditing && isSidebarAvailable? <Sidebar className='hidden lg:block' />: null}
 			</div>
 
 			<SidebarRight
