@@ -310,7 +310,6 @@ const GovernanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferen
 
 					{isTipProposal && canVote &&
 					<div>
-						<TipInfo who={onchainTipProposal?onchainTipProposal?.[0]?.who: ''} onChainId={onchainId as string}/>
 						<EndorseTip
 							accounts={accounts}
 							address={address}
@@ -318,6 +317,7 @@ const GovernanceSideBar = ({ canEdit, className, isMotion, isProposal, isReferen
 							tipHash={onchainId as string}
 							onAccountChange={onAccountChange}
 						/>
+						<TipInfo who={onchainTipProposal?onchainTipProposal?.[0]?.who: ''} onChainId={onchainId as string}/>
 					</div>
 					}
 				</Form>
