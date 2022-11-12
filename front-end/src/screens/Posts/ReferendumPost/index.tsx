@@ -10,9 +10,9 @@ import { PostCategory } from 'src/global/post_categories';
 import BackToListingView from 'src/ui-components/BackToListingView';
 import { ErrorState, LoadingState } from 'src/ui-components/UIStates';
 
-const ReferendumPost = () => {
+const ReferendumPost = ({ councilBoardSidebar=false, postID }:{ councilBoardSidebar?: boolean, postID?: number }) => {
 	const { id } = useParams();
-	const idNumber = Number(id) || 0;
+	const idNumber = Number(id) || Number(postID) || 0;
 
 	const [refetch, { data, error }] = useReferendumPostAndCommentsLazyQuery({ variables: { 'id': idNumber } });
 	useEffect(() => {
@@ -21,7 +21,7 @@ const ReferendumPost = () => {
 	if (error?.message) return <ErrorState errorMessage={error.message} />;
 
 	if (data) return (<div>
-		<BackToListingView postCategory={PostCategory.REFERENDA} />
+		{!councilBoardSidebar && <BackToListingView postCategory={PostCategory.REFERENDA} />}
 
 		<div className='mt-6'>
 			<Post data={data} isReferendum refetch={refetch} />

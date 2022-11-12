@@ -4,8 +4,8 @@
 
 import React from 'react';
 import SidebarRight from 'src/components/SidebarRight';
-import PostDiscussion from 'src/screens/DiscussionPost';
-import PostReferendum from 'src/screens/ReferendumPost';
+import PostDiscussion from 'src/screens/Posts/DiscussionPost';
+import PostReferendum from 'src/screens/Posts/ReferendumPost';
 
 interface Props {
   className?: string
@@ -20,10 +20,10 @@ const PostSidebar = ({ className, closeSidebar, open, sidebarState }: Props) => 
 		<SidebarRight closeSidebar={closeSidebar} open={open} className={className}>
 			<div className="sidebar-content">
 				{sidebarState.postType === 'discussion' &&
-						<PostDiscussion postID={sidebarState.postID} />
+						<PostDiscussion councilBoardSidebar={true} postID={sidebarState.postID} />
 				}
 				{sidebarState.postType === 'referenda' &&
-						<PostReferendum postID={sidebarState.postID} />
+						<PostReferendum councilBoardSidebar={true} postID={sidebarState.postID} />
 				}
 			</div>
 		</SidebarRight>

@@ -10,7 +10,7 @@ import { PostCategory } from 'src/global/post_categories';
 import BackToListingView from 'src/ui-components/BackToListingView';
 import { ErrorState, LoadingState } from 'src/ui-components/UIStates';
 
-const DiscussionPost = ({ postID }: {postID?: number}) => {
+const DiscussionPost = ({ councilBoardSidebar=false, postID }: {postID?: number, councilBoardSidebar?: boolean}) => {
 	const { id } = useParams();
 	const idNumber = Number(id) || Number(postID) || 0;
 
@@ -23,7 +23,7 @@ const DiscussionPost = ({ postID }: {postID?: number}) => {
 	if (error?.message) return <ErrorState errorMessage={error.message} />;
 
 	if (data) return (<div>
-		<BackToListingView postCategory={PostCategory.DISCUSSION} />
+		{!councilBoardSidebar &&  <BackToListingView postCategory={PostCategory.DISCUSSION} />}
 
 		<div className='mt-6'>
 			<Post data={data} refetch={refetch} />
