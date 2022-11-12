@@ -5,6 +5,7 @@
 import { formatBalance } from '@polkadot/util';
 import React, { useCallback, useEffect, useState } from 'react';
 import { chainProperties } from 'src/global/networkConstants';
+import subscanApiHeaders from 'src/global/subscanApiHeaders';
 import { LoadingStatusType } from 'src/types';
 import GovSidebarCard from 'src/ui-components/GovSidebarCard';
 import getNetwork from 'src/util/getNetwork';
@@ -29,7 +30,7 @@ const ProposalDisplay = ({ proposalId, accounts, address, canVote, getAccounts, 
 	const fetchProposal = useCallback(() => {
 		fetch(`https://${getNetwork()}.api.subscan.io/api/scan/democracy/proposal`, { body: JSON.stringify({
 			democracy_id: proposalId
-		}), method: 'POST' }).then(async (res) => {
+		}), headers: subscanApiHeaders, method: 'POST' }).then(async (res) => {
 			const response = await res.json();
 			const info = response?.data?.info;
 			setLoadingStatus({ isLoading: false, message: '' });

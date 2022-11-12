@@ -5,6 +5,7 @@ import { Col, Empty, Row } from 'antd';
 import BN from 'bn.js';
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { ApiContext } from 'src/context/ApiContext';
+import subscanApiHeaders from 'src/global/subscanApiHeaders';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
 import formatBnBalance from 'src/util/formatBnBalance';
 import getNetwork from 'src/util/getNetwork';
@@ -84,7 +85,7 @@ const TipInfo = ({ onChainId, who }: Props) => {
 	const fetchTippers = useCallback(() => {
 		if (canFetch.current){
 			// eslint-disable-next-line quotes
-			fetch(`https://${getNetwork()}.api.subscan.io/api/scan/treasury/tippers`, { body: JSON.stringify({ hash: onChainId }) as unknown as BodyInit, method: 'POST' }).then(async (res) => {
+			fetch(`https://${getNetwork()}.api.subscan.io/api/scan/treasury/tippers`, { body: JSON.stringify({ hash: onChainId }) as unknown as BodyInit, headers: subscanApiHeaders, method: 'POST' }).then(async (res) => {
 				try {
 					const response = await res.json();
 					setTippers(response?.data?.list);
