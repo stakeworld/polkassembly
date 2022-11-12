@@ -21,8 +21,6 @@ interface Props {
 const PostHeading = ({ className, isTipProposal, onchainId, post, postStatus }:Props) => {
 	const { author, created_at, content, title, updated_at } = post;
 
-	console.log('post : ', post);
-
 	if (!author || !author.username || !content) return <div>Post not available</div>;
 
 	const defaultAddressField = getDefaultAddressField();
