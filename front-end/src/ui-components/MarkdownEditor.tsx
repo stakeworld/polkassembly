@@ -8,6 +8,8 @@ import showdown from 'showdown';
 
 const converter = new showdown.Converter();
 
+const EDITOR_API_KEY = 'l4043d54tod5uljzlcrj7kuaj1re9ok3f8piefs7oz49hkia';
+
 export interface Props {
 	className?: string
 	height?: number
@@ -21,7 +23,7 @@ function MarkdownEditor({ className, value, onChange, height }: Props): React.Re
 	return (
 		<div className={className}>
 			<Editor
-				apiKey={process.env.REACT_APP_EDITOR_API_KEY}
+				apiKey={EDITOR_API_KEY}
 				value={converter.makeHtml(value)}
 				onEditorChange={onChange}
 				onBlur={() => {
