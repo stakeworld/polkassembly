@@ -24,7 +24,7 @@ interface Props {
 	getAccounts: () => Promise<undefined>
 	motionId?: number | null
 	motionProposalHash?: string
-	onAccountChange: (event: React.SyntheticEvent<HTMLElement, Event>, data: any) => void
+	onAccountChange: (address: string) => void
 }
 
 const VoteMotion = ({

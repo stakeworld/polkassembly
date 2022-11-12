@@ -12,7 +12,7 @@ import HelperTooltip from './HelperTooltip';
 interface Props{
 	accounts: InjectedAccount[]
 	address: string
-	onAccountChange: (event: React.SyntheticEvent<HTMLElement, Event>, address: string) => void
+	onAccountChange: (address: string) => void
 	title: string
 	withBalance?: boolean
 }
@@ -25,10 +25,9 @@ const AccountSelectionForm = ({ accounts, address, onAccountChange, title, withB
 		</div>
 		<AddressDropdown
 			accounts={accounts}
-			defaultAddress={address || accounts[0]?.address}
 			onAccountChange={onAccountChange}
 		/>
-		{withBalance &&
+		{address && withBalance &&
 			<Balance address={address} />
 		}
 	</article>;

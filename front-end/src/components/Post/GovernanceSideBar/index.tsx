@@ -59,9 +59,8 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 	const canVote = !!status && !![proposalStatus.PROPOSED, referendumStatus.STARTED, motionStatus.PROPOSED, tipStatus.OPENED].includes(status);
 	const onchainTipProposal = (onchainLink as OnchainLinkTipFragment)?.onchain_tip;
 
-	const onAccountChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: any) => {
-		const addressValue = data.value as string;
-		setAddress(addressValue);
+	const onAccountChange = (address: string) => {
+		setAddress(address);
 	};
 
 	useEffect(() => {
@@ -198,7 +197,6 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 
 		setAccounts(accounts);
 		if (accounts.length > 0) {
-			setAddress(accounts[0].address);
 			const signer: Signer = signersMapLocal[accountsMapLocal[accounts[0].address]];
 			api.setSigner(signer);
 		}

@@ -19,7 +19,7 @@ export interface SecondProposalProps {
 	className?: string
 	proposalId?: number | null | undefined
 	getAccounts: () => Promise<undefined>
-	onAccountChange: (event: React.SyntheticEvent<HTMLElement, Event>, data: any) => void
+	onAccountChange: (address: string) => void
 }
 
 const SecondProposal = ({ className, proposalId, address, accounts, onAccountChange, getAccounts }: SecondProposalProps) => {

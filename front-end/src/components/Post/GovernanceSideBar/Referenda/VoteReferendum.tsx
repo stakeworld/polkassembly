@@ -22,13 +22,13 @@ interface Props {
 	referendumId?: number | null | undefined
 	address: string
 	accounts: InjectedAccount[]
-	onAccountChange: (event: React.SyntheticEvent<HTMLElement, Event>, data: any) => void
+	onAccountChange: (address: string) => void
 	getAccounts: () => Promise<undefined>
 	lastVote: string | null | undefined
 	setLastVote: React.Dispatch<React.SetStateAction<string | null | undefined>>
 }
 
-const VoteRefrendum = ({ className, referendumId, address, accounts, onAccountChange, getAccounts, lastVote, setLastVote }: Props) => {
+const VoteReferendum = ({ className, referendumId, address, accounts, onAccountChange, getAccounts, lastVote, setLastVote }: Props) => {
 	const [showModal, setShowModal] = useState<boolean>(false);
 	const [lockedBalance, setLockedBalance] = useState<BN | undefined>(undefined);
 	const { api, apiReady } = useContext(ApiContext);
@@ -49,7 +49,7 @@ const VoteRefrendum = ({ className, referendumId, address, accounts, onAccountCh
 	};
 
 	const onBalanceChange = (balance: BN) => setLockedBalance(balance);
-	const voteRefrendum = async (aye: boolean) => {
+	const voteReferendum = async (aye: boolean) => {
 		if (!referendumId && referendumId !== 0) {
 			console.error('referendumId not set');
 			return;
@@ -150,8 +150,8 @@ const VoteRefrendum = ({ className, referendumId, address, accounts, onAccountCh
 						className='mt-6 max-w-[156px]'
 						size='large'
 						disabled={!apiReady}
-						onClickAye={() => voteRefrendum(true)}
-						onClickNay={() => voteRefrendum(false)}
+						onClickAye={() => voteReferendum(true)}
+						onClickNay={() => voteReferendum(false)}
 					/>
 
 				</Spin>
@@ -160,7 +160,7 @@ const VoteRefrendum = ({ className, referendumId, address, accounts, onAccountCh
 	);
 };
 
-export default styled(VoteRefrendum)`
+export default styled(VoteReferendum)`
 	.LoaderWrapper {
 		height: 40rem;
 		position: absolute;

@@ -149,7 +149,7 @@ const Web3Signup: FC<Props> = ({
 		setIsAccountLoading(false);
 		return;
 	};
-	const onAccountChange = (event: React.SyntheticEvent<HTMLElement, Event>, address: string) => {
+	const onAccountChange = (address: string) => {
 		setAddress(address);
 	};
 
