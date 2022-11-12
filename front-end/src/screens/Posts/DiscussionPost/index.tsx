@@ -14,11 +14,16 @@ const DiscussionPost = ({ councilBoardSidebar=false, postID }: {postID?: number,
 	const { id } = useParams();
 	const idNumber = Number(id) || Number(postID) || 0;
 
-	const [refetch, { data, error }] = useDiscussionPostAndCommentsLazyQuery({ variables: { 'id': idNumber } });
+	const [getData, { called, data, error, refetch }] = useDiscussionPostAndCommentsLazyQuery({ variables: { 'id': idNumber } });
 
 	useEffect(() => {
-		refetch();
-	}, [refetch]);
+		if (called) {
+			refetch();
+		} else {
+			getData();
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [called]);
 
 	if (error?.message) return <ErrorState errorMessage={error.message} />;
 
