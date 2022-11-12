@@ -24,7 +24,7 @@ const PostHeading = ({ className, isTipProposal, onchainId, post, postStatus }:P
 	if (!author || !author.username || !content) return <div>Post not available</div>;
 
 	const defaultAddressField = getDefaultAddressField();
-	const defaultAddress = author[defaultAddressField];
+	const defaultAddress = (post as any).onchain_link?.proposer_address || author[defaultAddressField];
 
 	return (
 		<div className={className}>
