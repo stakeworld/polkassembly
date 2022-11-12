@@ -218,12 +218,6 @@ export default styled(AppLayout)`
 .ant-menu-item-selected {
 	background: #fff !important;
 
-	.anticon {
-		path {
-			stroke: pink_primary !important;
-		}
-	}
-
 	.ant-menu-title-content {
 		color: pink_primary !important;
 	}
@@ -252,5 +246,9 @@ export default styled(AppLayout)`
 .ant-empty-image{
 	display: flex;
 	justify-content: center;
+}
+
+.sidebar .ant-menu-item-selected .anticon {
+	filter: brightness(0) saturate(100%) invert(13%) sepia(94%) saturate(7151%) hue-rotate(321deg) brightness(90%) contrast(101%);
 }
 `;
