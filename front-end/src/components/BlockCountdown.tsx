@@ -3,9 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from '@xstyled/styled-components';
+import { Tooltip } from 'antd';
 import BN from 'bn.js';
 import React from 'react';
-import { Popup } from 'semantic-ui-react';
 import { useBlockTime } from 'src/hooks';
 import useCurrentBlock from 'src/hooks/useCurrentBlock';
 import blockToTime from 'src/util/blockToTime';
@@ -28,15 +28,10 @@ const BlockCountdown = ({ className, endBlock }:Props ) => {
 
 	return (
 		blocksRemaining !== endBlock && blocksRemaining > 0
-			?(
-				<Popup
-					className={className}
-					trigger={<span className='blockCountdown'>{ blockToTime(blocksRemaining, blocktime)}</span>}
-					content={<SpanContent>{`#${endBlock}`}</SpanContent>}
-					hoverable={true}
-					position='top left'
-				/>
-			)
+			?
+			<Tooltip title={<SpanContent>{`#${endBlock}`}</SpanContent>}>
+				<span className={`${className} blockCountdown`}>{ blockToTime(blocksRemaining, blocktime)}</span>
+			</Tooltip>
 			: <>#{endBlock}</>
 	);
 };

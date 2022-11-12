@@ -3,12 +3,10 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React, { useEffect } from 'react';
-
-import ProposalsListing from '../../../components/Listings/ProposalsListing';
-import { useTrackerDemocracyProposalPostsQuery } from '../../../generated/graphql';
-import { post_type } from '../../../global/post_types';
-import FilteredError from '../../../ui-components/FilteredError';
-import Loader from '../../../ui-components/Loader';
+import ProposalsListing from 'src/components/Listing/Proposals/ProposalsListing';
+import { useTrackerDemocracyProposalPostsLazyQuery } from 'src/generated/graphql';
+import { post_type } from 'src/global/post_types';
+import { ErrorState } from 'src/ui-components/UIStates';
 
 interface Props {
 	className?: string
@@ -25,7 +23,7 @@ const ProposalsContainer = ({ className }:Props) => {
 
 	const onchainProposalIds = Object.keys(trackMap.proposal || {}).map(key => Number(key));
 
-	const { data, error, refetch } = useTrackerDemocracyProposalPostsQuery({ variables: {
+	const [refetch, { data, error,loading }] = useTrackerDemocracyProposalPostsLazyQuery({ variables: {
 		onchainProposalIds,
 		postType: post_type.ON_CHAIN
 	} });
@@ -34,11 +32,17 @@ const ProposalsContainer = ({ className }:Props) => {
 		refetch();
 	}, [refetch]);
 
-	if (error?.message) return <FilteredError text={error.message}/>;
+	if (error?.message) return <ErrorState errorMessage={error.message}/>;
 
-	if (data) return <ProposalsListing className={className} data={data}/>;
+	return (
+		<div className={`${className} shadow-md bg-white p-3 md:p-8 rounded-md`}>
+			<div className='flex items-center justify-between'>
+				<h1 className='dashboard-heading'>Proposals</h1>
+			</div>
 
-	return <Loader/>;
+			<ProposalsListing loading={loading} data={data} />
+		</div>
+	);
 };
 
 export default ProposalsContainer;

@@ -3,9 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from '@xstyled/styled-components';
+import { Tooltip } from 'antd';
 import BN from 'bn.js';
 import React from 'react';
-import { Popup } from 'semantic-ui-react';
 import { useBlockTime } from 'src/hooks';
 import blockToTime from 'src/util/blockToTime';
 
@@ -23,13 +23,9 @@ const BlocksToTime = ({ blocks, className }:Props ) => {
 	const { blocktime } = useBlockTime();
 
 	return (
-		<Popup
-			className={className}
-			trigger={<div>{blockToTime(blocks, blocktime)}</div>}
-			content={<DivContent>{`${blocks} blocks`}</DivContent>}
-			hoverable={true}
-			position='top left'
-		/>
+		<Tooltip color='#E5007A' className={className} title={<DivContent>{`${blocks} blocks`}</DivContent>}>
+			<div>{blockToTime(blocks, blocktime)}</div>
+		</Tooltip>
 	);
 };
 

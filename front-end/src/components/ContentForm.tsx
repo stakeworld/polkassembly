@@ -2,68 +2,69 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import styled from '@xstyled/styled-components';
-import React from 'react';
-import { FieldError, NestDataObject } from 'react-hook-form/dist/types';
+import { Form } from 'antd';
+import React, { useState } from 'react';
 
-import { Form } from '../ui-components/Form';
-import { MarkdownEditor } from '../ui-components/MarkdownEditor';
-import messages from '../util/messages';
+import MarkdownEditor from '../ui-components/MarkdownEditor';
 
 interface Props {
 	className?: string
-	errorContent?: FieldError | NestDataObject<any, any> | NestDataObject<any, any>[] | FieldError[] | undefined
 	height?: number
-	onChange?: (content: string) => void
+	onChange?: (content: string) => void | string | null
 	value?: string
 }
 
-const ContentForm = ({ className, errorContent, height, onChange, value }: Props): JSX.Element => {
+type ValidationStatus = Parameters<typeof Form.Item>[0]['validateStatus'];
+
+type ValidationResult = {
+	errorMsg: string | null;
+	validateStatus: ValidationStatus;
+}
+
+const validateContent = (
+	content: string
+): ValidationResult => {
+	if(content) {
+		return {
+			errorMsg: null,
+			validateStatus: 'success'
+		};
+	}
+	return {
+		errorMsg: 'Please add the content.',
+		validateStatus: 'error'
+	};
+};
+
+const ContentForm = ({ className, height, onChange, value }: Props): JSX.Element => {
+
+	const [validationStatus, setValidation] = useState<ValidationResult>({
+		errorMsg: null,
+		validateStatus: 'success'
+	});
+
+	const onChangeWrapper = (content:string) => {
+		const validationStatus = validateContent(content);
+		setValidation(validationStatus);
+		if(onchange){
+			onChange!(content);
+		}
+
+		return content;
+	};
 
 	return (
 		<div className={className}>
-			<Form.Group className={errorContent? 'error': ''}>
+			<Form.Item valuePropName='value' getValueFromEvent={onChangeWrapper} name='content' validateStatus={validationStatus.validateStatus} help={validationStatus.errorMsg}>
 				<MarkdownEditor
-					className={ errorContent? 'error': ''}
 					height={height}
-					name={'content'}
-					onChange={onChange}
+					name='content'
+					onChange={onChangeWrapper}
 					value={value || ''}
 				/>
-			</Form.Group>
-			{errorContent && <div className={'errorText'}>{messages.VALIDATION_CONTENT_ERROR}</div>}
+			</Form.Item>
 		</div>
 	);
 };
 
-export default styled(ContentForm)`
-	.fields {
-		padding: 0;
-
-		&.error {
-			margin-bottom: 0 !important;
-		}
-	}
-
-	.errorText {
-		color: red_secondary;
-		margin-bottom: 1rem;
-		padding-left: 0.5rem;
-	}
-
-	textarea {
-		font-size: 1.4rem;
-	}
-
-	.react-mde.error > .mde-textarea-wrapper > textarea {
-		border-style: solid !important;
-		border-width: 1px !important;
-		border-color: red_secondary !important;
-	}
-
-	.container {
-		max-width: 100%;
-		min-width: 100%;
-		padding: 0 0.5rem;
-	}
-`;
+export default ContentForm;

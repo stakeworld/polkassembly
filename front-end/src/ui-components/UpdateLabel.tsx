@@ -3,9 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from '@xstyled/styled-components';
+import { Tooltip } from 'antd';
 import * as moment from 'moment';
 import React from 'react';
-import { Popup } from 'semantic-ui-react';
 
 interface Props{
     className?: string
@@ -18,7 +18,9 @@ const UpdateLabel = ({ className, created_at, updated_at } : Props) => {
 		updated_at === created_at
 			? null :
 			<span className={className}>
-				<Popup content={moment.utc(updated_at, 'YYYY-MM-DDTHH:mm:ss.SSS').fromNow()} trigger={<span>(edited)</span>}/>
+				<Tooltip color='#E5007A' title={moment.utc(updated_at, 'YYYY-MM-DDTHH:mm:ss.SSS').fromNow()}>
+					<span>(edited)</span>
+				</Tooltip>
 			</span>
 	);
 };

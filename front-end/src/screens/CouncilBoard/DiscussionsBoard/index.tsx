@@ -4,7 +4,7 @@
 
 import styled from '@xstyled/styled-components';
 import React, { useEffect } from 'react';
-import { useDiscussionPostsIdDescQuery } from 'src/generated/graphql';
+import { useDiscussionPostsIdDescLazyQuery } from 'src/generated/graphql';
 
 import DiscussionPostCard from './DiscussionPostCard';
 
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const DiscussionsBoard = ({ className, openSidebar } : Props) => {
-	const { data, error, loading, refetch } = useDiscussionPostsIdDescQuery({ variables: { limit: 10 } });
+	const [ refetch, { data, error, loading } ] = useDiscussionPostsIdDescLazyQuery({ variables: { limit: 10 } });
 
 	useEffect(() => {
 		refetch();

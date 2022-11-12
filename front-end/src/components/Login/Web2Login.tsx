@@ -1,164 +1,150 @@
 // Copyright 2019-2020 @Premiurly/polkassembly authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-
-import styled from '@xstyled/styled-components';
-import React, { useContext } from 'react';
-import { FieldError,useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
-import { Divider, Message } from 'semantic-ui-react';
+import { Alert, Button, Form , Input } from 'antd';
+import React, { FC } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useUserDetailsContext } from 'src/context';
+import { useLoginMutation } from 'src/generated/graphql';
+import { handleTokenChange } from 'src/services/auth.service';
 import { Wallet } from 'src/types';
+import AuthForm from 'src/ui-components/AuthForm';
+import FilteredError from 'src/ui-components/FilteredError';
+import messages from 'src/util/messages';
+import * as validation from 'src/util/validation';
 
-import { UserDetailsContext } from '../../context/UserDetailsContext';
-import { useLoginMutation } from '../../generated/graphql';
-import { useRouter } from '../../hooks';
-import { handleTokenChange } from '../../services/auth.service';
-import Button from '../../ui-components/Button';
-import FilteredError from '../../ui-components/FilteredError';
-import { Form } from '../../ui-components/Form';
-import messages from '../../util/messages';
-import * as validation from '../../util/validation';
 import WalletButtons from './WalletButtons';
 
 interface Props {
-	className?: string
-	onWalletSelect: (wallet: Wallet) => void
-	walletError: string | undefined
+  onWalletSelect: (wallet: Wallet) => void;
+  walletError: string | undefined;
 }
+const Web2Login: FC<Props> = ({ walletError, onWalletSelect }) => {
+	const { password, username } = validation;
+	const navigate = useNavigate();
+	const currentUser = useUserDetailsContext();
+	const [loginMutation, { error, loading }] = useLoginMutation();
 
-const LoginForm = ({ className, onWalletSelect, walletError }:Props): JSX.Element => {
-	const currentUser = useContext(UserDetailsContext);
-	const { navigate } = useRouter();
-	const [loginMutation, { loading, error }] = useLoginMutation();
-	const { errors, handleSubmit, register } = useForm();
-
-	const handleSubmitForm = (data:Record<string, any>):void => {
+	const handleSubmitForm = (data: any): void => {
 		const { username, password } = data;
 
-		if (username && password){
+		if (username && password) {
 			loginMutation({
 				variables: {
 					password,
 					username
 				}
-			}).then(({ data }) => {
-				if (data && data.login && data.login.token) {
-					handleTokenChange(data.login.token, currentUser);
-					navigate(-1);
-				}
-			}).catch((e) => {
-				console.error('Login error', e);
-			});
+			})
+				.then(({ data }) => {
+					if (data && data.login && data.login.token) {
+						handleTokenChange(data.login.token, currentUser);
+						navigate(-1);
+					}
+				})
+				.catch((e) => {
+					console.error('Login error', e);
+				});
 		}
 	};
-
 	return (
-		<Form className={className} onSubmit={handleSubmit(handleSubmitForm)}>
-			<h3>
-				Login
-			</h3>
+		<article className="bg-white shadow-md rounded-md p-8 flex flex-col gap-y-6">
+			<h3 className="text-2xl font-semibold text-[#1E232C]">Login</h3>
+			{walletError && <Alert message={walletError} type="error" />}
+			<AuthForm
+				onSubmit={handleSubmitForm}
+				className="flex flex-col gap-y-6"
+			>
+				<div className="flex flex-col gap-y-1">
+					<label
+						className="text-base text-sidebarBlue font-medium"
+						htmlFor="username"
+					>
+                        Username
+					</label>
+					<Form.Item
+						name="username"
+						rules={[
+							{
+								message: messages.VALIDATION_USERNAME_REQUIRED_ERROR,
+								required: username.required
+							},
+							{
+								message: messages.VALIDATION_USERNAME_PATTERN_ERROR,
+								pattern: username.pattern
+							},
+							{
+								max: username.maxLength,
+								message: messages.VALIDATION_USERNAME_MAXLENGTH_ERROR
+							},
+							{
+								message: messages.VALIDATION_USERNAME_MINLENGTH_ERROR,
+								min: username.minLength
+							}
+						]}
+					>
+						<Input
+							placeholder="John"
+							className="rounded-md py-3 px-4"
+							id="username"
+						/>
+					</Form.Item>
+				</div>
 
-			{walletError && <Message negative>
-				<Message.Header>{walletError}</Message.Header>
-			</Message>}
-
-			<Form.Group>
-				<Form.Field width={16}>
-					<label>Username</label>
-					<input
-						className={errors.username ? 'error' : ''}
-						name='username'
-						placeholder='John'
-						ref={register(validation.username)}
-						type='text'
-					/>
-					{(errors.username as FieldError)?.type === 'maxLength' && <span className={'errorText'}>{messages.VALIDATION_USERNAME_MAXLENGTH_ERROR}</span>}
-					{(errors.username as FieldError)?.type === 'minLength' && <span className={'errorText'}>{messages.VALIDATION_USERNAME_MINLENGTH_ERROR}</span>}
-					{(errors.username as FieldError)?.type === 'pattern' && <span className={'errorText'}>{messages.VALIDATION_USERNAME_PATTERN_ERROR}</span>}
-					{(errors.username as FieldError)?.type === 'required' && <span className={'errorText'}>{messages.VALIDATION_USERNAME_REQUIRED_ERROR}</span>}
-				</Form.Field>
-			</Form.Group>
-
-			<Form.Group>
-				<Form.Field width={16}>
-					<label>Password</label>
-					<input
-						className={errors.password ? 'error' : ''}
-						name='password'
-						placeholder='Password'
-						ref={register(validation.password)}
-						type='password'
-					/>
-					{errors.password && <span className={'errorText'}>{messages.VALIDATION_PASSWORD_ERROR}</span>}
-
-					<div className='text-muted'>
-						<Link to='/request-reset-password'>Forgot your password or username?</Link>
+				<div className="flex flex-col gap-y-1 -mt-6">
+					<label
+						className="text-base text-sidebarBlue font-medium"
+						htmlFor="password"
+					>
+						Password
+					</label>
+					<Form.Item
+						name="password"
+						rules={[
+							{
+								message: messages.VALIDATION_PASSWORD_ERROR,
+								required: password.required
+							},
+							{
+								message: messages.VALIDATION_PASSWORD_ERROR,
+								min: password.minLength
+							}
+						]}
+					>
+						<Input.Password
+							placeholder='Password'
+							className="rounded-md py-3 px-4"
+							id="password"
+						/>
+					</Form.Item>
+					<div className="text-right text-pink_primary">
+						<Link to="/request-reset-password">Forgot Password?</Link>
 					</div>
-				</Form.Field>
-			</Form.Group>
+				</div>
+				<div className="flex justify-center items-center">
+					<Button
+						disabled={loading}
+						htmlType="submit"
+						size="large"
+						className="bg-pink_primary w-56 rounded-md outline-none border-none text-white"
+					>
+                        Login
+					</Button>
+				</div>
+				{error?.message && <FilteredError text={error.message} />}
 
-			<div className={'mainButtonContainer'}>
-				<Button
-					primary
-					disabled={loading}
-					type='submit'
-					className='button'
-				>
-					Login
-				</Button>
-			</div>
-			<div>
-				{error?.message && <FilteredError text={error.message}/>}
-			</div>
+				<div>
+					<WalletButtons disabled={loading} onWalletSelect={onWalletSelect} />
+				</div>
 
-			<div>
-				<WalletButtons disabled={loading} onWalletSelect={onWalletSelect} />
-			</div>
-
-			<Divider horizontal>Or</Divider>
-
-			<div className='text-center'> Haven&apos;t used Polkassembly before? Sign up! </div>
-
-			<div className={'mainButtonContainer'}>
-				<Button secondary onClick={() => navigate('/signup')} type='button' className='button pink_primary-text'>
-						Sign-up
-				</Button>
-			</div>
-
-		</Form>
+				<div className='flex justify-center items-center gap-x-2 font-semibold'>
+					<label className='text-md text-grey_primary'>Don&apos;t have an account?</label>
+					<Link to='/signup' className='text-pink_primary text-md'>
+                        Sign Up
+					</Link>
+				</div>
+			</AuthForm>
+		</article>
 	);
 };
 
-export default styled(LoginForm)`
-	.mainButtonContainer {
-		align-items: center;
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-	}
-
-	.text-center{
-		text-align: center;
-		margin-bottom: 0.3em;
-	}
-
-	input.error {
-		border-style: solid;
-		border-width: 1px;
-		border-color: red_secondary;
-	}
-
-	.errorText {
-		color: red_secondary;
-	}
-
-	.button {
-		width: 80%;
-		margin: 4px 0;
-		height: 40px;
-	}
-
-	.pink_primary-text{
-		color: pink_primary !important;
-	}
-`;
+export default Web2Login;

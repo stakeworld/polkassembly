@@ -2,7 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import styled from '@xstyled/styled-components';
 import React from 'react';
 import getNetwork from 'src/util/getNetwork';
 
@@ -63,19 +62,10 @@ const ExternalLinks = ({
 	return (
 		<div className={className}>
 			<div>
-				<a href={getLink(service.SUBSCAN)} rel="noopener noreferrer" target='_blank'>{'-> Show in Subscan'}</a>
+				<a href={getLink(service.SUBSCAN)} rel="noopener noreferrer" target='_blank' className='text-pink_primary'>{'-> Show in Subscan'}</a>
 			</div>
 		</div>
 	);
 };
 
-export default styled(ExternalLinks)`
-	a {
-		color: black_primary;
-		font-weight: bold;
-	}
-
-	a:hover {
-		text-decoration: underline;
-	}
-`;
+export default ExternalLinks;

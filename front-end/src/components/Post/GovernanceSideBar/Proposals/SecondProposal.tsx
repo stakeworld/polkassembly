@@ -2,19 +2,16 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { LoadingOutlined } from '@ant-design/icons';
 import { InjectedAccount } from '@polkadot/extension-inject/types';
 import styled from '@xstyled/styled-components';
+import { Button, Modal, Spin } from 'antd';
 import React, { useContext, useState } from 'react';
-import { DropdownProps } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
-import Loader from 'src/ui-components/Loader';
+import AccountSelectionForm from 'src/ui-components/AccountSelectionForm';
+import queueNotification from 'src/ui-components/QueueNotification';
 
-import { NotificationContext } from '../../../../context/NotificationContext';
 import { LoadingStatusType,NotificationStatus } from '../../../../types';
-import AccountSelectionForm from '../../../../ui-components/AccountSelectionForm';
-import Button from '../../../../ui-components/Button';
-import Card from '../../../../ui-components/Card';
-import { Form } from '../../../../ui-components/Form';
 
 export interface SecondProposalProps {
 	accounts: InjectedAccount[]
@@ -22,14 +19,12 @@ export interface SecondProposalProps {
 	className?: string
 	proposalId?: number | null | undefined
 	getAccounts: () => Promise<undefined>
-	onAccountChange: (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => void
+	onAccountChange: (address: string) => void
 }
 
-type Props = SecondProposalProps
-
-const SecondProposal = ({ className, proposalId, address, accounts, onAccountChange, getAccounts }: Props) => {
+const SecondProposal = ({ className, proposalId, address, accounts, onAccountChange, getAccounts }: SecondProposalProps) => {
+	const [showModal, setShowModal] = useState<boolean>(false);
 	const [loadingStatus, setLoadingStatus] = useState<LoadingStatusType>({ isLoading: false, message:'' });
-	const { queueNotification } = useContext(NotificationContext);
 	const { api, apiReady } = useContext(ApiContext);
 
 	const secondProposal = async () => {
@@ -47,7 +42,6 @@ const SecondProposal = ({ className, proposalId, address, accounts, onAccountCha
 		}
 
 		setLoadingStatus({ isLoading: true, message: 'Waiting for signature' });
-
 		const second = api.tx.democracy.second(proposalId);
 
 		second.signAndSend(address, ({ status }: any) => {
@@ -78,52 +72,46 @@ const SecondProposal = ({ className, proposalId, address, accounts, onAccountCha
 		});
 	};
 
-	const GetAccountsButton = () =>
-		<Form.Group>
-			<Form.Field className='button-container'>
-				<Button
-					primary
-					onClick={getAccounts}
-					size={'large'}
-				>
-					Second
-				</Button>
-			</Form.Field>
-		</Form.Group>;
-
-	const noAccount = accounts.length === 0;
+	const openModal = () => {
+		setShowModal(true);
+		if(accounts.length === 0) {
+			getAccounts();
+		}
+	};
 
 	return (
 		<div className={className}>
-			{ noAccount
-				? <GetAccountsButton />
-				:loadingStatus.isLoading
-					? <Card className={'LoaderWrapper'}>
-						<Loader text={loadingStatus.message}/>
-					</Card>
-					: <Card>
-						<AccountSelectionForm
-							title='Endorse with account'
-							accounts={accounts}
-							address={address}
-							withBalance
-							onAccountChange={onAccountChange}
-						/>
-						<Button
-							primary
-							disabled={!apiReady}
-							onClick={secondProposal}
-						>
-							Second
-						</Button>
-					</Card>
-			}
+			<Button
+				className='bg-pink_primary hover:bg-pink_secondary mb-10 text-lg text-white border-pink_primary hover:border-pink_primary rounded-lg flex items-center justify-center p-7 w-[90%] mx-auto'
+				onClick={openModal}
+			>
+				Second
+			</Button>
+			<Modal
+				title="Second Proposal"
+				open={showModal}
+				onCancel={() => setShowModal(false)}
+				footer={[
+					<Button className='bg-pink_primary text-white border-pink_primary hover:bg-pink_secondary my-1' key="second" loading={loadingStatus.isLoading} disabled={!apiReady} onClick={secondProposal}>
+            Second
+					</Button>
+				]}
+			>
+				<Spin spinning={loadingStatus.isLoading} indicator={<LoadingOutlined />}>
+					<AccountSelectionForm
+						title='Endorse with account'
+						accounts={accounts}
+						address={address}
+						withBalance
+						onAccountChange={onAccountChange}
+					/>
+				</Spin>
+			</Modal>
 		</div>
 	);
 };
 
 export default styled(SecondProposal)`
-
 	.LoaderWrapper {
 		height: 15rem;
 		position: absolute;

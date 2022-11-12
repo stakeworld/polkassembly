@@ -4,9 +4,9 @@
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import React, { useEffect } from 'react';
-import { Button } from 'semantic-ui-react';
 
 function CustomToolbarMini(props: any) {
 	function addMonths(date:any, months: any) {
@@ -38,10 +38,10 @@ function CustomToolbarMini(props: any) {
 	}, []);
 
 	return (
-		props.date && <div className='custom-calendar-toolbar-mini'>
-			<Button onClick={goToBack} icon='chevron left' />
-			<span className='date-text'>{moment(props.date).format('MMMM YYYY')}</span>
-			<Button onClick={goToNext} icon='chevron right' />
+		props.date && <div className='flex justify-center items-center mb-3 '>
+			<LeftOutlined onClick={goToBack} className='text-md cursor-pointer hover:text-sidebarBlue hover:font-semibold' />
+			<span className=' font-medium mx-3 text-sidebarBlue'>{moment(props.date).format('MMMM YYYY')}</span>
+			<RightOutlined onClick={goToNext} className='text-md cursor-pointer hover:text-sidebarBlue hover:font-semibold' />
 		</div>
 	);
 }

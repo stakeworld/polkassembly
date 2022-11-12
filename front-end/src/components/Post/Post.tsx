@@ -2,79 +2,29 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+/* eslint-disable sort-keys */
 import styled from '@xstyled/styled-components';
-import { ApolloQueryResult } from 'apollo-client';
+import { Tabs } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Grid, Icon } from 'semantic-ui-react';
+import { MetaContext } from 'src/context/MetaContext';
+import { UserDetailsContext } from 'src/context/UserDetailsContext';
+import { BountyPostAndCommentsQueryHookResult, BountyPostFragment, ChildBountyPostAndCommentsQueryHookResult, ChildBountyPostFragment, DiscussionPostAndCommentsQueryHookResult, DiscussionPostFragment, MotionPostAndCommentsQueryHookResult, MotionPostFragment, OnchainLinkBountyFragment, OnchainLinkChildBountyFragment, OnchainLinkMotionFragment, OnchainLinkProposalFragment, OnchainLinkReferendumFragment, OnchainLinkTechCommitteeProposalFragment, OnchainLinkTipFragment, OnchainLinkTreasuryProposalFragment, ProposalPostAndCommentsQueryHookResult, ProposalPostFragment, ReferendumPostAndCommentsQueryHookResult, ReferendumPostFragment, TechCommitteeProposalPostAndCommentsQueryHookResult, TechCommitteeProposalPostFragment, TipPostAndCommentsQueryHookResult, TipPostFragment, TreasuryProposalPostAndCommentsQueryHookResult, TreasuryProposalPostFragment } from 'src/generated/graphql';
+import { PostCategory } from 'src/global/post_categories';
+import { PostEmptyState } from 'src/ui-components/UIStates';
 
-import { MetaContext } from '../../context/MetaContext';
-import { UserDetailsContext } from '../../context/UserDetailsContext';
-import {
-	BountyPostAndCommentsQuery,
-	BountyPostAndCommentsQueryHookResult,
-	BountyPostFragment,
-	ChildBountyPostAndCommentsQuery,
-	ChildBountyPostAndCommentsQueryHookResult,
-	ChildBountyPostFragment,
-	DiscussionPostAndCommentsQuery,
-	DiscussionPostAndCommentsQueryHookResult,
-	DiscussionPostFragment,
-	MotionPostAndCommentsQuery,
-	MotionPostAndCommentsQueryHookResult,
-	MotionPostFragment,
-	OnchainLinkBountyFragment,
-	OnchainLinkChildBountyFragment,
-	OnchainLinkMotionFragment,
-	OnchainLinkProposalFragment,
-	OnchainLinkReferendumFragment,
-	OnchainLinkTechCommitteeProposalFragment,
-	OnchainLinkTipFragment,
-	OnchainLinkTreasuryProposalFragment,
-	ProposalPostAndCommentsQuery,
-	ProposalPostAndCommentsQueryHookResult,
-	ProposalPostFragment,
-	ReferendumPostAndCommentsQuery,
-	ReferendumPostAndCommentsQueryHookResult,
-	ReferendumPostFragment,
-	TechCommitteeProposalPostAndCommentsQuery,
-	TechCommitteeProposalPostAndCommentsQueryHookResult,
-	TechCommitteeProposalPostFragment,
-	TipPostAndCommentsQuery,
-	TipPostAndCommentsQueryHookResult,
-	TipPostFragment,
-	TreasuryProposalPostAndCommentsQuery,
-	TreasuryProposalPostAndCommentsQueryHookResult,
-	TreasuryProposalPostFragment } from '../../generated/graphql';
-import { Media } from '../../Media';
-import Button from '../../ui-components/Button';
-import Card from '../../ui-components/Card';
-import ScrollToTop from '../../ui-components/ScrollToTop';
-import Comments from '../Comment/Comments';
-import EditablePostContent from '../EditablePostContent';
-import NoPostFound from '../NoPostFound';
-import OptionPoll from '../OptionPoll';
-import CreateOptionPoll from '../OptionPoll/CreateOptionPoll';
-import PostReactionBar from '../Reactionbar/PostReactionBar';
-import ReportButton from '../ReportButton';
-import ShareButton from '../ShareButton';
-import SubscriptionButton from '../SubscriptionButton/SubscriptionButton';
-import Timeline from '../Timeline';
-import TrackerButton from '../TrackerButton';
+import OtherProposals from '../OtherProposals';
+import SidebarRight from '../SidebarRight';
+import OptionPoll from './ActionsBar/OptionPoll';
+import TrackerButton from './ActionsBar/TrackerButton';
 import ClaimPayoutModal from './ClaimPayoutModal';
+import EditablePostContent from './EditablePostContent';
 import GovernanceSideBar from './GovernanceSideBar';
 import Poll from './Poll';
-import CreatePostComment from './PostCommentForm';
-import OtherProposalsSidebar from './PostGovernanceInfo/OtherProposalsSidebar';
-import PostBountyInfo from './PostGovernanceInfo/PostBountyInfo';
-import PostChildBountiesList from './PostGovernanceInfo/PostChildBountiesList';
-import PostChildBountyInfo from './PostGovernanceInfo/PostChildBountyInfo';
-import PostMotionInfo from './PostGovernanceInfo/PostMotionInfo';
-import PostProposalInfo from './PostGovernanceInfo/PostProposalInfo';
-import PostReferendumInfo from './PostGovernanceInfo/PostReferendumInfo';
-import PostTechCommitteeProposalInfo from './PostGovernanceInfo/PostTechCommitteeProposalInfo';
-import PostTipInfo from './PostGovernanceInfo/PostTipInfo';
-import PostTreasuryInfo from './PostGovernanceInfo/PostTreasuryInfo';
+import PostHeading from './PostHeading';
+import PostDescription from './Tabs/PostDescription';
+import PostOnChainInfo from './Tabs/PostOnChainInfo';
+import PostTimeline from './Tabs/PostTimeline';
 
 interface Props {
 	className?: string
@@ -97,16 +47,7 @@ interface Props {
 	isTechCommitteeProposal?: boolean
 	isTipProposal?: boolean
 	isChildBounty?: boolean
-	refetch: (variables?:any) =>
-		Promise<ApolloQueryResult<ReferendumPostAndCommentsQuery>> |
-		Promise<ApolloQueryResult<ProposalPostAndCommentsQuery>> |
-		Promise<ApolloQueryResult<MotionPostAndCommentsQuery>> |
-		Promise<ApolloQueryResult<TreasuryProposalPostAndCommentsQuery>> |
-		Promise<ApolloQueryResult<TipPostAndCommentsQuery>> |
-		Promise<ApolloQueryResult<BountyPostAndCommentsQuery>> |
-		Promise<ApolloQueryResult<DiscussionPostAndCommentsQuery>> |
-		Promise<ApolloQueryResult<TechCommitteeProposalPostAndCommentsQuery>> |
-		Promise<ApolloQueryResult<ChildBountyPostAndCommentsQuery>>
+	refetch: any
 }
 
 interface Redirection {
@@ -114,22 +55,30 @@ interface Redirection {
 	text?: string;
 }
 
-const Post = ( { className, data, isBounty = false, isChildBounty = false, isMotion = false, isProposal = false, isReferendum = false, isTipProposal = false, isTreasuryProposal = false, isTechCommitteeProposal = false, refetch }: Props ) => {
-
-	const routeWrapperEl = document.getElementById('route-wrapper');
-	let routeWrapperHeight = routeWrapperEl?.offsetHeight;
-	if(routeWrapperEl && routeWrapperHeight) {
-		routeWrapperHeight += parseInt(window.getComputedStyle(routeWrapperEl).getPropertyValue('margin-top'));
-		routeWrapperHeight += parseInt(window.getComputedStyle(routeWrapperEl).getPropertyValue('margin-bottom'));
-	}
-
-	const [otherProposalsSidebarAddr, setOtherProposalsSidebarAddr] = useState<string|null>(null);
+const Post = ({
+	className,
+	data,
+	isBounty = false,
+	isChildBounty = false,
+	isMotion = false,
+	isProposal = false,
+	isReferendum = false,
+	isTipProposal = false,
+	isTreasuryProposal = false,
+	isTechCommitteeProposal = false,
+	refetch }: Props ) => {
 
 	const post = data && data.posts && data.posts[0];
 	const { id, addresses } = useContext(UserDetailsContext);
 	const [isEditing, setIsEditing] = useState(false);
 	const toggleEdit = () => setIsEditing(!isEditing);
 	const { setMetaContextState } = useContext(MetaContext);
+	const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
+	const [proposerAddress, setProposerAddress] = useState<string>('');
+
+	useEffect(() => {
+		refetch();
+	}, [refetch]);
 
 	useEffect(() => {
 		const users: string[] = [];
@@ -253,16 +202,10 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 		return false;
 	};
 
-	if (!post) return <NoPostFound
-		isMotion={isMotion}
-		isProposal={isProposal}
-		isReferendum={isReferendum}
-		isTreasuryProposal={isTreasuryProposal}
-		isTipProposal={isTipProposal}
-		isBounty={isBounty}
-		isTechCommitteeProposal={isTechCommitteeProposal}
-		isChildBounty={isChildBounty}
-	/>;
+	if (!post) {
+		const postCategory: PostCategory = isMotion ? PostCategory.MOTION : isProposal ? PostCategory.PROPOSAL : isReferendum ? PostCategory.REFERENDA : isTreasuryProposal ? PostCategory.TREASURY_PROPOSAL : isTipProposal ? PostCategory.TIP : isBounty ? PostCategory.BOUNTY : isTechCommitteeProposal ? PostCategory.TECH_COMMITTEE_PROPOSAL : isChildBounty ? PostCategory.CHILD_BOUNTY : PostCategory.DISCUSSION;
+		return <div className='mt-16'><PostEmptyState postCategory={postCategory} /></div>;
+	}
 
 	const isBountyProposer = isBounty && bountyPost?.onchain_link?.proposer_address && addresses?.includes(bountyPost.onchain_link.proposer_address);
 	const isChildBountyProposer = isChildBounty && childBountyPost?.onchain_link?.proposer_address && addresses?.includes(childBountyPost.onchain_link.proposer_address);
@@ -284,321 +227,230 @@ const Post = ( { className, data, isBounty = false, isChildBounty = false, isMot
 		isChildBountyProposer
 	);
 
-	const Sidebar = () => <>
-		<GovernanceSideBar
-			isBounty={isBounty}
-			isChildBounty={isChildBounty}
-			isMotion={isMotion}
-			isProposal={isProposal}
-			isReferendum={isReferendum}
-			isTipProposal={isTipProposal}
-			isTreasuryProposal={isTreasuryProposal}
-			isTechCommitteeProposal={isTechCommitteeProposal}
-			onchainId={onchainId}
-			onchainLink={definedOnchainLink}
-			status={postStatus}
-			canEdit={canEdit}
-			startTime={post.created_at}
-		/>
-		{isDiscussion(post) && <Poll postId={post.id} canEdit={post.author?.id === id} />}
-		<OptionPoll postId={post.id} canEdit={post.author?.id === id} />
+	const Sidebar = ({ className } : {className?:string}) => {
+		return (
+			<div className={`${className} flex flex-col w-full lg:w-4/12 mx-auto`}>
+				<GovernanceSideBar
+					isBounty={isBounty}
+					isChildBounty={isChildBounty}
+					isMotion={isMotion}
+					isProposal={isProposal}
+					isReferendum={isReferendum}
+					isTipProposal={isTipProposal}
+					isTreasuryProposal={isTreasuryProposal}
+					isTechCommitteeProposal={isTechCommitteeProposal}
+					onchainId={onchainId}
+					onchainLink={definedOnchainLink}
+					status={postStatus}
+					canEdit={canEdit}
+					startTime={post.created_at}
+				/>
+				{isDiscussion(post) && <Poll postId={post.id} canEdit={post.author?.id === id} />}
+				<OptionPoll postId={post.id} canEdit={post.author?.id === id} />
+			</div>
+		);
+	};
+
+	const TrackerButtonComp = <>
+		{id && onchainId && isOnchainPost && !isEditing && (
+			<TrackerButton
+				onchainId={onchainId}
+				isBounty={isBounty}
+				isMotion={isMotion}
+				isProposal={isProposal}
+				isReferendum={isReferendum}
+				isTipProposal={isTipProposal}
+				isTreasuryProposal={isTreasuryProposal}
+				isTechCommitteeProposal={isTechCommitteeProposal}
+			/>)
+		}
 	</>;
+
+	const handleOpenSidebar = (address:string) => {
+		setSidebarOpen(true);
+		setProposerAddress(address);
+	};
+
+	const getOnChainTabs = () => {
+		if (isDiscussion(post)) return [];
+
+		const onChainTabs = [
+			{ label: 'Timeline',
+				key: 'timeline',
+				children: <PostTimeline
+					isBounty={isBounty}
+					isMotion={isMotion}
+					isProposal={isProposal}
+					isReferendum={isReferendum}
+					isTipProposal={isTipProposal}
+					isTreasuryProposal={isTreasuryProposal}
+					isTechCommitteeProposal={isTechCommitteeProposal}
+					isChildBounty={isChildBounty}
+					referendumPost={referendumPost}
+					proposalPost={proposalPost}
+					motionPost={motionPost}
+					treasuryPost={treasuryPost}
+					tipPost={tipPost}
+					bountyPost={bountyPost}
+					childBountyPost={childBountyPost}
+					techCommitteeProposalPost={techCommitteeProposalPost}
+				/>
+			},
+			{ label: 'On Chain Info',
+				key: 'onChainInfo',
+				children: <PostOnChainInfo
+					isBounty={isBounty}
+					isMotion={isMotion}
+					isProposal={isProposal}
+					isReferendum={isReferendum}
+					isTipProposal={isTipProposal}
+					isTreasuryProposal={isTreasuryProposal}
+					isTechCommitteeProposal={isTechCommitteeProposal}
+					isChildBounty={isChildBounty}
+					definedOnchainLink={definedOnchainLink}
+					handleOpenSidebar={handleOpenSidebar}
+				/>
+			}
+		];
+
+		return onChainTabs;
+	};
+
+	const tabItems: any[] = [
+		{ label: 'Description',
+			key: 'description',
+			children: <PostDescription
+				id={id}
+				post={post as any}
+				isEditing={isEditing}
+				canEdit={canEdit}
+				toggleEdit={toggleEdit}
+				isOnchainPost={isOnchainPost}
+				TrackerButtonComp={TrackerButtonComp}
+				Sidebar={Sidebar}
+				refetch={refetch}
+			/>
+		},
+		...getOnChainTabs()
+	];
+
+	const parentBountyId = isChildBounty && (definedOnchainLink as OnchainLinkChildBountyFragment).onchain_child_bounty?.[0]?.parentBountyId;
+
+	const getLatestDiscussionState = () => {
+		if(!isDiscussion(post)) return;
+
+		const latestState = {
+			link: '',
+			text: ''
+		};
+
+		if(post.onchain_link?.onchain_referendum_id) {
+			latestState.link = `/referendum/${post.onchain_link.onchain_referendum_id}`;
+			latestState.text = `Referendum #${post.onchain_link.onchain_referendum_id}`;
+		} else if (post.onchain_link?.onchain_motion_id) {
+			latestState.link = `/motion/${post.onchain_link.onchain_motion_id}`;
+			latestState.text = `Motion #${post.onchain_link.onchain_motion_id}`;
+		} else if (post.onchain_link?.onchain_treasury_proposal_id) {
+			latestState.link = `/treasury/${post.onchain_link.onchain_treasury_proposal_id}`;
+			latestState.text = `Treasury Proposal #${post.onchain_link.onchain_treasury_proposal_id}`;
+		} else if (post.onchain_link?.onchain_proposal_id) {
+			latestState.link = `/proposal/${post.onchain_link.onchain_proposal_id}`;
+			latestState.text = `Proposal #${post.onchain_link.onchain_proposal_id}`;
+		}
+
+		return latestState;
+	};
 
 	return (
 		<>
-			<Grid className={className}>
-				<Grid.Column mobile={16} tablet={16} computer={10} largeScreen={10}>
+			<div className={`${className} flex flex-col lg:flex-row`}>
+				<div className='flex-1 w-full lg:w-8/12 mx-auto lg:mr-9 mb-6 lg:mb-0'>
+
 					{redirection.link &&
-						<Link className='redirection' to={redirection.link}>
-							<Card className='redirectionCard'>
-								<Icon name='forward'/> This proposal has become <span className='redirectionText'>{redirection.text}</span>
-							</Card>
+						<Link to={redirection.link}>
+							<div className='bg-white drop-shadow-md p-3 md:p-6 rounded-md w-full mb-6 dashboard-heading'>
+								This proposal is now <span className='text-pink_primary'>{redirection.text}</span>
+							</div>
 						</Link>
 					}
+
 					{ post && isChildBounty && postStatus === 'PendingPayout' && (
-						// TODO: Add condition to check for benificiary
-						<Card className='claimPayoutCard'>
-							<span>The child bounty payout is ready to be claimed&nbsp;&nbsp;</span>
+						<div className='bg-white drop-shadow-md p-3 md:p-6 rounded-md w-full mb-6 dashboard-heading flex items-center gap-x-2'>
+							<span>The child bounty payout is ready to be claimed</span>
 							<ClaimPayoutModal
 								parentBountyId={(definedOnchainLink as OnchainLinkChildBountyFragment).onchain_child_bounty[0]?.parentBountyId}
 								childBountyId={(definedOnchainLink as OnchainLinkChildBountyFragment).onchain_child_bounty[0]?.childBountyId}
 							/>
-						</Card>
-					)}
-					<div className='post_content'>
-						<EditablePostContent
-							isEditing={isEditing}
-							isTipProposal={isTipProposal}
-							onchainId={onchainId}
-							post={post as any}
-							postStatus={postStatus}
-							refetch={refetch as any}
-							toggleEdit={toggleEdit}
-						/>
-						<div className='actions-bar'>
-							<PostReactionBar className='reactions' postId={post.id} />
-							{id && <div className='vl'/>}
-							{id && !isEditing && <SubscriptionButton postId={post.id}/>}
-							{canEdit && <Button className={'social'} onClick={toggleEdit}><Icon name='edit' className='icon'/>Edit</Button>}
-							{id && !isEditing && !isOnchainPost && <ReportButton type='post' contentId={`${post.id}`} />}
-							{canEdit && !isEditing && <CreateOptionPoll postId={post.id} />}
-							{id && onchainId && isOnchainPost && !isEditing && (
-								<TrackerButton
-									onchainId={onchainId}
-									isBounty={isBounty}
-									isMotion={isMotion}
-									isProposal={isProposal}
-									isReferendum={isReferendum}
-									isTipProposal={isTipProposal}
-									isTreasuryProposal={isTreasuryProposal}
-									isTechCommitteeProposal={isTechCommitteeProposal}
-								/>)
-							}
-							<ShareButton title={post.title} />
 						</div>
-					</div>
-					{ isTechCommitteeProposal && (
-						<>
-							<PostTechCommitteeProposalInfo
-								onchainLink={definedOnchainLink as OnchainLinkTechCommitteeProposalFragment}
-								setOtherProposalsSidebarAddr={setOtherProposalsSidebarAddr}
-							/>
-							<Timeline
-								statuses={techCommitteeProposalPost?.onchain_link?.onchain_tech_committee_proposal?.[0]?.status?.map(s => ({
-									blockNumber: s.blockNumber?.number || 0,
-									status: s.status || ''
-								})) || []}
-							/>
-						</>)
-					}
-					{ isBounty && (
-						<>
-							<PostBountyInfo
-								onchainLink={definedOnchainLink as OnchainLinkBountyFragment}
-								setOtherProposalsSidebarAddr={setOtherProposalsSidebarAddr}
-							/>
-							<PostChildBountiesList
-								onchainId={Number(onchainId)}
-							/>
-							<Timeline
-								statuses={bountyPost?.onchain_link?.onchain_bounty?.[0]?.bountyStatus?.map(s => ({
-									blockNumber: s.blockNumber?.number || 0,
-									status: s.status || ''
-								})) || []}
-							/>
-						</>)
-					}
-					{ isChildBounty && (
-						<>
-							<PostChildBountyInfo
-								onchainLink={definedOnchainLink as OnchainLinkChildBountyFragment}
-								setOtherProposalsSidebarAddr={setOtherProposalsSidebarAddr}
-							/>
-							<Timeline
-								statuses={childBountyPost?.onchain_link?.onchain_child_bounty?.[0]?.childBountyStatus?.map(s => ({
-									blockNumber: s.blockNumber?.number || 0,
-									status: s.status || ''
-								})) || []}
-							/>
-						</>)
-					}
-					{ isMotion && (
-						<>
-							<PostMotionInfo
-								onchainLink={definedOnchainLink as OnchainLinkMotionFragment}
-								setOtherProposalsSidebarAddr={setOtherProposalsSidebarAddr}
-							/>
-							<Timeline
-								statuses={motionPost?.onchain_link?.onchain_motion?.[0]?.motionStatus?.map(s => ({
-									blockNumber: s.blockNumber?.number || 0,
-									status: s.status || ''
-								})) || []}
-							/>
-						</>)
-					}
-					{ isProposal && (
-						<>
-							<PostProposalInfo
-								onchainLink={definedOnchainLink as OnchainLinkProposalFragment}
-								setOtherProposalsSidebarAddr={setOtherProposalsSidebarAddr}
-							/>
-							<Timeline
-								statuses={proposalPost?.onchain_link?.onchain_proposal?.[0]?.proposalStatus?.map(s => ({
-									blockNumber: s.blockNumber?.number || 0,
-									status: s.status || ''
-								})) || []}
-							/>
-						</>)
-					}
-					{ isReferendum && (
-						<>
-							<PostReferendumInfo
-								onchainLink={definedOnchainLink as OnchainLinkReferendumFragment}
-								setOtherProposalsSidebarAddr={setOtherProposalsSidebarAddr}
-							/>
-							<Timeline
-								statuses={referendumPost?.onchain_link?.onchain_referendum?.[0]?.referendumStatus?.map(s => ({
-									blockNumber: s.blockNumber?.number || 0,
-									status: s.status || ''
-								})) || []}
-							/>
-						</>)
-					}
-					{ isTreasuryProposal && (
-						<>
-							<PostTreasuryInfo
-								onchainLink={definedOnchainLink as OnchainLinkTreasuryProposalFragment}
-								setOtherProposalsSidebarAddr={setOtherProposalsSidebarAddr}
-							/>
-							<Timeline
-								statuses={treasuryPost?.onchain_link?.onchain_treasury_spend_proposal?.[0]?.treasuryStatus?.map(s => ({
-									blockNumber: s.blockNumber?.number || 0,
-									status: s.status || ''
-								})) || []}
-							/>
-						</>)
-					}
-					{ isTipProposal && (
-						<>
-							<PostTipInfo
-								onchainLink={definedOnchainLink as OnchainLinkTipFragment}
-								setOtherProposalsSidebarAddr={setOtherProposalsSidebarAddr}
-							/>
-							<Timeline
-								statuses={tipPost?.onchain_link?.onchain_tip?.[0]?.tipStatus?.map(s => ({
-									blockNumber: s.blockNumber?.number || 0,
-									status: s.status || ''
-								})) || []}
-							/>
-						</>)
-					}
-					{redirection.link &&
-						<Card className='timelineCard'>
-							<Icon name='forward'/> Became <Link className='redirection' to={redirection.link}><span className='redirectionText'>{redirection.text}</span></Link>
-						</Card>
-					}
-					<Media lessThan="computer">
-						<Sidebar />
-					</Media>
-					{ !!post.comments?.length &&
-						<Comments
-							comments={post.comments}
-							refetch={refetch as any}
-						/>
-					}
-					{ id && <CreatePostComment postId={post.id} refetch={refetch as any} /> }
-				</Grid.Column>
-				<Grid.Column mobile={16} tablet={16} computer={6} largeScreen={6}>
-					<Media greaterThanOrEqual="computer">
-						<Sidebar />
-					</Media>
-					<ScrollToTop/>
-				</Grid.Column>
-			</Grid>
+					)}
 
-			{/* Create Event Sidebar */}
-			{routeWrapperHeight && otherProposalsSidebarAddr &&
-				<OtherProposalsSidebar
-					closeOtherProposalsSidebar={() => {setOtherProposalsSidebarAddr(null); window.scrollTo(0, 0);}}
-					currPostOnchainID={Number(onchainId)}
-					proposerAddress={otherProposalsSidebarAddr}
-					routeWrapperHeight={routeWrapperHeight}
-				/>
-			}
+					{
+						isDiscussion(post) && getLatestDiscussionState()?.link &&
+						<Link to={getLatestDiscussionState()?.link!}>
+							<div className='bg-white drop-shadow-md p-3 md:p-6 rounded-md w-full mb-6 dashboard-heading'>
+								This discussion is now <span className='text-pink_primary'>{getLatestDiscussionState()?.text}</span>
+							</div>
+						</Link>
+					}
+
+					{
+						isChildBounty && parentBountyId &&
+						<Link to={`/bounty/${parentBountyId}`}>
+							<div className='bg-white drop-shadow-md p-3 md:p-6 rounded-md w-full mb-6 dashboard-heading'>
+								This is a child bounty of <span className='text-pink_primary'>Bounty #{parentBountyId}</span>
+							</div>
+						</Link>
+					}
+
+					{/* Post Content */}
+					<div className='bg-white drop-shadow-md p-3 lg:p-6 rounded-md w-full mb-6'>
+						{isEditing && <EditablePostContent
+							post={post as any}
+							refetch={refetch}
+							toggleEdit={toggleEdit}
+						/>}
+
+						{!isEditing && <>
+							<PostHeading className='mb-8' isTipProposal={isTipProposal} onchainId={onchainId} post={post as any} postStatus={postStatus} />
+
+							<Tabs
+								type="card"
+								className='ant-tabs-tab-bg-white text-sidebarBlue font-medium'
+								items={tabItems}
+							/>
+						</>}
+
+					</div>
+				</div>
+
+				{!isEditing && <Sidebar className='hidden lg:block' />}
+			</div>
+
+			<SidebarRight
+				open={sidebarOpen}
+				closeSidebar={() => setSidebarOpen(false)}
+			>
+				{ proposerAddress && <OtherProposals proposerAddress={proposerAddress} currPostOnchainID={Number(onchainId)} closeSidebar={() => setSidebarOpen(false)} /> }
+			</SidebarRight>
 		</>
 	);
 };
 
 export default styled(Post)`
-
-	.post_content {
+	.ant-tabs-tab-bg-white .ant-tabs-tab:not(.ant-tabs-tab-active) {
 		background-color: white;
-		border-radius: 3px;
-		box-shadow: box_shadow_card;
-		padding: 3rem 3rem 0.8rem 3rem;
-		margin-bottom: 1rem;
+		border-top-color: white;
+		border-left-color: white;
+		border-right-color: white;
+		border-bottom-color: #E1E6EB;
 	}
-
-	.actions-bar {
-		display: flex;
-		align-items: center;
+	.ant-tabs-tab-bg-white .ant-tabs-tab-active{
+		border-top-color: #E1E6EB;
+		border-left-color: #E1E6EB;
+		border-right-color: #E1E6EB;
+		border-radius: 6px 6px 0 0 !important;
 	}
-
-	.reactions {
-		display: inline-flex;
-		border: none;
-		padding: 0.4rem 0;
-		margin: 0rem;
-	}
-
-	.vl {
-		display: inline-flex;
-		border-left-style: solid;
-		border-left-width: 1px;
-		border-left-color: grey_border;
-		height: 2rem;
-		margin: 0 1.2rem 0 0.8rem;
-	}
-
-	@media only screen and (max-width: 576px) {
-		.post_content {
-			padding: 2rem;
-			border-radius: 0px;
-		}
-	}
-
-	a.social {
-		color: grey_primary;
-		font-size: 1.3rem;
-		font-weight: 500;
-
-		i {
-			font-size: 1.5rem;
-		}
-	}
-
-	.redirectionCard, .claimPayoutCard {
-		color: black_text;
-		background-color: grey_border;
-		padding: 2rem 3rem 2rem 3rem;
-		border-radius: 3px;
-		font-size: md;
-		margin-bottom: 1rem;
-		text-align: center;
-
-		@media only screen and (max-width: 768px) {
-			padding: 2rem;
-			font-size: sm;
-		}
-
-		.redirectionText {
-			color: pink_primary;
-
-			&:hover {
-				text-decoration: none;
-				color: pink_secondary;
-			}
-		}
-	}
-
-	.claimPayoutCard {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-
-		span {
-			margin-top: 4px;
-		}
-	}
-
-	.timelineCard {
-		a {
-			color: pink_secondary;
-			font-size: 1.3rem;
-
-			i {
-				font-size: 1.5rem;
-			}
-		}
+	.ant-tabs-tab-bg-white .ant-tabs-nav:before{
+		border-bottom: 1px solid #E1E6EB;
 	}
 `;

@@ -2,98 +2,118 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import styled from '@xstyled/styled-components';
-import React from 'react';
-import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
+import { DownOutlined } from '@ant-design/icons';
+import { Card, Col, Dropdown, Row } from 'antd';
+import React, { FC } from 'react';
 import chainLogo from 'src/assets/parachain-logos/chain-logo.jpg';
 import { chainProperties, network } from 'src/global/networkConstants';
 import getNetwork from 'src/util/getNetwork';
 
-const NETWORK = getNetwork();
-const StyledDiv = styled.div`
-    display: flex;
-    align-items: center;
-    text-transform: capitalize;
+type DropdownMenuItemType = {
+	key: any,
+	label: any
+}
 
-    img {
-			width: 2rem;
-			@media only screen and (min-width: 992px) {
-      	width: 4rem;
-			}
-        border-radius: 50%;
-        margin-right: 0.5rem;
-    }
-`;
+const polkadotChains: DropdownMenuItemType[] = [];
+const kusamaChains: DropdownMenuItemType[] = [];
+const soloChains: DropdownMenuItemType[] = [];
+const testChains: DropdownMenuItemType[] = [];
 
-const StyledNetworkItem = ({ showNetwork }: {showNetwork: string}) => {
-	return <StyledDiv>
-		<img
-			src={chainProperties[showNetwork]?.logo ? chainProperties[showNetwork].logo : chainLogo}
-			alt={showNetwork}
-		/>
-		{showNetwork}
-	</StyledDiv>;
-};
-
-const NetworkOptions: DropdownItemProps[] = [];
+const currentNetwork = getNetwork();
 
 for (const key of Object.keys(network)) {
-	const optionObj = {
-		children: <StyledNetworkItem showNetwork={network[key as keyof typeof network]} />,
-		value: network[key as keyof typeof network]
+	const keyVal = network[key as keyof typeof network];
+	const link = ['MOONBASE', 'MOONRIVER', 'MOONBEAM', 'KILT'].includes(key) ? `https://${key}.polkassembly.network` : `https://${key}.polkassembly.io`;
+	const optionObj: DropdownMenuItemType = {
+		key,
+		label: <a href={link} className='flex items-center my-2'>
+			<img
+				className='w-5 h-5 mr-3 rounded-full'
+				src={chainProperties[keyVal]?.logo ? chainProperties[keyVal].logo : chainLogo}
+				alt='Logo'
+			/>
+			<span className='capitalize'> {keyVal == 'hydradx' ? 'HydraDX' : keyVal} </span>
+		</a>
 	};
 
-	NetworkOptions.push(optionObj);
+	switch(chainProperties[keyVal]?.category) {
+	case 'polkadot':
+		polkadotChains.push(optionObj);
+		break;
+	case 'kusama':
+		kusamaChains.push(optionObj);
+		break;
+	case 'test':
+		testChains.push(optionObj);
+		break;
+	default:
+		soloChains.push(optionObj);
+	}
 }
 
-interface Props {
-    className?: string
-		setSidebarHiddenFunc?: () => void
-}
+const NetworkDropdown: FC<{setSidebarCollapsed: React.Dispatch<React.SetStateAction<boolean>>}> = ({ setSidebarCollapsed }) => {
+	return (
+		<Dropdown
+			trigger={['click']}
+			dropdownRender={() => {
+				return (
+					<Card className='max-w-[356px] max-h-[52vh] overflow-y-auto'>
+						<>
+							<div className='text-navBlue font-medium'>Polkadot &amp; Parachains</div>
+							<Row className="mt-2">
+								{
+									polkadotChains.map(optionObj => (
+										<Col span={12} key={optionObj.key} className="flex">{optionObj.label}</Col>
+									))
+								}
+							</Row>
 
-const NetworkDropdown = ({ className, setSidebarHiddenFunc }: Props) =>  {
+							<div className='text-navBlue font-medium mt-4'>Kusama &amp; Parachains</div>
+							<Row className="mt-2">
+								{
+									kusamaChains.map(optionObj => (
+										<Col span={12} key={optionObj.key} className="flex">{optionObj.label}</Col>
+									))
+								}
+							</Row>
 
-	const navigate = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-		if (data.value === NETWORK){
-			return null;
-		}
+							<div className='text-navBlue font-medium mt-4'>Solo Chains</div>
+							<Row className="mt-2">
+								{
+									soloChains.map(optionObj => (
+										<Col span={12} key={optionObj.key} className="flex">{optionObj.label}</Col>
+									))
+								}
+							</Row>
 
-		if (data.value === 'moonbase' || data.value === 'moonriver' || data.value === 'moonbeam' || data.value === 'kilt' || data.value === 'automata') {
-			window.location.href = `https://${data.value}.polkassembly.network`;
-		} else {
-			window.location.href = `https://${data.value}.polkassembly.io`;
-		}
-		return null;
-	};
-
-	return <Dropdown
-		onClick={setSidebarHiddenFunc}
-		className={className}
-		pointing='top'
-		onChange={navigate}
-		options={NetworkOptions}
-		trigger={<StyledNetworkItem showNetwork={NETWORK}/>}
-		value={NETWORK}
-		scrolling
-	/>;
+							<div className='text-navBlue font-medium mt-4'>Test Chains</div>
+							<Row className="mt-2">
+								{
+									testChains.map(optionObj => (
+										<Col span={12} key={optionObj.key} className="flex">{optionObj.label}</Col>
+									))
+								}
+							</Row>
+						</>
+					</Card>
+				);}
+			}
+		>
+			<a className='flex items-center justify-between text-navBlue hover:text-pink_primary' onClick={e => {
+				e.preventDefault();
+				setSidebarCollapsed(true);
+			}}
+			>
+				<img
+					className='w-[20px] h-[20px] mr-2 rounded-full'
+					src={chainProperties[currentNetwork]?.logo ? chainProperties[currentNetwork].logo : chainLogo}
+					alt='Logo'
+				/>
+				<span className='mr-2 capitalize font-medium hidden md:inline-block'>{currentNetwork == 'hydradx' ? 'HydraDX' : currentNetwork}</span>
+				<DownOutlined />
+			</a>
+		</Dropdown>
+	);
 };
 
-export default styled(NetworkDropdown)`
-    color: #fff;
-    display: flex !important;
-    align-items: center;
-		margin: 0 1.2rem;
-
-		@media only screen and (max-width: 768px) {
-			font-size: 13px;
-		}
-
-		i.icon {
-			color: #fff !important;
-		}
-
-		.menu {
-			z-index: 201 !important;
-			min-height: 70vh !important;
-		}
-`;
+export default NetworkDropdown;

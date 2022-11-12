@@ -3,18 +3,13 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React, { useEffect } from 'react';
+import TipListing from 'src/components/Listing/Tips/TipListing';
+import { useTrackerTipPostsLazyQuery } from 'src/generated/graphql';
+import { post_type } from 'src/global/post_types';
+import { ErrorState } from 'src/ui-components/UIStates';
 
-import TipListing from '../../../components/Listings/TipListing';
-import { useTrackerTipPostsQuery } from '../../../generated/graphql';
-import { post_type } from '../../../global/post_types';
-import FilteredError from '../../../ui-components/FilteredError';
-import Loader from '../../../ui-components/Loader';
+const TipContainer = ({ className } : { className?:string }) => {
 
-interface Props {
-	className?: string
-}
-
-const TipContainer = ({ className }:Props) => {
 	let trackMap: any = {};
 
 	try {
@@ -25,7 +20,7 @@ const TipContainer = ({ className }:Props) => {
 
 	const onchainTipIds = Object.keys(trackMap.tipProposal || {}).map(key => `${key}`);
 
-	const { data, error, refetch } = useTrackerTipPostsQuery({ variables: {
+	const [refetch, { data, error, loading }] = useTrackerTipPostsLazyQuery({ variables: {
 		onchainTipIds,
 		postType: post_type.ON_CHAIN
 	} });
@@ -34,11 +29,19 @@ const TipContainer = ({ className }:Props) => {
 		refetch();
 	}, [refetch]);
 
-	if (error?.message) return <FilteredError text={error.message}/>;
+	if (error?.message) {
+		return <ErrorState errorMessage={error.message} />;
+	}
 
-	if (data) return <TipListing className={className} data={data}/>;
+	return (
+		<div className={`${className} shadow-md bg-white p-3 md:p-8 rounded-md`}>
+			<div className='flex items-center justify-between'>
+				<h1 className='dashboard-heading'>Tip Proposals</h1>
+			</div>
 
-	return <Loader/>;
+			<TipListing loading={loading} data={data} />
+		</div>
+	);
 };
 
 export default TipContainer;
