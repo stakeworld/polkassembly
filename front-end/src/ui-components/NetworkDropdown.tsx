@@ -17,6 +17,7 @@ type DropdownMenuItemType = {
 const polkadotChains: DropdownMenuItemType[] = [];
 const kusamaChains: DropdownMenuItemType[] = [];
 const soloChains: DropdownMenuItemType[] = [];
+const testChains: DropdownMenuItemType[] = [];
 
 const currentNetwork = getNetwork();
 
@@ -41,6 +42,9 @@ for (const key of Object.keys(network)) {
 		break;
 	case 'kusama':
 		kusamaChains.push(optionObj);
+		break;
+	case 'test':
+		testChains.push(optionObj);
 		break;
 	default:
 		soloChains.push(optionObj);
@@ -73,10 +77,19 @@ const NetworkDropdown: FC<{setSidebarCollapsed: React.Dispatch<React.SetStateAct
 								}
 							</Row>
 
-							<div className='text-navBlue font-medium mt-4'>Solochains</div>
+							<div className='text-navBlue font-medium mt-4'>Solo Chains</div>
 							<Row className="mt-2">
 								{
 									soloChains.map(optionObj => (
+										<Col span={12} key={optionObj.key} className="flex">{optionObj.label}</Col>
+									))
+								}
+							</Row>
+
+							<div className='text-navBlue font-medium mt-4'>Test Chains</div>
+							<Row className="mt-2">
+								{
+									testChains.map(optionObj => (
 										<Col span={12} key={optionObj.key} className="flex">{optionObj.label}</Col>
 									))
 								}

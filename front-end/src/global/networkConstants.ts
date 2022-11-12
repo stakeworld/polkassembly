@@ -334,7 +334,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.MOONBASE]: {
 		blockTime: 12000,
-		category: 'solo',
+		category: 'test',
 		chainId: 1287,
 		logo: moonbaseLogo,
 		rpcEndpoint: 'wss://moonbeam-alpha.api.onfinality.io/public-ws',
@@ -404,7 +404,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.SHIBUYA]: {
 		blockTime: 12000,
-		category: 'solo',
+		category: 'test',
 		chainId: 81,
 		logo: shidenLogo,
 		rpcEndpoint: 'wss://shibuya-rpc.dwellir.com',
@@ -444,7 +444,7 @@ export const chainProperties: types.ChainPropType = {
 	},
 	[network.WESTEND]: {
 		blockTime: 6000,
-		category: 'solo',
+		category: 'test',
 		chainId: 0,
 		logo: westendLogo,
 		rpcEndpoint: 'wss://kusama-rpc.polkadot.io',
