@@ -36,7 +36,6 @@ const RequestResetPassword: FC<Props> = () => {
             data.requestResetPassword.message
 					) {
 						navigate('/');
-						console.log(data.requestResetPassword.message);
 						setModal({
 							content: data.requestResetPassword.message,
 							title: 'Check your emails'

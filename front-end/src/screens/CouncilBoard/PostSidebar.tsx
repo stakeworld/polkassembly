@@ -15,7 +15,6 @@ interface Props {
 }
 
 const PostSidebar = ({ className, closeSidebar, open, sidebarState }: Props) => {
-	console.log(open);
 	return (
 		<SidebarRight closeSidebar={closeSidebar} open={open} className={className}>
 			<div className="sidebar-content">

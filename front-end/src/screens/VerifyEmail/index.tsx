@@ -17,7 +17,6 @@ import Loader from '../../ui-components/Loader';
 const VerifyEmail = () => {
 	const { token } = useParams();
 	const navigate = useNavigate();
-	console.log(token!);
 
 	const currentUser = useUserDetailsContext();
 	const [verifyEmailMutation, { error }] = useVerifyEmailMutation({

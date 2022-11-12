@@ -22,8 +22,6 @@ const BountyChildBounties = ({ onchainId }: Props) => {
 
 	if (error?.message) return <FilteredError text={error.message}/>;
 
-	console.log('data : ', data);
-
 	return (
 		onchainId && data && data.childBounties.length > 0 ?
 			<GovSidebarCard>

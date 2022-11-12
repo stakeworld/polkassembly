@@ -95,9 +95,6 @@ const CreatePost = ({ className } : Props) => {
 			const content = form.getFieldValue('content');
 			const title = form.getFieldValue('title');
 
-			console.log('content : ', content);
-			console.log('title : ', title);
-
 			if(!title || !content) return;
 
 			setFormDisabled(true);

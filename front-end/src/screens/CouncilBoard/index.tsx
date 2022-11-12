@@ -82,7 +82,6 @@ const CouncilBoardContainer = ({ className } : {className?: string}) => {
 	}, [api, apiReady]);
 
 	const openSidebar = (postID: number, type: SidebarReducerAction) => {
-		console.log(type, postID);
 		dispatch({ postID, type });
 	};
 
