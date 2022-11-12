@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ClockCircleOutlined, CommentOutlined } from '@ant-design/icons';
+import { ClockCircleOutlined, CommentOutlined, DislikeOutlined, LikeOutlined } from '@ant-design/icons';
 import { Divider,Space } from 'antd';
 import React, { useContext } from 'react';
 import BlockCountdown from 'src/components/BlockCountdown';
@@ -13,7 +13,17 @@ import OnchainCreationLabel from 'src/ui-components/OnchainCreationLabel';
 import StatusTag from 'src/ui-components/StatusTag';
 import getRelativeCreatedAt from 'src/util/getRelativeCreatedAt';
 
+function getFormattedLike(v: number) {
+	return Intl.NumberFormat('en-US', {
+		maximumFractionDigits: 1,
+		notation: 'compact'
+	}).format(v);
+}
+
 interface GovernanceProps {
+	postReactions: {
+		reaction: string;
+	}[];
 	address: string
 	className?: string
 	comments?: string
@@ -28,6 +38,7 @@ interface GovernanceProps {
 }
 
 const GovernanceCard = function ({
+	postReactions,
 	address,
 	className,
 	comments,
@@ -53,7 +64,17 @@ const GovernanceCard = function ({
 	const currentBlock = useCurrentBlock()?.toNumber() || 0;
 	const ownProposal = currentUser?.addresses?.includes(address);
 	const relativeCreatedAt = getRelativeCreatedAt(created_at);
-
+	const reaction = {
+		dislike: 0,
+		like: 0
+	};
+	postReactions?.forEach((postReaction) => {
+		if (postReaction?.reaction === '👍') {
+			reaction.like++;
+		} else if (postReaction?.reaction === '👎') {
+			reaction.dislike++;
+		}
+	});
 	return (
 		<div className={`${className} ${ownProposal && 'border-l-pink_primary border-l-4'} border-2 border-grey_light hover:border-pink_primary hover:shadow-xl transition-all duration-200 rounded-md p-3 md:p-4`}>
 			<div className="flex justify-between">
@@ -69,7 +90,17 @@ const GovernanceCard = function ({
 						</Space>
 						<Divider className='hidden md:inline-block' type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
 
-						<div className='flex items-center'>
+						<div className='flex items-center gap-x-2'>
+							<div className='flex items-center justify-center gap-x-1.5'>
+								<LikeOutlined />
+								<span>{getFormattedLike(reaction.like)}</span>
+							</div>
+							<Divider className='hidden md:inline-block' type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
+							<div className='flex items-center justify-center gap-x-1.5'>
+								<DislikeOutlined />
+								<span>{getFormattedLike(reaction.dislike)}</span>
+							</div>
+							<Divider className='hidden md:inline-block' type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
 							{relativeCreatedAt && <>
 								<div className='flex items-center'>
 									<ClockCircleOutlined className='mr-1' /> {relativeCreatedAt}
