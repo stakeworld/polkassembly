@@ -36,7 +36,7 @@ const Proxy: FC<Props> = ({ dismissModal, open }) => {
 	const [accountsNotFound, setAccountsNotFound] = useState(false);
 	const [linkProxyAddressMutation, { loading, error }] = useLinkProxyAddressMutation();
 
-	const onProxyAddressChange = (event: React.SyntheticEvent<HTMLElement, Event>, address: string) => {
+	const onProxyAddressChange = (address: string) => {
 		setProxyAddress(address);
 	};
 
