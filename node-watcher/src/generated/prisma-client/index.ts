@@ -2195,14 +2195,16 @@ export type ReferendumV2OrderByInput =
   | "id_DESC"
   | "trackNumber_ASC"
   | "trackNumber_DESC"
-  | "track_ASC"
-  | "track_DESC"
+  | "origin_ASC"
+  | "origin_DESC"
   | "preimageHash_ASC"
   | "preimageHash_DESC"
   | "referendumId_ASC"
   | "referendumId_DESC"
   | "enactmentAt_ASC"
   | "enactmentAt_DESC"
+  | "enactmentAfter_ASC"
+  | "enactmentAfter_DESC"
   | "submittedAt_ASC"
   | "submittedAt_DESC"
   | "submitted_ASC"
@@ -4378,20 +4380,20 @@ export interface ReferendumV2WhereInput {
   trackNumber_lte?: Maybe<Int>;
   trackNumber_gt?: Maybe<Int>;
   trackNumber_gte?: Maybe<Int>;
-  track?: Maybe<String>;
-  track_not?: Maybe<String>;
-  track_in?: Maybe<String[] | String>;
-  track_not_in?: Maybe<String[] | String>;
-  track_lt?: Maybe<String>;
-  track_lte?: Maybe<String>;
-  track_gt?: Maybe<String>;
-  track_gte?: Maybe<String>;
-  track_contains?: Maybe<String>;
-  track_not_contains?: Maybe<String>;
-  track_starts_with?: Maybe<String>;
-  track_not_starts_with?: Maybe<String>;
-  track_ends_with?: Maybe<String>;
-  track_not_ends_with?: Maybe<String>;
+  origin?: Maybe<String>;
+  origin_not?: Maybe<String>;
+  origin_in?: Maybe<String[] | String>;
+  origin_not_in?: Maybe<String[] | String>;
+  origin_lt?: Maybe<String>;
+  origin_lte?: Maybe<String>;
+  origin_gt?: Maybe<String>;
+  origin_gte?: Maybe<String>;
+  origin_contains?: Maybe<String>;
+  origin_not_contains?: Maybe<String>;
+  origin_starts_with?: Maybe<String>;
+  origin_not_starts_with?: Maybe<String>;
+  origin_ends_with?: Maybe<String>;
+  origin_not_ends_with?: Maybe<String>;
   preimage?: Maybe<PreimageV2WhereInput>;
   preimageHash?: Maybe<String>;
   preimageHash_not?: Maybe<String>;
@@ -4432,6 +4434,20 @@ export interface ReferendumV2WhereInput {
   enactmentAt_not_starts_with?: Maybe<String>;
   enactmentAt_ends_with?: Maybe<String>;
   enactmentAt_not_ends_with?: Maybe<String>;
+  enactmentAfter?: Maybe<String>;
+  enactmentAfter_not?: Maybe<String>;
+  enactmentAfter_in?: Maybe<String[] | String>;
+  enactmentAfter_not_in?: Maybe<String[] | String>;
+  enactmentAfter_lt?: Maybe<String>;
+  enactmentAfter_lte?: Maybe<String>;
+  enactmentAfter_gt?: Maybe<String>;
+  enactmentAfter_gte?: Maybe<String>;
+  enactmentAfter_contains?: Maybe<String>;
+  enactmentAfter_not_contains?: Maybe<String>;
+  enactmentAfter_starts_with?: Maybe<String>;
+  enactmentAfter_not_starts_with?: Maybe<String>;
+  enactmentAfter_ends_with?: Maybe<String>;
+  enactmentAfter_not_ends_with?: Maybe<String>;
   submittedAt?: Maybe<String>;
   submittedAt_not?: Maybe<String>;
   submittedAt_in?: Maybe<String[] | String>;
@@ -7740,11 +7756,12 @@ export interface ReferendumV2CreateOneWithoutPreimageInput {
 
 export interface ReferendumV2CreateWithoutPreimageInput {
   trackNumber: Int;
-  track: String;
+  origin: String;
   preimageHash: String;
   referendumId: Int;
   referendumStatus?: Maybe<ReferendumStatusV2CreateManyWithoutReferendumInput>;
   enactmentAt?: Maybe<String>;
+  enactmentAfter?: Maybe<String>;
   submittedAt: String;
   submitted?: Maybe<Json>;
   decisionDeposit?: Maybe<Json>;
@@ -7905,11 +7922,12 @@ export interface ReferendumV2UpdateOneWithoutPreimageInput {
 
 export interface ReferendumV2UpdateWithoutPreimageDataInput {
   trackNumber?: Maybe<Int>;
-  track?: Maybe<String>;
+  origin?: Maybe<String>;
   preimageHash?: Maybe<String>;
   referendumId?: Maybe<Int>;
   referendumStatus?: Maybe<ReferendumStatusV2UpdateManyWithoutReferendumInput>;
   enactmentAt?: Maybe<String>;
+  enactmentAfter?: Maybe<String>;
   submittedAt?: Maybe<String>;
   submitted?: Maybe<Json>;
   decisionDeposit?: Maybe<Json>;
@@ -8615,11 +8633,12 @@ export interface ReferendumV2CreateOneWithoutReferendumStatusInput {
 
 export interface ReferendumV2CreateWithoutReferendumStatusInput {
   trackNumber: Int;
-  track: String;
+  origin: String;
   preimage?: Maybe<PreimageV2CreateOneWithoutReferendumInput>;
   preimageHash: String;
   referendumId: Int;
   enactmentAt?: Maybe<String>;
+  enactmentAfter?: Maybe<String>;
   submittedAt: String;
   submitted?: Maybe<Json>;
   decisionDeposit?: Maybe<Json>;
@@ -8662,11 +8681,12 @@ export interface ReferendumV2UpdateOneRequiredWithoutReferendumStatusInput {
 
 export interface ReferendumV2UpdateWithoutReferendumStatusDataInput {
   trackNumber?: Maybe<Int>;
-  track?: Maybe<String>;
+  origin?: Maybe<String>;
   preimage?: Maybe<PreimageV2UpdateOneWithoutReferendumInput>;
   preimageHash?: Maybe<String>;
   referendumId?: Maybe<Int>;
   enactmentAt?: Maybe<String>;
+  enactmentAfter?: Maybe<String>;
   submittedAt?: Maybe<String>;
   submitted?: Maybe<Json>;
   decisionDeposit?: Maybe<Json>;
@@ -8713,12 +8733,13 @@ export interface ReferendumStatusV2UpdateManyMutationInput {
 
 export interface ReferendumV2CreateInput {
   trackNumber: Int;
-  track: String;
+  origin: String;
   preimage?: Maybe<PreimageV2CreateOneWithoutReferendumInput>;
   preimageHash: String;
   referendumId: Int;
   referendumStatus?: Maybe<ReferendumStatusV2CreateManyWithoutReferendumInput>;
   enactmentAt?: Maybe<String>;
+  enactmentAfter?: Maybe<String>;
   submittedAt: String;
   submitted?: Maybe<Json>;
   decisionDeposit?: Maybe<Json>;
@@ -8727,12 +8748,13 @@ export interface ReferendumV2CreateInput {
 
 export interface ReferendumV2UpdateInput {
   trackNumber?: Maybe<Int>;
-  track?: Maybe<String>;
+  origin?: Maybe<String>;
   preimage?: Maybe<PreimageV2UpdateOneWithoutReferendumInput>;
   preimageHash?: Maybe<String>;
   referendumId?: Maybe<Int>;
   referendumStatus?: Maybe<ReferendumStatusV2UpdateManyWithoutReferendumInput>;
   enactmentAt?: Maybe<String>;
+  enactmentAfter?: Maybe<String>;
   submittedAt?: Maybe<String>;
   submitted?: Maybe<Json>;
   decisionDeposit?: Maybe<Json>;
@@ -8741,10 +8763,11 @@ export interface ReferendumV2UpdateInput {
 
 export interface ReferendumV2UpdateManyMutationInput {
   trackNumber?: Maybe<Int>;
-  track?: Maybe<String>;
+  origin?: Maybe<String>;
   preimageHash?: Maybe<String>;
   referendumId?: Maybe<Int>;
   enactmentAt?: Maybe<String>;
+  enactmentAfter?: Maybe<String>;
   submittedAt?: Maybe<String>;
   submitted?: Maybe<Json>;
   decisionDeposit?: Maybe<Json>;
@@ -13031,10 +13054,11 @@ export interface PreimageStatusV2NullablePromise
 export interface ReferendumV2 {
   id: Int;
   trackNumber: Int;
-  track: String;
+  origin: String;
   preimageHash: String;
   referendumId: Int;
   enactmentAt?: String;
+  enactmentAfter?: String;
   submittedAt: String;
   submitted?: Json;
   decisionDeposit?: Json;
@@ -13046,7 +13070,7 @@ export interface ReferendumV2Promise
     Fragmentable {
   id: () => Promise<Int>;
   trackNumber: () => Promise<Int>;
-  track: () => Promise<String>;
+  origin: () => Promise<String>;
   preimage: <T = PreimageV2Promise>() => T;
   preimageHash: () => Promise<String>;
   referendumId: () => Promise<Int>;
@@ -13060,6 +13084,7 @@ export interface ReferendumV2Promise
     last?: Int;
   }) => T;
   enactmentAt: () => Promise<String>;
+  enactmentAfter: () => Promise<String>;
   submittedAt: () => Promise<String>;
   submitted: () => Promise<Json>;
   decisionDeposit: () => Promise<Json>;
@@ -13071,7 +13096,7 @@ export interface ReferendumV2Subscription
     Fragmentable {
   id: () => Promise<AsyncIterator<Int>>;
   trackNumber: () => Promise<AsyncIterator<Int>>;
-  track: () => Promise<AsyncIterator<String>>;
+  origin: () => Promise<AsyncIterator<String>>;
   preimage: <T = PreimageV2Subscription>() => T;
   preimageHash: () => Promise<AsyncIterator<String>>;
   referendumId: () => Promise<AsyncIterator<Int>>;
@@ -13087,6 +13112,7 @@ export interface ReferendumV2Subscription
     last?: Int;
   }) => T;
   enactmentAt: () => Promise<AsyncIterator<String>>;
+  enactmentAfter: () => Promise<AsyncIterator<String>>;
   submittedAt: () => Promise<AsyncIterator<String>>;
   submitted: () => Promise<AsyncIterator<Json>>;
   decisionDeposit: () => Promise<AsyncIterator<Json>>;
@@ -13098,7 +13124,7 @@ export interface ReferendumV2NullablePromise
     Fragmentable {
   id: () => Promise<Int>;
   trackNumber: () => Promise<Int>;
-  track: () => Promise<String>;
+  origin: () => Promise<String>;
   preimage: <T = PreimageV2Promise>() => T;
   preimageHash: () => Promise<String>;
   referendumId: () => Promise<Int>;
@@ -13112,6 +13138,7 @@ export interface ReferendumV2NullablePromise
     last?: Int;
   }) => T;
   enactmentAt: () => Promise<String>;
+  enactmentAfter: () => Promise<String>;
   submittedAt: () => Promise<String>;
   submitted: () => Promise<Json>;
   decisionDeposit: () => Promise<Json>;
@@ -16376,10 +16403,11 @@ export interface ReferendumV2SubscriptionPayloadSubscription
 export interface ReferendumV2PreviousValues {
   id: Int;
   trackNumber: Int;
-  track: String;
+  origin: String;
   preimageHash: String;
   referendumId: Int;
   enactmentAt?: String;
+  enactmentAfter?: String;
   submittedAt: String;
   submitted?: Json;
   decisionDeposit?: Json;
@@ -16391,10 +16419,11 @@ export interface ReferendumV2PreviousValuesPromise
     Fragmentable {
   id: () => Promise<Int>;
   trackNumber: () => Promise<Int>;
-  track: () => Promise<String>;
+  origin: () => Promise<String>;
   preimageHash: () => Promise<String>;
   referendumId: () => Promise<Int>;
   enactmentAt: () => Promise<String>;
+  enactmentAfter: () => Promise<String>;
   submittedAt: () => Promise<String>;
   submitted: () => Promise<Json>;
   decisionDeposit: () => Promise<Json>;
@@ -16406,10 +16435,11 @@ export interface ReferendumV2PreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<Int>>;
   trackNumber: () => Promise<AsyncIterator<Int>>;
-  track: () => Promise<AsyncIterator<String>>;
+  origin: () => Promise<AsyncIterator<String>>;
   preimageHash: () => Promise<AsyncIterator<String>>;
   referendumId: () => Promise<AsyncIterator<Int>>;
   enactmentAt: () => Promise<AsyncIterator<String>>;
+  enactmentAfter: () => Promise<AsyncIterator<String>>;
   submittedAt: () => Promise<AsyncIterator<String>>;
   submitted: () => Promise<AsyncIterator<Json>>;
   decisionDeposit: () => Promise<AsyncIterator<Json>>;

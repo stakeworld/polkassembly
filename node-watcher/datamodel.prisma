@@ -330,12 +330,13 @@ type CouncilMotionVote {
 type ReferendumV2 {
   id: Int! @id(strategy: SEQUENCE) @sequence(name: "REFERENDUMV2_SEQUENCE" initialValue:1 allocationSize:1)
   trackNumber: Int!
-  track: String!
+  origin: String!
   preimage: PreimageV2 @relation(name: "PreimageV2ForReferendumV2")
   preimageHash: String!
   referendumId: Int! @unique
   referendumStatus: [ReferendumStatusV2]! @relation(name: "ReferendumStatusV2FromReferendumV2")
   enactmentAt: String
+  enactmentAfter: String
   submittedAt: String!
   submitted: Json
   decisionDeposit: Json

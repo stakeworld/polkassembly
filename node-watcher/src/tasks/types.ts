@@ -259,10 +259,11 @@ export interface NomidotReferendum {
 export interface NomidotReferendumV2 {
   referendumIndex: number;
   trackNumber: number;
-  track: string;
+  origin: string;
   preimageHash: Hash;
   status: ReferendumStatusV2;
   enactmentAt?: string;
+  enactmentAfter?: string;
   SubmittedAt: string;
   submitted?: Json;
   decisionDeposit?: Json;

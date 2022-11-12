@@ -132,3 +132,13 @@ export const GetPolkassemblyTipProposals = gql`
 		}
 	}
 `;
+
+export const getDiscussionReferendumV2 = gql`
+    query getDiscussionReferendumV2{
+        onchain_links(where: {onchain_referendumv2_id: {_is_null: false}}){
+            id
+            onchain_referendumv2_id
+            proposer_address
+        }
+    }
+`;

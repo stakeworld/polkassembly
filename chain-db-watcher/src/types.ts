@@ -9,6 +9,7 @@ export interface OnchainSyncData {
     motions?: Array<OnchainMotionFragment | null> | null;
     proposals?: Array<OnchainProposalFragment | null> | null;
     referenda?: Array<OnchainReferendumFragment | null> | null;
+    referendumV2?: Array<any | null> | null;
     tips?: Array<OnchainTipFragment | null> | null;
     treasuryProposals?: Array<OnchainTreasuryProposalFragment | null> | null;
     bounties?: Array<OnchainBountyFragment | null> | null;
@@ -20,6 +21,7 @@ export interface DiscussionSyncData {
     motions?: Array<DiscussionMotionFragment | null> | null;
     proposals?: Array<DiscussionProposalFragment | null> | null;
     referenda?: Array<DiscussionReferendumFragment | null> | null;
+    referendumV2?: Array<any | null> | null;
     tips?: Array<DiscussionTipFragment | null> | null;
     treasuryProposals?: Array<DiscussionTreasuryProposalFragment | null> | null;
     bounties?: Array<DiscussionBountyFragment | null> | null;
@@ -41,6 +43,7 @@ export interface OnchainSyncMap {
     motions?: MotionObjectMap;
     proposals?: ObjectMap;
     referenda?: ReferendumObjectMap;
+    referendumV2?: ReferendumV2ObjectMap;
     tips?: ObjectMap;
     bounties?: ObjectMap;
     childBounties?: ObjectMap;
@@ -53,6 +56,15 @@ export interface OnchainReferendaValueSyncType {
     blockCreationNumber: number;
 }
 
+export interface OnchainReferendaV2ValueSyncType {
+    preimageHash: string;
+    blockCreationNumber: number;
+    trackNumber: number;
+    origin: string;
+    author: string;
+    status: string;
+}
+
 export interface OnchainMotionSyncType {
     author: string;
     treasuryProposalId?: number;
@@ -63,6 +75,7 @@ export interface DiscussionSyncMap {
     motions?: ObjectMap;
     proposals?: ObjectMap;
     referenda?: ObjectMap;
+    referendumV2?: ObjectMap;
     tips?: ObjectMap;
     bounties?: ObjectMap;
     childBounties?: ObjectMap;
@@ -75,3 +88,4 @@ export type TreasuryDeduplicateMotionMap = Record<number, number[]>;
 export type ObjectMap = {[index: string]: string};
 export type MotionObjectMap = {[index: string]: OnchainMotionSyncType};
 export type ReferendumObjectMap = {[index: string]: OnchainReferendaValueSyncType};
+export type ReferendumV2ObjectMap = {[index: string]: OnchainReferendaV2ValueSyncType};

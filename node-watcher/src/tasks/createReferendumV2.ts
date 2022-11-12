@@ -74,18 +74,18 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
           );
           return null;
         }
-        if (!referendumRawEvent.HashInfo?.legacy?.hash && !referendumRawEvent.HashInfo?.lookup?.hash) {
+        if (!referendumRawEvent.HashInfo?.legacy?.hash && !referendumRawEvent.HashInfo?.lookup?.hash && !referendumRawEvent.HashInfo?.inline?.hash) {
           l.error(
             `Expected preimageHash is missing in the event: ${referendumRawEvent.ReferendumIndex}`
           );
           return null;
         }
 
-        const preimageHash = referendumRawEvent.HashInfo?.legacy?.hash || referendumRawEvent.HashInfo?.lookup?.hash;
+        const preimageHash = referendumRawEvent.HashInfo?.legacy?.hash || referendumRawEvent.HashInfo?.lookup?.hash || referendumRawEvent.HashInfo?.inline?.hash;
 
         const referendumInfoRaw: Option<PalletReferendaReferendumInfoConvictionVotingTally> = await api.query.referenda.referendumInfoFor(referendumRawEvent.ReferendumIndex);
 
-        console.log('referendumInfoRaw', JSON.stringify(referendumInfoRaw));
+        l.log('referendumInfoRaw', JSON.stringify(referendumInfoRaw));
 
         // const referendumInfo = getReferendumStatus(referendumInfoRaw);
         const referendumInfo =  JSON.parse(JSON.stringify(referendumInfoRaw));
@@ -100,10 +100,11 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
         const result: NomidotReferendumV2 = {
             referendumIndex: referendumRawEvent.ReferendumIndex,
             trackNumber: referendumInfo.ongoing?.track,
-            track: referendumInfo.ongoing?.origin?.origins,
+            origin: referendumInfo.ongoing?.origin?.origins || 'root',
             preimageHash: preimageHash,
             status: referendumStatusV2.ONGOING,
             enactmentAt: referendumInfo.ongoing?.enactment?.at,
+            enactmentAfter: referendumInfo.ongoing?.enactment?.after,
             SubmittedAt: referendumInfo.ongoing?.submitted,
             submitted: referendumInfo.ongoing?.submissionDeposit,
             decisionDeposit: referendumInfo.ongoing?.decisionDeposit,
@@ -126,11 +127,12 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
       value.map(async referendum => {
         const {
           trackNumber,
-          track,
+          origin,
           preimageHash,
           referendumIndex,
           status,
           enactmentAt,
+          enactmentAfter,
           SubmittedAt,
           decisionDeposit,
           deciding,
@@ -169,7 +171,7 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
             },
             update: {
                 trackNumber: trackNumber,
-                track: track,
+                origin: origin,
                 preimage: notedPreimage
                     ? {
                         connect: {
@@ -179,7 +181,8 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
                     : undefined,
                 preimageHash: preimageHash.toString(),
                 referendumId: referendumIndex,
-                enactmentAt: enactmentAt,
+                enactmentAt: enactmentAt?.toString(),
+                enactmentAfter: enactmentAfter?.toString(),
                 submittedAt: SubmittedAt.toString(),
                 submitted: submitted,
                 decisionDeposit: decisionDeposit,
@@ -187,7 +190,7 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
             },
             create: {
                 trackNumber: trackNumber,
-                track: track,
+                origin: origin,
                 preimage: notedPreimage
                     ? {
                         connect: {
@@ -208,7 +211,8 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
                     uniqueStatus: `${referendumIndex}_${status}`,
                     },
                 },
-                enactmentAt: enactmentAt,
+                enactmentAt: enactmentAt?.toString(),
+                enactmentAfter: enactmentAfter?.toString(),
                 submittedAt: SubmittedAt?.toString(),
                 decisionDeposit: decisionDeposit,
                 deciding: deciding,

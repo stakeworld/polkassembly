@@ -4,7 +4,7 @@
 
 /* eslint-disable camelcase */
 import { OnchainMotionFragment } from 'src/generated/chain-db-graphql';
-import { OnchainMotionSyncType, OnchainReferendaValueSyncType, SyncData, SyncMap } from 'src/types';
+import { OnchainMotionSyncType, OnchainReferendaV2ValueSyncType, OnchainReferendaValueSyncType, SyncData, SyncMap } from 'src/types';
 
 export const getMotionTreasuryProposalId = (section: string, motionProposalArguments: OnchainMotionFragment['motionProposalArguments']): number | undefined => {
 	let treasuryProposalId: number | undefined;
@@ -229,6 +229,38 @@ export const getMaps = (syncData: SyncData): SyncMap => {
 			}
 		}, {});
 
+	const discussionReferendumV2Map = syncData?.discussion.referendumV2?.reduce(
+		(prev, curr) => {
+			// edgecase those id can be 0
+			if ((curr?.onchain_referendumv2_id || curr?.onchain_referendumv2_id === 0) && (curr?.id || curr?.id === 0)) {
+				return {
+					...prev,
+					[curr.onchain_referendumv2_id]: curr.id
+				};
+			} else {
+				return prev || {};
+			}
+		}, {});
+
+	const onchainReferendumV2Map = syncData?.onchain.referendumV2?.reduce(
+		(prev, curr) => {
+			if ((curr?.referendumId || curr?.referendumId === 0) && (curr?.id || curr?.id === 0)) {
+				return {
+					...prev,
+					[curr.referendumId]: {
+						author: curr?.preimage?.author,
+						blockCreationNumber: curr?.referendumStatus?.[0]?.blockNumber?.number,
+						origin: curr?.origin,
+						preimageHash: curr?.preimage?.hash,
+						status: curr?.referendumStatus?.[0]?.status,
+						trackNumber: curr?.trackNumber
+					} as OnchainReferendaV2ValueSyncType
+				};
+			} else {
+				return prev || {};
+			}
+		}, {});
+
 	return {
 		discussion: {
 			bounties: discussionBountyMap,
@@ -236,6 +268,7 @@ export const getMaps = (syncData: SyncData): SyncMap => {
 			motions: discussionMotionMap,
 			proposals: discussionProposalMap,
 			referenda: discussionReferendaMap,
+			referendumV2: discussionReferendumV2Map,
 			techCommitteeProposals: discussionTechCommitteeProposalMap,
 			tips: discussionTipMap,
 			treasuryProposals: discussionTreasuryProposalMap
@@ -246,6 +279,7 @@ export const getMaps = (syncData: SyncData): SyncMap => {
 			motions: onchainMotionMap,
 			proposals: onchainProposalMap,
 			referenda: onchainReferendaMap,
+			referendumV2: onchainReferendumV2Map,
 			techCommitteeProposals: onchainTechCommitteeProposalsProposalMap,
 			tips: onchainTipMap,
 			treasuryProposals: onchainTreasuryProposalMap

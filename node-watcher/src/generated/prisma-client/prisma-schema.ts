@@ -6649,12 +6649,13 @@ input ReferendumUpsertWithoutReferendumVoteInput {
 type ReferendumV2 {
   id: Int!
   trackNumber: Int!
-  track: String!
+  origin: String!
   preimage: PreimageV2
   preimageHash: String!
   referendumId: Int!
   referendumStatus(where: ReferendumStatusV2WhereInput, orderBy: ReferendumStatusV2OrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ReferendumStatusV2!]
   enactmentAt: String
+  enactmentAfter: String
   submittedAt: String!
   submitted: Json
   decisionDeposit: Json
@@ -6669,12 +6670,13 @@ type ReferendumV2Connection {
 
 input ReferendumV2CreateInput {
   trackNumber: Int!
-  track: String!
+  origin: String!
   preimage: PreimageV2CreateOneWithoutReferendumInput
   preimageHash: String!
   referendumId: Int!
   referendumStatus: ReferendumStatusV2CreateManyWithoutReferendumInput
   enactmentAt: String
+  enactmentAfter: String
   submittedAt: String!
   submitted: Json
   decisionDeposit: Json
@@ -6693,11 +6695,12 @@ input ReferendumV2CreateOneWithoutReferendumStatusInput {
 
 input ReferendumV2CreateWithoutPreimageInput {
   trackNumber: Int!
-  track: String!
+  origin: String!
   preimageHash: String!
   referendumId: Int!
   referendumStatus: ReferendumStatusV2CreateManyWithoutReferendumInput
   enactmentAt: String
+  enactmentAfter: String
   submittedAt: String!
   submitted: Json
   decisionDeposit: Json
@@ -6706,11 +6709,12 @@ input ReferendumV2CreateWithoutPreimageInput {
 
 input ReferendumV2CreateWithoutReferendumStatusInput {
   trackNumber: Int!
-  track: String!
+  origin: String!
   preimage: PreimageV2CreateOneWithoutReferendumInput
   preimageHash: String!
   referendumId: Int!
   enactmentAt: String
+  enactmentAfter: String
   submittedAt: String!
   submitted: Json
   decisionDeposit: Json
@@ -6727,14 +6731,16 @@ enum ReferendumV2OrderByInput {
   id_DESC
   trackNumber_ASC
   trackNumber_DESC
-  track_ASC
-  track_DESC
+  origin_ASC
+  origin_DESC
   preimageHash_ASC
   preimageHash_DESC
   referendumId_ASC
   referendumId_DESC
   enactmentAt_ASC
   enactmentAt_DESC
+  enactmentAfter_ASC
+  enactmentAfter_DESC
   submittedAt_ASC
   submittedAt_DESC
   submitted_ASC
@@ -6748,10 +6754,11 @@ enum ReferendumV2OrderByInput {
 type ReferendumV2PreviousValues {
   id: Int!
   trackNumber: Int!
-  track: String!
+  origin: String!
   preimageHash: String!
   referendumId: Int!
   enactmentAt: String
+  enactmentAfter: String
   submittedAt: String!
   submitted: Json
   decisionDeposit: Json
@@ -6778,12 +6785,13 @@ input ReferendumV2SubscriptionWhereInput {
 
 input ReferendumV2UpdateInput {
   trackNumber: Int
-  track: String
+  origin: String
   preimage: PreimageV2UpdateOneWithoutReferendumInput
   preimageHash: String
   referendumId: Int
   referendumStatus: ReferendumStatusV2UpdateManyWithoutReferendumInput
   enactmentAt: String
+  enactmentAfter: String
   submittedAt: String
   submitted: Json
   decisionDeposit: Json
@@ -6792,10 +6800,11 @@ input ReferendumV2UpdateInput {
 
 input ReferendumV2UpdateManyMutationInput {
   trackNumber: Int
-  track: String
+  origin: String
   preimageHash: String
   referendumId: Int
   enactmentAt: String
+  enactmentAfter: String
   submittedAt: String
   submitted: Json
   decisionDeposit: Json
@@ -6820,11 +6829,12 @@ input ReferendumV2UpdateOneWithoutPreimageInput {
 
 input ReferendumV2UpdateWithoutPreimageDataInput {
   trackNumber: Int
-  track: String
+  origin: String
   preimageHash: String
   referendumId: Int
   referendumStatus: ReferendumStatusV2UpdateManyWithoutReferendumInput
   enactmentAt: String
+  enactmentAfter: String
   submittedAt: String
   submitted: Json
   decisionDeposit: Json
@@ -6833,11 +6843,12 @@ input ReferendumV2UpdateWithoutPreimageDataInput {
 
 input ReferendumV2UpdateWithoutReferendumStatusDataInput {
   trackNumber: Int
-  track: String
+  origin: String
   preimage: PreimageV2UpdateOneWithoutReferendumInput
   preimageHash: String
   referendumId: Int
   enactmentAt: String
+  enactmentAfter: String
   submittedAt: String
   submitted: Json
   decisionDeposit: Json
@@ -6871,20 +6882,20 @@ input ReferendumV2WhereInput {
   trackNumber_lte: Int
   trackNumber_gt: Int
   trackNumber_gte: Int
-  track: String
-  track_not: String
-  track_in: [String!]
-  track_not_in: [String!]
-  track_lt: String
-  track_lte: String
-  track_gt: String
-  track_gte: String
-  track_contains: String
-  track_not_contains: String
-  track_starts_with: String
-  track_not_starts_with: String
-  track_ends_with: String
-  track_not_ends_with: String
+  origin: String
+  origin_not: String
+  origin_in: [String!]
+  origin_not_in: [String!]
+  origin_lt: String
+  origin_lte: String
+  origin_gt: String
+  origin_gte: String
+  origin_contains: String
+  origin_not_contains: String
+  origin_starts_with: String
+  origin_not_starts_with: String
+  origin_ends_with: String
+  origin_not_ends_with: String
   preimage: PreimageV2WhereInput
   preimageHash: String
   preimageHash_not: String
@@ -6925,6 +6936,20 @@ input ReferendumV2WhereInput {
   enactmentAt_not_starts_with: String
   enactmentAt_ends_with: String
   enactmentAt_not_ends_with: String
+  enactmentAfter: String
+  enactmentAfter_not: String
+  enactmentAfter_in: [String!]
+  enactmentAfter_not_in: [String!]
+  enactmentAfter_lt: String
+  enactmentAfter_lte: String
+  enactmentAfter_gt: String
+  enactmentAfter_gte: String
+  enactmentAfter_contains: String
+  enactmentAfter_not_contains: String
+  enactmentAfter_starts_with: String
+  enactmentAfter_not_starts_with: String
+  enactmentAfter_ends_with: String
+  enactmentAfter_not_ends_with: String
   submittedAt: String
   submittedAt_not: String
   submittedAt_in: [String!]

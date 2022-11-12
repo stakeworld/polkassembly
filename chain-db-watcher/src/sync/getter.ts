@@ -220,6 +220,28 @@ export const getDiscussionTips = async (): Promise<Array<DiscussionTipFragment> 
 	}
 };
 
+export const getDiscussionReferendumV2 = async (): Promise<Array<any | null> | undefined> => {
+	if (!discussionGraphqlUrl) {
+		throw new Error(
+			'Environment variable for the DISCUSSION_DB_GRAPHQL_URL not set'
+		);
+	}
+	try {
+		const client = new GraphQLClient(discussionGraphqlUrl, { headers: {} });
+
+		const discussionSdk = getDiscussionSdk(client);
+		const data = await discussionSdk.getDiscussionReferendumV2();
+
+		return data?.onchain_links;
+	} catch (err) {
+		console.error(chalk.red('getDiscussionReferendumV2 execution'), err);
+		err.response?.errors &&
+			console.error(chalk.red('GraphQL response errors', err.response.errors));
+		err.response?.data &&
+			console.error(chalk.red('Response data if available', err.response.data));
+	}
+};
+
 export const getOnChainMotions = async (): Promise<Array<OnchainMotionFragment | null> | undefined> => {
 	if (!onchainGraphqlServerUrl) {
 		throw new Error(
@@ -397,6 +419,29 @@ export const getOnChainTechCommitteeProposals = async (): Promise<Array<OnchainT
 		return data?.techCommitteeProposals;
 	} catch (err) {
 		console.error(chalk.red('getOnChainTechCommitteeProposals execution'), err);
+		err.response?.errors &&
+			console.error(chalk.red('GraphQL response errors', err.response.errors));
+		err.response?.data &&
+			console.error(chalk.red('Response data if available', err.response.data));
+	}
+};
+
+export const getOnChainReferendumV2s = async (): Promise<Array<any | null> | undefined> => {
+	if (!onchainGraphqlServerUrl) {
+		throw new Error(
+			'Environment variable for the CHAIN_DB_GRAPHQL_URL not set'
+		);
+	}
+
+	try {
+		const client = new GraphQLClient(onchainGraphqlServerUrl, { headers: {} });
+
+		const onchainSdk = getOnchainSdk(client);
+		const data = await onchainSdk.getOnchainReferendumV2({ startBlock });
+
+		return data?.referendumV2s;
+	} catch (err) {
+		console.error(chalk.red('getOnChainReferndumV2s execution'), err);
 		err.response?.errors &&
 			console.error(chalk.red('GraphQL response errors', err.response.errors));
 		err.response?.data &&

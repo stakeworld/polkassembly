@@ -15,6 +15,7 @@ import {
 	addDiscussionPostAndChildBounty,
 	addDiscussionPostAndMotion,
 	addDiscussionPostAndProposal,
+	addDiscussionPostAndReferendumV2,
 	addDiscussionPostAndTechCommitteeProposal,
 	addDiscussionPostAndTip,
 	addDiscussionPostAndTreasuryProposal,
@@ -23,12 +24,14 @@ import {
 	childBountyDiscussionExists,
 	motionDiscussionExists,
 	proposalDiscussionExists,
+	referendumV2DiscussionExists,
 	techCommitteeProposalDiscussionExists,
 	tipDiscussionExists,
 	treasuryProposalDiscussionExists,
+	updateDiscussionReferendumV2Status,
 	updateTreasuryProposalWithMotion
 } from './graphql_helpers';
-import { bountySubscription, childBountySubscription, motionSubscription, proposalSubscription, referendumSubscription, techCommitteeProposalSubscription, tipSubscription, treasurySpendProposalSubscription } from './queries';
+import { bountySubscription, childBountySubscription, motionSubscription, proposalSubscription, referendumStatusV2Subscription, referendumSubscription, referendumV2Subscription, techCommitteeProposalSubscription, tipSubscription, treasurySpendProposalSubscription } from './queries';
 import { syncDBs } from './sync';
 import { getMotionTreasuryProposalId } from './sync/utils';
 
@@ -281,7 +284,70 @@ const startSubscriptions = (client: SubscriptionClient): void => {
 			process.exit(1);
 		}
 	});
+
+	execute(link, {
+		query: referendumV2Subscription,
+		variables: { startBlock }
+	}).subscribe({
+		next: ({ data }): void => {
+			console.log('ReferendumV2 data received', JSON.stringify(data, null, 2));
+			if (data?.referendmV2.mutation === subscriptionMutation.Created) {
+				const {
+					referendumId,
+					referendumStatus,
+					origin,
+					trackNumber,
+					preimage
+				} = data?.referendmV2?.node;
+
+				addDiscussionPostAndReferendumV2({
+					trackNumber,
+					origin,
+					status: referendumStatus,
+					referendumId,
+					proposer: preimage?.author
+				}).catch(e => {
+					console.error(chalk.red(e));
+				});
+			}
+		},
+		error: error => { throw new Error(`Subscription (referendumV2) error: ${JSON.stringify(error)}`); },
+		complete: () => {
+			console.log('Subscription (referendumV2) completed');
+			process.exit(1);
+		}
+	});
+
+	execute(link, {
+		query: referendumStatusV2Subscription,
+		variables: { startBlock }
+	}).subscribe({
+		next: ({ data }): void => {
+			console.log('ReferendumStatusV2 data received', JSON.stringify(data, null, 2));
+			const {
+				referendum,
+				status
+			} = data?.referendumStatusV2?.node;
+
+			referendumV2DiscussionExists(referendum.refendumId).then(alreadyExist => {
+				if (!alreadyExist) {
+					throw new Error(`Status recieved for refendumId ${referendum.refendumId} which is not present in discussion db`);
+				} else {
+					updateDiscussionReferendumV2Status({
+						referendumId: referendum.refendumId,
+						status
+					});
+				}
+			}).catch(error => console.error(chalk.red(error)));
+		},
+		error: error => { throw new Error(`Subscription (referendumStatusV2) error: ${JSON.stringify(error)}`); },
+		complete: () => {
+			console.log('Subscription (referendumStatusV2) completed');
+			process.exit(1);
+		}
+	});
 };
+
 async function main (): Promise<void> {
 	if (!graphQLEndpoint) {
 		console.error(
