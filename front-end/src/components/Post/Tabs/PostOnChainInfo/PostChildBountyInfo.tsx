@@ -75,7 +75,7 @@ const PostChildBountyInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Prop
 					{description &&
 					<Col xs={24} md={12}>
 						<h6>Description</h6>
-						{description}
+						<p className='text-navBlue leading-6 whitespace-pre-wrap'>{description}</p>
 					</Col>}
 				</Row>
 			</OnchainInfoWrapper>
