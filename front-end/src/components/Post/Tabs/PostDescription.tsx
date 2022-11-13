@@ -25,6 +25,7 @@ interface Props {
 	className?: string;
 	canEdit: boolean | '' | undefined;
 	id: number | null | undefined;
+	postStatus?: string;
 	isEditing: boolean;
 	isOnchainPost: boolean;
 	post: DiscussionPostFragment | ProposalPostFragment | ReferendumPostFragment| TreasuryProposalPostFragment| MotionPostFragment;
@@ -44,7 +45,7 @@ interface ITimeline {
 	id: number;
 }
 
-const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, post, refetch, toggleEdit, Sidebar, TrackerButtonComp } : Props) => {
+const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, post, postStatus, refetch, toggleEdit, Sidebar, TrackerButtonComp } : Props) => {
 	const { content, onchain_link } = post;
 
 	const { blocktime } = useBlockTime();
@@ -188,7 +189,7 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 									}));
 								}} className={`flex flex-col border-none outline-none items-end w-full ${timeline === 0? 'text-sidebarBlue':'text-navBlue'}`}>
 									<span>Today</span>
-									<span>Proposed</span>
+									<span>{postStatus}</span>
 								</button>
 							</Timeline.Item>
 							{timelines.map(({ date, id, status }) => {
