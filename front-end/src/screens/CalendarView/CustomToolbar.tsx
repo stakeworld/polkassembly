@@ -137,13 +137,13 @@ function CustomToolbar(props: any) {
 	},[props.view]);
 
 	function createEventButton(disabled:boolean = false){
-		return <Button type='primary' size={props.width < 768 ? 'small' : 'middle'} className='ml-2' disabled={disabled} onClick={() => { if(!disabled) props.setSidebarCreateEvent(true); } }>Create Event</Button>;
+		return <Button size={props.width < 768 ? 'small' : 'middle'} className='ml-2 bg-pink_primary rounded-md  hover:bg-pink_secondary text-white transition-colors duration-300' disabled={disabled} onClick={() => { if(!disabled) props.setSidebarCreateEvent(true); } }>Create Event</Button>;
 	}
 
 	return (
 		props.date && <>
 			{ !props.small && !(props.width < 768) ?
-				<div className={`custom-calendar-toolbar ${props.small || props.width < 768 ? 'small' : ''}`} style={ !props.small && !(props.width <= 991) ? { marginLeft: -props.leftPanelWidth } : { marginLeft: 0 } }>
+				<div className={`custom-calendar-toolbar ${props.small || props.width < 768 ? 'small' : ''}`} style={{ marginLeft: !props.small && !(props.width <= 991) ? props.leftPanelWidth && -props.leftPanelWidth : 0 }}>
 					<NetworkSelect selectedNetwork={props.selectedNetwork} setSelectedNetwork={props.setSelectedNetwork} />
 					<div className='select-div'>
 						<label>Type</label>
@@ -157,7 +157,7 @@ function CustomToolbar(props: any) {
 
 					{/* <Button className='search-btn' icon='search' /> */}
 					<div className='flex items-center ml-auto'>
-						<Button onClick={goToToday}>Today</Button>
+						<Button className='rounded-md' onClick={goToToday}>Today</Button>
 
 						{
 							!props.isLoggedIn ?

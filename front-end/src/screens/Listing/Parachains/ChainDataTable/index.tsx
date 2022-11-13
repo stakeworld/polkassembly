@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 import { Tooltip } from 'antd';
 import Table, { ColumnsType } from 'antd/lib/table';
-import React, { useEffect,useState } from 'react';
+import React, { Key, useEffect,useState } from 'react';
 import announcedIcon from 'src/assets/parachains/announced.png';
 import auctionIcon from 'src/assets/parachains/auction.png';
 import liveIcon from 'src/assets/parachains/chain-link.png';
@@ -32,6 +32,7 @@ interface ParachainRowData{
     logoURL: string
 	chain: string
     w3fGrant: { [key: string]: any; } | null
+	key: Key | null | undefined
 }
 
 const columns: ColumnsType<ParachainRowData> = [
@@ -170,6 +171,7 @@ const ChainDataTable = ({ chain, data }:Props) => {
 					githubLink: item?.githubURL,
 					index: id + 1,
 					investors: item.investorsCount,
+					key: id + 1,
 					logoURL: item?.logoURL,
 					project: title,
 					status: item?.status,
@@ -192,7 +194,8 @@ const ChainDataTable = ({ chain, data }:Props) => {
 
 			<div className="block lg:hidden h-[520px] overflow-y-auto">
 				{tableData.map((data) => (
-					<Cards key={data.index} {...data} />
+					// eslint-disable-next-line react/jsx-key
+					<Cards {...data} />
 				))}
 			</div>
 		</>);
