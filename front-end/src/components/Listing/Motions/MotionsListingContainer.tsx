@@ -16,14 +16,20 @@ const LIMIT = 10;
 const MotionsListingContainer = ({ className, count } : { className?:string, count: number | null | undefined }) => {
 	const [offset, setOffset] = useState(0);
 
-	const [refetch, { data, error, loading }] = useAllMotionPostsLazyQuery({ variables: {
+	const [getData, { called, data, error, loading, refetch }] = useAllMotionPostsLazyQuery({ variables: {
 		limit: LIMIT,
 		offset,
 		postType: post_type.ON_CHAIN
 	} });
+
 	useEffect(() => {
-		refetch();
-	}, [refetch]);
+		if (called) {
+			refetch();
+		} else {
+			getData();
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [called]);
 
 	const onPaginationChange = (page:number) => {
 		handlePaginationChange({ LIMIT, page, setOffset });

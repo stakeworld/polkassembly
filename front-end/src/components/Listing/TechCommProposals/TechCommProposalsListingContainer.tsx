@@ -16,15 +16,20 @@ const LIMIT = 10;
 const TechCommProposalsListingContainer = ({ className, count } : { className?:string, count: number | null | undefined }) => {
 	const [offset, setOffset] = useState(0);
 
-	const [refetch, { data, error, loading }] = useAllTechCommitteeProposalPostsLazyQuery({ variables: {
+	const [getData, { called, data, error, loading, refetch }] = useAllTechCommitteeProposalPostsLazyQuery({ variables: {
 		limit: LIMIT,
 		offset,
 		postType: post_type.ON_CHAIN
 	} });
 
 	useEffect(() => {
-		refetch();
-	}, [refetch]);
+		if (called) {
+			refetch();
+		} else {
+			getData();
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [called]);
 
 	const onPaginationChange = (page:number) => {
 		handlePaginationChange({ LIMIT, page, setOffset });

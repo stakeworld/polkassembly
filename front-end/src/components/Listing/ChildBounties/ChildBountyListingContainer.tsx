@@ -17,15 +17,21 @@ const LIMIT = 10;
 const ChildBountyListingContainer = ({ className, count } : { className?:string, count: number | null | undefined }) => {
 	const [offset, setOffset] = useState(0);
 
-	const [refetch, { data, error, loading }] = useAllChildBountyPostsLazyQuery({ variables: {
+	const [getData, { called, data, error, loading, refetch }] = useAllChildBountyPostsLazyQuery({ variables: {
 		limit: LIMIT,
 		offset,
 		postTopic: post_topic.TREASURY,
 		postType: post_type.ON_CHAIN
 	} });
+
 	useEffect(() => {
-		refetch();
-	}, [refetch]);
+		if (called) {
+			refetch();
+		} else {
+			getData();
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [called]);
 
 	const onPaginationChange = (page:number) => {
 		handlePaginationChange({ LIMIT, page, setOffset });
