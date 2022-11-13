@@ -12,7 +12,6 @@ import formatBnBalance from 'src/util/formatBnBalance';
 import getNetwork from 'src/util/getNetwork';
 
 import Address from '../../../../ui-components/Address';
-import Card from '../../../../ui-components/Card';
 import Loader from '../../../../ui-components/Loader';
 
 interface Props {
@@ -147,7 +146,7 @@ const TipInfo = ({ onChainId, who }: Props) => {
 	return (
 		<>
 			{tips?.tips.length > 0 ?
-				<Card className='flex flex-col gap-y-7'>
+				<div className='flex flex-col gap-y-7'>
 					<h3 className='flex items-center gap-x-2 text-lg tracking-wide text-sidebarBlue font-medium'>Receiver of Final Tip<HelperTooltip className='text-sm' text='The final value of the tip is decided based on the median of all tips issued by the tippers' /></h3>
 					<Row className='flex items-center justify-between'>
 						<Col>
@@ -183,9 +182,9 @@ const TipInfo = ({ onChainId, who }: Props) => {
 							</Row>
 						)}
 					</div>
-				</Card>
+				</div>
 				: isTippersLoading ? <Loader text={'Requesting Tippers'} /> : tippers?.length > 0?
-					<Card className='flex flex-col gap-y-7'>
+					<div className='flex flex-col gap-y-7'>
 						<h3 className='flex items-center gap-x-2 text-lg tracking-wide text-sidebarBlue font-medium'>Receiver of Final Tip<HelperTooltip className='text-sm' text='The final value of the tip is decided based on the median of all tips issued by the tippers' /></h3>
 						<Row className='flex items-center justify-between'>
 							<Col>
@@ -217,7 +216,7 @@ const TipInfo = ({ onChainId, who }: Props) => {
 							}
 							)}
 						</div>
-					</Card>
+					</div>
 					:<PostEmptyState />}
 		</>
 	);

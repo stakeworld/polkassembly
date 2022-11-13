@@ -14,8 +14,6 @@ import { useGetCouncilMembersQuery } from 'src/generated/graphql';
 import { LoadingStatusType, NotificationStatus } from 'src/types';
 import AccountSelectionForm from 'src/ui-components/AccountSelectionForm';
 import BalanceInput from 'src/ui-components/BalanceInput';
-import Card from 'src/ui-components/Card';
-import GovSidebarCard from 'src/ui-components/GovSidebarCard';
 import Loader from 'src/ui-components/Loader';
 import queueNotification from 'src/ui-components/QueueNotification';
 
@@ -128,10 +126,10 @@ const EndorseTip = ({
 	const endorse = noAccount
 		? <GetAccountsButton/>
 		: loadingStatus.isLoading
-			? <Card className={'LoaderWrapper'}>
+			? <div className={'LoaderWrapper'}>
 				<Loader text={loadingStatus.message}/>
-			</Card>
-			: <Card>
+			</div>
+			: <div>
 				<AccountSelectionForm
 					title='Endorse with account'
 					accounts={accounts}
@@ -151,9 +149,9 @@ const EndorseTip = ({
 				>
 					Endorse
 				</Button>
-			</Card>;
+			</div>;
 	const NotCouncil = () =>
-		<GovSidebarCard>
+		<>
 			<h3 className='dashboard-heading mb-6'>Endorse with account!</h3>
 			<Alert className='mb-6' type='warning' message={<div className='flex items-center gap-x-2'>
 				<span>
@@ -162,7 +160,7 @@ const EndorseTip = ({
 				<img width={25} height={25} src={frowningFace} alt="frowning face" />
 			</div>} />
 			<Button onClick={() => setForceEndorse(true)}>Let me try still.</Button>
-		</GovSidebarCard>;
+		</>;
 
 	return (
 		<div className={className}>
