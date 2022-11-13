@@ -26,10 +26,16 @@ const DiscussionListingContainer = ({ className, sortBy, count } : { className?:
 		postsQuery = useLatestDiscussionPostsLazyQuery;
 	}
 
-	const [refetch, { data, error, loading }] = postsQuery({ variables: { limit: LIMIT, offset } });
+	const [getData, { called, data, error, loading, refetch }] = postsQuery({ variables: { limit: LIMIT, offset } });
+
 	useEffect(() => {
-		refetch();
-	}, [refetch]);
+		if (called) {
+			refetch();
+		} else {
+			getData();
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [called]);
 
 	const onPaginationChange = (page:number) => {
 		handlePaginationChange({ LIMIT, page, setOffset });

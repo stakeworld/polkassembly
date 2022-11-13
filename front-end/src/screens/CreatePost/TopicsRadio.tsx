@@ -5,10 +5,10 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import { Segmented } from 'antd';
 import { SegmentedValue } from 'antd/lib/segmented';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ErrorAlert from 'src/ui-components/ErrorAlert';
 
-import { usePost_TopicsQuery } from '../../generated/graphql';
+import { usePost_TopicsLazyQuery } from '../../generated/graphql';
 
 interface Props {
     className?: string
@@ -17,8 +17,11 @@ interface Props {
 
 const TopicsRadio = ({ className, onTopicSelection }: Props) => {
 
-	const { data, error } = usePost_TopicsQuery();
-	if (!data || !data.post_topics) return null;
+	const [refetch, { data, error }] = usePost_TopicsLazyQuery();
+
+	useEffect(() => {
+		refetch();
+	}, [refetch]);
 
 	if (error?.message) {
 		console.error('Topic retrieval error', error);

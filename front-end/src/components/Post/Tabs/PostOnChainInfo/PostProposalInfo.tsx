@@ -71,7 +71,7 @@ const PostProposalInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props) 
 						{ metaDescription &&
 							<>
 								<h6>Description</h6>
-								<p className='text-navBlue leading-6'>{metaDescription}</p>
+								<p className='text-navBlue leading-6 whitespace-pre-wrap'>{metaDescription}</p>
 							</>
 						}
 					</Col>

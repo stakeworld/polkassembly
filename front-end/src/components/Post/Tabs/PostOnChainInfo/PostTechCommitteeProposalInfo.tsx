@@ -71,7 +71,7 @@ const PostTechCommitteeProposalInfo = ({ className, onchainLink, setOtherProposa
 							{ metaDescription &&
 								<>
 									<h6>Description</h6>
-									<p className='text-navBlue leading-6'>{metaDescription}</p>
+									<p className='text-navBlue leading-6 whitespace-pre-wrap'>{metaDescription}</p>
 								</>
 							}
 						</Col>
@@ -112,7 +112,7 @@ const ProposalInfo = ({ preimage } : {preimage?: OnchainLinkMotionPreimageFragme
 				{ metaDescription &&
 					<>
 						<h6>Description</h6>
-						{metaDescription}
+						<p className='text-navBlue leading-6 whitespace-pre-wrap'>{metaDescription}</p>
 					</>
 				}
 			</Col>
