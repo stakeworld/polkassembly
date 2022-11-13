@@ -75,6 +75,7 @@ const PostCommentForm = ({ className, postId, refetch }: Props) => {
 			.then(({ data }) => {
 				if (data && data.insert_comments && data.insert_comments.affected_rows > 0) {
 					setContent('');
+					form.resetFields();
 					global.window.localStorage.removeItem(commentKey());
 					refetch();
 					createSubscription(postId);

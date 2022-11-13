@@ -1,6 +1,7 @@
 // Copyright 2019-2020 @Premiurly/polkassembly authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
+
 import { BellOutlined, BookOutlined, DownOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import styled from '@xstyled/styled-components';
 import { Avatar, Dropdown, Layout, Menu, MenuProps } from 'antd';
@@ -73,10 +74,9 @@ const getUserDropDown = (handleLogout: any, img?: string | null, username?: stri
 			</Link>
 		}
 	];
-	const menu = <Menu className='max-h-96 overflow-y-auto' items={dropdownMenuItems} />;
 
 	const AuthDropdown = ({ children }: {children: ReactNode}) => (
-		<Dropdown overlay={menu} trigger={['click']}>
+		<Dropdown menu={{ items: dropdownMenuItems }} trigger={['click']}>
 			{children}
 		</Dropdown>
 	);
@@ -218,12 +218,6 @@ export default styled(AppLayout)`
 .ant-menu-item-selected {
 	background: #fff !important;
 
-	.anticon {
-		path {
-			stroke: pink_primary !important;
-		}
-	}
-
 	.ant-menu-title-content {
 		color: pink_primary !important;
 	}
@@ -252,5 +246,9 @@ export default styled(AppLayout)`
 .ant-empty-image{
 	display: flex;
 	justify-content: center;
+}
+
+.sidebar .ant-menu-item-selected .anticon {
+	filter: brightness(0) saturate(100%) invert(13%) sepia(94%) saturate(7151%) hue-rotate(321deg) brightness(90%) contrast(101%);
 }
 `;

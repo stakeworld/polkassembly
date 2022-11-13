@@ -3,14 +3,13 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 /* eslint-disable sort-keys */
-import { QueryLazyOptions } from '@apollo/client';
 import styled from '@xstyled/styled-components';
 import { Tabs } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MetaContext } from 'src/context/MetaContext';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
-import { BountyPostAndCommentsQueryHookResult, BountyPostFragment, ChildBountyPostAndCommentsQueryHookResult, ChildBountyPostFragment, DiscussionPostAndCommentsQueryHookResult, DiscussionPostFragment, Exact, MotionPostAndCommentsQueryHookResult, MotionPostFragment, OnchainLinkBountyFragment, OnchainLinkChildBountyFragment, OnchainLinkMotionFragment, OnchainLinkProposalFragment, OnchainLinkReferendumFragment, OnchainLinkTechCommitteeProposalFragment, OnchainLinkTipFragment, OnchainLinkTreasuryProposalFragment, ProposalPostAndCommentsQueryHookResult, ProposalPostFragment, ReferendumPostAndCommentsQueryHookResult, ReferendumPostFragment, TechCommitteeProposalPostAndCommentsQueryHookResult, TechCommitteeProposalPostFragment, TipPostAndCommentsQueryHookResult, TipPostFragment, TreasuryProposalPostAndCommentsQueryHookResult, TreasuryProposalPostFragment } from 'src/generated/graphql';
+import { BountyPostAndCommentsQueryHookResult, BountyPostFragment, ChildBountyPostAndCommentsQueryHookResult, ChildBountyPostFragment, DiscussionPostAndCommentsQueryHookResult, DiscussionPostFragment, MotionPostAndCommentsQueryHookResult, MotionPostFragment, OnchainLinkBountyFragment, OnchainLinkChildBountyFragment, OnchainLinkMotionFragment, OnchainLinkProposalFragment, OnchainLinkReferendumFragment, OnchainLinkTechCommitteeProposalFragment, OnchainLinkTipFragment, OnchainLinkTreasuryProposalFragment, ProposalPostAndCommentsQueryHookResult, ProposalPostFragment, ReferendumPostAndCommentsQueryHookResult, ReferendumPostFragment, TechCommitteeProposalPostAndCommentsQueryHookResult, TechCommitteeProposalPostFragment, TipPostAndCommentsQueryHookResult, TipPostFragment, TreasuryProposalPostAndCommentsQueryHookResult, TreasuryProposalPostFragment } from 'src/generated/graphql';
 import { PostCategory } from 'src/global/post_categories';
 import { PostEmptyState } from 'src/ui-components/UIStates';
 
@@ -48,11 +47,7 @@ interface Props {
 	isTechCommitteeProposal?: boolean
 	isTipProposal?: boolean
 	isChildBounty?: boolean
-	refetch: ((options?: QueryLazyOptions<Exact<{
-		id: number;
-	}>> | undefined) => void ) | ((options?: QueryLazyOptions<Exact<{
-		hash: string;
-	}>> | undefined) => void)
+	refetch: any
 }
 
 interface Redirection {

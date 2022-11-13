@@ -14,10 +14,17 @@ const ReferendumPost = ({ councilBoardSidebar=false, postID }:{ councilBoardSide
 	const { id } = useParams();
 	const idNumber = Number(id) || Number(postID) || 0;
 
-	const [refetch, { data, error }] = useReferendumPostAndCommentsLazyQuery({ variables: { 'id': idNumber } });
+	const [getData, { called, data, error, refetch }] = useReferendumPostAndCommentsLazyQuery({ variables: { 'id': idNumber } });
+
 	useEffect(() => {
-		refetch();
-	}, [refetch]);
+		if (called) {
+			refetch();
+		} else {
+			getData();
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [called]);
+
 	if (error?.message) return <ErrorState errorMessage={error.message} />;
 
 	if (data) return (<div>

@@ -50,7 +50,7 @@ const ClaimPayoutModal = ({ className, parentBountyId, childBountyId } : Props) 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const onAccountChange = (e: any, address:string) => {
+	const onAccountChange = (address:string) => {
 		setSelectedAddress(address);
 	};
 

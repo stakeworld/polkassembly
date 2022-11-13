@@ -14,10 +14,17 @@ const TreasuryPost = () => {
 	const { id } = useParams();
 	const idNumber = Number(id) || 0;
 
-	const [refetch, { data, error }] = useTreasuryProposalPostAndCommentsLazyQuery({ variables: { 'id': idNumber } });
+	const [getData, { called, data, error, refetch }] = useTreasuryProposalPostAndCommentsLazyQuery({ variables: { 'id': idNumber } });
+
 	useEffect(() => {
-		refetch();
-	}, [refetch]);
+		if (called) {
+			refetch();
+		} else {
+			getData();
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [called]);
+
 	if (error?.message) return <ErrorState errorMessage={error.message} />;
 
 	if (data) return (<div>

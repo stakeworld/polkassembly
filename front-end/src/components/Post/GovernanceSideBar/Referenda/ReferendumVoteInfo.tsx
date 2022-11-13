@@ -5,8 +5,8 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import { Spin } from 'antd';
 import BN from 'bn.js';
-import React, { memo, useEffect, useMemo, useState } from 'react';
-import { chainProperties } from 'src/global/networkConstants';
+import React, { memo, useContext, useEffect, useMemo, useState } from 'react';
+import { ApiContext } from 'src/context/ApiContext';
 import subscanApiHeaders from 'src/global/subscanApiHeaders';
 import { useFetch } from 'src/hooks';
 import { LoadingStatusType, VoteThreshold } from 'src/types';
@@ -28,17 +28,10 @@ const ZERO = new BN(0);
 const NETWORK = getNetwork();
 
 const ReferendumVoteInfo = ({ className, referendumId }: Props) => {
+	const { api, apiReady } = useContext(ApiContext);
 	const [totalIssuance, setTotalIssuance] = useState(ZERO);
 	const [loadingStatus, setLoadingStatus] = useState<LoadingStatusType>({ isLoading: true, message:'Loading votes' });
 	const [voteInfo, setVoteInfo] = useState<any | null>(null);
-
-	const { data: tokenData, error:tokenDataError } = useFetch<any>(
-		`https://${NETWORK}.api.subscan.io/api/scan/token`,
-		{
-			headers: subscanApiHeaders,
-			method: 'POST'
-		}
-	);
 
 	const { data: voteInfoData, error:voteInfoError } = useFetch<any>(
 		`https://${NETWORK}.api.subscan.io/api/scan/democracy/referendum`,
@@ -52,20 +45,35 @@ const ReferendumVoteInfo = ({ className, referendumId }: Props) => {
 	);
 
 	useEffect(() => {
+		if (!api) {
+			return;
+		}
+
+		if (!apiReady) {
+			return;
+		}
+
+		let unsubscribe: () => void;
+
 		setLoadingStatus({
 			isLoading: true,
 			message: 'Loading Data'
 		});
 
-		if(!tokenDataError && tokenData && tokenData.data) {
-			setTotalIssuance(tokenData.data.detail[chainProperties[NETWORK].tokenSymbol].total_issuance);
-		}
+		api.query.balances.totalIssuance((result) => {
+			setTotalIssuance(result as BN);
+		})
+			.then( unsub => {
+				unsubscribe = unsub;
+				setLoadingStatus({
+					isLoading: false,
+					message: 'Loading Data'
+				});
+			})
+			.catch(console.error);
 
-		setLoadingStatus({
-			isLoading: false,
-			message: 'Loading Data'
-		});
-	}, [tokenData, tokenDataError]);
+		return () => unsubscribe && unsubscribe();
+	},[api, apiReady]);
 
 	useEffect(() => {
 		setLoadingStatus({
@@ -94,8 +102,8 @@ const ReferendumVoteInfo = ({ className, referendumId }: Props) => {
 		});
 	}, [voteInfoData, voteInfoError]);
 
-	const turnoutPercentage = useMemo( () => {
-		if (totalIssuance.isZero()) {
+	const turnoutPercentage = useMemo(() => {
+		if (totalIssuance && totalIssuance.isZero()) {
 			return 0;
 		}
 		// BN doens't handle floats. If we devide a number by a bigger number (12/100 --> 0.12), the result will be 0

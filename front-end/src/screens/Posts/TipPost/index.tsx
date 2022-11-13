@@ -14,10 +14,17 @@ const TipPost = () => {
 	const { hash } = useParams();
 	const hashString = `${hash}`;
 
-	const [refetch, { data, error }] = useTipPostAndCommentsLazyQuery({ variables: { 'hash': hashString } });
+	const [getData, { called, data, error, refetch }] = useTipPostAndCommentsLazyQuery({ variables: { 'hash': hashString } });
+
 	useEffect(() => {
-		refetch();
-	}, [refetch]);
+		if (called) {
+			refetch();
+		} else {
+			getData();
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [called]);
+
 	if (error?.message) return <ErrorState errorMessage={error.message} />;
 
 	if (data) return (<div>
