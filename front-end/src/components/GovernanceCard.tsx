@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { ClockCircleOutlined, CommentOutlined, DislikeOutlined, LikeOutlined } from '@ant-design/icons';
-import { Divider,Space } from 'antd';
+import { Divider } from 'antd';
 import React, { useContext } from 'react';
 import BlockCountdown from 'src/components/BlockCountdown';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
@@ -77,44 +77,44 @@ const GovernanceCard = function ({
 	});
 	return (
 		<div className={`${className} ${ownProposal && 'border-l-pink_primary border-l-4'} border-2 border-grey_light hover:border-pink_primary hover:shadow-xl transition-all duration-200 rounded-md p-3 md:p-4`}>
-			<div className="flex justify-between">
-				<div className="content">
-					<h1 className='text-sidebarBlue font-semibold text-sm flex'>
+			<div className="flex flex-col justify-between">
+				<div className="flex items-center justify-between gap-x-2">
+					<h1 className='text-sidebarBlue font-semibold text-sm flex max-w-[250px] sm:max-w-none overflow-hidden sm:overflow-visible'>
 						{!tipReason && <span className='font-medium mr-2'>#{onchainId}</span>} {mainTitle}
 					</h1>
-					<h2 className='text-navBlue font-medium text-sm'>{subTitle}</h2>
+					{status && <StatusTag className='self-start' status={status}/>}
+				</div>
+				<h2 className='text-navBlue font-medium text-sm'>{subTitle}</h2>
 
-					<Space className="mt-3 font-medium text-navBlue text-xs flex flex-col md:flex-row items-start md:items-center">
-						<Space className='flex'>
-							<OnchainCreationLabel address={address} topic={topic} />
-						</Space>
-						<Divider className='hidden md:inline-block' type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
+				<div className="mt-3 gap-2.5 font-medium text-navBlue text-xs flex flex-col md:flex-row items-start md:items-center">
+					<OnchainCreationLabel address={address} topic={topic} />
+					<Divider className='hidden md:inline-block' type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
 
-						<div className='flex items-center gap-x-2'>
-							<div className='flex items-center justify-center gap-x-1.5'>
-								<LikeOutlined />
-								<span>{getFormattedLike(reaction.like)}</span>
-							</div>
-							<Divider className='hidden md:inline-block' type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
-							<div className='flex items-center justify-center gap-x-1.5'>
-								<DislikeOutlined />
-								<span>{getFormattedLike(reaction.dislike)}</span>
-							</div>
-							<Divider className='hidden md:inline-block' type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
-							{relativeCreatedAt && <>
-								<div className='flex items-center'>
-									<ClockCircleOutlined className='mr-1' /> {relativeCreatedAt}
-								</div><Divider type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
-							</>}
-
-							{comments && <>
-								<div className='flex items-center'>
-									<CommentOutlined className='mr-1' /> {comments} comments
-								</div>
-							</>}
+					<div className='flex items-center gap-x-2'>
+						<div className='flex items-center justify-center gap-x-1.5'>
+							<LikeOutlined />
+							<span>{getFormattedLike(reaction.like)}</span>
 						</div>
+						<Divider className='hidden md:inline-block' type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
+						<div className='flex items-center justify-center gap-x-1.5'>
+							<DislikeOutlined />
+							<span>{getFormattedLike(reaction.dislike)}</span>
+						</div>
+						<Divider className='hidden md:inline-block' type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
+						{relativeCreatedAt && <>
+							<div className='flex items-center'>
+								<ClockCircleOutlined className='mr-1' /> {relativeCreatedAt}
+							</div><Divider type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
+						</>}
 
-						{!!end && !!currentBlock &&
+						{comments && <>
+							<div className='flex items-center'>
+								<CommentOutlined className='mr-1' /> {comments} comments
+							</div>
+						</>}
+					</div>
+
+					{!!end && !!currentBlock &&
 							<div className="flex items-center">
 								<Divider className='hidden md:inline-block' type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
 								<ClockCircleOutlined className='mr-1' />
@@ -124,11 +124,8 @@ const GovernanceCard = function ({
 										: <span>ended <BlockCountdown endBlock={end}/></span>
 								}
 							</div>
-						}
-					</Space>
+					}
 				</div>
-
-				{status && <StatusTag status={status}/>}
 			</div>
 		</div>
 	);
