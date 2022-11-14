@@ -36,7 +36,7 @@ const VotersList = ({ className, referendumId } : Props) => {
 				body: JSON.stringify({
 					page: currentPage,
 					referendum_index: referendumId,
-					row: 30
+					row: 10
 				}),
 				headers: subscanApiHeaders,
 				method: 'POST'
@@ -77,9 +77,9 @@ const VotersList = ({ className, referendumId } : Props) => {
 							<h6 className='dashboard-heading'>Voters</h6>
 						</div>
 
-						<div className='flex flex-col justify-between gap-y-3 h-screen overflow-y-auto px-0 md:px-3'>
+						<div className='flex flex-col justify-between gap-y-1 h-screen overflow-y-auto px-0 md:px-3'>
 							{votersList.map((voteData: any, index:number) =>
-								<div className='flex items-center justify-between mb-6' key={index}>
+								<div className='flex items-center justify-between mb-4' key={index}>
 									<div className='item overflow-ellipsis'>
 										<Address address={voteData.account.address} />
 									</div>
