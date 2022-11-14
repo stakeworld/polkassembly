@@ -43,7 +43,6 @@ const VotersList = ({ className, referendumId } : Props) => {
 				method: 'POST'
 			}).then(async (res) => {
 			const votersData = await res.json();
-			console.log('votersData : ', votersData);
 
 			if(votersData && votersData.data && votersData.data.list) {
 				if(!count) {
@@ -57,7 +56,7 @@ const VotersList = ({ className, referendumId } : Props) => {
 				message: 'Loading Data'
 			});
 		}).catch((err) => {
-			console.log('Error in fetching vote data:', err);
+			console.error('Error in fetching vote data:', err);
 		});
 	}, [count, currentPage, referendumId]);
 
