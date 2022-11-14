@@ -63,7 +63,7 @@ export const Comment = ({ className, comment, refetch } : Props) => {
 					defaultAddress={defaultAddress}
 					text={'commented'}
 					username={author.username}
-					hideCreatedAt={true}
+					hideCreatedAt={false}
 				>
 					<UpdateLabel
 						created_at={created_at}
