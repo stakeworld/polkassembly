@@ -39,7 +39,7 @@ const CreationLabel = ({ className, children, created_at, defaultAddress, hideCr
 
 		<div className='flex items-center mt-1 md:mt-0'>
 			{topic && <Divider className='ml-0 hidden md:inline-block' type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />}
-			{!hideCreatedAt && created_at && <span className='flex items-center'><ClockCircleOutlined className='mr-1' />{relativeCreatedAt}</span>}
+			{!hideCreatedAt && created_at && <span className='flex items-center'> <span className='mx-1'>|</span> <ClockCircleOutlined className='mr-1' />{relativeCreatedAt}</span>}
 			{children}
 		</div>
 	</div>;
