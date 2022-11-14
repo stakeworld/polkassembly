@@ -309,7 +309,7 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 					}
 
 					{isTipProposal && canVote &&
-					<div>
+					<GovSidebarCard>
 						<EndorseTip
 							accounts={accounts}
 							address={address}
@@ -318,7 +318,7 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 							onAccountChange={onAccountChange}
 						/>
 						<TipInfo who={onchainTipProposal?onchainTipProposal?.[0]?.who: ''} onChainId={onchainId as string}/>
-					</div>
+					</GovSidebarCard>
 					}
 
 					{isBounty && <>

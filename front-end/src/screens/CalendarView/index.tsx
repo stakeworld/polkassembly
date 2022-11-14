@@ -247,6 +247,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 								<Calendar
 									className='events-calendar-mini'
 									date={miniCalSelectedDate}
+									onNavigate={setMiniCalSelectedDate}
 									localizer={localizer}
 									events={calendarEvents}
 									startAccessor="start_time"
@@ -542,14 +543,10 @@ export default styled(CalendarView)`
 		.filter-by-chain-div {
 			background-color: #fff;
 			border-radius: 5px;
-			border: 1px solid #ddd;
-			padding: 2px;
-		}
-
-		.filter-by-chain-div > .dropdown {
+			border: 1px solid #eee;
+			padding: 4px;
 			display: flex;
 			align-items: center;
-			padding: 3px 10px;
 		}
 	
 		@media only screen and (max-width: 768px) {
@@ -903,7 +900,7 @@ export default styled(CalendarView)`
 
 			.select-month-dropdown, .select-view-dropdown {
 				padding-left: 5px !important;
-				border: 2px solid #eee;
+				border: 1px solid #eee;
 				border-radius: 5px;
 				padding: 2px;
 				font-size: 12px;

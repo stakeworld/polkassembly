@@ -12,18 +12,19 @@ import chainLogo from 'src/assets/parachain-logos/chain-logo.jpg';
 import { chainProperties, network } from 'src/global/networkConstants';
 import styled from 'styled-components';
 
-function NetworkSelect({ selectedNetwork, setSelectedNetwork }: {selectedNetwork:string, setSelectedNetwork: React.Dispatch<React.SetStateAction<string>>}) {
-	const StyledDiv = styled.div`
-    display: flex;
-    align-items: center;
-    text-transform: capitalize;
+const StyledDiv = styled.div`
+display: flex;
+align-items: center;
+text-transform: capitalize;
 
-    img {
-			width: 22px;
-			border-radius: 50%;
-			margin-right: 0.5rem;
-    }
+img {
+		width: 22px;
+		border-radius: 50%;
+		margin-right: 0.5rem;
+}
 `;
+
+function NetworkSelect({ selectedNetwork, setSelectedNetwork }: {selectedNetwork:string, setSelectedNetwork: React.Dispatch<React.SetStateAction<string>>}) {
 
 	const StyledNetworkItem = ({ className, showNetwork }: {className?: string,showNetwork: string}) => {
 		return <StyledDiv className={className}>
