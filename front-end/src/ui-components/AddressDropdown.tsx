@@ -1,23 +1,27 @@
 // Copyright 2019-2020 @Premiurly/polkassembly authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-
+import { DownOutlined } from '@ant-design/icons';
 import { InjectedAccount } from '@polkadot/extension-inject/types';
-import styled from '@xstyled/styled-components';
+import { Dropdown } from 'antd';
+import { ItemType } from 'antd/lib/menu/hooks/useItems';
 import React, { useState } from 'react';
-import { Dropdown, DropdownItemProps, DropdownProps } from 'semantic-ui-react';
 import Address from 'src/ui-components/Address';
 
-interface Props{
-	accounts: InjectedAccount[]
-	className?: string
-	defaultAddress: string
-	filterAccounts?: string[]
-    onAccountChange: (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => void
+interface Props {
+  accounts: InjectedAccount[];
+  className?: string;
+  filterAccounts?: string[]
+  onAccountChange: (address: string) => void;
 }
 
-const AddressDropdown = ({ accounts, className, defaultAddress, filterAccounts, onAccountChange }: Props) => {
-	const [selectedAddress, setSelectedAddress] = useState(defaultAddress);
+const AddressDropdown = ({
+	className = 'px-4 py-2 border-2 rounded-md',
+	accounts,
+	filterAccounts,
+	onAccountChange
+}: Props) => {
+	const [selectedAddress, setSelectedAddress] = useState('');
 	const filteredAccounts = !filterAccounts
 		? accounts
 		: accounts.filter( elem =>
@@ -25,64 +29,45 @@ const AddressDropdown = ({ accounts, className, defaultAddress, filterAccounts, 
 		);
 
 	const dropdownList: {[index: string]: string} = {};
-	const addressOptions: DropdownItemProps[] = [];
+	const addressItems: ItemType[] = [];
 
 	filteredAccounts.forEach(account => {
-		addressOptions.push({
-			children: <Address
-				extensionName={account.name}
-				address={account.address}
-			/>,
-			value: account.address
+		addressItems.push({
+			key: account.address,
+			label: (
+				<Address extensionName={account.name} address={account.address} />
+			)
 		});
 
 		if (account.address && account.name){
 			dropdownList[account.address] = account.name;
 		}
-
 	}
 	);
+	return (
+		<Dropdown
+			trigger={['click']}
+			className={className}
 
-	const _onAccountChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-		setSelectedAddress(data.value?.toString() || '');
-		onAccountChange(event, data);
-	};
-
-	return <Dropdown
-		className={className}
-		pointing='top'
-		onChange={_onAccountChange}
-		options={addressOptions}
-		trigger={<div className='address-wrapper'>
-			<Address
-				extensionName={dropdownList[selectedAddress]}
-				address={defaultAddress}
-			/>
-		</div>}
-		value={selectedAddress}
-	/>;
+			menu={{
+				items: addressItems,
+				onClick: (e) => {
+					setSelectedAddress(e.key);
+					onAccountChange(e.key);
+				}
+			}}
+		>
+			<div className="flex justify-between items-center">
+				<Address
+					extensionName={dropdownList[selectedAddress]}
+					address={selectedAddress}
+				/>
+				<span>
+					<DownOutlined />
+				</span>
+			</div>
+		</Dropdown>
+	);
 };
 
-export default styled(AddressDropdown)`
-	width: 100%;
-	padding: 1.4rem .4rem .8rem 1.2rem;
-
-	.address-wrapper {
-		display: inline-block;
-	}
-
-	.visible.menu.transition {
-		width: 100%;
-		border-radius: 0;
-		max-height: 20rem;
-		overflow: auto;
-	}
-
-	.dropdown.icon {
-		position: absolute;
-		right: 0rem;
-		top: -0.5rem;
-		padding: 1.6rem 0.8rem;
-		float: right;
-	}
-`;
+export default AddressDropdown;

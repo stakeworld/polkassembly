@@ -4,17 +4,17 @@
 
 import styled from '@xstyled/styled-components';
 import React, { ReactNode } from 'react';
-import { Label } from 'semantic-ui-react';
 import { bountyStatus, bountyStatusMap, childBountyStatus, childBountyStatusMap, motionStatus, proposalStatus, referendumStatus, tipStatus, tipStatusMap } from 'src/global/statuses';
 
 interface Props{
-	children?: ReactNode,
-	className?: string,
-	content?: string,
-	status: string
+	children?: ReactNode;
+	className?: string;
+	content?: string;
+	status: string;
+	colorInverted?: boolean;
 }
 
-const StatusTag = ({ children, className, content, status }: Props) => {
+const StatusTag = ({ className, content, status, colorInverted }: Props) => {
 
 	if (content && tipStatusMap[content]) {
 		content = tipStatusMap[content];
@@ -29,14 +29,9 @@ const StatusTag = ({ children, className, content, status }: Props) => {
 	}
 
 	return (
-		<Label
-			className={className}
-			content={content}
-			status={status}
-		>
-			{children}
-		</Label>
-
+		<div className={`${className} ${status} ${colorInverted && 'bg-white inverted'} text-xs rounded-full border-2 px-3 py-1 whitespace-nowrap truncate h-min`}>
+			{content}
+		</div>
 	);
 };
 
@@ -44,64 +39,74 @@ export default styled(StatusTag).attrs(( { status }: Props) => ({
 	className: status,
 	content: status
 }))`
-	&.ui.label {
-		font-size: xs;
-		font-weight: 500;
-		background-color: white;
-		color: grey_primary;
-		border-style: solid;
-		border-width: 1px;
-		border-radius: 5px;
-		letter-spacing: 0.05rem;
-		text-transform: capitalize;
-		padding: 0.5rem 1rem;
-
-		&.${referendumStatus.STARTED},
-		&.${proposalStatus.PROPOSED},
-		&.${motionStatus.PROPOSED},
-		&.${bountyStatus.PROPOSED} {
-			border-color: #6495ED;
-			color: #6495ED;
-		}
+	color: #fff;
+	max-width: min-content;
+	
+	&.${referendumStatus.STARTED},
+	&.${proposalStatus.PROPOSED},
+	&.${motionStatus.PROPOSED},
+	&.${bountyStatus.PROPOSED} {
+		border-color: #6495ED;
+		background: #6495ED;
 		
-		&.${tipStatus.OPENED},
-		&.${tipStatus.CLOSING},
-		&.${bountyStatus.AWARDED},
-		&.${bountyStatus.BECAME_ACTIVE},
-		&.${bountyStatus.EXTENDED},
-		&.${childBountyStatus.ADDED} {
-			border-color: #6495ED;
+		&.inverted {
 			color: #6495ED;
 		}
-		&.${proposalStatus.TABLED},
-		&.${referendumStatus.PASSED},
-		&.${referendumStatus.EXECUTED},
-		&.${motionStatus.EXECUTED},
-		&.${motionStatus.APPROVED},
-		&.${motionStatus.CLOSED},
-		&.${tipStatus.CLOSED},
-		&.${bountyStatus.AWARDED},
-		&.${bountyStatus.CLAIMED},
-		&.${childBountyStatus.AWARDED} {
-			border-color: #5BC044;
+	}
+	
+	&.${tipStatus.OPENED},
+	&.${tipStatus.CLOSING},
+	&.${bountyStatus.AWARDED},
+	&.${bountyStatus.BECAME_ACTIVE},
+	&.${bountyStatus.EXTENDED},
+	&.${childBountyStatus.ADDED} {
+		border-color: #6495ED;
+		background: #6495ED;
+
+		&.inverted {
+			color: #6495ED;
+		}
+	}
+	&.${proposalStatus.TABLED},
+	&.${referendumStatus.PASSED},
+	&.${referendumStatus.EXECUTED},
+	&.${motionStatus.EXECUTED},
+	&.${motionStatus.APPROVED},
+	&.${motionStatus.CLOSED},
+	&.${tipStatus.CLOSED},
+	&.${bountyStatus.AWARDED},
+	&.${bountyStatus.CLAIMED},
+	&.${childBountyStatus.AWARDED} {
+		border-color: #5BC044;
+		background: #5BC044;
+
+		&.inverted {
 			color: #5BC044;
 		}
-		&.${childBountyStatus.CLAIMED},
-		&.prime {
-			border-color: green_primary;
+	}
+	&.${childBountyStatus.CLAIMED},
+	&.prime, &.Prime {
+		border-color: green_primary;
+		background-color: green_primary;
+
+		&.inverted {
 			color: green_primary;
 		}
-		&.${proposalStatus.CLEARED},
-		&.${referendumStatus.CANCELLED},
-		&.${referendumStatus.NOTPASSED},
-		&.${referendumStatus.VETOED},
-		&.${motionStatus.DISAPPROVED},
-		&.${tipStatus.RETRACTED},
-		&.${bountyStatus.CANCELED},
-		&.${bountyStatus.REJECTED},
-		&.${childBountyStatus.CANCELED} {
-			border-color: #FF0000;
+	}
+	&.${proposalStatus.CLEARED},
+	&.${referendumStatus.CANCELLED},
+	&.${referendumStatus.NOTPASSED},
+	&.${referendumStatus.VETOED},
+	&.${motionStatus.DISAPPROVED},
+	&.${tipStatus.RETRACTED},
+	&.${bountyStatus.CANCELED},
+	&.${bountyStatus.REJECTED},
+	&.${childBountyStatus.CANCELED} {
+		border-color: #FF0000;
+		background: #FF0000;
+
+		&.inverted {
 			color: #FF0000;
-		},
+		}
 	}
 `;

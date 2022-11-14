@@ -3,18 +3,13 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React, { useEffect } from 'react';
+import ReferendaListing from 'src/components/Listing/Referenda/ReferendaListing';
+import { useTrackerReferendaPostsLazyQuery } from 'src/generated/graphql';
 import { post_type } from 'src/global/post_types';
+import { ErrorState } from 'src/ui-components/UIStates';
 
-import Referenda from '../../../components/Listings/ReferendaListing';
-import { useTrackerReferendaPostsQuery } from '../../../generated/graphql';
-import FilteredError from '../../../ui-components/FilteredError';
-import Loader from '../../../ui-components/Loader';
+const ReferendaContainer = ({ className } : { className?:string }) => {
 
-interface Props {
-	className?: string
-}
-
-const ReferendaContainer = ({ className }:Props) => {
 	let trackMap: any = {};
 
 	try {
@@ -25,7 +20,7 @@ const ReferendaContainer = ({ className }:Props) => {
 
 	const onchainReferendumIds = Object.keys(trackMap.referendum || {}).map(key => Number(key));
 
-	const { data, error, refetch } = useTrackerReferendaPostsQuery({ variables: {
+	const [refetch, { data, error, loading }] = useTrackerReferendaPostsLazyQuery({ variables: {
 		onchainReferendumIds,
 		postType: post_type.ON_CHAIN
 	} });
@@ -34,11 +29,19 @@ const ReferendaContainer = ({ className }:Props) => {
 		refetch();
 	}, [refetch]);
 
-	if (error?.message) return <FilteredError text={error.message}/>;
+	if (error?.message) {
+		return <ErrorState errorMessage={error.message} />;
+	}
 
-	if (data) return <Referenda className={className} data={data}/>;
+	return (
+		<div className={`${className} shadow-md bg-white p-3 md:p-8 rounded-md`}>
+			<div className='flex items-center justify-between'>
+				<h1 className='dashboard-heading'>Referendas</h1>
+			</div>
 
-	return <Loader/>;
+			<ReferendaListing loading={loading} data={data} />
+		</div>
+	);
 };
 
 export default ReferendaContainer;

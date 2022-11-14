@@ -5,8 +5,8 @@
 import { DeriveAccountFlags, DeriveAccountInfo, DeriveAccountRegistration } from '@polkadot/api-derive/types';
 import Identicon from '@polkadot/react-identicon';
 import styled from '@xstyled/styled-components';
+import { Space, Tooltip } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
-import { Popup } from 'semantic-ui-react';
 import { ApiContext } from 'src/context/ApiContext';
 
 import shortenAddress from '../util/shortenAddress';
@@ -81,8 +81,11 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 		return () => unsubscribe && unsubscribe();
 	}, [address, api, apiReady]);
 
+	const t1 = mainDisplay || shortenAddress(address, shortenAddressLength);
+	const t2 = extensionName || mainDisplay;
+
 	return (
-		<div className={displayInline ? `${className} inline`: className}>
+		<div className={displayInline ? `${className} display_inline`: className}>
 			{
 				!disableIdenticon ?
 					<Identicon
@@ -98,59 +101,50 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 				{displayInline
 					// When inline disregard the extension name.
 					? popupContent
-						? <>
+						? <Space>
 							{identity && mainDisplay && <IdentityBadge identity={identity} flags={flags} />}
-							<Popup
-								trigger={
-									<div className={'header inline identityName'}>
-										{mainDisplay || shortenAddress(address, shortenAddressLength)}
-										{sub && <span className='sub'>/{sub}</span>}
-									</div>
-								}
-								content={popupContent}
-								hoverable={true}
-								position='top center'
-							/>
-						</>
+							<Tooltip color='#E5007A' title={popupContent}>
+								<div className={'header display_inline identityName flex flex-col gap-y-1'}>
+									{ t1 && <span className='truncate'>{t1}</span> }
+									{sub && <span className='sub truncate'>{sub}</span>}
+								</div>
+							</Tooltip>
+						</Space>
 						: <>
-							<div className={'description inline'}>
+							<Space className={'description display_inline'}>
 								{identity && mainDisplay && <IdentityBadge identity={identity} flags={flags} />}
-								<span className='identityName'>
-									{ mainDisplay || shortenAddress(address, shortenAddressLength)}
-									{sub && <span className='sub'>/{sub}</span>}
+								<span className='identityName flex flex-col gap-y-1'>
+									{ t1 && <span className='truncate'>{ t1 }</span> }
+									{sub && <span className='sub truncate'>{sub}</span>}
 								</span>
-							</div>
+							</Space>
 						</>
 					: extensionName || mainDisplay
 						? popupContent
-							? <Popup
-								trigger={
-									<>
-										<div className={'header'}>
-											{identity && mainDisplay && !extensionName && <IdentityBadge identity={identity} flags={flags} />}
-											<span className='identityName'>
-												{extensionName || mainDisplay}
-												{!extensionName && sub && <span className='sub'>/{sub}</span>}
-											</span>
-										</div>
-										<div className={'description inline'}>{shortenAddress(address, shortenAddressLength)}</div>
-									</>
-								}
-								content={popupContent}
-								hoverable={true}
-								position='top center'
-							/>
-							: <>
-								<div className={'header'}>
+							?
+							<Tooltip title={popupContent}>
+								<Space>
+									<Space className={'header'}>
+										{identity && mainDisplay && !extensionName && <IdentityBadge identity={identity} flags={flags} />}
+										<span className='identityName flex flex-col gap-y-1'>
+											{ t2 && <span className='truncate'>{ t2 }</span> }
+											{!extensionName && sub && <span className='sub truncate'>{sub}</span>}
+										</span>
+									</Space>
+									<div className={'description display_inline'}>{shortenAddress(address, shortenAddressLength)}</div>
+								</Space>
+							</Tooltip>
+							: <div>
+								<Space className={'header'}>
 									{identity && mainDisplay && !extensionName && <IdentityBadge identity={identity} flags={flags} />}
-									<span className='identityName'>
-										{extensionName || mainDisplay}
-										{!extensionName && sub && <span className='sub'>/{sub}</span>}
+									<span className='identityName flex flex-col gap-y-1'>
+										{ t2 && <span className='truncate'>{ t2 }</span> }
+										{!extensionName && sub && <span className='sub truncate'>{sub}</span>}
 									</span>
-								</div>
-								<div className={'description'}>{shortenAddress(address, shortenAddressLength)}</div>
-							</>
-						: <div className={'description'}>{shortenAddress(address, shortenAddressLength)}</div>
+								</Space>
+								<div className={'description text-xs ml-0.5'}>{shortenAddress(address, shortenAddressLength)}</div>
+							</div>
+						: <div className={'description text-xs'}>{shortenAddress(address, shortenAddressLength)}</div>
 				}
 			</div>}
 		</div>
@@ -161,9 +155,10 @@ export default styled(Address)`
 	position: relative;
 	display: flex;
 	align-items: center;
-
+	
 	.content {
 		display: inline-block;
+		color: nav_blue !important;
 	}
 
 	.identicon {
@@ -177,24 +172,20 @@ export default styled(Address)`
 	.header {
 		color: black_text;
 		font-weight: 500;
-		font-size: sm;
 		margin-right: 0.4rem;
 	}
 
 	.description {
-		color: grey_primary;
-		font-size: xs;
+		color: nav_blue;
 		margin-right: 0.4rem;
 	}
 
-	.inline {
+	.display_inline {
 		display: inline-flex !important;
-		font-size: sm !important;
-
 	}
 
 	.sub {
-		color: grey_secondary;
+		color: nav_blue;
 		line-height: inherit;
 	}
 `;

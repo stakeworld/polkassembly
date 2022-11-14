@@ -21,6 +21,7 @@ import createProposalTracker from './mutation/createProposalTracker';
 import deleteAccount from './mutation/deleteAccount';
 import editPostConfirm from './mutation/editPostConfirm';
 import editPostStart from './mutation/editPostStart';
+import linkProxyAddress from './mutation/linkProxyAddress';
 import login from './mutation/login';
 import logout from './mutation/logout';
 import multisigLinkConfirm from './mutation/multisigLinkConfirm';
@@ -67,6 +68,7 @@ export default {
 		deleteAccount,
 		editPostConfirm,
 		editPostStart,
+		linkProxyAddress,
 		login,
 		logout,
 		multisigLinkConfirm,

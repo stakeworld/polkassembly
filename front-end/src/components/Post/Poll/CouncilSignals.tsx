@@ -2,18 +2,16 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { QueryResult } from '@apollo/react-common';
-import styled from '@xstyled/styled-components';
+import { DislikeFilled, LikeFilled } from '@ant-design/icons';
+import { Divider, Progress } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { Grid, Icon } from 'semantic-ui-react';
 import useCurrentBlock from 'src/hooks/useCurrentBlock';
+import GovSidebarCard from 'src/ui-components/GovSidebarCard';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
 
-import { CouncilAtBlockNumberQuery, CouncilAtBlockNumberQueryVariables, PollVotesQuery, useCouncilAtBlockNumberQuery } from '../../../generated/graphql';
+import { PollVotesQuery, useCouncilAtBlockNumberQuery } from '../../../generated/graphql';
 import { CouncilVote, Vote } from '../../../types';
 import Address from '../../../ui-components/Address';
-import Card from '../../../ui-components/Card';
-import CouncilSignalBar from '../../../ui-components/CouncilSignalBar';
 import getDefaultAddressField from '../../../util/getDefaultAddressField';
 import getEncodedAddress from '../../../util/getEncodedAddress';
 
@@ -33,9 +31,9 @@ const CouncilSignals = ({ className, endBlock, data }: Props) => {
 	const councilAtPollEndBlockNumber = useCouncilAtBlockNumberQuery({ variables: { blockNumber: endBlock } });
 	const councilAtCurrentBlockNumber = useCouncilAtBlockNumberQuery({ variables: { blockNumber: currentBlockNumber } });
 
-	const getCouncilMembers = (councilAtBlockNumber: QueryResult<CouncilAtBlockNumberQuery, CouncilAtBlockNumberQueryVariables>): Set<string> => {
+	const getCouncilMembers = (councilAtBlockNumber: any): Set<string> => {
 		const memberSet = new Set<string>();
-		councilAtBlockNumber?.data?.councils?.[0]?.members?.forEach((member) => {
+		councilAtBlockNumber?.data?.councils?.[0]?.members?.forEach((member: any) => {
 			const address = getEncodedAddress(member.address);
 			if (address) {
 				memberSet.add(address);
@@ -91,59 +89,64 @@ const CouncilSignals = ({ className, endBlock, data }: Props) => {
 	}, [data, memberSet]);
 
 	return (
-		<Card className={className}>
-			<h3>Council Signals <HelperTooltip content='This represents the off-chain votes of council members'/></h3>
-			<CouncilSignalBar
-				ayeSignals={ayes}
-				councilSize={memberSet.size}
-				naySignals={nays}
-			/>
-			<Grid className='council-votes'>
+		<GovSidebarCard className={className}>
+			<h3 className='flex items-center'><span className='mr-2 dashboard-heading'>Council Signals</span> <HelperTooltip text='This represents the off-chain votes of council members'/></h3>
+
+			<div className="mt-6 flex">
+				<div>
+					<Progress
+						percent={100}
+						success={{ percent: (ayes/(ayes + nays)) * 100, strokeColor: '#2ED47A' }}
+						type="circle"
+						strokeWidth={12}
+						strokeColor='#FF3C5F'
+						format={() => (
+							ayes && nays ? <div className='text-sm'>
+								<div className='text-green-400 border-b border-b-gray-400 mx-10'>{((ayes/(ayes + nays)) * 100).toFixed(1)}%</div>
+								<div className='text-pink_primary'>{((nays/(ayes + nays)) * 100).toFixed(1)}%</div>
+							</div> : <div className='text-sm'>No Votes</div>
+						)}
+					/>
+				</div>
+
+				<div className='flex-1 flex flex-col justify-between ml-12 py-5'>
+					<div className='mb-auto flex items-center'>
+						<div className='mr-auto text-sidebarBlue font-medium'>Aye</div>
+						<div className='text-navBlue'>{ayes}</div>
+					</div>
+
+					<div className='flex items-center'>
+						<div className='mr-auto text-sidebarBlue font-medium'>Nay</div>
+						<div className='text-navBlue'>{nays}</div>
+					</div>
+				</div>
+			</div>
+
+			{councilVotes.length > 0 && <div>
+				<Divider />
 				{councilVotes.map(councilVote =>
-					<Grid.Row key={councilVote.address}>
-						<Grid.Column width={12}>
-							<div className='item'>
-								<Address address={councilVote.address} />
-							</div>
-						</Grid.Column>
-						<Grid.Column width={4}>
+					<div className='flex items-center px-12 mt-3' key={councilVote.address}>
+						<div className='mr-auto'>
+							<Address address={councilVote.address} />
+						</div>
+						<div>
 							{councilVote.vote === Vote.AYE ? <>
-								<div className='thumbs up'>
-									<Icon name='thumbs up' />
-								</div> Aye
+								<div className='flex items-center'>
+									<LikeFilled className='mr-4 text-pink_primary' />
+									Aye
+								</div>
 							</> : <>
-								<div className='thumbs down'>
-									<Icon name='thumbs down' />
-								</div> Nay
+								<div className='flex items-center'>
+									<DislikeFilled className='mr-4 text-green-400' />
+									Nay
+								</div>
 							</>}
-						</Grid.Column>
-					</Grid.Row>
+						</div>
+					</div>
 				)}
-			</Grid>
-		</Card>
+			</div>}
+		</GovSidebarCard>
 	);
 };
 
-export default styled(CouncilSignals)`
-	.council-votes {
-		margin-top: 2em;
-	}
-	.thumbs {
-		display: inline-block;
-		text-align: center;
-		vertical-align: middle;
-		color: white;
-		width: 2rem;
-		height: 2rem;
-		border-radius: 50%;
-		font-size: 1rem;
-	}
-
-	.thumbs.up {
-		background-color: green_primary;
-	}
-
-	.thumbs.down {
-		background-color: red_primary;
-	}
-`;
+export default CouncilSignals;

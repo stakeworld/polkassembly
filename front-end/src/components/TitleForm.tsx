@@ -2,56 +2,70 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import styled from '@xstyled/styled-components';
-import React, { ChangeEvent } from 'react';
-import { FieldError, NestDataObject } from 'react-hook-form/dist/types';
-
-import { Form } from '../ui-components/Form';
-import messages from '../util/messages';
+import { Form,Input } from 'antd';
+import React, { useState } from 'react';
 
 interface Props {
 	className?: string
-	errorTitle?: FieldError | NestDataObject<any, any> | NestDataObject<any, any>[] | FieldError[]
-	onChange?: (event: ChangeEvent<HTMLInputElement>) => void
+	onChange?: (event: React.ChangeEvent<HTMLInputElement>) => string | void
 	value?: string
 }
 
-const TitleForm = ({ className, errorTitle, onChange, value = '' }:Props): JSX.Element => {
+type ValidationStatus = Parameters<typeof Form.Item>[0]['validateStatus'];
+
+type ValidationResult = {
+	errorMsg: string | null;
+	validateStatus: ValidationStatus;
+}
+
+const validateTitle = (
+	content: string
+): ValidationResult => {
+	if(content) {
+		return {
+			errorMsg: null,
+			validateStatus: 'success'
+		};
+	}
+	return {
+		errorMsg: 'Please add the title.',
+		validateStatus: 'error'
+	};
+};
+
+const TitleForm = ({ className, onChange, value = '' }:Props): JSX.Element => {
+
+	const [validationStatus, setValidation] = useState<ValidationResult>({
+		errorMsg: null,
+		validateStatus: 'success'
+	});
+
+	const onChangeWrapper = (event:React.ChangeEvent<HTMLInputElement>) => {
+		const validationStatus = validateTitle(event.currentTarget.value);
+		setValidation(validationStatus);
+		if(onchange){
+			onChange!(event);
+		}
+
+		return event.currentTarget.value;
+	};
 
 	return (
 		<div className={className}>
-			<Form.Group>
-				<Form.Field width={16}>
-					<label>Title</label>
-					<input
-						className={errorTitle ? 'error title' : 'title'}
+			<Form>
+				<label className='mb-3 font-bold flex items-center text-sm text-sidebarBlue'>Title</label>
+				<Form.Item name='title' validateStatus={validationStatus.validateStatus} help={validationStatus.errorMsg}  >
+					<Input
+						className='text-sm text-sidebarBlue'
 						name={'title'}
-						onChange={onChange}
+						onChange={onChangeWrapper}
 						placeholder='Your title...'
-						type='text'
 						value={value}
 					/>
-					{errorTitle && <span className={'errorText'}>{messages.VALIDATION_TITLE_ERROR}</span>}
-				</Form.Field>
-			</Form.Group>
+				</Form.Item>
+			</Form>
 		</div>
 	);
 };
 
-export default styled(TitleForm)`
-	.fields {
-		padding: 0;
-	}
-
-	input.title {
-		font-size: 1.4rem !important;
-	}
-
-	input.error {
-		border-color: red_secondary !important;
-	}
-
-	.errorText {
-		color: red_secondary;
-	}
-`;
+export default TitleForm;

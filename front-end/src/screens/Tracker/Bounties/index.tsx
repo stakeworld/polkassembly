@@ -3,18 +3,13 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React, { useEffect } from 'react';
+import BountyListing from 'src/components/Listing/Bounties/BountyListing';
+import { useTrackerBountyPostsLazyQuery } from 'src/generated/graphql';
+import { post_type } from 'src/global/post_types';
+import { ErrorState } from 'src/ui-components/UIStates';
 
-import BountiesListing from '../../../components/Listings/BountiesListing';
-import { useTrackerBountyPostsQuery } from '../../../generated/graphql';
-import { post_type } from '../../../global/post_types';
-import FilteredError from '../../../ui-components/FilteredError';
-import Loader from '../../../ui-components/Loader';
+const BountyContainer = ({ className } : { className?:string }) => {
 
-interface Props {
-	className?: string
-}
-
-const BountiesContainer = ({ className }:Props) => {
 	let trackMap: any = {};
 
 	try {
@@ -25,7 +20,7 @@ const BountiesContainer = ({ className }:Props) => {
 
 	const onchainBountyIds = Object.keys(trackMap.bounty || {}).map(key => Number(key));
 
-	const { data, error, refetch } = useTrackerBountyPostsQuery({ variables: {
+	const [refetch, { data, error, loading }] = useTrackerBountyPostsLazyQuery({ variables: {
 		onchainBountyIds,
 		postType: post_type.ON_CHAIN
 	} });
@@ -34,11 +29,19 @@ const BountiesContainer = ({ className }:Props) => {
 		refetch();
 	}, [refetch]);
 
-	if (error?.message) return <FilteredError text={error.message}/>;
+	if (error?.message) {
+		return <ErrorState errorMessage={error.message} />;
+	}
 
-	if (data) return <BountiesListing className={className} data={data}/>;
+	return (
+		<div className={`${className} shadow-md bg-white p-3 md:p-8 rounded-md`}>
+			<div className='flex items-center justify-between'>
+				<h1 className='dashboard-heading'>Bounties</h1>
+			</div>
 
-	return <Loader/>;
+			<BountyListing loading={loading} data={data} />
+		</div>
+	);
 };
 
-export default BountiesContainer;
+export default BountyContainer;

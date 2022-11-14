@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 // eslint-disable-next-line
-import '@polkadot/api-augment'
+import '@polkadot/api-augment';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import React, { useEffect, useState } from 'react';
 

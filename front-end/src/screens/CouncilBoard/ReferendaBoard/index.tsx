@@ -4,7 +4,7 @@
 
 import styled from '@xstyled/styled-components';
 import React, { useEffect } from 'react';
-import { useAllReferendaPostsQuery } from 'src/generated/graphql';
+import { useAllReferendaPostsLazyQuery } from 'src/generated/graphql';
 import { post_type } from 'src/global/post_types';
 
 import ReferendaPostCard from './ReferendaPostCard';
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const ReferendaBoard = ({ className, openSidebar } : Props) => {
-	const { data, loading, error, refetch } = useAllReferendaPostsQuery({
+	const [refetch, { data, error, loading }] = useAllReferendaPostsLazyQuery({
 		variables: {
 			limit: 10,
 			postType: post_type.ON_CHAIN

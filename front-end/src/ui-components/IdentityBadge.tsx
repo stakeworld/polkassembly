@@ -2,10 +2,11 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { CheckCircleFilled, MinusCircleFilled } from '@ant-design/icons';
 import { DeriveAccountFlags, DeriveAccountRegistration } from '@polkadot/api-derive/types';
 import styled from '@xstyled/styled-components';
+import { Tooltip } from 'antd';
 import React from 'react';
-import { Icon, Popup } from 'semantic-ui-react';
 
 const StyledPopup = styled.div`
 font-size: sm;
@@ -33,10 +34,10 @@ const IdentityBadge = ({ className, identity, flags }: {className?: string, iden
 	const isBad = judgements.some(([, judgement]): boolean => judgement.isErroneous || judgement.isLowQuality);
 
 	const color: 'brown' | 'green' | 'grey' = isGood ? 'green' : isBad ? 'brown' : 'grey';
-	const iconName = isGood ? 'check circle' : 'minus circle';
-	const CouncilEmoji = () => <span aria-label="council member" className='councilMember' role="img">👑</span>;
-	const infoElem = <span>
-		<Icon name={iconName} color={color} />
+	const CouncilEmoji = () => <span aria-label="council member" className='-mt-1' role="img">👑</span>;
+	const infoElem = <span className='flex items-center'>
+		{isGood ? <CheckCircleFilled style={ { color } } /> : <MinusCircleFilled style={ { color } } />}
+		<span className='w-1'></span>
 		{flags?.isCouncil && <CouncilEmoji/>}
 	</span>;
 
@@ -54,12 +55,9 @@ const IdentityBadge = ({ className, identity, flags }: {className?: string, iden
 	</StyledPopup>;
 
 	return <div className={className}>
-		<Popup
-			trigger={infoElem}
-			content={popupContent}
-			hoverable={true}
-			position='top center'
-		/>
+		<Tooltip color='#fff' title={popupContent}>
+			{infoElem}
+		</Tooltip>
 	</div>;
 };
 
@@ -72,9 +70,5 @@ export default styled(IdentityBadge)`
 
 	i.grey.circle.icon {
 		color: grey_primary !important;
-	}
-
-	.councilMember {
-		margin-right: 0.25rem;
 	}
 `;

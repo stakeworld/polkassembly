@@ -2,14 +2,13 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ApolloQueryResult } from 'apollo-client';
+import { QueryLazyOptions } from '@apollo/client';
 import React, { useContext } from 'react';
+import ErrorAlert from 'src/ui-components/ErrorAlert';
 
 import { UserDetailsContext } from '../../../context/UserDetailsContext';
-import { PollQuery, PollQueryVariables, usePollVotesQuery } from '../../../generated/graphql';
+import { Exact, usePollVotesLazyQuery } from '../../../generated/graphql';
 import { Vote } from '../../../types';
-import Card from '../../../ui-components/Card';
-import FilteredError from '../../../ui-components/FilteredError';
 import CouncilSignals from './CouncilSignals';
 import GeneralSignals from './GeneralSignals';
 
@@ -17,12 +16,14 @@ interface Props {
 	pollId: number
 	endBlock: number
 	canEdit: boolean
-	pollRefetch: (variables?: PollQueryVariables | undefined) => Promise<ApolloQueryResult<PollQuery>>
+	pollRefetch: (options?: QueryLazyOptions<Exact<{
+		postId: number;
+	}>> | undefined) => void
 }
 
 const Poll = ({ pollId, endBlock, canEdit, pollRefetch }: Props) => {
 	const { id } = useContext(UserDetailsContext);
-	const { data, error, refetch } = usePollVotesQuery({ variables: { pollId } });
+	const [refetch, { data, error }] = usePollVotesLazyQuery({ variables: { pollId } });
 	let ayes = 0;
 	let nays = 0;
 	let ownVote: Vote | null = null;
@@ -39,7 +40,7 @@ const Poll = ({ pollId, endBlock, canEdit, pollRefetch }: Props) => {
 		}
 	});
 
-	if (error?.message) return <Card><FilteredError text={error.message}/></Card>;
+	if (error?.message) return <ErrorAlert errorMsg={error.message} />;
 
 	return (
 		<>

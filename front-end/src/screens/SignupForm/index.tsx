@@ -2,18 +2,13 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { Col, Row } from 'antd';
 import React, { useState } from 'react';
-import { Grid } from 'semantic-ui-react';
+import Web2Signup from 'src/components/Signup/Web2Signup';
+import Web3Signup from 'src/components/Signup/Web3Signup';
 import { Wallet } from 'src/types';
 
-import Web2Signup from '../../components/Signup/Web2Signup';
-import Web3Signup from '../../components/Signup/Web3Signup';
-
-interface Props {
-	className?: string
-}
-
-const Signup = ({ className }: Props) => {
+const Signup = () => {
 	const [displayWeb, setDisplayWeb] = useState(2);
 	const [chosenWallet, setChosenWallet] = useState<Wallet>();
 	const [walletError, setWalletError] =  useState<string | undefined>();
@@ -27,14 +22,14 @@ const Signup = ({ className }: Props) => {
 
 	return (
 		<>
-			<Grid centered className={className}>
-				<Grid.Column mobile={16} tablet={14} computer={8} style={ { minWidth: 'min-content' } }>
+			<Row justify='center' align='middle' className='h-full -mt-5'>
+				<Col className='min-w-full sm:min-w-[500px]'>
 					{ displayWeb === 2
 						? <Web2Signup onWalletSelect={onWalletSelect} walletError={walletError} /> : null}
 
 					{displayWeb === 3 && chosenWallet ? <Web3Signup chosenWallet={chosenWallet} setDisplayWeb2={setDisplayWeb2} setWalletError={setWalletError} /> : null}
-				</Grid.Column>
-			</Grid>
+				</Col>
+			</Row>
 		</>
 	);
 };

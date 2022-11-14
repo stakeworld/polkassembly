@@ -3,18 +3,13 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React, { useEffect } from 'react';
+import TreasuryListing from 'src/components/Listing/Treasury/TreasuryListing';
+import { useTrackerDemocracyTreasuryProposalPostsLazyQuery } from 'src/generated/graphql';
+import { post_type } from 'src/global/post_types';
+import { ErrorState } from 'src/ui-components/UIStates';
 
-import TreasuryListing from '../../../components/Listings/TreasuryListing';
-import { useTrackerDemocracyTreasuryProposalPostsQuery } from '../../../generated/graphql';
-import { post_type } from '../../../global/post_types';
-import FilteredError from '../../../ui-components/FilteredError';
-import Loader from '../../../ui-components/Loader';
+const TreasuryProposalsContainer = ({ className } : { className?:string }) => {
 
-interface Props {
-	className?: string
-}
-
-const TreasuryProposalsContainer = ({ className }:Props) => {
 	let trackMap: any = {};
 
 	try {
@@ -25,7 +20,7 @@ const TreasuryProposalsContainer = ({ className }:Props) => {
 
 	const onchainTreasuryProposalIds = Object.keys(trackMap.treasuryProposal || {}).map(key => Number(key));
 
-	const { data, error, refetch } = useTrackerDemocracyTreasuryProposalPostsQuery({ variables: {
+	const [refetch, { data, error, loading }] = useTrackerDemocracyTreasuryProposalPostsLazyQuery({ variables: {
 		onchainTreasuryProposalIds,
 		postType: post_type.ON_CHAIN
 	} });
@@ -34,11 +29,19 @@ const TreasuryProposalsContainer = ({ className }:Props) => {
 		refetch();
 	}, [refetch]);
 
-	if (error?.message) return <FilteredError text={error.message}/>;
+	if (error?.message) {
+		return <ErrorState errorMessage={error.message} />;
+	}
 
-	if (data) return <TreasuryListing className={className} data={data}/>;
+	return (
+		<div className={`${className} shadow-md bg-white p-3 md:p-8 rounded-md`}>
+			<div className='flex items-center justify-between'>
+				<h1 className='dashboard-heading'>Treasury Proposals</h1>
+			</div>
 
-	return <Loader/>;
+			<TreasuryListing loading={loading} data={data} />
+		</div>
+	);
 };
 
 export default TreasuryProposalsContainer;

@@ -1,34 +1,24 @@
 // Copyright 2019-2020 @Premiurly/polkassembly authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
+import { Button, Form, Switch } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { useUserDetailsContext } from 'src/context';
+import queueNotification from 'src/ui-components/QueueNotification';
 
-import styled from '@xstyled/styled-components';
-import React, { useContext, useEffect,useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Checkbox, CheckboxProps,Grid } from 'semantic-ui-react';
-
-import { NotificationContext } from '../../context/NotificationContext';
-import { UserDetailsContext } from '../../context/UserDetailsContext';
 import { useChangeNotificationPreferenceMutation } from '../../generated/graphql';
 import { handleTokenChange } from '../../services/auth.service';
 import { NotificationStatus } from '../../types';
-import Button from '../../ui-components/Button';
 import FilteredError from '../../ui-components/FilteredError';
-import { Form } from '../../ui-components/Form';
 
-interface Props {
-	className?: string
-}
-
-const Settings = ({ className }:Props): JSX.Element => {
-	const currentUser = useContext(UserDetailsContext);
+const NotificationSettings = () => {
+	const currentUser = useUserDetailsContext();
 	const [changed, setChanged] = useState<boolean>(false);
 	const [postParticipated, setPostParticipated] = useState<boolean>(false);
 	const [postCreated, setPostCreated] = useState<boolean>(false);
 	const [newProposal, setNewProposal] = useState<boolean>(false);
 	const [ownProposal, setOwnProposal] = useState<boolean>(false);
-	const [changeNotificationPreferenceMutation, { error }] = useChangeNotificationPreferenceMutation();
-	const { queueNotification } = useContext(NotificationContext);
+	const [changeNotificationPreferenceMutation, { error, loading }] = useChangeNotificationPreferenceMutation();
 	const { notification, email_verified } = currentUser;
 
 	useEffect(() => {
@@ -68,131 +58,106 @@ const Settings = ({ className }:Props): JSX.Element => {
 				console.error('change name error', e);
 			});
 	};
-
-	const handlePostParticipatedChange = (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
-		setPostParticipated(data.checked || false);
-		setChanged(true);
-	};
-
-	const handlePostCreatedChange = (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
-		setPostCreated(data.checked || false);
-		setChanged(true);
-	};
-
-	const handleNewProposalChange = (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
-		setNewProposal(data.checked || false);
-		setChanged(true);
-	};
-
-	const handleOwnProposalChange = (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
-		setOwnProposal(data.checked || false);
-		setChanged(true);
-	};
-
 	return (
-		<Grid>
-			<Grid.Column className={className} mobile={16} tablet={12} computer={12} largeScreen={10} widescreen={10}>
-				<h2>Notification Preferences</h2>
-				{!email_verified && <div className='errorText'>Please set and verify an email <Link to="/settings">in your settings</Link> to receive be able to set notifications.</div>}
-				<Form standalone={false}>
-					<Form.Group>
-						<Form.Field>
-							<Checkbox label='Subscribe to post you participate in' disabled={!email_verified} checked={!!email_verified && postParticipated} toggle onChange={handlePostParticipatedChange} />
-						</Form.Field>
-					</Form.Group>
-					<Form.Group>
-						<Form.Field>
-							<Checkbox label='Subscribe to post you created' disabled={!email_verified} checked={!!email_verified && postCreated} toggle onChange={handlePostCreatedChange} />
-						</Form.Field>
-					</Form.Group>
-					<Form.Group>
-						<Form.Field>
-							<Checkbox label='Notified for new proposal in council/motion/referendum' disabled={!email_verified} checked={!!email_verified && newProposal} toggle onChange={handleNewProposalChange} />
-						</Form.Field>
-					</Form.Group>
-					<Form.Group>
-						<Form.Field>
-							<Checkbox label='Notified for your own proposals' disabled={!email_verified} checked={!!email_verified && ownProposal} toggle onChange={handleOwnProposalChange} />
-						</Form.Field>
-					</Form.Group>
-					{changed ?
-						<Form.Group>
-							<Form.Field width={6}>
-								{error?.message && <FilteredError text={error.message}/>}
-								<Button
-									secondary
-									onClick={updatePreference}
-									type="submit"
-								>
-								Save
-								</Button>
-							</Form.Field>
-						</Form.Group>
-						: null}
-				</Form>
-			</Grid.Column>
-			<Grid.Column only='computer' computer={4} largeScreen={6} widescreen={6}/>
-		</Grid>
+		<Form onFinish={() => updatePreference()} className='w-full bg-white shadow-md p-8 rounded-md flex flex-col gap-y-8'>
+			<header>
+				<h3
+					className='font-medium text-lg tracking-wide text-sidebarBlue'
+				>
+						Notification Settings
+				</h3>
+				<h5
+					className='font-normal text-sm text-navBlue mt-2'
+				>
+						Update your notification settings. You will be receiving your notifications on <span className='text-sidebarBlue'>{currentUser?.email}</span>
+				</h5>
+			</header>
+			{error?.message && <FilteredError text={error.message}/>}
+			<article className='flex items-center gap-x-2'>
+				<label
+					className='text-sm text-sidebarBlue font-normal cursor-pointer'
+					htmlFor='postParticipated'
+				>
+					Subscribe to post you participate in
+				</label>
+				<Switch
+					checked={!!email_verified && postParticipated}
+					disabled={!email_verified}
+					onChange={(checked) => {
+						setPostParticipated(checked);
+						setChanged(true);
+					}}
+					size='small'
+					id='postParticipated'
+				/>
+			</article>
+			<article className='flex items-center gap-x-2'>
+				<label
+					className='text-sm text-sidebarBlue font-normal cursor-pointer'
+					htmlFor='postCreated'
+				>
+					Subscribe to post you created
+				</label>
+				<Switch
+					checked={!!email_verified && postCreated}
+					disabled={!email_verified}
+					onChange={(checked) => {
+						setPostCreated(checked);
+						setChanged(true);
+					}}
+					size='small'
+					id='postCreated'
+				/>
+			</article>
+			<article className='flex items-center gap-x-2'>
+				<label
+					className='text-sm text-sidebarBlue font-normal cursor-pointer'
+					htmlFor='newProposal'
+				>
+					Notified for new proposal in council/motion/referendum
+				</label>
+				<Switch
+					checked={!!email_verified && newProposal}
+					disabled={!email_verified}
+					onChange={(checked) => {
+						setNewProposal(checked);
+						setChanged(true);
+					}}
+					size='small'
+					id='newProposal'
+				/>
+			</article>
+			<article className='flex items-center gap-x-2'>
+				<label
+					className='text-sm text-sidebarBlue font-normal cursor-pointer'
+					htmlFor='ownProposal'
+				>
+					Notified for your own proposals
+				</label>
+				<Switch
+					checked={!!email_verified && ownProposal}
+					disabled={!email_verified}
+					onChange={(checked) => {
+						setOwnProposal(checked);
+						setChanged(true);
+					}}
+					size='small'
+					id='ownProposal'
+				/>
+			</article>
+			<article>
+				<Button
+					loading={loading}
+					disabled={!changed}
+					size='large'
+					htmlType='submit'
+					className={`rounded-lg font-semibold text-lg leading-7 text-white py-3 outline-none border-none px-14 flex items-center justify-center ${changed?'bg-pink_primary':'bg-icon_grey'}`}
+				>
+					Save
+				</Button>
+			</article>
+		</Form>
 	);
 };
 
-export default styled(Settings)`
-	background-color: white;
-	padding: 2rem 3rem 3rem 3rem!important;
-	border-radius: 0.3rem;
-	box-shadow: box_shadow_card;
-
-	.button {
-		margin-top: 0.2rem;
-	}
-
-	.ui.form:not(.unstackable)
-	.fields:not(.unstackable)>.ten.wide.field {
-
-		@media only screen and (max-width: 767px)  {
-			width: 70%!important;
-		}
-
-		@media only screen and (max-width: 576px) {
-			width: 60%!important;
-		}
-	}
-
-	.ui.form:not(.unstackable)
-	.fields:not(.unstackable)>.six.wide.field {
-
-		@media only screen and (max-width: 767px)  {
-			width: 30%!important;
-		}
-
-		@media only screen and (max-width: 576px) {
-			width: 40%!important;
-		}
-	}
-
-	@media only screen and (max-width: 576px) {
-		padding: 2rem!important;
-
-		.ui.form {
-			margin-top: 0rem;
-			padding: 0rem;
-		}
-
-		button {
-			padding: 0.8rem 1rem;
-			border-radius: 0.5rem;
-		}
-	}
-
-	.errorText {
-		color: red_secondary;
-		a {
-			color: grey_primary;
-			text-decoration: underline;
-			&:hover {
-				color: grey_secondary;
-				text-decoration: none;
-			}
-		}
-	}
-`;
+export default NotificationSettings;

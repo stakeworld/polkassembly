@@ -188,6 +188,35 @@ const resolvers = {
       return prisma.preimageStatus({ id: parent.id }).blockNumber();
     },
   },
+  PreimageV2: {
+    preimageArguments(
+      parent: any,
+      { where, orderBy, skip, after, before, first, last }: Selectors
+    ) {
+      return prisma.preimageV2({ id: parent.id }).preimageArguments({
+        where,
+        orderBy,
+        skip,
+        after,
+        before,
+        first,
+        last,
+      });
+    },
+    preimageStatus(
+      parent: any,
+      { where, orderBy, skip, after, before, first, last }: Selectors
+    ) {
+      return prisma
+        .preimageV2({ id: parent.id })
+        .preimageStatus({ where, orderBy, skip, after, before, first, last });
+    },
+  },
+  PreimageStatusV2: {
+    blockNumber(parent: any) {
+      return prisma.preimageStatusV2({ id: parent.id }).blockNumber();
+    },
+  },
   ProposalStatus: {
     blockNumber(parent: any) {
       return prisma.proposalStatus({ id: parent.id }).blockNumber();
@@ -317,6 +346,24 @@ const resolvers = {
   ReferendumVote: {
     blockNumber(parent: any) {
       return prisma.referendumVote({ id: parent.id }).blockNumber();
+    },
+  },
+  ReferendumV2: {
+    preimage(parent: any) {
+      return prisma.referendumV2({ id: parent.id }).preimage();
+    },
+    referendumStatus(
+      parent: any,
+      { where, orderBy, skip, after, before, first, last }: Selectors
+    ) {
+      return prisma
+        .referendumV2({ id: parent.id })
+        .referendumStatus({ where, orderBy, skip, after, before, first, last });
+    },
+  },
+  ReferendumStatusV2: {
+    blockNumber(parent: any) {
+      return prisma.referendumStatusV2({ id: parent.id }).blockNumber();
     },
   },
 };

@@ -645,6 +645,17 @@
       - author_id
       backend_only: false
   select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+      - id
+      - onchain_link_id
+      - discussion_post_id
+      - author_id
+      - created_at
+      - updated_at
+      filter: {}
+      allow_aggregations: true
   - role: event_bot
     permission:
       columns:
@@ -658,7 +669,10 @@
       columns:
       - author_id
       - discussion_post_id
+      - id
       - onchain_link_id
+      - created_at
+      - updated_at
       filter: {}
       allow_aggregations: true
   update_permissions:

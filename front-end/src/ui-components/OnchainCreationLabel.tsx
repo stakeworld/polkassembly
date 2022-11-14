@@ -16,11 +16,11 @@ interface Props {
 
 const OnchainCreationLabel = ({ address, className, topic }:Props ) => {
 	return (
-		<div className={className}>
+		<div className={`${className} text-navBlue`}>
 			by
 			<Address
 				address={address}
-				className='address'
+				className='address ml-2'
 				displayInline={true}
 			/>
 				from <TopicTag className={'topic-tag'} topic={topic} />

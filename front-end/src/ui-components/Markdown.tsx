@@ -5,7 +5,7 @@
 import styled from '@xstyled/styled-components';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 
 interface Props {
 	className?: string
@@ -14,25 +14,25 @@ interface Props {
 }
 
 const Markdown = ({ className, isPreview=false, md }: Props) => {
-	return (
-		<ReactMarkdown
-			className={isPreview ? `${className} mde-preview-content` : className}
-			remarkPlugins={[remarkGfm]}
-			linkTarget='_blank'
-		>{md}</ReactMarkdown>
-	);
+	return <ReactMarkdown
+		className={isPreview ? `${className} mde-preview-content` : className}
+		rehypePlugins={[rehypeRaw]}
+		linkTarget='_blank'
+	>
+		{md}
+	</ReactMarkdown>;
 };
 
 export default styled(Markdown)`
 
 	&, &.mde-preview-content {
 		font-size: md;
-		margin-bottom: 2rem;
+		margin-bottom: 0;
 		overflow-wrap: break-word;
 
 		p, blockquote, ul, ol, dl, table {
 			line-height: 150%;
-			margin: 0 0 1.5rem 0;
+			margin: 0 0 0.5rem 0;
 		}
 
 		h1 {
@@ -109,7 +109,7 @@ export default styled(Markdown)`
 			&::before, &::after {
 				letter-spacing: -0.2em;
 			}
-			overflow: overlay;
+			overflow: auto;
 		}
 	}
 

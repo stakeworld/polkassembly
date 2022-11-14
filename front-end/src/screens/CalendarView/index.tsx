@@ -5,15 +5,17 @@
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import styled from '@xstyled/styled-components';
+import type { MenuProps } from 'antd';
+import {  Badge, Button, Col, Divider, Dropdown, Row, Space } from 'antd';
 import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
 import { Calendar, DateHeaderProps, momentLocalizer, View } from 'react-big-calendar';
-import {  Button, Divider, Dropdown, DropdownProps, Grid, Icon, List } from 'semantic-ui-react';
-import { NotificationContext } from 'src/context/NotificationContext';
+import SidebarRight from 'src/components/SidebarRight';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
-import { useGetCalenderEventsQuery, useUpdateApprovalStatusMutation } from 'src/generated/graphql';
+import {  useGetCalenderEventsLazyQuery, useUpdateApprovalStatusMutation } from 'src/generated/graphql';
 import { approvalStatus } from 'src/global/statuses';
 import { NotificationStatus } from 'src/types';
+import queueNotification from 'src/ui-components/QueueNotification';
 import getNetwork from 'src/util/getNetwork';
 
 import chainLink from '../../assets/chain-link.png';
@@ -57,8 +59,6 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 		accessible = true;
 	}
 
-	const { queueNotification } = useContext(NotificationContext);
-
 	const [calendarEvents, setCalendarEvents] = useState<any[]>([]);
 	const [selectedView, setSelectedView] = useState<View>('month');
 	const [selectedNetwork, setSelectedNetwork] = useState<string>(NETWORK);
@@ -71,32 +71,29 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 
 	const [eventApprovalStatus, setEventApprovalStatus] = useState<string>(queryApprovalStatus);
 
-	const approvalStatusDropdown = [
+	const approvalStatusDropdown : MenuProps['items'] = [
 		{
 			key: approvalStatus.APPROVED,
-			text: 'Approved',
-			value: approvalStatus.APPROVED
+			label: 'Approved'
 		},
 		{
 			key: approvalStatus.PENDING,
-			text: 'Pending',
-			value: approvalStatus.PENDING
+			label: 'Pending'
 		},
 		{
 			key: approvalStatus.REJECTED,
-			text: 'Rejected',
-			value: approvalStatus.REJECTED
+			label: 'Rejected'
 		}
 	];
 
-	const { data, loading, refetch } = useGetCalenderEventsQuery({ variables: {
+	const [ refetch, { data, loading } ] = useGetCalenderEventsLazyQuery({ variables: {
 		approval_status: queryApprovalStatus,
 		network: selectedNetwork
 	} });
 
 	useEffect(() => {
 		refetch();
-	}, [refetch]);
+	}, [refetch, data]);
 
 	useEffect(() =>  {
 		const eventsArr:any[] = [];
@@ -135,8 +132,8 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 		}
 	};
 
-	const onApprovalStatusChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-		const status = data.value as string;
+	const onApprovalStatusChange : MenuProps['onClick'] = ({ key }) => {
+		const status = key as string;
 		setEventApprovalStatus(status);
 		refetch();
 	};
@@ -214,69 +211,70 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 		</button>;
 	};
 
+	const listData = [
+		{ color:'#EA8612', label: 'Working' },
+		{ color:'#5BC044', label: 'Completed' },
+		{ color:'#FF0000', label: 'Overdue' }
+	];
+
 	return (
-		<div className={className}>
-			{accessible &&
+		<>
+			<div className={`${className} bg-white drop-shadow-md p-3 rounded-md`}>
+				{accessible &&
 				<div className='event-bot-div'>
-					<Button fluid className='pending-events-btn' onClick={togglePendingEvents} disabled={Boolean(sidebarEvent)}>
+					<Button className='pending-events-btn' onClick={togglePendingEvents} disabled={Boolean(sidebarEvent)}>
 						{queryApprovalStatus == approvalStatus.APPROVED ? 'Show' : 'Hide'} Pending Events
 					</Button>
 				</div>
-			}
+				}
 
-			{ !small && <div className='cal-heading-div'>
-				<h1> Calendar </h1>
-				<div className='mobile-network-select'>
-					<NetworkSelect selectedNetwork={selectedNetwork} setSelectedNetwork={setSelectedNetwork} />
+				{ !small && <div className='cal-heading-div'>
+					<h1> Calendar </h1>
+					<div className='mobile-network-select'>
+						<NetworkSelect selectedNetwork={selectedNetwork} setSelectedNetwork={setSelectedNetwork} />
+					</div>
 				</div>
-			</div>
-			}
+				}
 
-			<Grid stackable>
-				{!loading && data && data.calender_events &&
-					<Grid.Row className='pt-0'>
-						{!small && width > 992 && <Grid.Column id='calendar-left-panel' className='calendar-left-panel' computer={4}>
-							<p className='utc-time'>Current Time: { moment(utcDate).format('D-MM-YY | h:mm a UTC') } </p>
+				<div>
+					{!loading && data && data.calender_events &&
+					<Row className='pt-0'>
+						{!small && width > 992 &&
+						<Col xs={24} md={8} id='calendar-left-panel' className='calendar-left-panel'>
+							<div className='p-5 pl-2 pt-0'>
+								<p className='text-sidebarBlue font-medium text-md text-center mb-2'>Current Time: { moment(utcDate).format('D-MM-YY | h:mm a UTC') } </p>
 
-							<Calendar
-								className='events-calendar-mini'
-								date={miniCalSelectedDate}
-								localizer={localizer}
-								events={calendarEvents}
-								startAccessor="start_time"
-								endAccessor="end_time"
-								components={{
-									event: () => null,
-									eventWrapper: EventWrapperComponent,
-									month: {
-										dateHeader: MonthDateComponentHeader
-									},
-									toolbar: props => <CustomToolbarMini
-										{...props}
-										leftPanelWidth={calLeftPanelWidth}
-									/>
-								}}
-							/>
+								<Calendar
+									className='events-calendar-mini'
+									date={miniCalSelectedDate}
+									localizer={localizer}
+									events={calendarEvents}
+									startAccessor="start_time"
+									endAccessor="end_time"
+									components={{
+										event: () => null,
+										eventWrapper: EventWrapperComponent,
+										month: {
+											dateHeader: MonthDateComponentHeader
+										},
+										toolbar: (props:any) => <CustomToolbarMini
+											{...props}
+											leftPanelWidth={calLeftPanelWidth}
+										/>
+									}}
+								/>
 
-							<span className='legend-title'>Proposal Status: </span>
-							<List className='legend-list'>
-								<List.Item>
-									<List.Icon name='square' style={ { color: '#EA8612' } } />
-									<List.Content>Working</List.Content>
-								</List.Item>
-								<List.Item>
-									<List.Icon name='square' style={ { color: '#5BC044' } } />
-									<List.Content>Completed</List.Content>
-								</List.Item>
-								<List.Item>
-									<List.Icon name='square' style={ { color: '#FF0000' } } />
-									<List.Content>Overdue</List.Content>
-								</List.Item>
-							</List>
-						</Grid.Column>
+								<div className='font-medium text-md text-sidebarBlue mb-3'>Proposal Status: </div>
+								<Space direction='vertical'>
+									{listData.map((item) => (
+										<Badge key={item.color} text={item.label} color={item.color} />
+									))}
+								</Space>
+							</div>
+						</Col>
 						}
 
-						<Grid.Column className='calendar-right-panel' mobile={16} tablet={16} computer={small ? 16: 12}>
+						<Col xs={24} md={16} className=' h-full' >
 							<Calendar
 								className={`events-calendar ${small || width < 768 ? 'small' : '' }`}
 								localizer={localizer}
@@ -290,7 +288,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 									event: Event,
 									eventWrapper: EventWrapperComponent,
 									timeGutterHeader: () => <TimeGutterHeader localizer={localizer} date={selectedDate} selectedView={selectedView} />,
-									toolbar: props => <CustomToolbar
+									toolbar: (props:any) => <CustomToolbar
 										{...props}
 										small={small}
 										width={width}
@@ -302,7 +300,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 										setMiniCalendarToToday={setMiniCalendarToToday}
 									/>,
 									week: {
-										header: props => <CustomWeekHeader {...props} small={small || width < 768} />
+										header: (props:any) => <CustomWeekHeader {...props} small={small || width < 768} />
 									}
 								}}
 								formats={{
@@ -318,67 +316,66 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 									work_week: false
 								}}
 							/>
-						</Grid.Column>
-					</Grid.Row>
-				}
-			</Grid>
+						</Col>
+					</Row>
+					}
+				</div>
+			</div>
 
 			{/* Event View Sidebar */}
-			{routeWrapperHeight && sidebarEvent && Object.keys(sidebarEvent).length !== 0 && <div className="events-sidebar" style={ { maxHeight: `${routeWrapperHeight}px`, minHeight: `${routeWrapperHeight}px` } }>
-				{accessible &&
+			{sidebarEvent && <SidebarRight open={sidebarEvent} closeSidebar={() => setSidebarEvent(false)}>
+				<div className="events-sidebar" >
+					{accessible &&
 					<div className='approval-status-div'>
 						<span>Status: </span>
 						<Dropdown
-							fluid
-							selection
-							value={eventApprovalStatus}
-							options={approvalStatusDropdown}
-							onChange={onApprovalStatusChange}
+							// value={eventApprovalStatus}
+							menu={{ items:approvalStatusDropdown, onClick:onApprovalStatusChange }}
 							disabled={loadingUpdate}
-						/>
+						>{eventApprovalStatus}</Dropdown>
 						<Button onClick={handleUpdateApproval} disabled={loadingUpdate}>Save</Button>
 					</div>
-				}
-				<div className="event-sidebar-header d-flex">
-					<div className='d-flex'>
-						<Icon name='circle' className={`status-icon ${moment(sidebarEvent.end_time).isBefore() ? 'overdue-color' : `${sidebarEvent.status?.toLowerCase()}-color`}`} />
-						<h1>{sidebarEvent.title}</h1>
+					}
+					<div className="event-sidebar-header d-flex">
+						<div className='d-flex'>
+							<div className={`status-icon ${moment(sidebarEvent.end_time).isBefore() ? 'overdue-color' : `${sidebarEvent.status?.toLowerCase()}-color`}`} ></div>
+							<h1>{sidebarEvent.title}</h1>
+						</div>
+
 					</div>
-					<Icon className='close-btn' name='close' disabled={loadingUpdate} onClick={() => setSidebarEvent(false)} />
-				</div>
 
-				<div className="sidebar-event-datetime">
-					<span>{moment(sidebarEvent.end_time).format('MMMM D')}</span> <span>{moment(sidebarEvent.end_time).format('h:mm a')}</span>
-				</div>
+					<div className="sidebar-event-datetime">
+						<span>{moment(sidebarEvent.end_time).format('MMMM D')}</span> <span>{moment(sidebarEvent.end_time).format('h:mm a')}</span>
+					</div>
 
-				{sidebarEvent.content && <div className="sidebar-event-content">
-					{`${sidebarEvent.content.substring(0, 769)} ${sidebarEvent.content.length > 769 ? '...' : ''}`}
-					{sidebarEvent.content.length > 769 && <><br/><a href={sidebarEvent.url} target='_blank' rel='noreferrer'>Show More</a></>}
-				</div>
-				}
+					{sidebarEvent.content && <div className="sidebar-event-content">
+						{`${sidebarEvent.content.substring(0, 769)} ${sidebarEvent.content.length > 769 ? '...' : ''}`}
+						{sidebarEvent.content.length > 769 && <><br/><a href={sidebarEvent.url} target='_blank' rel='noreferrer'>Show More</a></>}
+					</div>
+					}
 
-				<Divider />
+					<Divider />
 
-				<div className="sidebar-event-links">
-					<h3> <img src={chainLink} /> Relevant Links</h3>
-					<div className='links-container'>
-						<a href={sidebarEvent.url} target='_blank' rel='noreferrer'>{sidebarEvent.url}</a>
+					<div className="sidebar-event-links">
+						<h3> <img src={chainLink} /> Relevant Links</h3>
+						<div className='links-container'>
+							<a href={sidebarEvent.url} target='_blank' rel='noreferrer'>{sidebarEvent.url}</a>
+						</div>
 					</div>
 				</div>
-			</div>}
+			</SidebarRight>}
 
 			{/* Create Event Sidebar */}
-			{routeWrapperHeight && sidebarCreateEvent &&
-				<CreateEventSidebar
-					setSidebarCreateEvent={setSidebarCreateEvent}
-					refetch={refetch}
-					routeWrapperHeight={routeWrapperHeight}
-					selectedNetwork={selectedNetwork}
-					className='create-event-sidebar'
-					id={id}
-				/>
-			}
-		</div>
+			{ sidebarCreateEvent &&  <CreateEventSidebar
+				open={sidebarCreateEvent}
+				setSidebarCreateEvent={setSidebarCreateEvent}
+				refetch={refetch}
+				selectedNetwork={selectedNetwork}
+				className='create-event-sidebar'
+				id={id}
+			/>}
+
+		</>
 	);
 };
 
@@ -414,7 +411,6 @@ export default styled(CalendarView)`
 }
 
 .events-sidebar, .create-event-sidebar {
-	position: absolute;
 	min-width: 250px;
 	width: 510px;
 	max-width: 35vw;
@@ -450,29 +446,25 @@ export default styled(CalendarView)`
 
 		.status-icon {
 			margin-right: 9px;
-			font-size: 12px;
-			color: #E5007A;
+			height: 12px;
+			width: 12px;
+			border-radius: 50%;
+			background-color: #E5007A;
 
 			&.overdue-color {
-				color: #FF0000;
+				background-color: #FF0000;
 			}
 
 			&.completed-color {
-				color: #5BC044;
+				background-color: #5BC044;
 			}
 
 			&.in_progress-color {
-				color: #EA8612;
+				background-color: #EA8612;
 			}
 		}
 
-		h1 {
-			font-size: 20px !important;
-		}
 
-		.close-btn {
-			cursor: pointer;
-		}
 	}
 
 	.sidebar-event-datetime {
@@ -529,221 +521,6 @@ export default styled(CalendarView)`
 
 	}
 
-}
-
-.create-event-sidebar {
-	overflow-y: auto;
-	min-width: 350px !important;
-	width: 610px !important;
-	max-width: 60vw !important;
-
-	@media only screen and (max-width: 768px) {
-		min-width: 250px !important;
-		max-width: 90vw !important;
-	}
-
-	.create-event-sidebar-header {
-		justify-content: space-between !important;
-
-		h1 {
-			font-weight: 500;
-			font-size: 32px !important;
-		}
-
-		@media only screen and (max-width: 768px) {
-			h1 {
-				font-weight: 500;
-				font-size: 32px !important;
-				margin-left: 0;
-			}
-		}
-	}
-
-	.create-event-form {
-		margin-top: 48px;
-
-		@media only screen and (max-width: 768px) {
-			margin-top: 18px;
-		}
-
-		.input.error {
-			border: 1px solid #FF0000;
-		}
-
-		.input-label {
-			font-weight: 500;
-			font-size: 16px;
-			color: #7D7D7D;
-			margin-bottom: 12px;
-
-			@media only screen and (max-width: 768px) {
-				font-size: 14px;
-			}
-		}
-		
-		.text-input {
-			height: 35px;
-			border-radius: 5px;
-			margin-bottom: 18px;
-			font-size: 16px;
-
-			@media only screen and (max-width: 768px) {
-				font-size: 14px;
-				height: 38px;
-				margin-bottom: 12px;
-			}
-		}
-
-		.radio-input-group {
-			margin-top: 12px;
-			
-			.checkbox{
-				margin-right: 20px !important;
-
-				&.checked {
-					label {
-						color: #E5007A;
-
-						&::after {
-							background-color: #E5007A !important;
-						}
-					}
-				}
-
-				label {
-					font-size: 16px !important;
-					padding-left: 20px !important;
-
-					@media only screen and (max-width: 768px) {
-						font-size: 14px;
-					}
-				}
-
-			}
-		}
-
-		.date-input-row {
-			margin-top: 28px;
-			margin-bottom: 28px;
-			display: flex;
-
-			@media only screen and (max-width: 768px) {
-				margin-top: 22px;
-				margin-bottom: 22px;
-				flex-direction: column;
-			}
-
-			.start-date-div {
-				margin-right: 20px;
-
-				@media only screen and (max-width: 768px) {
-					margin-right: 0;
-					margin-bottom: 14px;
-				}
-			}
-
-			.input-label {
-				margin-bottom: 212px !important;
-			}
-
-			.react-calendar__tile--now {
-				background-color: rgba(229, 0, 122, 0.1);
-			}
-		}
-
-		.date-input {
-			width: 100%;
-			margin-top: 2px;
-			font-family: 'Roboto' !important;
-			height: 38px !important;
-	
-			&.error {
-				.react-date-picker__wrapper {
-					border: #FF0000 1px solid;
-					color: #FF0000 !important;
-				}
-	
-				.react-date-picker__inputGroup__input {
-					color: #FF0000 !important;
-					font-family: 'Roboto' !important;
-				}
-			}
-	
-			.react-date-picker__wrapper {
-				padding: 0 10px;
-				border: 1px solid rgba(34,36,38,.15);
-				border-radius: .29rem;
-	
-				.react-date-picker__inputGroup {
-					display: flex;
-	
-					.react-date-picker__inputGroup__divider {
-						height: 100%;
-						display: flex;
-						align-items: center;
-					}
-				}
-	
-			}
-	
-			.react-date-picker__clear-button {
-				svg {
-					stroke: #aaa !important;
-					height: 14px;
-				}
-			}
-	
-			.react-date-picker__inputGroup__input {
-				border: none !important;
-				font-family: 'Roboto' !important;
-				color: #333;
-				height: min-content;
-				margin-bottom: 0 !important;
-			}
-	
-			.react-date-picker__inputGroup__divider,.react-date-picker__inputGroup__day, .react-date-picker__inputGroup__month, .react-date-picker__inputGroup__year {
-				font-size: 14px;
-				padding-left: 1px !important;
-				padding-right: 1px !important;
-			}
-		}
-
-		.form-actions{
-			display: flex;
-			justify-content: flex-end;
-			margin-top: 16px;
-
-			.button {
-				font-weight: 600;
-				font-size: 16px;
-
-				&:first-of-type {
-					background: transparent;
-				}
-			}
-
-			.submit-btn {
-				background: #E5007A;
-				color: #fff;
-			}
-			
-		}
-	}
-
-}
-
-h1 {
-	@media only screen and (max-width: 576px) {
-		margin: 3rem 1rem 1rem 1rem;
-	}
-
-	@media only screen and (max-width: 768px) and (min-width: 576px) {
-		margin-left: 1rem;
-	}
-
-	@media only screen and (max-width: 991px) and (min-width: 768px) {
-		margin-left: 1rem;
-	}
 }
 
 .cal-heading-div {
@@ -890,6 +667,8 @@ h1 {
 					color: #fff;
 					border: 1px solid #E6007A;
 					border-radius: 50%;
+					height:30px;
+					width:30px;
 				}
 			}
 		}
@@ -932,7 +711,7 @@ h1 {
 		}
 	}
 
-	.legend-title {
+	.font-medium text-md text-sidebarBlue {
 		margin-left: 8px;
 		color: #646464;
 		font-size: 14px;
@@ -943,10 +722,6 @@ h1 {
 		margin-left: 10px;
 	}
 	
-}
-
-.calendar-right-panel {
-	padding-left: 0 !important;
 }
 
 .events-calendar {
@@ -993,7 +768,6 @@ h1 {
 	.custom-calendar-toolbar {
 		height: 77px;
 		padding: 6px 26px;
-		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
 		border-bottom: 1px solid #E8E8E8;
 		display: flex;
@@ -1260,6 +1034,8 @@ h1 {
 				color: #fff;
 				border: 1px solid #E6007A;
 				border-radius: 50%;
+				height:32px;
+				width:32px;
 			}
 		}
 	}
@@ -1405,4 +1181,3 @@ h1 {
 }
 
 `;
-
