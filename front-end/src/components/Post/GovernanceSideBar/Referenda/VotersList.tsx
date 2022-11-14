@@ -2,7 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-/* eslint-disable no-tabs */
 import { DislikeFilled, LeftOutlined, LikeFilled, RightOutlined } from '@ant-design/icons';
 import { LoadingOutlined } from '@ant-design/icons';
 import { Pagination, PaginationProps, Spin } from 'antd';
