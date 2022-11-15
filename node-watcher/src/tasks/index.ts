@@ -64,7 +64,7 @@ export const nomidotTasks: NomidotTask[] = [
   createChildBountyStatus,
   createCouncilMotionVotes,
   createReferendumVote,
+  createPreimageV2,
   createReferendumV2,
   createReferendumStatusV2,
-  createPreimageV2,
 ];
