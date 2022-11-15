@@ -18,6 +18,8 @@ import VoteProgress from 'src/ui-components/VoteProgress';
 import formatBnBalance from 'src/util/formatBnBalance';
 import getNetwork from 'src/util/getNetwork';
 
+import VotersList from './VotersList';
+
 interface Props {
 	className?: string
 	referendumId: number
@@ -133,7 +135,7 @@ const ReferendumVoteInfo = ({ className, referendumId }: Props) => {
 								nayVotes={voteInfo?.nay_amount}
 							/>
 
-							<div className='flex-1 flex flex-col justify-between ml-12 py-9'>
+							<div className='flex-1 flex flex-col justify-between ml-4 md:ml-12 py-9'>
 								<div className='mb-auto flex items-center'>
 									<div className='mr-auto text-sidebarBlue font-medium'>Turnout {turnoutPercentage > 0 && <span className='turnoutPercentage'>({turnoutPercentage}%)</span>}</div>
 									<div className='text-navBlue'>{formatBnBalance(voteInfo?.turnout, { numberAfterComma: 2, withUnit: true })}</div>
@@ -151,7 +153,10 @@ const ReferendumVoteInfo = ({ className, referendumId }: Props) => {
 							</div>
 						</div>
 					</Spin>
-				</GovSidebarCard>}
+				</GovSidebarCard>
+			}
+
+			<VotersList className={className} referendumId={referendumId} />
 		</>
 	);
 };
