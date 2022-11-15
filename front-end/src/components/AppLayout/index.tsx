@@ -15,6 +15,7 @@ import { logout } from 'src/services/auth.service';
 import { BountiesIcon, CalendarIcon, DemocracyProposalsIcon, DiscussionsIcon, MembersIcon, MotionsIcon, NewsIcon, OverviewIcon, ParachainsIcon, ReferendaIcon, TipsIcon, TreasuryProposalsIcon } from 'src/ui-components/CustomIcons';
 
 import Footer from './Footer';
+import GovernanceSwitchDropdown from './GovernanceSwitchDropdown';
 import NavHeader from './NavHeader';
 import SwitchRoutes from './SwitchRoutes';
 
@@ -86,16 +87,25 @@ const getUserDropDown = (handleLogout: any, img?: string | null, username?: stri
 			<div className='flex items-center justify-between gap-x-2'>
 				<span className='truncate w-[85%]'>{username || ''}</span> <DownOutlined className='text-navBlue hover:text-pink_primary text-base' />
 			</div>
-		</AuthDropdown>, 'userMenu', <AuthDropdown><Avatar className='-ml-2.5 mr-2' size={40} src={img || noUserImg} /></AuthDropdown>);
+		</AuthDropdown>, 'noNavigate', <AuthDropdown><Avatar className='-ml-2.5 mr-2' size={40} src={img || noUserImg} /></AuthDropdown>);
 };
 
-const overviewItems = [
+let overviewItems = [
 	getSiderMenuItem('Overview', '/', <OverviewIcon className='text-white' />),
 	getSiderMenuItem('Discussions', '/discussions', <DiscussionsIcon className='text-white' />),
 	getSiderMenuItem('Calendar', '/calendar', <CalendarIcon className='text-white' />),
 	getSiderMenuItem('News', '/news', <NewsIcon className='text-white' />),
 	getSiderMenuItem('Parachains', '/parachains', <ParachainsIcon className='text-white' />)
 ];
+
+const GovSwitchDropdownMenuItem = getSiderMenuItem(<GovernanceSwitchDropdown className='block lg:hidden' />, 'noNavigate', '');
+
+if(window.screen.width < 1024) {
+	overviewItems = [
+		GovSwitchDropdownMenuItem,
+		...overviewItems
+	];
+}
 
 const democracyItems = [
 	getSiderMenuItem('Proposals', '/proposals', <DemocracyProposalsIcon className='text-white' />),
@@ -153,7 +163,7 @@ const AppLayout = ({ className }: { className?:string }) => {
 	const { pathname } = useLocation();
 
 	const handleMenuClick = (menuItem: any) => {
-		if(menuItem.key === 'userMenu') return;
+		if(menuItem.key === 'noNavigate') return;
 
 		navigate(menuItem.key);
 		// only for mobile devices
@@ -191,7 +201,11 @@ const AppLayout = ({ className }: { className?:string }) => {
 						mode="inline"
 						selectedKeys={[pathname]}
 						defaultOpenKeys={['democracy_group', 'treasury_group', 'council_group', 'tech_comm_group']}
-						items={sidebarCollapsed ? username? [getUserDropDown(handleLogout, picture, username), ...collapsedItems]: collapsedItems : username? [getUserDropDown(handleLogout, picture, username), ...items]: items}
+						items={
+							sidebarCollapsed ? username ?
+								[getUserDropDown(handleLogout, picture, username), ...collapsedItems] : collapsedItems
+								: username ? [getUserDropDown(handleLogout, picture, username), ...items] : items
+						}
 						onClick={handleMenuClick}
 						className={`${username?'auth-sider-menu':''} mt-[60px]`}
 					/>
