@@ -65,6 +65,7 @@
     "react-jwt": "^1.1.7",
     "react-lottie-player": "^1.4.3",
     "react-markdown": "^8.0.3",
+    "react-mde": "^11.5.0",
     "react-router-dom": "^6.4.1",
     "react-scripts": "5.0.1",
     "react-twitter-embed": "^4.0.4",
