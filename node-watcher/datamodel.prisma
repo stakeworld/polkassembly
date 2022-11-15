@@ -326,3 +326,57 @@ type CouncilMotionVote {
   voter: String!
   seconded: Boolean!
 }
+
+type ReferendumV2 {
+  id: Int! @id(strategy: SEQUENCE) @sequence(name: "REFERENDUMV2_SEQUENCE" initialValue:1 allocationSize:1)
+  trackNumber: Int!
+  origin: String!
+  preimage: PreimageV2 @relation(name: "PreimageV2ForReferendumV2")
+  preimageHash: String!
+  referendumId: Int! @unique
+  referendumStatus: [ReferendumStatusV2]! @relation(name: "ReferendumStatusV2FromReferendumV2")
+  enactmentAt: String
+  enactmentAfter: String
+  submittedAt: String!
+  submitted: Json
+  decisionDeposit: Json
+  deciding: Json
+}
+
+type ReferendumStatusV2 {
+  id: ID! @id
+  blockNumber: BlockNumber! @relation(name: "ReferendumStatusV2AtBlockNumber", link: INLINE)
+  referendum: ReferendumV2! @relation(name: "ReferendumStatusV2FromReferendumV2", link: INLINE)
+  status: String!
+  uniqueStatus: String! @unique
+}
+
+type PreimageV2 {
+  id: ID! @id
+  author: String!
+  depositAmount: String
+  hash: String!
+  metaDescription: String!
+  method: String!
+  enactmentPeriod: String
+  origin: String
+  preimageArguments: [PreimageArgumentV2]! @relation(name: "ArgumentForPreimageV2")
+  preimageStatus: [PreimageStatusV2]! @relation(name: "PreimageStatusV2FromPreimage")
+  referendum: ReferendumV2 @relation(name: "PreimageV2ForReferendumV2", link: INLINE)
+  section: String!
+  length: Int!
+}
+
+type PreimageStatusV2 {
+  id: ID! @id
+  blockNumber: BlockNumber! @relation(name: "PreimagStatusV2AtBlockNumber", link: INLINE)
+  preimage: PreimageV2! @relation(name: "PreimageStatusV2FromPreimage", link: INLINE)
+  status: String!
+}
+
+type PreimageArgumentV2 {
+  id: ID! @id
+  name: String!
+  preimage: PreimageV2! @relation(name: "ArgumentForPreimageV2", link: INLINE)
+  value: String!
+}

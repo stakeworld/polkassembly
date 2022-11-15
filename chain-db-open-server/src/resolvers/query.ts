@@ -385,6 +385,50 @@ const Query = {
   ) {
     return prisma.preimageStatus(PreimageStatusWhereUniqueInput);
   },
+  preimageV2s(
+    _parent: any,
+    { where, orderBy, skip, after, before, first, last }: Selectors,
+    { prisma }: Context
+  ) {
+    return prisma.preimageV2s({
+      where,
+      orderBy,
+      skip,
+      after,
+      before,
+      first,
+      last,
+    });
+  },
+  preimageV2(
+    _parent: any,
+    { PreimageWhereUniqueInput }: Selectors,
+    { prisma }: Context
+  ) {
+    return prisma.preimageV2(PreimageWhereUniqueInput);
+  },
+  preimageStatusV2s(
+    _parent: any,
+    { where, orderBy, skip, after, before, first, last }: Selectors,
+    { prisma }: Context
+  ) {
+    return prisma.preimageStatusV2s({
+      where,
+      orderBy,
+      skip,
+      after,
+      before,
+      first,
+      last,
+    });
+  },
+  preimageStatusV2(
+    _parent: any,
+    { PreimageStatusWhereUniqueInput }: Selectors,
+    { prisma }: Context
+  ) {
+    return prisma.preimageStatusV2(PreimageStatusWhereUniqueInput);
+  },
   proposals(
     _parent: any,
     { where, orderBy, skip, after, before, first, last }: Selectors,
@@ -538,6 +582,35 @@ const Query = {
     { prisma }: Context
   ) {
     return prisma.referendumStatus(referendumStatusWhereUniqueInput);
+  },
+  referendumV2(
+    _parent: any,
+    { referendumWhereUniqueInput }: Selectors,
+    { prisma }: Context
+  ) {
+    return prisma.referendumV2(referendumWhereUniqueInput);
+  },
+  referendumStatusV2s(
+    _parent: any,
+    { where, orderBy, skip, after, before, first, last }: Selectors,
+    { prisma }: Context
+  ) {
+    return prisma.referendumStatusV2s({
+      where,
+      orderBy,
+      skip,
+      after,
+      before,
+      first,
+      last,
+    });
+  },
+  referendumStatusV2(
+    _parent: any,
+    { referendumStatusWhereUniqueInput }: Selectors,
+    { prisma }: Context
+  ) {
+    return prisma.referendumStatusV2(referendumStatusWhereUniqueInput);
   },
   referendumVotes(
     _parent: any,
