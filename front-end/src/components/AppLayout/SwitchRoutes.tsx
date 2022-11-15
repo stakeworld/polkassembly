@@ -7,6 +7,7 @@ import { Route, Routes } from 'react-router-dom';
 import CalendarView from 'src/screens/CalendarView';
 import CouncilBoard from 'src/screens/CouncilBoard';
 import CreatePost from 'src/screens/CreatePost';
+import Gov2Home from 'src/screens/Gov2Home';
 import Home from 'src/screens/Home';
 import { PrivacyPolicy, TermsAndConditions, TermsOfWebsite } from 'src/screens/LegalDocuments';
 import Bounties from 'src/screens/Listing/Bounties';
@@ -101,6 +102,9 @@ const SwitchRoutes = () => {
 			<Route path="/terms-and-conditions" element={<TermsAndConditions/>} />
 			<Route path="/terms-of-website" element={<TermsOfWebsite/>} />
 			<Route path="/privacy" element={<PrivacyPolicy/>} />
+
+			<Route path="/gov-2" element={<Gov2Home />} />
+
 			<Route path="*" element={<NotFound />} />
 
 		</Routes>

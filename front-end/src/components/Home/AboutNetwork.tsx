@@ -13,8 +13,6 @@ import getNetwork from 'src/util/getNetwork';
 
 const network = getNetwork();
 
-console.log(network);
-
 export const socialLinks = (blockchain_socials: any) => {
 	if (!blockchain_socials) {
 		return null;
