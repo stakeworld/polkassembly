@@ -583,6 +583,21 @@ const Query = {
   ) {
     return prisma.referendumStatus(referendumStatusWhereUniqueInput);
   },
+  referendumV2s(
+    _parent: any,
+    { where, orderBy, skip, after, before, first, last }: Selectors,
+    { prisma }: Context
+  ) {
+    return prisma.referendumV2s({
+      where,
+      orderBy,
+      skip,
+      after,
+      before,
+      first,
+      last,
+    });
+  },
   referendumV2(
     _parent: any,
     { referendumWhereUniqueInput }: Selectors,
