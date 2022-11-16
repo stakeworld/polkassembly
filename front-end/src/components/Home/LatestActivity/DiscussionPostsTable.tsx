@@ -22,6 +22,7 @@ interface DiscussionPostsRowData {
 	createdAt: string | null;
 	postId: number;
 	postCategory: PostCategory;
+	topic: string;
 }
 
 const columns: ColumnsType<DiscussionPostsRowData> = [
@@ -38,6 +39,11 @@ const columns: ColumnsType<DiscussionPostsRowData> = [
 		key: 'title',
 		width: 500,
 		fixed: 'left'
+	},
+	{
+		title: 'Topic',
+		dataIndex: 'topic',
+		key: 'topic'
 	},
 	{
 		title: 'Creator',
@@ -95,7 +101,8 @@ const DiscussionPostsTable = () => {
 					username: post.author.username,
 					createdAt: post.created_at,
 					postId: post.id,
-					postCategory: PostCategory.DISCUSSION
+					postCategory: PostCategory.DISCUSSION,
+					topic: post.type.name
 				};
 
 				tableData.push(tableDataObj);
