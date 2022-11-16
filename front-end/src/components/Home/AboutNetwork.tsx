@@ -2,10 +2,11 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { HomeFilled, TwitterOutlined, YoutubeFilled } from '@ant-design/icons';
+import { DesktopOutlined, FileTextOutlined, HomeFilled, PlayCircleFilled, TwitterOutlined, YoutubeFilled } from '@ant-design/icons';
 import styled from '@xstyled/styled-components';
 import { Space } from 'antd';
 import React, { useEffect } from 'react';
+// import Gov2InfoBG from 'src/assets/gov2-info-bg.png';
 import { useNetworkSocialsLazyQuery } from 'src/generated/graphql';
 import { CubeIcon, DiscordIcon, GithubIcon, RedditIcon, TelegramIcon } from 'src/ui-components/CustomIcons';
 import ErrorAlert from 'src/ui-components/ErrorAlert';
@@ -64,7 +65,19 @@ export const socialLinks = (blockchain_socials: any) => {
 	);
 };
 
-const AboutNetwork = ({ className } : {className?: string}) => {
+const gov2Link = ({ className, icon, text, subText } : { className?: string, icon?:any, text:string, subText:string }) =>
+	<div className={`${className} flex min-w-[260px]`}>
+		<div className="mr-3 flex items-center justify-center min-w-[132px] h-[75px] bg-[url('/src/assets/gov2-info-bg.png')]">
+			{icon}
+		</div>
+
+		<div className='flex flex-col justify-between my-1'>
+			<div className="text-sidebarBlue">{text}</div>
+			<div className="text-navBlue">{subText}</div>
+		</div>
+	</div>;
+
+const AboutNetwork = ({ className, showGov2Links } : { className?: string, showGov2Links?: boolean }) => {
 	const [refetch, { data, error }] = useNetworkSocialsLazyQuery({ variables: {
 		network
 	} });
@@ -88,6 +101,32 @@ const AboutNetwork = ({ className } : {className?: string}) => {
 			<div className='mt-5 lg:hidden flex justify-center'>
 				{!error && data && socialLinks(data.blockchain_socials[0])}
 			</div>
+
+			{
+				showGov2Links &&
+				<div className='mt-12 pb-2 flex justify-between xl:w-[90%] overflow-x-auto'>
+					{gov2Link({
+						className: 'mr-12 lg:mr-9',
+						icon: <PlayCircleFilled className='text-white text-xl' />,
+						subText: '02:03 mins',
+						text: 'Gavin\'s view on Gov2'
+					})}
+
+					{gov2Link({
+						className: 'mr-12 lg:mr-9',
+						icon: <DesktopOutlined className='text-white text-xl' />,
+						subText: '02:03 mins',
+						text: 'Gavin\'s blog on Medium'
+					})}
+
+					{gov2Link({
+						className: 'mr-12 lg:mr-0',
+						icon: <FileTextOutlined className='text-white text-xl' />,
+						subText: '02:03 mins',
+						text: 'Notes on Gov. V2 learnings'
+					})}
+				</div>
+			}
 		</div>
 	);
 };

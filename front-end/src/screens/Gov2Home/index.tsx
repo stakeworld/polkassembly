@@ -2,21 +2,40 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { FieldTimeOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import AboutNetwork from 'src/components/Home/AboutNetwork';
+import LatestActivity from 'src/components/Home/LatestActivity';
+import News from 'src/components/Home/News';
+import TreasuryOverview from 'src/components/Home/TreasuryOverview';
+import UpcomingEvents from 'src/components/Home/UpcomingEvents';
 
 const Gov2Home = () => {
-
-	const navigate = useNavigate();
-
 	return (
-		<section className="flex flex-col items-center justify-center mt-8 md:mt-20 text-center">
-			<FieldTimeOutlined className='text-6xl md:text-9xl text-navBlue' />
-			<h1 className='text-4xl md:text-6xl my-8 text-navBlue'>Coming Soon</h1>
-			<Button className='mt-4 py-2 px-6 bg-pink_primary text-white border-white hover:bg-pink_secondary rounded-md text-lg h-[50px] w-[215px]' onClick={() => navigate(-1)}>Go back</Button>
-		</section>
+		<>
+			<h1 className='dashboard-heading'>Overview</h1>
+
+			<div className="mt-6 mx-1">
+				<AboutNetwork showGov2Links />
+			</div>
+
+			<div className="mt-8 mx-1">
+				<TreasuryOverview />
+			</div>
+
+			<div className="mt-8 mx-1">
+				<LatestActivity />
+			</div>
+
+			<div className="mt-8 mx-1 flex flex-col xl:flex-row items-center justify-between gap-4">
+				<div className='w-full xl:w-[60%]'>
+					<UpcomingEvents />
+				</div>
+
+				<div className='w-full xl:w-[40%]'>
+					<News />
+				</div>
+			</div>
+		</>
 	);
 };
 
