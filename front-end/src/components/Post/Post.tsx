@@ -325,7 +325,6 @@ const Post = ({
 			key: 'description',
 			children: <PostDescription
 				id={id}
-				postStatus={postStatus}
 				post={post as any}
 				isEditing={isEditing}
 				canEdit={canEdit}

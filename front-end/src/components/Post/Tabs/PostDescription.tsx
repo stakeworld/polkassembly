@@ -26,7 +26,6 @@ interface Props {
 	className?: string;
 	canEdit: boolean | '' | undefined;
 	id: number | null | undefined;
-	postStatus?: string;
 	isEditing: boolean;
 	isOnchainPost: boolean;
 	post: DiscussionPostFragment | ProposalPostFragment | ReferendumPostFragment| TreasuryProposalPostFragment| MotionPostFragment;
