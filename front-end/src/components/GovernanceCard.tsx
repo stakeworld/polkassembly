@@ -55,35 +55,46 @@ const GovernanceCard = function ({
 	const relativeCreatedAt = getRelativeCreatedAt(created_at);
 
 	return (
-		<div className={`${className} ${ownProposal && 'border-l-pink_primary border-l-4'} border-2 border-grey_light hover:border-pink_primary hover:shadow-xl transition-all duration-200 rounded-md p-3 md:p-4`}>
-			<div className="flex justify-between">
-				<div className="content">
-					<h1 className='text-sidebarBlue font-semibold text-sm flex'>
-						{!tipReason && <span className='font-medium mr-2'>#{onchainId}</span>} {mainTitle}
-					</h1>
-					<h2 className='text-navBlue font-medium text-sm'>{subTitle}</h2>
+		<div className={`${className} ${ownProposal && 'border-l-pink_primary border-l-4'} border-2 overflow-hidden border-grey_light hover:border-pink_primary hover:shadow-xl transition-all duration-200 rounded-md p-3 md:p-4`}>
+			<div className="content">
+				<div className='flex lg:justify-between lg:items-start lg:flex-row flex-col-reverse'>
+					<div className='mt-3 lg:mt-0'>
+						<h1 className='text-sidebarBlue font-semibold text-sm flex'>
+							{!tipReason && <span className='font-medium mr-2'>#{onchainId}</span>} {mainTitle}
+						</h1>
+						<h2 className='text-navBlue font-medium text-sm'>{subTitle}</h2>
+					</div>
+					<div className='flex justify-between items-center'>
+						{status && <StatusTag status={status}/>}
+						{relativeCreatedAt &&
+							<div className='flex items-center text-navBlue lg:hidden'>
+								<ClockCircleOutlined className='mr-1' /> {relativeCreatedAt}
+							</div>}
+					</div>
+				</div>
 
-					<Space className="mt-3 font-medium text-navBlue text-xs flex flex-col md:flex-row items-start md:items-center">
-						<Space className='flex'>
-							<OnchainCreationLabel address={address} topic={topic} />
-						</Space>
-						<Divider className='hidden md:inline-block' type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
+				<Space className="mt-3 font-medium text-navBlue text-xs flex flex-col md:flex-row items-start md:items-center">
+					<Space className='flex'>
+						<OnchainCreationLabel address={address} topic={topic} />
+					</Space>
+					<Divider className='hidden md:inline-block' type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
 
-						<div className='flex items-center'>
-							{relativeCreatedAt && <>
-								<div className='flex items-center'>
-									<ClockCircleOutlined className='mr-1' /> {relativeCreatedAt}
-								</div><Divider type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
-							</>}
+					<div className='flex items-center'>
+						{relativeCreatedAt && <>
+							<div className='hidden lg:flex lg:items-center'>
+								<ClockCircleOutlined className='mr-1' /> {relativeCreatedAt}
+							</div><Divider type="vertical" className='hidden lg:inline' style={{ borderLeft: '1px solid #90A0B7' }} />
+						</>}
 
-							{comments && <>
-								<div className='flex items-center'>
-									<CommentOutlined className='mr-1' /> {comments} comments
-								</div>
-							</>}
-						</div>
+						{comments && <>
+							<div className='flex items-center'>
+								<CommentOutlined className='mr-1' /> {comments} comments
+							</div>
+						</>}
 
-						{!!end && !!currentBlock &&
+					</div>
+
+					{!!end && !!currentBlock &&
 							<div className="flex items-center">
 								<Divider className='hidden md:inline-block' type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
 								<ClockCircleOutlined className='mr-1' />
@@ -93,11 +104,8 @@ const GovernanceCard = function ({
 										: <span>ended <BlockCountdown endBlock={end}/></span>
 								}
 							</div>
-						}
-					</Space>
-				</div>
-
-				{status && <StatusTag status={status}/>}
+					}
+				</Space>
 			</div>
 		</div>
 	);
