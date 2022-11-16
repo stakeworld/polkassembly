@@ -26,7 +26,7 @@ const NavHeader = ({ className, sidebarCollapsed, setSidebarCollapsed } : Props)
 	const { username } = currentUser;
 
 	return (
-		<Header className={`${className} flex items-center bg-white h-[60px] max-h-[60px] px-6 z-50 leading-normal`}>
+		<Header className={`${className} sticky top-0 flex items-center bg-white h-[60px] max-h-[60px] px-6 z-50 leading-normal`}>
 			<MenuOutlined className='lg:hidden mr-5' onClick={() => {
 				setSidebarCollapsed(!sidebarCollapsed);
 				if (sidebarCollapsed) {

@@ -87,7 +87,7 @@ const AboutNetwork = ({ className } : {className?: string}) => {
 
 			<p className='mt-5'>Join our Community to discuss, contribute and get regular updates from us!</p>
 
-			<div className='mt-5 lg:hidden flex justify-center'>
+			<div className='mt-5 lg:hidden flex'>
 				{!error && data && socialLinks(data.blockchain_socials[0])}
 			</div>
 		</div>

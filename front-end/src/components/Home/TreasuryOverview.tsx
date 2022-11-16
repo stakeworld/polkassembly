@@ -22,6 +22,7 @@ import fetchTokenToUSDPrice from 'src/util/fetchTokenToUSDPrice';
 import formatBnBalance from 'src/util/formatBnBalance';
 import formatUSDWithUnits from 'src/util/formatUSDWithUnits';
 import getNetwork from 'src/util/getNetwork';
+import styled from 'styled-components';
 
 const EMPTY_U8A_32 = new Uint8Array(32);
 
@@ -34,11 +35,12 @@ interface Result {
 
 interface Props{
 	inTreasuryProposals?: boolean
+	className?: string
 }
 
 const NETWORK = getNetwork();
 
-const TreasuryOverview = ({ inTreasuryProposals }:Props) => {
+const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 	const { api, apiReady } = useContext(ApiContext);
 	const [currentBlock, setCurrentBlock] = useState<BN>(new BN(0));
 	const [treasuryBalance, setTreasuryBalance] = useState<
@@ -237,7 +239,7 @@ const TreasuryOverview = ({ inTreasuryProposals }:Props) => {
 	}, [api, apiReady, currentBlock, blocktime, result.spendPeriod]);
 
 	return (
-		<div className="grid grid-rows-2 grid-flow-col gap-4 lg:gap-0 lg:flex">
+		<div className={`${className} grid grid-rows-2 grid-cols-2 grid-flow-col gap-4 lg:gap-0 lg:flex`}>
 			{/* Available */}
 			<div className="flex-1 lg:mr-7 bg-white drop-shadow-md p-3 lg:p-6 rounded-md">
 				<div className="text-navBlue text-xs flex items-center">
@@ -369,4 +371,10 @@ const TreasuryOverview = ({ inTreasuryProposals }:Props) => {
 	);
 };
 
-export default TreasuryOverview;
+export default styled(TreasuryOverview)`
+
+.ant-progress-text{
+	color: #90A0B7 !important;
+}
+
+`;
