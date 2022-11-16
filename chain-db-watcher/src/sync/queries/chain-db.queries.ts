@@ -195,3 +195,35 @@ export const getOnchainTips = gql`
         hash
     }
 `;
+
+export const getOnchainReferendumV2 = gql`
+    query getOnchainReferendumV2($startBlock: Int!) {
+        referendumV2s (
+            where: {
+                referendumStatus_some: {
+                    AND: [
+                        { status: "Ongoing" }
+                        { blockNumber: { number_gte: $startBlock } }
+                    ]
+                }
+            }
+        ){
+            ...onchainReferendumV2
+        }
+    }
+    fragment onchainReferendumV2 on ReferendumV2 {
+        id
+        referendumId
+        origin
+        trackNumber
+        referendumStatus(last: 1) {
+            status
+        }
+        preimageHash
+        preimage {
+            author
+            hash
+        }
+    }
+`;
+

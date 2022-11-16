@@ -253,6 +253,53 @@ export const addPostAndMotionMutation = gql`
     }
 `;
 
+export const addPostAndReferendumV2Mutation = gql`
+    mutation addPostAndReferendumV2Mutation (
+        $onchainReferendumId:Int!,
+        $authorId: Int!,
+        $proposerAddress: String!,
+        $status: String!,
+        $track: Int!,
+        $origin: String!,
+        $content: String!,
+        $topicId: Int!,
+        $typeId: Int!
+        ){
+        __typename
+        insert_onchain_links(objects: {
+            onchain_referendumv2_id: $onchainReferendumId,
+            proposer_address: $proposerAddress,
+            origin: $origin,
+            track: $track,
+            onchain_referendumv2_status: $status,
+            post: {data: {
+                author_id: $authorId,
+                content: $content,
+                topic_id: $topicId,
+                type_id: $typeId
+            }
+        }}) {
+            returning {
+                id
+            }
+        }
+    }
+`;
+
+export const updateDiscussionReferendumV2Mutation = gql`
+    mutation updateDiscussionReferendumV2Mutation (
+        $onchainReferendumId:Int!,
+        $status: String!,
+        ){
+        __typename
+        update_onchain_links(where: {onchain_referendumv2_id: {_eq: $onchainReferendumId}}, _set: {onchain_referendumv2_status: $status}) {
+            returning {
+                id
+            }
+        }
+    }
+`;
+
 export const getProposalWithNoAssociatedReferendumQuery = gql`
     query getProposalWithNoAssociatedReferendumQuery($onchainProposalId: Int!) {
         onchain_links(where: {_and: {
@@ -384,3 +431,10 @@ export const getDiscussionTechCommitteeProposalById = gql`
     }
 `;
 
+export const getDiscussionReferendumV2ById = gql`
+    query getDiscussionReferendumV2ById($onchainReferendumId: Int!) {
+        onchain_links(where: {onchain_referendumv2_id: {_eq: $onchainReferendumId}}) {
+            id
+        }
+    }
+`;

@@ -8,6 +8,7 @@ import Header from 'src/screens/Settings/Header';
 
 import Address from './Address';
 import MultiSignatureAddress from './MultiSignatureAddress';
+import Proxy from './Proxy';
 
 interface IAddressHeaderProps {
     header?: string;
@@ -34,6 +35,7 @@ interface Props {
 const Account: FC<Props> = ({ className }) => {
 	const [isLinkAddress, setIsLinkAddress] = useState(false);
 	const [isMultiSigAddress, setIsMultiSigAddress] = useState(false);
+	const [isLinkProxy, setIsLinkProxy] = useState(false);
 	return (
 		<Row className={`${className} flex flex-col w-full`}>
 			<Header heading='Account Settings' subHeading='Update your account settings' />
@@ -60,6 +62,18 @@ const Account: FC<Props> = ({ className }) => {
 					<MultiSignatureAddress
 						open={isMultiSigAddress}
 						dismissModal={() => setIsMultiSigAddress(false)}
+					/>
+				</section>
+				<section>
+					<AddressHeader
+						checked={isLinkProxy}
+						header='Link Proxy Address'
+						id='link_proxy'
+						onChange={setIsLinkProxy}
+					/>
+					<Proxy
+						open={isLinkProxy}
+						dismissModal={() => setIsLinkProxy(false)}
 					/>
 				</section>
 			</div>

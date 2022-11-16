@@ -17,7 +17,7 @@ const LIMIT = 10;
 const TreasuryListingWrapper = ({ className, count } : { className?:string, count: number | null | undefined }) => {
 	const [offset, setOffset] = useState(0);
 
-	const [refetch, { data, error, loading }] = useAllDemocracyTreasuryProposalPostsLazyQuery({ variables: {
+	const [getData, { called, data, error, loading, refetch }] = useAllDemocracyTreasuryProposalPostsLazyQuery({ variables: {
 		limit: LIMIT,
 		offset,
 		postTopic: post_topic.TREASURY,
@@ -25,8 +25,13 @@ const TreasuryListingWrapper = ({ className, count } : { className?:string, coun
 	} });
 
 	useEffect(() => {
-		refetch();
-	}, [refetch]);
+		if (called) {
+			refetch();
+		} else {
+			getData();
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [called]);
 
 	const onPaginationChange = (page:number) => {
 		handlePaginationChange({ LIMIT, page, setOffset });

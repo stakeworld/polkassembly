@@ -66,14 +66,13 @@ const MotionVoteInfo = ({ className, motionId }: Props) => {
 			return () => unsubscribe && unsubscribe();
 		}
 		else{
-
 			if (canFetch.current){
 				fetch(`https://${getNetwork()}.api.subscan.io/api/scan/council/proposal`,
 					{ body: JSON.stringify({ proposal_id: motionId }), headers: subscanApiHeaders, method: 'POST' }).then(async (res) => {
 					try {
 						const response = await res.json();
 						const info = response?.data?.info;
-						if (info) {
+						if (info && info.votes) {
 							const councilVotes: CouncilVote[] = [];
 
 							info.votes.forEach((vote: any) => {
@@ -104,8 +103,8 @@ const MotionVoteInfo = ({ className, motionId }: Props) => {
 		<GovSidebarCard className={`${className} px-1 md:px-9`}>
 			<h3 className='dashboard-heading flex items-center'>Council Votes <HelperTooltip className='ml-2' text='This represents the onchain votes of council members'/></h3>
 			<div className='mt-6'>
-				{councilVotes.map(councilVote =>
-					<div className='flex items-center justify-between mb-6' key={councilVote.address}>
+				{councilVotes.map((councilVote, index) =>
+					<div className='flex items-center justify-between mb-6' key={`${councilVote.address}_${index}`}>
 						<div className='item'>
 							<Address address={councilVote.address} />
 						</div>

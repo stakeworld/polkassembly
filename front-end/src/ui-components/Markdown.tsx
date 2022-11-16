@@ -109,7 +109,7 @@ export default styled(Markdown)`
 			&::before, &::after {
 				letter-spacing: -0.2em;
 			}
-			overflow: overlay;
+			overflow: auto;
 		}
 	}
 

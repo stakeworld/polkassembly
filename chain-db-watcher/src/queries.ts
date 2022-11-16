@@ -245,3 +245,56 @@ export const tipSubscription = gql`
         }
     }
 `;
+
+export const referendumV2Subscription = gql`
+    subscription referendumV2Subscription($startBlock: Int!) {
+        referendumV2 (
+            where: {
+                node: {
+                    referendumStatus_some: {
+                        AND: [
+                            { status: "Ongoing" }
+                            { blockNumber: { number_gte: $startBlock } }
+                        ]
+                    }
+                }
+            }
+        ) {
+            mutation
+            node {
+                id
+                referendumId
+                origin
+                trackNumber
+                referendumStatus(last: 1) {
+                    status
+                }
+                preimageHash
+                preimage {
+                    author
+                    hash
+                }
+            }
+        }
+    }
+`;
+
+export const referendumStatusV2Subscription = gql`
+    subscription referendumStatusV2Subscription($startBlock: Int!) {
+        referendumStatusV2(
+            where: {node: {blockNumber: {number_gte: $startBlock}}}
+        ) {
+            mutation
+            node {
+                id
+                referendum{
+                    referendumId
+                }
+                status
+                blockNumber {
+                    number
+                }
+            }
+        }
+    }
+`;

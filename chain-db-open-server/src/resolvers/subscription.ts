@@ -17,7 +17,11 @@ import {
   ProposalSubscriptionPayloadSubscription,
   ProposalSubscriptionWhereInput,
   ReferendumSubscriptionPayloadSubscription,
+  ReferendumV2SubscriptionPayloadSubscription,
   ReferendumSubscriptionWhereInput,
+  ReferendumV2SubscriptionWhereInput,
+  ReferendumStatusV2SubscriptionWhereInput,
+  ReferendumStatusV2SubscriptionPayloadSubscription,
   RewardSubscription,
   SessionSubscription,
   SlashingSubscription,
@@ -261,6 +265,32 @@ const referendum = {
   },
 };
 
+const referendumV2 = {
+  subscribe: (
+    parent: any,
+    { where }: { where: ReferendumV2SubscriptionWhereInput },
+    context: Context
+  ): ReferendumV2SubscriptionPayloadSubscription => {
+    return context.prisma.$subscribe.referendumV2(where);
+  },
+  resolve: (payload: any) => {
+    return payload;
+  },
+};
+
+const referendumStatusV2 = {
+  subscribe: (
+    parent: any,
+    { where }: { where: ReferendumStatusV2SubscriptionWhereInput },
+    context: Context
+  ): ReferendumStatusV2SubscriptionPayloadSubscription => {
+    return context.prisma.$subscribe.referendumStatusV2(where);
+  },
+  resolve: (payload: any) => {
+    return payload;
+  },
+};
+
 const treasurySpendProposal = {
   subscribe: (
     parent: any,
@@ -345,4 +375,6 @@ export const Subscription = {
   tip,
   treasurySpendProposal,
   referendum,
+  referendumV2,
+  referendumStatusV2,
 };

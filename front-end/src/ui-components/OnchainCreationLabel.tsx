@@ -9,20 +9,24 @@ import TopicTag from '../ui-components/TopicTag';
 
 interface Props {
 	address: string
-	className?: string
 	topic: string
 }
 
-const OnchainCreationLabel = ({ address, className, topic }:Props ) => {
+const OnchainCreationLabel = ({ address, topic }:Props ) => {
 	return (
-		<div className={`${className} text-navBlue flex items-center text-[12px]`}>
-			by
-			<Address
-				address={address}
-				className='address ml-2'
-				displayInline={true}
-			/>
-				from <TopicTag className='ml-[0.6rem]' topic={topic} />
+		<div className='flex flex-col md:flex-row md:items-center text-xs text-nav_black w-full md:w-auto'>
+			<div className='flex items-center'>
+				<span>by</span>
+				<Address
+					address={address}
+					className='address ml-1.5'
+					displayInline={true}
+				/>
+			</div>
+			<div className='flex items-center'>
+				<span className='mr-1.5 ml-auto'>from</span>
+				<TopicTag topic={topic} />
+			</div>
 		</div>
 	);
 };

@@ -39,6 +39,7 @@ const ChildBountyListing = ({ className, data, loading } : Props) => {
 						<li key={post.id} className='my-5'>
 							{<Link to={`/child_bounty/${onchainId}`}>
 								<GovernanceCard
+									postReactions={(post as any)?.post_reactions}
 									address={post.onchain_link.proposer_address}
 									comments={post.comments_aggregate.aggregate?.count
 										? post.comments_aggregate.aggregate.count.toString()

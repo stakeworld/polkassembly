@@ -9,19 +9,21 @@ import {
 	addDiscussionPostAndChildBounty,
 	addDiscussionPostAndMotion,
 	addDiscussionPostAndProposal,
+	addDiscussionPostAndReferendumV2,
 	addDiscussionPostAndTechCommitteeProposal,
 	addDiscussionPostAndTip,
 	addDiscussionPostAndTreasuryProposal,
 	addDiscussionReferendum,
 	updateTreasuryProposalWithMotion
 } from '../graphql_helpers';
-import { MotionObjectMap, ObjectMap, OnchainMotionSyncType, ReferendumObjectMap, SyncData, TreasuryDeduplicateMotionMap } from '../types';
+import { MotionObjectMap, ObjectMap, OnchainMotionSyncType, ReferendumObjectMap, ReferendumV2ObjectMap, SyncData, TreasuryDeduplicateMotionMap } from '../types';
 import {
 	getDiscussionBounties,
 	getDiscussionChildBounties,
 	getDiscussionMotions,
 	getDiscussionProposals,
 	getDiscussionReferenda,
+	getDiscussionReferendumV2,
 	getDiscussionTechCommitteeProposals,
 	getDiscussionTips,
 	getDiscussionTreasuryProposals,
@@ -30,6 +32,7 @@ import {
 	getOnChainMotions,
 	getOnChainProposals,
 	getOnchainReferenda,
+	getOnChainReferendumV2s,
 	getOnChainTechCommitteeProposals,
 	getOnChainTips,
 	getOnChainTreasuryProposals
@@ -41,6 +44,7 @@ const getSyncData = async (): Promise<SyncData | undefined> => {
 		const discussionMotions = await getDiscussionMotions();
 		const discussionProposals = await getDiscussionProposals();
 		const discussionReferenda = await getDiscussionReferenda();
+		const discussionReferendumV2 = await getDiscussionReferendumV2();
 		const discussionTreasuryProposals = await getDiscussionTreasuryProposals();
 		const discussionTips = await getDiscussionTips();
 		const discussionBounties = await getDiscussionBounties();
@@ -50,6 +54,7 @@ const getSyncData = async (): Promise<SyncData | undefined> => {
 		const onChainMotions = await getOnChainMotions();
 		const onChainProposals = await getOnChainProposals();
 		const onchainReferenda = await getOnchainReferenda();
+		const onchainReferendumV2s = await getOnChainReferendumV2s();
 		const onChainTreasuryProposals = await getOnChainTreasuryProposals();
 		const onChainTips = await getOnChainTips();
 		const onChainBounties = await getOnChainBounties();
@@ -63,9 +68,11 @@ const getSyncData = async (): Promise<SyncData | undefined> => {
 				motions: discussionMotions,
 				proposals: discussionProposals,
 				referenda: discussionReferenda,
+				referendumV2: discussionReferendumV2,
 				techCommitteeProposals: discussionTechCommitteeProposals,
 				tips: discussionTips,
 				treasuryProposals: discussionTreasuryProposals
+
 			},
 			onchain: {
 				bounties: onChainBounties,
@@ -73,6 +80,7 @@ const getSyncData = async (): Promise<SyncData | undefined> => {
 				motions: onChainMotions,
 				proposals: onChainProposals,
 				referenda: onchainReferenda,
+				referendumV2: onchainReferendumV2s,
 				techCommitteeProposals: onChainTechCommitteeProposals,
 				tips: onChainTips,
 				treasuryProposals: onChainTreasuryProposals
@@ -182,6 +190,22 @@ const syncReferenda = async (onchainReferenda: ReferendumObjectMap, discussionRe
 		}));
 };
 
+const syncReferendumV2 = async (onchainReferendaV2: ReferendumV2ObjectMap, discussionReferendaV2: ObjectMap): Promise<void[]> => {
+	return Promise.all(
+		Object.keys(onchainReferendaV2).map(async (key) => {
+			// If this referendum doesn't exist in the discussion DB
+			if (!discussionReferendaV2[key]) {
+				await addDiscussionPostAndReferendumV2({
+					origin: onchainReferendaV2[key].origin,
+					proposer: onchainReferendaV2[key].author,
+					referendumId: Number(key),
+					status: onchainReferendaV2[key].status,
+					trackNumber: onchainReferendaV2[key].trackNumber
+				});
+			}
+		}));
+};
+
 const getTreasuryDeduplicatedMotionsMap = (motionObjectMap: MotionObjectMap): TreasuryDeduplicateMotionMap => {
 	// this map will contain the treasury with the array of motions linked to it
 	// eg: {
@@ -240,6 +264,10 @@ export const syncDBs = async (): Promise<void> => {
 		syncMaps?.onchain?.referenda &&
 		syncMaps?.discussion?.referenda &&
 		await syncReferenda(syncMaps.onchain.referenda, syncMaps.discussion.referenda);
+
+		syncMaps?.onchain?.referendumV2 &&
+		syncMaps?.discussion?.referendumV2 &&
+		await syncReferendumV2(syncMaps.onchain.referendumV2, syncMaps.discussion.referendumV2);
 
 		console.log('✅ Syncing finished.');
 	} catch (err) {

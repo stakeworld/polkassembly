@@ -20,12 +20,14 @@ import {
   ValidatorPrefs,
   VoteThreshold,
 } from '@polkadot/types/interfaces';
-
+import { Json } from 'src/generated/prisma-client';
 import {
   motionStatus,
   preimageStatus,
+  preimageStatusV2,
   proposalStatus,
   referendumStatus,
+  referendumStatusV2,
   techCommitteeStatus,
 } from '../util/statuses';
 
@@ -131,7 +133,11 @@ export type Nomidot =
   | NomidotReferendumRawVoteEvent[]
   | NomidotReferendumVote[]
   | NomidotCouncilMotionRawVoteEvent[]
-  | NomidotCouncilMotionVote[];
+  | NomidotCouncilMotionVote[]
+  | NomidotReferendumV2[]
+  | NomidotReferendumV2RawEvent[]
+  | NomidotPreimageV2[];
+
 
 
 export type NomidotTask = Task<Nomidot>;
@@ -250,9 +256,29 @@ export interface NomidotReferendum {
   voteThreshold: VoteThreshold;
 }
 
+export interface NomidotReferendumV2 {
+  referendumIndex: number;
+  trackNumber: number;
+  origin: string;
+  preimageHash: Hash;
+  status: ReferendumStatusV2;
+  enactmentAt?: string;
+  enactmentAfter?: string;
+  SubmittedAt: string;
+  submitted?: Json;
+  decisionDeposit?: Json;
+  deciding: Json;
+}
+
 export interface NomidotReferendumRawEvent {
   ReferendumIndex?: number;
   VoteThreshold?: VoteThreshold;
+}
+
+export interface NomidotReferendumV2RawEvent {
+  ReferendumIndex?: number;
+  TrackNumber?: number;
+  HashInfo?: any;
 }
 
 export interface NomidotArgument {
@@ -265,7 +291,11 @@ type ProposalStatus = typeof proposalStatus[keyof typeof proposalStatus];
 
 type PreimageStatus = typeof preimageStatus[keyof typeof preimageStatus];
 
+type PreimageStatusV2 = typeof preimageStatusV2[keyof typeof preimageStatusV2];
+
 type ReferendumStatus = typeof referendumStatus[keyof typeof referendumStatus];
+
+type ReferendumStatusV2 = typeof referendumStatusV2[keyof typeof referendumStatusV2];
 
 type TechCommitteeStatus = typeof techCommitteeStatus[keyof typeof techCommitteeStatus];
 
@@ -276,11 +306,28 @@ export interface NomidotPreimage extends NomidotPreimageEvent {
   section: string;
   status: PreimageStatus;
 }
+export interface NomidotPreimageV2 {
+  preImageArguments: NomidotArgument[];
+  preimageHash: Hash;
+  metaDescription: string;
+  method: string;
+  section: string;
+  origin: string;
+  enactmentPeriod: string;
+  status: PreimageStatusV2;
+  author: AccountId;
+  depositAmount: Balance;
+  length: number;
+}
 
 export interface NomidotPreimageEvent {
   hash: Hash;
   author: AccountId;
   depositAmount: Balance;
+}
+
+export interface NomidotPreimageEventV2 {
+  hash: Hash;
 }
 
 export interface NomidotPreimageRawEvent {

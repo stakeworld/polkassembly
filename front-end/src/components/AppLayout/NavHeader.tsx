@@ -13,6 +13,7 @@ import SearchBar from 'src/ui-components/SearchBar';
 import styled  from 'styled-components';
 
 import { ReactComponent as PALogoBlack } from '../../assets/pa-logo-black.svg';
+import GovernanceSwitchDropdown from './GovernanceSwitchDropdown';
 
 interface Props {
 	className?: string
@@ -37,18 +38,24 @@ const NavHeader = ({ className, sidebarCollapsed, setSidebarCollapsed } : Props)
 			}} />
 			<nav className='w-full lg:w-5/6 lg:mx-auto flex items-center justify-between'>
 				<Link className='flex' to='/'><PALogoBlack /></Link>
-				<Space className='flex items-center justify-between'>
-					<SearchBar/>
-					<Link className='text-navBlue hidden hover:text-pink_primary text-lg items-center mr-4' to='/notification-settings'>
-						<BellOutlined />
-					</Link>
-					<NetworkDropdown setSidebarCollapsed={setSidebarCollapsed} />
-					{!username
-						&& <div className='flex items-center lg:gap-x-2 ml-2 lg:ml-4'>
-							<Link className='text-navBlue hover:text-pink_primary font-medium' onClick={() => {setSidebarCollapsed(true);}} to='/login'>Login</Link>
-						</div>
-					}
-				</Space>
+
+				<div className="flex items-center justify-between w-max lg:w-[60%] xl:w-[54%]">
+					<GovernanceSwitchDropdown className='hidden lg:block min-w-[120px] mr-6 xl:mr-0' />
+
+					<Space className='flex items-center justify-between'>
+						<SearchBar/>
+						<Link className='text-navBlue hidden hover:text-pink_primary text-lg items-center mr-4' to='/notification-settings'>
+							<BellOutlined />
+						</Link>
+						<NetworkDropdown setSidebarCollapsed={setSidebarCollapsed} />
+						{!username
+							&& <div className='flex items-center lg:gap-x-2 ml-2 lg:ml-4'>
+								<Link className='text-navBlue hover:text-pink_primary font-medium' onClick={() => {setSidebarCollapsed(true);}} to='/login'>Login</Link>
+							</div>
+						}
+					</Space>
+				</div>
+
 			</nav>
 		</Header>
 	);

@@ -299,6 +299,32 @@ export const motionDiscussionExists = async (
 	}
 };
 
+export const referendumV2DiscussionExists = async (
+	onchainReferendumId: number
+): Promise<boolean | void> => {
+	if (!discussionGraphqlUrl) {
+		throw new Error(
+			'Environment variable for the REACT_APP_HASURA_GRAPHQL_URL not set'
+		);
+	}
+	try {
+		const client = new GraphQLClient(discussionGraphqlUrl, {
+			headers: {}
+		});
+
+		const discussionSdk = getDiscussionSdk(client);
+		const data = await discussionSdk.getDiscussionReferendumV2ById({ onchainReferendumId });
+
+		return !!data.onchain_links?.length;
+	} catch (err) {
+		console.error(chalk.red(`referendumV2DiscussionExists execution error with referendumId: ${onchainReferendumId}`), err);
+		err.response?.errors &&
+			console.error(chalk.red('GraphQL response errors\n'), err.response.errors);
+		err.response?.data &&
+			console.error(chalk.red('Response data if available\n'), err.response.data);
+	}
+};
+
 /**
  * Returns the discussion id linked to a referendum.
  *
@@ -1269,5 +1295,137 @@ export const addDiscussionReferendum = async ({ preimageHash, referendumCreation
 		}
 	} catch (error) {
 		console.error(error);
+	}
+};
+
+interface AddDiscussionReferendumV2 {
+	origin: string;
+	proposer: string;
+	referendumId: number;
+	status: string;
+	trackNumber: number;
+}
+
+export const addDiscussionPostAndReferendumV2 = async ({ trackNumber, origin, status, referendumId, proposer }: AddDiscussionReferendumV2): Promise<void> => {
+	if (!treasuryTopicId) {
+		throw new Error(
+			'Please specify an environment variable for the TREASURY_TOPIC_ID.'
+		);
+	}
+	if (!proposalPostTypeId) {
+		throw new Error(
+			'Please specify an environment variable for the HASURA_PROPOSAL_POST_TYPE_ID.'
+		);
+	}
+	if (!proposalBotUserId) {
+		throw new Error(
+			'Please specify an environment variable for the PROPOSAL_BOT_USER_ID.'
+		);
+	}
+
+	if (!proposer) {
+		throw new Error(
+			'Proposer is not defined.'
+		);
+	}
+
+	const referendumV2AndPostVariables = {
+		authorId: Number(proposalBotUserId),
+		content: getDescription('referendum', proposer),
+		onchainReferendumId: referendumId,
+		origin: origin,
+		proposerAddress: proposer,
+		status: status,
+		topicId: [30, 31, 32, 34].includes(Number(trackNumber)) ? Number(treasuryTopicId) : Number(democracyTopicId),
+		track: Number(trackNumber),
+		typeId: Number(proposalPostTypeId)
+	};
+
+	try {
+		const token = await getToken();
+
+		if (!token) {
+			throw new Error(
+				'No authorization token found for the chain-db-watcher.'
+			);
+		}
+		if (!discussionGraphqlUrl) {
+			throw new Error(
+				'Please specify an environment variable for the REACT_APP_SERVER_URL.'
+			);
+		}
+
+		const client = new GraphQLClient(discussionGraphqlUrl, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		});
+
+		const discussionSdk = getDiscussionSdk(client);
+		const data = await discussionSdk.addPostAndReferendumV2Mutation(referendumV2AndPostVariables);
+		const addedId = data?.insert_onchain_links?.returning[0]?.id;
+
+		if (addedId || addedId === 0) {
+			console.log(`${chalk.green('✔︎')} ReferendumV2 ${referendumId} added to the database.`);
+		}
+	} catch (err) {
+		console.error(chalk.red(`addPostAndBounty execution error, ReferendumV2 id ${referendumId}\n`), err);
+		err.response?.errors &&
+			console.error(chalk.red('GraphQL response errors\n'), err.response.errors);
+		err.response?.data &&
+			console.error(chalk.red('Response data if available\n'), err.response.data);
+	}
+};
+
+interface UpdateDiscussionReferendumV2Status{
+	referendumId: number;
+	status: string;
+}
+
+export const updateDiscussionReferendumV2Status = async ({ referendumId, status }: UpdateDiscussionReferendumV2Status): Promise<void> => {
+	if (!proposalBotUserId) {
+		throw new Error(
+			'Please specify an environment variable for the PROPOSAL_BOT_USER_ID.'
+		);
+	}
+
+	const referendumV2StatusVariables = {
+		onchainReferendumId: referendumId,
+		status: status
+	};
+
+	try {
+		const token = await getToken();
+
+		if (!token) {
+			throw new Error(
+				'No authorization token found for the chain-db-watcher.'
+			);
+		}
+		if (!discussionGraphqlUrl) {
+			throw new Error(
+				'Please specify an environment variable for the REACT_APP_SERVER_URL.'
+			);
+		}
+
+		const client = new GraphQLClient(discussionGraphqlUrl, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		});
+
+		const discussionSdk = getDiscussionSdk(client);
+		const data = await discussionSdk.updateDiscussionReferendumV2Mutation(referendumV2StatusVariables);
+		const updatedId = data?.update_onchain_links?.returning[0]?.id;
+
+		if (updatedId || updatedId === 0) {
+			console.log(`${chalk.green('✔︎')} ReferendumV2 ${referendumId} status updated to ${status}.`);
+		}
+	} catch (err) {
+		console.error(chalk.red(`updateReferendumV2Status execution error, ReferendumV2 id ${referendumId}\n`), err);
+		err.response?.errors &&
+			console.error(chalk.red('GraphQL response errors\n'), err.response.errors);
+		err.response?.data &&
+			console.error(chalk.red('Response data if available\n'), err.response.data);
 	}
 };

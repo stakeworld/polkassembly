@@ -2,8 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ClockCircleOutlined, CommentOutlined } from '@ant-design/icons';
-import { Divider,Space } from 'antd';
+import { ClockCircleOutlined, CommentOutlined, DislikeOutlined, LikeOutlined } from '@ant-design/icons';
+import { Divider } from 'antd';
 import React, { useContext } from 'react';
 import BlockCountdown from 'src/components/BlockCountdown';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
@@ -13,7 +13,17 @@ import OnchainCreationLabel from 'src/ui-components/OnchainCreationLabel';
 import StatusTag from 'src/ui-components/StatusTag';
 import getRelativeCreatedAt from 'src/util/getRelativeCreatedAt';
 
+function getFormattedLike(v: number) {
+	return Intl.NumberFormat('en-US', {
+		maximumFractionDigits: 1,
+		notation: 'compact'
+	}).format(v);
+}
+
 interface GovernanceProps {
+	postReactions: {
+		reaction: string;
+	}[];
 	address: string
 	className?: string
 	comments?: string
@@ -28,6 +38,7 @@ interface GovernanceProps {
 }
 
 const GovernanceCard = function ({
+	postReactions,
 	address,
 	className,
 	comments,
@@ -53,37 +64,47 @@ const GovernanceCard = function ({
 	const currentBlock = useCurrentBlock()?.toNumber() || 0;
 	const ownProposal = currentUser?.addresses?.includes(address);
 	const relativeCreatedAt = getRelativeCreatedAt(created_at);
-
+	const reaction = {
+		dislike: 0,
+		like: 0
+	};
+	postReactions?.forEach((postReaction) => {
+		if (postReaction?.reaction === '👍') {
+			reaction.like++;
+		} else if (postReaction?.reaction === '👎') {
+			reaction.dislike++;
+		}
+	});
 	return (
-		<div className={`${className} ${ownProposal && 'border-l-pink_primary border-l-4'} border-2 overflow-hidden border-grey_light hover:border-pink_primary hover:shadow-xl transition-all duration-200 rounded-md p-3 md:p-4`}>
-			<div className="content">
-				<div className='flex lg:justify-between lg:items-start lg:flex-row flex-col-reverse'>
-					<div className='mt-3 lg:mt-0'>
-						<h1 className='text-sidebarBlue font-semibold text-sm flex'>
-							{!tipReason && <span className='font-medium mr-2'>#{onchainId}</span>} {mainTitle}
-						</h1>
-						<h2 className='text-navBlue font-medium text-sm'>{subTitle}</h2>
-					</div>
-					<div className='flex justify-between items-center'>
-						{status && <StatusTag status={status}/>}
-						{relativeCreatedAt &&
-							<div className='flex items-center text-navBlue lg:hidden'>
-								<ClockCircleOutlined className='mr-1' /> {relativeCreatedAt}
-							</div>}
-					</div>
+		<div className={`${className} ${ownProposal && 'border-l-pink_primary border-l-4'} border-2 border-grey_light hover:border-pink_primary hover:shadow-xl transition-all duration-200 rounded-md p-3 md:p-4`}>
+			<div className="flex flex-col justify-between">
+				<div className="flex items-center justify-between gap-x-2">
+					<h1 className='text-sidebarBlue font-semibold text-sm flex max-w-[250px] sm:max-w-none overflow-hidden sm:overflow-visible'>
+						{!tipReason && <span className='font-medium mr-2'>#{onchainId}</span>} {mainTitle}
+					</h1>
+					{status && <StatusTag className='self-start' status={status}/>}
 				</div>
+				<h2 className='text-navBlue font-medium text-sm'>{subTitle}</h2>
 
-				<Space className="mt-3 font-medium text-navBlue text-xs flex flex-col md:flex-row items-start md:items-center">
-					<Space className='flex'>
-						<OnchainCreationLabel address={address} topic={topic} />
-					</Space>
+				<div className="mt-3 gap-2.5 font-medium text-navBlue text-xs flex flex-col md:flex-row items-start md:items-center">
+					<OnchainCreationLabel address={address} topic={topic} />
 					<Divider className='hidden md:inline-block' type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
 
-					<div className='flex items-center'>
+					<div className='flex items-center gap-x-2'>
+						<div className='flex items-center justify-center gap-x-1.5'>
+							<LikeOutlined />
+							<span>{getFormattedLike(reaction.like)}</span>
+						</div>
+						<Divider className='hidden md:inline-block' type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
+						<div className='flex items-center justify-center gap-x-1.5'>
+							<DislikeOutlined />
+							<span>{getFormattedLike(reaction.dislike)}</span>
+						</div>
+						<Divider className='hidden md:inline-block' type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
 						{relativeCreatedAt && <>
-							<div className='hidden lg:flex lg:items-center'>
+							<div className='flex items-center'>
 								<ClockCircleOutlined className='mr-1' /> {relativeCreatedAt}
-							</div><Divider type="vertical" className='hidden lg:inline' style={{ borderLeft: '1px solid #90A0B7' }} />
+							</div><Divider type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
 						</>}
 
 						{comments && <>
@@ -91,7 +112,6 @@ const GovernanceCard = function ({
 								<CommentOutlined className='mr-1' /> {comments} comments
 							</div>
 						</>}
-
 					</div>
 
 					{!!end && !!currentBlock &&
@@ -105,7 +125,7 @@ const GovernanceCard = function ({
 								}
 							</div>
 					}
-				</Space>
+				</div>
 			</div>
 		</div>
 	);

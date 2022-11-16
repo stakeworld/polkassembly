@@ -188,9 +188,6 @@ const EditableCommentContent = ({ authorId, className, content, commentId, refet
 		}
 	});
 
-	// TODO: Implement
-	// const relativeCreatedAt = created_at ? moment(created_at).isAfter(moment().subtract(1, 'w')) ? moment(created_at).startOf('day').fromNow(true) : moment(created_at).format('Do MMM \'YY') : null;
-
 	return (
 		<>
 			<div className={className}>

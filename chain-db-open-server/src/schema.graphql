@@ -56,9 +56,18 @@ type Query {
   preimageArgument(where: PreimageArgumentWhereUniqueInput!): PreimageArgument
   preimageArguments(where: PreimageArgumentWhereInput, orderBy: PreimageArgumentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PreimageArgument]!
   preimageArgumentsConnection(where: PreimageArgumentWhereInput, orderBy: PreimageArgumentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PreimageArgumentConnection!
+  preimageArgumentV2(where: PreimageArgumentV2WhereUniqueInput!): PreimageArgumentV2
+  preimageArgumentV2s(where: PreimageArgumentV2WhereInput, orderBy: PreimageArgumentV2OrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PreimageArgumentV2]!
+  preimageArgumentV2sConnection(where: PreimageArgumentV2WhereInput, orderBy: PreimageArgumentV2OrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PreimageArgumentV2Connection!
   preimageStatus(where: PreimageStatusWhereUniqueInput!): PreimageStatus
   preimageStatuses(where: PreimageStatusWhereInput, orderBy: PreimageStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PreimageStatus]!
   preimageStatusesConnection(where: PreimageStatusWhereInput, orderBy: PreimageStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PreimageStatusConnection!
+  preimageStatusV2(where: PreimageStatusV2WhereUniqueInput!): PreimageStatusV2
+  preimageStatusV2s(where: PreimageStatusV2WhereInput, orderBy: PreimageStatusV2OrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PreimageStatusV2]!
+  preimageStatusV2sConnection(where: PreimageStatusV2WhereInput, orderBy: PreimageStatusV2OrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PreimageStatusV2Connection!
+  preimageV2(where: PreimageV2WhereUniqueInput!): PreimageV2
+  preimageV2s(where: PreimageV2WhereInput, orderBy: PreimageV2OrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PreimageV2]!
+  preimageV2sConnection(where: PreimageV2WhereInput, orderBy: PreimageV2OrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PreimageV2Connection!
   proposal(where: ProposalWhereUniqueInput!): Proposal
   proposals(where: ProposalWhereInput, orderBy: ProposalOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Proposal]!
   proposalsConnection(where: ProposalWhereInput, orderBy: ProposalOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProposalConnection!
@@ -71,6 +80,12 @@ type Query {
   referendumStatus(where: ReferendumStatusWhereUniqueInput!): ReferendumStatus
   referendumStatuses(where: ReferendumStatusWhereInput, orderBy: ReferendumStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ReferendumStatus]!
   referendumStatusesConnection(where: ReferendumStatusWhereInput, orderBy: ReferendumStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReferendumStatusConnection!
+  referendumStatusV2(where: ReferendumStatusV2WhereUniqueInput!): ReferendumStatusV2
+  referendumStatusV2s(where: ReferendumStatusV2WhereInput, orderBy: ReferendumStatusV2OrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ReferendumStatusV2]!
+  referendumStatusV2sConnection(where: ReferendumStatusV2WhereInput, orderBy: ReferendumStatusV2OrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReferendumStatusV2Connection!
+  referendumV2(where: ReferendumV2WhereUniqueInput!): ReferendumV2
+  referendumV2s(where: ReferendumV2WhereInput, orderBy: ReferendumV2OrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ReferendumV2]!
+  referendumV2sConnection(where: ReferendumV2WhereInput, orderBy: ReferendumV2OrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReferendumV2Connection!
   referendumVote(where: ReferendumVoteWhereUniqueInput!): ReferendumVote
   referendumVotes(where: ReferendumVoteWhereInput, orderBy: ReferendumVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ReferendumVote]!
   referendumVotesConnection(where: ReferendumVoteWhereInput, orderBy: ReferendumVoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReferendumVoteConnection!
@@ -135,11 +150,16 @@ type Subscription {
   offlineValidator(where: OfflineValidatorSubscriptionWhereInput): OfflineValidatorSubscriptionPayload
   preimage(where: PreimageSubscriptionWhereInput): PreimageSubscriptionPayload
   preimageArgument(where: PreimageArgumentSubscriptionWhereInput): PreimageArgumentSubscriptionPayload
+  preimageArgumentV2(where: PreimageArgumentV2SubscriptionWhereInput): PreimageArgumentV2SubscriptionPayload
   preimageStatus(where: PreimageStatusSubscriptionWhereInput): PreimageStatusSubscriptionPayload
+  preimageStatusV2(where: PreimageStatusV2SubscriptionWhereInput): PreimageStatusV2SubscriptionPayload
+  preimageV2(where: PreimageV2SubscriptionWhereInput): PreimageV2SubscriptionPayload
   proposal(where: ProposalSubscriptionWhereInput): ProposalSubscriptionPayload
   proposalStatus(where: ProposalStatusSubscriptionWhereInput): ProposalStatusSubscriptionPayload
   referendum(where: ReferendumSubscriptionWhereInput): ReferendumSubscriptionPayload
   referendumStatus(where: ReferendumStatusSubscriptionWhereInput): ReferendumStatusSubscriptionPayload
+  referendumStatusV2(where: ReferendumStatusV2SubscriptionWhereInput): ReferendumStatusV2SubscriptionPayload
+  referendumV2(where: ReferendumV2SubscriptionWhereInput): ReferendumV2SubscriptionPayload
   referendumVote(where: ReferendumVoteSubscriptionWhereInput): ReferendumVoteSubscriptionPayload
   reward(where: RewardSubscriptionWhereInput): RewardSubscriptionPayload
   session(where: SessionSubscriptionWhereInput): SessionSubscriptionPayload

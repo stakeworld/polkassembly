@@ -4,8 +4,7 @@
 
 import { Form } from 'antd';
 import React, { useState } from 'react';
-
-import MarkdownEditor from '../ui-components/MarkdownEditor';
+import MarkdownEditor from 'src/ui-components/MarkdownEditor';
 
 interface Props {
 	className?: string
