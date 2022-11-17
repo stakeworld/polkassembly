@@ -6,7 +6,7 @@
 import { ColumnsType } from 'antd/lib/table';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetLatestGov2PostsLazyQuery } from 'src/generated/graphql';
+import { useGetGov2PostsByTrackLazyQuery } from 'src/generated/graphql';
 import { noTitle } from 'src/global/noTitle';
 import { EmptyLatestActivity, ErrorLatestActivity, Gov2PopulatedLatestActivityCard, LoadingLatestActivity, PopulatedLatestActivity } from 'src/ui-components/LatestActivityStates';
 import NameLabel from 'src/ui-components/NameLabel';
@@ -14,18 +14,7 @@ import StatusTag from 'src/ui-components/StatusTag';
 import getDefaultAddressField from 'src/util/getDefaultAddressField';
 import getRelativeCreatedAt from 'src/util/getRelativeCreatedAt';
 
-export interface Gov2PostsRowData {
-  key: string | number;
-	id: number;
-  title: string;
-	subTitle: string | null;
-  address?: string;
-	username: string;
-  postOrigin: string | null;
-	status: string | null;
-	createdAt: string | null;
-	track: number | null;
-}
+import { Gov2PostsRowData } from './AllGov2PostsTable';
 
 const columns: ColumnsType<Gov2PostsRowData> = [
 	{
@@ -78,32 +67,26 @@ const columns: ColumnsType<Gov2PostsRowData> = [
 		render: (status) => {
 			if(status) return <StatusTag status={status} />;
 		}
-	},
-	{
-		title: 'Origin',
-		dataIndex: 'postOrigin',
-		key: 'type',
-		render: (postOrigin) => {
-			return (
-				<span className='flex items-center'>
-					<span className='capitalize ml-3'>{postOrigin?.split(/(?=[A-Z])/).join(' ')}</span></span>
-			);
-		}
 	}
 ];
 
 const defaultAddressField = getDefaultAddressField();
 
-const AllGov2PostsTable = () => {
+interface Props {
+	trackNumber: number;
+}
+
+const TrackPostsTable = ({ trackNumber } : Props) => {
 	const navigate = useNavigate();
 
 	function gotoPost(rowData: Gov2PostsRowData){
 		navigate(`/${rowData.postOrigin}/${rowData.track}/${rowData.id}`);
 	}
 
-	const [getData, { called, data, error, refetch }] = useGetLatestGov2PostsLazyQuery({
+	const [getData, { called, data, error, refetch }] = useGetGov2PostsByTrackLazyQuery({
 		variables: {
-			limit: 10
+			limit: 8,
+			track: trackNumber
 		}
 	});
 
@@ -167,4 +150,4 @@ const AllGov2PostsTable = () => {
 	return <LoadingLatestActivity />;
 };
 
-export default AllGov2PostsTable;
+export default TrackPostsTable;

@@ -178,3 +178,29 @@ export enum Wallet {
   NOVAWALLET = 'polkadot-js',
   OTHER = ''
 }
+
+export const PostOrigin = {
+	AUCTION_ADMIN : 'AuctionAdmin',
+	BIG_SPENDER : 'BigSpender',
+	BIG_TIPPER : 'BigTipper',
+	FELLOWSHIP_ADMIN : 'FellowshipAdmin',
+	GENERAL_ADMIN : 'GeneralAdmin',
+	LEASE_ADMIN : 'LeaseAdmin',
+	MEDIUM_SPENDER : 'MediumSpender',
+	REFERENDUM_CANCELLER : 'ReferendumCanceller',
+	REFERENDUM_KILLER : 'ReferendumKiller',
+	ROOT : 'Root',
+	SMALL_SPENDER : 'SmallSpender',
+	SMALL_TIPPER : 'SmallTipper',
+	STAKING_ADMIN : 'StakingAdmin',
+	TREASURER : 'Treasurer',
+	WHITELISTED_CALLER : 'WhitelistedCaller'
+};
+
+export type TrackInfoType = {
+  [index: string]: TrackProps;
+};
+
+export interface TrackProps {
+  'trackId': number;
+}

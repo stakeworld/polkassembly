@@ -7,15 +7,25 @@ import styled from '@xstyled/styled-components';
 import { Tabs } from 'antd';
 import React from 'react';
 import DiscussionPostsTable from 'src/components/Home/LatestActivity/DiscussionPostsTable';
+import { trackInfo } from 'src/global/post_trackInfo';
 
 import AllGov2PostsTable from './AllGov2PostsTable';
+import TrackPostsTable from './TrackPostsTable';
+
+const tabItems = [
+	{ label: 'All', key: 'all', children: <AllGov2PostsTable /> },
+	{ label: 'Discussions', key: 'discussions', children: <DiscussionPostsTable /> }
+];
+
+for (const trackName of Object.keys(trackInfo)) {
+	tabItems.push({
+		label: trackName.split(/(?=[A-Z])/).join(' '),
+		key: trackName,
+		children: <TrackPostsTable trackNumber={trackInfo[trackName].trackId} />
+	});
+}
 
 const Gov2LatestActivity = ({ className }: {className?:string}) => {
-	const tabItems = [
-		{ label: 'All', key: 'all', children: <AllGov2PostsTable /> },
-		{ label: 'Discussions', key: 'discussions', children: <DiscussionPostsTable /> }
-	];
-
 	return (
 		<div className={`${className} bg-white drop-shadow-md p-2 lg:p-6 rounded-md`}>
 			<h2 className='dashboard-heading mb-6'>Latest Activity</h2>
