@@ -35,27 +35,28 @@ const PostTreasuryInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props) 
 			<OnchainInfoWrapper>
 				<Row>
 					<Col xs={24} md={12}>
-						<h6>Proposer
-							<span className='text-pink_primary cursor-pointer ml-3' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
-								View Other Proposals
-							</span>
-						</h6>
+						<h6>Proposer</h6>
 						<Address address={proposerAddress}/>
+						<div className='text-pink_primary cursor-pointer mt-3' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
+							View Other Proposals
+						</div>
 					</Col>
 					{bond && currentNetwork &&
-					<Col xs={24} md={12}>
+					<Col span={12}>
 						<h6>Bond</h6>
-						{parseInt(bond) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
-					</Col>}
-					{beneficiary &&
-					<Col xs={24} md={12}>
-						<h6>Beneficiary</h6>
-						<Address address={beneficiary}/>
+						<div className='text-navBlue'>
+							{parseInt(bond) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
+						</div>
 					</Col>}
 					{value && currentNetwork &&
-					<Col xs={24} md={12}>
+					<Col span={12}>
 						<h6>Value</h6>
-						{parseInt(value) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
+						<div className='text-navBlue'>{parseInt(value) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}</div>
+					</Col>}
+					{beneficiary &&
+					<Col span={12}>
+						<h6>Beneficiary</h6>
+						<Address address={beneficiary}/>
 					</Col>}
 					<Col span={24}>
 						<ExternalLinks isTreasuryProposal={true} onchainId={onchainLink.onchain_treasury_proposal_id} />

@@ -39,44 +39,45 @@ const PostBountyInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props) =>
 		<>
 			<OnchainInfoWrapper>
 				<Row gutter={40}>
-					<Col xs={24} md={12}>
-						<h6>Proposer
-							<span className='text-pink_primary cursor-pointer ml-3' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
-								View Other Proposals
-							</span>
-						</h6>
+					<Col span={24}>
+						<h6>Proposer</h6>
 						<Address address={proposerAddress}/>
+						<div className='text-pink_primary cursor-pointer mt-3' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
+					View Other Proposals
+						</div>
 					</Col>
 					{curator &&
-						<Col xs={24} md={12}>
-							<h6>Curator</h6>
-							<Address address={curator}/>
-						</Col>}
+				<Col xs={24} md={12}>
+					<h6>Curator</h6>
+					<Address address={curator}/>
+				</Col>}
 					{beneficiary &&
-						<Col xs={24} md={12}>
-							<h6>Beneficiary</h6>
-							<Address address={beneficiary}/>
-						</Col>}
+				<Col xs={24} md={12}>
+					<h6>Beneficiary</h6>
+					<Address address={beneficiary}/>
+				</Col>}
 					{value &&
-						<Col xs={24} md={12}>
-							<h6>Value</h6>
-							{parseInt(value) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
-						</Col>}
+				<Col span={12}>
+					<h6>Value</h6>
+					<div className='text-navBlue'>{parseInt(value) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}</div>
+				</Col>}
 					{fee &&
-						<Col xs={24} md={12}>
-							<h6>Fee</h6>
-							{parseInt(fee) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
-						</Col>}
+				<Col span={12}>
+					<h6>Fee</h6>
+					<div className='text-navBlue'>{parseInt(fee) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}</div>
+				</Col>}
 					{curatorDeposit &&
-						<Col xs={24} md={12}>
-							<h6>Curator Deposit</h6>
-							{parseInt(curatorDeposit) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
-						</Col>}
+				<Col span={12}>
+					<h6>Curator Deposit</h6>
+					<div className='text-navBlue'>{parseInt(curatorDeposit) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}</div>
+				</Col>}
 					{bond &&
-						<Col xs={24} md={12}>
-							<h6>Bond</h6>
-							{parseInt(bond) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
-						</Col>}
+				<Col span={12}>
+					<h6>Bond</h6>
+					<div className='text-navBlue'>
+						{parseInt(bond) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
+					</div>
+				</Col>}
 				</Row>
 			</OnchainInfoWrapper>
 		</>

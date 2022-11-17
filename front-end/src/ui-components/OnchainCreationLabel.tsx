@@ -14,7 +14,7 @@ interface Props {
 
 const OnchainCreationLabel = ({ address, topic }:Props ) => {
 	return (
-		<div className='flex flex-col md:flex-row md:items-center text-xs text-nav_black w-full md:w-auto'>
+		<div className='flex flex-col md:flex-row md:items-center text-xs text-navBlue w-full md:w-auto'>
 			<div className='flex items-center'>
 				<span>by</span>
 				<Address

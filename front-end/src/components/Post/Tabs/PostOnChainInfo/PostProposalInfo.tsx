@@ -37,26 +37,23 @@ const PostProposalInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props) 
 			<OnchainInfoWrapper>
 				<Row gutter={40}>
 					<Col xs={24} md={12}>
-						<h6>Proposer
-							<span className='text-pink_primary cursor-pointer ml-3' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
-								View Other Proposals
-							</span>
-						</h6>
+						<h6>Proposer</h6>
 						<Address address={proposerAddress}/>
+						<div className='text-pink_primary cursor-pointer mt-3' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
+							View Other Proposals
+						</div>
 					</Col>
 					{depositAmount && currentNetwork &&
-					<Col xs={24} md={12}>
+					<Col span={12}>
 						<h6>Deposit</h6>
-						{parseInt(depositAmount) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
+						<div className='text-navBlue'>{parseInt(depositAmount) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}</div>
+					</Col>}
+					{method && <Col span={12}>
+						<h6>Method</h6>
+						<div className='text-navBlue'>{method}</div>
 					</Col>}
 					{method &&
 					<>
-						<Row gutter={40} className='px-5'>
-							<Col span={24}>
-								<h6>Method</h6>
-								{method}
-							</Col>
-						</Row>
 						<div className='overflow-x-auto px-5'>
 							<div className='arguments'>
 								{preimageArguments && preimageArguments.length
@@ -71,7 +68,7 @@ const PostProposalInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props) 
 						{ metaDescription &&
 							<>
 								<h6>Description</h6>
-								<p className='text-navBlue leading-6 whitespace-pre-wrap'>{metaDescription}</p>
+								<p className='text-navBlue leading-6'>{metaDescription}</p>
 							</>
 						}
 					</Col>

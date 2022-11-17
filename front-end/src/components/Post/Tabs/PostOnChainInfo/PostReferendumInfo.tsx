@@ -58,7 +58,7 @@ const PostReferendumInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props
 								?
 								<>
 									<h6>End</h6>
-									<BlockCountdown endBlock={end}/>
+									<BlockCountdown className='text-navBlue' endBlock={end}/>
 								</>
 								:
 								<>
@@ -88,7 +88,7 @@ const PostReferendumInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props
 					{metaDescription &&
 					<Col span={24}>
 						<h6>Description</h6>
-						<p className='text-navBlue leading-6 whitespace-pre-wrap'>{metaDescription}</p>
+						<p className='text-navBlue leading-6'>{metaDescription}</p>
 					</Col>}
 					<Col span={24}>
 						<ExternalLinks isReferendum={true} onchainId={onchainLink.onchain_referendum_id} />
