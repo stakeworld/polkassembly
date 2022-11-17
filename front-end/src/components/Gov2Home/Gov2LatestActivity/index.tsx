@@ -6,12 +6,14 @@
 import styled from '@xstyled/styled-components';
 import { Tabs } from 'antd';
 import React from 'react';
+import DiscussionPostsTable from 'src/components/Home/LatestActivity/DiscussionPostsTable';
 
 import AllGov2PostsTable from './AllGov2PostsTable';
 
 const Gov2LatestActivity = ({ className }: {className?:string}) => {
 	const tabItems = [
-		{ label: 'All', key: 'all', children: <AllGov2PostsTable /> }
+		{ label: 'All', key: 'all', children: <AllGov2PostsTable /> },
+		{ label: 'Discussions', key: 'discussions', children: <DiscussionPostsTable /> }
 	];
 
 	return (

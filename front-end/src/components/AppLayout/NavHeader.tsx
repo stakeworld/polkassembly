@@ -13,7 +13,7 @@ import SearchBar from 'src/ui-components/SearchBar';
 import styled  from 'styled-components';
 
 import { ReactComponent as PALogoBlack } from '../../assets/pa-logo-black.svg';
-import GovernanceSwitchDropdown from './GovernanceSwitchDropdown';
+import GovernanceSwitchButton from './GovernanceSwitchButton';
 
 interface Props {
 	className?: string
@@ -39,8 +39,8 @@ const NavHeader = ({ className, sidebarCollapsed, setSidebarCollapsed } : Props)
 			<nav className='w-full lg:w-5/6 lg:mx-auto flex items-center justify-between'>
 				<Link className='flex' to='/'><PALogoBlack /></Link>
 
-				<div className="flex items-center justify-between w-max lg:w-[60%] xl:w-[54%]">
-					<GovernanceSwitchDropdown className='hidden lg:block min-w-[120px] mr-6 xl:mr-0' />
+				<div className="flex items-center justify-between w-max lg:w-[82%] xl:w-[63%] 2xl:w-[55%]">
+					<GovernanceSwitchButton className='hidden lg:flex min-w-[120px] mr-6 lg:mr-5 xl:mr-0' />
 
 					<Space className='flex items-center justify-between'>
 						<SearchBar/>

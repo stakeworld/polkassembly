@@ -15,7 +15,7 @@ import { logout } from 'src/services/auth.service';
 import { BountiesIcon, CalendarIcon, DemocracyProposalsIcon, DiscussionsIcon, MembersIcon, MotionsIcon, NewsIcon, OverviewIcon, ParachainsIcon, ReferendaIcon, TipsIcon, TreasuryProposalsIcon } from 'src/ui-components/CustomIcons';
 
 import Footer from './Footer';
-import GovernanceSwitchDropdown from './GovernanceSwitchDropdown';
+import GovernanceSwitchButton from './GovernanceSwitchButton';
 import NavHeader from './NavHeader';
 import SwitchRoutes from './SwitchRoutes';
 
@@ -87,7 +87,7 @@ const getUserDropDown = (handleLogout: any, img?: string | null, username?: stri
 			<div className='flex items-center justify-between gap-x-2'>
 				<span className='truncate w-[85%]'>{username || ''}</span> <DownOutlined className='text-navBlue hover:text-pink_primary text-base' />
 			</div>
-		</AuthDropdown>, 'noNavigate', <AuthDropdown><Avatar className='-ml-2.5 mr-2' size={40} src={img || noUserImg} /></AuthDropdown>);
+		</AuthDropdown>, 'userMenu', <AuthDropdown><Avatar className='-ml-2.5 mr-2' size={40} src={img || noUserImg} /></AuthDropdown>);
 };
 
 let overviewItems = [
@@ -98,7 +98,7 @@ let overviewItems = [
 	getSiderMenuItem('Parachains', '/parachains', <ParachainsIcon className='text-white' />)
 ];
 
-const GovSwitchDropdownMenuItem = getSiderMenuItem(<GovernanceSwitchDropdown className='block lg:hidden' />, 'noNavigate', '');
+const GovSwitchDropdownMenuItem = getSiderMenuItem(<GovernanceSwitchButton className='flex lg:hidden' />, 'gov-2', '');
 
 if(window.screen.width < 1024) {
 	overviewItems = [
@@ -163,7 +163,7 @@ const AppLayout = ({ className }: { className?:string }) => {
 	const { pathname } = useLocation();
 
 	const handleMenuClick = (menuItem: any) => {
-		if(menuItem.key === 'noNavigate') return;
+		if(menuItem.key === 'userMenu') return;
 
 		navigate(menuItem.key);
 		// only for mobile devices
