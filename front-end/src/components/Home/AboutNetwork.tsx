@@ -66,16 +66,16 @@ export const socialLinks = (blockchain_socials: any) => {
 };
 
 const gov2Link = ({ className, icon, text, subText } : { className?: string, icon?:any, text:string, subText:string }) =>
-	<div className={`${className} flex min-w-[260px]`}>
-		<div className="mr-3 flex items-center justify-center min-w-[132px] h-[75px] bg-[url('/src/assets/gov2-info-bg.png')]">
+	<a href='#' target='_blank' rel='noreferrer' className={`${className} group flex min-w-[260px] max-w-[260px]`}>
+		<div className="group-hover:text-pink_primary mr-3 flex items-center justify-center min-w-[132px] h-[75px] bg-[url('/src/assets/gov2-info-bg.png')]">
 			{icon}
 		</div>
 
 		<div className='flex flex-col justify-between my-1'>
-			<div className="text-sidebarBlue">{text}</div>
-			<div className="text-navBlue">{subText}</div>
+			<div className="text-sidebarBlue group-hover:text-pink_primary">{text}</div>
+			<div className="text-navBlue group-hover:text-pink_primary">{subText}</div>
 		</div>
-	</div>;
+	</a>;
 
 const AboutNetwork = ({ className, showGov2Links } : { className?: string, showGov2Links?: boolean }) => {
 	const [refetch, { data, error }] = useNetworkSocialsLazyQuery({ variables: {
@@ -104,7 +104,7 @@ const AboutNetwork = ({ className, showGov2Links } : { className?: string, showG
 
 			{
 				showGov2Links &&
-				<div className='mt-12 pb-2 flex justify-between xl:w-[90%] overflow-x-auto'>
+				<div className='mt-10 pb-2 flex justify-between xl:w-[90%] overflow-x-auto'>
 					{gov2Link({
 						className: 'mr-12 lg:mr-9',
 						icon: <PlayCircleFilled className='text-white text-xl' />,

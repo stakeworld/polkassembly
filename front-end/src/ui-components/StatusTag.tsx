@@ -41,7 +41,15 @@ export default styled(StatusTag).attrs(( { status }: Props) => ({
 }))`
 	color: #fff;
 	max-width: min-content;
-	
+	background: #666;
+	border-color: #666;
+
+	&.inverted {
+		color: #666;
+	}
+
+
+	&.Ongoing,
 	&.${referendumStatus.STARTED},
 	&.${proposalStatus.PROPOSED},
 	&.${motionStatus.PROPOSED},

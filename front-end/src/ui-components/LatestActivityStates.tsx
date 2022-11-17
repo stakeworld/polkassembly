@@ -115,3 +115,61 @@ export const PopulatedLatestActivityCard = ({ tableData, onClick }: { tableData:
 		</div>
 	);
 };
+
+export const Gov2PopulatedLatestActivityCard = ({ tableData, onClick }: { tableData: readonly any[], onClick: (rowData:any) => any }) => {
+	return (
+		<div>
+			{
+				tableData.map(rowData => (
+					<div key={rowData.key} className="bg-white rounded shadow-md mb-6 p-3 border border-gray-200 cursor-pointer" onClick={() => onClick(rowData)}>
+						{/* Meta Data Row */}
+						<div className="flex items-center justify-between text-sidebarBlue">
+							<div className="flex items-center">
+								<span className='capitalize flex items-center'>
+									<span className='w-min'>
+										{rowData.postOrigin.toString().split(/(?=[A-Z])/).join(' ')}
+									</span>
+									<span className="h-[4px] w-[4px] bg-sidebarBlue mx-1 rounded-full inline-block"></span>
+									<span>#{rowData.id}</span>
+								</span>
+							</div>
+							<span>{rowData.status && <StatusTag status={rowData.status} />}</span>
+						</div>
+
+						{/* Title */}
+						<div className="my-4">
+							<h4>
+								<div style={{
+									height: '3em',
+									lineHeight: '1.5em',
+									overflow: 'hidden',
+									textAlign: 'justify',
+									textOverflow: 'ellipsis'
+								}}>
+									{rowData.title}
+								</div>
+							</h4>
+							{rowData.subTitle && <div className='text-sm text-sidebarBlue'>{rowData.subTitle}</div>}
+						</div>
+
+						{/* Created by and on */}
+						<div className='flex items-center justify-between'>
+							<span>
+								{
+									!rowData.address ? <span className='username text-sidebarBlue'> { rowData.username } </span> :
+										<Address
+											address={rowData.address}
+											className='text-sm'
+											displayInline={true}
+											disableIdenticon={true}
+										/>
+								}
+							</span>
+							<span>{rowData.createdAt ? moment(rowData.createdAt).isAfter(moment().subtract(1, 'w')) ? moment(rowData.createdAt).startOf('day').fromNow() : moment(rowData.createdAt).format('Do MMM \'YY') : null}</span>
+						</div>
+					</div>
+				))
+			}
+		</div>
+	);
+};
