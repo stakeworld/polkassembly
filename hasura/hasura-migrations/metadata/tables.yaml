@@ -1576,3 +1576,60 @@
 - table:
     schema: public
     name: track_info
+  select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+      - id
+      - track_id
+      - name
+      - max_deciding
+      - decision_deposit
+      - prepare_period
+      - decision_period
+      - confirm_period
+      - min_enactment_period
+      filter: {}
+      allow_aggregations: true
+  - role: event_bot
+    permission:
+      columns:
+      - confirm_period
+      - decision_period
+      - id
+      - max_deciding
+      - min_enactment_period
+      - prepare_period
+      - track_id
+      - decision_deposit
+      - name
+      filter: {}
+      allow_aggregations: true
+  - role: proposal_bot
+    permission:
+      columns:
+      - confirm_period
+      - decision_period
+      - id
+      - max_deciding
+      - min_enactment_period
+      - prepare_period
+      - track_id
+      - decision_deposit
+      - name
+      filter: {}
+      allow_aggregations: true
+  - role: user
+    permission:
+      columns:
+      - confirm_period
+      - decision_period
+      - id
+      - max_deciding
+      - min_enactment_period
+      - prepare_period
+      - track_id
+      - decision_deposit
+      - name
+      filter: {}
+      allow_aggregations: true
