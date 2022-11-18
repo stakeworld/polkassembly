@@ -160,9 +160,9 @@ const collapsedItems: MenuProps['items'] = [
 
 const gov2TrackItems: {[x:string]: ItemType[]} = {
 	mainItems: [
-		getSiderMenuItem(trackInfo[PostOrigin.ROOT].displayName, PostOrigin.ROOT.split(/(?=[A-Z])/).join('-').toLowerCase(), <TreasuryProposalsIcon className='text-white' />),
-		getSiderMenuItem(trackInfo[PostOrigin.AUCTION_ADMIN].displayName, PostOrigin.AUCTION_ADMIN.split(/(?=[A-Z])/).join('-').toLowerCase(), <TreasuryProposalsIcon className='text-white' />),
-		getSiderMenuItem(trackInfo[PostOrigin.STAKING_ADMIN].displayName, PostOrigin.STAKING_ADMIN.split(/(?=[A-Z])/).join('-').toLowerCase(), <TreasuryProposalsIcon className='text-white' />)
+		getSiderMenuItem(trackInfo[PostOrigin.ROOT].displayName, `/${PostOrigin.ROOT.split(/(?=[A-Z])/).join('-').toLowerCase()}`, <TreasuryProposalsIcon className='text-white' />),
+		getSiderMenuItem(trackInfo[PostOrigin.AUCTION_ADMIN].displayName, `/${PostOrigin.AUCTION_ADMIN.split(/(?=[A-Z])/).join('-').toLowerCase()}`, <TreasuryProposalsIcon className='text-white' />),
+		getSiderMenuItem(trackInfo[PostOrigin.STAKING_ADMIN].displayName, `/${PostOrigin.STAKING_ADMIN.split(/(?=[A-Z])/).join('-').toLowerCase()}`, <TreasuryProposalsIcon className='text-white' />)
 	],
 	governanceItems : [],
 	treasuryItems: [],
@@ -172,7 +172,7 @@ const gov2TrackItems: {[x:string]: ItemType[]} = {
 for (const trackName of Object.keys(trackInfo)) {
 	if(!('group' in trackInfo[trackName])) continue;
 
-	const menuItem = getSiderMenuItem(trackInfo[trackName].displayName, trackName.split(/(?=[A-Z])/).join('-').toLowerCase(), <TreasuryProposalsIcon className='text-white' />);
+	const menuItem = getSiderMenuItem(trackInfo[trackName].displayName, `/${trackName.split(/(?=[A-Z])/).join('-').toLowerCase()}`, <TreasuryProposalsIcon className='text-white' />);
 
 	switch(trackInfo[trackName].group) {
 	case 'Governance':
@@ -180,7 +180,7 @@ for (const trackName of Object.keys(trackInfo)) {
 		break;
 	case 'Treasury':
 		gov2TrackItems.treasuryItems.push(
-			getSiderMenuItem(trackInfo[trackName].displayName, trackName.split(/(?=[A-Z])/).join('-').toLowerCase(), <TreasuryProposalsIcon className='text-white' />)
+			getSiderMenuItem(trackInfo[trackName].displayName, `/${trackName.split(/(?=[A-Z])/).join('-').toLowerCase()}`, <TreasuryProposalsIcon className='text-white' />)
 		);
 		break;
 	case 'Fellowship':
@@ -188,13 +188,13 @@ for (const trackName of Object.keys(trackInfo)) {
 			gov2TrackItems.fellowshipItems.push(
 				getSiderMenuItem(trackInfo[trackName].displayName, 'gov2_fellowshipAdmin_group', null, [
 					...trackInfo[trackName].statuses!.map(status =>
-						getSiderMenuItem(status, `${trackName.split(/(?=[A-Z])/).join('-').toLowerCase()}/${status.split(/(?=[A-Z])/).join('-').toLowerCase()}`, <TreasuryProposalsIcon className='text-white' />)
+						getSiderMenuItem(status, `/${trackName.split(/(?=[A-Z])/).join('-').toLowerCase()}/${status.split(/(?=[A-Z])/).join('-').toLowerCase()}`, <TreasuryProposalsIcon className='text-white' />)
 					)
 				])
 			);
 		}else {
 			gov2TrackItems.fellowshipItems.push(
-				getSiderMenuItem(trackInfo[trackName].displayName, trackName.split(/(?=[A-Z])/).join('-').toLowerCase(), <TreasuryProposalsIcon className='text-white' />)
+				getSiderMenuItem(trackInfo[trackName].displayName, `/${trackName.split(/(?=[A-Z])/).join('-').toLowerCase()}`, <TreasuryProposalsIcon className='text-white' />)
 			);
 		}
 		break;
