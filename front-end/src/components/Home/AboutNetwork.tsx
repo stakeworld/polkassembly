@@ -67,13 +67,13 @@ export const socialLinks = (blockchain_socials: any) => {
 
 const gov2Link = ({ className, icon, text, subText } : { className?: string, icon?:any, text:string, subText:string }) =>
 	<a href='#' target='_blank' rel='noreferrer' className={`${className} group flex min-w-[260px] max-w-[260px]`}>
-		<div className="group-hover:text-pink_primary mr-3 flex items-center justify-center min-w-[132px] h-[75px] bg-[url('/src/assets/gov2-info-bg.png')]">
+		<div className="group-hover:text-pink_secondary mr-3 flex items-center justify-center min-w-[132px] h-[75px] bg-[url('/src/assets/gov2-info-bg.png')]">
 			{icon}
 		</div>
 
 		<div className='flex flex-col justify-between my-1'>
-			<div className="text-sidebarBlue group-hover:text-pink_primary">{text}</div>
-			<div className="text-navBlue group-hover:text-pink_primary">{subText}</div>
+			<div className="text-sidebarBlue group-hover:text-pink_secondary">{text}</div>
+			<div className="text-navBlue group-hover:text-pink_secondary">{subText}</div>
 		</div>
 	</a>;
 

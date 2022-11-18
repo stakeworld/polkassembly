@@ -6,10 +6,7 @@ import { SwapOutlined } from '@ant-design/icons';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-const gov2Routes = [
-	'gov-2',
-	'track'
-];
+import { gov2Routes } from './SwitchRoutes';
 
 interface Props {
 	className?: string;
@@ -17,12 +14,12 @@ interface Props {
 
 const GovernanceSwitchButton = ({ className } : Props) => {
 	const { pathname } = useLocation();
-	const cleanPathName = pathname.split('/')[1];
+	const isGov2Route: boolean = gov2Routes.includes(pathname.split('/')[1]);
 
 	return (
-		<Link className={`${className} flex items-center font-semibold text-sidebarBlue hover:text-pink_primary`} to={gov2Routes.includes(cleanPathName) ? '/' : '/gov-2'}>
+		<Link className={`${className} flex items-center font-semibold text-sidebarBlue hover:text-pink_primary`} to={isGov2Route ? '/' : '/gov-2'}>
 			<div className='-mt-1 mr-2'><SwapOutlined /></div>
-			<div> Switch to {gov2Routes.includes(cleanPathName) ? 'Governance V1' : 'Governance V2'} </div>
+			<div> Switch to {isGov2Route ? 'Governance V1' : 'Governance V2'} </div>
 		</Link>
 	);
 };

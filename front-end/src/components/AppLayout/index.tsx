@@ -2,6 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+/* eslint-disable sort-keys */
 import { BellOutlined, BookOutlined, DownOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import styled from '@xstyled/styled-components';
 import { Avatar, Dropdown, Layout, Menu, MenuProps } from 'antd';
@@ -11,13 +12,15 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import noUserImg from 'src/assets/no-user-img.png';
 import { useUserDetailsContext } from 'src/context';
 import { useLogoutMutation } from 'src/generated/graphql';
+import { trackInfo } from 'src/global/post_trackInfo';
 import { logout } from 'src/services/auth.service';
+import { PostOrigin } from 'src/types';
 import { BountiesIcon, CalendarIcon, DemocracyProposalsIcon, DiscussionsIcon, MembersIcon, MotionsIcon, NewsIcon, OverviewIcon, ParachainsIcon, ReferendaIcon, TipsIcon, TreasuryProposalsIcon } from 'src/ui-components/CustomIcons';
 
 import Footer from './Footer';
 import GovernanceSwitchButton from './GovernanceSwitchButton';
 import NavHeader from './NavHeader';
-import SwitchRoutes from './SwitchRoutes';
+import SwitchRoutes, { gov2Routes } from './SwitchRoutes';
 
 const { Content, Sider } = Layout;
 
@@ -33,7 +36,8 @@ function getSiderMenuItem(
 		children,
 		icon,
 		key,
-		label
+		label,
+		type: key === 'tracksHeading' ? 'group' : ''
 	} as MenuItem;
 }
 
@@ -90,70 +94,135 @@ const getUserDropDown = (handleLogout: any, img?: string | null, username?: stri
 		</AuthDropdown>, 'userMenu', <AuthDropdown><Avatar className='-ml-2.5 mr-2' size={40} src={img || noUserImg} /></AuthDropdown>);
 };
 
-let overviewItems = [
-	getSiderMenuItem('Overview', '/', <OverviewIcon className='text-white' />),
-	getSiderMenuItem('Discussions', '/discussions', <DiscussionsIcon className='text-white' />),
-	getSiderMenuItem('Calendar', '/calendar', <CalendarIcon className='text-white' />),
-	getSiderMenuItem('News', '/news', <NewsIcon className='text-white' />),
-	getSiderMenuItem('Parachains', '/parachains', <ParachainsIcon className='text-white' />)
-];
+const gov1Items: {[x:string]: ItemType[]} = {
+	overviewItems: [
+		getSiderMenuItem('Overview', '/', <OverviewIcon className='text-white' />),
+		getSiderMenuItem('Discussions', '/discussions', <DiscussionsIcon className='text-white' />),
+		getSiderMenuItem('Calendar', '/calendar', <CalendarIcon className='text-white' />),
+		getSiderMenuItem('News', '/news', <NewsIcon className='text-white' />),
+		getSiderMenuItem('Parachains', '/parachains', <ParachainsIcon className='text-white' />)
+	],
+	democracyItems: [
+		getSiderMenuItem('Proposals', '/proposals', <DemocracyProposalsIcon className='text-white' />),
+		getSiderMenuItem('Referenda', '/referenda', <ReferendaIcon className='text-white' />)
+	],
+	councilItems: [
+		getSiderMenuItem('Motions', '/motions', <MotionsIcon className='text-white' />),
+		getSiderMenuItem('Members', '/council', <MembersIcon className='text-white' />)
+	],
+	treasuryItems: [
+		getSiderMenuItem('Proposals', '/treasury-proposals', <TreasuryProposalsIcon className='text-white' />),
+		getSiderMenuItem('Bounties', '/bounties', <BountiesIcon className='text-white' />),
+		getSiderMenuItem('Child Bounties', '/child_bounties', <BountiesIcon className='text-white' />),
+		getSiderMenuItem('Tips', '/tips', <TipsIcon className='text-white' />)
+	],
+	techCommItems: [
+		getSiderMenuItem('Proposals', '/tech-comm-proposals', <DemocracyProposalsIcon className='text-white' />)
+	]
+};
 
 const GovSwitchDropdownMenuItem = getSiderMenuItem(<GovernanceSwitchButton className='flex lg:hidden' />, 'gov-2', '');
 
 if(window.screen.width < 1024) {
-	overviewItems = [
+	gov1Items.overviewItems = [
 		GovSwitchDropdownMenuItem,
-		...overviewItems
+		...gov1Items.overviewItems
 	];
 }
 
-const democracyItems = [
-	getSiderMenuItem('Proposals', '/proposals', <DemocracyProposalsIcon className='text-white' />),
-	getSiderMenuItem('Referenda', '/referenda', <ReferendaIcon className='text-white' />)
-];
-
-const councilItems = [
-	getSiderMenuItem('Motions', '/motions', <MotionsIcon className='text-white' />),
-	getSiderMenuItem('Members', '/council', <MembersIcon className='text-white' />)
-];
-
-const treasuryItems = [
-	getSiderMenuItem('Proposals', '/treasury-proposals', <TreasuryProposalsIcon className='text-white' />),
-	getSiderMenuItem('Bounties', '/bounties', <BountiesIcon className='text-white' />),
-	getSiderMenuItem('Child Bounties', '/child_bounties', <BountiesIcon className='text-white' />),
-	getSiderMenuItem('Tips', '/tips', <TipsIcon className='text-white' />)
-];
-
-const techCommItems = [
-	getSiderMenuItem('Proposals', '/tech-comm-proposals', <DemocracyProposalsIcon className='text-white' />)
-];
-
 const items: MenuProps['items'] = [
-	...overviewItems,
+	...gov1Items.overviewItems,
 
 	getSiderMenuItem('Democracy', 'democracy_group', null, [
-		...democracyItems
+		...gov1Items.democracyItems
 	]),
 
 	getSiderMenuItem('Treasury', 'treasury_group', null, [
-		...treasuryItems
+		...gov1Items.treasuryItems
 	]),
 
 	getSiderMenuItem('Council', 'council_group', null, [
-		...councilItems
+		...gov1Items.councilItems
 	]),
 
 	getSiderMenuItem('Tech. Comm.', 'tech_comm_group', null, [
-		...techCommItems
+		...gov1Items.techCommItems
 	])
 ];
 
 const collapsedItems: MenuProps['items'] = [
-	...overviewItems,
-	...democracyItems,
-	...treasuryItems,
-	...councilItems,
-	...techCommItems
+	...gov1Items.overviewItems,
+	...gov1Items.democracyItems,
+	...gov1Items.treasuryItems,
+	...gov1Items.councilItems,
+	...gov1Items.techCommItems
+];
+
+const gov2TrackItems: {[x:string]: ItemType[]} = {
+	mainItems: [
+		getSiderMenuItem(trackInfo[PostOrigin.ROOT].displayName, PostOrigin.ROOT.split(/(?=[A-Z])/).join('-').toLowerCase(), <TreasuryProposalsIcon className='text-white' />),
+		getSiderMenuItem(trackInfo[PostOrigin.AUCTION_ADMIN].displayName, PostOrigin.AUCTION_ADMIN.split(/(?=[A-Z])/).join('-').toLowerCase(), <TreasuryProposalsIcon className='text-white' />),
+		getSiderMenuItem(trackInfo[PostOrigin.STAKING_ADMIN].displayName, PostOrigin.STAKING_ADMIN.split(/(?=[A-Z])/).join('-').toLowerCase(), <TreasuryProposalsIcon className='text-white' />)
+	],
+	governanceItems : [],
+	treasuryItems: [],
+	fellowshipItems: []
+};
+
+for (const trackName of Object.keys(trackInfo)) {
+	if(!('group' in trackInfo[trackName])) continue;
+
+	const menuItem = getSiderMenuItem(trackInfo[trackName].displayName, trackName.split(/(?=[A-Z])/).join('-').toLowerCase(), <TreasuryProposalsIcon className='text-white' />);
+
+	switch(trackInfo[trackName].group) {
+	case 'Governance':
+		gov2TrackItems.governanceItems.push(menuItem);
+		break;
+	case 'Treasury':
+		gov2TrackItems.treasuryItems.push(
+			getSiderMenuItem(trackInfo[trackName].displayName, trackName.split(/(?=[A-Z])/).join('-').toLowerCase(), <TreasuryProposalsIcon className='text-white' />)
+		);
+		break;
+	case 'Fellowship':
+		if(trackName === 'FellowshipAdmin') {
+			gov2TrackItems.fellowshipItems.push(
+				getSiderMenuItem(trackInfo[trackName].displayName, 'gov2_fellowshipAdmin_group', null, [
+					...trackInfo[trackName].statuses!.map(status =>
+						getSiderMenuItem(status, `${trackName.split(/(?=[A-Z])/).join('-').toLowerCase()}/${status.split(/(?=[A-Z])/).join('-').toLowerCase()}`, <TreasuryProposalsIcon className='text-white' />)
+					)
+				])
+			);
+		}else {
+			gov2TrackItems.fellowshipItems.push(
+				getSiderMenuItem(trackInfo[trackName].displayName, trackName.split(/(?=[A-Z])/).join('-').toLowerCase(), <TreasuryProposalsIcon className='text-white' />)
+			);
+		}
+		break;
+	}
+}
+
+const gov2Items:MenuProps['items'] = [
+	...gov1Items.overviewItems,
+	// Tracks Heading
+	getSiderMenuItem(<span className='text-navBlue hover:text-navBlue ml-2 uppercase text-base font-medium'>Tracks</span>, 'tracksHeading', null),
+	...gov2TrackItems.mainItems,
+	getSiderMenuItem('Governance', 'gov2_governance_group', null, [
+		...gov2TrackItems.governanceItems
+	]),
+	getSiderMenuItem('Treasury', 'gov2_treasury_group', null, [
+		...gov2TrackItems.treasuryItems
+	]),
+	getSiderMenuItem('Fellowship', 'gov2_fellowship_group', null, [
+		...gov2TrackItems.fellowshipItems
+	])
+];
+
+const gov2CollapsedItems:MenuProps['items'] = [
+	...gov1Items.overviewItems,
+	...gov2TrackItems.mainItems,
+	...gov2TrackItems.governanceItems,
+	...gov2TrackItems.treasuryItems,
+	...gov2TrackItems.fellowshipItems
 ];
 
 const AppLayout = ({ className }: { className?:string }) => {
@@ -162,8 +231,10 @@ const AppLayout = ({ className }: { className?:string }) => {
 	const navigate = useNavigate();
 	const { pathname } = useLocation();
 
+	const isGov2Route: boolean = gov2Routes.includes(pathname.split('/')[1]);
+
 	const handleMenuClick = (menuItem: any) => {
-		if(menuItem.key === 'userMenu') return;
+		if(['userMenu', 'tracksHeading'].includes(menuItem.key)) return;
 
 		navigate(menuItem.key);
 		// only for mobile devices
@@ -172,6 +243,7 @@ const AppLayout = ({ className }: { className?:string }) => {
 			setSidebarCollapsed(true);
 		}
 	};
+
 	const [logoutMutation] = useLogoutMutation();
 
 	const handleLogout = async () => {
@@ -183,6 +255,18 @@ const AppLayout = ({ className }: { className?:string }) => {
 		logout(setUserDetailsContextState);
 		navigate('/');
 	};
+
+	const userDropdown = getUserDropDown(handleLogout, picture, username!);
+
+	let sidebarItems = sidebarCollapsed ? collapsedItems : items;
+
+	if(isGov2Route) {
+		sidebarItems = sidebarCollapsed ? gov2CollapsedItems : gov2Items;
+	}
+
+	if(username) {
+		sidebarItems = [userDropdown, ...sidebarItems];
+	}
 
 	return (
 		<Layout className={className}>
@@ -201,11 +285,7 @@ const AppLayout = ({ className }: { className?:string }) => {
 						mode="inline"
 						selectedKeys={[pathname]}
 						defaultOpenKeys={['democracy_group', 'treasury_group', 'council_group', 'tech_comm_group']}
-						items={
-							sidebarCollapsed ? username ?
-								[getUserDropDown(handleLogout, picture, username), ...collapsedItems] : collapsedItems
-								: username ? [getUserDropDown(handleLogout, picture, username), ...items] : items
-						}
+						items={sidebarItems}
 						onClick={handleMenuClick}
 						className={`${username?'auth-sider-menu':''} mt-[60px]`}
 					/>

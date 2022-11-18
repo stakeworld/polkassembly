@@ -4,6 +4,7 @@
 
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { trackInfo } from 'src/global/post_trackInfo';
 import CalendarView from 'src/screens/CalendarView';
 import CouncilBoard from 'src/screens/CouncilBoard';
 import CreatePost from 'src/screens/CreatePost';
@@ -43,6 +44,16 @@ import Tracker from 'src/screens/Tracker';
 import UndoEmailChange from 'src/screens/UndoEmailChange';
 import UserProfile from 'src/screens/UserProfile';
 import VerifyEmail from 'src/screens/VerifyEmail';
+
+export const gov2Routes = [
+	'gov-2',
+	'track'
+];
+
+for (const trackName of Object.keys(trackInfo)) {
+	gov2Routes.push(trackName.split(/(?=[A-Z])/).join('-').toLowerCase());
+}
+
 const SwitchRoutes = () => {
 	return (
 		<Routes>

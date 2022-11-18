@@ -20,6 +20,15 @@ export const referendumStatus = {
 	VETOED: 'Vetoed'
 };
 
+export const gov2ReferendumStatus = {
+	APPROVED: 'Approved',
+	CANCELLED: 'Cancelled',
+	KILLED: 'Killed',
+	ONGOING: 'Ongoing',
+	REJECTED: 'Rejected',
+	TIMEDOUT: 'Timedout'
+};
+
 export const motionStatus = {
 	APPROVED: 'Approved',
 	CLOSED: 'Closed',
