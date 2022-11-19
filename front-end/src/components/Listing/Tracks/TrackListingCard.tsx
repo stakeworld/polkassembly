@@ -25,7 +25,7 @@ const TrackListingCard = ({ className, trackName } : Props) => {
 		{ label: 'Killed', key: 'Killed', children: <TrackListingStatusTabContent trackNum={trackMetaData.trackId} status='Killed' /> },
 		{ label: 'Ongoing', key: 'Ongoing', children: <TrackListingStatusTabContent trackNum={trackMetaData.trackId} status='Ongoing' /> },
 		{ label: 'Rejected', key: 'Rejected', children: <TrackListingStatusTabContent trackNum={trackMetaData.trackId} status='Rejected' /> },
-		{ label: 'Timedout', key: 'Timedout', children: <TrackListingStatusTabContent trackNum={trackMetaData.trackId} status='Timedout' /> }
+		{ label: 'Timed Out', key: 'Timedout', children: <TrackListingStatusTabContent trackNum={trackMetaData.trackId} status='Timedout' /> }
 	];
 
 	return (

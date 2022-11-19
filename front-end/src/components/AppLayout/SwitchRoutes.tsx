@@ -21,7 +21,7 @@ import Proposals from 'src/screens/Listing/Proposals';
 import Referenda from 'src/screens/Listing/Referenda';
 import TechCommProposals from 'src/screens/Listing/TechCommProposals';
 import Tips from 'src/screens/Listing/Tips';
-import Root from 'src/screens/Listing/Tracks/Root';
+import TrackListing from 'src/screens/Listing/Tracks';
 import Treasury from 'src/screens/Listing/Treasury';
 import LoginForm from 'src/screens/LoginForm';
 import News from 'src/screens/News';
@@ -45,6 +45,7 @@ import Tracker from 'src/screens/Tracker';
 import UndoEmailChange from 'src/screens/UndoEmailChange';
 import UserProfile from 'src/screens/UserProfile';
 import VerifyEmail from 'src/screens/VerifyEmail';
+import { PostOrigin } from 'src/types';
 
 export const gov2Routes = [
 	'gov-2',
@@ -117,7 +118,62 @@ const SwitchRoutes = () => {
 
 			{/* GOV 2 Routes */}
 			<Route path="/gov-2" element={<Gov2Home />} />
-			<Route path="/root" element={<Root />} />
+
+			<Route path="/root">
+				<Route index element={<TrackListing trackName={PostOrigin.ROOT} />} />
+			</Route>
+
+			<Route path="/auction-admin">
+				<Route index element={<TrackListing trackName={PostOrigin.AUCTION_ADMIN} />} />
+			</Route>
+
+			<Route path="/staking-admin">
+				<Route index element={<TrackListing trackName={PostOrigin.STAKING_ADMIN} />} />
+			</Route>
+
+			<Route path="/lease-admin">
+				<Route index element={<TrackListing trackName={PostOrigin.LEASE_ADMIN} />} />
+			</Route>
+
+			<Route path="/general-admin">
+				<Route index element={<TrackListing trackName={PostOrigin.GENERAL_ADMIN} />} />
+			</Route>
+
+			<Route path="/referendum-canceller">
+				<Route index element={<TrackListing trackName={PostOrigin.REFERENDUM_CANCELLER} />} />
+			</Route>
+
+			<Route path="/treasurer">
+				<Route index element={<TrackListing trackName={PostOrigin.TREASURER} />} />
+			</Route>
+
+			<Route path="/small-tipper">
+				<Route index element={<TrackListing trackName={PostOrigin.SMALL_TIPPER} />} />
+			</Route>
+
+			<Route path="/big-tipper">
+				<Route index element={<TrackListing trackName={PostOrigin.BIG_TIPPER} />} />
+			</Route>
+
+			<Route path="/small-spender">
+				<Route index element={<TrackListing trackName={PostOrigin.SMALL_SPENDER} />} />
+			</Route>
+
+			<Route path="/medium-spender">
+				<Route index element={<TrackListing trackName={PostOrigin.MEDIUM_SPENDER} />} />
+			</Route>
+
+			<Route path="/big-spender">
+				<Route index element={<TrackListing trackName={PostOrigin.BIG_SPENDER} />} />
+			</Route>
+
+			<Route path="/whitelisted-caller">
+				<Route index element={<TrackListing trackName={PostOrigin.WHITELISTED_CALLER} />} />
+			</Route>
+
+			<Route path="/fellowship-admin">
+				<Route index element={<TrackListing trackName={PostOrigin.FELLOWSHIP_ADMIN} />} />
+			</Route>
 
 			<Route path="*" element={<NotFound />} />
 

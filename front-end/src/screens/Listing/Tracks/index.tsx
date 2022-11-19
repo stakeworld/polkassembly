@@ -5,10 +5,8 @@
 import React from 'react';
 import AboutTrackCard from 'src/components/Listing/Tracks/AboutTrackCard';
 import TrackListingCard from 'src/components/Listing/Tracks/TrackListingCard';
-import { PostOrigin } from 'src/types';
 
-const Root = () => {
-	const trackName = PostOrigin.ROOT;
+const TrackListing = ({ trackName } : { trackName: string }) => {
 
 	return (
 		<>
@@ -18,4 +16,4 @@ const Root = () => {
 	);
 };
 
-export default Root;
+export default TrackListing;
