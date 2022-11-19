@@ -1,0 +1,83 @@
+// Copyright 2019-2020 @Premiurly/polkassembly authors & contributors
+// This software may be modified and distributed under the terms
+// of the Apache-2.0 license. See the LICENSE file for details.
+
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import GovernanceCard from 'src/components/GovernanceCard';
+import { useGetGov2PostsByTrackAndStatusLazyQuery } from 'src/generated/graphql';
+import ErrorAlert from 'src/ui-components/ErrorAlert';
+import { LoadingState, PostEmptyState } from 'src/ui-components/UIStates';
+
+interface Props {
+	className?: string;
+	status: string;
+	trackNum: number;
+}
+
+const TrackListingStatusTabContent = ({ className, status, trackNum } : Props) => {
+
+	const [getData, { called, data, error, loading, refetch }] = useGetGov2PostsByTrackAndStatusLazyQuery({
+		variables : {
+			limit: 10,
+			status,
+			track: trackNum
+		}
+	});
+
+	useEffect(() => {
+		if (called) {
+			refetch();
+		} else {
+			getData();
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [called]);
+
+	if(error) return <div className={className}><ErrorAlert errorMsg={error.message} /></div>;
+
+	if(!data || loading) return <div className={className}><LoadingState /></div>;
+
+	const noPost = !data.posts || !data.posts.length;
+	const atLeastOneCurrentReferendum = data.posts.some((post) => {
+		if(post.onchain_link?.onchain_referendumv2.length){
+			// this breaks the loop as soon as
+			// we find a post that has a tip.
+			return true;
+		}
+		return false;
+	});
+
+	if (noPost || !atLeastOneCurrentReferendum) return <div className={className}><PostEmptyState /></div>;
+
+	return (
+		<ul className={`${className} proposals__list`}>
+			{data.posts.map(
+				(post) => {
+					const onchainId = post.onchain_link?.onchain_referendumv2[0]?.id;
+
+					return !!post?.author?.username && !!post?.onchain_link?.onchain_referendumv2.length &&
+						<li key={post.id} className='my-5'>
+							{<Link to={`/root/${onchainId}`}>
+								<GovernanceCard
+									postReactions={(post as any)?.post_reactions}
+									address={post.onchain_link.proposer_address}
+									comments={post.comments_aggregate.aggregate?.count
+										? post.comments_aggregate.aggregate.count.toString()
+										: 'no'}
+									method={post.onchain_link.onchain_referendumv2[0]?.preimage?.method}
+									onchainId={onchainId}
+									status={post.onchain_link.onchain_referendumv2[0]?.referendumStatus?.[0].status}
+									title={post.title}
+									topic={post.topic.name}
+								/>
+							</Link>}
+						</li>
+					;
+				}
+			)}
+		</ul>
+	);
+};
+
+export default TrackListingStatusTabContent;

@@ -9,6 +9,7 @@ import React, { useEffect } from 'react';
 import { useGetTrackInfoLazyQuery } from 'src/generated/graphql';
 import { chainProperties } from 'src/global/networkConstants';
 import { trackInfo } from 'src/global/post_trackInfo';
+import ErrorAlert from 'src/ui-components/ErrorAlert';
 import formatBnBalance from 'src/util/formatBnBalance';
 import getNetwork from 'src/util/getNetwork';
 
@@ -22,7 +23,6 @@ const currentNetwork = getNetwork();
 const AboutTrackCard = ({ className, trackName } : Props) => {
 	const trackMetaData = trackInfo[trackName];
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [getData, { called, data, error, loading, refetch }] = useGetTrackInfoLazyQuery({ variables: {
 		track: trackMetaData.trackId
 	} });
@@ -36,8 +36,6 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [called]);
 
-	console.log('data: ', data);
-
 	return (
 		<div className={`${className} bg-white drop-shadow-md rounded-md p-4 md:p-8 text-sidebarBlue`}>
 			<div className="flex justify-between capitalize font-medium">
@@ -50,7 +48,9 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 
 			<p className="mt-5 text-sm font-normal">{trackMetaData.description}</p>
 
-			<div className="mt-8 text-xs w-full">
+			{error && <ErrorAlert className="mt-8" errorMsg={error.message} />}
+
+			{!error && <div className="mt-8 text-xs w-full">
 				<Spin spinning={!data || loading} indicator={<LoadingOutlined />}>
 					<Row gutter={[{ xs: 4, sm: 4, md: 16, lg: 32, xl: 32, xxl: 32 }, 16]}>
 						<Col xs={24} sm={24} md={12} lg={12} xl={6}>
@@ -102,7 +102,7 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 						</Col> */}
 					</Row>
 				</Spin>
-			</div>
+			</div>}
 		</div>
 	);
 };

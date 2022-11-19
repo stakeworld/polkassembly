@@ -184,19 +184,9 @@ for (const trackName of Object.keys(trackInfo)) {
 		);
 		break;
 	case 'Fellowship':
-		if(trackName === 'FellowshipAdmin') {
-			gov2TrackItems.fellowshipItems.push(
-				getSiderMenuItem(trackInfo[trackName].displayName, 'gov2_fellowshipAdmin_group', null, [
-					...trackInfo[trackName].statuses!.map(status =>
-						getSiderMenuItem(status, `/${trackName.split(/(?=[A-Z])/).join('-').toLowerCase()}/${status.split(/(?=[A-Z])/).join('-').toLowerCase()}`, <TreasuryProposalsIcon className='text-white' />)
-					)
-				])
-			);
-		}else {
-			gov2TrackItems.fellowshipItems.push(
-				getSiderMenuItem(trackInfo[trackName].displayName, `/${trackName.split(/(?=[A-Z])/).join('-').toLowerCase()}`, <TreasuryProposalsIcon className='text-white' />)
-			);
-		}
+		gov2TrackItems.fellowshipItems.push(
+			getSiderMenuItem(trackInfo[trackName].displayName, `/${trackName.split(/(?=[A-Z])/).join('-').toLowerCase()}`, <TreasuryProposalsIcon className='text-white' />)
+		);
 		break;
 	}
 }

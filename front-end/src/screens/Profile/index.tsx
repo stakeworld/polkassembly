@@ -15,7 +15,6 @@ import TitleForm from 'src/components/TitleForm';
 import { PostCategory } from 'src/global/post_categories';
 import BackToListingView from 'src/ui-components/BackToListingView';
 import queueNotification from 'src/ui-components/QueueNotification';
-import styled from 'styled-components';
 
 // import Balance from '../../components/Balance';
 import { ApiContext } from '../../context/ApiContext';
@@ -353,21 +352,4 @@ const Profile = ({ className }: Props): JSX.Element => {
 	);
 };
 
-export default styled(Profile)`
-	.ant-tabs-tab-bg-white .ant-tabs-tab:not(.ant-tabs-tab-active) {
-		background-color: white;
-		border-top-color: white;
-		border-left-color: white;
-		border-right-color: white;
-		border-bottom-color: #E1E6EB;
-	}
-	.ant-tabs-tab-bg-white .ant-tabs-tab-active{
-		border-top-color: #E1E6EB;
-		border-left-color: #E1E6EB;
-		border-right-color: #E1E6EB;
-		border-radius: 6px 6px 0 0 !important;
-	}
-	.ant-tabs-tab-bg-white .ant-tabs-nav:before{
-		border-bottom: 1px solid #E1E6EB;
-	}
-`;
+export default Profile;

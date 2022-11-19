@@ -37,15 +37,6 @@ export const trackInfo: TrackInfoType = {
 		description: 'Origin for managing the composition of the fellowship.',
 		displayName: 'Admin',
 		group: 'Fellowship',
-		statuses: [
-			'Proposed',
-			'Tabled',
-			'Opened',
-			'Executed',
-			'Rejected',
-			'Extended',
-			'Awarded'
-		],
 		trackId: 13
 	},
 	[PostOrigin.GENERAL_ADMIN] : {

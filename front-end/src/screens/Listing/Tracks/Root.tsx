@@ -4,6 +4,7 @@
 
 import React from 'react';
 import AboutTrackCard from 'src/components/Listing/Tracks/AboutTrackCard';
+import TrackListingCard from 'src/components/Listing/Tracks/TrackListingCard';
 import { PostOrigin } from 'src/types';
 
 const Root = () => {
@@ -12,6 +13,7 @@ const Root = () => {
 	return (
 		<>
 			<AboutTrackCard trackName={trackName} />
+			<TrackListingCard className='mt-12' trackName={trackName} />
 		</>
 	);
 };
