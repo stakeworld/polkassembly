@@ -21,6 +21,7 @@ import Proposals from 'src/screens/Listing/Proposals';
 import Referenda from 'src/screens/Listing/Referenda';
 import TechCommProposals from 'src/screens/Listing/TechCommProposals';
 import Tips from 'src/screens/Listing/Tips';
+import Root from 'src/screens/Listing/Tracks/Root';
 import Treasury from 'src/screens/Listing/Treasury';
 import LoginForm from 'src/screens/LoginForm';
 import News from 'src/screens/News';
@@ -114,7 +115,9 @@ const SwitchRoutes = () => {
 			<Route path="/terms-of-website" element={<TermsOfWebsite/>} />
 			<Route path="/privacy" element={<PrivacyPolicy/>} />
 
+			{/* GOV 2 Routes */}
 			<Route path="/gov-2" element={<Gov2Home />} />
+			<Route path="/root" element={<Root />} />
 
 			<Route path="*" element={<NotFound />} />
 

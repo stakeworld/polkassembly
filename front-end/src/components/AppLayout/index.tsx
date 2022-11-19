@@ -201,8 +201,16 @@ for (const trackName of Object.keys(trackInfo)) {
 	}
 }
 
+const gov2OverviewItems = [
+	getSiderMenuItem('Overview', '/gov-2', <OverviewIcon className='text-white' />),
+	getSiderMenuItem('Discussions', '/discussions', <DiscussionsIcon className='text-white' />),
+	getSiderMenuItem('Calendar', '/calendar', <CalendarIcon className='text-white' />),
+	getSiderMenuItem('News', '/news', <NewsIcon className='text-white' />),
+	getSiderMenuItem('Parachains', '/parachains', <ParachainsIcon className='text-white' />)
+];
+
 const gov2Items:MenuProps['items'] = [
-	...gov1Items.overviewItems,
+	...gov2OverviewItems,
 	// Tracks Heading
 	getSiderMenuItem(<span className='text-navBlue hover:text-navBlue ml-2 uppercase text-base font-medium'>Tracks</span>, 'tracksHeading', null),
 	...gov2TrackItems.mainItems,
@@ -218,7 +226,7 @@ const gov2Items:MenuProps['items'] = [
 ];
 
 const gov2CollapsedItems:MenuProps['items'] = [
-	...gov1Items.overviewItems,
+	...gov2OverviewItems,
 	...gov2TrackItems.mainItems,
 	...gov2TrackItems.governanceItems,
 	...gov2TrackItems.treasuryItems,

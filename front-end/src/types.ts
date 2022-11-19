@@ -206,4 +206,5 @@ export interface TrackProps {
   'displayName' : string;
   'group'?: string;
   'statuses'?: string[];
+  'description': string;
 }
