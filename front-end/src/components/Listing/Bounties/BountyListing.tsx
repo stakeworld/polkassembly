@@ -48,6 +48,7 @@ const BountyListing = ({ className, data, loading } : Props) => {
 									status={post.onchain_link.onchain_bounty[0]?.bountyStatus?.[0].status}
 									title={post.title}
 									topic={post.topic.name}
+									created_at={post.created_at}
 								/>
 							</Link>}
 						</li>

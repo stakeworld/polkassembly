@@ -39,13 +39,12 @@ const PostChildBountyInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Prop
 		<>
 			<OnchainInfoWrapper>
 				<Row gutter={40}>
-					<Col xs={24} md={12}>
-						<h6>Proposer
-							<span className='text-pink_primary cursor-pointer ml-3' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
-								View Other Proposals
-							</span>
-						</h6>
+					<Col span={24}>
+						<h6>Proposer</h6>
 						<Address address={proposerAddress}/>
+						<div className='text-pink_primary cursor-pointer mt-3' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
+							View Other Proposals
+						</div>
 					</Col>
 					{curator &&
 					<Col xs={24} md={12}>
@@ -58,24 +57,32 @@ const PostChildBountyInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Prop
 						<Address address={beneficiary}/>
 					</Col>}
 					{value &&
-					<Col xs={24} md={12}>
+					<Col span={12}>
 						<h6>Value</h6>
-						{parseInt(value) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
+						<div className='text-navBlue'>
+							{parseInt(value) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
+						</div>
 					</Col>}
 					{fee &&
-					<Col xs={24} md={12}>
+					<Col span={12}>
 						<h6>Fee</h6>
-						{parseInt(fee) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
+						<div className='text-navBlue'>
+							{parseInt(fee) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
+						</div>
 					</Col>}
 					{curatorDeposit &&
-					<Col xs={24} md={12}>
+					<Col span={12}>
 						<h6>Curator Deposit</h6>
-						{parseInt(curatorDeposit) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
+						<div className='text-navBlue'>
+							{parseInt(curatorDeposit) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
+						</div>
 					</Col>}
 					{description &&
-					<Col xs={24} md={12}>
+					<Col span={12}>
 						<h6>Description</h6>
-						<p className='text-navBlue leading-6 whitespace-pre-wrap'>{description}</p>
+						<div className='text-navBlue'>
+							{description}
+						</div>
 					</Col>}
 				</Row>
 			</OnchainInfoWrapper>

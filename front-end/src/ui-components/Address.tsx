@@ -105,8 +105,8 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 							{identity && mainDisplay && <IdentityBadge identity={identity} flags={flags} />}
 							<Tooltip color='#E5007A' title={popupContent}>
 								<div className={'header display_inline identityName flex flex-col gap-y-1'}>
-									{ t1 && <span className='truncate'>{t1}</span> }
-									{sub && <span className='sub truncate'>{sub}</span>}
+									{ t1 && <span className='truncate text-navBlue'>{t1}</span> }
+									{sub && <span className='sub truncate text-navBlue'>{sub}</span>}
 								</div>
 							</Tooltip>
 						</Space>
@@ -114,8 +114,8 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 							<Space className={'description display_inline'}>
 								{identity && mainDisplay && <IdentityBadge identity={identity} flags={flags} />}
 								<span className='identityName flex flex-col gap-y-1'>
-									{ t1 && <span className='truncate'>{ t1 }</span> }
-									{sub && <span className='sub truncate'>{sub}</span>}
+									{ t1 && <span className='truncate text-navBlue'>{ t1 }</span> }
+									{sub && <span className='sub truncate text-navBlue'>{sub}</span>}
 								</span>
 							</Space>
 						</>
@@ -127,8 +127,8 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 									<Space className={'header'}>
 										{identity && mainDisplay && !extensionName && <IdentityBadge identity={identity} flags={flags} />}
 										<span className='identityName flex flex-col gap-y-1'>
-											{ t2 && <span className='truncate'>{ t2 }</span> }
-											{!extensionName && sub && <span className='sub truncate'>{sub}</span>}
+											{ t2 && <span className='truncate text-navBlue'>{ t2 }</span> }
+											{!extensionName && sub && <span className='sub truncate text-navBlue'>{sub}</span>}
 										</span>
 									</Space>
 									<div className={'description display_inline'}>{shortenAddress(address, shortenAddressLength)}</div>
@@ -138,8 +138,8 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 								<Space className={'header'}>
 									{identity && mainDisplay && !extensionName && <IdentityBadge identity={identity} flags={flags} />}
 									<span className='identityName flex flex-col gap-y-1'>
-										{ t2 && <span className='truncate'>{ t2 }</span> }
-										{!extensionName && sub && <span className='sub truncate'>{sub}</span>}
+										{ t2 && <span className='truncate text-navBlue'>{ t2 }</span> }
+										{!extensionName && sub && <span className='sub truncate text-navBlue'>{sub}</span>}
 									</span>
 								</Space>
 								<div className={'description text-xs ml-0.5'}>{shortenAddress(address, shortenAddressLength)}</div>

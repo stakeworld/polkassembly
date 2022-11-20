@@ -9,7 +9,6 @@ import kusamaLogo from 'src/assets/kusama-logo.gif';
 import auctionIcon from 'src/assets/parachains/auction.png';
 import chainIcon from 'src/assets/parachains/chain-link.png';
 import crowdloansIcon from 'src/assets/parachains/crowdloan.png';
-import projectsIcon from 'src/assets/parachains/projects.png';
 import polkadotLogo from 'src/assets/polkadot-logo-small-inverted.png';
 
 interface Props {
@@ -76,15 +75,6 @@ const ParachainInfoCard = ({ className, network }: Props) => {
 							<span className='metric-num text-sidebarBlue'>{metrics.projects}</span>
 						</div>
 						<div className='metric-name text-navBlue'>Parachains</div>
-					</div>
-
-					{/* Projects */}
-					<div className='metric-container'>
-						<div className='metric-line'>
-							<img src={projectsIcon} alt="Parachains Icon" />
-							<span className='metric-num text-sidebarBlue'>{metrics.projects}</span>
-						</div>
-						<div className='metric-name text-navBlue'>Projects</div>
 					</div>
 				</div>
 			</div>

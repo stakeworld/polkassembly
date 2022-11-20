@@ -49,6 +49,7 @@ const TechCommProposalsListing = ({ className, data, loading } : Props) => {
 									status={post.onchain_link.onchain_tech_committee_proposal[0]?.status?.[0].status}
 									title={post.title}
 									topic={post.topic.name}
+									created_at={post.created_at}
 								/>
 							</Link>}
 						</li>

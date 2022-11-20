@@ -39,47 +39,46 @@ const PostReferendumInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props
 		<>
 			<OnchainInfoWrapper>
 				<Row>
-					<Col xs={24} md={12}>
-						<h6>Proposer
-							<span className='text-pink_primary cursor-pointer ml-3' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
-								View Other Proposals
-							</span>
-						</h6>
+					<Col span={24}>
+						<h6>Proposer</h6>
 						<Address address={proposerAddress}/>
+						<div className='text-pink_primary cursor-pointer mt-3' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
+							View Other Proposals
+						</div>
 					</Col>
-					{(delay || delay === 0) &&
-						<Col xs={24} md={12}>
-							<h6>Delay</h6>
-							<BlocksToTime blocks={delay} />
-						</Col>}
+					{method &&
+						<Col span={12}>
+							<h6>Method</h6>
+							<div className='text-navBlue'>{method}</div>
+						</Col>
+					}
 					{end &&
-						<Col xs={24} md={12}>
+						<Col span={12}>
 							{status === 'Started'
 								?
 								<>
 									<h6>End</h6>
-									<BlockCountdown endBlock={end}/>
+									<BlockCountdown className='text-navBlue' endBlock={end}/>
 								</>
 								:
 								<>
 									<h6>Ended</h6>
-									<div>{moment.utc(blockNumber?.startDateTime).format('DD MMM YYYY, HH:mm:ss')}</div>
+									<div className='text-navBlue'>{moment.utc(blockNumber?.startDateTime).format('DD MMM YYYY, HH:mm:ss')}</div>
 								</>
 							}
 						</Col>}
+					{(delay || delay === 0) &&
+						<Col span={12}>
+							<h6>Delay</h6>
+							<div className='text-navBlue'><BlocksToTime blocks={delay} /></div>
+						</Col>}
 					{voteThreshold &&
-						<Col xs={24} md={12}>
+						<Col span={12}>
 							<h6>Vote threshold</h6>
-							{voteThreshold}
+							<div className='text-navBlue'>{voteThreshold}</div>
 						</Col>}
 					{method &&
 					<>
-						<Row>
-							<Col span={24}>
-								<h6>Method</h6>
-								{method}
-							</Col>
-						</Row>
 						<div className='arguments max-w-full'>
 							{preimageArguments && preimageArguments.length
 								? <ArgumentsTableJSONView postArguments={preimageArguments} showAccountArguments={true}  />
@@ -89,7 +88,7 @@ const PostReferendumInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props
 					{metaDescription &&
 					<Col span={24}>
 						<h6>Description</h6>
-						<p className='text-navBlue leading-6 whitespace-pre-wrap'>{metaDescription}</p>
+						<p className='text-navBlue leading-6'>{metaDescription}</p>
 					</Col>}
 					<Col span={24}>
 						<ExternalLinks isReferendum={true} onchainId={onchainLink.onchain_referendum_id} />

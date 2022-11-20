@@ -187,7 +187,8 @@ const AppLayout = ({ className }: { className?:string }) => {
 	return (
 		<Layout className={className}>
 			<NavHeader sidebarCollapsed={sidebarCollapsed} setSidebarCollapsed={setSidebarCollapsed} />
-			<Layout hasSider>
+			<Layout hasSider className='relative'>
+				{!sidebarCollapsed && <div onClick={() => setSidebarCollapsed(true)} className={`${sidebarCollapsed ? 'hidden' : ''} fixed top-0 left-0 w-screen h-screen z-10 opacity-20 bg-sidebarBlue `}></div>}
 				<Sider
 					trigger={null}
 					collapsible

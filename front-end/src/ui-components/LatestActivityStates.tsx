@@ -2,11 +2,11 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { ClockCircleOutlined } from '@ant-design/icons';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import React, { ReactNode } from 'react';
-import { PostCategory } from 'src/global/post_categories';
 
 import Address from './Address';
 import StatusTag from './StatusTag';
@@ -67,15 +67,13 @@ export const PopulatedLatestActivityCard = ({ tableData, onClick }: { tableData:
 					<div key={rowData.key} className="bg-white rounded shadow-md mb-6 p-3 border border-gray-200 cursor-pointer" onClick={() => onClick(rowData)}>
 						{/* Meta Data Row */}
 						<div className="flex items-center justify-between text-sidebarBlue">
+							<span>{rowData.status && <StatusTag status={rowData.status} />}</span>
 							<div className="flex items-center">
 								{rowData.icon}
 								<span className='capitalize ml-2 flex items-center'>
-									{rowData.postCategory.toString().split(' ')[0]}
-									<span className="h-[4px] w-[4px] bg-sidebarBlue mx-1 rounded-full inline-block"></span>
-									#{rowData.postCategory === PostCategory.DISCUSSION || rowData.postCategory === PostCategory.TIP ? rowData.postId : rowData.onChainId}
+									<span className='text-navBlue'><ClockCircleOutlined className='align-middle' /> {rowData.createdAt ? moment(rowData.createdAt).isAfter(moment().subtract(1, 'w')) ? moment(rowData.createdAt).startOf('day').fromNow() : moment(rowData.createdAt).format('Do MMM \'YY') : null}</span>
 								</span>
 							</div>
-							<span>{rowData.status && <StatusTag status={rowData.status} />}</span>
 						</div>
 
 						{/* Title */}
@@ -107,7 +105,6 @@ export const PopulatedLatestActivityCard = ({ tableData, onClick }: { tableData:
 										/>
 								}
 							</span>
-							<span>{rowData.createdAt ? moment(rowData.createdAt).isAfter(moment().subtract(1, 'w')) ? moment(rowData.createdAt).startOf('day').fromNow() : moment(rowData.createdAt).format('Do MMM \'YY') : null}</span>
 						</div>
 					</div>
 				))

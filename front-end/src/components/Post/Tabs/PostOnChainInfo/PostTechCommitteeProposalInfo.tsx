@@ -35,28 +35,31 @@ const PostTechCommitteeProposalInfo = ({ className, onchainLink, setOtherProposa
 		<>
 			<OnchainInfoWrapper className={className}>
 				<Row gutter={40}>
-					<Col xs={24} md={12}>
-						<h6>Proposer
-							<span className='text-pink_primary cursor-pointer ml-3' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
-								View Other Proposals
-							</span>
-						</h6>
+					<Col span={24}>
+						<h6>Proposer</h6>
 						<Address address={proposerAddress}/>
+						<div className='text-pink_primary cursor-pointer mt-3' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
+							View Other Proposals
+						</div>
 					</Col>
 					<Col xs={24} md={12}>
 						<h6>Member count</h6>
-						{memberCount}
+						<div className='text-navBlue'>
+							{memberCount}
+						</div>
 					</Col>
 				</Row>
 
 				<Row gutter={40}>
 					<Col xs={24} md={12}>
 						<h6>Proposal hash</h6>
-						{proposalHash}
+						<div className='text-navBlue'>
+							{proposalHash}
+						</div>
 					</Col>
 					<Col xs={24} md={12}>
 						<h6>Motion&apos;s method</h6>
-						<span className={method === 'rejectProposal' ? 'bold-red-text' : ''}>{method}</span>
+						<span className={method === 'rejectProposal' ? 'bold-red-text' : 'text-navBlue'}>{method}</span>
 					</Col>
 				</Row>
 
@@ -71,7 +74,7 @@ const PostTechCommitteeProposalInfo = ({ className, onchainLink, setOtherProposa
 							{ metaDescription &&
 								<>
 									<h6>Description</h6>
-									<p className='text-navBlue leading-6 whitespace-pre-wrap'>{metaDescription}</p>
+									<p className='text-navBlue leading-6'>{metaDescription}</p>
 								</>
 							}
 						</Col>

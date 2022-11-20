@@ -38,6 +38,7 @@ const TreasuryListing = ({ className, data, loading } : Props) => {
 									status={post.onchain_link.onchain_treasury_spend_proposal?.[0]?.treasuryStatus?.[0].status}
 									title={post.title}
 									topic={post.topic.name}
+									created_at={post.created_at}
 								/>
 							</Link>}
 						</li>
