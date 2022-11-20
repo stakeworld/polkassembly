@@ -153,14 +153,14 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 				</div>
 			</div>
 
-			{!isEditing && <div className='flex lg:hidden mb-8 mx-2'><Sidebar /></div>}
+			{!isEditing && <div className='flex xl:hidden mb-8 mx-2'><Sidebar /></div>}
 
 			<div className='flex relative'>
 				{
 					onchain_link && !!post.comments?.length && currentBlock && timelines.length > 0 &&
 					<div style={{
 						height: `${window.innerHeight}px`
-					}} className='hidden xl:flex mr-9 min-w-[120px] sticky top-0 pt-10 xl:items-center'>
+					}} className='hidden xl:flex mr-4 min-w-[100px] -ml-4 sticky top-[10%] pt-10 xl:items-center'>
 						<Timeline className='flex flex-col h-full w-full' mode='right'>
 							{timelines.map(({ date, id, isToday, status }) => {
 								return (<Timeline.Item style={{
@@ -182,7 +182,7 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 														return commentDate.isSameOrBefore(timelines[index].date) && commentDate.isAfter(timelines[index + 1].date);
 													}
 												}));
-									}} className={`flex flex-col border-none outline-none items-end w-full ${timeline === id? 'text-sidebarBlue':'text-navBlue'}`}>
+									}} className={`text-xs flex flex-col border-none outline-none items-end w-full ${timeline === id? 'text-sidebarBlue':'text-navBlue'}`}>
 										{
 											isToday
 												?<span>Today</span>
@@ -205,7 +205,7 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 					{ !!comments?.length &&
 						<>
 							<Comments
-								className='ml-0 xl:ml-4'
+								className='ml-0 xl:ml-4 xl:max-w-[490px] 2xl:max-w-[100%]'
 								comments={comments}
 								refetch={refetch}
 							/>
