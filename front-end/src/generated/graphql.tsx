@@ -29739,7 +29739,7 @@ export type GetLatestGov2PostsQuery = (
       & Pick<Onchain_Links, 'proposer_address' | 'track' | 'origin'>
       & { onchain_referendumv2: Array<Maybe<(
         { __typename?: 'ReferendumV2' }
-        & Pick<ReferendumV2, 'deciding' | 'decisionDeposit' | 'enactmentAfter' | 'enactmentAt' | 'id' | 'origin' | 'preimageHash' | 'trackNumber' | 'submitted' | 'submittedAt'>
+        & Pick<ReferendumV2, 'deciding' | 'decisionDeposit' | 'enactmentAfter' | 'enactmentAt' | 'id' | 'origin' | 'preimageHash' | 'trackNumber' | 'submitted' | 'referendumId' | 'submittedAt'>
         & { referendumStatus?: Maybe<Array<(
           { __typename?: 'ReferendumStatusV2' }
           & Pick<ReferendumStatusV2, 'id' | 'status'>
@@ -29786,7 +29786,7 @@ export type GetGov2PostsByTrackQuery = (
       & Pick<Onchain_Links, 'proposer_address' | 'track' | 'origin'>
       & { onchain_referendumv2: Array<Maybe<(
         { __typename?: 'ReferendumV2' }
-        & Pick<ReferendumV2, 'deciding' | 'decisionDeposit' | 'enactmentAfter' | 'enactmentAt' | 'id' | 'origin' | 'preimageHash' | 'trackNumber' | 'submitted' | 'submittedAt'>
+        & Pick<ReferendumV2, 'deciding' | 'decisionDeposit' | 'enactmentAfter' | 'enactmentAt' | 'id' | 'origin' | 'preimageHash' | 'trackNumber' | 'submitted' | 'referendumId' | 'submittedAt'>
         & { referendumStatus?: Maybe<Array<(
           { __typename?: 'ReferendumStatusV2' }
           & Pick<ReferendumStatusV2, 'id' | 'status'>
@@ -29834,7 +29834,7 @@ export type GetGov2PostsByTrackAndStatusQuery = (
       & Pick<Onchain_Links, 'proposer_address' | 'track' | 'origin'>
       & { onchain_referendumv2: Array<Maybe<(
         { __typename?: 'ReferendumV2' }
-        & Pick<ReferendumV2, 'deciding' | 'decisionDeposit' | 'enactmentAfter' | 'enactmentAt' | 'id' | 'origin' | 'preimageHash' | 'trackNumber' | 'submitted' | 'submittedAt'>
+        & Pick<ReferendumV2, 'deciding' | 'decisionDeposit' | 'enactmentAfter' | 'enactmentAt' | 'id' | 'origin' | 'preimageHash' | 'trackNumber' | 'referendumId' | 'submitted' | 'submittedAt'>
         & { referendumStatus?: Maybe<Array<(
           { __typename?: 'ReferendumStatusV2' }
           & Pick<ReferendumStatusV2, 'id' | 'status'>
@@ -34847,6 +34847,7 @@ export const GetLatestGov2PostsDocument = gql`
         trackNumber
         submitted
         submittedAt
+        referendumId
         referendumStatus(last: 1) {
           id
           status
@@ -34857,6 +34858,7 @@ export const GetLatestGov2PostsDocument = gql`
           section
         }
       }
+      onchain_referendumv2_id
     }
     post_reactions {
       reaction
@@ -34932,6 +34934,7 @@ export const GetGov2PostsByTrackDocument = gql`
         trackNumber
         submitted
         submittedAt
+        referendumId
         referendumStatus(last: 1) {
           id
           status
@@ -34942,6 +34945,7 @@ export const GetGov2PostsByTrackDocument = gql`
           section
         }
       }
+      onchain_referendumv2_id
     }
     post_reactions {
       reaction
@@ -35018,6 +35022,7 @@ export const GetGov2PostsByTrackAndStatusDocument = gql`
         trackNumber
         submitted
         submittedAt
+        referendumId
         referendumStatus(last: 1) {
           id
           status
@@ -35028,6 +35033,7 @@ export const GetGov2PostsByTrackAndStatusDocument = gql`
           section
         }
       }
+      onchain_referendumv2_id
     }
     post_reactions {
       reaction
@@ -35080,6 +35086,7 @@ export const ReferendumV2PostAndCommentsDocument = gql`
       proposer_address
       track
       origin
+      onchain_referendumv2_id
       onchain_referendumv2 {
         deciding
         decisionDeposit
