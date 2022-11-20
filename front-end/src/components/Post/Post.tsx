@@ -229,7 +229,7 @@ const Post = ({
 
 	const Sidebar = ({ className } : {className?:string}) => {
 		return (
-			<div className={`${className} flex flex-col w-full lg:w-4/12 mx-auto`}>
+			<div className={`${className} flex flex-col w-full xl:w-4/12 mx-auto`}>
 				<GovernanceSideBar
 					isBounty={isBounty}
 					isChildBounty={isChildBounty}
@@ -365,8 +365,8 @@ const Post = ({
 
 	return (
 		<>
-			<div className={`${className} flex flex-col lg:flex-row`}>
-				<div className='flex-1 w-full lg:w-8/12 mx-auto lg:mr-9 mb-6 lg:mb-0'>
+			<div className={`${className} flex flex-col xl:flex-row`}>
+				<div className='flex-1 w-full xl:w-8/12 mx-auto xl:mr-9 mb-6 xl:mb-0'>
 
 					{redirection.link &&
 						<Link to={redirection.link}>
@@ -405,7 +405,7 @@ const Post = ({
 					}
 
 					{/* Post Content */}
-					<div className='bg-white drop-shadow-md p-3 lg:p-6 rounded-md w-full mb-6'>
+					<div className='bg-white drop-shadow-md p-3 md:p-4 lg:p-6 rounded-md w-full mb-6'>
 						{isEditing && <EditablePostContent
 							post={post as any}
 							refetch={refetch}
@@ -425,7 +425,7 @@ const Post = ({
 					</div>
 				</div>
 
-				{!isEditing && isSidebarAvailable? <Sidebar className='hidden lg:block' />: null}
+				{!isEditing && isSidebarAvailable? <Sidebar className='hidden xl:block' />: null}
 			</div>
 
 			<SidebarRight

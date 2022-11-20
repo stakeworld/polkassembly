@@ -191,7 +191,7 @@ const AppLayout = ({ className }: { className?:string }) => {
 					onMouseOver={() => setSidedrawer(true)}
 					style={{ transform: sidedrawer ? 'translateX(-60px)' : 'translateX(0px)', transitionDuration: '0.3s' }}
 					// onMouseLeave={() => setSidebarCollapsed(true)}
-					className={'hidden overflow-y-hidden sidebar bg-white lg:block bottom-0 left-0 h-screen overflow-y-auto fixed z-40'}
+					className={'hidden overflow-y-hidden sidebar bg-white lg:block bottom-0 left-0 h-screen fixed z-40'}
 				>
 					<Menu
 						theme="light"
@@ -217,6 +217,7 @@ const AppLayout = ({ className }: { className?:string }) => {
 							: items}
 						onClick={handleMenuClick}
 						className={`${username?'auth-sider-menu':''} mt-[60px]`}
+						onMouseLeave={() => setSidedrawer(false)}
 					/>
 				</Drawer>
 				<Layout className='min-h-[calc(100vh - 10rem)] flex flex-row'>
@@ -231,7 +232,7 @@ const AppLayout = ({ className }: { className?:string }) => {
 };
 
 const CustomContent = memo(function CustomContent() {
-	return <Content className={'lg:opacity-100 flex-initial mx-auto min-h-[90vh] w-[94vw] lg:w-[85vw] xl:w-5/6 my-6'}>
+	return <Content className={'lg:opacity-100 flex-initial mx-auto min-h-[90vh] w-[94vw] lg:w-[85vw] 2xl:w-5/6 my-6'}>
 		<SwitchRoutes />
 	</Content>;
 });
