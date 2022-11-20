@@ -51,7 +51,7 @@ for (const key of Object.keys(network)) {
 	}
 }
 
-const NetworkDropdown: FC<{setSidebarCollapsed: React.Dispatch<React.SetStateAction<boolean>>}> = ({ setSidebarCollapsed }) => {
+const NetworkDropdown: FC<{setSidedrawer: React.Dispatch<React.SetStateAction<boolean>>}> = ({ setSidedrawer }) => {
 	return (
 		<Dropdown
 			trigger={['click']}
@@ -101,7 +101,7 @@ const NetworkDropdown: FC<{setSidebarCollapsed: React.Dispatch<React.SetStateAct
 		>
 			<a className='flex items-center justify-between text-navBlue hover:text-pink_primary' onClick={e => {
 				e.preventDefault();
-				setSidebarCollapsed(true);
+				setSidedrawer(false);
 			}}
 			>
 				<img
