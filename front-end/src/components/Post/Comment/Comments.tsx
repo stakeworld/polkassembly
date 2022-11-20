@@ -21,7 +21,6 @@ interface Props{
 const Comments = ({ className, comments, refetch }: Props) => {
 	return (
 		<div className={className}>
-			<div className='text-sidebarBlue text-sm font-medium mb-5'>{comments.length} comments</div>
 			{comments.map((comment:CommentFieldsFragment) =>
 				<Comment
 					comment={comment}

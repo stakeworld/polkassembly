@@ -56,7 +56,7 @@ export const Comment = ({ className, comment, refetch } : Props) => {
 				size='large'
 				id={author.id}
 			/>
-			<div>
+			<div className='w-full pr-5'>
 				<CreationLabel
 					className='creation-label py-2 px-4 bg-comment_bg rounded-t-md'
 					created_at={created_at}
