@@ -98,7 +98,9 @@ const AllGov2PostsTable = () => {
 	const navigate = useNavigate();
 
 	function gotoPost(rowData: Gov2PostsRowData){
-		navigate(`/${rowData.postOrigin}/${rowData.track}/${rowData.id}`);
+		if(rowData.postOrigin) {
+			navigate(`/${rowData.postOrigin.split(/(?=[A-Z])/).join('-').toLowerCase()}/${rowData.id}`);
+		}
 	}
 
 	const [getData, { called, data, error, refetch }] = useGetLatestGov2PostsLazyQuery({

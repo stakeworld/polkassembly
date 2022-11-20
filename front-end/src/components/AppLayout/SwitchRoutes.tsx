@@ -33,6 +33,7 @@ import DiscussionPost from 'src/screens/Posts/DiscussionPost';
 import MotionPost from 'src/screens/Posts/MotionPost';
 import ProposalPost from 'src/screens/Posts/ProposalPost';
 import ReferendumPost from 'src/screens/Posts/ReferendumPost';
+import ReferendumV2Post from 'src/screens/Posts/ReferendumV2Post';
 import TechCommProposalPost from 'src/screens/Posts/TechCommProposalPost';
 import TipPost from 'src/screens/Posts/TipPost';
 import TreasuryPost from 'src/screens/Posts/TreasuryPost';
@@ -121,58 +122,72 @@ const SwitchRoutes = () => {
 
 			<Route path="/root">
 				<Route index element={<TrackListing trackName={PostOrigin.ROOT} />} />
+				<Route path=':id' element={<ReferendumV2Post trackName={PostOrigin.ROOT} />} />
 			</Route>
 
 			<Route path="/auction-admin">
 				<Route index element={<TrackListing trackName={PostOrigin.AUCTION_ADMIN} />} />
+				<Route path=':id' element={<ReferendumV2Post trackName={PostOrigin.AUCTION_ADMIN} />} />
 			</Route>
 
 			<Route path="/staking-admin">
 				<Route index element={<TrackListing trackName={PostOrigin.STAKING_ADMIN} />} />
+				<Route path=':id' element={<ReferendumV2Post trackName={PostOrigin.STAKING_ADMIN} />} />
 			</Route>
 
 			<Route path="/lease-admin">
 				<Route index element={<TrackListing trackName={PostOrigin.LEASE_ADMIN} />} />
+				<Route path=':id' element={<ReferendumV2Post trackName={PostOrigin.LEASE_ADMIN} />} />
 			</Route>
 
 			<Route path="/general-admin">
 				<Route index element={<TrackListing trackName={PostOrigin.GENERAL_ADMIN} />} />
+				<Route path=':id' element={<ReferendumV2Post trackName={PostOrigin.GENERAL_ADMIN} />} />
 			</Route>
 
 			<Route path="/referendum-canceller">
 				<Route index element={<TrackListing trackName={PostOrigin.REFERENDUM_CANCELLER} />} />
+				<Route path=':id' element={<ReferendumV2Post trackName={PostOrigin.REFERENDUM_CANCELLER} />} />
 			</Route>
 
 			<Route path="/treasurer">
 				<Route index element={<TrackListing trackName={PostOrigin.TREASURER} />} />
+				<Route path=':id' element={<ReferendumV2Post trackName={PostOrigin.TREASURER} />} />
 			</Route>
 
 			<Route path="/small-tipper">
 				<Route index element={<TrackListing trackName={PostOrigin.SMALL_TIPPER} />} />
+				<Route path=':id' element={<ReferendumV2Post trackName={PostOrigin.SMALL_TIPPER} />} />
 			</Route>
 
 			<Route path="/big-tipper">
 				<Route index element={<TrackListing trackName={PostOrigin.BIG_TIPPER} />} />
+				<Route path=':id' element={<ReferendumV2Post trackName={PostOrigin.BIG_TIPPER} />} />
 			</Route>
 
 			<Route path="/small-spender">
 				<Route index element={<TrackListing trackName={PostOrigin.SMALL_SPENDER} />} />
+				<Route path=':id' element={<ReferendumV2Post trackName={PostOrigin.SMALL_SPENDER} />} />
 			</Route>
 
 			<Route path="/medium-spender">
 				<Route index element={<TrackListing trackName={PostOrigin.MEDIUM_SPENDER} />} />
+				<Route path=':id' element={<ReferendumV2Post trackName={PostOrigin.MEDIUM_SPENDER} />} />
 			</Route>
 
 			<Route path="/big-spender">
 				<Route index element={<TrackListing trackName={PostOrigin.BIG_SPENDER} />} />
+				<Route path=':id' element={<ReferendumV2Post trackName={PostOrigin.BIG_SPENDER} />} />
 			</Route>
 
 			<Route path="/whitelisted-caller">
 				<Route index element={<TrackListing trackName={PostOrigin.WHITELISTED_CALLER} />} />
+				<Route path=':id' element={<ReferendumV2Post trackName={PostOrigin.WHITELISTED_CALLER} />} />
 			</Route>
 
 			<Route path="/fellowship-admin">
 				<Route index element={<TrackListing trackName={PostOrigin.FELLOWSHIP_ADMIN} />} />
+				<Route path=':id' element={<ReferendumV2Post trackName={PostOrigin.FELLOWSHIP_ADMIN} />} />
 			</Route>
 
 			<Route path="*" element={<NotFound />} />
