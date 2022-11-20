@@ -43,6 +43,7 @@ export const ALL_GOV2_POSTS = gql`
                     trackNumber
                     submitted
                     submittedAt
+                    referendumId
                     referendumStatus(last: 1) {
                         id
                         status
@@ -53,6 +54,7 @@ export const ALL_GOV2_POSTS = gql`
                         section
                     }
                 }
+                onchain_referendumv2_id
             }
             post_reactions {
                 reaction
@@ -100,6 +102,7 @@ export const GOV2_POSTS_BY_TRACK = gql`
                     trackNumber
                     submitted
                     submittedAt
+                    referendumId
                     referendumStatus(last: 1) {
                         id
                         status
@@ -110,6 +113,7 @@ export const GOV2_POSTS_BY_TRACK = gql`
                         section
                     }
                 }
+                onchain_referendumv2_id
             }
             post_reactions {
                 reaction
@@ -157,6 +161,7 @@ export const GOV2_POSTS_BY_TRACK_AND_STATUS = gql`
                     trackNumber
                     submitted
                     submittedAt
+                    referendumId
                     referendumStatus(last: 1) {
                         id
                         status
@@ -167,6 +172,7 @@ export const GOV2_POSTS_BY_TRACK_AND_STATUS = gql`
                         section
                     }
                 }
+                onchain_referendumv2_id
             }
             post_reactions {
                 reaction
@@ -226,6 +232,7 @@ export const REFERENDUMV2_POST_AND_COMMENTS = gql`
                         }
                     }
                 }
+                onchain_referendumv2_id
             }
             title
             topic {
