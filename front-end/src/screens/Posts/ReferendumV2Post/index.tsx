@@ -12,7 +12,7 @@ import { ErrorState, LoadingState } from 'src/ui-components/UIStates';
 interface Props {
 	councilBoardSidebar?: boolean;
 	postID?: number;
-	trackName: string;
+	trackName?: string;
 }
 
 const ReferendumV2Post = ({ councilBoardSidebar=false, postID, trackName }: Props) => {
@@ -33,7 +33,7 @@ const ReferendumV2Post = ({ councilBoardSidebar=false, postID, trackName }: Prop
 	if (error?.message) return <ErrorState errorMessage={error.message} />;
 
 	if (data) return (<div>
-		{!councilBoardSidebar && <BackToListingView trackName={trackName} />}
+		{trackName && !councilBoardSidebar && <BackToListingView trackName={trackName} />}
 
 		<div className='mt-6'>
 			<Post data={data} trackName={trackName} isReferendumV2 refetch={refetch} />
