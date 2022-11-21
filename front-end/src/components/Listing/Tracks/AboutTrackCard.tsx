@@ -10,6 +10,7 @@ import { useGetTrackInfoLazyQuery } from 'src/generated/graphql';
 import { chainProperties } from 'src/global/networkConstants';
 import { trackInfo } from 'src/global/post_trackInfo';
 import ErrorAlert from 'src/ui-components/ErrorAlert';
+import Loader from 'src/ui-components/Loader';
 import formatBnBalance from 'src/util/formatBnBalance';
 import getNetwork from 'src/util/getNetwork';
 
@@ -50,43 +51,47 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 
 			{error && <ErrorAlert className="mt-8" errorMsg={error.message} />}
 
-			{!error && <div className="mt-8 text-xs w-full xl:w-5/6">
+			{!data && <Loader />}
+
+			{data && data.track_info && data.track_info.length && !error && <div className="mt-8 text-xs w-full xl:w-5/6">
 				<Spin spinning={!data || loading} indicator={<LoadingOutlined />}>
 					<Row gutter={[{ xs: 4, sm: 4, md: 16, lg: 32, xl: 32, xxl: 32 }, 16]}>
 						<Col xs={24} sm={24} md={12} lg={12} xl={8}>
-							<Row>
+							{data?.track_info[0].max_deciding && <Row>
 								<Col span={15} className='font-bold'>Max Deciding:</Col>
 								<Col span={9}>{data?.track_info[0].max_deciding}</Col>
 							</Row>
+							}
 
-							<Row className='mt-2'>
+							{data?.track_info[0].decision_deposit && <Row className='mt-2'>
 								<Col span={15} className='font-bold'>Decision Deposit ({chainProperties[currentNetwork].tokenSymbol}):</Col>
 								<Col span={9}>{data?.track_info[0].decision_deposit && formatBnBalance(data?.track_info[0].decision_deposit, { numberAfterComma: 2, withUnit: false })}</Col>
 							</Row>
+							}
 						</Col>
 
 						<Col xs={24} sm={24} md={12} lg={12} xl={8}>
-							<Row>
+							{data?.track_info[0].prepare_period && <Row>
 								<Col span={15} className='font-bold'>Prepare Period:</Col>
 								<Col span={9}>{data?.track_info[0].prepare_period}</Col>
-							</Row>
+							</Row>}
 
-							<Row className='mt-2'>
+							{data?.track_info[0].confirm_period && <Row className='mt-2'>
 								<Col span={15} className='font-bold'>Confirm Period:</Col>
 								<Col span={9}>{data?.track_info[0].confirm_period}</Col>
-							</Row>
+							</Row>}
 						</Col>
 
 						<Col xs={24} sm={24} md={12} lg={12} xl={8}>
-							<Row>
+							{data?.track_info[0].min_enactment_period &&<Row>
 								<Col span={15} className='font-bold'>Minimum Enactment Period:</Col>
 								<Col span={9}>{data?.track_info[0].min_enactment_period}</Col>
-							</Row>
+							</Row>}
 
-							<Row className='mt-2'>
+							{data?.track_info[0].decision_period && <Row className='mt-2'>
 								<Col span={15} className='font-bold'>Decision Period:</Col>
 								<Col span={9}>{data?.track_info[0].decision_period}</Col>
-							</Row>
+							</Row>}
 						</Col>
 
 						{/* <Col xs={24} sm={24} md={12} lg={12} xl={6}>

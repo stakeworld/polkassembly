@@ -24,15 +24,14 @@ const PostReferendumV2Info = ({ onchainLink, setOtherProposalsSidebarAddr }: Pro
 
 	const {
 		onchain_referendumv2,
-		origin,
-		proposer_address
+		origin
 	} = onchainLink;
 
 	if ( !onchain_referendumv2?.[0] ){
 		return null;
 	}
 
-	const { deciding, enactmentAfter, enactmentAt, preimage, trackNumber } = onchain_referendumv2[0];
+	const { deciding, enactmentAfter, enactmentAt, preimage, trackNumber, submitted } = onchain_referendumv2[0];
 	const { metaDescription, method, preimageArguments } = preimage || {};
 
 	const formattedBlockToTime = (blockNo: number) => {
@@ -54,11 +53,11 @@ const PostReferendumV2Info = ({ onchainLink, setOtherProposalsSidebarAddr }: Pro
 				<Row>
 					<Col xs={24} md={12}>
 						<h6>Proposer
-							<span className='text-pink_primary cursor-pointer ml-3' onClick={() => setOtherProposalsSidebarAddr(proposer_address)}>
+							<span className='text-pink_primary cursor-pointer ml-3' onClick={() => setOtherProposalsSidebarAddr(submitted.who)}>
 								View Other Proposals
 							</span>
 						</h6>
-						<Address address={proposer_address}/>
+						<Address address={submitted.who}/>
 					</Col>
 					{origin &&
 						<Col xs={24} md={12}>
