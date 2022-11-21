@@ -255,7 +255,7 @@ const AppLayout = ({ className }: { className?:string }) => {
 	let sidebarItems = !sidedrawer ? collapsedItems : items;
 
 	if(isGov2Route) {
-		sidebarItems = sidedrawer ? gov2CollapsedItems : gov2Items;
+		sidebarItems = !sidedrawer ? gov2CollapsedItems : gov2Items;
 	}
 
 	if(username) {
@@ -272,7 +272,6 @@ const AppLayout = ({ className }: { className?:string }) => {
 					collapsed={true}
 					onMouseOver={() => setSidedrawer(true)}
 					style={{ transform: sidedrawer ? 'translateX(-60px)' : 'translateX(0px)', transitionDuration: '0.3s' }}
-					// onMouseLeave={() => setSidebarCollapsed(true)}
 					className={'hidden overflow-y-hidden sidebar bg-white lg:block bottom-0 left-0 h-screen fixed z-40'}
 				>
 					<Menu
@@ -291,9 +290,7 @@ const AppLayout = ({ className }: { className?:string }) => {
 						mode="inline"
 						selectedKeys={[pathname]}
 						defaultOpenKeys={['democracy_group', 'treasury_group', 'council_group', 'tech_comm_group']}
-						items={username
-							? [getUserDropDown(handleLogout, picture, username), ...items]
-							: items}
+						items={sidebarItems}
 						onClick={handleMenuClick}
 						className={`${username?'auth-sider-menu':''} mt-[60px]`}
 						onMouseLeave={() => setSidedrawer(false)}

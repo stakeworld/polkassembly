@@ -138,4 +138,8 @@ export const GlobalStyle = createGlobalStyle`
 	.ant-tabs-tab-bg-white .ant-tabs-nav:before{
 		border-bottom: 1px solid #E1E6EB;
 	}
+
+	.ant-menu-submenu-popup {
+		display: none !important;
+	}
 `;
