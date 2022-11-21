@@ -121,11 +121,9 @@ const gov1Items: {[x:string]: ItemType[]} = {
 	]
 };
 
-const GovSwitchDropdownMenuItem = getSiderMenuItem(<GovernanceSwitchButton className='flex lg:hidden' />, 'gov-2', '');
-
 if(window.screen.width < 1024) {
 	gov1Items.overviewItems = [
-		GovSwitchDropdownMenuItem,
+		getSiderMenuItem(<GovernanceSwitchButton className='flex lg:hidden' />, 'gov-2', ''),
 		...gov1Items.overviewItems
 	];
 }
@@ -201,7 +199,7 @@ let gov2OverviewItems = [
 
 if(window.screen.width < 1024) {
 	gov2OverviewItems = [
-		GovSwitchDropdownMenuItem,
+		getSiderMenuItem(<GovernanceSwitchButton className='flex lg:hidden' />, '/', ''),
 		...gov2OverviewItems
 	];
 }
@@ -240,15 +238,8 @@ const AppLayout = ({ className }: { className?:string }) => {
 
 	const handleMenuClick = (menuItem: any) => {
 		if(['userMenu', 'tracksHeading'].includes(menuItem.key)) return;
-
-		if(menuItem.key === 'gov-2') {
-			setSidedrawer(false);
-			if(isGov2Route) {
-				navigate('/');
-			} else {
-				navigate(menuItem.key);
-			}
-		}
+		navigate(menuItem.key);
+		setSidedrawer(false);
 	};
 
 	const [logoutMutation] = useLogoutMutation();
