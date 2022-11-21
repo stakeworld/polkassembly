@@ -8,9 +8,10 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetLatestGov2PostsLazyQuery } from 'src/generated/graphql';
 import { noTitle } from 'src/global/noTitle';
-import { EmptyLatestActivity, ErrorLatestActivity, Gov2PopulatedLatestActivityCard, LoadingLatestActivity, PopulatedLatestActivity } from 'src/ui-components/LatestActivityStates';
+import { EmptyLatestActivity, Gov2PopulatedLatestActivityCard, LoadingLatestActivity, PopulatedLatestActivity } from 'src/ui-components/LatestActivityStates';
 import NameLabel from 'src/ui-components/NameLabel';
 import StatusTag from 'src/ui-components/StatusTag';
+import { ErrorState } from 'src/ui-components/UIStates';
 import getDefaultAddressField from 'src/util/getDefaultAddressField';
 import getRelativeCreatedAt from 'src/util/getRelativeCreatedAt';
 
@@ -119,7 +120,7 @@ const AllGov2PostsTable = () => {
 	}, [called]);
 
 	//error state
-	if (error?.message) return <ErrorLatestActivity errorMessage={error?.message} />;
+	if (error?.message) return <ErrorState errorMessage={'Error in loading data, please try again.'} />;
 
 	if(data) {
 		//empty state
