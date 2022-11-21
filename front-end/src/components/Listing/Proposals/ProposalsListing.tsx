@@ -30,13 +30,13 @@ const ProposalsListing = ({ className, data, loading } : Props) => {
 	if (noPost || !atLeastOneCurrentProposal) return <div className={className}><PostEmptyState /></div>;
 
 	return (
-		<ul className={`${className} proposals__list`}>
+		<div className={`${className} proposals__list`}>
 			{data.posts.map(
 				(post) => {
 					const onchainId = post.onchain_link?.onchain_proposal_id;
 
 					return !!post?.author?.username && !!post.onchain_link?.onchain_proposal.length &&
-						<li key={post.id} className='my-5'>
+						<div key={post.id} className='my-5'>
 							{<Link to={`/proposal/${onchainId}`}>
 								<GovernanceCard
 									postReactions={(post as any)?.post_reactions}
@@ -52,11 +52,11 @@ const ProposalsListing = ({ className, data, loading } : Props) => {
 									created_at={post.created_at}
 								/>
 							</Link>}
-						</li>
+						</div>
 					;
 				}
 			)}
-		</ul>
+		</div>
 	);
 };
 

@@ -52,13 +52,13 @@ const TrackListingAllTabContent = ({ className, trackName } : Props) => {
 	if (noPost || !atLeastOneCurrentReferendum) return <div className={className}><PostEmptyState /></div>;
 
 	return (
-		<ul className={`${className} proposals__list`}>
+		<div className={`${className} proposals__list`}>
 			{data.posts.map(
 				(post) => {
 					const onchainId = post.onchain_link?.onchain_referendumv2[0]?.referendumId;
 
 					return !!post?.author?.username && !!post?.onchain_link?.onchain_referendumv2.length &&
-						<li key={post.id} className='my-5'>
+						<div key={post.id} className='my-5'>
 							{<Link to={`/${trackName.split(/(?=[A-Z])/).join('-').toLowerCase()}/${onchainId}`}>
 								<GovernanceCard
 									postReactions={(post as any)?.post_reactions}
@@ -73,11 +73,11 @@ const TrackListingAllTabContent = ({ className, trackName } : Props) => {
 									topic={post.topic.name}
 								/>
 							</Link>}
-						</li>
+						</div>
 					;
 				}
 			)}
-		</ul>
+		</div>
 	);
 };
 

@@ -30,13 +30,13 @@ const TechCommProposalsListing = ({ className, data, loading } : Props) => {
 	if (noPost || !atLeastOneCurrentTechCommitteeProposal) return <div className={className}><PostEmptyState /></div>;
 
 	return (
-		<ul className={`${className} motions__list`}>
+		<div className={`${className} motions__list`}>
 			{data.posts.map(
 				(post) => {
 					const onchainId = post.onchain_link?.onchain_tech_committee_proposal_id;
 
 					return !!post?.author?.username && !!post.onchain_link?.onchain_tech_committee_proposal.length &&
-						<li key={post.id} className='my-5'>
+						<div key={post.id} className='my-5'>
 							{<Link to={`/tech/${onchainId}`}>
 								<GovernanceCard
 									postReactions={(post as any)?.post_reactions}
@@ -52,11 +52,11 @@ const TechCommProposalsListing = ({ className, data, loading } : Props) => {
 									created_at={post.created_at}
 								/>
 							</Link>}
-						</li>
+						</div>
 					;
 				}
 			)}
-		</ul>
+		</div>
 	);
 };
 
