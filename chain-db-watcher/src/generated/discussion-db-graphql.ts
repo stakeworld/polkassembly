@@ -6727,6 +6727,7 @@ export type Mutation = {
   deleteAccount?: Maybe<Message>;
   editPostConfirm?: Maybe<Message>;
   editPostStart?: Maybe<AddressLoginType>;
+  linkProxyAddress?: Maybe<ChangeResponse>;
   login?: Maybe<LoginResponse>;
   logout?: Maybe<Message>;
   multisigLinkConfirm?: Maybe<ChangeResponse>;
@@ -6870,6 +6871,15 @@ export type MutationEditPostConfirmArgs = {
 
 export type MutationEditPostStartArgs = {
   address: Scalars['String'];
+};
+
+
+export type MutationLinkProxyAddressArgs = {
+  message: Scalars['String'];
+  network: Scalars['String'];
+  proxied: Scalars['String'];
+  proxy: Scalars['String'];
+  signature: Scalars['String'];
 };
 
 
@@ -7260,6 +7270,7 @@ export type Mutation_Root = {
   insert_track_info?: Maybe<Track_Info_Mutation_Response>;
   /** insert a single row into the table: "track_info" */
   insert_track_info_one?: Maybe<Track_Info>;
+  linkProxyAddress?: Maybe<ChangeResponse>;
   login?: Maybe<LoginResponse>;
   logout?: Maybe<Message>;
   multisigLinkConfirm?: Maybe<ChangeResponse>;
@@ -8850,6 +8861,16 @@ export type Mutation_RootInsert_Track_InfoArgs = {
 export type Mutation_RootInsert_Track_Info_OneArgs = {
   object: Track_Info_Insert_Input;
   on_conflict?: Maybe<Track_Info_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootLinkProxyAddressArgs = {
+  message: Scalars['String'];
+  network: Scalars['String'];
+  proxied: Scalars['String'];
+  proxy: Scalars['String'];
+  signature: Scalars['String'];
 };
 
 

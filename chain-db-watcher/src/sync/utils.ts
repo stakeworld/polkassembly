@@ -245,10 +245,17 @@ export const getMaps = (syncData: SyncData): SyncMap => {
 	const onchainReferendumV2Map = syncData?.onchain.referendumV2?.reduce(
 		(prev, curr) => {
 			if ((curr?.referendumId || curr?.referendumId === 0) && (curr?.id || curr?.id === 0)) {
+				let author = null;
+				try{
+					author = curr.submitted?.who;
+				}
+				catch {
+					console.log("error getting author for referendumV2 submitted not present", JSON.stringify(curr));
+				}
 				return {
 					...prev,
 					[curr.referendumId]: {
-						author: curr?.preimage?.author,
+						author: author || curr?.preimage?.proposer,
 						blockCreationNumber: curr?.referendumStatus?.[0]?.blockNumber?.number,
 						origin: curr?.origin,
 						preimageHash: curr?.preimage?.hash,

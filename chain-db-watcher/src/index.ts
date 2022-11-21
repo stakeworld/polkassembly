@@ -297,15 +297,25 @@ const startSubscriptions = (client: SubscriptionClient): void => {
 					referendumStatus,
 					origin,
 					trackNumber,
-					preimage
+					preimage,
+					submitted
 				} = data?.referendmV2?.node;
+
+				let author = null
+
+				try{
+					author = submitted?.who;
+				}
+				catch {
+					console.log("error getting author for referendumV2 submitted not present", JSON.stringify(data?.referendmV2?.node));;
+				}
 
 				addDiscussionPostAndReferendumV2({
 					trackNumber,
 					origin,
 					status: referendumStatus,
 					referendumId,
-					proposer: preimage?.author
+					proposer: author || preimage?.author
 				}).catch(e => {
 					console.error(chalk.red(e));
 				});
