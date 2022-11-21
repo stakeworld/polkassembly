@@ -64,7 +64,7 @@ const TrackListingStatusTabContent = ({ className, status, trackName } : Props) 
 							{<Link to={`/${trackName.split(/(?=[A-Z])/).join('-').toLowerCase()}/${onchainId}`}>
 								<GovernanceCard
 									postReactions={(post as any)?.post_reactions}
-									address={post.onchain_link.proposer_address}
+									address={post.onchain_link.onchain_referendumv2[0]?.submitted.who}
 									comments={post.comments_aggregate.aggregate?.count
 										? post.comments_aggregate.aggregate.count.toString()
 										: 'no'}
