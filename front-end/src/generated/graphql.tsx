@@ -37493,7 +37493,7 @@ export type DemocracyTreasuryProposalCountLazyQueryHookResult = ReturnType<typeo
 export type DemocracyTreasuryProposalCountQueryResult = ApolloReactCommon.QueryResult<DemocracyTreasuryProposalCountQuery, DemocracyTreasuryProposalCountQueryVariables>;
 export const GetLatestPostsDocument = gql`
     query GetLatestPosts($limit: Int! = 10) {
-  posts(limit: $limit, order_by: {id: desc}) {
+  posts(limit: $limit, order_by: {id: desc}, where: {onchain_link: {onchain_referendumv2_id: {_is_null: true}}}) {
     id
     title
     author {
