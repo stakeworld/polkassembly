@@ -11,8 +11,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { ApiContext } from 'src/context/ApiContext';
 import { OnchainLinkBountyFragment, OnchainLinkChildBountyFragment, OnchainLinkMotionFragment, OnchainLinkProposalFragment, OnchainLinkReferendumFragment, OnchainLinkTechCommitteeProposalFragment, OnchainLinkTipFragment, OnchainLinkTreasuryProposalFragment } from 'src/generated/graphql';
 import { APPNAME } from 'src/global/appName';
-import { motionStatus, proposalStatus, referendumStatus, tipStatus } from 'src/global/statuses';
-import { OnchainLinkReferendumV2Fragment, VoteThreshold, Wallet } from 'src/types';
+import { gov2ReferendumStatus, motionStatus, proposalStatus, referendumStatus, tipStatus } from 'src/global/statuses';
+import { OnchainLinkReferendumV2Fragment, Wallet } from 'src/types';
 import GovSidebarCard from 'src/ui-components/GovSidebarCard';
 import getEncodedAddress from 'src/util/getEncodedAddress';
 import styled from 'styled-components';
@@ -57,7 +57,7 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 	const { api, apiReady } = useContext(ApiContext);
 	const [lastVote, setLastVote] = useState<string | null | undefined>(undefined);
 
-	const canVote = !!status && !![proposalStatus.PROPOSED, referendumStatus.STARTED, motionStatus.PROPOSED, tipStatus.OPENED].includes(status);
+	const canVote = !!status && !![proposalStatus.PROPOSED, referendumStatus.STARTED, motionStatus.PROPOSED, tipStatus.OPENED, gov2ReferendumStatus.ONGOING].includes(status);
 	const onchainTipProposal = (onchainLink as OnchainLinkTipFragment)?.onchain_tip;
 
 	const onAccountChange = (address: string) => {
@@ -267,7 +267,7 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 						/>
 					}
 
-					{(isReferendum) &&
+					{isReferendum &&
 						<>
 							{canVote &&
 								<GovSidebarCard>
@@ -288,7 +288,6 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 								<div className={className}>
 									<ReferendumVoteInfo
 										referendumId={onchainId as number}
-										threshold={((onchainLink as OnchainLinkReferendumFragment).onchain_referendum[0]?.voteThreshold) as VoteThreshold}
 									/>
 								</div>
 							}
@@ -309,11 +308,44 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 						</>
 					}
 
-					{
-						isReferendumV2 && <>
-							<GovSidebarCard>
-								Referendum V2 Sidebar Card
-							</GovSidebarCard>
+					{isReferendumV2 &&
+						<>
+							{canVote &&
+								<GovSidebarCard>
+									<h6 className="dashboard-heading mb-6">Cast your Vote!</h6>
+									<VoteReferendum
+										lastVote={lastVote}
+										setLastVote={setLastVote}
+										accounts={accounts}
+										address={address}
+										getAccounts={getAccounts}
+										onAccountChange={onAccountChange}
+										referendumId={onchainId  as number}
+									/>
+								</GovSidebarCard>
+							}
+
+							{(onchainId || onchainId === 0) && (onchainLink as OnchainLinkReferendumV2Fragment).onchain_referendumv2 &&
+								<div className={className}>
+									<ReferendumVoteInfo
+										referendumId={onchainId as number}
+									/>
+								</div>
+							}
+
+							<div>
+								{lastVote != undefined ? lastVote == null ?
+									<GovSidebarCard>
+										You haven&apos;t voted yet, vote now and do your bit for the community
+									</GovSidebarCard>
+									:
+									<GovSidebarCard className='flex items-center'>
+										You Voted: { lastVote == 'aye' ? <LikeFilled className='text-aye_green ml-2' /> : <DislikeFilled className='text-nay_red ml-2' /> }
+										<span className={`last-vote-text ${lastVote == 'aye' ? 'green-text' : 'red-text'}`}>{lastVote}</span>
+									</GovSidebarCard>
+									: <></>
+								}
+							</div>
 						</>
 					}
 

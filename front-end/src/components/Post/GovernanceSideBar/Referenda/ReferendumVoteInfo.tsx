@@ -9,7 +9,7 @@ import React, { memo, useContext, useEffect, useMemo, useState } from 'react';
 import { ApiContext } from 'src/context/ApiContext';
 import subscanApiHeaders from 'src/global/subscanApiHeaders';
 import { useFetch } from 'src/hooks';
-import { LoadingStatusType, VoteThreshold } from 'src/types';
+import { LoadingStatusType } from 'src/types';
 import GovSidebarCard from 'src/ui-components/GovSidebarCard';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
 import Loader from 'src/ui-components/Loader';
@@ -23,7 +23,6 @@ import VotersList from './VotersList';
 interface Props {
 	className?: string
 	referendumId: number
-	threshold?: VoteThreshold
 }
 
 const ZERO = new BN(0);
