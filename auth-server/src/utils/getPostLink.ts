@@ -13,6 +13,6 @@ export default (type: PostType, id: number | string): string => {
 	if (postType === PostTypeEnum.REFERENDUM_V2) {
 		postType = PostTypeEnum.REFERENDUM;
 	}
-	return `${DOMAIN}/${type}/${id}`;
+	return `${DOMAIN}/${postType}/${id}`;
 };
 
