@@ -5,10 +5,12 @@
 import { Col, Row } from 'antd';
 import moment from 'moment';
 import * as React from 'react';
+import { trackInfo } from 'src/global/post_trackInfo';
 import { useCurrentBlock } from 'src/hooks';
 import { OnchainLinkReferendumV2Fragment } from 'src/types';
 import Address from 'src/ui-components/Address';
 import blockToTime from 'src/util/blockToTime';
+import formatBnBalance from 'src/util/formatBnBalance';
 
 import ArgumentsTableJSONView from './ArgumentsTableJSONView';
 import OnchainInfoWrapper from './OnchainInfoWrapper';
@@ -31,8 +33,14 @@ const PostReferendumV2Info = ({ onchainLink, setOtherProposalsSidebarAddr }: Pro
 		return null;
 	}
 
-	const { deciding, enactmentAfter, enactmentAt, preimage, trackNumber, submitted } = onchain_referendumv2[0];
+	const { deciding, decisionDeposit, enactmentAfter, enactmentAt, preimage, trackNumber, submitted } = onchain_referendumv2[0];
 	const { metaDescription, method, preimageArguments } = preimage || {};
+
+	const getTrackNameFromNumber = (trackNum: number) => {
+		for (const trackName of Object.keys(trackInfo)) {
+			if(trackInfo[trackName].trackId === trackNum) return trackName.split(/(?=[A-Z])/).join(' ');
+		}
+	};
 
 	const formattedBlockToTime = (blockNo: number) => {
 		if(!currentBlock) return;
@@ -53,44 +61,62 @@ const PostReferendumV2Info = ({ onchainLink, setOtherProposalsSidebarAddr }: Pro
 				<Row>
 					<Col xs={24} md={12}>
 						<h6>Proposer
-							<span className='text-pink_primary cursor-pointer ml-3' onClick={() => setOtherProposalsSidebarAddr(submitted.who)}>
+							<Address address={submitted.who}/>
+							<div className='text-pink_primary cursor-pointer mt-3' onClick={() => setOtherProposalsSidebarAddr(submitted.who)}>
 								View Other Proposals
-							</span>
+							</div>
 						</h6>
-						<Address address={submitted.who}/>
 					</Col>
+
+					{submitted && submitted.amount &&
+						<Col xs={24} md={12}>
+							<h6>Submitted</h6>
+							<div className='text-navBlue'>{formatBnBalance(submitted.amount, { numberAfterComma: 2, withUnit: true })}</div>
+						</Col>
+					}
+
 					{origin &&
 						<Col xs={24} md={12}>
 							<h6>Origin</h6>
-							{origin}
+							<div className='text-navBlue'>{origin.split(/(?=[A-Z])/).join(' ')}</div>
 						</Col>
 					}
 					{trackNumber && <Col xs={24} md={12}>
-						<h6>Track</h6>
-						{trackNumber}
+						<h6>Track Number</h6>
+						<div className='text-navBlue'>{trackNumber}</div>
+					</Col>}
+					{trackNumber && <Col xs={24} md={12}>
+						<h6>Track Name</h6>
+						<div className='text-navBlue'>{getTrackNameFromNumber(trackNumber)}</div>
 					</Col>}
 					{enactmentAfter &&
 						<Col xs={24} md={12}>
 							<h6>Enactment After</h6>
-							{formattedBlockToTime(Number(enactmentAfter))}
+							<div className='text-navBlue'>{formattedBlockToTime(Number(enactmentAfter))}</div>
 						</Col>
 					}
 					{enactmentAt &&
 						<Col xs={24} md={12}>
 							<h6>Enactment At</h6>
-							{formattedBlockToTime(Number(enactmentAt))}
+							<div className='text-navBlue'>{formattedBlockToTime(Number(enactmentAt))}</div>
 						</Col>
 					}
 					{deciding && deciding.since &&
 						<Col xs={24} md={12}>
 							<h6>Deciding Since</h6>
-							{formattedBlockToTime(deciding.since)}
+							<div className='text-navBlue'>{formattedBlockToTime(deciding.since)}</div>
 						</Col>
 					}
 					{deciding && deciding.confirming &&
 						<Col xs={24} md={12}>
 							<h6>Confirming</h6>
-							{formattedBlockToTime(deciding.confirming)}
+							<div className='text-navBlue'></div>{formattedBlockToTime(deciding.confirming)}
+						</Col>
+					}
+					{decisionDeposit && decisionDeposit.amount &&
+						<Col xs={24} md={12}>
+							<h6>Decision Deposit</h6>
+							<div className='text-navBlue'>{formatBnBalance(decisionDeposit.amount, { numberAfterComma: 2, withUnit: true })}</div>
 						</Col>
 					}
 					{method &&
@@ -98,7 +124,7 @@ const PostReferendumV2Info = ({ onchainLink, setOtherProposalsSidebarAddr }: Pro
 						<Row>
 							<Col span={24}>
 								<h6>Method</h6>
-								{method}
+								<div className='text-navBlue'>{method}</div>
 							</Col>
 						</Row>
 						<div className='arguments max-w-full'>

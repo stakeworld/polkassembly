@@ -274,9 +274,9 @@ const Post = ({
 	};
 
 	const TrackerButtonComp = <>
-		{id && onchainId && isOnchainPost && !isEditing && (
+		{id && !isNaN(Number(onchainId)) && isOnchainPost && !isEditing &&
 			<TrackerButton
-				onchainId={onchainId}
+				onchainId={onchainId!}
 				isBounty={isBounty}
 				isMotion={isMotion}
 				isProposal={isProposal}
@@ -285,7 +285,7 @@ const Post = ({
 				isTipProposal={isTipProposal}
 				isTreasuryProposal={isTreasuryProposal}
 				isTechCommitteeProposal={isTechCommitteeProposal}
-			/>)
+			/>
 		}
 	</>;
 
