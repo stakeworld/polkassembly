@@ -73,12 +73,13 @@ export default styled(Markdown)`
 		}
 
 		blockquote {
-			margin-left: 0;
+			margin: 1rem 0;
 			padding: 0 1em;
 			color: grey_primary;
 			border-left-style: solid;
 			border-left-width: 0.25rem;
 			border-left-color: grey_primary;
+			font-size: 0.9rem;
 				& > :first-child {
 					margin-top: 0;
 				}
