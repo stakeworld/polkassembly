@@ -3,16 +3,17 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 /* eslint-disable sort-keys */
-import styled from '@xstyled/styled-components';
 import { Tabs } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MetaContext } from 'src/context/MetaContext';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
-import { BountyPostAndCommentsQueryHookResult, BountyPostFragment, ChildBountyPostAndCommentsQueryHookResult, ChildBountyPostFragment, DiscussionPostAndCommentsQueryHookResult, DiscussionPostFragment, MotionPostAndCommentsQueryHookResult, MotionPostFragment, OnchainLinkBountyFragment, OnchainLinkChildBountyFragment, OnchainLinkMotionFragment, OnchainLinkProposalFragment, OnchainLinkReferendumFragment, OnchainLinkTechCommitteeProposalFragment, OnchainLinkTipFragment, OnchainLinkTreasuryProposalFragment, ProposalPostAndCommentsQueryHookResult, ProposalPostFragment, ReferendumPostAndCommentsQueryHookResult, ReferendumPostFragment, TechCommitteeProposalPostAndCommentsQueryHookResult, TechCommitteeProposalPostFragment, TipPostAndCommentsQueryHookResult, TipPostFragment, TreasuryProposalPostAndCommentsQueryHookResult, TreasuryProposalPostFragment } from 'src/generated/graphql';
+import { BountyPostAndCommentsQueryHookResult, BountyPostFragment, ChildBountyPostAndCommentsQueryHookResult, ChildBountyPostFragment, DiscussionPostAndCommentsQueryHookResult, DiscussionPostFragment, MotionPostAndCommentsQueryHookResult, MotionPostFragment, OnchainLinkBountyFragment, OnchainLinkChildBountyFragment, OnchainLinkMotionFragment, OnchainLinkProposalFragment, OnchainLinkReferendumFragment, OnchainLinkTechCommitteeProposalFragment, OnchainLinkTipFragment, OnchainLinkTreasuryProposalFragment, ProposalPostAndCommentsQueryHookResult, ProposalPostFragment, ReferendumPostAndCommentsQueryHookResult, ReferendumPostFragment, ReferendumV2PostAndCommentsQueryHookResult, TechCommitteeProposalPostAndCommentsQueryHookResult, TechCommitteeProposalPostFragment, TipPostAndCommentsQueryHookResult, TipPostFragment, TreasuryProposalPostAndCommentsQueryHookResult, TreasuryProposalPostFragment } from 'src/generated/graphql';
 import { PostCategory } from 'src/global/post_categories';
+import { OnchainLinkReferendumV2Fragment, ReferendumV2PostFragment } from 'src/types';
 import { PostEmptyState } from 'src/ui-components/UIStates';
 
+import AboutTrackCard from '../Listing/Tracks/AboutTrackCard';
 import OtherProposals from '../OtherProposals';
 import SidebarRight from '../SidebarRight';
 import OptionPoll from './ActionsBar/OptionPoll';
@@ -37,8 +38,10 @@ interface Props {
 		TipPostAndCommentsQueryHookResult['data'] |
 		BountyPostAndCommentsQueryHookResult['data'] |
 		TechCommitteeProposalPostAndCommentsQueryHookResult['data'] |
-		ChildBountyPostAndCommentsQueryHookResult['data']
+		ChildBountyPostAndCommentsQueryHookResult['data'] |
+		ReferendumV2PostAndCommentsQueryHookResult['data']
 	)
+	trackName?: string
 	isBounty?: boolean
 	isMotion?: boolean
 	isProposal?: boolean
@@ -47,6 +50,7 @@ interface Props {
 	isTechCommitteeProposal?: boolean
 	isTipProposal?: boolean
 	isChildBounty?: boolean
+	isReferendumV2?: boolean
 	refetch: any
 }
 
@@ -58,6 +62,7 @@ interface Redirection {
 const Post = ({
 	className,
 	data,
+	trackName,
 	isBounty = false,
 	isChildBounty = false,
 	isMotion = false,
@@ -66,6 +71,7 @@ const Post = ({
 	isTipProposal = false,
 	isTreasuryProposal = false,
 	isTechCommitteeProposal = false,
+	isReferendumV2 = false,
 	refetch }: Props ) => {
 
 	const post = data && data.posts && data.posts[0];
@@ -105,9 +111,10 @@ const Post = ({
 		});
 	}, [post, setMetaContextState]);
 
-	const isOnchainPost = isMotion || isProposal || isReferendum || isTreasuryProposal || isBounty || isTechCommitteeProposal || isTipProposal;
+	const isOnchainPost = isMotion || isProposal || isReferendum || isTreasuryProposal || isBounty || isTechCommitteeProposal || isTipProposal || isReferendumV2;
 
 	let onchainId: string | number | null | undefined;
+	let referendumV2Post: ReferendumV2PostFragment | undefined;
 	let referendumPost: ReferendumPostFragment | undefined;
 	let proposalPost: ProposalPostFragment | undefined;
 	let motionPost: MotionPostFragment | undefined;
@@ -116,7 +123,7 @@ const Post = ({
 	let bountyPost: BountyPostFragment | undefined;
 	let childBountyPost: ChildBountyPostFragment | undefined;
 	let techCommitteeProposalPost: TechCommitteeProposalPostFragment | undefined;
-	let definedOnchainLink: OnchainLinkTechCommitteeProposalFragment | OnchainLinkBountyFragment | OnchainLinkChildBountyFragment | OnchainLinkMotionFragment | OnchainLinkReferendumFragment | OnchainLinkProposalFragment | OnchainLinkTipFragment | OnchainLinkTreasuryProposalFragment | undefined;
+	let definedOnchainLink: OnchainLinkReferendumV2Fragment | OnchainLinkTechCommitteeProposalFragment | OnchainLinkBountyFragment | OnchainLinkChildBountyFragment | OnchainLinkMotionFragment | OnchainLinkReferendumFragment | OnchainLinkProposalFragment | OnchainLinkTipFragment | OnchainLinkTreasuryProposalFragment | undefined;
 	let postStatus: string | undefined;
 	let redirection: Redirection = {};
 
@@ -146,6 +153,13 @@ const Post = ({
 		definedOnchainLink = referendumPost.onchain_link as OnchainLinkReferendumFragment;
 		onchainId = definedOnchainLink.onchain_referendum_id;
 		postStatus = referendumPost?.onchain_link?.onchain_referendum?.[0]?.referendumStatus?.[0].status;
+	}
+
+	if (post && isReferendumV2) {
+		referendumV2Post = post as ReferendumV2PostFragment;
+		definedOnchainLink = referendumV2Post.onchain_link as OnchainLinkReferendumV2Fragment;
+		onchainId = definedOnchainLink.onchain_referendumv2[0]?.referendumId;
+		postStatus = referendumV2Post?.onchain_link?.onchain_referendumv2?.[0]?.referendumStatus?.[0].status;
 	}
 
 	if (post && isProposal) {
@@ -194,8 +208,8 @@ const Post = ({
 		postStatus = tipPost?.onchain_link?.onchain_tip?.[0]?.tipStatus?.[0].status;
 	}
 
-	const isDiscussion = (post: TechCommitteeProposalPostFragment | BountyPostFragment | ChildBountyPostFragment | TipPostFragment | TreasuryProposalPostFragment | MotionPostFragment | ProposalPostFragment | DiscussionPostFragment | ReferendumPostFragment): post is DiscussionPostFragment => {
-		if (!isTechCommitteeProposal && !isReferendum && !isProposal && !isMotion && !isTreasuryProposal && !isTipProposal && !isBounty && !isChildBounty) {
+	const isDiscussion = (post: ReferendumV2PostFragment | TechCommitteeProposalPostFragment | BountyPostFragment | ChildBountyPostFragment | TipPostFragment | TreasuryProposalPostFragment | MotionPostFragment | ProposalPostFragment | DiscussionPostFragment | ReferendumPostFragment): post is DiscussionPostFragment => {
+		if (!isReferendumV2 && !isTechCommitteeProposal && !isReferendum && !isProposal && !isMotion && !isTreasuryProposal && !isTipProposal && !isBounty && !isChildBounty) {
 			return (post as DiscussionPostFragment) !== undefined;
 		}
 
@@ -204,6 +218,11 @@ const Post = ({
 
 	if (!post) {
 		const postCategory: PostCategory = isMotion ? PostCategory.MOTION : isProposal ? PostCategory.PROPOSAL : isReferendum ? PostCategory.REFERENDA : isTreasuryProposal ? PostCategory.TREASURY_PROPOSAL : isTipProposal ? PostCategory.TIP : isBounty ? PostCategory.BOUNTY : isTechCommitteeProposal ? PostCategory.TECH_COMMITTEE_PROPOSAL : isChildBounty ? PostCategory.CHILD_BOUNTY : PostCategory.DISCUSSION;
+
+		if(isReferendumV2) {
+			return <div className='mt-16'><PostEmptyState /></div>;
+		}
+
 		return <div className='mt-16'><PostEmptyState postCategory={postCategory} /></div>;
 	}
 
@@ -211,6 +230,7 @@ const Post = ({
 	const isChildBountyProposer = isChildBounty && childBountyPost?.onchain_link?.proposer_address && addresses?.includes(childBountyPost.onchain_link.proposer_address);
 	const isProposalProposer = isProposal && proposalPost?.onchain_link?.proposer_address && addresses?.includes(proposalPost.onchain_link.proposer_address);
 	const isReferendumProposer = isReferendum && referendumPost?.onchain_link?.proposer_address && addresses?.includes(referendumPost.onchain_link.proposer_address);
+	const isReferendumV2Proposer = isReferendumV2 && referendumV2Post?.onchain_link?.proposer_address && addresses?.includes(referendumV2Post.onchain_link.proposer_address);
 	const isMotionProposer = isMotion && motionPost?.onchain_link?.proposer_address && addresses?.includes(motionPost.onchain_link.proposer_address);
 	const isTreasuryProposer = isTreasuryProposal && treasuryPost?.onchain_link?.proposer_address && addresses?.includes(treasuryPost.onchain_link.proposer_address);
 	const isTipProposer = isTipProposal && tipPost?.onchain_link?.proposer_address && addresses?.includes(tipPost.onchain_link.proposer_address);
@@ -219,6 +239,7 @@ const Post = ({
 		post.author?.id === id ||
 		isProposalProposer ||
 		isReferendumProposer ||
+		isReferendumV2Proposer ||
 		isMotionProposer ||
 		isTreasuryProposer ||
 		isTipProposer ||
@@ -236,6 +257,7 @@ const Post = ({
 					isMotion={isMotion}
 					isProposal={isProposal}
 					isReferendum={isReferendum}
+					isReferendumV2={isReferendumV2}
 					isTipProposal={isTipProposal}
 					isTreasuryProposal={isTreasuryProposal}
 					isTechCommitteeProposal={isTechCommitteeProposal}
@@ -259,6 +281,7 @@ const Post = ({
 				isMotion={isMotion}
 				isProposal={isProposal}
 				isReferendum={isReferendum}
+				isReferendumV2={isReferendumV2}
 				isTipProposal={isTipProposal}
 				isTreasuryProposal={isTreasuryProposal}
 				isTechCommitteeProposal={isTechCommitteeProposal}
@@ -282,11 +305,13 @@ const Post = ({
 					isMotion={isMotion}
 					isProposal={isProposal}
 					isReferendum={isReferendum}
+					isReferendumV2={isReferendumV2}
 					isTipProposal={isTipProposal}
 					isTreasuryProposal={isTreasuryProposal}
 					isTechCommitteeProposal={isTechCommitteeProposal}
 					isChildBounty={isChildBounty}
 					referendumPost={referendumPost}
+					referendumV2Post={referendumV2Post}
 					proposalPost={proposalPost}
 					motionPost={motionPost}
 					treasuryPost={treasuryPost}
@@ -303,6 +328,7 @@ const Post = ({
 					isMotion={isMotion}
 					isProposal={isProposal}
 					isReferendum={isReferendum}
+					isReferendumV2={isReferendumV2}
 					isTipProposal={isTipProposal}
 					isTreasuryProposal={isTreasuryProposal}
 					isTechCommitteeProposal={isTechCommitteeProposal}
@@ -361,12 +387,16 @@ const Post = ({
 		return latestState;
 	};
 
-	const isSidebarAvailable = isMotion || isProposal || isTreasuryProposal || isReferendum || isTipProposal;
+	const isSidebarAvailable = isMotion || isProposal || isTreasuryProposal || isReferendum || isTipProposal || isReferendumV2;
 
 	return (
 		<>
 			<div className={`${className} flex flex-col xl:flex-row`}>
 				<div className='flex-1 w-full xl:w-8/12 mx-auto xl:mr-9 mb-6 xl:mb-0'>
+
+					{
+						trackName && isReferendumV2  && <AboutTrackCard trackName={trackName} className='mb-6' />
+					}
 
 					{redirection.link &&
 						<Link to={redirection.link}>
@@ -438,21 +468,4 @@ const Post = ({
 	);
 };
 
-export default styled(Post)`
-	.ant-tabs-tab-bg-white .ant-tabs-tab:not(.ant-tabs-tab-active) {
-		background-color: white;
-		border-top-color: white;
-		border-left-color: white;
-		border-right-color: white;
-		border-bottom-color: #E1E6EB;
-	}
-	.ant-tabs-tab-bg-white .ant-tabs-tab-active{
-		border-top-color: #E1E6EB;
-		border-left-color: #E1E6EB;
-		border-right-color: #E1E6EB;
-		border-radius: 6px 6px 0 0 !important;
-	}
-	.ant-tabs-tab-bg-white .ant-tabs-nav:before{
-		border-bottom: 1px solid #E1E6EB;
-	}
-`;
+export default Post;

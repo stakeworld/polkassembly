@@ -6,41 +6,48 @@ import { LeftOutlined } from '@ant-design/icons';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { PostCategory } from 'src/global/post_categories';
+import { trackInfo } from 'src/global/post_trackInfo';
 
-const BackToListingView = ({ postCategory } : { postCategory:PostCategory }) => {
+const BackToListingView = ({ postCategory, trackName } : { postCategory?:PostCategory, trackName?:string }) => {
 	let path: string = '';
 
-	switch (postCategory){
-	case PostCategory.DISCUSSION:
-		path = 'discussions';
-		break;
-	case PostCategory.REFERENDA:
-		path = 'referenda';
-		break;
-	case PostCategory.PROPOSAL:
-		path = 'proposals';
-		break;
-	case PostCategory.MOTION:
-		path = 'motions';
-		break;
-	case PostCategory.TREASURY_PROPOSAL:
-		path = 'treasury-proposals';
-		break;
-	case PostCategory.TECH_COMMITTEE_PROPOSAL:
-		path = 'tech-comm-proposals';
-		break;
-	case PostCategory.BOUNTY:
-		path = 'bounties';
-		break;
-	case PostCategory.CHILD_BOUNTY:
-		path = 'child_bounties';
-		break;
-	case PostCategory.TIP:
-		path = 'tips';
-		break;
-	case PostCategory.COUNCIL:
-		path = 'council';
-		break;
+	if(trackName) {
+		path = `${trackName.split(/(?=[A-Z])/).join('-').toLowerCase()}`;
+	}
+
+	if(postCategory) {
+		switch (postCategory){
+		case PostCategory.DISCUSSION:
+			path = 'discussions';
+			break;
+		case PostCategory.REFERENDA:
+			path = 'referenda';
+			break;
+		case PostCategory.PROPOSAL:
+			path = 'proposals';
+			break;
+		case PostCategory.MOTION:
+			path = 'motions';
+			break;
+		case PostCategory.TREASURY_PROPOSAL:
+			path = 'treasury-proposals';
+			break;
+		case PostCategory.TECH_COMMITTEE_PROPOSAL:
+			path = 'tech-comm-proposals';
+			break;
+		case PostCategory.BOUNTY:
+			path = 'bounties';
+			break;
+		case PostCategory.CHILD_BOUNTY:
+			path = 'child_bounties';
+			break;
+		case PostCategory.TIP:
+			path = 'tips';
+			break;
+		case PostCategory.COUNCIL:
+			path = 'council';
+			break;
+		}
 	}
 
 	const listingPageText = path.replace(/-|_/g, ' ');
@@ -49,7 +56,7 @@ const BackToListingView = ({ postCategory } : { postCategory:PostCategory }) => 
 		<Link className='text-sidebarBlue hover:text-pink_primary' to={`/${path}`}>
 			<div className='flex items-center'>
 				<LeftOutlined className='text-xs mr-2' />
-				<span className='text-sm font-medium'>Back to <span className='capitalize'>{listingPageText}</span></span>
+				<span className='text-sm font-medium'>Back to <span className='capitalize'>{trackName ? trackInfo[trackName].displayName : listingPageText}</span></span>
 			</div>
 		</Link>
 	);

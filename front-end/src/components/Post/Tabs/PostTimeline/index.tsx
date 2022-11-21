@@ -4,6 +4,7 @@
 
 import React from 'react';
 import { BountyPostFragment, ChildBountyPostFragment, MotionPostFragment, ProposalPostFragment, ReferendumPostFragment, TechCommitteeProposalPostFragment,TipPostFragment, TreasuryProposalPostFragment } from 'src/generated/graphql';
+import { ReferendumV2PostFragment } from 'src/types';
 
 import TimelineContainer from './TimelineContainer';
 
@@ -13,11 +14,13 @@ interface Props {
 	isMotion?: boolean;
 	isProposal?: boolean;
 	isReferendum?: boolean;
+	isReferendumV2?: boolean;
 	isTreasuryProposal?: boolean;
 	isTechCommitteeProposal?: boolean;
 	isTipProposal?: boolean;
 	isChildBounty?: boolean;
 	referendumPost: ReferendumPostFragment | undefined;
+	referendumV2Post: ReferendumV2PostFragment | undefined;
 	proposalPost: ProposalPostFragment | undefined;
 	motionPost: MotionPostFragment | undefined;
 	treasuryPost: TreasuryProposalPostFragment | undefined;
@@ -33,11 +36,13 @@ const PostTimeline = ({
 	isMotion,
 	isProposal,
 	isReferendum,
+	isReferendumV2,
 	isTreasuryProposal,
 	isTechCommitteeProposal,
 	isTipProposal,
 	isChildBounty,
 	referendumPost,
+	referendumV2Post,
 	proposalPost,
 	motionPost,
 	treasuryPost,
@@ -91,6 +96,14 @@ const PostTimeline = ({
 			{ isReferendum &&
 					<TimelineContainer
 						statuses={referendumPost?.onchain_link?.onchain_referendum?.[0]?.referendumStatus?.map(s => ({
+							blockNumber: s.blockNumber?.number || 0,
+							status: s.status || ''
+						})) || []}
+					/>
+			}
+			{ isReferendumV2 &&
+					<TimelineContainer
+						statuses={referendumV2Post?.onchain_link?.onchain_referendumv2?.[0]?.referendumStatus?.map(s => ({
 							blockNumber: s.blockNumber?.number || 0,
 							status: s.status || ''
 						})) || []}

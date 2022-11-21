@@ -55,7 +55,6 @@ export const Reply = ({ className, reply, refetch } : Props) => {
 					defaultAddress={defaultAddress}
 					text={'replied'}
 					username={author.username}
-					hideCreatedAt={true}
 				>
 					<UpdateLabel
 						created_at={created_at}
