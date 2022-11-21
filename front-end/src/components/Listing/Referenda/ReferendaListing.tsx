@@ -50,6 +50,7 @@ const ReferendaListing = ({ className, data, loading } : Props) => {
 									end={post.onchain_link.onchain_referendum[0]?.end}
 									title={post.title}
 									topic={post.topic.name}
+									created_at={post.created_at}
 								/>
 							</Link>}
 						</li>

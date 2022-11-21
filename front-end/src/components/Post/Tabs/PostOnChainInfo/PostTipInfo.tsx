@@ -33,22 +33,27 @@ const PostTipInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props) => {
 			<OnchainInfoWrapper>
 				<Row>
 					<Col xs={24} md={12}>
-						<h6>Proposer
-							<span className='text-pink_primary cursor-pointer ml-3' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
-								View Other Proposals
-							</span>
-						</h6>
+						<h6>Proposer</h6>
 						<Address address={proposerAddress}/>
+						<div className='text-pink_primary cursor-pointer mt-3' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
+							View Other Proposals
+						</div>
 					</Col>
 					{hash &&
 					<Col xs={24} md={12}>
 						<h6>Hash</h6>
-						{hash}
+						<div className='text-navBlue'>
+							{hash}
+
+						</div>
 					</Col>}
 					{reason &&
 					<Col xs={24} md={12}>
 						<h6>Reason</h6>
-						{reason}
+						<div className='text-navBlue'>
+							{reason}
+
+						</div>
 					</Col>}
 					{who &&
 					<Col xs={24} md={12}>

@@ -254,8 +254,8 @@ const TreasuryProposalFormButton = ({
 		}
 	};
 
-	const triggerBtn = <Button disabled={!id} className='w-full rounded-md h-full bg-pink_primary hover:bg-pink_secondary transition-colors duration-300 text-white'  onClick={() => setModalOpen(true)}> Create Treasury Proposal</Button>;
-	const triggerBtnLoginDisabled = <Tooltip  color='#E5007A' title='Please signup/login to create treasury proposal'> <Button type='primary' disabled={true} className='w-full h-full rounded-md' > Create Treasury Proposal</Button></Tooltip>;
+	const triggerBtn = <Button disabled={!id} className='w-full rounded-md h-[40px] md:h-[69px] bg-pink_primary hover:bg-pink_secondary transition-colors duration-300 text-white'  onClick={() => setModalOpen(true)}> Create Treasury Proposal</Button>;
+	const triggerBtnLoginDisabled = <Tooltip  color='#E5007A' title='Please signup/login to create treasury proposal'> <Button type='primary' disabled={true} className='w-full h-[40px] md:h-[69px] rounded-md' > Create Treasury Proposal</Button></Tooltip>;
 
 	return (
 		loadingStatus.isLoading

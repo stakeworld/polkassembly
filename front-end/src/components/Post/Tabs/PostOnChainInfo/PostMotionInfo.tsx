@@ -38,25 +38,28 @@ const PostMotionInfo = ({ className, onchainLink, setOtherProposalsSidebarAddr }
 		<>
 			<OnchainInfoWrapper className={className}>
 				<Row gutter={40}>
-					<Col xs={24} md={12}>
-						<h6>Proposer
-							<span className='text-pink_primary cursor-pointer ml-3' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
-								View Other Proposals
-							</span>
-						</h6>
+					<Col span={24}>
+						<h6>Proposer</h6>
 						<Address address={proposerAddress}/>
+						<div className='text-pink_primary cursor-pointer mt-3' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
+							View Other Proposals
+						</div>
 					</Col>
-					<Col xs={24} md={12}>
+					<Col span={12}>
 						<h6>Member count</h6>
-						{memberCount}
+						<div className='text-navBlue'>
+							{memberCount}
+						</div>
 					</Col>
-					<Col xs={24} md={12}>
+					<Col span={12}>
 						<h6>Motion hash</h6>
-						{motionProposalHash}
+						<div className='text-navBlue'>
+							{motionProposalHash}
+						</div>
 					</Col>
-					<Col xs={24} md={12}>
+					<Col span={12}>
 						<h6>Motion&apos;s method</h6>
-						<span className={method === 'rejectProposal' ? 'bold-red-text' : ''}>{method}</span>
+						<span className={method === 'rejectProposal' ? 'bold-red-text' : 'text-navBlue'}>{method}</span>
 					</Col>
 					<div className='overflow-x-auto px-5'>
 						<div className='arguments'>
@@ -127,14 +130,14 @@ const TreasuryInfo = ({ treasurySpendProposal }: {treasurySpendProposal?: Onchai
 					<Address address={beneficiary} />
 				</Col>}
 			{value && currentNetwork &&
-					<Col xs={24} md={12}>
+					<Col span={12}>
 						<h6>Value</h6>
 						{parseInt(value) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
 					</Col>}
 			{bond && currentNetwork &&
 				<>
 					<Col xs={24} md={12}/>
-					<Col xs={24} md={12}>
+					<Col span={12}>
 						<h6>Bond</h6>
 						{parseInt(bond) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
 					</Col>

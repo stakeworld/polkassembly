@@ -352,8 +352,8 @@ const SetOnChainIdentityButton = ({
 		});
 	};
 
-	const triggerBtn = <div><Button disabled={!id} className='h-full bg-pink_primary rounded-md  hover:bg-pink_secondary text-white transition-colors duration-300' onClick={() => setModalOpen(true)}> Set On-Chain Identity</Button></div>;
-	const triggerBtnLoginDisabled = <Tooltip  color='#E5007A' title='Please signup/login to set on-chain identity'> <Button type='primary' disabled={true} className='w-full h-full rounded-md' > Set On-Chain Identity</Button></Tooltip>;
+	const triggerBtn = <div><Button disabled={!id} className='h-[40px] md:h-[69px] bg-pink_primary rounded-md  hover:bg-pink_secondary text-white transition-colors duration-300' onClick={() => setModalOpen(true)}> Set On-Chain Identity</Button></div>;
+	const triggerBtnLoginDisabled = <Tooltip  color='#E5007A' title='Please signup/login to set on-chain identity'> <Button type='primary' disabled={true} className='w-full h-[40px] md:h-[69px] rounded-md' > Set On-Chain Identity</Button></Tooltip>;
 
 	return (
 		loadingStatus.isLoading

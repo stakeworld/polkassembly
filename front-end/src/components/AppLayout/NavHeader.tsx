@@ -18,11 +18,11 @@ import { gov2Routes } from './SwitchRoutes';
 
 interface Props {
 	className?: string
-	sidebarCollapsed: boolean
-	setSidebarCollapsed: React.Dispatch<React.SetStateAction<boolean>>
+	sidedrawer: boolean
+	setSidedrawer: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const NavHeader = ({ className, sidebarCollapsed, setSidebarCollapsed } : Props) => {
+const NavHeader = ({ className, sidedrawer, setSidedrawer } : Props) => {
 	const currentUser = useUserDetailsContext();
 	const { pathname } = useLocation();
 	const { username } = currentUser;
@@ -30,14 +30,9 @@ const NavHeader = ({ className, sidebarCollapsed, setSidebarCollapsed } : Props)
 	const isGov2Route: boolean = gov2Routes.includes(pathname.split('/')[1]);
 
 	return (
-		<Header className={`${className} flex items-center bg-white h-[60px] max-h-[60px] px-6 z-50 leading-normal`}>
+		<Header className={`${className} sticky top-0 flex items-center bg-white h-[60px] max-h-[60px] px-6 z-50 leading-normal`}>
 			<MenuOutlined className='lg:hidden mr-5' onClick={() => {
-				setSidebarCollapsed(!sidebarCollapsed);
-				if (sidebarCollapsed) {
-					document.body.classList.add('overflow-hidden');
-				} else{
-					document.body.classList.remove('overflow-hidden');
-				}
+				setSidedrawer(!sidedrawer);
 			}} />
 			<nav className='w-full lg:w-5/6 lg:mx-auto flex items-center justify-between'>
 				<Link className='flex' to={isGov2Route ? '/gov-2' : '/'}><PALogoBlack /></Link>
@@ -50,10 +45,10 @@ const NavHeader = ({ className, sidebarCollapsed, setSidebarCollapsed } : Props)
 						<Link className='text-navBlue hidden hover:text-pink_primary text-lg items-center mr-4' to='/notification-settings'>
 							<BellOutlined />
 						</Link>
-						<NetworkDropdown setSidebarCollapsed={setSidebarCollapsed} />
+						<NetworkDropdown setSidedrawer={setSidedrawer} />
 						{!username
 							&& <div className='flex items-center lg:gap-x-2 ml-2 lg:ml-4'>
-								<Link className='text-navBlue hover:text-pink_primary font-medium' onClick={() => {setSidebarCollapsed(true);}} to='/login'>Login</Link>
+								<Link className='text-navBlue hover:text-pink_primary font-medium' onClick={() => {setSidedrawer(true);}} to='/login'>Login</Link>
 							</div>
 						}
 					</Space>

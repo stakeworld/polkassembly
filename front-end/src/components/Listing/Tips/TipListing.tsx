@@ -49,6 +49,7 @@ const TipListing = ({ className, data, loading } : Props) => {
 									status={post.onchain_link.onchain_tip?.[0]?.tipStatus?.[0].status}
 									title={post.title}
 									topic={post.topic.name}
+									created_at={post.created_at}
 								/>
 							</Link>}
 						</li>
