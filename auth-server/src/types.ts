@@ -143,6 +143,7 @@ export interface OnchainLinkType {
     onchain_treasury_proposal_id?: number;
     onchain_tech_committee_proposal_id?: number;
     onchain_child_bounty_id?: number;
+    onchain_referendumv2_id?: number;
 }
 
 export interface JsonSchema {
@@ -268,6 +269,7 @@ export enum PostTypeEnum {
     REFERENDUM = 'referendum',
     TECH = 'tech',
     CHILD_BOUNTY = 'child_bounty',
+    REFERENDUM_V2 = 'referendum_v2',
 }
 
 export type PostType = PostTypeEnum;
