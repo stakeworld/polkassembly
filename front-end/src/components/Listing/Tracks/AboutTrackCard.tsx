@@ -41,7 +41,7 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 		<div className={`${className} bg-white drop-shadow-md rounded-md p-4 md:p-8 text-sidebarBlue`}>
 			<div className="flex justify-between capitalize font-medium">
 				<h2 className="text-lg capitalize">
-						About {trackMetaData.displayName}
+						About {trackName.split(/(?=[A-Z])/).join(' ')}
 				</h2>
 
 				<h2 className="text-sm text-pink_primary">{trackMetaData.group}</h2>
