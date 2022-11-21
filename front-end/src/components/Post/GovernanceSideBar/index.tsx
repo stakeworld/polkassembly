@@ -325,13 +325,13 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 								</GovSidebarCard>
 							}
 
-							{(onchainId || onchainId === 0) && (onchainLink as OnchainLinkReferendumV2Fragment).onchain_referendumv2 &&
+							{/* {(onchainId || onchainId === 0) && (onchainLink as OnchainLinkReferendumV2Fragment).onchain_referendumv2 &&
 								<div className={className}>
 									<ReferendumVoteInfo
 										referendumId={onchainId as number}
 									/>
 								</div>
-							}
+							} */}
 
 							<div>
 								{lastVote != undefined ? lastVote == null ?

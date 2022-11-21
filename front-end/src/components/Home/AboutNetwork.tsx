@@ -65,8 +65,8 @@ export const socialLinks = (blockchain_socials: any) => {
 	);
 };
 
-const gov2Link = ({ className, icon, text, subText } : { className?: string, icon?:any, text:string, subText:string }) =>
-	<a href='#' target='_blank' rel='noreferrer' className={`${className} group flex min-w-[260px] max-w-[260px]`}>
+const gov2Link = ({ className, icon, link, text, subText } : { className?: string, icon?:any, link:string, text:string, subText:string }) =>
+	<a href={link} target='_blank' rel='noreferrer' className={`${className} group flex min-w-[260px] max-w-[260px]`}>
 		<div className="group-hover:text-pink_secondary mr-3 flex items-center justify-center min-w-[132px] h-[75px] bg-[url('/src/assets/gov2-info-bg.png')]">
 			{icon}
 		</div>
@@ -108,22 +108,25 @@ const AboutNetwork = ({ className, showGov2Links } : { className?: string, showG
 					{gov2Link({
 						className: 'mr-12 lg:mr-9',
 						icon: <PlayCircleFilled className='text-white text-xl' />,
-						subText: '02:03 mins',
+						link:'https://www.youtube.com/watch?v=EF93ZM_P_Oc',
+						subText: '45:33 mins',
 						text: 'Gavin\'s view on Gov2'
 					})}
 
 					{gov2Link({
 						className: 'mr-12 lg:mr-9',
 						icon: <DesktopOutlined className='text-white text-xl' />,
-						subText: '02:03 mins',
+						link: 'https://medium.com/polkadot-network/gov2-polkadots-next-generation-of-decentralised-governance-4d9ef657d11b',
+						subText: '17 min read',
 						text: 'Gavin\'s blog on Medium'
 					})}
 
 					{gov2Link({
 						className: 'mr-12 lg:mr-0',
 						icon: <FileTextOutlined className='text-white text-xl' />,
-						subText: '02:03 mins',
-						text: 'Notes on Gov. V2 learnings'
+						link: 'https://wiki.polkadot.network/docs/learn-governance',
+						subText: 'Wiki',
+						text: 'Governance V1 Basics'
 					})}
 				</div>
 			}
