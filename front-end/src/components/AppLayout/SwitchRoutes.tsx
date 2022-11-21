@@ -150,6 +150,11 @@ const SwitchRoutes = () => {
 				<Route path=':id' element={<ReferendumV2Post trackName={PostOrigin.REFERENDUM_CANCELLER} />} />
 			</Route>
 
+			<Route path="/referendum-killer">
+				<Route index element={<TrackListing trackName={PostOrigin.REFERENDUM_KILLER} />} />
+				<Route path=':id' element={<ReferendumV2Post trackName={PostOrigin.REFERENDUM_KILLER} />} />
+			</Route>
+
 			<Route path="/treasurer">
 				<Route index element={<TrackListing trackName={PostOrigin.TREASURER} />} />
 				<Route path=':id' element={<ReferendumV2Post trackName={PostOrigin.TREASURER} />} />
