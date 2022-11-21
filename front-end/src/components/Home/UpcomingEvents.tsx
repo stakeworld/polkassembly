@@ -77,16 +77,16 @@ const UpcomingEvents = ({ className }:Props) => {
 		const hasEvent = getDateHasEvent(value);
 		if(hasEvent) {
 			const eventData = getEventData(value);
-			const eventList = <ul>
+			const eventList = <div>
 				{
 					eventData.map(eventObj => (
-						<li key={eventObj.id}>
+						<div key={eventObj.id}>
 							<a className='text-white hover:text-white hover:underline' href={eventObj.url} target='_blank' rel='noreferrer'>{eventObj.title}</a>
 							<span className="flex h-[1px] bg-[rgba(255,255,255,0.3)] w-full my-2 rounded-full"></span>
-						</li>
+						</div>
 					))
 				}
-			</ul>;
+			</div>;
 
 			return (
 				<Tooltip color='#E5007A' title={eventList}>

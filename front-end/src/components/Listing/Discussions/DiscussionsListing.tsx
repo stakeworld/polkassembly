@@ -23,12 +23,12 @@ const DiscussionsListing = ({ className, data, loading } : Props) => {
 	if (!data.posts || !data.posts.length) return <div className={className}><PostEmptyState /></div>;
 
 	return (
-		<ul className={className}>
+		<div className={className}>
 			{!!data.posts &&
 				data.posts.map(
 					(post) => {
 						return !!post?.author?.username &&
-							<li key={post.id} className='my-5'>
+							<div key={post.id} className='my-5'>
 								<Link to={`/post/${post.id}`}>
 									<DiscussionCard
 										defaultAddress={post.author[defaultAddressField]}
@@ -40,12 +40,12 @@ const DiscussionsListing = ({ className, data, loading } : Props) => {
 										username={post.author.username}
 									/>
 								</Link>
-							</li>
+							</div>
 						;
 					}
 				)
 			}
-		</ul>
+		</div>
 	);
 };
 
