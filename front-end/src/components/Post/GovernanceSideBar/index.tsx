@@ -321,6 +321,7 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 										getAccounts={getAccounts}
 										onAccountChange={onAccountChange}
 										referendumId={onchainId  as number}
+										isReferendumV2={true}
 									/>
 								</GovSidebarCard>
 							}
