@@ -123,7 +123,7 @@ const TrackPostsTable = ({ trackNumber } : Props) => {
 					id: post.onchain_link ? Number(post.onchain_link?.onchain_referendumv2[0]?.referendumId) : post.id,
 					title,
 					subTitle,
-					address: post.onchain_link?.proposer_address ? post.onchain_link?.proposer_address : post.author[defaultAddressField]!,
+					address: post.onchain_link?.onchain_referendumv2[0]?.submitted.who ? post.onchain_link?.onchain_referendumv2[0]?.submitted.who : post.author[defaultAddressField]!,
 					username: post.author.username,
 					createdAt: post.created_at,
 					postOrigin: post.onchain_link?.origin || null,
