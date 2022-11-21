@@ -7,7 +7,7 @@ import { commentFields } from 'src/fragments/comments';
 
 export const ALL_GOV2_POSTS = gql`
     query GetLatestGov2Posts($limit: Int! = 10) {
-        posts(limit: $limit, order_by: {onchain_link: {onchain_referendumv2_id: desc}}, where: {onchain_link: {onchain_referendumv2_id: {_is_null: false}}}) {
+        posts(limit: $limit, order_by: {id: desc}, where: {onchain_link: {onchain_referendumv2_id: {_is_null: false}}}) {
             id
             title
             author {
@@ -66,7 +66,7 @@ export const ALL_GOV2_POSTS = gql`
 
 export const GOV2_POSTS_BY_TRACK = gql`
     query GetGov2PostsByTrack($track: Int!, $limit: Int! = 10) {
-        posts(limit: $limit, where: {onchain_link: {onchain_referendumv2_id: {_is_null: false}, track: {_eq: $track}}}, order_by: {onchain_link: {onchain_referendumv2_id: desc}}) {
+        posts(limit: $limit, where: {onchain_link: {id: {_is_null: false}, track: {_eq: $track}}}, order_by: {id: desc}) {
             id
             title
             author {
@@ -125,7 +125,7 @@ export const GOV2_POSTS_BY_TRACK = gql`
 
 export const GOV2_POSTS_BY_TRACK_AND_STATUS = gql`
     query GetGov2PostsByTrackAndStatus($track: Int!, $status: String!, $limit: Int! = 10) {
-        posts(limit: $limit, where: {onchain_link: {onchain_referendumv2_id: {_is_null: false}, onchain_referendumv2_status: {_eq: $status}, track: {_eq: $track}}}, order_by: {onchain_link: {onchain_referendumv2_id: desc}}) {
+        posts(limit: $limit, where: {onchain_link: {onchain_referendumv2_id: {_is_null: false}, onchain_referendumv2_status: {_eq: $status}, track: {_eq: $track}}}, order_by: {id: desc}) {
             id
             title
             author {
