@@ -120,7 +120,7 @@ const TrackPostsTable = ({ trackNumber } : Props) => {
 
 				const tableDataObj:Gov2PostsRowData = {
 					key: post.id,
-					id: !isNaN(Number(post.onchain_link?.onchain_referendumv2[0]?.id)) ? Number(post.onchain_link?.onchain_referendumv2[0]?.id) : post.id,
+					id: post.onchain_link ? Number(post.onchain_link?.onchain_referendumv2[0]?.referendumId) : post.id,
 					title,
 					subTitle,
 					address: post.onchain_link?.proposer_address ? post.onchain_link?.proposer_address : post.author[defaultAddressField]!,
