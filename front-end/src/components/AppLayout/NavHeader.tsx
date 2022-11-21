@@ -45,7 +45,7 @@ const NavHeader = ({ className, sidedrawer, setSidedrawer } : Props) => {
 						<NetworkDropdown setSidedrawer={setSidedrawer} />
 						{!username
 							&& <div className='flex items-center lg:gap-x-2 ml-2 lg:ml-4'>
-								<Link className='text-navBlue hover:text-pink_primary font-medium' onClick={() => {setSidedrawer(true);}} to='/login'>Login</Link>
+								<Link className='text-navBlue hover:text-pink_primary font-medium' onClick={() => {setSidedrawer(false);}} to='/login'>Login</Link>
 							</div>
 						}
 					</Space>
