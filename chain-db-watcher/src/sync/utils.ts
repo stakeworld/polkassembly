@@ -246,11 +246,10 @@ export const getMaps = (syncData: SyncData): SyncMap => {
 		(prev, curr) => {
 			if ((curr?.referendumId || curr?.referendumId === 0) && (curr?.id || curr?.id === 0)) {
 				let author = null;
-				try{
+				try {
 					author = curr.submitted?.who;
-				}
-				catch {
-					console.log("error getting author for referendumV2 submitted not present", JSON.stringify(curr));
+				} catch {
+					console.log('error getting author for referendumV2 submitted not present', JSON.stringify(curr));
 				}
 				return {
 					...prev,

@@ -301,13 +301,12 @@ const startSubscriptions = (client: SubscriptionClient): void => {
 					submitted
 				} = data?.referendmV2?.node;
 
-				let author = null
+				let author = null;
 
-				try{
+				try {
 					author = submitted?.who;
-				}
-				catch {
-					console.log("error getting author for referendumV2 submitted not present", JSON.stringify(data?.referendmV2?.node));;
+				} catch {
+					console.log('error getting author for referendumV2 submitted not present', JSON.stringify(data?.referendmV2?.node));
 				}
 
 				addDiscussionPostAndReferendumV2({
