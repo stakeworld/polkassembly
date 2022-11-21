@@ -12,7 +12,7 @@ import { ApiContext } from 'src/context/ApiContext';
 import { OnchainLinkBountyFragment, OnchainLinkChildBountyFragment, OnchainLinkMotionFragment, OnchainLinkProposalFragment, OnchainLinkReferendumFragment, OnchainLinkTechCommitteeProposalFragment, OnchainLinkTipFragment, OnchainLinkTreasuryProposalFragment } from 'src/generated/graphql';
 import { APPNAME } from 'src/global/appName';
 import { motionStatus, proposalStatus, referendumStatus, tipStatus } from 'src/global/statuses';
-import { VoteThreshold, Wallet } from 'src/types';
+import { OnchainLinkReferendumV2Fragment, VoteThreshold, Wallet } from 'src/types';
 import GovSidebarCard from 'src/ui-components/GovSidebarCard';
 import getEncodedAddress from 'src/util/getEncodedAddress';
 import styled from 'styled-components';
@@ -36,16 +36,17 @@ interface Props {
 	isMotion?: boolean
 	isProposal?: boolean
 	isReferendum?: boolean
+	isReferendumV2?: boolean
 	isTreasuryProposal?: boolean
 	isTipProposal?: boolean
 	isTechCommitteeProposal?: boolean
 	onchainId?: string | number | null
-	onchainLink?: OnchainLinkTechCommitteeProposalFragment | OnchainLinkBountyFragment | OnchainLinkChildBountyFragment | OnchainLinkMotionFragment | OnchainLinkProposalFragment | OnchainLinkReferendumFragment | OnchainLinkTreasuryProposalFragment | OnchainLinkTipFragment
+	onchainLink?: OnchainLinkReferendumV2Fragment | OnchainLinkTechCommitteeProposalFragment | OnchainLinkBountyFragment | OnchainLinkChildBountyFragment | OnchainLinkMotionFragment | OnchainLinkProposalFragment | OnchainLinkReferendumFragment | OnchainLinkTreasuryProposalFragment | OnchainLinkTipFragment
 	status?: string
 	startTime: string
 }
 
-const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal, isReferendum, isTipProposal, isTreasuryProposal, onchainId, onchainLink, startTime, status }: Props) => {
+const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal, isReferendum, isReferendumV2, isTipProposal, isTreasuryProposal, onchainId, onchainLink, startTime, status }: Props) => {
 	const [address, setAddress] = useState<string>('');
 	const [accounts, setAccounts] = useState<InjectedAccount[]>([]);
 	const [extensionNotFound, setExtensionNotFound] = useState(false);
@@ -266,7 +267,7 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 						/>
 					}
 
-					{isReferendum &&
+					{(isReferendum) &&
 						<>
 							{canVote &&
 								<GovSidebarCard>
@@ -305,6 +306,14 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 									: <></>
 								}
 							</div>
+						</>
+					}
+
+					{
+						isReferendumV2 && <>
+							<GovSidebarCard>
+								Referendum V2 Sidebar Card
+							</GovSidebarCard>
 						</>
 					}
 

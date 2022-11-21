@@ -5,7 +5,6 @@
 /* eslint-disable sort-keys */
 import { Tabs } from 'antd';
 import React from 'react';
-import { trackInfo } from 'src/global/post_trackInfo';
 
 import TrackListingAllTabContent from './TrackListingAllTabContent';
 import TrackListingStatusTabContent from './TrackListingStatusTabContent';
@@ -16,16 +15,15 @@ interface Props {
 }
 
 const TrackListingCard = ({ className, trackName } : Props) => {
-	const trackMetaData = trackInfo[trackName];
 
 	const items = [
-		{ label: 'All', key: 'All', children: <TrackListingAllTabContent trackNum={trackMetaData.trackId} /> },
-		{ label: 'Approved', key: 'Approved', children: <TrackListingStatusTabContent trackNum={trackMetaData.trackId} status='Approved' /> },
-		{ label: 'Cancelled', key: 'Cancelled', children: <TrackListingStatusTabContent trackNum={trackMetaData.trackId} status='Cancelled' /> },
-		{ label: 'Killed', key: 'Killed', children: <TrackListingStatusTabContent trackNum={trackMetaData.trackId} status='Killed' /> },
-		{ label: 'Ongoing', key: 'Ongoing', children: <TrackListingStatusTabContent trackNum={trackMetaData.trackId} status='Ongoing' /> },
-		{ label: 'Rejected', key: 'Rejected', children: <TrackListingStatusTabContent trackNum={trackMetaData.trackId} status='Rejected' /> },
-		{ label: 'Timed Out', key: 'Timedout', children: <TrackListingStatusTabContent trackNum={trackMetaData.trackId} status='Timedout' /> }
+		{ label: 'All', key: 'All', children: <TrackListingAllTabContent trackName={trackName} /> },
+		{ label: 'Approved', key: 'Approved', children: <TrackListingStatusTabContent trackName={trackName} status='Approved' /> },
+		{ label: 'Cancelled', key: 'Cancelled', children: <TrackListingStatusTabContent trackName={trackName} status='Cancelled' /> },
+		{ label: 'Killed', key: 'Killed', children: <TrackListingStatusTabContent trackName={trackName} status='Killed' /> },
+		{ label: 'Ongoing', key: 'Ongoing', children: <TrackListingStatusTabContent trackName={trackName} status='Ongoing' /> },
+		{ label: 'Rejected', key: 'Rejected', children: <TrackListingStatusTabContent trackName={trackName} status='Rejected' /> },
+		{ label: 'Timed Out', key: 'Timedout', children: <TrackListingStatusTabContent trackName={trackName} status='Timedout' /> }
 	];
 
 	return (

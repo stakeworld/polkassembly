@@ -6,20 +6,23 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import GovernanceCard from 'src/components/GovernanceCard';
 import { useGetGov2PostsByTrackLazyQuery } from 'src/generated/graphql';
+import { trackInfo } from 'src/global/post_trackInfo';
 import ErrorAlert from 'src/ui-components/ErrorAlert';
 import { LoadingState, PostEmptyState } from 'src/ui-components/UIStates';
 
 interface Props {
 	className?: string;
-	trackNum: number;
+	trackName: string;
 }
 
-const TrackListingAllTabContent = ({ className, trackNum } : Props) => {
+const TrackListingAllTabContent = ({ className, trackName } : Props) => {
+
+	const { trackId } = trackInfo[trackName];
 
 	const [getData, { called, data, error, loading, refetch }] = useGetGov2PostsByTrackLazyQuery({
 		variables : {
 			limit: 10,
-			track: trackNum
+			track: trackId
 		}
 	});
 
@@ -52,11 +55,11 @@ const TrackListingAllTabContent = ({ className, trackNum } : Props) => {
 		<ul className={`${className} proposals__list`}>
 			{data.posts.map(
 				(post) => {
-					const onchainId = post.onchain_link?.onchain_referendumv2[0]?.id;
+					const onchainId = post.onchain_link?.onchain_referendumv2[0]?.referendumId;
 
 					return !!post?.author?.username && !!post?.onchain_link?.onchain_referendumv2.length &&
 						<li key={post.id} className='my-5'>
-							{<Link to={`/root/${onchainId}`}>
+							{<Link to={`/${trackName.split(/(?=[A-Z])/).join('-').toLowerCase()}/${onchainId}`}>
 								<GovernanceCard
 									postReactions={(post as any)?.post_reactions}
 									address={post.onchain_link.proposer_address}

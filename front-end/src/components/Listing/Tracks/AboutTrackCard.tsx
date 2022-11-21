@@ -50,10 +50,10 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 
 			{error && <ErrorAlert className="mt-8" errorMsg={error.message} />}
 
-			{!error && <div className="mt-8 text-xs w-full">
+			{!error && <div className="mt-8 text-xs w-full xl:w-5/6">
 				<Spin spinning={!data || loading} indicator={<LoadingOutlined />}>
 					<Row gutter={[{ xs: 4, sm: 4, md: 16, lg: 32, xl: 32, xxl: 32 }, 16]}>
-						<Col xs={24} sm={24} md={12} lg={12} xl={6}>
+						<Col xs={24} sm={24} md={12} lg={12} xl={8}>
 							<Row>
 								<Col span={15} className='font-bold'>Max Deciding:</Col>
 								<Col span={9}>{data?.track_info[0].max_deciding}</Col>
@@ -65,7 +65,7 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 							</Row>
 						</Col>
 
-						<Col xs={24} sm={24} md={12} lg={12} xl={6}>
+						<Col xs={24} sm={24} md={12} lg={12} xl={8}>
 							<Row>
 								<Col span={15} className='font-bold'>Prepare Period:</Col>
 								<Col span={9}>{data?.track_info[0].prepare_period}</Col>
@@ -77,7 +77,7 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 							</Row>
 						</Col>
 
-						<Col xs={24} sm={24} md={12} lg={12} xl={6}>
+						<Col xs={24} sm={24} md={12} lg={12} xl={8}>
 							<Row>
 								<Col span={15} className='font-bold'>Minimum Enactment Period:</Col>
 								<Col span={9}>{data?.track_info[0].min_enactment_period}</Col>
