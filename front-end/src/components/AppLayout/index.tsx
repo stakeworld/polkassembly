@@ -191,13 +191,20 @@ for (const trackName of Object.keys(trackInfo)) {
 	}
 }
 
-const gov2OverviewItems = [
+let gov2OverviewItems = [
 	getSiderMenuItem('Overview', '/gov-2', <OverviewIcon className='text-white' />),
 	getSiderMenuItem('Discussions', '/discussions', <DiscussionsIcon className='text-white' />),
 	getSiderMenuItem('Calendar', '/calendar', <CalendarIcon className='text-white' />),
 	getSiderMenuItem('News', '/news', <NewsIcon className='text-white' />),
 	getSiderMenuItem('Parachains', '/parachains', <ParachainsIcon className='text-white' />)
 ];
+
+if(window.screen.width < 1024) {
+	gov2OverviewItems = [
+		GovSwitchDropdownMenuItem,
+		...gov2OverviewItems
+	];
+}
 
 const gov2Items:MenuProps['items'] = [
 	...gov2OverviewItems,
@@ -234,8 +241,14 @@ const AppLayout = ({ className }: { className?:string }) => {
 	const handleMenuClick = (menuItem: any) => {
 		if(['userMenu', 'tracksHeading'].includes(menuItem.key)) return;
 
-		navigate(menuItem.key);
-		setSidedrawer(false);
+		if(menuItem.key === 'gov-2') {
+			setSidedrawer(false);
+			if(isGov2Route) {
+				navigate('/');
+			} else {
+				navigate(menuItem.key);
+			}
+		}
 	};
 
 	const [logoutMutation] = useLogoutMutation();
