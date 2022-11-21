@@ -41,7 +41,7 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 		<div className={`${className} bg-white drop-shadow-md rounded-md p-4 md:p-8 text-sidebarBlue`}>
 			<div className="flex justify-between capitalize font-medium">
 				<h2 className="text-lg capitalize">
-						About {trackMetaData.displayName}
+						About {trackName.split(/(?=[A-Z])/).join(' ')}
 				</h2>
 
 				<h2 className="text-sm text-pink_primary">{trackMetaData.group}</h2>
@@ -53,7 +53,7 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 
 			{!data && <Loader />}
 
-			{data && data.track_info && data.track_info.length && !error && <div className="mt-8 text-xs w-full xl:w-5/6">
+			{data && data.track_info && data.track_info.length && !error ? <div className="mt-8 text-xs w-full xl:w-5/6">
 				<Spin spinning={!data || loading} indicator={<LoadingOutlined />}>
 					<Row gutter={[{ xs: 4, sm: 4, md: 16, lg: 32, xl: 32, xxl: 32 }, 16]}>
 						<Col xs={24} sm={24} md={12} lg={12} xl={8}>
@@ -107,7 +107,10 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 						</Col> */}
 					</Row>
 				</Spin>
-			</div>}
+			</div>
+				:
+				<></>
+			}
 		</div>
 	);
 };
