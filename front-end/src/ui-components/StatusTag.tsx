@@ -4,7 +4,7 @@
 
 import styled from '@xstyled/styled-components';
 import React, { ReactNode } from 'react';
-import { bountyStatus, bountyStatusMap, childBountyStatus, childBountyStatusMap, motionStatus, proposalStatus, referendumStatus, tipStatus, tipStatusMap } from 'src/global/statuses';
+import { bountyStatus, bountyStatusMap, childBountyStatus, childBountyStatusMap, gov2ReferendumStatus, motionStatus, proposalStatus, referendumStatus, tipStatus, tipStatusMap } from 'src/global/statuses';
 
 interface Props{
 	children?: ReactNode;
@@ -41,7 +41,15 @@ export default styled(StatusTag).attrs(( { status }: Props) => ({
 }))`
 	color: #fff;
 	max-width: min-content;
-	
+	background: #666;
+	border-color: #666;
+
+	&.inverted {
+		color: #666;
+	}
+
+
+	&.${gov2ReferendumStatus.ONGOING},
 	&.${referendumStatus.STARTED},
 	&.${proposalStatus.PROPOSED},
 	&.${motionStatus.PROPOSED},
@@ -67,6 +75,8 @@ export default styled(StatusTag).attrs(( { status }: Props) => ({
 			color: #6495ED;
 		}
 	}
+
+	&.${gov2ReferendumStatus.APPROVED},
 	&.${proposalStatus.TABLED},
 	&.${referendumStatus.PASSED},
 	&.${referendumStatus.EXECUTED},
@@ -93,6 +103,10 @@ export default styled(StatusTag).attrs(( { status }: Props) => ({
 			color: green_primary;
 		}
 	}
+
+	&.${gov2ReferendumStatus.KILLED},
+	&.${gov2ReferendumStatus.REJECTED},
+	&.${gov2ReferendumStatus.TIMEDOUT},
 	&.${proposalStatus.CLEARED},
 	&.${referendumStatus.CANCELLED},
 	&.${referendumStatus.NOTPASSED},

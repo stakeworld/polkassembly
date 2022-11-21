@@ -219,7 +219,7 @@ const EditableCommentContent = ({ authorId, className, content, commentId, refet
 						</Form>
 						:
 						<>
-							<Markdown md={content} className='py-2 px-4 bg-comment_bg rounded-b-md text-sm' />
+							<Markdown md={content} className='py-2 px-2 md:px-4 bg-comment_bg rounded-b-md text-sm' />
 
 							<div className='actions-bar flex items-start md:items-center flex-col md:flex-row bg-white'>
 								<div className='flex items-center'>

@@ -70,7 +70,7 @@ const Cards = function ({
 	const title = grantPopupContent();
 
 	return (
-		<div className={className}>
+		<div className={`${className} bg-white rounded shadow-md mb-6 p-3 border border-gray-200 cursor-pointer`}>
 			<div className='parachain-card-header'>
 				<div>
 					<img src={logoURL} height={34} width={34} alt={`${name} Logo`} />
@@ -130,15 +130,6 @@ const Cards = function ({
 };
 
 export default styled(Cards)`
-	text-transform: capitalize !important;
-	background: #fff;
-	width: 98%;
-	margin-top: 16px;
-	margin-right: auto;
-	margin-left: auto;
-	padding: 16px 16px 16px 16px;
-	border-radius: 10px;
-	border: 1px solid #D5DBDE;
 
 	.parachain-card-header {
 

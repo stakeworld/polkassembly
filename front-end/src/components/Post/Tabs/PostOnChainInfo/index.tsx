@@ -4,12 +4,14 @@
 
 import React from 'react';
 import { OnchainLinkBountyFragment, OnchainLinkChildBountyFragment, OnchainLinkMotionFragment, OnchainLinkProposalFragment, OnchainLinkReferendumFragment, OnchainLinkTechCommitteeProposalFragment, OnchainLinkTipFragment, OnchainLinkTreasuryProposalFragment } from 'src/generated/graphql';
+import { OnchainLinkReferendumV2Fragment } from 'src/types';
 
 import PostBountyInfo from './PostBountyInfo';
 import PostChildBountyInfo from './PostChildBountyInfo';
 import PostMotionInfo from './PostMotionInfo';
 import PostProposalInfo from './PostProposalInfo';
 import PostReferendumInfo from './PostReferendumInfo';
+import PostReferendumV2Info from './PostReferendumV2Info';
 import PostTechCommitteeProposalInfo from './PostTechCommitteeProposalInfo';
 import PostTipInfo from './PostTipInfo';
 import PostTreasuryInfo from './PostTreasuryInfo';
@@ -20,11 +22,12 @@ interface Props {
 	isMotion?: boolean;
 	isProposal?: boolean;
 	isReferendum?: boolean;
+	isReferendumV2?: boolean;
 	isTreasuryProposal?: boolean;
 	isTechCommitteeProposal?: boolean;
 	isTipProposal?: boolean;
 	isChildBounty?: boolean;
-	definedOnchainLink: OnchainLinkTechCommitteeProposalFragment | OnchainLinkBountyFragment | OnchainLinkChildBountyFragment | OnchainLinkMotionFragment | OnchainLinkReferendumFragment | OnchainLinkProposalFragment | OnchainLinkTipFragment | OnchainLinkTreasuryProposalFragment | undefined;
+	definedOnchainLink: OnchainLinkReferendumV2Fragment | OnchainLinkTechCommitteeProposalFragment | OnchainLinkBountyFragment | OnchainLinkChildBountyFragment | OnchainLinkMotionFragment | OnchainLinkReferendumFragment | OnchainLinkProposalFragment | OnchainLinkTipFragment | OnchainLinkTreasuryProposalFragment | undefined;
 	handleOpenSidebar: (address: string) => void;
 }
 
@@ -34,6 +37,7 @@ const PostOnChainInfo = ({
 	isMotion,
 	isProposal,
 	isReferendum,
+	isReferendumV2,
 	isTreasuryProposal,
 	isTechCommitteeProposal,
 	isTipProposal,
@@ -78,6 +82,12 @@ const PostOnChainInfo = ({
 				{ isReferendum &&
 					<PostReferendumInfo
 						onchainLink={definedOnchainLink as OnchainLinkReferendumFragment}
+						setOtherProposalsSidebarAddr={handleOpenSidebar}
+					/>
+				}
+				{ isReferendumV2 &&
+					<PostReferendumV2Info
+						onchainLink={definedOnchainLink as OnchainLinkReferendumV2Fragment}
 						setOtherProposalsSidebarAddr={handleOpenSidebar}
 					/>
 				}

@@ -2,10 +2,11 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { HomeFilled, TwitterOutlined, YoutubeFilled } from '@ant-design/icons';
+import { DesktopOutlined, FileTextOutlined, HomeFilled, PlayCircleFilled, TwitterOutlined, YoutubeFilled } from '@ant-design/icons';
 import styled from '@xstyled/styled-components';
 import { Space } from 'antd';
 import React, { useEffect } from 'react';
+// import Gov2InfoBG from 'src/assets/gov2-info-bg.png';
 import { useNetworkSocialsLazyQuery } from 'src/generated/graphql';
 import { CubeIcon, DiscordIcon, GithubIcon, RedditIcon, TelegramIcon } from 'src/ui-components/CustomIcons';
 import ErrorAlert from 'src/ui-components/ErrorAlert';
@@ -64,7 +65,19 @@ export const socialLinks = (blockchain_socials: any) => {
 	);
 };
 
-const AboutNetwork = ({ className } : {className?: string}) => {
+const gov2Link = ({ className, icon, link, text, subText } : { className?: string, icon?:any, link:string, text:string, subText:string }) =>
+	<a href={link} target='_blank' rel='noreferrer' className={`${className} group flex min-w-[260px] max-w-[260px]`}>
+		<div className="group-hover:text-pink_secondary mr-3 flex items-center justify-center min-w-[132px] h-[75px] bg-[url('/src/assets/gov2-info-bg.png')]">
+			{icon}
+		</div>
+
+		<div className='flex flex-col justify-between my-1'>
+			<div className="text-sidebarBlue group-hover:text-pink_secondary">{text}</div>
+			<div className="text-navBlue group-hover:text-pink_secondary">{subText}</div>
+		</div>
+	</a>;
+
+const AboutNetwork = ({ className, showGov2Links } : { className?: string, showGov2Links?: boolean }) => {
 	const [refetch, { data, error }] = useNetworkSocialsLazyQuery({ variables: {
 		network
 	} });
@@ -85,9 +98,38 @@ const AboutNetwork = ({ className } : {className?: string}) => {
 
 			<p className='mt-5'>Join our Community to discuss, contribute and get regular updates from us!</p>
 
-			<div className='mt-5 lg:hidden flex justify-center'>
+			<div className='mt-5 lg:hidden flex'>
 				{!error && data && socialLinks(data.blockchain_socials[0])}
 			</div>
+
+			{
+				showGov2Links &&
+				<div className='mt-10 pb-2 flex justify-between xl:w-[90%] overflow-x-auto'>
+					{gov2Link({
+						className: 'mr-12 lg:mr-9',
+						icon: <PlayCircleFilled className='text-white text-xl' />,
+						link:'https://www.youtube.com/watch?v=EF93ZM_P_Oc',
+						subText: '45:33 mins',
+						text: 'Gavin\'s view on Gov2'
+					})}
+
+					{gov2Link({
+						className: 'mr-12 lg:mr-9',
+						icon: <DesktopOutlined className='text-white text-xl' />,
+						link: 'https://medium.com/polkadot-network/gov2-polkadots-next-generation-of-decentralised-governance-4d9ef657d11b',
+						subText: '17 min read',
+						text: 'Gavin\'s blog on Medium'
+					})}
+
+					{gov2Link({
+						className: 'mr-12 lg:mr-0',
+						icon: <FileTextOutlined className='text-white text-xl' />,
+						link: 'https://wiki.polkadot.network/docs/learn-governance',
+						subText: 'Wiki',
+						text: 'Governance V1 Basics'
+					})}
+				</div>
+			}
 		</div>
 	);
 };

@@ -49,6 +49,7 @@ const ProposalsListing = ({ className, data, loading } : Props) => {
 									status={post.onchain_link.onchain_proposal[0]?.proposalStatus?.[0].status}
 									title={post.title}
 									topic={post.topic.name}
+									created_at={post.created_at}
 								/>
 							</Link>}
 						</li>
