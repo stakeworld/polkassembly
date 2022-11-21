@@ -224,6 +224,7 @@ export const getOnchainReferendumV2 = gql`
             author
             hash
         }
+        submitted
     }
 `;
 

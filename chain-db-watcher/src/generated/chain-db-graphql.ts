@@ -16809,7 +16809,7 @@ export type GetOnchainReferendumV2Query = (
 
 export type OnchainReferendumV2Fragment = (
   { __typename?: 'ReferendumV2' }
-  & Pick<ReferendumV2, 'id' | 'referendumId' | 'origin' | 'trackNumber' | 'preimageHash'>
+  & Pick<ReferendumV2, 'id' | 'referendumId' | 'origin' | 'trackNumber' | 'preimageHash' | 'submitted'>
   & { referendumStatus?: Maybe<Array<(
     { __typename?: 'ReferendumStatusV2' }
     & Pick<ReferendumStatusV2, 'status'>
@@ -16902,6 +16902,7 @@ export const OnchainReferendumV2FragmentDoc = gql`
     author
     hash
   }
+  submitted
 }
     `;
 export const GetExecutedMotionsWithPreimageHashDocument = gql`
