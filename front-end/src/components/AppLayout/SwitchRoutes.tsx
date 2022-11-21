@@ -190,6 +190,8 @@ const SwitchRoutes = () => {
 				<Route path=':id' element={<ReferendumV2Post trackName={PostOrigin.FELLOWSHIP_ADMIN} />} />
 			</Route>
 
+			<Route path='/referenda/:id' element={<ReferendumV2Post />} />
+
 			<Route path="*" element={<NotFound />} />
 
 		</Routes>
