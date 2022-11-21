@@ -26,9 +26,10 @@ interface Props {
 	getAccounts: () => Promise<undefined>
 	lastVote: string | null | undefined
 	setLastVote: React.Dispatch<React.SetStateAction<string | null | undefined>>
+	isReferendumV2?: boolean
 }
 
-const VoteReferendum = ({ className, referendumId, address, accounts, onAccountChange, getAccounts, lastVote, setLastVote }: Props) => {
+const VoteReferendum = ({ className, referendumId, address, accounts, onAccountChange, getAccounts, lastVote, setLastVote, isReferendumV2 }: Props) => {
 	const [showModal, setShowModal] = useState<boolean>(false);
 	const [lockedBalance, setLockedBalance] = useState<BN | undefined>(undefined);
 	const { api, apiReady } = useContext(ApiContext);
@@ -65,7 +66,14 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 
 		setLoadingStatus({ isLoading: true, message: 'Waiting for signature' });
 
-		const voteTx = api.tx.democracy.vote(referendumId, { Standard: { balance: lockedBalance, vote: { aye, conviction } } });
+		let voteTx = null;
+
+		if(isReferendumV2){
+			voteTx = api.tx.convictionVoting.vote(referendumId, { Standard: { balance: lockedBalance, vote: { aye, conviction } } });
+		}
+		else{
+			voteTx = api.tx.democracy.vote(referendumId, { Standard: { balance: lockedBalance, vote: { aye, conviction } } });
+		}
 
 		voteTx.signAndSend(address, ({ status }) => {
 			if (status.isInBlock) {
