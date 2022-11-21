@@ -36,17 +36,17 @@ export default styled(Markdown)`
 		}
 
 		h1 {
-			font-size: 3rem;
-			margin-bottom: 3rem;
+			font-size: 1.5rem;
+			margin-bottom: 2rem;
 		}
 
 		h2 {
-			font-size: 2.4rem;
-			margin: 3rem 0 2rem 0;
+			font-size: 1.3rem;
+			margin: 2rem 0 1rem 0;
 		}
 
 		h3, h4 {
-			font-size: lg;
+			font-size: 1.2rem;
 			margin-bottom: 0.8rem;
 		}
 
@@ -79,7 +79,6 @@ export default styled(Markdown)`
 			border-left-style: solid;
 			border-left-width: 0.25rem;
 			border-left-color: grey_primary;
-			font-size: 1.6rem;
 				& > :first-child {
 					margin-top: 0;
 				}
@@ -102,13 +101,15 @@ export default styled(Markdown)`
 
 		code {
 			margin: 0;
-			font-size: sm;
 			border-radius: 3px;
 			color: black_text;
 			white-space: pre;
 			&::before, &::after {
 				letter-spacing: -0.2em;
 			}
+			margin-bottom: -6px; //offset for horizontal scrollbar
+			padding-left: 4px;
+			padding-right: 4px;
 			overflow: auto;
 		}
 	}
@@ -120,12 +121,12 @@ export default styled(Markdown)`
 		}
 
 		h1, h2 {
-			font-size: lg;
+			font-size: 1.3rem;
 			font-weight: 400;
 		}
 
 		h3, h4 {
-			font-size: md;
+			font-size: 1.2rem;
 			font-weight: 500;
 		}
 

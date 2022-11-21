@@ -35,7 +35,12 @@ export const GlobalStyle = createGlobalStyle`
 			-moz-osx-font-smoothing: grayscale;
 			background-color: grey_app_background;
 			color: black_text;
+			scroll-behavior: smooth;
 	}
+
+	ul, ol {
+    list-style: revert !important;
+  }
 
 	pre {
 			display: inline-block;
