@@ -22,6 +22,7 @@ import BountyChildBounties from './Bounty/BountyChildBounties';
 import MotionVoteInfo from './Motions/MotionVoteInfo';
 import VoteMotion from './Motions/VoteMotion';
 import ProposalDisplay from './Proposals';
+import ReferendumV2VoteInfo from './Referenda/ReferendumV2VoteInfo';
 import ReferendumVoteInfo from './Referenda/ReferendumVoteInfo';
 import VoteReferendum from './Referenda/VoteReferendum';
 import EndorseTip from './Tips/EndorseTip';
@@ -326,13 +327,13 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 								</GovSidebarCard>
 							}
 
-							{/* {(onchainId || onchainId === 0) && (onchainLink as OnchainLinkReferendumV2Fragment).onchain_referendumv2 &&
+							{(onchainId || onchainId === 0) && (onchainLink as OnchainLinkReferendumV2Fragment).onchain_referendumv2 &&
 								<div className={className}>
-									<ReferendumVoteInfo
+									<ReferendumV2VoteInfo
 										referendumId={onchainId as number}
 									/>
 								</div>
-							} */}
+							}
 
 							<div>
 								{lastVote != undefined ? lastVote == null ?

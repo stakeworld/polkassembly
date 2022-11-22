@@ -77,9 +77,9 @@ const VotersList = ({ className, referendumId } : Props) => {
 							<h6 className='dashboard-heading'>Voters</h6>
 						</div>
 
-						<div className='flex flex-col justify-between gap-y-1 h-screen overflow-y-auto px-0 md:px-3'>
+						<div className='flex flex-col gap-y-1 max-h-screen overflow-y-auto px-0 md:px-3'>
 							{votersList.map((voteData: any, index:number) =>
-								<div className='flex items-center justify-between mb-4' key={index}>
+								<div className='flex items-center justify-between mb-9' key={index}>
 									<div className='item overflow-ellipsis'>
 										<Address address={voteData.account.address} />
 									</div>
