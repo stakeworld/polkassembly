@@ -113,12 +113,14 @@ const PostReferendumV2Info = ({ onchainLink, setOtherProposalsSidebarAddr }: Pro
 							<div className='text-navBlue'></div>{formattedBlockToTime(deciding.confirming)}
 						</Col>
 					}
+
 					{decisionDeposit && decisionDeposit.amount &&
 						<Col xs={24} md={12}>
 							<h6>Decision Deposit</h6>
 							<div className='text-navBlue'>{formatBnBalance(decisionDeposit.amount, { numberAfterComma: 2, withUnit: true })}</div>
 						</Col>
 					}
+
 					{method &&
 					<>
 						<Row>
@@ -126,22 +128,27 @@ const PostReferendumV2Info = ({ onchainLink, setOtherProposalsSidebarAddr }: Pro
 								<h6>Method</h6>
 								<div className='text-navBlue'>{method}</div>
 							</Col>
+
+							<Col span={24}>
+								<div className='arguments max-w-full'>
+									{preimageArguments && preimageArguments.length
+										? <ArgumentsTableJSONView postArguments={preimageArguments} showAccountArguments={true}  />
+										: null}
+								</div>
+							</Col>
 						</Row>
-						<div className='arguments max-w-full'>
-							{preimageArguments && preimageArguments.length
-								? <ArgumentsTableJSONView postArguments={preimageArguments} showAccountArguments={true}  />
-								: null}
-						</div>
 					</>}
+
 					{metaDescription &&
 					<Col span={24}>
 						<h6>Description</h6>
 						<p className='text-navBlue leading-6 whitespace-pre-wrap'>{metaDescription}</p>
 					</Col>}
-					<Col span={24}>
-						{/* TODO: Update for subscan when they have Gov2 */}
-						{/* <ExternalLinks isReferendum={true} onchainId={onchainLink.onchain_referendumv2[0]?.referendumId} /> */}
-					</Col>
+
+					{/* TODO: Update for subscan when they have Gov2 */}
+					{/* <Col span={24}>
+						<ExternalLinks isReferendum={true} onchainId={onchainLink.onchain_referendumv2[0]?.referendumId} />
+					</Col> */}
 				</Row>
 			</OnchainInfoWrapper>
 		</>

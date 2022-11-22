@@ -37,6 +37,7 @@ import ReferendumV2Post from 'src/screens/Posts/ReferendumV2Post';
 import TechCommProposalPost from 'src/screens/Posts/TechCommProposalPost';
 import TipPost from 'src/screens/Posts/TipPost';
 import TreasuryPost from 'src/screens/Posts/TreasuryPost';
+import PreImages from 'src/screens/PreImages';
 import Profile from 'src/screens/Profile';
 import RequestResetPassword from 'src/screens/RequestResetPassword';
 import ResetPassword from 'src/screens/ResetPassword';
@@ -50,7 +51,8 @@ import { PostOrigin } from 'src/types';
 
 export const gov2Routes = [
 	'gov-2',
-	'track'
+	'track',
+	'preimages'
 ];
 
 for (const trackName of Object.keys(trackInfo)) {
@@ -119,6 +121,8 @@ const SwitchRoutes = () => {
 
 			{/* GOV 2 Routes */}
 			<Route path="/gov-2" element={<Gov2Home />} />
+
+			<Route path="/preimages" element={<PreImages />} />
 
 			<Route path="/root">
 				<Route index element={<TrackListing trackName={PostOrigin.ROOT} />} />

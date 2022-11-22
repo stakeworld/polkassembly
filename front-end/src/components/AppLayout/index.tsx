@@ -160,7 +160,8 @@ const gov2TrackItems: {[x:string]: ItemType[]} = {
 	mainItems: [
 		getSiderMenuItem(PostOrigin.ROOT.split(/(?=[A-Z])/).join(' '), `/${PostOrigin.ROOT.split(/(?=[A-Z])/).join('-').toLowerCase()}`),
 		getSiderMenuItem(PostOrigin.AUCTION_ADMIN.split(/(?=[A-Z])/).join(' '), `/${PostOrigin.AUCTION_ADMIN.split(/(?=[A-Z])/).join('-').toLowerCase()}`),
-		getSiderMenuItem(PostOrigin.STAKING_ADMIN.split(/(?=[A-Z])/).join(' '), `/${PostOrigin.STAKING_ADMIN.split(/(?=[A-Z])/).join('-').toLowerCase()}`)
+		getSiderMenuItem(PostOrigin.STAKING_ADMIN.split(/(?=[A-Z])/).join(' '), `/${PostOrigin.STAKING_ADMIN.split(/(?=[A-Z])/).join('-').toLowerCase()}`),
+		getSiderMenuItem('Preimages', '/preimages')
 	],
 	governanceItems : [],
 	treasuryItems: [],
@@ -368,5 +369,15 @@ export default styled(AppLayout)`
 
 .sidebar .ant-menu-item-selected .anticon {
 	filter: brightness(0) saturate(100%) invert(13%) sepia(94%) saturate(7151%) hue-rotate(321deg) brightness(90%) contrast(101%);
+}
+
+.ant-menu-inline-collapsed-noicon {
+	color: nav_link;
+}
+
+.ant-menu-item-selected {
+	.ant-menu-inline-collapsed-noicon {
+		color: pink_primary;
+	}
 }
 `;
