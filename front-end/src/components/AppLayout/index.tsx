@@ -121,11 +121,9 @@ const gov1Items: {[x:string]: ItemType[]} = {
 	]
 };
 
-const GovSwitchDropdownMenuItem = getSiderMenuItem(<GovernanceSwitchButton className='flex lg:hidden' />, 'gov-2', '');
-
 if(window.screen.width < 1024) {
 	gov1Items.overviewItems = [
-		GovSwitchDropdownMenuItem,
+		getSiderMenuItem(<GovernanceSwitchButton className='flex lg:hidden' />, 'gov-2', ''),
 		...gov1Items.overviewItems
 	];
 }
@@ -162,7 +160,8 @@ const gov2TrackItems: {[x:string]: ItemType[]} = {
 	mainItems: [
 		getSiderMenuItem(PostOrigin.ROOT.split(/(?=[A-Z])/).join(' '), `/${PostOrigin.ROOT.split(/(?=[A-Z])/).join('-').toLowerCase()}`),
 		getSiderMenuItem(PostOrigin.AUCTION_ADMIN.split(/(?=[A-Z])/).join(' '), `/${PostOrigin.AUCTION_ADMIN.split(/(?=[A-Z])/).join('-').toLowerCase()}`),
-		getSiderMenuItem(PostOrigin.STAKING_ADMIN.split(/(?=[A-Z])/).join(' '), `/${PostOrigin.STAKING_ADMIN.split(/(?=[A-Z])/).join('-').toLowerCase()}`)
+		getSiderMenuItem(PostOrigin.STAKING_ADMIN.split(/(?=[A-Z])/).join(' '), `/${PostOrigin.STAKING_ADMIN.split(/(?=[A-Z])/).join('-').toLowerCase()}`),
+		getSiderMenuItem('Preimages', '/preimages')
 	],
 	governanceItems : [],
 	treasuryItems: [],
@@ -191,13 +190,20 @@ for (const trackName of Object.keys(trackInfo)) {
 	}
 }
 
-const gov2OverviewItems = [
+let gov2OverviewItems = [
 	getSiderMenuItem('Overview', '/gov-2', <OverviewIcon className='text-white' />),
 	getSiderMenuItem('Discussions', '/discussions', <DiscussionsIcon className='text-white' />),
 	getSiderMenuItem('Calendar', '/calendar', <CalendarIcon className='text-white' />),
 	getSiderMenuItem('News', '/news', <NewsIcon className='text-white' />),
 	getSiderMenuItem('Parachains', '/parachains', <ParachainsIcon className='text-white' />)
 ];
+
+if(window.screen.width < 1024) {
+	gov2OverviewItems = [
+		getSiderMenuItem(<GovernanceSwitchButton className='flex lg:hidden' />, '/', ''),
+		...gov2OverviewItems
+	];
+}
 
 const gov2Items:MenuProps['items'] = [
 	...gov2OverviewItems,
@@ -233,7 +239,6 @@ const AppLayout = ({ className }: { className?:string }) => {
 
 	const handleMenuClick = (menuItem: any) => {
 		if(['userMenu', 'tracksHeading'].includes(menuItem.key)) return;
-
 		navigate(menuItem.key);
 		setSidedrawer(false);
 	};
@@ -364,5 +369,15 @@ export default styled(AppLayout)`
 
 .sidebar .ant-menu-item-selected .anticon {
 	filter: brightness(0) saturate(100%) invert(13%) sepia(94%) saturate(7151%) hue-rotate(321deg) brightness(90%) contrast(101%);
+}
+
+.ant-menu-inline-collapsed-noicon {
+	color: nav_link;
+}
+
+.ant-menu-item-selected {
+	.ant-menu-inline-collapsed-noicon {
+		color: pink_primary;
+	}
 }
 `;

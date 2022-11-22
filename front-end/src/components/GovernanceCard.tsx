@@ -52,7 +52,7 @@ const GovernanceCard = function ({
 	topic
 }:GovernanceProps) {
 	const currentUser = useContext(UserDetailsContext);
-	let titleString = method || tipReason ||  title || noTitle;
+	let titleString = title || method || tipReason || noTitle;
 
 	if(tipReason) {
 		const titleTrimmed = titleString.match(/.{1,80}(\s|$)/g)![0];
