@@ -15,20 +15,20 @@ interface Props {
 const MembersListing = ({ className, data, prime } : Props) => {
 
 	return (
-		<ul className={`${className} motions__list`}>
+		<div className={`${className} motions__list`}>
 			{data.map(
 				(member) => (
-					<li key={member} className='my-5'>
+					<div key={member} className='my-5'>
 						{<Link to={`/profile/${member}?council=true`}>
 							<CouncilMembersCard
 								data={member}
 								prime={prime}
 							/>
 						</Link>}
-					</li>
+					</div>
 				)
 			)}
-		</ul>
+		</div>
 	);
 };
 

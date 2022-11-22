@@ -18,10 +18,9 @@ interface Props{
 	text?: string
 	topic?: string
 	username?: string
-	hideCreatedAt?: boolean
 }
 
-const CreationLabel = ({ className, children, created_at, defaultAddress, hideCreatedAt=false, text, username, topic } : Props) => {
+const CreationLabel = ({ className, children, created_at, defaultAddress, text, username, topic } : Props) => {
 	const relativeCreatedAt = getRelativeCreatedAt(created_at);
 
 	return <div className={`${className} text-navBlue text-xs flex flex-col md:flex-row md:items-center`}>
@@ -39,9 +38,9 @@ const CreationLabel = ({ className, children, created_at, defaultAddress, hideCr
 			}
 		</div>
 
-		<div className='flex items-center mt-1 md:mt-0'>
-			{topic && <Divider className='ml-0 hidden md:inline-block' type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />}
-			{!hideCreatedAt && created_at && <span className='flex items-center'> <span className='mx-1 hidden md:block'>|</span> <ClockCircleOutlined className='mr-1' />{relativeCreatedAt}</span>}
+		<div className='flex items-center mt-1 min-[365px]:mt-0'>
+			{(topic || text) && <Divider className='ml-1 hidden min-[365px]:inline-block' type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />}
+			{created_at && <span className='flex items-center'> <ClockCircleOutlined className='mr-1' />{relativeCreatedAt}</span>}
 			{children}
 		</div>
 	</div>;

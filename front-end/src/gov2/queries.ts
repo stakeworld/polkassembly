@@ -66,7 +66,7 @@ export const ALL_GOV2_POSTS = gql`
 
 export const GOV2_POSTS_BY_TRACK = gql`
     query GetGov2PostsByTrack($track: Int!, $limit: Int! = 10) {
-        posts(limit: $limit, where: {onchain_link: {onchain_referendumv2_id: {_is_null: false}, track: {_eq: $track}}}, order_by: {id: desc}) {
+        posts(limit: $limit, where: {onchain_link: {id: {_is_null: false}, track: {_eq: $track}}}, order_by: {id: desc}) {
             id
             title
             author {

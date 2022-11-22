@@ -58,12 +58,11 @@ export const Comment = ({ className, comment, refetch } : Props) => {
 			/>
 			<div className='w-full pr-5'>
 				<CreationLabel
-					className='creation-label py-2 px-4 bg-comment_bg rounded-t-md'
+					className='creation-label py-2 px-0 md:px-4 bg-comment_bg rounded-t-md'
 					created_at={created_at}
 					defaultAddress={defaultAddress}
 					text={'commented'}
 					username={author.username}
-					hideCreatedAt={false}
 				>
 					<UpdateLabel
 						created_at={created_at}

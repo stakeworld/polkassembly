@@ -30,13 +30,13 @@ const TipListing = ({ className, data, loading } : Props) => {
 	if (noPost || !atLeastOneCurrentTip) return <div className={className}><PostEmptyState /></div>;
 
 	return (
-		<ul className={`${className} proposals__list`}>
+		<div className={`${className} proposals__list`}>
 			{data.posts.map(
 				(post) => {
 					const onchainId = post.onchain_link?.onchain_tip_id;
 
 					return !!post?.author?.username && !!post?.onchain_link?.onchain_tip.length &&
-						<li key={post.id} className='my-5'>
+						<div key={post.id} className='my-5'>
 							{<Link to={`/tip/${onchainId}`}>
 								<GovernanceCard
 									postReactions={(post as any)?.post_reactions}
@@ -52,11 +52,11 @@ const TipListing = ({ className, data, loading } : Props) => {
 									created_at={post.created_at}
 								/>
 							</Link>}
-						</li>
+						</div>
 					;
 				}
 			)}
-		</ul>
+		</div>
 	);
 };
 

@@ -274,6 +274,7 @@ export const referendumV2Subscription = gql`
                     author
                     hash
                 }
+                submitted
             }
         }
     }

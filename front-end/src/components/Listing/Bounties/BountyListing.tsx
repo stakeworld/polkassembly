@@ -30,13 +30,13 @@ const BountyListing = ({ className, data, loading } : Props) => {
 	if (noPost || !atLeastOneCurrentBounty) return <div className={className}><PostEmptyState /></div>;
 
 	return (
-		<ul className={`${className} bounties__list`}>
+		<div className={`${className}`}>
 			{data.posts.map(
 				(post) => {
 					const onchainId = post.onchain_link?.onchain_bounty_id;
 
 					return !!post?.author?.username && !!post.onchain_link?.onchain_bounty.length &&
-						<li key={post.id} className='my-5'>
+						<div key={post.id} className='my-5'>
 							{<Link to={`/bounty/${onchainId}`}>
 								<GovernanceCard
 									postReactions={(post as any)?.post_reactions}
@@ -51,11 +51,11 @@ const BountyListing = ({ className, data, loading } : Props) => {
 									created_at={post.created_at}
 								/>
 							</Link>}
-						</li>
+						</div>
 					;
 				}
 			)}
-		</ul>
+		</div>
 	);
 };
 

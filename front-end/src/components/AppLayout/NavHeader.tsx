@@ -6,14 +6,15 @@ import { BellOutlined, MenuOutlined } from '@ant-design/icons';
 import { Space } from 'antd';
 import { Header } from 'antd/lib/layout/layout';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useUserDetailsContext } from 'src/context';
 import NetworkDropdown from 'src/ui-components/NetworkDropdown';
 import SearchBar from 'src/ui-components/SearchBar';
 import styled  from 'styled-components';
 
 import { ReactComponent as PALogoBlack } from '../../assets/pa-logo-black.svg';
-import GovernanceSwitchDropdown from './GovernanceSwitchDropdown';
+import GovernanceSwitchButton from './GovernanceSwitchButton';
+import { gov2Routes } from './SwitchRoutes';
 
 interface Props {
 	className?: string
@@ -23,8 +24,10 @@ interface Props {
 
 const NavHeader = ({ className, sidedrawer, setSidedrawer } : Props) => {
 	const currentUser = useUserDetailsContext();
-
+	const { pathname } = useLocation();
 	const { username } = currentUser;
+
+	const isGov2Route: boolean = gov2Routes.includes(pathname.split('/')[1]);
 
 	return (
 		<Header className={`${className} sticky top-0 flex items-center bg-white h-[60px] max-h-[60px] px-6 z-50 leading-normal`}>
@@ -32,10 +35,10 @@ const NavHeader = ({ className, sidedrawer, setSidedrawer } : Props) => {
 				setSidedrawer(!sidedrawer);
 			}} />
 			<nav className='w-full lg:w-5/6 lg:mx-auto flex items-center justify-between'>
-				<Link className='flex' to='/'><PALogoBlack /></Link>
+				<Link className='flex' to={isGov2Route ? '/gov-2' : '/'}><PALogoBlack /></Link>
 
-				<div className="flex items-center justify-between w-max lg:w-[60%] xl:w-[54%]">
-					<GovernanceSwitchDropdown className='hidden lg:block min-w-[120px] mr-6 xl:mr-0' />
+				<div className="flex items-center justify-between w-max lg:w-[82%] xl:w-[63%] 2xl:w-[55%]">
+					<GovernanceSwitchButton className='hidden lg:flex min-w-[120px] mr-6 lg:mr-5 xl:mr-0' />
 
 					<Space className='flex items-center justify-between'>
 						<SearchBar/>
@@ -45,7 +48,7 @@ const NavHeader = ({ className, sidedrawer, setSidedrawer } : Props) => {
 						<NetworkDropdown setSidedrawer={setSidedrawer} />
 						{!username
 							&& <div className='flex items-center lg:gap-x-2 ml-2 lg:ml-4'>
-								<Link className='text-navBlue hover:text-pink_primary font-medium' onClick={() => {setSidedrawer(true);}} to='/login'>Login</Link>
+								<Link className='text-navBlue hover:text-pink_primary font-medium' onClick={() => {setSidedrawer(false);}} to='/login'>Login</Link>
 							</div>
 						}
 					</Space>

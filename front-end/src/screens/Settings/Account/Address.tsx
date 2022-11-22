@@ -200,7 +200,7 @@ const Address: FC<Props> = ({ dismissModal ,open }) => {
 		return (
 			<article className='flex flex-col gap-y-2'>
 				<label className='font-medium text-sm tracking-wide text-sidebarBlue'>{title}</label>
-				<ul className='flex flex-col gap-y-4'>
+				<div className='flex flex-col gap-y-4'>
 					{accounts.map(account => {
 						const address = getEncodedAddress(account.address);
 						const isLinked = address && currentUser.addresses?.includes(address);
@@ -208,7 +208,7 @@ const Address: FC<Props> = ({ dismissModal ,open }) => {
 							return null;
 						}
 						return address &&
-									<li key={address} className='grid grid-cols-6 gap-x-2 items-center'>
+									<div key={address} className='grid grid-cols-6 gap-x-2 items-center'>
 										<AddressComponent
 											className='col-span-3'
 											address={address}
@@ -237,9 +237,9 @@ const Address: FC<Props> = ({ dismissModal ,open }) => {
 												</div>
 											</>
 										}
-									</li>;
+									</div>;
 					})}
-				</ul>
+				</div>
 			</article>
 		);
 	};

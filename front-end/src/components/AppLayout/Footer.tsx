@@ -47,19 +47,19 @@ const Footer = ({ className } : { className?:string }) => {
 							<p className="text-lg font-medium text-sidebarBlue">Help Center</p>
 
 							<nav aria-label="Footer About Nav" className="mt-4 md:mt-8">
-								<ul className="space-y-4 text-sm">
-									<li>
+								<div className="space-y-4 text-sm">
+									<div>
 										<Link to='/terms-and-conditions'>
 											Terms and Conditions
 										</Link>
-									</li>
+									</div>
 
-									<li>
+									<div>
 										<a href='https://github.com/premiurly/polkassembly/issues' target='_blank' rel='noreferrer'>
 											Report an Issue
 										</a>
-									</li>
-								</ul>
+									</div>
+								</div>
 							</nav>
 						</div>
 
@@ -67,19 +67,19 @@ const Footer = ({ className } : { className?:string }) => {
 							<p className="text-lg font-medium text-sidebarBlue">Our Services</p>
 
 							<nav aria-label="Footer Services Nav" className="mt-4 md:mt-8">
-								<ul className="space-y-4 text-sm">
-									<li>
+								<div className="space-y-4 text-sm">
+									<div>
 										<Link to={'/terms-of-website'} >
 											Terms of Website
 										</Link>
-									</li>
+									</div>
 
-									<li>
+									<div>
 										<Link to={'/privacy'}>
 											Privacy Policy
 										</Link>
-									</li>
-								</ul>
+									</div>
+								</div>
 							</nav>
 						</div>
 					</div>
