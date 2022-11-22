@@ -108,7 +108,7 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 
 					<div className='flex flex-col text-xs xl:text-sm xl:max-h-screen gap-y-1 overflow-y-auto px-0 text-sidebarBlue'>
 						<div className='flex text-xs items-center justify-between mb-9 font-semibold'>
-							<div className='w-[110px]'>Voter</div>
+							<div className='w-[135px]'>Voter</div>
 							<div><span className='hidden md:inline-block'>Amount</span><span className='inline-block md:hidden'>Amt.</span></div>
 							<div>Conviction</div>
 							<div>Vote</div>
