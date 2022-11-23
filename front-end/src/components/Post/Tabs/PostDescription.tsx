@@ -200,8 +200,6 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 
 				<div className='w-full'>
 					<div className='text-sidebarBlue text-sm font-medium mb-5'>{comments.length} comments</div>
-					{ id && <PostCommentForm postId={post.id} refetch={refetch} /> }
-
 					{ !!comments?.length &&
 						<>
 							<Comments
@@ -219,6 +217,7 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 							</div>: null}
 						</>
 					}
+					{ id && <PostCommentForm postId={post.id} refetch={refetch} /> }
 				</div>
 			</div>
 
