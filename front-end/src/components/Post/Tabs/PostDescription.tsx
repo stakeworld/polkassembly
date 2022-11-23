@@ -207,12 +207,12 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 								comments={comments}
 								refetch={refetch}
 							/>
-							{post?.comments.length > 8 ?<div>
+							{post?.comments.length > 8 && post?.comments.length !== comments.length ?<div>
 								<Button
 									className='border-none outline-none bg-transparent shadow-none text-sm font-medium text-sidebarBlue'
 									onClick={() => setComments(post?.comments)}
 								>
-									Load {post?.comments.length - comments.length} older comments
+									Load older comments
 								</Button>
 							</div>: null}
 						</>
