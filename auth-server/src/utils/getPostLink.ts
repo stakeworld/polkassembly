@@ -9,10 +9,6 @@ import { PostType, PostTypeEnum } from '../types';
  */
 export default (type: PostType, id: number | string): string => {
 	const DOMAIN = process.env.DOMAIN_NAME && process.env.DOMAIN_PROTOCOL ? `${process.env.DOMAIN_PROTOCOL}${process.env.DOMAIN_NAME}` : 'https://test.polkassembly.io';
-	let postType = type;
-	if (postType === PostTypeEnum.REFERENDUM_V2) {
-		postType = PostTypeEnum.REFERENDUM;
-	}
-	return `${DOMAIN}/${postType}/${id}`;
+	return `${DOMAIN}/${type}/${id}`;
 };
 

@@ -144,6 +144,32 @@ export const newProposalCreatedEmailTemplate = container(`
     </p>
 `);
 
+export const ownGovernanceV2ReferendaCreatedEmailTemplate = container(`
+    <p>
+        Hi <%= username %>!<br/><br/>
+
+        You have submitted a Governance v2 Referendum on chain.<br />
+        Click on the following link to login to Polkassembly and edit the referendaum's description and title: <a href="<%= postUrl %>"><%= postUrl %></a>.<br /><br />
+
+        You can deactivate this notification in your notification settings: <a href="<%= domain %>/notification-settings"><%= domain %>/notification-settings</a><br /><br />
+
+        Polkassembly Team
+    </p>
+`);
+
+export const newGovernanceV2CreatedEmailTemplate = container(`
+    <p>
+        Hi <%= username %>!<br/><br/>
+
+        There is a new Governance v2 Referendum created on chain.<br />
+        Click on the following link to check it out: <a href="<%= postUrl %>"><%= postUrl %></a>.<br /><br />
+
+        You can deactivate this notification in your notification settings: <a href="<%= domain %>/notification-settings"><%= domain %>/notification-settings</a><br /><br />
+
+        Polkassembly Team
+    </p>
+`);
+
 export const reportContentEmailTemplate = container(`
     <p>
         Content Reported.<br />
