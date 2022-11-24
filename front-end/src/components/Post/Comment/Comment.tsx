@@ -29,11 +29,11 @@ interface Props{
 export const Comment = ({ className, comment, refetch } : Props) => {
 	const { author, content, created_at, id, replies, updated_at } = comment;
 	const { hash } = useLocation();
-	const commentRef = useRef<HTMLDivElement>(null);
+	const commentScrollRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		if (hash === `#${id}`) {
-			window.scrollTo(0, commentRef.current?.offsetTop || 0);
+		if (commentScrollRef && commentScrollRef.current && hash === `#${id}`) {
+			commentScrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
 		}
 	}, [hash, id]);
 
@@ -49,7 +49,9 @@ export const Comment = ({ className, comment, refetch } : Props) => {
 	const defaultAddress = author[defaultAddressField];
 
 	return (
-		<div id={id} ref={commentRef} className={`${className} flex gap-x-4 mb-9`}>
+		<div className={`${className} flex gap-x-4 mb-9`}>
+			{/* Offset div to scroll to because scrollIntoView doesn't support offset */}
+			<div id={id} ref={commentScrollRef} className="invisible absolute mt-[-100px]"></div>
 			<UserAvatar
 				className='tm-1 hidden md:inline-block flex-none'
 				username={author.username}
