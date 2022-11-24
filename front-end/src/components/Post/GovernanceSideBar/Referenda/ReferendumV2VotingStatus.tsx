@@ -33,10 +33,12 @@ const ReferendumV2VotingStatus = ({ className, referendumId }: Props) => {
 
 		const parsedReferendumInfo: any = referendumInfoOf.toJSON();
 
+		console.log('parsedReferendumInfo : ', parsedReferendumInfo);
+
 		const voteInfo = {
-			aye_amount: new BN(parsedReferendumInfo.ongoing.tally.ayes.slice(2), 'hex'),
-			nay_amount: new BN(parsedReferendumInfo.ongoing.tally.nays),
-			support_amount: new BN(parsedReferendumInfo.ongoing.tally.support.slice(2), 'hex')
+			aye_amount: typeof parsedReferendumInfo.ongoing.tally.ayes === 'string' ? new BN(parsedReferendumInfo.ongoing.tally.ayes.slice(2), 'hex') : new BN(parsedReferendumInfo.ongoing.tally.ayes),
+			nay_amount: typeof parsedReferendumInfo.ongoing.tally.nays === 'string' ? new BN(parsedReferendumInfo.ongoing.tally.nays.slice(2), 'hex') : new BN(parsedReferendumInfo.ongoing.tally.nays),
+			support_amount: typeof parsedReferendumInfo.ongoing.tally.support === 'string' ? new BN(parsedReferendumInfo.ongoing.tally.support.slice(2), 'hex') : new BN(parsedReferendumInfo.ongoing.tally.support)
 		};
 
 		setReferendumInfo(voteInfo);
