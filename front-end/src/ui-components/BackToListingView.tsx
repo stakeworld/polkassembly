@@ -6,7 +6,6 @@ import { LeftOutlined } from '@ant-design/icons';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { PostCategory } from 'src/global/post_categories';
-import { trackInfo } from 'src/global/post_trackInfo';
 
 const BackToListingView = ({ postCategory, trackName } : { postCategory?:PostCategory, trackName?:string }) => {
 	let path: string = '';
@@ -56,7 +55,7 @@ const BackToListingView = ({ postCategory, trackName } : { postCategory?:PostCat
 		<Link className='text-sidebarBlue hover:text-pink_primary' to={`/${path}`}>
 			<div className='flex items-center'>
 				<LeftOutlined className='text-xs mr-2' />
-				<span className='text-sm font-medium'>Back to <span className='capitalize'>{trackName ? trackInfo[trackName].displayName : listingPageText}</span></span>
+				<span className='text-sm font-medium'>Back to <span className='capitalize'>{trackName ? trackName.split(/(?=[A-Z])/).join(' ') : listingPageText}</span></span>
 			</div>
 		</Link>
 	);

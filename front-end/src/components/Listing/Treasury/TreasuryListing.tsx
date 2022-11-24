@@ -20,13 +20,13 @@ const TreasuryListing = ({ className, data, loading } : Props) => {
 	if (!data.posts || !data.posts.length) return <div className={className}><PostEmptyState /></div>;
 
 	return (
-		<ul className={`${className}`}>
+		<div className={`${className}`}>
 			{data.posts.map(
 				(post) => {
 					const onchainId = post.onchain_link?.onchain_treasury_proposal_id;
 
 					return !!post?.author?.username && post.onchain_link &&
-						<li key={post.id} className='my-5'>
+						<div key={post.id} className='my-5'>
 							{<Link to={`/treasury/${onchainId}`}>
 								<GovernanceCard
 									postReactions={(post as any)?.post_reactions}
@@ -41,11 +41,11 @@ const TreasuryListing = ({ className, data, loading } : Props) => {
 									created_at={post.created_at}
 								/>
 							</Link>}
-						</li>
+						</div>
 					;
 				}
 			)}
-		</ul>
+		</div>
 	);
 };
 

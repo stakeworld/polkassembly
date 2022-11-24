@@ -21,9 +21,10 @@ interface Props {
 	popupContent?: string
 	disableAddress?:boolean
 	shortenAddressLength?:number
+	textClassName?:string
 }
 
-const Address = ({ address, className, displayInline, disableIdenticon, extensionName, popupContent, disableAddress, shortenAddressLength }: Props): JSX.Element => {
+const Address = ({ address, className, displayInline, disableIdenticon, extensionName, popupContent, disableAddress, textClassName, shortenAddressLength }: Props): JSX.Element => {
 	const { api, apiReady } = useContext(ApiContext);
 	const [mainDisplay, setMainDisplay] = useState<string>('');
 	const [sub, setSub] = useState<string | null>(null);
@@ -111,13 +112,13 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 							</Tooltip>
 						</Space>
 						: <>
-							<Space className={'description display_inline'}>
+							<div className={'description display_inline flex items-center'}>
 								{identity && mainDisplay && <IdentityBadge identity={identity} flags={flags} />}
-								<span className='identityName flex flex-col gap-y-1'>
-									{ t1 && <span className='truncate text-navBlue'>{ t1 }</span> }
-									{sub && <span className='sub truncate text-navBlue'>{sub}</span>}
+								<span title={mainDisplay || address} className={`${textClassName} truncate identityName flex gap-x-1 ml-0.5 pl-1.5`}>
+									{ t1 && <span className={`truncate text-navBlue ${identity && mainDisplay && '-ml-1.5'}`}>{ t1 }</span> }
+									{sub && <span className={'sub truncate text-navBlue'}>{sub}</span>}
 								</span>
-							</Space>
+							</div>
 						</>
 					: extensionName || mainDisplay
 						? popupContent
@@ -127,8 +128,8 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 									<Space className={'header'}>
 										{identity && mainDisplay && !extensionName && <IdentityBadge identity={identity} flags={flags} />}
 										<span className='identityName flex flex-col gap-y-1'>
-											{ t2 && <span className='truncate text-navBlue'>{ t2 }</span> }
-											{!extensionName && sub && <span className='sub truncate text-navBlue'>{sub}</span>}
+											{ t2 && <span className={`${textClassName} truncate text-navBlue`}>{ t2 }</span> }
+											{!extensionName && sub && <span className={`${textClassName} sub truncate text-navBlue`}>{sub}</span>}
 										</span>
 									</Space>
 									<div className={'description display_inline'}>{shortenAddress(address, shortenAddressLength)}</div>
@@ -138,8 +139,8 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 								<Space className={'header'}>
 									{identity && mainDisplay && !extensionName && <IdentityBadge identity={identity} flags={flags} />}
 									<span className='identityName flex flex-col gap-y-1'>
-										{ t2 && <span className='truncate text-navBlue'>{ t2 }</span> }
-										{!extensionName && sub && <span className='sub truncate text-navBlue'>{sub}</span>}
+										{ t2 && <span className={`${textClassName} truncate text-navBlue`}>{ t2 }</span> }
+										{!extensionName && sub && <span className={`${textClassName} sub truncate text-navBlue`}>{sub}</span>}
 									</span>
 								</Space>
 								<div className={'description text-xs ml-0.5'}>{shortenAddress(address, shortenAddressLength)}</div>

@@ -9,6 +9,7 @@ import React, { useEffect } from 'react';
 import { useGetTrackInfoLazyQuery } from 'src/generated/graphql';
 import { chainProperties } from 'src/global/networkConstants';
 import { trackInfo } from 'src/global/post_trackInfo';
+import { useBlockTime } from 'src/hooks';
 import ErrorAlert from 'src/ui-components/ErrorAlert';
 import Loader from 'src/ui-components/Loader';
 import formatBnBalance from 'src/util/formatBnBalance';
@@ -23,6 +24,10 @@ const currentNetwork = getNetwork();
 
 const AboutTrackCard = ({ className, trackName } : Props) => {
 	const trackMetaData = trackInfo[trackName];
+
+	const { blocktime } = useBlockTime();
+
+	const blockTimeSeconds = blocktime / 1000;
 
 	const [getData, { called, data, error, loading, refetch }] = useGetTrackInfoLazyQuery({ variables: {
 		track: trackMetaData.trackId
@@ -41,7 +46,7 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 		<div className={`${className} bg-white drop-shadow-md rounded-md p-4 md:p-8 text-sidebarBlue`}>
 			<div className="flex justify-between capitalize font-medium">
 				<h2 className="text-lg capitalize">
-						About {trackMetaData.displayName}
+						About {trackName.split(/(?=[A-Z])/).join(' ')}
 				</h2>
 
 				<h2 className="text-sm text-pink_primary">{trackMetaData.group}</h2>
@@ -53,7 +58,7 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 
 			{!data && <Loader />}
 
-			{data && data.track_info && data.track_info.length && !error && <div className="mt-8 text-xs w-full xl:w-5/6">
+			{data && data.track_info && data.track_info.length && !error ? <div className="mt-8 text-xs w-full max-w-[1000px]">
 				<Spin spinning={!data || loading} indicator={<LoadingOutlined />}>
 					<Row gutter={[{ xs: 4, sm: 4, md: 16, lg: 32, xl: 32, xxl: 32 }, 16]}>
 						<Col xs={24} sm={24} md={12} lg={12} xl={8}>
@@ -63,9 +68,9 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 							</Row>
 							}
 
-							{data?.track_info[0].decision_deposit && <Row className='mt-2'>
-								<Col span={15} className='font-bold'>Decision Deposit ({chainProperties[currentNetwork].tokenSymbol}):</Col>
-								<Col span={9}>{data?.track_info[0].decision_deposit && formatBnBalance(data?.track_info[0].decision_deposit, { numberAfterComma: 2, withUnit: false })}</Col>
+							{data?.track_info[0].decision_deposit && <Row className='mt-3'>
+								<Col span={15} className='font-bold'>Decision Deposit:</Col>
+								<Col span={9}>{data?.track_info[0].decision_deposit && formatBnBalance(data?.track_info[0].decision_deposit, { numberAfterComma: 2, withUnit: false })}({chainProperties[currentNetwork].tokenSymbol})</Col>
 							</Row>
 							}
 						</Col>
@@ -73,24 +78,24 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 						<Col xs={24} sm={24} md={12} lg={12} xl={8}>
 							{data?.track_info[0].prepare_period && <Row>
 								<Col span={15} className='font-bold'>Prepare Period:</Col>
-								<Col span={9}>{data?.track_info[0].prepare_period}</Col>
+								<Col span={9} className='whitespace-pre'>{data?.track_info[0].prepare_period * blockTimeSeconds} sec</Col>
 							</Row>}
 
-							{data?.track_info[0].confirm_period && <Row className='mt-2'>
+							{data?.track_info[0].confirm_period && <Row className='mt-3'>
 								<Col span={15} className='font-bold'>Confirm Period:</Col>
-								<Col span={9}>{data?.track_info[0].confirm_period}</Col>
+								<Col span={9} className='whitespace-pre'>{(data?.track_info[0].confirm_period * blockTimeSeconds)/3600} hrs</Col>
 							</Row>}
 						</Col>
 
 						<Col xs={24} sm={24} md={12} lg={12} xl={8}>
 							{data?.track_info[0].min_enactment_period &&<Row>
-								<Col span={15} className='font-bold'>Minimum Enactment Period:</Col>
-								<Col span={9}>{data?.track_info[0].min_enactment_period}</Col>
+								<Col span={19} className='font-bold'>Min Enactment Period:</Col>
+								<Col span={5} className='whitespace-pre'>{(data?.track_info[0].min_enactment_period * blockTimeSeconds)/3600} hrs</Col>
 							</Row>}
 
-							{data?.track_info[0].decision_period && <Row className='mt-2'>
-								<Col span={15} className='font-bold'>Decision Period:</Col>
-								<Col span={9}>{data?.track_info[0].decision_period}</Col>
+							{data?.track_info[0].decision_period && <Row className='mt-3'>
+								<Col span={19} className='font-bold'>Decision Period:</Col>
+								<Col span={5} className='whitespace-pre'>{(data?.track_info[0].decision_period * blockTimeSeconds)/86400} days</Col>
 							</Row>}
 						</Col>
 
@@ -107,7 +112,10 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 						</Col> */}
 					</Row>
 				</Spin>
-			</div>}
+			</div>
+				:
+				<></>
+			}
 		</div>
 	);
 };
