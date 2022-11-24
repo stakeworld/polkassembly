@@ -55,7 +55,7 @@ export default (onchainLink: OnchainLinkType): PostType => {
 	}
 
 	if (onchain_referendumv2_id === 0 || onchain_referendumv2_id) {
-		type = PostTypeEnum.REFERENDUM_V2;
+		type = PostTypeEnum.REFERENDA;
 	}
 
 	return type;

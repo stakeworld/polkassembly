@@ -269,7 +269,7 @@ export enum PostTypeEnum {
     REFERENDUM = 'referendum',
     TECH = 'tech',
     CHILD_BOUNTY = 'child_bounty',
-    REFERENDUM_V2 = 'referendum_v2',
+    REFERENDA = 'referenda',
 }
 
 export type PostType = PostTypeEnum;

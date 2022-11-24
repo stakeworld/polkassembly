@@ -11,7 +11,9 @@ import User from '../model/User';
 import { CommentCreationHookDataType, PostType, PostTypeEnum } from '../types';
 import {
 	commentMentionEmailTemplate,
+	newGovernanceV2CreatedEmailTemplate,
 	newProposalCreatedEmailTemplate,
+	ownGovernanceV2ReferendaCreatedEmailTemplate,
 	ownProposalCreatedEmailTemplate,
 	postSubscriptionMailTemplate,
 	reportContentEmailTemplate,
@@ -170,7 +172,7 @@ export const sendOwnProposalCreatedEmail = (user: User, type: PostType, url: str
 		return;
 	}
 
-	const text = ejs.render(ownProposalCreatedEmailTemplate, {
+	const text = ejs.render(type === PostTypeEnum.REFERENDA ? ownGovernanceV2ReferendaCreatedEmailTemplate : ownProposalCreatedEmailTemplate, {
 		domain: DOMAIN,
 		postUrl: url,
 		type,
@@ -203,7 +205,7 @@ export const sendNewProposalCreatedEmail = (user: User, type: PostType, url: str
 		return;
 	}
 
-	const text = ejs.render(newProposalCreatedEmailTemplate, {
+	const text = ejs.render(type === PostTypeEnum.REFERENDA ? newGovernanceV2CreatedEmailTemplate : newProposalCreatedEmailTemplate, {
 		domain: DOMAIN,
 		postUrl: url,
 		type,
