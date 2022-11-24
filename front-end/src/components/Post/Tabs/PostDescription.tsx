@@ -175,12 +175,10 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 
 			{!isEditing && <div className='flex xl:hidden mb-8 mx-2'><Sidebar /></div>}
 
-			<div className='flex relative'>
+			<div className='block xl:grid grid-cols-12'>
 				{
 					onchain_link && !!post.comments?.length && currentBlock && timelines.length > 0 &&
-					<div style={{
-						height: `${window.innerHeight}px`
-					}} className='hidden xl:flex mr-4 min-w-[100px] -ml-4 sticky top-[10%] pt-10 xl:items-center'>
+					<div className='h-screen hidden xl:block col-start-1 col-end-2 min-w-[100px] -ml-4 sticky top-[10%] pt-10'>
 						<Timeline className='flex flex-col h-full w-full' mode='right'>
 							{timelines.map(({ date, id, isToday, status }) => {
 								return (
@@ -205,12 +203,11 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 					</div>
 				}
 
-				<div className='w-full'>
+				<div className='col-start-1 xl:col-start-3 col-end-13'>
 					<div className='text-sidebarBlue text-sm font-medium mb-5'>{comments.length} comments</div>
 					{ !!comments?.length &&
 						<>
 							<Comments
-								className='ml-0 xl:ml-4 xl:max-w-[490px] 2xl:max-w-[100%]'
 								comments={comments}
 								refetch={refetch}
 							/>
