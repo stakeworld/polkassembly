@@ -9,6 +9,7 @@ import React, { memo, useContext, useEffect, useMemo, useState } from 'react';
 import { ApiContext } from 'src/context/ApiContext';
 import subscanApiHeaders from 'src/global/subscanApiHeaders';
 import { useFetch } from 'src/hooks';
+import { getFailingThreshold } from 'src/polkassemblyutils';
 import { LoadingStatusType } from 'src/types';
 import GovSidebarCard from 'src/ui-components/GovSidebarCard';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
@@ -25,14 +26,24 @@ interface Props {
 	referendumId: number
 }
 
+type VoteInfo = {
+	aye_amount: BN;
+	aye_without_conviction: BN;
+	isPassing: boolean | null;
+	nay_amount: BN;
+	nay_without_conviction: BN;
+	turnout: BN;
+	voteThreshold: string;
+}
+
 const ZERO = new BN(0);
 const NETWORK = getNetwork();
 
 const ReferendumVoteInfo = ({ className, referendumId }: Props) => {
 	const { api, apiReady } = useContext(ApiContext);
-	const [totalIssuance, setTotalIssuance] = useState(ZERO);
+	const [totalIssuance, setTotalIssuance] = useState<BN | null>(null);
 	const [loadingStatus, setLoadingStatus] = useState<LoadingStatusType>({ isLoading: true, message:'Loading votes' });
-	const [voteInfo, setVoteInfo] = useState<any | null>(null);
+	const [voteInfo, setVoteInfo] = useState<VoteInfo | null>(null);
 
 	const { data: voteInfoData, error:voteInfoError } = useFetch<any>(
 		`https://${NETWORK}.api.subscan.io/api/scan/democracy/referendum`,
@@ -85,21 +96,15 @@ const ReferendumVoteInfo = ({ className, referendumId }: Props) => {
 		if(!voteInfoError && voteInfoData && voteInfoData.data && voteInfoData.data.info) {
 			const info = voteInfoData.data.info;
 
-			const voteInfo = {
+			const voteInfo: VoteInfo = {
 				aye_amount : ZERO,
 				aye_without_conviction: ZERO,
-				isPassing: true,
+				isPassing: null,
 				nay_amount: ZERO,
 				nay_without_conviction: ZERO,
 				turnout: ZERO,
 				voteThreshold: ''
 			};
-
-			if (info.status === 'notPassed'){
-				voteInfo.isPassing = false;
-			} else {
-				voteInfo.isPassing = true;
-			}
 
 			voteInfo.aye_amount = new BN(info.aye_amount);
 			voteInfo.aye_without_conviction = new BN(info.aye_without_conviction);
@@ -107,6 +112,31 @@ const ReferendumVoteInfo = ({ className, referendumId }: Props) => {
 			voteInfo.nay_without_conviction = new BN(info.nay_without_conviction);
 			voteInfo.turnout = new BN(info.turnout);
 			voteInfo.voteThreshold = info.vote_threshold.split(/(?=[A-Z])/).join(' ');
+
+			if(totalIssuance !== null) {
+				let capitalizedVoteThreshold = info.vote_threshold.toLowerCase();
+				capitalizedVoteThreshold = `${capitalizedVoteThreshold.charAt(0).toUpperCase()}${capitalizedVoteThreshold.slice(1)}`;
+				//nays needed for a referendum to fail
+				const { failingThreshold } = getFailingThreshold({
+					ayes: voteInfo.aye_amount,
+					ayesWithoutConviction: voteInfo.aye_without_conviction,
+					threshold: capitalizedVoteThreshold,
+					totalIssuance: totalIssuance
+				});
+
+				if(failingThreshold){
+					try {
+						if(voteInfo.nay_amount.gte(failingThreshold)) {
+							voteInfo.isPassing = false;
+						} else {
+							voteInfo.isPassing = true;
+						}
+					} catch(e) {
+						console.log('Error calculating Passing state: ', e);
+					}
+				}
+			}
+
 			setVoteInfo(voteInfo);
 		}
 
@@ -114,17 +144,17 @@ const ReferendumVoteInfo = ({ className, referendumId }: Props) => {
 			isLoading: false,
 			message: 'Loading Data'
 		});
-	}, [voteInfoData, voteInfoError]);
+	}, [voteInfoData, voteInfoError, totalIssuance]);
 
 	const turnoutPercentage = useMemo(() => {
-		if (totalIssuance && totalIssuance.isZero()) {
+		if (!voteInfo || !totalIssuance) {
 			return 0;
 		}
 		// BN doens't handle floats. If we devide a number by a bigger number (12/100 --> 0.12), the result will be 0
 		// therefore, we first multiply by 10 000, which gives (120 000/100 = 1200) go to Number which supports floats
 		// and devide by 100 to have percentage --> 12.00%
 		return voteInfo?.turnout.muln(10000).div(totalIssuance).toNumber()/100;
-	} , [voteInfo?.turnout, totalIssuance]);
+	} , [voteInfo, totalIssuance]);
 
 	return (
 		<>
@@ -136,12 +166,12 @@ const ReferendumVoteInfo = ({ className, referendumId }: Props) => {
 				<GovSidebarCard className={className}>
 					<Spin spinning={loadingStatus.isLoading} indicator={<LoadingOutlined />}>
 						<div className="flex justify-between mb-7">
-							<h6 className='dashboard-heading'>Voting Status</h6>
-							<div className='flex items-center gap-x-3'>
-								<span className={'text-sidebarBlue border-navBlue border text-xs rounded-full px-3 py-1 whitespace-nowrap truncate h-min w-min'}>
+							<h6 className='dashboard-heading text-base whitespace-pre mr-3'>Voting Status</h6>
+							<div className='flex items-center gap-x-2 justify-end'>
+								<div className={'text-sidebarBlue border-navBlue border xl:max-w-[120px] 2xl:max-w-[100%] text-xs rounded-full px-3 py-1 whitespace-nowrap truncate h-min'}>
 									{ voteInfo?.voteThreshold }
-								</span>
-								<PassingInfoTag isPassing={voteInfo?.isPassing}/>
+								</div>
+								{voteInfo.isPassing !== null && <PassingInfoTag isPassing={voteInfo?.isPassing}/>}
 							</div>
 						</div>
 
