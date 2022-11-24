@@ -6,11 +6,10 @@ import { FormOutlined } from '@ant-design/icons';
 import { QueryLazyOptions } from '@apollo/client';
 import { Button, Timeline } from 'antd';
 import BN from 'bn.js';
-import _ from 'lodash';
 import moment from 'moment';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PASmallCirclePNG from 'src/assets/pa-small-circle.png';
-import { CommentFieldsFragment, DiscussionPostFragment, Exact, MotionPostFragment,ProposalPostFragment, ReferendumPostFragment,  TreasuryProposalPostFragment } from 'src/generated/graphql';
+import { DiscussionPostFragment, Exact, MotionPostFragment,ProposalPostFragment, ReferendumPostFragment,  TreasuryProposalPostFragment } from 'src/generated/graphql';
 import { useCurrentBlock } from 'src/hooks';
 import Markdown from 'src/ui-components/Markdown';
 import blockToTime from 'src/util/blockToTime';
@@ -63,15 +62,7 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 	const currentBlock = useCurrentBlock();
 
 	const [timeline, setTimeline] = useState(0);
-	const [comments, setComments] = useState<CommentFieldsFragment[]>([]);
 	const [timelines, setTimelines] = useState<ITimeline[]>([]);
-
-	const allSortedComments = useMemo(() => _.orderBy(post.comments, [(obj) => new Date(obj.created_at)], ['desc']), [post?.comments]);
-
-	useEffect(() => {
-		if(!post?.comments || post?.comments.length < 1) return;
-		setComments(allSortedComments);
-	}, [post?.comments, allSortedComments]);
 
 	useEffect(() => {
 		if (onchain_link && currentBlock) {
@@ -140,18 +131,6 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const handleTimelineClick = ({ id, isToday } : {id: number,  isToday: boolean | undefined}) => {
 		setTimeline(id);
-		setComments(
-			isToday
-				? allSortedComments
-				: allSortedComments.filter((comment) => {
-					const commentDate = moment(comment?.updated_at);
-					const index = timelines.findIndex((v) => (v.id === id));
-					if (index === timelines.length - 1) {
-						return commentDate.isSameOrBefore(timelines[index].date);
-					} else {
-						return commentDate.isSameOrBefore(timelines[index].date) && commentDate.isAfter(timelines[index + 1].date);
-					}
-				}));
 	};
 
 	return (
@@ -204,11 +183,11 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 				}
 
 				<div className='col-start-1 xl:col-start-3 col-end-13'>
-					<div className='text-sidebarBlue text-sm font-medium mb-5'>{comments.length} comments</div>
-					{ !!comments?.length &&
+					<div className='text-sidebarBlue text-sm font-medium mb-5'>{post.comments.length} comments</div>
+					{ !!post.comments?.length &&
 						<>
 							<Comments
-								comments={comments}
+								comments={post.comments}
 								refetch={refetch}
 							/>
 						</>
