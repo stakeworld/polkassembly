@@ -80,7 +80,7 @@ export const Comment = ({ className, comment, refetch } : Props) => {
 					content={content}
 					refetch={refetch}
 				/>
-				<Replies className='comment-content' repliesArr={replies} refetch={refetch} />
+				{replies && replies.length > 0 && <Replies className='comment-content' repliesArr={replies} refetch={refetch} />}
 			</div>
 		</div>
 	);
