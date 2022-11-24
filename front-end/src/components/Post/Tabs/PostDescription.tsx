@@ -6,8 +6,9 @@ import { FormOutlined } from '@ant-design/icons';
 import { QueryLazyOptions } from '@apollo/client';
 import { Button, Timeline } from 'antd';
 import BN from 'bn.js';
+import _ from 'lodash';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import PASmallCirclePNG from 'src/assets/pa-small-circle.png';
 import { CommentFieldsFragment, DiscussionPostFragment, Exact, MotionPostFragment,ProposalPostFragment, ReferendumPostFragment,  TreasuryProposalPostFragment } from 'src/generated/graphql';
 import { useCurrentBlock } from 'src/hooks';
@@ -63,13 +64,14 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 
 	const [timeline, setTimeline] = useState(0);
 	const [comments, setComments] = useState<CommentFieldsFragment[]>([]);
-	useEffect(() => {
-		setComments(post?.comments?.filter((_, index) => {
-			return index < 8;
-		}));
-	}, [post?.comments]);
-
 	const [timelines, setTimelines] = useState<ITimeline[]>([]);
+
+	const allSortedComments = useMemo(() => _.orderBy(post.comments, [(obj) => new Date(obj.created_at)], ['desc']), [post?.comments]);
+
+	useEffect(() => {
+		if(!post?.comments || post?.comments.length < 1) return;
+		setComments(allSortedComments);
+	}, [post?.comments, allSortedComments]);
 
 	useEffect(() => {
 		if (onchain_link && currentBlock) {
@@ -117,6 +119,7 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 				});
 			}
 			const newTimelines = timelines.sort((a, b) => b.date.diff(a.date));
+
 			if (newTimelines.length > 0) {
 				if (newTimelines[0].date.isAfter(moment().subtract(1, 'days'))) {
 					newTimelines[0].isToday = true;
@@ -133,6 +136,23 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 			setTimelines(newTimelines);
 		}
 	}, [onchain_link, currentBlock]);
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const handleTimelineClick = ({ id, isToday } : {id: number,  isToday: boolean | undefined}) => {
+		setTimeline(id);
+		setComments(
+			isToday
+				? allSortedComments
+				: allSortedComments.filter((comment) => {
+					const commentDate = moment(comment?.updated_at);
+					const index = timelines.findIndex((v) => (v.id === id));
+					if (index === timelines.length - 1) {
+						return commentDate.isSameOrBefore(timelines[index].date);
+					} else {
+						return commentDate.isSameOrBefore(timelines[index].date) && commentDate.isAfter(timelines[index + 1].date);
+					}
+				}));
+	};
 
 	return (
 		<div className={`${className} mt-4`}>
@@ -163,36 +183,23 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 					}} className='hidden xl:flex mr-4 min-w-[100px] -ml-4 sticky top-[10%] pt-10 xl:items-center'>
 						<Timeline className='flex flex-col h-full w-full' mode='right'>
 							{timelines.map(({ date, id, isToday, status }) => {
-								return (<Timeline.Item style={{
-									height: '100%'
-								}} dot={timeline === id && <img style={ { maxWidth:'20px' } } src={PASmallCirclePNG} />} color={`${timeline === id? '#334D6E':'#90A0B7'}`} key={id}>
-									<button onClick={() => {
-										setTimeline(id);
-										setComments(
-											isToday
-												?post?.comments?.filter((_, index) => {
-													return index < 8;
-												})
-												:comments.filter((comment) => {
-													const commentDate = moment(comment?.updated_at);
-													const index = timelines.findIndex((v) => (v.id === id));
-													if (index === timelines.length - 1) {
-														return commentDate.isSameOrBefore(timelines[index].date);
-													} else {
-														return commentDate.isSameOrBefore(timelines[index].date) && commentDate.isAfter(timelines[index + 1].date);
-													}
-												}));
-									}} className={`text-xs flex flex-col border-none outline-none items-end w-full ${timeline === id? 'text-sidebarBlue':'text-navBlue'}`}>
-										{
-											isToday
-												?<span>Today</span>
-												:<>
-													<span>{date.format('MMM Do')}</span>
-													<span className='text-right'>{status}</span>
-												</>
-										}
-									</button>
-								</Timeline.Item>);
+								return (
+									<Timeline.Item
+										className='h-full'
+										dot={timeline === id && <img style={ { maxWidth:'20px' } } src={PASmallCirclePNG} />}
+										color={`${timeline === id? '#334D6E':'#90A0B7'}`} key={id}
+									>
+										<button onClick={() => handleTimelineClick({ id, isToday })} className={`text-xs flex flex-col border-none outline-none items-end w-full ${timeline === id? 'text-sidebarBlue':'text-navBlue'}`}>
+											{
+												isToday
+													? <span>Today</span>
+													: <>
+														<span>{date.format('MMM Do')}</span>
+														<span className='text-right'>{status}</span>
+													</>
+											}
+										</button>
+									</Timeline.Item>);
 							})}
 						</Timeline>
 					</div>
@@ -207,14 +214,6 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 								comments={comments}
 								refetch={refetch}
 							/>
-							{post?.comments.length > 8 && post?.comments.length !== comments.length ?<div>
-								<Button
-									className='border-none outline-none bg-transparent shadow-none text-sm font-medium text-sidebarBlue'
-									onClick={() => setComments(post?.comments)}
-								>
-									Load older comments
-								</Button>
-							</div>: null}
 						</>
 					}
 					{ id && <PostCommentForm postId={post.id} refetch={refetch} /> }
