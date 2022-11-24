@@ -100,7 +100,7 @@ const AllGov2PostsTable = () => {
 
 	function gotoPost(rowData: Gov2PostsRowData){
 		if(rowData.postOrigin) {
-			navigate(`/${rowData.postOrigin.split(/(?=[A-Z])/).join('-').toLowerCase()}/${rowData.id}`);
+			navigate(`/referenda/${rowData.id}`);
 		}
 	}
 
