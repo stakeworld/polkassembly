@@ -84,17 +84,30 @@ const ReferendumVoteInfo = ({ className, referendumId }: Props) => {
 
 		if(!voteInfoError && voteInfoData && voteInfoData.data && voteInfoData.data.info) {
 			const info = voteInfoData.data.info;
+
+			const voteInfo = {
+				aye_amount : ZERO,
+				aye_without_conviction: ZERO,
+				isPassing: true,
+				nay_amount: ZERO,
+				nay_without_conviction: ZERO,
+				turnout: ZERO,
+				voteThreshold: ''
+			};
+
 			if (info.status === 'notPassed'){
-				info.isPassing = false;
+				voteInfo.isPassing = false;
 			} else {
-				info.isPassing = true;
+				voteInfo.isPassing = true;
 			}
-			info.aye_amount = new BN(info.aye_amount);
-			info.aye_without_conviction = new BN(info.aye_without_conviction);
-			info.nay_amount = new BN(info.nay_amount);
-			info.nay_without_conviction = new BN(info.nay_without_conviction);
-			info.turnout = new BN(info.turnout);
-			setVoteInfo(info);
+
+			voteInfo.aye_amount = new BN(info.aye_amount);
+			voteInfo.aye_without_conviction = new BN(info.aye_without_conviction);
+			voteInfo.nay_amount = new BN(info.nay_amount);
+			voteInfo.nay_without_conviction = new BN(info.nay_without_conviction);
+			voteInfo.turnout = new BN(info.turnout);
+			voteInfo.voteThreshold = info.vote_threshold.split(/(?=[A-Z])/).join(' ');
+			setVoteInfo(voteInfo);
 		}
 
 		setLoadingStatus({
@@ -124,7 +137,12 @@ const ReferendumVoteInfo = ({ className, referendumId }: Props) => {
 					<Spin spinning={loadingStatus.isLoading} indicator={<LoadingOutlined />}>
 						<div className="flex justify-between mb-7">
 							<h6 className='dashboard-heading'>Voting Status</h6>
-							<PassingInfoTag isPassing={voteInfo?.isPassing}/>
+							<div className='flex items-center gap-x-3'>
+								<span className={'text-sidebarBlue border-navBlue border text-xs rounded-full px-3 py-1 whitespace-nowrap truncate h-min w-min'}>
+									{ voteInfo?.voteThreshold }
+								</span>
+								<PassingInfoTag isPassing={voteInfo?.isPassing}/>
+							</div>
 						</div>
 
 						<div className="flex justify-between">
@@ -134,7 +152,7 @@ const ReferendumVoteInfo = ({ className, referendumId }: Props) => {
 								nayVotes={voteInfo?.nay_amount}
 							/>
 
-							<div className='flex-1 flex flex-col justify-between ml-4 md:ml-12 py-9'>
+							<div className='flex-1 flex flex-col justify-between ml-4 md:ml-6 2xl:ml-12 py-9'>
 								<div className='mb-auto flex items-center'>
 									<div className='mr-auto text-sidebarBlue font-medium'>Turnout {turnoutPercentage > 0 && <span className='turnoutPercentage'>({turnoutPercentage}%)</span>}</div>
 									<div className='text-navBlue'>{formatBnBalance(voteInfo?.turnout, { numberAfterComma: 2, withUnit: true })}</div>
@@ -142,12 +160,12 @@ const ReferendumVoteInfo = ({ className, referendumId }: Props) => {
 
 								<div className='mb-auto flex items-center'>
 									<div className='mr-auto text-sidebarBlue font-medium flex items-center'>Aye <HelperTooltip className='ml-2' text='Aye votes without taking conviction into account'/></div>
-									<div className='text-navBlue'>{formatBnBalance(voteInfo?.aye_without_conviction, { numberAfterComma: 2, withUnit: true })}</div>
+									<div className='text-navBlue'>{formatBnBalance(voteInfo?.aye_amount, { numberAfterComma: 2, withUnit: true })}</div>
 								</div>
 
 								<div className='flex items-center'>
 									<div className='mr-auto text-sidebarBlue font-medium flex items-center'>Nay <HelperTooltip className='ml-2' text='Nay votes without taking conviction into account'/></div>
-									<div className='text-navBlue'>{formatBnBalance(voteInfo?.nay_without_conviction, { numberAfterComma: 2, withUnit: true })}</div>
+									<div className='text-navBlue'>{formatBnBalance(voteInfo?.nay_amount, { numberAfterComma: 2, withUnit: true })}</div>
 								</div>
 							</div>
 						</div>

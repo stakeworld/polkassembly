@@ -81,7 +81,7 @@ const VotersList = ({ className, referendumId } : Props) => {
 							{votersList.map((voteData: any, index:number) =>
 								<div className='flex items-center justify-between mb-9' key={index}>
 									<div className='item overflow-ellipsis'>
-										<Address address={voteData.account.address} />
+										<Address maxDisplayTextWidth={110} address={voteData.account.address} />
 									</div>
 
 									{voteData.passed ?
