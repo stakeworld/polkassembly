@@ -117,7 +117,7 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 						{votesList.map((voteData: any, index:number) =>
 							<div className='flex items-center justify-between mb-9' key={index}>
 								<div className='w-[110px] max-w-[110px] overflow-ellipsis'>
-									<Address maxDisplayTextWidth={110} displayInline={true} address={voteData.voter} />
+									<Address textClassName='w-[90px] text-xs' displayInline={true} address={voteData.voter} />
 								</div>
 
 								<div>{formatBnBalance(voteData.balance.value, { numberAfterComma: 2, withUnit: true })}</div>
