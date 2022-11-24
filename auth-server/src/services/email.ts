@@ -172,7 +172,7 @@ export const sendOwnProposalCreatedEmail = (user: User, type: PostType, url: str
 		return;
 	}
 
-	const text = ejs.render(type == PostTypeEnum.REFERENDA ? ownGovernanceV2ReferendaCreatedEmailTemplate : ownProposalCreatedEmailTemplate, {
+	const text = ejs.render(type === PostTypeEnum.REFERENDA ? ownGovernanceV2ReferendaCreatedEmailTemplate : ownProposalCreatedEmailTemplate, {
 		domain: DOMAIN,
 		postUrl: url,
 		type,
@@ -205,7 +205,7 @@ export const sendNewProposalCreatedEmail = (user: User, type: PostType, url: str
 		return;
 	}
 
-	const text = ejs.render(type == PostTypeEnum.REFERENDA ? newGovernanceV2CreatedEmailTemplate : newProposalCreatedEmailTemplate, {
+	const text = ejs.render(type === PostTypeEnum.REFERENDA ? newGovernanceV2CreatedEmailTemplate : newProposalCreatedEmailTemplate, {
 		domain: DOMAIN,
 		postUrl: url,
 		type,
