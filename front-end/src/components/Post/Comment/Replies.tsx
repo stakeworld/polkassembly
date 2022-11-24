@@ -4,7 +4,8 @@
 
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import { QueryLazyOptions } from '@apollo/client';
-import React, { useState } from 'react';
+import _ from 'lodash';
+import React, { useMemo, useState } from 'react';
 import {
 	Exact,
 	ReplyFieldsFragment
@@ -26,6 +27,8 @@ const Replies = ({ className, repliesArr, refetch }: Props) => {
 	const [showReplies, setShowReplies] = useState<boolean>(false);
 	const toggleShowReplies = () => setShowReplies(!showReplies);
 
+	const allSortedReplies = useMemo(() => _.orderBy(repliesArr, [(obj) => new Date(obj.created_at)], ['desc']), [repliesArr]);
+
 	return (
 		<div className={className}>
 			{repliesArr.length > 0 ?
@@ -35,7 +38,7 @@ const Replies = ({ className, repliesArr, refetch }: Props) => {
 					<div className='text-sidebarBlue font-medium text-sm border-none cursor-pointer flex items-center' onClick={toggleShowReplies}>Hide replies <UpOutlined className='ml-1' /></div>
 				: null
 			}
-			{showReplies && repliesArr.map((reply:ReplyFieldsFragment) =>
+			{showReplies && allSortedReplies.map((reply:ReplyFieldsFragment) =>
 				<div key={reply.id}>
 					<Reply
 						reply={reply}
