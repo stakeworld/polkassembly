@@ -109,13 +109,13 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 
 						<Col xs={24} sm={24} md={12} lg={12} xl={8}>
 							{data?.track_info[0].min_enactment_period &&<Row>
-								<Col span={19} className='font-bold'>Min Enactment Period:</Col>
-								<Col span={5} className='whitespace-pre'>{secondsToRelevantTime(data?.track_info[0].min_enactment_period)}</Col>
+								<Col xs={15} xl={19} className='font-bold'>Min Enactment Period:</Col>
+								<Col xs={9} xl={5} className='whitespace-pre'>{secondsToRelevantTime(data?.track_info[0].min_enactment_period)}</Col>
 							</Row>}
 
 							{data?.track_info[0].decision_period && <Row className='mt-3'>
-								<Col span={19} className='font-bold'>Decision Period:</Col>
-								<Col span={5} className='whitespace-pre'>{secondsToRelevantTime(data?.track_info[0].decision_period)}</Col>
+								<Col xs={15} xl={19} className='font-bold'>Decision Period:</Col>
+								<Col xs={9} xl={5} className='whitespace-pre'>{secondsToRelevantTime(data?.track_info[0].decision_period)}</Col>
 							</Row>}
 						</Col>
 
