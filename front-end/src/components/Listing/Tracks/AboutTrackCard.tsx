@@ -4,7 +4,7 @@
 
 /* eslint-disable sort-keys */
 import { LoadingOutlined } from '@ant-design/icons';
-import { Col, Row, Spin } from 'antd';
+import { Col, Divider, Row, Spin } from 'antd';
 import React, { useEffect } from 'react';
 import { useGetTrackInfoLazyQuery } from 'src/generated/graphql';
 import { chainProperties } from 'src/global/networkConstants';
@@ -14,6 +14,8 @@ import ErrorAlert from 'src/ui-components/ErrorAlert';
 import Loader from 'src/ui-components/Loader';
 import formatBnBalance from 'src/util/formatBnBalance';
 import getNetwork from 'src/util/getNetwork';
+
+import DelegateModal from './DelegateModal';
 
 interface Props {
 	className?: string;
@@ -136,6 +138,13 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 				:
 				<></>
 			}
+
+			<Divider />
+
+			<div className="flex justify-end">
+				<DelegateModal />
+			</div>
+
 		</div>
 	);
 };

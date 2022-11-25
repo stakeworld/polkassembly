@@ -28,6 +28,7 @@ const BalanceInput = ({ className, label = '', helpText = '', onChange, placehol
 	const onBalanceChange = (value: number | null): void => {
 		if(!value || value <= 0) {
 			setIsValidInput(false);
+			onChange(new BN(0));
 			return;
 		}
 
@@ -42,14 +43,14 @@ const BalanceInput = ({ className, label = '', helpText = '', onChange, placehol
 	return <Form.Item
 		className={className}
 		name="balance"
-		rules={[{ required: true }, {  }]}
+		rules={[{ required: true }]}
 		validateStatus={isValidInput ? 'success' : 'error'}
 		help={!isValidInput && 'Please input a valid value'}
 	>
 		<label className='mb-3 font-bold flex items-center text-sm text-sidebarBlue'> {label} {helpText && <HelperTooltip className='ml-2' text={helpText}/> } </label>
 
 		<InputNumber
-			className='text-sm text-sidebarBlue w-full'
+			className='text-sm text-sidebarBlue w-full px-2 py-1 border-2 rounded-md'
 			onChange={onBalanceChange}
 			placeholder={`${placeholder} ${chainProperties[currentNetwork].tokenSymbol}`}
 			size={size || 'large'}
