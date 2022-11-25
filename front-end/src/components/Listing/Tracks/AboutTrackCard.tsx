@@ -27,7 +27,7 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 
 	const { blocktime } = useBlockTime();
 
-	const blockTimeSeconds = blocktime / 1000;
+	const blockTimeSeconds:number = blocktime / 1000;
 
 	const [getData, { called, data, error, loading, refetch }] = useGetTrackInfoLazyQuery({ variables: {
 		track: trackMetaData.trackId
@@ -41,6 +41,26 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [called]);
+
+	const secondsToRelevantTime = (seconds:number): string => {
+		let divisor:number = 1;
+		let text:string = 'sec';
+
+		const blockSeconds = seconds*blockTimeSeconds;
+
+		if(blockSeconds > 60 && blockSeconds < 3600) {
+			divisor = 60;
+			text = 'min';
+		} else if (blockSeconds > 3600 && blockSeconds < 86400) {
+			divisor = 3600;
+			text = 'hrs';
+		} else if (blockSeconds > 86400) {
+			divisor = 86400;
+			text = 'days';
+		}
+
+		return `${blockSeconds/divisor} ${text}`;
+	};
 
 	return (
 		<div className={`${className} bg-white drop-shadow-md rounded-md p-4 md:p-8 text-sidebarBlue`}>
@@ -78,24 +98,24 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 						<Col xs={24} sm={24} md={12} lg={12} xl={8}>
 							{data?.track_info[0].prepare_period && <Row>
 								<Col span={15} className='font-bold'>Prepare Period:</Col>
-								<Col span={9} className='whitespace-pre'>{data?.track_info[0].prepare_period * blockTimeSeconds} sec</Col>
+								<Col span={9} className='whitespace-pre'>{secondsToRelevantTime(data?.track_info[0].prepare_period)}</Col>
 							</Row>}
 
 							{data?.track_info[0].confirm_period && <Row className='mt-3'>
 								<Col span={15} className='font-bold'>Confirm Period:</Col>
-								<Col span={9} className='whitespace-pre'>{(data?.track_info[0].confirm_period * blockTimeSeconds)/3600} hrs</Col>
+								<Col span={9} className='whitespace-pre'>{secondsToRelevantTime(data?.track_info[0].confirm_period)}</Col>
 							</Row>}
 						</Col>
 
 						<Col xs={24} sm={24} md={12} lg={12} xl={8}>
 							{data?.track_info[0].min_enactment_period &&<Row>
 								<Col span={19} className='font-bold'>Min Enactment Period:</Col>
-								<Col span={5} className='whitespace-pre'>{(data?.track_info[0].min_enactment_period * blockTimeSeconds)/3600} hrs</Col>
+								<Col span={5} className='whitespace-pre'>{secondsToRelevantTime(data?.track_info[0].min_enactment_period)}</Col>
 							</Row>}
 
 							{data?.track_info[0].decision_period && <Row className='mt-3'>
 								<Col span={19} className='font-bold'>Decision Period:</Col>
-								<Col span={5} className='whitespace-pre'>{(data?.track_info[0].decision_period * blockTimeSeconds)/86400} days</Col>
+								<Col span={5} className='whitespace-pre'>{secondsToRelevantTime(data?.track_info[0].decision_period)}</Col>
 							</Row>}
 						</Col>
 
