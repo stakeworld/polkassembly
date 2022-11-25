@@ -107,8 +107,9 @@ const DelegateModal = () => {
 				title={
 					<div className='flex items-center'>
 						Delegate
-
-						<span className='rounded-md border border-pink_secondary px-2 py-0.5 text-xs ml-2 text-pink_secondary'>Delegation dashboard coming soon</span>
+						<span className='rounded-md border border-pink_secondary px-2 py-0.5 text-xs ml-2 text-pink_secondary'>
+							Delegation dashboard coming soon 🚀
+						</span>
 					</div>
 				}
 				open={showModal}
