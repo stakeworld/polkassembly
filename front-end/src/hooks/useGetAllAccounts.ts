@@ -27,7 +27,7 @@ const initResponse: Response = {
 	signersMap: {}
 };
 
-const useGetAccounts = () => {
+const useGetAllAccounts = () => {
 	const { api, apiReady } = useContext(ApiContext);
 
 	const [response, setResponse] = useState<Response>(initResponse);
@@ -82,11 +82,7 @@ const useGetAccounts = () => {
 	};
 
 	const getAccounts = async (): Promise<undefined> => {
-		if (!api) {
-			return;
-		}
-
-		if (!apiReady) {
+		if (!api || !apiReady) {
 			return;
 		}
 
@@ -174,4 +170,4 @@ const useGetAccounts = () => {
 	return response;
 };
 
-export default useGetAccounts;
+export default useGetAllAccounts;

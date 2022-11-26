@@ -1,23 +1,27 @@
 // Copyright 2019-2020 @Premiurly/polkassembly authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
+
+import { LoadingOutlined } from '@ant-design/icons';
 import { PlusOutlined } from '@ant-design/icons';
 import { Signer } from '@polkadot/api/types';
-import { Button, Form, Modal, Select } from 'antd';
+import { Button, Form, Modal, Select, Spin } from 'antd';
 import BN from 'bn.js';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import ExtensionNotDetected from 'src/components/ExtensionNotDetected';
 import { ApiContext } from 'src/context/ApiContext';
-import { useGetAccounts } from 'src/hooks';
+import { useGetAllAccounts } from 'src/hooks';
+import { NotificationStatus } from 'src/types';
 import AccountSelectionForm from 'src/ui-components/AccountSelectionForm';
 import BalanceInput from 'src/ui-components/BalanceInput';
 import ErrorAlert from 'src/ui-components/ErrorAlert';
+import queueNotification from 'src/ui-components/QueueNotification';
 
 const ZERO_BN = new BN(0);
 
 const DelegateModal = () => {
 	const { api, apiReady } = useContext(ApiContext);
-	const { noAccounts, noExtension, accounts, accountsMap, signersMap } = useGetAccounts();
+	const { noAccounts, noExtension, accounts, accountsMap, signersMap } = useGetAllAccounts();
 	const [form] = Form.useForm();
 
 	const [showModal, setShowModal] = useState<boolean>(false);
@@ -87,8 +91,39 @@ const DelegateModal = () => {
 			return;
 		}
 
-		console.log({ address, bnBalance, conviction, target });
-		setLoading(false);
+		if (!api || !apiReady) {
+			return;
+		}
+
+		const delegateTxn = api.tx.democracy.delegate(target, conviction, bnBalance);
+
+		setTimeout(() => {
+			setLoading(true);
+		}, 15000);
+
+		delegateTxn.signAndSend(address, ({ status }: any) => {
+			if (status.isInBlock) {
+				queueNotification({
+					header: 'Success!',
+					message: 'Delegation successful.',
+					status: NotificationStatus.SUCCESS
+				});
+
+				console.log(`Delegation: completed at block hash #${status.asInBlock.toString()}`);
+			} else {
+				console.log(`Delegation: Current status: ${status.type}`);
+			}
+		}).catch((error: any) => {
+			console.log(':( transaction failed');
+			console.error('ERROR:', error);
+			queueNotification({
+				header: 'Delegation failed!',
+				message: error.message,
+				status: NotificationStatus.ERROR
+			});
+		}).finally(() => {
+			setLoading(false);
+		});
 	};
 
 	return (
@@ -125,54 +160,57 @@ const DelegateModal = () => {
 					</Button>
 				]}
 			>
-				<div className="flex flex-col gap-y-3">
+				<Spin spinning={loading} indicator={<LoadingOutlined />}>
+					<div className="flex flex-col gap-y-3">
 
-					{noAccounts && <ErrorAlert errorMsg='You need at least one account in your wallet extenstion to use this feature.' />}
-					{noExtension && <ExtensionNotDetected />}
+						{noAccounts && <ErrorAlert errorMsg='You need at least one account in your wallet extenstion to use this feature.' />}
+						{noExtension && <ExtensionNotDetected />}
 
-					{
-						errorArr.length > 0 && errorArr.map(errorMsg => <ErrorAlert key={errorMsg} errorMsg={errorMsg} />)
-					}
+						{
+							errorArr.length > 0 && errorArr.map(errorMsg => <ErrorAlert key={errorMsg} errorMsg={errorMsg} />)
+						}
 
-					{
-						!noAccounts && !noExtension &&
-						<Form
-							form={form}
-						>
-							<AccountSelectionForm
-								title='Address'
-								accounts={accounts}
-								address={address}
-								withBalance
-								onAccountChange={(address) => setAddress(address)}
-							/>
+						{
+							!noAccounts && !noExtension &&
+							<Form
+								form={form}
+								disabled={loading}
+							>
+								<AccountSelectionForm
+									title='Address'
+									accounts={accounts}
+									address={address}
+									withBalance
+									onAccountChange={(address) => setAddress(address)}
+								/>
 
-							<AccountSelectionForm
-								title='Target'
-								accounts={accounts}
-								address={target}
-								onAccountChange={(address) => setTarget(address)}
-							/>
+								<AccountSelectionForm
+									title='Target'
+									accounts={accounts}
+									address={target}
+									onAccountChange={(address) => setTarget(address)}
+								/>
 
-							<BalanceInput
-								label={'Balance'}
-								placeholder={'0'}
-								className='mt-4'
-								onChange={(balance) => setBnBalance(balance)}
-								size='large'
-							/>
+								<BalanceInput
+									label={'Balance'}
+									placeholder={'0'}
+									className='mt-4'
+									onChange={(balance) => setBnBalance(balance)}
+									size='large'
+								/>
 
-							<div className='-mt-2'>
-								<label  className='ml-1 mb-2 flex items-center text-sm text-sidebarBlue'>Conviction</label>
+								<div className='-mt-2'>
+									<label  className='ml-1 mb-2 flex items-center text-sm text-sidebarBlue'>Conviction</label>
 
-								<Select onChange={(value:any) => setConviction(Number(value))} size='large' className='rounded-md text-sm text-sidebarBlue p-1 w-full' defaultValue={conviction}>
-									{convictionOpts}
-								</Select>
-							</div>
-						</Form>
-					}
+									<Select onChange={(value:any) => setConviction(Number(value))} size='large' className='rounded-md text-sm text-sidebarBlue p-1 w-full' defaultValue={conviction}>
+										{convictionOpts}
+									</Select>
+								</div>
+							</Form>
+						}
 
-				</div>
+					</div>
+				</Spin>
 			</Modal>
 		</>
 	);

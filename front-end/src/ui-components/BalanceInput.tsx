@@ -40,22 +40,23 @@ const BalanceInput = ({ className, label = '', helpText = '', onChange, placehol
 		}
 	};
 
-	return <Form.Item
-		className={className}
-		name="balance"
-		rules={[{ required: true }]}
-		validateStatus={isValidInput ? 'success' : 'error'}
-		help={!isValidInput && 'Please input a valid value'}
-	>
-		<label className='mb-3 font-bold flex items-center text-sm text-sidebarBlue'> {label} {helpText && <HelperTooltip className='ml-2' text={helpText}/> } </label>
+	return <div className={className}>
+		<label className='mb-2 flex items-center text-sm text-sidebarBlue'> {label} {helpText && <HelperTooltip className='ml-2' text={helpText}/> } </label>
 
-		<InputNumber
-			className='text-sm text-sidebarBlue w-full px-2 py-1 border-2 rounded-md'
-			onChange={onBalanceChange}
-			placeholder={`${placeholder} ${chainProperties[currentNetwork].tokenSymbol}`}
-			size={size || 'large'}
-		/>
-	</Form.Item>;
+		<Form.Item
+			name="balance"
+			rules={[{ required: true }]}
+			validateStatus={isValidInput ? 'success' : 'error'}
+			help={!isValidInput && 'Please input a valid value'}
+		>
+			<InputNumber
+				className='text-sm text-sidebarBlue w-full px-2 py-1 border-2 rounded-md'
+				onChange={onBalanceChange}
+				placeholder={`${placeholder} ${chainProperties[currentNetwork].tokenSymbol}`}
+				size={size || 'large'}
+			/>
+		</Form.Item>
+	</div>;
 };
 
 export default BalanceInput;
