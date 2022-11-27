@@ -358,6 +358,10 @@ export default styled(AppLayout)`
 	letter-spacing: 0.01em;
 }
 
+.auth-sider-menu {
+	list-style: none !important;
+}
+
 .auth-sider-menu > li:first-child {
   margin-bottom: 25px;
 }
