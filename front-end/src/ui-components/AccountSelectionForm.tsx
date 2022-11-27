@@ -25,6 +25,7 @@ const AccountSelectionForm = ({ accounts, address, onAccountChange, title, withB
 		</div>
 		<AddressDropdown
 			accounts={accounts}
+			defaultAddress={address}
 			onAccountChange={onAccountChange}
 		/>
 		{address && withBalance &&

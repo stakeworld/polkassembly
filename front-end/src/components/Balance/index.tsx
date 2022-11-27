@@ -28,7 +28,7 @@ const Balance = ({ address }: Props) => {
 	}, [address, api, apiReady]);
 
 	return (
-		<div className='text-[#53595C]'>
+		<div className='text-xs ml-auto text-[#53595C]'>
 			<span className='font-medium text-[#2E2F30]'>{formatBnBalance(balance, { numberAfterComma: 2, withUnit: true })}</span> available.
 		</div>
 	);
