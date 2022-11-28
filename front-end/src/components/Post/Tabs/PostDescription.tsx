@@ -182,7 +182,7 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 					</div>
 				}
 
-				<div className='col-start-1 xl:col-start-3 col-end-13'>
+				<div className={`col-start-1 ${timelines.length > 0 && 'xl:col-start-3'} col-end-13`}>
 					<div className='text-sidebarBlue text-sm font-medium mb-5'>{post.comments.length} comments</div>
 					{ !!post.comments?.length &&
 						<>
