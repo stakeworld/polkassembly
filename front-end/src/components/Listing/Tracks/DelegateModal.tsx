@@ -13,6 +13,7 @@ import { ApiContext } from 'src/context/ApiContext';
 import { useGetAllAccounts } from 'src/hooks';
 import { NotificationStatus } from 'src/types';
 import AccountSelectionForm from 'src/ui-components/AccountSelectionForm';
+import AddressInput from 'src/ui-components/AddressInput';
 import BalanceInput from 'src/ui-components/BalanceInput';
 import ErrorAlert from 'src/ui-components/ErrorAlert';
 import queueNotification from 'src/ui-components/QueueNotification';
@@ -59,7 +60,7 @@ const DelegateModal = () => {
 		setAddress(accounts[0].address);
 	}, [accounts]);
 
-	const validateForm = async ():Promise<boolean> => {
+	const validateForm = ():boolean => {
 		const errors = [];
 
 		if(!address) {
@@ -67,15 +68,15 @@ const DelegateModal = () => {
 		}
 
 		if(!target) {
-			errors.push('Please select a target.');
+			errors.push('Please provide a valid target address.');
 		}
 
 		if(address == target) {
-			errors.push('Please select an different target account.');
+			errors.push('Please provide a different target address.');
 		}
 
 		if(bnBalance.lte(ZERO_BN)) {
-			errors.push('Please input a valid balance.');
+			errors.push('Please provide a valid balance.');
 		}
 
 		setErrorArr(errors);
@@ -86,7 +87,7 @@ const DelegateModal = () => {
 	const handleSubmit = async () => {
 		setLoading(true);
 
-		if(!(await validateForm())){
+		if(!validateForm()){
 			setLoading(false);
 			return;
 		}
@@ -96,10 +97,6 @@ const DelegateModal = () => {
 		}
 
 		const delegateTxn = api.tx.democracy.delegate(target, conviction, bnBalance);
-
-		setTimeout(() => {
-			setLoading(true);
-		}, 15000);
 
 		delegateTxn.signAndSend(address, ({ status }: any) => {
 			if (status.isInBlock) {
@@ -155,7 +152,7 @@ const DelegateModal = () => {
 					<Button key="back" disabled={loading} onClick={() => setShowModal(false)}>
             Cancel
 					</Button>,
-					<Button htmlType='submit' key="submit" type="primary" disabled={loading || noAccounts || noExtension} onClick={handleSubmit}>
+					<Button htmlType='submit' key="submit" className='bg-pink_primary text-white hover:bg-pink_secondary' disabled={loading || noAccounts || noExtension} onClick={handleSubmit}>
             Confirm
 					</Button>
 				]}
@@ -184,11 +181,12 @@ const DelegateModal = () => {
 									onAccountChange={(address) => setAddress(address)}
 								/>
 
-								<AccountSelectionForm
-									title='Target'
-									accounts={accounts}
-									address={target}
-									onAccountChange={(address) => setTarget(address)}
+								<AddressInput
+									label={'Target Address'}
+									placeholder='Target Account Address'
+									className='mt-4 mb-7'
+									onChange={(address) => setTarget(address)}
+									size='large'
 								/>
 
 								<BalanceInput
