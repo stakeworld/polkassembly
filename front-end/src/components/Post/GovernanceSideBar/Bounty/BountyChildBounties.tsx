@@ -34,7 +34,7 @@ const BountyChildBounties = ({ onchainId }: Props) => {
 								<div className='w-[70%] break-words'>
 									<h5>{childBounty.description} || {`#${childBounty.childBountyId} Untitled`}</h5>
 								</div>
-								{childBounty.childBountyStatus && <StatusTag className='statusTag' status={childBounty.childBountyStatus?.[1].status} />}
+								{childBounty.childBountyStatus && childBounty.childBountyStatus.length > 0 && <StatusTag className='statusTag' status={childBounty.childBountyStatus?.[childBounty.childBountyStatus.length - 1]?.status} />}
 							</div>
 						</div>
 					</Link>
