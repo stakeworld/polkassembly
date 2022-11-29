@@ -165,7 +165,9 @@ const gov2TrackItems: {[x:string]: ItemType[]} = {
 	],
 	governanceItems : [],
 	treasuryItems: [],
-	fellowshipItems: []
+	fellowshipItems: [
+		getSiderMenuItem('Members', '/fellowship')
+	]
 };
 
 for (const trackName of Object.keys(trackInfo)) {
