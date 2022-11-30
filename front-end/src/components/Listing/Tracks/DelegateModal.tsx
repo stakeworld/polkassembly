@@ -21,7 +21,7 @@ import { inputToBn } from 'src/util/inputToBn';
 
 const ZERO_BN = new BN(0);
 
-const DelegateModal = () => {
+const DelegateModal = ({ trackNum } : { trackNum:number }) => {
 	const { api, apiReady } = useContext(ApiContext);
 	const { noAccounts, noExtension, accounts, accountsMap, signersMap } = useGetAllAccounts();
 	const [form] = Form.useForm();
@@ -102,7 +102,7 @@ const DelegateModal = () => {
 			return;
 		}
 
-		const delegateTxn = api.tx.democracy.delegate(target, conviction, bnBalance);
+		const delegateTxn = api.tx.convictionVoting.delegate(trackNum, target, conviction, bnBalance);
 
 		delegateTxn.signAndSend(address, ({ status }: any) => {
 			if (status.isInBlock) {
