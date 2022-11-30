@@ -158,7 +158,12 @@ const EditProposalStatus = ({ canEdit, className, proposalId, startTime } : Prop
 						</div>
 						<EditOutlined className='edit-icon text-white text-lg' onClick={() => setModalOpen(true)} />
 					</div>
-					: <div className='w-full h-[60px] bg-white rounded-md drop-shadow-md flex justify-center items-center text-sidebarBlue font-medium text-[18px]'>Deadline: Not Set</div> }
+					: (isUpdate) ? <div className='w-full h-[60px] bg-white rounded-md drop-shadow-md flex items-center justify-center transition:colors duration:500'>
+						<div className='text-center text-sidebarBlue font-medium text-[18px]'>
+							<>Deadline: {moment(deadlineDate).format('MMM Do YY')}</>
+						</div>
+					</div> :
+						<div className='w-full h-[60px] bg-white rounded-md drop-shadow-md flex justify-center items-center text-sidebarBlue font-medium text-[18px]'>Deadline: Not Set</div> }
 
 			<Modal
 				open={modalOpen}

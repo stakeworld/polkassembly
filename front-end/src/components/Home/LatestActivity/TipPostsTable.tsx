@@ -47,7 +47,7 @@ const columns: ColumnsType<TipPostsRowData> = [
 		title: 'Creator',
 		dataIndex: 'username',
 		key: 'creator',
-		render: (username, { address }) => <NameLabel defaultAddress={address} username={username} disableIdenticon={true} />
+		render: (username, { address }) => <div className='truncate'><NameLabel defaultAddress={address} username={username} disableIdenticon={true} /></div>
 	},
 	{
 		title: 'Status',
