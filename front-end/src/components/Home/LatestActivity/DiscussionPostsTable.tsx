@@ -43,7 +43,8 @@ const columns: ColumnsType<DiscussionPostsRowData> = [
 	{
 		title: 'Topic',
 		dataIndex: 'topic',
-		key: 'topic'
+		key: 'topic',
+		width: 160
 	},
 	{
 		title: 'Creator',

@@ -40,7 +40,7 @@ const columns: ColumnsType<Gov2PostsRowData> = [
 		title: 'Title',
 		dataIndex: 'title',
 		key: 'title',
-		width: 350,
+		width: 400,
 		fixed: 'left',
 		render: (title, { subTitle }) => {
 			return (
@@ -70,7 +70,8 @@ const columns: ColumnsType<Gov2PostsRowData> = [
 			return (
 				<span>{relativeCreatedAt}</span>
 			);
-		}
+		},
+		width: 160
 	},
 	{
 		title: 'Status',
@@ -78,7 +79,8 @@ const columns: ColumnsType<Gov2PostsRowData> = [
 		key: 'status',
 		render: (status) => {
 			if(status) return <StatusTag status={status} />;
-		}
+		},
+		width: 160
 	},
 	{
 		title: 'Origin',

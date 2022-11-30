@@ -53,7 +53,8 @@ const columns: ColumnsType<MotionPostsRowData> = [
 		key: 'status',
 		render: (status) => {
 			if(status) return <StatusTag status={status} />;
-		}
+		},
+		width: 200
 	},
 	{
 		title: 'Created',

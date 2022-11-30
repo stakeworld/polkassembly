@@ -28,7 +28,7 @@ const columns: ColumnsType<Gov2PostsRowData> = [
 		title: 'Title',
 		dataIndex: 'title',
 		key: 'title',
-		width: 350,
+		width: 400,
 		fixed: 'left',
 		render: (title, { subTitle }) => {
 			return (

@@ -182,7 +182,7 @@ const columns: ColumnsType<AllPostsRowData> = [
 				<span>{relativeCreatedAt}</span>
 			);
 		},
-		width: 150
+		width: 160
 	},
 	{
 		title: 'Type',
@@ -194,7 +194,7 @@ const columns: ColumnsType<AllPostsRowData> = [
 					{icon} <span className='capitalize ml-3'>{postCategory}</span></span>
 			);
 		},
-		width: 190
+		width: 200
 
 	},
 	{
