@@ -59,7 +59,7 @@ const columns: ColumnsType<Gov2PostsRowData> = [
 		title: 'Posted By',
 		dataIndex: 'username',
 		key: 'postedBy',
-		render: (username, { address }) => <NameLabel textClassName='max-w-[10vw]' defaultAddress={address} username={username} disableIdenticon={true} />
+		render: (username, { address }) => <NameLabel textClassName='max-w-[9vw] 2xl:max-w-[12vw]' defaultAddress={address} username={username} disableIdenticon={true} />
 	},
 	{
 		title: 'Created',

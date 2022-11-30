@@ -170,7 +170,7 @@ const columns: ColumnsType<AllPostsRowData> = [
 		title: 'Posted By',
 		dataIndex: 'username',
 		key: 'postedBy',
-		render: (username, { address }) => <NameLabel textClassName='max-w-[10vw]' defaultAddress={address} username={username} disableIdenticon={true} />
+		render: (username, { address }) => <NameLabel textClassName='max-w-[9vw] 2xl:max-w-[12vw]' defaultAddress={address} username={username} disableIdenticon={true} />
 	},
 	{
 		title: 'Created',
@@ -181,7 +181,8 @@ const columns: ColumnsType<AllPostsRowData> = [
 			return (
 				<span>{relativeCreatedAt}</span>
 			);
-		}
+		},
+		width: 150
 	},
 	{
 		title: 'Type',
@@ -192,7 +193,9 @@ const columns: ColumnsType<AllPostsRowData> = [
 				<span className='flex items-center'>
 					{icon} <span className='capitalize ml-3'>{postCategory}</span></span>
 			);
-		}
+		},
+		width: 190
+
 	},
 	{
 		title: 'Status',
