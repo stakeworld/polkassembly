@@ -9,26 +9,28 @@ import kusamaLogo from 'src/assets/kusama-logo.gif';
 import auctionIcon from 'src/assets/parachains/auction.png';
 import chainIcon from 'src/assets/parachains/chain-link.png';
 import crowdloansIcon from 'src/assets/parachains/crowdloan.png';
+import projectsIcon from 'src/assets/parachains/projects.png';
 import polkadotLogo from 'src/assets/polkadot-logo-small-inverted.png';
 
 interface Props {
 	className?: string
 	network: 'polkadot' | 'kusama'
+	projects: number
 }
 
-const ParachainInfoCard = ({ className, network }: Props) => {
+const ParachainInfoCard = ({ className, network, projects }: Props) => {
 	const polkadotMetrics = {
 		auction: '14th',
 		crowdloans: '5',
 		parachains: '14',
-		projects: '23'
+		projects: projects
 	};
 
 	const kusamaMetrics = {
 		auction: '31st',
 		crowdloans: '5',
 		parachains: '29',
-		projects: '23'
+		projects: projects
 	};
 
 	const metrics = network=='polkadot' ? polkadotMetrics : kusamaMetrics;
@@ -52,29 +54,38 @@ const ParachainInfoCard = ({ className, network }: Props) => {
 				<div className='parachain-card-desc'>
 					{/* Auction */}
 					<div className='metric-container'>
-						<div className='metric-line'>
-							<img src={auctionIcon} alt="Auction Icon" />
-							<span className='metric-num text-sidebarBlue'>{metrics.auction}</span>
+						<div className='metric-line flex items-center'>
+							<img className='h-[14px] w-auto md:h-auto' src={auctionIcon} alt="Auction Icon" />
+							<span className='metric-num ml-[7px] font-medium text-[12px] md:text-[14px] text-sidebarBlue'>{metrics.auction}</span>
 						</div>
-						<div className='metric-name text-navBlue'>Auction</div>
+						<div className='metric-name mt-[8px] text-[12px] md:text-[14px] text-navBlue'>Auction</div>
 					</div>
 
 					{/* Crowdloans */}
 					<div className='metric-container'>
-						<div className='metric-line'>
-							<img src={crowdloansIcon} alt="Crowdloans Icon" />
-							<span className='metric-num text-sidebarBlue'>{metrics.crowdloans}</span>
+						<div className='metric-line flex items-center'>
+							<img className='h-[14px] w-auto md:h-auto' src={crowdloansIcon} alt="Crowdloans Icon" />
+							<span className='metric-num ml-[7px] font-medium text-[12px] md:text-[14px] text-sidebarBlue'>{metrics.crowdloans}</span>
 						</div>
-						<div className='metric-name text-navBlue'>Crowdloans</div>
+						<div className='metric-name mt-[8px] text-[12px] md:text-[14px] text-navBlue'>Crowdloans</div>
 					</div>
 
 					{/* Parachains */}
 					<div className='metric-container'>
-						<div className='metric-line'>
-							<img src={chainIcon} alt="Parachains Icon" />
-							<span className='metric-num text-sidebarBlue'>{metrics.projects}</span>
+						<div className='metric-line flex items-center'>
+							<img className='h-[14px] w-auto md:h-auto' src={chainIcon} alt="Parachains Icon" />
+							<span className='metric-num ml-[7px] font-medium text-[12px] md:text-[14px] text-sidebarBlue'>{metrics.parachains}</span>
 						</div>
-						<div className='metric-name text-navBlue'>Parachains</div>
+						<div className='metric-name mt-[8px] text-[12px] md:text-[14px] text-navBlue'>Parachains</div>
+					</div>
+
+					{/* Projects */}
+					<div className='metric-container'>
+						<div className='metric-line flex items-center'>
+							<img className='h-[14px] w-auto md:h-auto' src={projectsIcon} alt="Parachains Icon" />
+							<span className='metric-num ml-[7px] font-medium text-[12px] md:text-[14px] text-sidebarBlue'>{metrics.projects}</span>
+						</div>
+						<div className='metric-name mt-[8px] text-[12px] md:text-[14px] text-navBlue'>Projects</div>
 					</div>
 				</div>
 			</div>
@@ -148,37 +159,6 @@ export default styled(ParachainInfoCard)`
 			@media only screen and (max-width: 768px) {
 				margin-left: 0;
 				margin-top: 16px;
-			}
-
-			.metric-line {
-				display: flex;
-				align-items: center;
-
-				img {
-					@media only screen and (max-width: 768px) {
-						height: 14px;
-						width: auto;
-					}
-				}
-
-				.metric-num {
-					margin-left: 7px;
-					font-weight: 500;
-					font-size: 14px;
-
-					@media only screen and (max-width: 768px) {
-						font-size: 12px;
-					}
-				}
-			}
-
-			.metric-name {
-				margin-top: 8px !important;
-				font-size: 14px;
-
-				@media only screen and (max-width: 768px) {
-					font-size: 12px;
-				}
 			}
 		}
 `;
