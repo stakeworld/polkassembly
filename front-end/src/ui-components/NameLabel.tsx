@@ -11,15 +11,17 @@ interface Props {
 	defaultAddress?: string | null
 	username?: string
 	disableIdenticon?: boolean
+	textClassName?: string
 }
 
-const NameLabel = ({ className, defaultAddress, username, disableIdenticon = false } : Props) => {
+const NameLabel = ({ className, defaultAddress, username, disableIdenticon = false, textClassName } : Props) => {
 	return (
 		<div className={`${className} mr-2`}>
 			{!defaultAddress ? <span className='username text-sidebarBlue mr-1.5'> { username } </span> :
 				<Address
 					address={defaultAddress}
 					className='text-sm'
+					textClassName={textClassName}
 					displayInline={true}
 					disableIdenticon={disableIdenticon}
 				/>}
