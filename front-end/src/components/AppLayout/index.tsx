@@ -15,7 +15,7 @@ import { useLogoutMutation } from 'src/generated/graphql';
 import { trackInfo } from 'src/global/post_trackInfo';
 import { logout } from 'src/services/auth.service';
 import { PostOrigin } from 'src/types';
-import { BountiesIcon, CalendarIcon, DemocracyProposalsIcon, DiscussionsIcon, MembersIcon, MotionsIcon, NewsIcon, OverviewIcon, ParachainsIcon, ReferendaIcon, TipsIcon, TreasuryProposalsIcon } from 'src/ui-components/CustomIcons';
+import { AuctionAdminIcon, BountiesIcon, CalendarIcon, DemocracyProposalsIcon, DiscussionsIcon, FellowshipGroupIcon, GovernanceGroupIcon, MembersIcon, MotionsIcon, NewsIcon, OverviewIcon, ParachainsIcon, ReferendaIcon, RootIcon, StakingAdminIcon, TipsIcon, TreasuryGroupIcon, TreasuryProposalsIcon } from 'src/ui-components/CustomIcons';
 
 import Footer from './Footer';
 import GovernanceSwitchButton from './GovernanceSwitchButton';
@@ -158,10 +158,9 @@ const collapsedItems: MenuProps['items'] = [
 
 const gov2TrackItems: {[x:string]: ItemType[]} = {
 	mainItems: [
-		getSiderMenuItem(PostOrigin.ROOT.split(/(?=[A-Z])/).join(' '), `/${PostOrigin.ROOT.split(/(?=[A-Z])/).join('-').toLowerCase()}`),
-		getSiderMenuItem(PostOrigin.AUCTION_ADMIN.split(/(?=[A-Z])/).join(' '), `/${PostOrigin.AUCTION_ADMIN.split(/(?=[A-Z])/).join('-').toLowerCase()}`),
-		getSiderMenuItem(PostOrigin.STAKING_ADMIN.split(/(?=[A-Z])/).join(' '), `/${PostOrigin.STAKING_ADMIN.split(/(?=[A-Z])/).join('-').toLowerCase()}`),
-		getSiderMenuItem('Preimages', '/preimages')
+		getSiderMenuItem(PostOrigin.ROOT.split(/(?=[A-Z])/).join(' '), `/${PostOrigin.ROOT.split(/(?=[A-Z])/).join('-').toLowerCase()}`, <RootIcon className='text-white' />),
+		getSiderMenuItem(PostOrigin.AUCTION_ADMIN.split(/(?=[A-Z])/).join(' '), `/${PostOrigin.AUCTION_ADMIN.split(/(?=[A-Z])/).join('-').toLowerCase()}`, <AuctionAdminIcon className='text-white' />),
+		getSiderMenuItem(PostOrigin.STAKING_ADMIN.split(/(?=[A-Z])/).join(' '), `/${PostOrigin.STAKING_ADMIN.split(/(?=[A-Z])/).join('-').toLowerCase()}`, <StakingAdminIcon className='text-white' />)
 	],
 	governanceItems : [],
 	treasuryItems: [],
@@ -197,7 +196,9 @@ let gov2OverviewItems = [
 	getSiderMenuItem('Discussions', '/discussions', <DiscussionsIcon className='text-white' />),
 	getSiderMenuItem('Calendar', '/calendar', <CalendarIcon className='text-white' />),
 	getSiderMenuItem('News', '/news', <NewsIcon className='text-white' />),
-	getSiderMenuItem('Parachains', '/parachains', <ParachainsIcon className='text-white' />)
+	getSiderMenuItem('Parachains', '/parachains', <ParachainsIcon className='text-white' />),
+	getSiderMenuItem('Preimages', '/preimages')
+
 ];
 
 if(window.screen.width < 1024) {
@@ -212,13 +213,13 @@ const gov2Items:MenuProps['items'] = [
 	// Tracks Heading
 	getSiderMenuItem(<span className='text-navBlue hover:text-navBlue ml-2 uppercase text-base font-medium'>Tracks</span>, 'tracksHeading', null),
 	...gov2TrackItems.mainItems,
-	getSiderMenuItem('Governance', 'gov2_governance_group', null, [
+	getSiderMenuItem('Governance', 'gov2_governance_group', <GovernanceGroupIcon className='text-white' />, [
 		...gov2TrackItems.governanceItems
 	]),
-	getSiderMenuItem('Treasury', 'gov2_treasury_group', null, [
+	getSiderMenuItem('Treasury', 'gov2_treasury_group', <TreasuryGroupIcon className='text-white' />, [
 		...gov2TrackItems.treasuryItems
 	]),
-	getSiderMenuItem('Fellowship', 'gov2_fellowship_group', null, [
+	getSiderMenuItem('Fellowship', 'gov2_fellowship_group', <FellowshipGroupIcon className='text-white' />, [
 		...gov2TrackItems.fellowshipItems
 	])
 ];
