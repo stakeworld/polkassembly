@@ -17,10 +17,11 @@ import AddressInput from 'src/ui-components/AddressInput';
 import BalanceInput from 'src/ui-components/BalanceInput';
 import ErrorAlert from 'src/ui-components/ErrorAlert';
 import queueNotification from 'src/ui-components/QueueNotification';
+import { inputToBn } from 'src/util/inputToBn';
 
 const ZERO_BN = new BN(0);
 
-const DelegateModal = () => {
+const DelegateModal = ({ trackNum } : { trackNum:number }) => {
 	const { api, apiReady } = useContext(ApiContext);
 	const { noAccounts, noExtension, accounts, accountsMap, signersMap } = useGetAllAccounts();
 	const [form] = Form.useForm();
@@ -32,6 +33,7 @@ const DelegateModal = () => {
 	const [bnBalance, setBnBalance] = useState<BN>(ZERO_BN);
 	const [conviction, setConviction] = useState<number>(0);
 	const [errorArr, setErrorArr] = useState<string[]>([]);
+	const [availableBalance, setAvailableBalance] = useState<BN>(ZERO_BN);
 
 	const CONVICTIONS: [number, number][] = [1, 2, 4, 8, 16, 32].map((lock, index) => [index + 1, lock]);
 	const convictionOpts = useMemo(() => [
@@ -79,6 +81,10 @@ const DelegateModal = () => {
 			errors.push('Please provide a valid balance.');
 		}
 
+		if(availableBalance.lt(bnBalance)) {
+			errors.push('Insufficient balance.');
+		}
+
 		setErrorArr(errors);
 
 		return errors.length === 0;
@@ -96,7 +102,7 @@ const DelegateModal = () => {
 			return;
 		}
 
-		const delegateTxn = api.tx.democracy.delegate(target, conviction, bnBalance);
+		const delegateTxn = api.tx.convictionVoting.delegate(trackNum, target, conviction, bnBalance);
 
 		delegateTxn.signAndSend(address, ({ status }: any) => {
 			if (status.isInBlock) {
@@ -121,6 +127,11 @@ const DelegateModal = () => {
 		}).finally(() => {
 			setLoading(false);
 		});
+	};
+
+	const handleOnBalanceChange = (balanceStr: string) => {
+		const [balance, isValid] = inputToBn(balanceStr, false);
+		isValid ? setAvailableBalance(balance) : setAvailableBalance(ZERO_BN);
 	};
 
 	return (
@@ -179,6 +190,7 @@ const DelegateModal = () => {
 									address={address}
 									withBalance
 									onAccountChange={(address) => setAddress(address)}
+									onBalanceChange={handleOnBalanceChange}
 								/>
 
 								<AddressInput

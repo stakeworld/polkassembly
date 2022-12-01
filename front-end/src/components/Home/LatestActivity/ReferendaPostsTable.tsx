@@ -45,7 +45,7 @@ const columns: ColumnsType<ReferendaPostsRowData> = [
 		title: 'Creator',
 		dataIndex: 'username',
 		key: 'creator',
-		render: (username, { address }) => <div className='truncate'><NameLabel defaultAddress={address} username={username} disableIdenticon={true} /></div>
+		render: (username, { address }) => <NameLabel textClassName='max-w-[9vw] 2xl:max-w-[12vw]' defaultAddress={address} username={username} disableIdenticon={true} />
 	},
 	{
 		title: 'Status',
@@ -53,7 +53,8 @@ const columns: ColumnsType<ReferendaPostsRowData> = [
 		key: 'status',
 		render: (status) => {
 			if(status) return <StatusTag status={status} />;
-		}
+		},
+		width: 200
 	},
 	{
 		title: 'Created',

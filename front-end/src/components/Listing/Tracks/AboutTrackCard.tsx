@@ -142,7 +142,7 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 			<Divider />
 
 			<div className="flex justify-end">
-				<DelegateModal />
+				<DelegateModal trackNum={trackMetaData.trackId} />
 			</div>
 
 		</div>

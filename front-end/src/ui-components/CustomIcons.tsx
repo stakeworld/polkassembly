@@ -14,6 +14,12 @@ import { ReactComponent as BountiesSVG } from 'src/assets/sidebar/bounties.svg';
 import { ReactComponent as CalendarSVG } from 'src/assets/sidebar/calendar.svg';
 import { ReactComponent as DemocracyProposalsSVG } from 'src/assets/sidebar/democracy_proposals.svg';
 import { ReactComponent as DiscussionsSVG } from 'src/assets/sidebar/discussions.svg';
+import { ReactComponent as AuctionAdminSVG } from 'src/assets/sidebar/gov2_auction_admin.svg';
+import { ReactComponent as FellowshipGroupSVG } from 'src/assets/sidebar/gov2_fellowship_group.svg';
+import { ReactComponent as GovernanceGroupSVG } from 'src/assets/sidebar/gov2_governance_group.svg';
+import { ReactComponent as RootSVG } from 'src/assets/sidebar/gov2_root.svg';
+import { ReactComponent as StakingAdminSVG } from 'src/assets/sidebar/gov2_staking_admin.svg';
+import { ReactComponent as TreasuryGroupSVG } from 'src/assets/sidebar/gov2_treasury_group.svg';
 import { ReactComponent as MembersSVG } from 'src/assets/sidebar/members.svg';
 import { ReactComponent as MotionsSVG } from 'src/assets/sidebar/motions.svg';
 import { ReactComponent as NewsSVG } from 'src/assets/sidebar/news.svg';
@@ -89,4 +95,28 @@ export const RedditIcon = (props: Partial<CustomIconComponentProps>) => (
 
 export const TelegramIcon = (props: Partial<CustomIconComponentProps>) => (
 	<Icon component={TelegramSVG} {...props} />
+);
+
+export const RootIcon = (props: Partial<CustomIconComponentProps>) => (
+	<Icon component={RootSVG} {...props} />
+);
+
+export const AuctionAdminIcon = (props: Partial<CustomIconComponentProps>) => (
+	<Icon component={AuctionAdminSVG} {...props} />
+);
+
+export const StakingAdminIcon = (props: Partial<CustomIconComponentProps>) => (
+	<Icon component={StakingAdminSVG} {...props} />
+);
+
+export const GovernanceGroupIcon = (props: Partial<CustomIconComponentProps>) => (
+	<Icon component={GovernanceGroupSVG} {...props} />
+);
+
+export const TreasuryGroupIcon = (props: Partial<CustomIconComponentProps>) => (
+	<Icon component={TreasuryGroupSVG} {...props} />
+);
+
+export const FellowshipGroupIcon = (props: Partial<CustomIconComponentProps>) => (
+	<Icon component={FellowshipGroupSVG} {...props} />
 );

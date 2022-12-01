@@ -43,13 +43,14 @@ const columns: ColumnsType<DiscussionPostsRowData> = [
 	{
 		title: 'Topic',
 		dataIndex: 'topic',
-		key: 'topic'
+		key: 'topic',
+		width: 160
 	},
 	{
 		title: 'Creator',
 		dataIndex: 'username',
 		key: 'creator',
-		render: (username, { address }) => <div className='truncate'><NameLabel defaultAddress={address} username={username} disableIdenticon={true} /></div>
+		render: (username, { address }) => <NameLabel textClassName='max-w-[9vw] 2xl:max-w-[12vw]' defaultAddress={address} username={username} disableIdenticon={true} />
 	},
 	{
 		title: 'Created',
