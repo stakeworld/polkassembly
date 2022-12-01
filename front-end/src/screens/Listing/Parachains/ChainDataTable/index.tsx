@@ -145,15 +145,10 @@ const ChainDataTable = ({ chain, data }:Props) => {
 	const [chainData, setChainData] = useState<any>(null);
 
 	useEffect(() => {
-		if(chain === 'all'){
-			setChainData(data);
-		}
-		else{
-			const filteredData: any = data.filter((project: any) => {
-				return project.chain == chain;
-			});
-			setChainData(filteredData);
-		}
+		const filteredData: any = data.filter((project: any) => {
+			return project.chain == chain;
+		});
+		setChainData(filteredData);
 	}, [chain, data]);
 
 	if(chainData){
