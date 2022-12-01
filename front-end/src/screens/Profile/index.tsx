@@ -280,7 +280,7 @@ const Profile = ({ className }: Props): JSX.Element => {
 					</div> : null}
 				</>}
 			</div>}
-			{council ? <CouncilVotes address={address} /> : null}
+			{council || fellowship ? <CouncilVotes address={address} /> : null}
 		</div>
 	);
 
