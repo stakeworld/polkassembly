@@ -2,42 +2,60 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+/* eslint-disable no-tabs */
+import _ from 'lodash';
 import React, { useContext, useEffect, useState } from 'react';
 import { ApiContext } from 'src/context/ApiContext';
 import { useGetLatestMotionsCountLazyQuery } from 'src/generated/graphql';
 import { post_type } from 'src/global/post_types';
-import { ErrorState } from 'src/ui-components/UIStates';
-import { LoadingState } from 'src/ui-components/UIStates';
+import { ErrorState, LoadingState } from 'src/ui-components/UIStates';
 
 import FellowshipMembersListing from './FellowshipMembersListing';
 
+export type FellowshipMember = {accountId:string, rank: number};
+
 const FellowshipMembersContainer = ({ className } : { className?:string }) => {
 	const { api, apiReady } = useContext(ApiContext);
-	const [error, setErr] = useState<Error | null>(null);
-	const [members, setMembers] = useState<string[]>([]);
-	const [runnersUp, setRunnersup] = useState<string[]>([]);
-	const [prime, setPrime] = useState<string>('');
+	const [error, setError] = useState<any>();
+	const [members, setMembers] = useState<FellowshipMember[]>([]);
+
+	const getFellowshipMembers = async () => {
+		if (!api || !apiReady) {
+			return;
+		}
+
+		// using any because it returns some Codec types
+		api.query.fellowshipCollective.members.entries().then((entries: any) => {
+			let members: FellowshipMember[] = [];
+
+			for (let i = 0; i < entries.length; i++) {
+				// key split into args part to extract
+				const [{ args: [accountId] }, optInfo] = entries[i];
+				if (optInfo.isSome) {
+					members.push({
+						accountId: accountId.toString(),
+						rank: Number(optInfo.unwrap().rank.toString())
+					});
+				}
+			}
+
+			members = _.orderBy(members, ['rank'], ['asc']);
+
+			setMembers(members);
+		}).catch(err => {
+			setError(err);
+		});
+
+	};
+
 	useEffect(() => {
-		if (!api) {
+		if (!api || !apiReady) {
 			return;
 		}
 
-		if (!apiReady) {
-			return;
-		}
+		getFellowshipMembers();
 
-		api.query.council.prime().then(primeId => {
-			setPrime(primeId.unwrapOr('').toString());
-		}).catch(error => setErr(error));
-
-		api.query.council.members().then((members) => {
-			setMembers(members.map(member => member.toString()));
-		}).catch(error => setErr(error));
-
-		api.derive.elections.info().then((electionInfo) => {
-			setRunnersup(electionInfo.runnersUp.map(runner => runner.toString().split(',')[0]));
-		}).catch(error => setErr(error));
-
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [api, apiReady]);
 
 	const [refetch] = useGetLatestMotionsCountLazyQuery({ variables: {
@@ -48,27 +66,19 @@ const FellowshipMembersContainer = ({ className } : { className?:string }) => {
 	}, [refetch]);
 
 	if (error) {
-		return <ErrorState errorMessage={error.message} />;
+		return <ErrorState errorMessage={error.message || 'Error in fetching Fellowship members.'} />;
 	}
 
-	if(members.length || runnersUp.length){
+	if(members.length){
 
 		return (
 			<>
 				<div className={`${className} shadow-md bg-white p-3 md:p-8 rounded-md`}>
 					<div className='flex items-center justify-between'>
-						<h1 className='dashboard-heading'>Members</h1>
+						<h1 className='dashboard-heading'>{members.length} Members</h1>
 					</div>
 
-					<FellowshipMembersListing className='mt-6' data={members} prime={prime} />
-				</div>
-
-				<div className={`${className} shadow-md bg-white p-3 md:p-8 rounded-md`}>
-					<div className='flex items-center justify-between'>
-						<h1 className='dashboard-heading'>Runners up</h1>
-					</div>
-
-					<FellowshipMembersListing className='mt-6' data={runnersUp} prime={prime} />
+					<FellowshipMembersListing className='mt-6' data={members} />
 				</div>
 			</>
 		);

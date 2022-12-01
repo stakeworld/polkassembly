@@ -4,26 +4,24 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import CouncilMembersCard from 'src/components/CouncilMembersCard';
+
+import FellowshipMemberCard from './FellowshipMemberCard';
+import { FellowshipMember } from './FellowshipMembersContainer';
 
 interface Props {
   className?: string
-  data: string[]
-  prime: string
+  data: FellowshipMember[]
 }
 
-const FellowshipMembersListing = ({ className, data, prime } : Props) => {
+const FellowshipMembersListing = ({ className, data } : Props) => {
 
 	return (
 		<div className={`${className} motions__list`}>
 			{data.map(
 				(member) => (
-					<div key={member} className='my-5'>
-						{<Link to={`/profile/${member}?council=true`}>
-							<CouncilMembersCard
-								data={member}
-								prime={prime}
-							/>
+					<div key={member.accountId} className='my-5'>
+						{<Link to={`/profile/${member.accountId}?fellowship=true`}>
+							<FellowshipMemberCard member={member} />
 						</Link>}
 					</div>
 				)
