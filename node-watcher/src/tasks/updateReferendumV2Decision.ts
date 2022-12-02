@@ -27,8 +27,8 @@ const eventField = [
   'HashInfo',
 ];
 
-const createReferendumV2: Task<NomidotReferendumV2[]> = {
-  name: 'createReferendum',
+const updateReferendumV2: Task<NomidotReferendumV2[]> = {
+  name: 'updateReferendumV2',
   read: async (
     blockHash: Hash,
     cached: Cached,
@@ -39,7 +39,6 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
     const referendumEvents = events.filter(
         ({ event: { method, section } }) =>
           section === 'referenda' && [
-            "Submitted",
             "DecisionStarted",
         ].includes(method)
     );
@@ -102,7 +101,7 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
             trackNumber: referendumInfo.ongoing?.track,
             origin: referendumInfo.ongoing?.origin?.origins || 'root',
             preimageHash: preimageHash,
-            status: referendumStatusV2.ONGOING,
+            status: referendumStatusV2.DECIDING,
             enactmentAt: referendumInfo.ongoing?.enactment?.at,
             enactmentAfter: referendumInfo.ongoing?.enactment?.after,
             SubmittedAt: referendumInfo.ongoing?.submitted,
@@ -172,14 +171,6 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
             update: {
                 trackNumber: trackNumber,
                 origin: origin,
-                preimage: notedPreimage
-                    ? {
-                        connect: {
-                        id: notedPreimage.id,
-                        },
-                    }
-                    : undefined,
-                preimageHash: preimageHash.toString(),
                 referendumId: referendumIndex,
                 enactmentAt: enactmentAt?.toString(),
                 enactmentAfter: enactmentAfter?.toString(),
@@ -187,6 +178,17 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
                 submitted: submitted,
                 decisionDeposit: decisionDeposit,
                 deciding: deciding,
+                referendumStatus: {
+                    create: {
+                    blockNumber: {
+                        connect: {
+                        number: blockNumber.toNumber(),
+                        },
+                    },
+                    status,
+                    uniqueStatus: `${referendumIndex}_${status}`,
+                    },
+                },
             },
             create: {
                 trackNumber: trackNumber,
@@ -224,4 +226,4 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
   },
 };
 
-export default createReferendumV2;
+export default updateReferendumV2;
