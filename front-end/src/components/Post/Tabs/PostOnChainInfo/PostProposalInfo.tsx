@@ -2,7 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Col, Row } from 'antd';
 import * as React from 'react';
 import ExternalLinks from 'src/components/ExternalLinks';
 import { OnchainLinkProposalFragment } from 'src/generated/graphql';
@@ -35,49 +34,43 @@ const PostProposalInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props) 
 	return (
 		<>
 			<OnchainInfoWrapper>
-				<Row gutter={40}>
-					<Col xs={24} md={12}>
-						<h6>Proposer</h6>
-						<Address address={proposerAddress}/>
-						<div className='text-pink_primary cursor-pointer mt-3' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
-							View Other Proposals
-						</div>
-					</Col>
-					{depositAmount && currentNetwork &&
-					<Col span={12}>
-						<h6>Deposit</h6>
-						<div className='text-navBlue'>{parseInt(depositAmount) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}</div>
-					</Col>}
-					{method && <Col span={12}>
-						<h6>Method</h6>
-						<div className='text-navBlue'>{method}</div>
-					</Col>}
-					{method &&
-					<>
-						<div className='overflow-x-auto px-5'>
-							<div className='arguments'>
-								{preimageArguments && preimageArguments.length
-									? <ArgumentsTableJSONView postArguments={preimageArguments} showAccountArguments={true}  />
-									: null}
+				<div className='md:hidden text-pink_primary cursor-pointer mb-5' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
+					View Other Proposals
+				</div>
+				<ul className='list-none flex flex-col gap-y-2'>
+					<li className="grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5">
+						<h6 className='col-span-2'>Proposer</h6>
+						<article className="flex gap-x-2 col-span-4 md:col-span-6 overflow-hidden">
+							<Address address={proposerAddress}/>
+							<div className='hidden md:block text-pink_primary cursor-pointer ml-auto' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
+								View Other Proposals
 							</div>
+						</article>
+					</li>
+					{depositAmount && currentNetwork && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
+						<h6 className='col-span-2'>Deposit</h6>
+						<div className='text-navBlue col-span-4 md:col-span-6'>{parseInt(depositAmount) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
 						</div>
-					</>}
-				</Row>
-				<Row gutter={40} className='px-5'>
-					<Col span={24}>
-						{ metaDescription &&
-							<>
-								<h6>Description</h6>
-								<p className='text-navBlue leading-6'>{metaDescription}</p>
-							</>
-						}
-					</Col>
-				</Row>
-				<Row gutter={40} className='px-5'>
-					<Col span={24}>
-						<ExternalLinks isProposal={true} onchainId={onchainLink.onchain_proposal_id} />
-					</Col>
-				</Row>
+					</li>}
+					{method && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
+						<h6 className='col-span-2'>Method</h6>
+						<div className='text-navBlue col-span-4 md:col-span-6'>{method}</div>
+					</li>}
+				</ul>
+				{method &&
+				<div className='mt-5'>
+					<div className='arguments'>
+						{preimageArguments && preimageArguments.length
+							? <ArgumentsTableJSONView postArguments={preimageArguments} showAccountArguments={true}  />
+							: null}
+					</div>
+				</div>}
+				{metaDescription &&
+				<div className='grid grid-cols-6 md:grid-cols-8 gap-x-5 mt-5'>
+					<h6 className='col-span-6 md:col-span-2'>Description</h6>
+					<p className='text-navBlue leading-6 col-span-6'>{metaDescription}</p>
+				</div>}
+				<ExternalLinks className='mt-5' isProposal={true} onchainId={onchainLink.onchain_proposal_id} />
 			</OnchainInfoWrapper>
 		</>
 	);

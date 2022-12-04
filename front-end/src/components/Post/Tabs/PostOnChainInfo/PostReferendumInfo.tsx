@@ -33,7 +33,7 @@ const PostReferendumInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props
 	const { delay, end, referendumStatus, preimage, voteThreshold } = onchainReferendum[0];
 	const { metaDescription, method, preimageArguments } = preimage || {};
 	const { blockNumber, status } = referendumStatus?.[0] || {};
-	console.log(onchainReferendum[0]);
+
 	return (
 		<>
 			<OnchainInfoWrapper>
@@ -43,7 +43,7 @@ const PostReferendumInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props
 				<ul className='list-none flex flex-col gap-y-2'>
 					<li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
 						<h6 className='col-span-2'>Proposer</h6>
-						<article className='flex gap-x-2 col-span-4 md:col-span-6'>
+						<article className='flex gap-x-2 col-span-4 md:col-span-6 overflow-hidden'>
 							<Address address={proposerAddress}/>
 							<div className='hidden md:block text-pink_primary cursor-pointer ml-auto' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
 								View Other Proposals
@@ -84,17 +84,15 @@ const PostReferendumInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props
 					}
 				</ul>
 				{method &&
-				<>
-					<div className='arguments max-w-full mt-5'>
-						{preimageArguments && preimageArguments.length
-							? <ArgumentsTableJSONView postArguments={preimageArguments} showAccountArguments={true}  />
-							: null}
-					</div>
-				</>}
+				<div className='mt-5'>
+					{preimageArguments && preimageArguments.length
+						? <ArgumentsTableJSONView postArguments={preimageArguments} showAccountArguments={true}  />
+						: null}
+				</div>}
 				{metaDescription &&
-				<div className='grid grid-cols-6 md:grid-cols-8 gap-x-5 mt-2'>
-					<h6 className='col-span-2'>Description</h6>
-					<p className='text-navBlue leading-6 col-span-4 md:col-span-6'>{metaDescription}</p>
+				<div className='grid grid-cols-6 md:grid-cols-8 gap-x-5 mt-5'>
+					<h6 className='col-span-6 md:col-span-2'>Description</h6>
+					<p className='text-navBlue leading-6 col-span-6'>{metaDescription}</p>
 				</div>}
 				<ExternalLinks className='mt-5' isReferendum={true} onchainId={onchainLink.onchain_referendum_id} />
 			</OnchainInfoWrapper>

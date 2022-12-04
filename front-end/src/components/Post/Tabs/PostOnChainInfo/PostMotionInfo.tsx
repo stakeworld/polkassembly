@@ -3,7 +3,6 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from '@xstyled/styled-components';
-import { Col, Row } from 'antd';
 import * as React from 'react';
 import ExternalLinks from 'src/components/ExternalLinks';
 import { OnchainLinkMotionFragment, OnchainLinkMotionPreimageFragment, OnchainLinkMotionTreasuryFragment } from 'src/generated/graphql';
@@ -37,43 +36,48 @@ const PostMotionInfo = ({ className, onchainLink, setOtherProposalsSidebarAddr }
 	return (
 		<>
 			<OnchainInfoWrapper className={className}>
-				<Row gutter={40}>
-					<Col span={24}>
-						<h6>Proposer</h6>
-						<Address address={proposerAddress}/>
-						<div className='text-pink_primary cursor-pointer mt-3' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
-							View Other Proposals
-						</div>
-					</Col>
-					<Col span={12}>
-						<h6>Member count</h6>
-						<div className='text-navBlue'>
+				<div className='md:hidden text-pink_primary cursor-pointer mb-5' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
+					View Other Proposals
+				</div>
+				<ul className='list-none flex flex-col gap-y-2'>
+					<li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
+						<h6 className='col-span-2'>Proposer</h6>
+						<article className='flex gap-x-2 col-span-4 md:col-span-6 overflow-hidden'>
+							<Address address={proposerAddress}/>
+							<div className='hidden md:block text-pink_primary cursor-pointer ml-auto' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
+								View Other Proposals
+							</div>
+						</article>
+					</li>
+					<li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
+						<h6 className='col-span-2'>Member count</h6>
+						<div className='text-navBlue col-span-4 md:col-span-6 overflow-hidden'>
 							{memberCount}
 						</div>
-					</Col>
-					<Col span={12}>
-						<h6>Motion hash</h6>
-						<div className='text-navBlue'>
+					</li>
+					<li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
+						<h6 className='col-span-2 flex items-center'>Motion Hash</h6>
+						<div className='text-navBlue col-span-4 md:col-span-6'>
 							{motionProposalHash}
 						</div>
-					</Col>
-					<Col span={12}>
-						<h6>Motion&apos;s method</h6>
-						<span className={method === 'rejectProposal' ? 'bold-red-text' : 'text-navBlue'}>{method}</span>
-					</Col>
-					<div className='overflow-x-auto px-5'>
-						<div className='arguments'>
-							{motionProposalArguments && motionProposalArguments.length
-								? <ArgumentsTableJSONView postArguments={motionProposalArguments} showAccountArguments={false}  />
-								: null}
+					</li>
+					<li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
+						<h6 className='col-span-2'>Motion&apos;s method</h6>
+						<div className={`col-span-4 md:col-span-6 ${method === 'rejectProposal' ? 'bold-red-text' : 'text-navBlue'}`}>
+							{method}
 						</div>
-					</div>
+					</li>
+				</ul>
+				<div className='mt-5'>
+					{motionProposalArguments && motionProposalArguments.length
+						? <ArgumentsTableJSONView postArguments={motionProposalArguments} showAccountArguments={false}  />
+						: null}
+				</div>
+				<div className="mt-5 flex flex-col gap-y-5">
 					<ProposalInfo preimage={preimage}/>
 					<TreasuryInfo treasurySpendProposal={treasurySpendProposal}/>
-					<Col span={24}>
-						<ExternalLinks isMotion={true} onchainId={onchainLink.onchain_motion_id} />
-					</Col>
-				</Row>
+				</div>
+				<ExternalLinks className='mt-5' isMotion={true} onchainId={onchainLink.onchain_motion_id} />
 			</OnchainInfoWrapper>
 		</>
 	);
@@ -87,29 +91,27 @@ const ProposalInfo = ({ preimage } : {preimage?: OnchainLinkMotionPreimageFragme
 	const { metaDescription, method: preimageMethod, preimageArguments } = preimage;
 
 	return (
-		<Row className='motion-sub-info with-table mx-0 w-full' gutter={40}>
+		<>
 			{preimageMethod &&
 				<>
-					<Col span={24}>
-						<h6>Method</h6>
-						{preimageMethod}
-					</Col>
-					<Col className='arguments-col' span={24}>
+					<div className='grid grid-cols-6 md:grid-cols-8 gap-x-5'>
+						<h6 className='col-span-6 md:col-span-2'>Method</h6>
+						<p className='text-navBlue leading-6 col-span-6'>{preimageMethod}</p>
+					</div>
+					<div>
 						{preimageArguments && preimageArguments.length
-							? <ArgumentsTableJSONView postArguments={preimageArguments} showAccountArguments={true}  />
+							? <ArgumentsTableJSONView postArguments={preimageArguments} showAccountArguments={true} />
 							: null}
-					</Col>
+					</div>
 				</>
 			}
-			<Col span={24}>
-				{ metaDescription &&
-					<>
-						<h6>Description</h6>
-						<p className='text-navBlue leading-6 whitespace-pre-wrap'>{metaDescription}</p>
-					</>
-				}
-			</Col>
-		</Row>
+			{ metaDescription &&
+					<div className='grid grid-cols-6 md:grid-cols-8 gap-x-5'>
+						<h6 className='col-span-6 md:col-span-2'>Description</h6>
+						<p className='text-navBlue leading-6 col-span-6'>{metaDescription}</p>
+					</div>
+			}
+		</>
 	);
 };
 
@@ -123,26 +125,29 @@ const TreasuryInfo = ({ treasurySpendProposal }: {treasurySpendProposal?: Onchai
 	const { beneficiary, bond, value } = treasurySpendProposal;
 
 	return (
-		<Row className='motion-sub-info treasury-info mx-0 w-full' gutter={40}>
+		<>
 			{beneficiary &&
-				<Col xs={24} md={12}>
-					<h6>Beneficiary</h6>
+				<div className='grid grid-cols-6 md:grid-cols-8 gap-x-5'>
+					<h6 className='col-span-6 md:col-span-2'>Beneficiary</h6>
 					<Address address={beneficiary} />
-				</Col>}
+				</div>}
 			{value && currentNetwork &&
-					<Col span={12}>
-						<h6>Value</h6>
-						{parseInt(value) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
-					</Col>}
+					<div className='grid grid-cols-6 md:grid-cols-8 gap-x-5'>
+						<h6 className='col-span-6 md:col-span-2'>Value</h6>
+						<div className='text-navBlue col-span-4 md:col-span-6'>
+							{parseInt(value) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
+						</div>
+					</div>}
 			{bond && currentNetwork &&
 				<>
-					<Col xs={24} md={12}/>
-					<Col span={12}>
-						<h6>Bond</h6>
-						{parseInt(bond) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
-					</Col>
+					<div className='grid grid-cols-6 md:grid-cols-8 gap-x-5'>
+						<h6 className='col-span-6 md:col-span-2'>Bond</h6>
+						<div className='text-navBlue col-span-4 md:col-span-6'>
+							{parseInt(bond) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
+						</div>
+					</div>
 				</>}
-		</Row>
+		</>
 	);
 };
 
