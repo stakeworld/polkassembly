@@ -60,6 +60,7 @@ const PostReferendumV2Info = ({ onchainLink, setOtherProposalsSidebarAddr }: Pro
 				<div className='md:hidden text-pink_primary cursor-pointer mb-5' onClick={() => setOtherProposalsSidebarAddr(submitted.who)}>
 					View Other Proposals
 				</div>
+				<h5 className='mb-5 font-bold text-base'>Metadata</h5>
 				<ul className='list-none flex flex-col gap-y-2'>
 					<li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
 						<h6 className='col-span-2'>Proposer</h6>
@@ -131,12 +132,14 @@ const PostReferendumV2Info = ({ onchainLink, setOtherProposalsSidebarAddr }: Pro
 						</div>
 					</li>}
 				</ul>
-				{method && <div className='mt-5'>
-					{preimageArguments && preimageArguments.length
-						? <ArgumentsTableJSONView postArguments={preimageArguments} showAccountArguments={false}  />
-						: null}
+				{method && preimageArguments && preimageArguments.length &&
+				<div className='mt-7'>
+					<h5 className='font-bold text-base mb-3'>Call Arguments</h5>
+					<div>
+						<ArgumentsTableJSONView postArguments={preimageArguments} showAccountArguments={true}  />
+					</div>
 				</div>}
-				{metaDescription &&
+				{metaDescription && metaDescription.length > 2 &&
 				<div className='grid grid-cols-6 md:grid-cols-8 gap-x-5 mt-5'>
 					<h6 className='col-span-6 md:col-span-2'>Description</h6>
 					<p className='text-navBlue leading-6 col-span-6'>{metaDescription}</p>

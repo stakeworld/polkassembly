@@ -39,11 +39,12 @@ const PostMotionInfo = ({ className, onchainLink, setOtherProposalsSidebarAddr }
 				<div className='md:hidden text-pink_primary cursor-pointer mb-5' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
 					View Other Proposals
 				</div>
+				<h5 className='mb-5 font-bold text-base'>Metadata</h5>
 				<ul className='list-none flex flex-col gap-y-2'>
 					<li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
 						<h6 className='col-span-2'>Proposer</h6>
 						<article className='flex gap-x-2 col-span-4 md:col-span-6 overflow-hidden'>
-							<Address address={proposerAddress}/>
+							<Address displayInline={true} address={proposerAddress}/>
 							<div className='hidden md:block text-pink_primary cursor-pointer ml-auto' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
 								View Other Proposals
 							</div>
@@ -68,11 +69,13 @@ const PostMotionInfo = ({ className, onchainLink, setOtherProposalsSidebarAddr }
 						</div>
 					</li>
 				</ul>
-				<div className='mt-5'>
-					{motionProposalArguments && motionProposalArguments.length
-						? <ArgumentsTableJSONView postArguments={motionProposalArguments} showAccountArguments={false}  />
-						: null}
-				</div>
+				{motionProposalArguments && motionProposalArguments.length &&
+				<div className='mt-7'>
+					<h5 className='font-bold text-base mb-3'>Call Arguments</h5>
+					<div>
+						<ArgumentsTableJSONView postArguments={motionProposalArguments} showAccountArguments={true}  />
+					</div>
+				</div>}
 				<div className="mt-5 flex flex-col gap-y-5">
 					<ProposalInfo preimage={preimage}/>
 					<TreasuryInfo treasurySpendProposal={treasurySpendProposal}/>

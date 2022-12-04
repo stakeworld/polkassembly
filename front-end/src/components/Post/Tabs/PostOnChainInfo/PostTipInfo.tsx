@@ -33,11 +33,12 @@ const PostTipInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props) => {
 				<div className='md:hidden text-pink_primary cursor-pointer mb-5' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
 					View Other Proposals
 				</div>
+				<h5 className='mb-5 font-bold text-base'>Metadata</h5>
 				<ul className='list-none flex flex-col gap-y-2'>
 					<li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
 						<h6 className='col-span-2 flex items-center'>Proposer</h6>
 						<article className='flex gap-x-2 col-span-4 md:col-span-6 overflow-hidden'>
-							<Address address={proposerAddress}/>
+							<Address displayInline={true} address={proposerAddress}/>
 							<div className='hidden md:block text-pink_primary cursor-pointer ml-auto' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
 								View Other Proposals
 							</div>
@@ -55,14 +56,14 @@ const PostTipInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props) => {
 							{reason}
 						</div>
 					</li>}
-					{who && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b pb-1.5'>
-						<h6 className='col-span-2 pt-1.5'>Receiver</h6>
+					{who && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
+						<h6 className='col-span-2'>Receiver</h6>
 						<div className='text-navBlue col-span-4 md:col-span-6 overflow-hidden'>
 							<Address displayInline={true} address={who}/>
 						</div>
 					</li>}
-					{finder && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b pb-1.5'>
-						<h6 className='col-span-2 pt-1.5'>Finder</h6>
+					{finder && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
+						<h6 className='col-span-2'>Finder</h6>
 						<div className='text-navBlue col-span-4 md:col-span-6 overflow-hidden'>
 							<Address displayInline={true} address={finder}/>
 						</div>

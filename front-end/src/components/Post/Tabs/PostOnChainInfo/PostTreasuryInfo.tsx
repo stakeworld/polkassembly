@@ -35,6 +35,7 @@ const PostTreasuryInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props) 
 				<div className='md:hidden text-pink_primary cursor-pointer mb-5' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
 					View Other Proposals
 				</div>
+				<h5 className='mb-5 font-bold text-base'>Metadata</h5>
 				<ul className='list-none flex flex-col gap-y-2'>
 					<li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
 						<h6 className='col-span-2'>Proposer</h6>
@@ -53,8 +54,8 @@ const PostTreasuryInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props) 
 						<h6 className='col-span-2'>Value</h6>
 						<div className='text-navBlue col-span-4 md:col-span-6'>{parseInt(value) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}</div>
 					</li>}
-					{beneficiary && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b pb-1.5'>
-						<h6 className='col-span-2 pt-1.5'>Beneficiary</h6>
+					{beneficiary && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
+						<h6 className='col-span-2'>Beneficiary</h6>
 						<div className='col-span-4 md:col-span-6 overflow-hidden'>
 							<Address displayInline={true} address={beneficiary}/>
 						</div>
