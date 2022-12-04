@@ -58,13 +58,13 @@ const PostTipInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props) => {
 					{who && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b pb-1.5'>
 						<h6 className='col-span-2 pt-1.5'>Receiver</h6>
 						<div className='text-navBlue col-span-4 md:col-span-6 overflow-hidden'>
-							<Address address={who}/>
+							<Address displayInline={true} address={who}/>
 						</div>
 					</li>}
 					{finder && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b pb-1.5'>
 						<h6 className='col-span-2 pt-1.5'>Finder</h6>
 						<div className='text-navBlue col-span-4 md:col-span-6 overflow-hidden'>
-							<Address address={finder}/>
+							<Address displayInline={true} address={finder}/>
 						</div>
 					</li>}
 					{closes && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b pb-1.5'>

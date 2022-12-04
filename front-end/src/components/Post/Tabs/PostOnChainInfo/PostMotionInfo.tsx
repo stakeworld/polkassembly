@@ -129,7 +129,7 @@ const TreasuryInfo = ({ treasurySpendProposal }: {treasurySpendProposal?: Onchai
 			{beneficiary &&
 				<div className='grid grid-cols-6 md:grid-cols-8 gap-x-5'>
 					<h6 className='col-span-6 md:col-span-2'>Beneficiary</h6>
-					<Address address={beneficiary} />
+					<Address  displayInline={true} address={beneficiary} />
 				</div>}
 			{value && currentNetwork &&
 					<div className='grid grid-cols-6 md:grid-cols-8 gap-x-5'>

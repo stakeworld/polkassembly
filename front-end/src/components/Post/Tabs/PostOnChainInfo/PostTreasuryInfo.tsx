@@ -39,7 +39,7 @@ const PostTreasuryInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props) 
 					<li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
 						<h6 className='col-span-2'>Proposer</h6>
 						<article className='flex gap-x-2 col-span-4 md:col-span-6 overflow-hidden'>
-							<Address address={proposerAddress}/>
+							<Address displayInline={true} address={proposerAddress}/>
 							<div className='hidden md:block text-pink_primary cursor-pointer ml-auto' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
 								View Other Proposals
 							</div>
@@ -56,7 +56,7 @@ const PostTreasuryInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props) 
 					{beneficiary && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b pb-1.5'>
 						<h6 className='col-span-2 pt-1.5'>Beneficiary</h6>
 						<div className='col-span-4 md:col-span-6 overflow-hidden'>
-							<Address address={beneficiary}/>
+							<Address displayInline={true} address={beneficiary}/>
 						</div>
 					</li>}
 				</ul>

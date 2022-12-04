@@ -64,7 +64,7 @@ const PostReferendumV2Info = ({ onchainLink, setOtherProposalsSidebarAddr }: Pro
 					<li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
 						<h6 className='col-span-2'>Proposer</h6>
 						<article className='flex gap-x-2 col-span-4 md:col-span-6 overflow-hidden'>
-							<Address address={submitted.who}/>
+							<Address  displayInline={true} address={submitted.who}/>
 							<div className='hidden md:block text-pink_primary cursor-pointer ml-auto' onClick={() => setOtherProposalsSidebarAddr(submitted.who)}>
 								View Other Proposals
 							</div>
