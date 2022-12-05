@@ -101,17 +101,18 @@ export default styled(Markdown)`
 		}
 
 		code {
+			font-size: 12px;
 			margin: 0;
 			border-radius: 3px;
-			color: black_text;
-			white-space: pre;
+			color: #c7254e;
+			white-space: pre-wrap;
 			&::before, &::after {
 				letter-spacing: -0.2em;
 			}
 			margin-bottom: -6px; //offset for horizontal scrollbar
 			padding-left: 4px;
 			padding-right: 4px;
-			overflow: auto;
+			background-color: #fbfbfd;
 		}
 	}
 
