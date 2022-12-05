@@ -14,6 +14,7 @@ import { PrivacyPolicy, TermsAndConditions, TermsOfWebsite } from 'src/screens/L
 import Bounties from 'src/screens/Listing/Bounties';
 import ChildBounties from 'src/screens/Listing/ChildBounties';
 import Discussions from 'src/screens/Listing/Discussions';
+import FellowshipMembers from 'src/screens/Listing/FellowshipMembers';
 import Members from 'src/screens/Listing/Members';
 import Motions from 'src/screens/Listing/Motions';
 import Parachains from 'src/screens/Listing/Parachains';
@@ -53,7 +54,8 @@ export const gov2Routes = [
 	'gov-2',
 	'track',
 	'preimages',
-	'referenda'
+	'referenda',
+	'fellowship'
 ];
 
 for (const trackName of Object.keys(trackInfo)) {
@@ -157,6 +159,7 @@ const SwitchRoutes = () => {
 				<Route path=':id' element={<RedirectToReferenda />} />
 			</Route>
 
+			<Route path="/fellowship" element={<FellowshipMembers />} />
 			<Route path="/whitelisted-caller" element={<TrackListing trackName={PostOrigin.WHITELISTED_CALLER} />} />
 			<Route path="/fellowship-admin" element={<TrackListing trackName={PostOrigin.FELLOWSHIP_ADMIN} />} />
 

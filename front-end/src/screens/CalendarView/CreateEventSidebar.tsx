@@ -259,7 +259,7 @@ const CreateEventSidebar = ({ className, refetch, selectedNetwork, setSidebarCre
 
 					<div className="form-actions">
 						<Button onClick={closeCreateEventSidebar} disabled={loading} >Cancel</Button>
-						<Button className='submit-btn ml-1' onClick={handleCreateEvent} loading={loading} >Create Event</Button>
+						<Button className='bg-pink_primary rounded-md  hover:bg-pink_secondary text-white transition-colors duration-300 ml-1' onClick={handleCreateEvent} loading={loading} >Create Event</Button>
 					</div>
 				</Form>
 			</div>

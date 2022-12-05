@@ -2,7 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Col,Row } from 'antd';
 import * as React from 'react';
 import ExternalLinks from 'src/components/ExternalLinks';
 import { OnchainLinkTreasuryProposalFragment } from 'src/generated/graphql';
@@ -33,35 +32,36 @@ const PostTreasuryInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props) 
 	return (
 		<>
 			<OnchainInfoWrapper>
-				<Row>
-					<Col xs={24} md={12}>
-						<h6>Proposer</h6>
-						<Address address={proposerAddress}/>
-						<div className='text-pink_primary cursor-pointer mt-3' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
-							View Other Proposals
+				<div className='md:hidden text-pink_primary cursor-pointer mb-5' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
+					View Other Proposals
+				</div>
+				<h5 className='mb-5 font-bold text-base'>Metadata</h5>
+				<ul className='list-none flex flex-col gap-y-2'>
+					<li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
+						<h6 className='col-span-2'>Proposer</h6>
+						<article className='flex gap-x-2 col-span-4 md:col-span-6 overflow-hidden'>
+							<Address displayInline={true} address={proposerAddress}/>
+							<div className='hidden md:block text-pink_primary cursor-pointer ml-auto' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
+								View Other Proposals
+							</div>
+						</article>
+					</li>
+					{bond && currentNetwork && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
+						<h6 className='col-span-2'>Bond</h6>
+						<div className='text-navBlue col-span-4 md:col-span-6'>{parseInt(bond) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}</div>
+					</li>}
+					{value && currentNetwork && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
+						<h6 className='col-span-2'>Value</h6>
+						<div className='text-navBlue col-span-4 md:col-span-6'>{parseInt(value) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}</div>
+					</li>}
+					{beneficiary && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
+						<h6 className='col-span-2'>Beneficiary</h6>
+						<div className='col-span-4 md:col-span-6 overflow-hidden'>
+							<Address displayInline={true} address={beneficiary}/>
 						</div>
-					</Col>
-					{bond && currentNetwork &&
-					<Col span={12}>
-						<h6>Bond</h6>
-						<div className='text-navBlue'>
-							{parseInt(bond) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}
-						</div>
-					</Col>}
-					{value && currentNetwork &&
-					<Col span={12}>
-						<h6>Value</h6>
-						<div className='text-navBlue'>{parseInt(value) / Math.pow(10, chainProperties[currentNetwork].tokenDecimals) + ' ' + chainProperties[currentNetwork].tokenSymbol}</div>
-					</Col>}
-					{beneficiary &&
-					<Col span={12}>
-						<h6>Beneficiary</h6>
-						<Address address={beneficiary}/>
-					</Col>}
-					<Col span={24}>
-						<ExternalLinks isTreasuryProposal={true} onchainId={onchainLink.onchain_treasury_proposal_id} />
-					</Col>
-				</Row>
+					</li>}
+				</ul>
+				<ExternalLinks className='mt-5' isTreasuryProposal={true} onchainId={onchainLink.onchain_treasury_proposal_id} />
 			</OnchainInfoWrapper>
 		</>
 	);

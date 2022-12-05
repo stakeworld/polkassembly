@@ -113,7 +113,7 @@ const createPreimageV2: Task<NomidotPreimageV2[]> = {
 
         const preimageStatus = await api.query.preimage.statusFor(preimageArguments.hash);
 
-        if (!preimageStatus) {
+        if (!preimageStatus || preimageStatus.isNone) {
           l.error(`preimageStatus missing: ${preimageStatus}`);
           return null;
         }

@@ -1,10 +1,11 @@
 // Copyright 2019-2020 @Premiurly/polkassembly authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-import { CloseCircleOutlined } from '@ant-design/icons';
-import Sider from 'antd/lib/layout/Sider';
+
+import { Drawer } from 'antd';
 import React from 'react';
 import { ReactNode } from 'react-markdown/lib/react-markdown';
+import styled from 'styled-components';
 interface Props {
 	className?: string;
 	children?: ReactNode;
@@ -14,16 +15,37 @@ interface Props {
 
 const SidebarRight = ({ className, children, open, closeSidebar } : Props) => {
 	return (
-		<Sider
-			trigger={null}
-			className={`${className} ${!open ? 'hidden overflow-y-hidden min-w-0 max-w-0 w-0': 'min-w-[90%] xl:min-w-[50%] max-w-[70%]'} bg-white lg:block top-0 right-0 h-screen overflow-y-auto fixed z-50 drop-shadow-2xl`}
+		<Drawer
+			open={open}
+			onClose={closeSidebar}
+			placement='right'
+			className={className}
 		>
-			<div className='w-full flex justify-end p-3'><CloseCircleOutlined onClick={closeSidebar} className='text-lg cursor-pointer hover:text-black' /></div>
 			<div className='p-3 md:p-6 h-[92vh] overflow-y-auto'>
 				{children}
 			</div>
-		</Sider>
+		</Drawer>
 	);
 };
 
-export default SidebarRight;
+export default styled(SidebarRight)`
+
+.ant-drawer-content-wrapper{
+	max-width: 70% !important;
+	box-shadow: none !important;
+	min-width: 50% !important;
+
+}
+.ant-drawer-body{
+	padding: 0 !important;
+
+	ul{
+		margin-top: 0 !important;
+	}
+}
+
+.ant-drawer-header-title{
+	justify-content: right;
+}
+
+`;
