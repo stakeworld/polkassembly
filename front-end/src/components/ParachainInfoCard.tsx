@@ -9,26 +9,28 @@ import kusamaLogo from 'src/assets/kusama-logo.gif';
 import auctionIcon from 'src/assets/parachains/auction.png';
 import chainIcon from 'src/assets/parachains/chain-link.png';
 import crowdloansIcon from 'src/assets/parachains/crowdloan.png';
+import projectsIcon from 'src/assets/parachains/projects.png';
 import polkadotLogo from 'src/assets/polkadot-logo-small-inverted.png';
 
 interface Props {
 	className?: string
 	network: 'polkadot' | 'kusama'
+	projects: number
 }
 
-const ParachainInfoCard = ({ className, network }: Props) => {
+const ParachainInfoCard = ({ className, network, projects }: Props) => {
 	const polkadotMetrics = {
 		auction: '14th',
 		crowdloans: '5',
 		parachains: '14',
-		projects: '23'
+		projects: projects
 	};
 
 	const kusamaMetrics = {
 		auction: '31st',
 		crowdloans: '5',
 		parachains: '29',
-		projects: '23'
+		projects: projects
 	};
 
 	const metrics = network=='polkadot' ? polkadotMetrics : kusamaMetrics;
@@ -72,9 +74,18 @@ const ParachainInfoCard = ({ className, network }: Props) => {
 					<div className='metric-container'>
 						<div className='metric-line'>
 							<img src={chainIcon} alt="Parachains Icon" />
-							<span className='metric-num text-sidebarBlue'>{metrics.projects}</span>
+							<span className='metric-num text-sidebarBlue'>{metrics.parachains}</span>
 						</div>
 						<div className='metric-name text-navBlue'>Parachains</div>
+					</div>
+
+					{/* Projects */}
+					<div className='metric-container'>
+						<div className='metric-line flex items-center'>
+							<img className='h-[14px] w-auto md:h-auto' src={projectsIcon} alt="Parachains Icon" />
+							<span className='metric-num ml-[7px] font-medium text-[12px] md:text-[14px] text-sidebarBlue'>{metrics.projects}</span>
+						</div>
+						<div className='metric-name mt-[8px] text-[12px] md:text-[14px] text-navBlue'>Projects</div>
 					</div>
 				</div>
 			</div>

@@ -2,7 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { SyncOutlined } from '@ant-design/icons';
+// import { SyncOutlined } from '@ant-design/icons';
+// import './style.css';
+
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -17,10 +19,12 @@ const GovernanceSwitchButton = ({ className } : Props) => {
 	const isGov2Route: boolean = gov2Routes.includes(pathname.split('/')[1]);
 
 	return (
-		<Link className={`${className} flex items-center font-semibold text-sidebarBlue hover:text-pink_primary`} to={isGov2Route ? '/' : '/gov-2'}>
-			<div className='-mt-1 mr-2'><SyncOutlined /></div>
-			<div> Switch to {isGov2Route ? 'Governance V1' : 'Governance V2'} </div>
-		</Link>
+		<div className={`${className} v2-button-wrapper`}>
+			<Link className='v2-box text-sidebarBlue hover:text-pink_primary' to={isGov2Route ? '/' : '/gov-2'}>
+				{/* <div className='-mt-1 mr-2'><SyncOutlined /></div> */}
+				<p> {isGov2Route ? 'Governance V1' : 'Governance V2'} </p>
+			</Link>
+		</div>
 	);
 };
 
