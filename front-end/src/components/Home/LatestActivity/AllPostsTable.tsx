@@ -170,7 +170,7 @@ const columns: ColumnsType<AllPostsRowData> = [
 		title: 'Posted By',
 		dataIndex: 'username',
 		key: 'postedBy',
-		render: (username, { address }) => <NameLabel textClassName='max-w-[9vw] 2xl:max-w-[12vw]' defaultAddress={address} username={username} disableIdenticon={true} />
+		render: (username, { address }) => <div className='truncate'><NameLabel textClassName='max-w-[9vw] 2xl:max-w-[12vw]' defaultAddress={address} username={username} disableIdenticon={true} /></div>
 	},
 	{
 		title: 'Created',
