@@ -5,7 +5,7 @@
 import { CheckOutlined, CloseOutlined, DeleteOutlined, FormOutlined, LoadingOutlined } from '@ant-design/icons';
 import { QueryLazyOptions } from '@apollo/client';
 import { Button, Form } from 'antd';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ContentForm from 'src/components/ContentForm';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { Exact, ReplyFieldsFragment,  useDeleteCommentReplyMutation,useEditCommentReplyMutation } from 'src/generated/graphql';
@@ -33,17 +33,23 @@ interface Props {
 const EditableReplyContent = ({ authorId, className, commentId, content, replyId, refetch }: Props) => {
 	const [isEditing, setIsEditing] = useState(false);
 	const { id } = useContext(UserDetailsContext);
-	const [newContent, setNewContent] = useState(content || '');
 	const toggleEdit = () => setIsEditing(!isEditing);
 	const [form] = Form.useForm();
-	form.setFieldValue('content', content);
+	useEffect(() => {
+		form.setFieldValue('content', content); //initialValues is not working
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const handleCancel = () => {
 		toggleEdit();
-		setNewContent(content || '');
+		form.setFieldValue('content', '');
 	};
 
-	const handleSave = () => {
+	const handleSave = async () => {
+		await form.validateFields();
+		const newContent = form.getFieldValue('content');
+		if(!newContent) return;
+
 		setIsEditing(false);
 		editCommentReplyMutation( {
 			variables: {
@@ -53,6 +59,7 @@ const EditableReplyContent = ({ authorId, className, commentId, content, replyId
 		)
 			.then(({ data }) => {
 				if (data?.update_replies && data.update_replies.affected_rows > 0){
+					form.setFieldValue('content', '');
 					refetch();
 					queueNotification({
 						header: 'Success!',
@@ -66,7 +73,7 @@ const EditableReplyContent = ({ authorId, className, commentId, content, replyId
 
 	const [editCommentReplyMutation, { error, loading }] = useEditCommentReplyMutation({
 		variables: {
-			content: newContent,
+			content: '',
 			id: commentId
 		}
 	});

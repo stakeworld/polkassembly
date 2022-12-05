@@ -93,9 +93,11 @@ const createReferendum: Task<NomidotReferendum[]> = {
         }
 
         let oldRefHash = '';
+        let lookupHash = '';
 
         try {
           oldRefHash = (referendumInfo.toJSON() as any).proposal?.legacy?.hash;
+          lookupHash = (referendumInfo.toJSON() as any).proposal?.lookup?.hash;
         } catch (err) {
           console.error(err);
         }
@@ -103,7 +105,7 @@ const createReferendum: Task<NomidotReferendum[]> = {
         const result: NomidotReferendum = {
           delay: referendumInfo.delay,
           end: referendumInfo.end,
-          preimageHash: referendumInfo.proposalHash || oldRefHash,
+          preimageHash: referendumInfo.proposalHash || oldRefHash || lookupHash,
           referendumIndex: referendumRawEvent.ReferendumIndex,
           status: referendumStatus.STARTED,
           voteThreshold: referendumRawEvent.VoteThreshold,

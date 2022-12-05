@@ -240,7 +240,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 					{!loading && data && data.calender_events &&
 					<Row className='pt-0'>
 						{!small && width > 992 &&
-						<Col xs={24} md={8} id='calendar-left-panel' className='calendar-left-panel'>
+						<Col span={8} id='calendar-left-panel' className='calendar-left-panel'>
 							<div className='p-5 pl-2 pt-0'>
 								<p className='text-sidebarBlue font-medium text-md text-center mb-2'>Current Time: { moment(utcDate).format('D-MM-YY | h:mm a UTC') } </p>
 
@@ -275,7 +275,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 						</Col>
 						}
 
-						<Col xs={24} md={16} className=' h-full' >
+						<Col span={!small && width > 992 ? 16 : 24} className=' h-full' >
 							<Calendar
 								className={`events-calendar ${small || width < 768 ? 'small' : '' }`}
 								localizer={localizer}
@@ -340,7 +340,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 					<div className="event-sidebar-header d-flex">
 						<div className='d-flex'>
 							<div className={`status-icon ${moment(sidebarEvent.end_time).isBefore() ? 'overdue-color' : `${sidebarEvent.status?.toLowerCase()}-color`}`} ></div>
-							<h1>{sidebarEvent.title}</h1>
+							<h1 className='dashboard-heading mb-2'>{sidebarEvent.title}</h1>
 						</div>
 
 					</div>
@@ -358,7 +358,7 @@ const CalendarView = ({ className, small = false, emitCalendarEvents = undefined
 					<Divider />
 
 					<div className="sidebar-event-links">
-						<h3> <img src={chainLink} /> Relevant Links</h3>
+						<h3 className='dashboard-heading flex items-center gap-x-2 mb-2'> <img src={chainLink} height={16} width={16} /> Relevant Links</h3>
 						<div className='links-container'>
 							<a href={sidebarEvent.url} target='_blank' rel='noreferrer'>{sidebarEvent.url}</a>
 						</div>
@@ -674,7 +674,8 @@ export default styled(CalendarView)`
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			margin-top: 3px;
+			margin-left: -3px;
+			margin-top: -2px;
 
 			.rbc-event {
 				background:#E6007A;
@@ -682,7 +683,7 @@ export default styled(CalendarView)`
 				padding: 0 !important;
 				width: 5px;
 				height: 5px;
-  			border-radius: 50%;
+				border-radius: 50%;
 				border: 2px solid #E6007A;
 
 				&.overdue-border {

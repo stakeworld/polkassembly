@@ -128,6 +128,15 @@ const createMotion: Task<NomidotMotion[]> = {
             if (['proposal_hash', 'proposalHash'].includes(name)) {
               preimageHash = values[index].toString();
             }
+
+            if (name === 'proposal') {
+              try {
+                let valueJson: any = values[index].toJSON();
+                preimageHash = valueJson?.lookup.hash || valueJson?.legacy.hash;
+              } catch(error) {
+                console.error(error);
+              }
+            }
           });
 
         const result: NomidotMotion = {

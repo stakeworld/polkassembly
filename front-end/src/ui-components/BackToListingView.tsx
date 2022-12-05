@@ -7,7 +7,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { PostCategory } from 'src/global/post_categories';
 
-const BackToListingView = ({ postCategory, trackName } : { postCategory?:PostCategory, trackName?:string }) => {
+interface Props {
+	postCategory?:PostCategory | 'council' | 'fellowship';
+	trackName?:string
+}
+
+const BackToListingView = ({ postCategory, trackName } : Props) => {
 	let path: string = '';
 
 	if(trackName) {
@@ -43,8 +48,11 @@ const BackToListingView = ({ postCategory, trackName } : { postCategory?:PostCat
 		case PostCategory.TIP:
 			path = 'tips';
 			break;
-		case PostCategory.COUNCIL:
+		case 'council':
 			path = 'council';
+			break;
+		case 'fellowship':
+			path = 'fellowship';
 			break;
 		}
 	}

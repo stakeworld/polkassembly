@@ -2,7 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Col,Row } from 'antd';
 import * as moment from 'moment';
 import React from 'react';
 import BlockCountdown from 'src/components/BlockCountdown';
@@ -31,58 +30,65 @@ const PostTipInfo = ({ onchainLink, setOtherProposalsSidebarAddr }: Props) => {
 	return (
 		<>
 			<OnchainInfoWrapper>
-				<Row>
-					<Col xs={24} md={12}>
-						<h6>Proposer</h6>
-						<Address address={proposerAddress}/>
-						<div className='text-pink_primary cursor-pointer mt-3' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
-							View Other Proposals
-						</div>
-					</Col>
-					{hash &&
-					<Col xs={24} md={12}>
-						<h6>Hash</h6>
-						<div className='text-navBlue'>
+				<div className='md:hidden text-pink_primary cursor-pointer mb-5' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
+					View Other Proposals
+				</div>
+				<h5 className='mb-5 font-bold text-base'>Metadata</h5>
+				<ul className='list-none flex flex-col gap-y-2'>
+					<li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
+						<h6 className='col-span-2 flex items-center'>Proposer</h6>
+						<article className='flex gap-x-2 col-span-4 md:col-span-6 overflow-hidden'>
+							<Address displayInline={true} address={proposerAddress}/>
+							<div className='hidden md:block text-pink_primary cursor-pointer ml-auto' onClick={() => setOtherProposalsSidebarAddr(proposerAddress)}>
+								View Other Proposals
+							</div>
+						</article>
+					</li>
+					{hash && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
+						<h6 className='col-span-2 flex items-center'>Hash</h6>
+						<div className='text-navBlue col-span-4 md:col-span-6'>
 							{hash}
-
 						</div>
-					</Col>}
-					{reason &&
-					<Col xs={24} md={12}>
-						<h6>Reason</h6>
-						<div className='text-navBlue'>
+					</li>}
+					{reason && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
+						<h6 className='col-span-2 flex items-center'>Reason</h6>
+						<div className='text-navBlue col-span-4 md:col-span-6'>
 							{reason}
-
 						</div>
-					</Col>}
-					{who &&
-					<Col xs={24} md={12}>
-						<h6>Receiver</h6>
-						<Address address={who}/>
-					</Col>}
-					{finder &&
-					<Col xs={24} md={12}>
-						<h6>Finder</h6>
-						<Address address={finder}/>
-					</Col>}
-					{closes &&
-					<Col xs={24} md={12}>
+					</li>}
+					{who && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
+						<h6 className='col-span-2'>Receiver</h6>
+						<div className='text-navBlue col-span-4 md:col-span-6 overflow-hidden'>
+							<Address displayInline={true} address={who}/>
+						</div>
+					</li>}
+					{finder && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
+						<h6 className='col-span-2'>Finder</h6>
+						<div className='text-navBlue col-span-4 md:col-span-6 overflow-hidden'>
+							<Address displayInline={true} address={finder}/>
+						</div>
+					</li>}
+					{closes && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b pb-1.5'>
 						{status === tipStatuses.CLOSING
 							?
 							<>
-								<h6>Closing</h6>
-								<BlockCountdown endBlock={closes}/>
+								<h6 className='col-span-2 pt-1.5'>Closing</h6>
+								<div className='col-span-4 md:col-span-6 overflow-hidden'>
+									<BlockCountdown endBlock={closes}/>
+								</div>
 							</>
 							:  status === tipStatuses.CLOSED
 								?
 								<>
-									<h6>Closed</h6>
-									<div>{moment.utc(blockNumber?.startDateTime).format('DD MMM YYYY, HH:mm:ss')}</div>
+									<h6 className='col-span-2 pt-1.5'>Closed</h6>
+									<div className='text-navBlue col-span-4 md:col-span-6 overflow-hidden'>
+										{moment.utc(blockNumber?.startDateTime).format('DD MMM YYYY, HH:mm:ss')}
+									</div>
 								</>
-								: <span>#{closes}</span>
+								: <span className='col-span-6 md:col-span-8'>#{closes}</span>
 						}
-					</Col>}
-				</Row>
+					</li>}
+				</ul>
 			</OnchainInfoWrapper>
 		</>
 	);
