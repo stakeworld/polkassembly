@@ -62,14 +62,6 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 	const currentBlock = useCurrentBlock();
 
 	const [timelineid, setTimelineId] = useState(0);
-	const [timelines, setTimelines] = useState<ITimeline[]>([
-		{
-			comments: post.comments,
-			date: moment(),
-			id: 0,
-			status: 'All Comments'
-		}
-	]);
 
 	const getCommentsBetweenDates = (endDate: moment.Moment, startDate: moment.Moment | null) => {
 
@@ -85,70 +77,34 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 		return comments || [];
 	};
 
-	const getTimeline = () => {
-		if (onchain_link && currentBlock) {
-			const timelines: ITimeline[] = [
-				{
-					comments: post.comments,
-					date: moment(),
-					id: 0,
-					status: 'All Comments'
-				}
-			];
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	let timelines: ITimeline[] = [];
 
-			const { onchain_proposal, onchain_referendum, onchain_treasury_spend_proposal, onchain_tech_committee_proposal, onchain_motion } = onchain_link as any;
+	if (onchain_link && currentBlock) {
+		const { onchain_proposal, onchain_referendum, onchain_treasury_spend_proposal, onchain_tech_committee_proposal, onchain_motion } = onchain_link as any;
 
-			if (onchain_proposal?.length > 0) {
-				if (onchain_referendum?.length > 0) {
-					const obj = onchain_referendum[0]?.referendumStatus?.[0];
-					timelines.push({
-						comments: [],
-						date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
-						id: timelines.length + 1,
-						status: 'Referendum'
-					});
-				}
-
-				const obj = onchain_proposal[0]?.proposalStatus?.[0];
+		if (onchain_proposal?.length > 0) {
+			if (onchain_referendum?.length > 0) {
+				const obj = onchain_referendum[0]?.referendumStatus?.[0];
 				timelines.push({
 					comments: [],
 					date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
 					id: timelines.length + 1,
-					status: 'Proposal'
+					status: 'Referendum'
 				});
 			}
 
-			if (onchain_treasury_spend_proposal?.length > 0) {
-				if (onchain_motion?.length > 0) {
-					const obj = onchain_motion[0]?.motionStatus?.[0];
-					timelines.push({
-						comments: [],
-						date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
-						id: timelines.length + 1,
-						status: 'Motion'
-					});
-				}
+			const obj = onchain_proposal[0]?.proposalStatus?.[0];
+			timelines.push({
+				comments: [],
+				date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
+				id: timelines.length + 1,
+				status: 'Proposal'
+			});
+		}
 
-				const obj = onchain_treasury_spend_proposal[0]?.treasuryStatus?.[0];
-				timelines.push({
-					comments: [],
-					date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
-					id: timelines.length + 1,
-					status: 'Treasury Proposal'
-				});
-			}
-
-			if (!(onchain_treasury_spend_proposal?.length > 0) && onchain_motion?.length > 0) {
-				if (onchain_referendum?.length > 0) {
-					const obj = onchain_referendum[0]?.referendumStatus?.[0];
-					timelines.push({
-						comments: [],
-						date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
-						id: timelines.length + 1,
-						status: 'Referendum'
-					});
-				}
-
+		if (onchain_treasury_spend_proposal?.length > 0) {
+			if (onchain_motion?.length > 0) {
 				const obj = onchain_motion[0]?.motionStatus?.[0];
 				timelines.push({
 					comments: [],
@@ -158,32 +114,57 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 				});
 			}
 
-			if (onchain_tech_committee_proposal?.length > 0) {
-				const obj = onchain_tech_committee_proposal[0]?.status?.[0];
+			const obj = onchain_treasury_spend_proposal[0]?.treasuryStatus?.[0];
+			timelines.push({
+				comments: [],
+				date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
+				id: timelines.length + 1,
+				status: 'Treasury Proposal'
+			});
+		}
+
+		if (!(onchain_treasury_spend_proposal?.length > 0) && onchain_motion?.length > 0) {
+			if (onchain_referendum?.length > 0) {
+				const obj = onchain_referendum[0]?.referendumStatus?.[0];
 				timelines.push({
 					comments: [],
 					date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
 					id: timelines.length + 1,
-					status: 'Tech. Comm. Proposal'
+					status: 'Referendum'
 				});
 			}
 
-			const newTimelines = timelines.map((timelineObj, i) => ({
-				...timelineObj,
-				comments: i === 0 ? post.comments : getCommentsBetweenDates(i === 1 ? moment() : timelineObj.date, timelines[i + 1]?.date || null)
-			}));
-
-			setTimelines(newTimelines);
+			const obj = onchain_motion[0]?.motionStatus?.[0];
+			timelines.push({
+				comments: [],
+				date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
+				id: timelines.length + 1,
+				status: 'Motion'
+			});
 		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	};
+
+		if (onchain_tech_committee_proposal?.length > 0) {
+			const obj = onchain_tech_committee_proposal[0]?.status?.[0];
+			timelines.push({
+				comments: [],
+				date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
+				id: timelines.length + 1,
+				status: 'Tech. Comm. Proposal'
+			});
+		}
+
+		timelines = timelines.map((timelineObj, i) => ({
+			...timelineObj,
+			comments: i === 0 ? post.comments : getCommentsBetweenDates(timelineObj.date, timelines[i + 1]?.date || null)
+		}));
+	}
 
 	useEffect(() => {
-		getTimeline();
+		if(timelines.length < 1 || timelineid) return;
+		setTimelineId(timelines[0].id);
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [onchain_link, currentBlock]);
+	}, [timelines]);
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const handleTimelineClick = ({ id } : {id: number}) => {
 		setTimelineId(id);
 	};
