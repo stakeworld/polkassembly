@@ -103,7 +103,7 @@ const DiscussionPostsTable = () => {
 					createdAt: post.created_at,
 					postId: post.id,
 					postCategory: PostCategory.DISCUSSION,
-					topic: post.type.name
+					topic: post.topic.name
 				};
 
 				tableData.push(tableDataObj);
