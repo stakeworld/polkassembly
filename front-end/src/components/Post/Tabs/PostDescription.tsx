@@ -49,6 +49,11 @@ interface ITimeline {
 const getTimelineDate = (no: number, currentBlock: BN) => {
 	const time = blockToTime(currentBlock.toNumber() - no);
 	const timeArr = time.split(' ');
+
+	if (!timeArr[0] || !timeArr[1] || !timeArr[2]) {
+		return moment().utc();
+	}
+
 	const days = Number(timeArr[0].replace('d', ''));
 	const hours = Number(timeArr[1].replace('h', ''));
 	const minutes = Number(timeArr[2].replace('m', ''));
