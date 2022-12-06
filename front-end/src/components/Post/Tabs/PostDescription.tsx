@@ -4,11 +4,12 @@
 
 import { FormOutlined } from '@ant-design/icons';
 import { QueryLazyOptions } from '@apollo/client';
-import { Button, Timeline } from 'antd';
+import styled from '@xstyled/styled-components';
+import { Anchor, Button } from 'antd';
 import BN from 'bn.js';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import PASmallCirclePNG from 'src/assets/pa-small-circle.png';
+// import PASmallCirclePNG from 'src/assets/pa-small-circle.png';
 import { DiscussionPostFragment, Exact, MotionPostFragment,ProposalPostFragment, ReferendumPostFragment,  TreasuryProposalPostFragment } from 'src/generated/graphql';
 import { useCurrentBlock } from 'src/hooks';
 import Markdown from 'src/ui-components/Markdown';
@@ -21,6 +22,8 @@ import ShareButton from '../ActionsBar/ShareButton';
 import SubscriptionButton from '../ActionsBar/SubscriptionButton/SubscriptionButton';
 import Comments from '../Comment/Comments';
 import PostCommentForm from '../PostCommentForm';
+
+const { Link: AnchorLink } = Anchor;
 
 interface Props {
 	className?: string;
@@ -43,15 +46,15 @@ interface ITimeline {
 	date: moment.Moment;
 	status: string;
 	id: number;
-	comments: any[];
+	commentsCount: number;
 }
 
 const getTimelineDate = (no: number, currentBlock: BN) => {
 	const time = blockToTime(currentBlock.toNumber() - no);
 	const timeArr = time.split(' ');
-	const days = Number(timeArr[0].replace('d', ''));
-	const hours = Number(timeArr[1].replace('h', ''));
-	const minutes = Number(timeArr[2].replace('m', ''));
+	const days = Number(timeArr[0]?.replace('d', ''));
+	const hours = Number(timeArr[1]?.replace('h', ''));
+	const minutes = Number(timeArr[2]?.replace('m', ''));
 	const duration = moment.duration({ 'days': days, 'hours': hours, 'minutes': minutes });
 	const date = moment().utc().subtract(duration);
 	return date;
@@ -63,18 +66,13 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 
 	const [timelineid, setTimelineId] = useState(0);
 
-	const getCommentsBetweenDates = (endDate: moment.Moment, startDate: moment.Moment | null) => {
-
+	const getCommentCountBetweenDates = (startDate: moment.Moment, endDate: moment.Moment) => {
 		const comments = post.comments.filter((comment) => {
 			const commentDate = moment(comment.created_at);
-			if (startDate) {
-				return commentDate.isBetween(startDate, endDate);
-			} else {
-				return commentDate.isBefore(endDate);
-			}
+			return commentDate.isBetween(startDate, endDate, undefined, '[)');
 		});
 
-		return comments || [];
+		return comments.length;
 	};
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -83,80 +81,82 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 	if (onchain_link && currentBlock) {
 		const { onchain_proposal, onchain_referendum, onchain_treasury_spend_proposal, onchain_tech_committee_proposal, onchain_motion } = onchain_link as any;
 
-		if (onchain_proposal?.length > 0) {
-			if (onchain_referendum?.length > 0) {
-				const obj = onchain_referendum[0]?.referendumStatus?.[0];
+		if (onchain_proposal?.length > 0 && onchain_proposal[0]?.proposalStatus.length > 0) {
+			const obj = onchain_proposal[0]?.proposalStatus?.at(-1);
+			timelines.push({
+				commentsCount: 0,
+				date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
+				id: timelines.length + 1,
+				status: 'Proposal'
+			});
+
+			if (onchain_referendum?.length > 0 && onchain_referendum[0]?.referendumStatus.length > 0) {
+				const obj = onchain_referendum[0]?.referendumStatus?.at(-1);
 				timelines.push({
-					comments: [],
+					commentsCount: 0,
 					date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
 					id: timelines.length + 1,
 					status: 'Referendum'
 				});
 			}
-
-			const obj = onchain_proposal[0]?.proposalStatus?.[0];
-			timelines.push({
-				comments: [],
-				date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
-				id: timelines.length + 1,
-				status: 'Proposal'
-			});
 		}
 
-		if (onchain_treasury_spend_proposal?.length > 0) {
-			if (onchain_motion?.length > 0) {
-				const obj = onchain_motion[0]?.motionStatus?.[0];
+		if (onchain_treasury_spend_proposal?.length > 0 && onchain_treasury_spend_proposal[0]?.treasuryStatus.length > 0) {
+			const obj = onchain_treasury_spend_proposal[0]?.treasuryStatus?.at(-1);
+			timelines.push({
+				commentsCount: 0,
+				date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
+				id: timelines.length + 1,
+				status: 'Treasury Proposal'
+			});
+
+			if (onchain_motion?.length > 0 && onchain_motion[0]?.motionStatus.length > 0) {
+				const obj = onchain_motion[0]?.motionStatus?.at(-1);
 				timelines.push({
-					comments: [],
+					commentsCount: 0,
 					date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
 					id: timelines.length + 1,
 					status: 'Motion'
 				});
 			}
-
-			const obj = onchain_treasury_spend_proposal[0]?.treasuryStatus?.[0];
-			timelines.push({
-				comments: [],
-				date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
-				id: timelines.length + 1,
-				status: 'Treasury Proposal'
-			});
 		}
 
-		if (!(onchain_treasury_spend_proposal?.length > 0) && onchain_motion?.length > 0) {
-			if (onchain_referendum?.length > 0) {
-				const obj = onchain_referendum[0]?.referendumStatus?.[0];
+		if (!(onchain_treasury_spend_proposal?.length > 0) && onchain_motion?.length > 0 && onchain_motion[0]?.motionStatus.length > 0) {
+			const obj = onchain_motion[0]?.motionStatus?.at(-1);
+			timelines.push({
+				commentsCount: 0,
+				date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
+				id: timelines.length + 1,
+				status: 'Motion'
+			});
+
+			if (onchain_referendum?.length > 0 && onchain_referendum[0]?.referendumStatus.length > 0) {
+				const obj = onchain_referendum[0]?.referendumStatus?.at(-1);
 				timelines.push({
-					comments: [],
+					commentsCount: 0,
 					date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
 					id: timelines.length + 1,
 					status: 'Referendum'
 				});
 			}
-
-			const obj = onchain_motion[0]?.motionStatus?.[0];
-			timelines.push({
-				comments: [],
-				date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
-				id: timelines.length + 1,
-				status: 'Motion'
-			});
 		}
 
-		if (onchain_tech_committee_proposal?.length > 0) {
-			const obj = onchain_tech_committee_proposal[0]?.status?.[0];
+		if (onchain_tech_committee_proposal?.length > 0 && onchain_tech_committee_proposal[0]?.status.length > 0) {
+			const obj = onchain_tech_committee_proposal[0]?.status?.at(-1);
 			timelines.push({
-				comments: [],
+				commentsCount: 0,
 				date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
 				id: timelines.length + 1,
 				status: 'Tech. Comm. Proposal'
 			});
 		}
 
-		timelines = timelines.map((timelineObj, i) => ({
-			...timelineObj,
-			comments: i === 0 ? post.comments : getCommentsBetweenDates(timelineObj.date, timelines[i + 1]?.date || null)
-		}));
+		if(timelines.length > 1) {
+			timelines = timelines.map((timelineObj, i) => ({
+				...timelineObj,
+				commentsCount: i === (timelines.length - 1) ? post.comments.length : getCommentCountBetweenDates(timelineObj.date, timelines[i + 1].date)
+			}));
+		}
 	}
 
 	useEffect(() => {
@@ -194,26 +194,26 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 				{
 					onchain_link && !!post.comments?.length && currentBlock && timelines.length > 1 &&
 					<div className='h-screen hidden xl:block col-start-1 col-end-2 min-w-[100px] -ml-2 sticky top-[10%] pt-10'>
-						<Timeline className='flex flex-col h-full w-full' mode='right'>
-							{timelines.map(({ date, id, status, comments }) => {
+						<Anchor className='h-full' onClick={(e: React.MouseEvent<HTMLElement>) => {e.preventDefault();}}>
+							{timelines.map(({ date, id, status, commentsCount }) => {
 								return (
-									<Timeline.Item
-										className='h-full'
-										dot={timelineid === id && <img style={ { maxWidth:'20px' } } src={PASmallCirclePNG} />}
-										color={`${timelineid === id? '#334D6E':'#90A0B7'}`} key={id}
-									>
-										<button disabled={comments.length < 1} onClick={() => handleTimelineClick({ id })} className={`text-xs flex flex-col border-none outline-none items-end w-full ${timelineid === id ? 'text-sidebarBlue': `${comments.length < 1 ? 'text-gray-300' : 'text-navBlue'}`}`}>
-											{
-												<div className='flex flex-col mr-1 text-right gap-y-0.5'>
-													{id > 0 && <div>{date.format('MMM Do')}</div>}
-													<div>{status}</div>
-													<div className={`${timelineid === id ? 'text-sidebarBlue' : `${comments.length < 1 ? 'text-gray-300' : 'text-navBlue'}`} text-xs font-normal`}>({comments.length})</div>
-												</div>
-											}
-										</button>
-									</Timeline.Item>);
+									<AnchorLink
+										key={id}
+										href="#"
+										title={
+											<button disabled={true} onClick={() => handleTimelineClick({ id })} className={'text-xs flex flex-col border-none outline-none items-end w-full text-sidebarBlue'}>
+												{
+													<div className='flex flex-col mr-1 text-right gap-y-0.5'>
+														{id > 0 && <div>{date.format('MMM Do')}</div>}
+														<div>{status}</div>
+														<div className={'text-sidebarBlue text-xs font-normal'}>({commentsCount})</div>
+													</div>
+												}
+											</button>
+										}
+									/>);
 							})}
-						</Timeline>
+						</Anchor>
 					</div>
 				}
 
@@ -222,7 +222,7 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 					{ !!post.comments?.length &&
 						<>
 							<Comments
-								comments={timelineid ? timelines[timelineid - 1].comments : post.comments}
+								comments={post.comments}
 								refetch={refetch}
 							/>
 						</>
@@ -235,4 +235,12 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 	);
 };
 
-export default React.memo(PostDescription);
+export default React.memo(styled(PostDescription)`
+.ant-anchor-wrapper {
+	.ant-anchor {
+		display: flex;
+		flex-direction: column;
+		gap: 96px;
+	}
+}
+`);
