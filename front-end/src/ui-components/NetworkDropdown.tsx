@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DownOutlined } from '@ant-design/icons';
+// import { DownOutlined } from '@ant-design/icons';
 import { Card, Col, Dropdown, Row } from 'antd';
 import React, { FC } from 'react';
 import chainLogo from 'src/assets/parachain-logos/chain-logo.jpg';
@@ -109,8 +109,8 @@ const NetworkDropdown: FC<{setSidedrawer: React.Dispatch<React.SetStateAction<bo
 					src={chainProperties[currentNetwork]?.logo ? chainProperties[currentNetwork].logo : chainLogo}
 					alt='Logo'
 				/>
-				<span className='mr-2 capitalize font-medium hidden md:inline-block'>{currentNetwork == 'hydradx' ? 'HydraDX' : currentNetwork}</span>
-				<DownOutlined />
+				{/* <span className='mr-2 capitalize font-medium hidden md:inline-block'>{currentNetwork == 'hydradx' ? 'HydraDX' : currentNetwork}</span>
+				<DownOutlined /> */}
 			</a>
 		</Dropdown>
 	);

@@ -57,9 +57,9 @@ const getTimelineDate = (no: number, currentBlock: BN) => {
 		return moment().utc();
 	}
 
-	const days = Number(timeArr[0]?.replace('d', ''));
-	const hours = Number(timeArr[1]?.replace('h', ''));
-	const minutes = Number(timeArr[2]?.replace('m', ''));
+	const days = Number(timeArr[0].replace('d', ''));
+	const hours = Number(timeArr[1].replace('h', ''));
+	const minutes = Number(timeArr[2].replace('m', ''));
 	const duration = moment.duration({ 'days': days, 'hours': hours, 'minutes': minutes });
 	const date = moment().utc().subtract(duration);
 	return date;
