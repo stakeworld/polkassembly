@@ -4,11 +4,12 @@
 
 import { FormOutlined } from '@ant-design/icons';
 import { QueryLazyOptions } from '@apollo/client';
-import { Button, Timeline } from 'antd';
+import styled from '@xstyled/styled-components';
+import { Anchor, Button } from 'antd';
 import BN from 'bn.js';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import PASmallCirclePNG from 'src/assets/pa-small-circle.png';
+// import PASmallCirclePNG from 'src/assets/pa-small-circle.png';
 import { DiscussionPostFragment, Exact, MotionPostFragment,ProposalPostFragment, ReferendumPostFragment,  TreasuryProposalPostFragment } from 'src/generated/graphql';
 import { useCurrentBlock } from 'src/hooks';
 import Markdown from 'src/ui-components/Markdown';
@@ -21,6 +22,8 @@ import ShareButton from '../ActionsBar/ShareButton';
 import SubscriptionButton from '../ActionsBar/SubscriptionButton/SubscriptionButton';
 import Comments from '../Comment/Comments';
 import PostCommentForm from '../PostCommentForm';
+
+const { Link: AnchorLink } = Anchor;
 
 interface Props {
 	className?: string;
@@ -40,10 +43,10 @@ interface Props {
 }
 
 interface ITimeline {
-	isToday?: boolean;
 	date: moment.Moment;
 	status: string;
 	id: number;
+	commentsCount: number;
 }
 
 const getTimelineDate = (no: number, currentBlock: BN) => {
@@ -66,76 +69,109 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 	const { content, onchain_link } = post;
 	const currentBlock = useCurrentBlock();
 
-	const [timeline, setTimeline] = useState(0);
-	const [timelines, setTimelines] = useState<ITimeline[]>([]);
+	const [timelineid, setTimelineId] = useState(0);
 
-	useEffect(() => {
-		if (onchain_link && currentBlock) {
-			const timelines: ITimeline[] = [];
-			const { onchain_proposal, onchain_referendum, onchain_treasury_spend_proposal, onchain_tech_committee_proposal, onchain_motion } = onchain_link as any;
+	const getCommentCountBetweenDates = (startDate: moment.Moment, endDate: moment.Moment) => {
+		const comments = post.comments.filter((comment) => {
+			const commentDate = moment(comment.created_at);
+			return commentDate.isBetween(startDate, endDate, undefined, '[)');
+		});
 
-			if (onchain_proposal?.length > 0) {
-				const obj = onchain_proposal[0]?.proposalStatus?.[0];
+		return comments.length;
+	};
+
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	let timelines: ITimeline[] = [];
+
+	if (onchain_link && currentBlock) {
+		const { onchain_proposal, onchain_referendum, onchain_treasury_spend_proposal, onchain_tech_committee_proposal, onchain_motion } = onchain_link as any;
+
+		if (onchain_proposal?.length > 0 && onchain_proposal[0]?.proposalStatus.length > 0) {
+			const obj = onchain_proposal[0]?.proposalStatus?.at(-1);
+			timelines.push({
+				commentsCount: 0,
+				date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
+				id: timelines.length + 1,
+				status: 'Proposal'
+			});
+
+			if (onchain_referendum?.length > 0 && onchain_referendum[0]?.referendumStatus.length > 0) {
+				const obj = onchain_referendum[0]?.referendumStatus?.at(-1);
 				timelines.push({
-					date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
-					id: timelines.length + 1,
-					status: 'Proposal'
-				});
-			}
-			if (onchain_referendum?.length > 0) {
-				const obj = onchain_referendum[0]?.referendumStatus?.[0];
-				timelines.push({
+					commentsCount: 0,
 					date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
 					id: timelines.length + 1,
 					status: 'Referendum'
 				});
 			}
-			if (onchain_treasury_spend_proposal?.length > 0) {
-				const obj = onchain_treasury_spend_proposal[0]?.treasuryStatus?.[0];
+		}
+
+		if (onchain_treasury_spend_proposal?.length > 0 && onchain_treasury_spend_proposal[0]?.treasuryStatus.length > 0) {
+			const obj = onchain_treasury_spend_proposal[0]?.treasuryStatus?.at(-1);
+			timelines.push({
+				commentsCount: 0,
+				date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
+				id: timelines.length + 1,
+				status: 'Treasury Proposal'
+			});
+
+			if (onchain_motion?.length > 0 && onchain_motion[0]?.motionStatus.length > 0) {
+				const obj = onchain_motion[0]?.motionStatus?.at(-1);
 				timelines.push({
-					date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
-					id: timelines.length + 1,
-					status: 'Treasury Proposal'
-				});
-			}
-			if (onchain_motion?.length > 0) {
-				const obj = onchain_motion[0]?.motionStatus?.[0];
-				timelines.push({
+					commentsCount: 0,
 					date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
 					id: timelines.length + 1,
 					status: 'Motion'
 				});
 			}
-			if (onchain_tech_committee_proposal?.length > 0) {
-				const obj = onchain_tech_committee_proposal[0]?.status?.[0];
+		}
+
+		if (!(onchain_treasury_spend_proposal?.length > 0) && onchain_motion?.length > 0 && onchain_motion[0]?.motionStatus.length > 0) {
+			const obj = onchain_motion[0]?.motionStatus?.at(-1);
+			timelines.push({
+				commentsCount: 0,
+				date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
+				id: timelines.length + 1,
+				status: 'Motion'
+			});
+
+			if (onchain_referendum?.length > 0 && onchain_referendum[0]?.referendumStatus.length > 0) {
+				const obj = onchain_referendum[0]?.referendumStatus?.at(-1);
 				timelines.push({
+					commentsCount: 0,
 					date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
 					id: timelines.length + 1,
-					status: 'Tech. Comm. Proposal'
+					status: 'Referendum'
 				});
 			}
-			const newTimelines = timelines.sort((a, b) => b.date.diff(a.date));
-
-			if (newTimelines.length > 0) {
-				if (newTimelines[0].date.isAfter(moment().subtract(1, 'days'))) {
-					newTimelines[0].isToday = true;
-					newTimelines[0].id = 0;
-				} else {
-					newTimelines.unshift({
-						date: moment(),
-						id: 0,
-						isToday: true,
-						status: ''
-					});
-				}
-			}
-			setTimelines(newTimelines);
 		}
-	}, [onchain_link, currentBlock]);
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const handleTimelineClick = ({ id, isToday } : {id: number,  isToday: boolean | undefined}) => {
-		setTimeline(id);
+		if (onchain_tech_committee_proposal?.length > 0 && onchain_tech_committee_proposal[0]?.status.length > 0) {
+			const obj = onchain_tech_committee_proposal[0]?.status?.at(-1);
+			timelines.push({
+				commentsCount: 0,
+				date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
+				id: timelines.length + 1,
+				status: 'Tech. Comm. Proposal'
+			});
+		}
+
+		if(timelines.length > 1) {
+			timelines = timelines.map((timelineObj, i) => ({
+				...timelineObj,
+				commentsCount: i === (timelines.length - 1) ? post.comments.length : getCommentCountBetweenDates(timelineObj.date, timelines[i + 1].date)
+			}));
+		}
+	}
+
+	useEffect(() => {
+		if(timelines.length < 1 || timelineid) return;
+		setTimelineId(timelines[0].id);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [timelines]);
+
+	const handleTimelineClick = ({ id } : {id: number}) => {
+		setTimelineId(id);
 	};
 
 	return (
@@ -161,33 +197,32 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 
 			<div className='block xl:grid grid-cols-12'>
 				{
-					onchain_link && !!post.comments?.length && currentBlock && timelines.length > 0 &&
-					<div className='h-screen hidden xl:block col-start-1 col-end-2 min-w-[100px] -ml-4 sticky top-[10%] pt-10'>
-						<Timeline className='flex flex-col h-full w-full' mode='right'>
-							{timelines.map(({ date, id, isToday, status }) => {
+					onchain_link && !!post.comments?.length && currentBlock && timelines.length > 1 &&
+					<div className='h-screen hidden xl:block col-start-1 col-end-2 min-w-[100px] -ml-2 sticky top-[10%] pt-10'>
+						<Anchor className='h-full' onClick={(e: React.MouseEvent<HTMLElement>) => {e.preventDefault();}}>
+							{timelines.map(({ date, id, status, commentsCount }) => {
 								return (
-									<Timeline.Item
-										className='h-full'
-										dot={timeline === id && <img style={ { maxWidth:'20px' } } src={PASmallCirclePNG} />}
-										color={`${timeline === id? '#334D6E':'#90A0B7'}`} key={id}
-									>
-										<button onClick={() => handleTimelineClick({ id, isToday })} className={`text-xs flex flex-col border-none outline-none items-end w-full ${timeline === id? 'text-sidebarBlue':'text-navBlue'}`}>
-											{
-												isToday
-													? <span>Today</span>
-													: <>
-														<span>{date.format('MMM Do')}</span>
-														<span className='text-right'>{status}</span>
-													</>
-											}
-										</button>
-									</Timeline.Item>);
+									<AnchorLink
+										key={id}
+										href="#"
+										title={
+											<button disabled={true} onClick={() => handleTimelineClick({ id })} className={'text-xs flex flex-col border-none outline-none items-end w-full text-sidebarBlue'}>
+												{
+													<div className='flex flex-col mr-1 text-right gap-y-0.5'>
+														{id > 0 && <div>{date.format('MMM Do')}</div>}
+														<div>{status}</div>
+														<div className={'text-sidebarBlue text-xs font-normal'}>({commentsCount})</div>
+													</div>
+												}
+											</button>
+										}
+									/>);
 							})}
-						</Timeline>
+						</Anchor>
 					</div>
 				}
 
-				<div className={`col-start-1 ${timelines.length > 0 && 'xl:col-start-3'} col-end-13`}>
+				<div className={`col-start-1 ${timelines.length > 1 && 'xl:col-start-3'} col-end-13`}>
 					<div className='text-sidebarBlue text-sm font-medium mb-5'>{post.comments.length} comments</div>
 					{ !!post.comments?.length &&
 						<>
@@ -205,4 +240,12 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 	);
 };
 
-export default PostDescription;
+export default React.memo(styled(PostDescription)`
+.ant-anchor-wrapper {
+	.ant-anchor {
+		display: flex;
+		flex-direction: column;
+		gap: 96px;
+	}
+}
+`);
