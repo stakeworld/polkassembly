@@ -22,6 +22,22 @@ interface Props {
 	setSidedrawer: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+const CSSVariables = styled.div`
+
+	@property --angle {
+		syntax: '<angle>';
+		initial-value: 90deg;
+		inherits: true;
+	}
+
+	--d: 2500ms;
+	--angle: 90deg;
+	--gradX: 100%;
+	--gradY: 50%;
+	--c1: #F696C9;
+	--c2: #ffffff;
+`;
+
 const NavHeader = ({ className, sidedrawer, setSidedrawer } : Props) => {
 	const currentUser = useUserDetailsContext();
 	const { pathname } = useLocation();
@@ -30,7 +46,7 @@ const NavHeader = ({ className, sidedrawer, setSidedrawer } : Props) => {
 	const isGov2Route: boolean = gov2Routes.includes(pathname.split('/')[1]);
 
 	return (
-		<Header className={`${className} sticky top-0 flex items-center bg-white h-[60px] max-h-[60px] px-6 z-50 leading-normal shadow-sm`}>
+		<Header className={`${className} sticky top-0 flex items-center bg-white h-[60px] max-h-[60px] px-6 z-50 leading-normal border-b-2 border-pink_primary drop-shadow-lg`}>
 			<MenuOutlined className='lg:hidden mr-5' onClick={() => {
 				setSidedrawer(!sidedrawer);
 			}} />
@@ -38,7 +54,9 @@ const NavHeader = ({ className, sidedrawer, setSidedrawer } : Props) => {
 				<Link className='flex' to={isGov2Route ? '/gov-2' : '/'}><PALogoBlack /></Link>
 
 				<div className="flex items-center justify-between w-max lg:w-[82%] xl:w-[63%] 2xl:w-[55%]">
-					<GovernanceSwitchButton className='hidden lg:flex min-w-[120px] mr-6 lg:mr-5 xl:mr-0' />
+					<CSSVariables>
+						<GovernanceSwitchButton className='hidden lg:flex min-w-[120px] mr-6 lg:mr-5 xl:mr-0' />
+					</CSSVariables>
 
 					<Space className='flex items-center justify-between'>
 						<SearchBar/>
@@ -98,4 +116,29 @@ export default styled(NavHeader)`
 		form.gsc-search-box {
 			margin-bottom: 0 !important;
 		}
+	
+	p {
+		margin: 0;
+	}
+	
+	.v2-button-wrapper {
+		min-width: min(40rem, 100%);
+	}
+	
+	.v2-box {
+		font-family: 'Poppins';
+		font-weight: 600;
+		margin: max(1rem, 3vw);
+		border: 0.25px solid;
+		border-radius: 3px;
+		padding: 6px 12px;
+		border-image: conic-gradient(from var(--angle), var(--c2), var(--c1) 0.1turn, var(--c1) 0.15turn, var(--c2) 0.25turn) 15;
+		animation: borderRotate var(--d) linear infinite forwards;
+	}
+	
+	@keyframes borderRotate {
+		100% {
+			--angle: 420deg;
+		}
+	}
 `;
