@@ -32,15 +32,17 @@ const ReferendumV2Post = ({ councilBoardSidebar=false, postID }: Props) => {
 
 	if (error?.message) return <ErrorState errorMessage={error.message} />;
 
-	const trackName = data?.posts[0].onchain_link?.origin || '';
+	if (data) {
+		const trackName = data?.posts[0]?.onchain_link?.origin || '';
 
-	if (data) return (<div>
-		{trackName && !councilBoardSidebar && <BackToListingView trackName={trackName} />}
+		return (<div>
+			{trackName && !councilBoardSidebar && <BackToListingView trackName={trackName} />}
 
-		<div className='mt-6'>
-			<Post data={data} trackName={trackName} isReferendumV2 refetch={refetch} />
-		</div>
-	</div>);
+			<div className='mt-6'>
+				<Post data={data} trackName={trackName} isReferendumV2 refetch={refetch} />
+			</div>
+		</div>);
+	}
 
 	return <div className='mt-16'><LoadingState /></div>;
 };

@@ -4,7 +4,6 @@
 import { FrownOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Button, Empty, Result } from 'antd';
 import React from 'react';
-import emptyState from 'src/assets/empty-state.svg';
 import { PostCategory } from 'src/global/post_categories';
 import cleanError from 'src/util/cleanError';
 
@@ -31,7 +30,6 @@ export const PostEmptyState = ({ className, description, postCategory } : { clas
 	return (
 		<Empty
 			className={className}
-			image={emptyState}
 			description={
 				postCategory?
 					<span className='text-md text-navBlue'>
