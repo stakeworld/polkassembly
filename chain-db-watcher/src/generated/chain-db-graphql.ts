@@ -16980,7 +16980,7 @@ export const GetOnchainTipsDocument = gql`
     ${OnchainTipFragmentDoc}`;
 export const GetOnchainReferendumV2Document = gql`
     query getOnchainReferendumV2($startBlock: Int!) {
-  referendumV2s(where: {referendumStatus_some: {AND: [{status: "Ongoing"}, {blockNumber: {number_gte: $startBlock}}]}}) {
+  referendumV2s(where: {referendumStatus_some: {AND: [{ status_in: ["Ongoing", "Submitted"]}, {blockNumber: {number_gte: $startBlock}}]}}) {
     ...onchainReferendumV2
   }
 }

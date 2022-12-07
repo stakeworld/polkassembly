@@ -253,7 +253,7 @@ export const referendumV2Subscription = gql`
                 node: {
                     referendumStatus_some: {
                         AND: [
-                            { status: "Ongoing" }
+                            { status_in: ["Ongoing", "Submitted"] }
                             { blockNumber: { number_gte: $startBlock } }
                         ]
                     }

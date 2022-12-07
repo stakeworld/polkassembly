@@ -202,7 +202,7 @@ export const getOnchainReferendumV2 = gql`
             where: {
                 referendumStatus_some: {
                     AND: [
-                        { status: "Ongoing" }
+                        { status_in: ["Ongoing", "Submitted"] }
                         { blockNumber: { number_gte: $startBlock } }
                     ]
                 }
