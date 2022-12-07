@@ -43,8 +43,6 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
         ].includes(method)
     );
 
-    console.log('referendumEvents', JSON.stringify(referendumEvents));
-
     const results: NomidotReferendumV2[] = [];
 
     await Promise.all(
@@ -52,9 +50,7 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
         const referendumRawEvent: NomidotReferendumV2RawEvent = data.reduce(
           (prev, curr, index) => {
             const type = eventField[index];
-
-            console.log(index, curr.toJSON());
-
+            
             return {
               ...prev,
               [type]: curr.toJSON(),
