@@ -33,6 +33,7 @@ export const referendumStatus = {
 export const referendumStatusV2 = {
   ONGOING: 'Ongoing',
   APPROVED: 'Approved',
+  Confirmed: 'Confirmed',
   REJECTED: 'Rejected',
   CANCELLED: 'Cancelled',
   TIMEDOUT: 'TimedOut',

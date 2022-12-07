@@ -50,8 +50,6 @@ const createReferendumStatusV2: Task<NomidotReferendumStatusUpdate[]> = {
       return results;
     }
 
-    console.log('referendum', referendumEvents);
-
     await Promise.all(
       referendumEvents.map(async ({ event: { data, typeDef, method } }) => {
         const referendumRawEvent: NomidotReferendumRawEvent = data.reduce(
