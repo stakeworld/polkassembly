@@ -227,9 +227,15 @@ const gov2Items:MenuProps['items'] = [
 const gov2CollapsedItems:MenuProps['items'] = [
 	...gov2OverviewItems,
 	...gov2TrackItems.mainItems,
-	...gov2TrackItems.governanceItems,
-	...gov2TrackItems.treasuryItems,
-	...gov2TrackItems.fellowshipItems
+	getSiderMenuItem('Governance', 'gov2_governance_group', <GovernanceGroupIcon className='text-white' />, [
+		...gov2TrackItems.governanceItems
+	]),
+	getSiderMenuItem('Treasury', 'gov2_treasury_group', <TreasuryGroupIcon className='text-white' />, [
+		...gov2TrackItems.treasuryItems
+	]),
+	getSiderMenuItem('Fellowship', 'gov2_fellowship_group', <FellowshipGroupIcon className='text-white' />, [
+		...gov2TrackItems.fellowshipItems
+	])
 ];
 
 const AppLayout = ({ className }: { className?:string }) => {
