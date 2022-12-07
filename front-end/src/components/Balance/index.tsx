@@ -7,9 +7,10 @@ import formatBnBalance from 'src/util/formatBnBalance';
 
 interface Props {
 	address: string
+	onChange?: (balance: string) => void
 }
 
-const Balance = ({ address }: Props) => {
+const Balance = ({ address, onChange }: Props) => {
 	const [balance, setBalance] = useState<string>('0');
 	const { api, apiReady } = useApiContext();
 
@@ -18,17 +19,22 @@ const Balance = ({ address }: Props) => {
 
 		let unsubscribe: () => void;
 
-		api.derive.balances.account(address, (info: any) =>
-			setBalance(info.freeBalance?.toString() || '0')
-		)
+		api.derive.balances.account(address, (info: any) => {
+			const balanceStr = info.freeBalance?.toString() || '0';
+			setBalance(balanceStr);
+			if(onChange){
+				onChange(balanceStr);
+			}
+		})
 			.then(unsub => { unsubscribe = unsub; })
 			.catch(e => console.error(e));
 
 		return () => unsubscribe && unsubscribe();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [address, api, apiReady]);
 
 	return (
-		<div className='text-[#53595C]'>
+		<div className='text-xs ml-auto text-[#53595C]'>
 			<span className='font-medium text-[#2E2F30]'>{formatBnBalance(balance, { numberAfterComma: 2, withUnit: true })}</span> available.
 		</div>
 	);

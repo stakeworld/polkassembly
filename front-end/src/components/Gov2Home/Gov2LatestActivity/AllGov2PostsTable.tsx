@@ -40,7 +40,7 @@ const columns: ColumnsType<Gov2PostsRowData> = [
 		title: 'Title',
 		dataIndex: 'title',
 		key: 'title',
-		width: 350,
+		width: 400,
 		fixed: 'left',
 		render: (title, { subTitle }) => {
 			return (
@@ -59,7 +59,7 @@ const columns: ColumnsType<Gov2PostsRowData> = [
 		title: 'Posted By',
 		dataIndex: 'username',
 		key: 'postedBy',
-		render: (username, { address }) => <NameLabel defaultAddress={address} username={username} disableIdenticon={true} />
+		render: (username, { address }) => <NameLabel textClassName='max-w-[9vw] 2xl:max-w-[12vw]' defaultAddress={address} username={username} disableIdenticon={true} />
 	},
 	{
 		title: 'Created',
@@ -70,7 +70,8 @@ const columns: ColumnsType<Gov2PostsRowData> = [
 			return (
 				<span>{relativeCreatedAt}</span>
 			);
-		}
+		},
+		width: 160
 	},
 	{
 		title: 'Status',
@@ -78,7 +79,8 @@ const columns: ColumnsType<Gov2PostsRowData> = [
 		key: 'status',
 		render: (status) => {
 			if(status) return <StatusTag status={status} />;
-		}
+		},
+		width: 160
 	},
 	{
 		title: 'Origin',
@@ -100,7 +102,7 @@ const AllGov2PostsTable = () => {
 
 	function gotoPost(rowData: Gov2PostsRowData){
 		if(rowData.postOrigin) {
-			navigate(`/${rowData.postOrigin.split(/(?=[A-Z])/).join('-').toLowerCase()}/${rowData.id}`);
+			navigate(`/referenda/${rowData.id}`);
 		}
 	}
 

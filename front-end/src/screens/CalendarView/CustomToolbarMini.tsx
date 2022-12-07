@@ -38,10 +38,10 @@ function CustomToolbarMini(props: any) {
 	}, []);
 
 	return (
-		props.date && <div className='flex justify-center items-center mb-3 '>
-			<LeftOutlined onClick={goToBack} className='text-md cursor-pointer hover:text-sidebarBlue hover:font-semibold' />
+		props.date && <div className='flex justify-between items-center mb-3 px-3 '>
+			<LeftOutlined onClick={goToBack} className='text-md cursor-pointer hover:text-sidebarBlue font-medium hover:font-bold' />
 			<span className=' font-medium mx-3 text-sidebarBlue'>{moment(props.date).format('MMMM YYYY')}</span>
-			<RightOutlined onClick={goToNext} className='text-md cursor-pointer hover:text-sidebarBlue hover:font-semibold' />
+			<RightOutlined onClick={goToNext} className='text-md cursor-pointer hover:text-sidebarBlue font-medium hover:font-bold' />
 		</div>
 	);
 }

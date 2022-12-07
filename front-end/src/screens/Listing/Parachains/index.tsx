@@ -25,13 +25,14 @@ const Parachains = ({ className }: Props) => {
 			});
 	},[]);
 
+	const polkadotProjects = parachainsData?.filter((item : any) => item?.chain === 'polkadot').length;
+	const kusamaProjects = parachainsData?.filter((item : any) => item?.chain === 'kusama').length;
+
 	const tabItems = [
 		// eslint-disable-next-line sort-keys
-		{ label: `All (${parachainsData?.length})`, key: 'all', children: <ChainDataTable data={parachainsData} chain='all' /> },
+		{ label: `Polkadot (${polkadotProjects})`, key: 'polkadot', children: <ChainDataTable data={parachainsData} chain='polkadot' /> },
 		// eslint-disable-next-line sort-keys
-		{ label: `Polkadot (${parachainsData?.filter((item : any) => item?.chain === 'polkadot').length})`, key: 'polkadot', children: <ChainDataTable data={parachainsData} chain='polkadot' /> },
-		// eslint-disable-next-line sort-keys
-		{ label: `Kusama (${parachainsData?.filter((item : any) => item?.chain === 'kusama').length})`, key: 'kusama', children: <ChainDataTable data={parachainsData} chain='kusama' /> }
+		{ label: `Kusama (${kusamaProjects})`, key: 'kusama', children: <ChainDataTable data={parachainsData} chain='kusama' /> }
 	];
 
 	return (
@@ -40,10 +41,10 @@ const Parachains = ({ className }: Props) => {
 
 			<Row gutter={[{ lg:16 }, 16]} className='mb-4 md:mb-6'>
 				<Col span={24} lg={{ span:12 }}>
-					<ParachainInfoCard network='polkadot' />
+					<ParachainInfoCard projects={polkadotProjects} network='polkadot' />
 				</Col>
 				<Col span={24} lg={{ span:12 }}>
-					<ParachainInfoCard network='kusama' />
+					<ParachainInfoCard projects={kusamaProjects} network='kusama' />
 				</Col>
 			</Row>
 

@@ -11,7 +11,7 @@ function secondsToDhm(seconds: number) {
 	const h = Math.floor(seconds % (3600*24) / 3600);
 	const m = seconds < 60 ? 1 : Math.floor(seconds % 3600 / 60);
 
-	const dDisplay = d + 'd ';
+	const dDisplay = d === 0 ? '' : d + 'd ';
 	const hDisplay = h + 'h ';
 	const mDisplay = m + 'm';
 

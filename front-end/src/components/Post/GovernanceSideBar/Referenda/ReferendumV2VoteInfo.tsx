@@ -108,10 +108,10 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 
 					<div className='flex flex-col text-xs xl:text-sm xl:max-h-screen gap-y-1 overflow-y-auto px-0 text-sidebarBlue'>
 						<div className='flex text-xs items-center justify-between mb-9 font-semibold'>
-							<div className='w-[135px]'>Voter</div>
-							<div><span className='hidden md:inline-block'>Amount</span><span className='inline-block md:hidden'>Amt.</span></div>
-							<div>Conviction</div>
-							<div>Vote</div>
+							<div className='w-[110px]'>Voter</div>
+							<div className='w-[60px]'><span className='hidden md:inline-block'>Amount</span><span className='inline-block md:hidden'>Amt.</span></div>
+							<div className='w-[70px]'>Conviction</div>
+							<div className='w-[30px]'>Vote</div>
 						</div>
 
 						{votesList.map((voteData: any, index:number) =>
@@ -120,16 +120,16 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 									<Address textClassName='w-[90px] text-xs' displayInline={true} address={voteData.voter} />
 								</div>
 
-								<div>{formatBnBalance(voteData.balance.value, { numberAfterComma: 2, withUnit: true })}</div>
+								<div className='w-[80px] max-w-[80px] overflow-ellipsis'>{formatBnBalance(voteData.balance.value, { numberAfterComma: 2, withUnit: true })}</div>
 
-								<div>{voteData.lockPeriod}x</div>
+								<div className='w-[50px] max-w-[50px] overflow-ellipsis'>{voteData.lockPeriod}x</div>
 
 								{voteData.decision === 'yes' ?
-									<div className='flex items-center text-aye_green text-md'>
+									<div className='flex items-center text-aye_green text-md w-[20px] max-w-[20px]'>
 										<LikeFilled className='mr-2' />
 									</div>
 									:
-									<div className='flex items-center text-nay_red text-md'>
+									<div className='flex items-center text-nay_red text-md w-[20px] max-w-[20px]'>
 										<DislikeFilled className='mr-2' />
 									</div>
 								}

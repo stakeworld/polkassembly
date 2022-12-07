@@ -12,7 +12,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams,useSearchParams } from 'react-router-dom';
 import ContentForm from 'src/components/ContentForm';
 import TitleForm from 'src/components/TitleForm';
-import { PostCategory } from 'src/global/post_categories';
 import BackToListingView from 'src/ui-components/BackToListingView';
 import queueNotification from 'src/ui-components/QueueNotification';
 
@@ -44,6 +43,7 @@ const Profile = ({ className }: Props): JSX.Element => {
 	const address = params.address || '' ;
 	const username = params.username || '';
 	const council = searchParams.get('council') === 'true';
+	const fellowship = searchParams.get('fellowship') === 'true';
 
 	// { data, loading, error }
 	const [refetch, aboutQueryResult] = useAboutLazyQuery({
@@ -280,7 +280,7 @@ const Profile = ({ className }: Props): JSX.Element => {
 					</div> : null}
 				</>}
 			</div>}
-			{council ? <CouncilVotes address={address} /> : null}
+			{council || fellowship ? <CouncilVotes address={address} /> : null}
 		</div>
 	);
 
@@ -332,7 +332,8 @@ const Profile = ({ className }: Props): JSX.Element => {
 	];
 
 	return (<div className={className}>
-		<BackToListingView postCategory={PostCategory.COUNCIL} />
+		<BackToListingView postCategory={fellowship ? 'fellowship' : 'council'} />
+
 		<div className="flex flex-col md:flex-row mb-4 mt-6">
 			<p className="text-sidebarBlue text-sm md:text-base font-medium bg-white p-6 rounded-md w-full shadow-md mb-4 md:mb-0 md:mr-4">
 				<Markdown md={aboutQueryResult?.data?.about?.description || noDescription} />

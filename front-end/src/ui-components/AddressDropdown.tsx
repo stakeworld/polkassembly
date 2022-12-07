@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import Address from 'src/ui-components/Address';
 
 interface Props {
+	defaultAddress?: string;
   accounts: InjectedAccount[];
   className?: string;
   filterAccounts?: string[]
@@ -16,12 +17,13 @@ interface Props {
 }
 
 const AddressDropdown = ({
+	defaultAddress,
 	className = 'px-4 py-2 border-2 rounded-md',
 	accounts,
 	filterAccounts,
 	onAccountChange
 }: Props) => {
-	const [selectedAddress, setSelectedAddress] = useState('');
+	const [selectedAddress, setSelectedAddress] = useState(defaultAddress || '');
 	const filteredAccounts = !filterAccounts
 		? accounts
 		: accounts.filter( elem =>

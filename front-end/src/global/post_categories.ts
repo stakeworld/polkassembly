@@ -11,6 +11,5 @@ export enum PostCategory {
 	TECH_COMMITTEE_PROPOSAL = 'tech committee proposal',
 	BOUNTY = 'bounty',
 	CHILD_BOUNTY = 'child bounty',
-	TIP = 'tip',
-	COUNCIL = 'council'
+	TIP = 'tip'
 }

@@ -6,7 +6,7 @@ import { CheckOutlined, CloseOutlined, DeleteOutlined, FormOutlined, LinkOutline
 import { QueryLazyOptions } from '@apollo/client';
 import styled from '@xstyled/styled-components';
 import { Button, Form } from 'antd';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import ContentForm from 'src/components/ContentForm';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
@@ -42,7 +42,10 @@ const EditableCommentContent = ({ authorId, className, content, commentId, refet
 	const { pathname } = useLocation();
 
 	const [form] = Form.useForm();
-	form.setFieldValue('content', content || ''); //initialValues is not working
+	useEffect(() => {
+		form.setFieldValue('content', content || ''); //initialValues is not working
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const [replyForm] = Form.useForm();
 
@@ -93,7 +96,7 @@ const EditableCommentContent = ({ authorId, className, content, commentId, refet
 	};
 
 	const handleReplySave = async () => {
-		await form.validateFields();
+		await replyForm.validateFields();
 		const replyContent = replyForm.getFieldValue('content');
 		if(!replyContent) return;
 
