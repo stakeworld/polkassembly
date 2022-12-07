@@ -220,7 +220,7 @@ const Post = ({
 		const postCategory: PostCategory = isMotion ? PostCategory.MOTION : isProposal ? PostCategory.PROPOSAL : isReferendum ? PostCategory.REFERENDA : isTreasuryProposal ? PostCategory.TREASURY_PROPOSAL : isTipProposal ? PostCategory.TIP : isBounty ? PostCategory.BOUNTY : isTechCommitteeProposal ? PostCategory.TECH_COMMITTEE_PROPOSAL : isChildBounty ? PostCategory.CHILD_BOUNTY : PostCategory.DISCUSSION;
 
 		if(isReferendumV2) {
-			return <div className='mt-16'><PostEmptyState /></div>;
+			return <div className='mt-16'><PostEmptyState postCategory={PostCategory.REFERENDA} /></div>;
 		}
 
 		return <div className='mt-16'><PostEmptyState postCategory={postCategory} /></div>;
