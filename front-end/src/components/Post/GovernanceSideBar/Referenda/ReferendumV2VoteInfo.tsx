@@ -63,7 +63,7 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 			})
 			.then(async (res) => {
 				const response = await res.json();
-				if(response && response.data  && response.data.votes && response.data.votes.length) {
+				if(response && response.data && response.data.votes) {
 					const votesData = response.data.votes;
 					setVotesList(votesData);
 				}
@@ -155,6 +155,9 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 		}
 
 		return <GovSidebarCard className={className}>
+			<div className="flex justify-between mb-6 bg-white z-10">
+				<h6 className='dashboard-heading'>Voters</h6>
+			</div>
 			<PostEmptyState />
 		</GovSidebarCard>;
 	}

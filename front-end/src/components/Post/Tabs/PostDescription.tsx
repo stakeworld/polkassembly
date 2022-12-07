@@ -8,7 +8,7 @@ import styled from '@xstyled/styled-components';
 import { Anchor, Button } from 'antd';
 import BN from 'bn.js';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 // import PASmallCirclePNG from 'src/assets/pa-small-circle.png';
 import { DiscussionPostFragment, Exact, MotionPostFragment,ProposalPostFragment, ReferendumPostFragment,  TreasuryProposalPostFragment } from 'src/generated/graphql';
 import { useCurrentBlock } from 'src/hooks';
@@ -47,6 +47,7 @@ interface ITimeline {
 	status: string;
 	id: number;
 	commentsCount: number;
+	firstCommentId: string;
 }
 
 const getTimelineDate = (no: number, currentBlock: BN) => {
@@ -69,21 +70,22 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 	const { content, onchain_link } = post;
 	const currentBlock = useCurrentBlock();
 
-	const [timelineid, setTimelineId] = useState(0);
-
-	const getCommentCountBetweenDates = (startDate: moment.Moment, endDate: moment.Moment) => {
+	const getCommentCountAndFirstIdBetweenDates = (startDate: moment.Moment, endDate: moment.Moment) => {
 		const comments = post.comments.filter((comment) => {
 			const commentDate = moment(comment.created_at);
-			return commentDate.isBetween(startDate, endDate, undefined, '[)');
+			return commentDate.isBetween(startDate, endDate, 'minutes' , '[)');
 		});
 
-		return comments.length;
+		return {
+			count: comments.length,
+			firstCommentId: comments.length > 0 ? comments[0].id : ''
+		};
 	};
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	let timelines: ITimeline[] = [];
 
-	if (onchain_link && currentBlock) {
+	if (onchain_link && currentBlock && post.comments.length > 0) {
 		const { onchain_proposal, onchain_referendum, onchain_treasury_spend_proposal, onchain_tech_committee_proposal, onchain_motion } = onchain_link as any;
 
 		if (onchain_proposal?.length > 0 && onchain_proposal[0]?.proposalStatus.length > 0) {
@@ -91,6 +93,7 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 			timelines.push({
 				commentsCount: 0,
 				date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
+				firstCommentId: '',
 				id: timelines.length + 1,
 				status: 'Proposal'
 			});
@@ -100,6 +103,7 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 				timelines.push({
 					commentsCount: 0,
 					date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
+					firstCommentId: '',
 					id: timelines.length + 1,
 					status: 'Referendum'
 				});
@@ -111,6 +115,7 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 			timelines.push({
 				commentsCount: 0,
 				date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
+				firstCommentId: '',
 				id: timelines.length + 1,
 				status: 'Treasury Proposal'
 			});
@@ -120,6 +125,7 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 				timelines.push({
 					commentsCount: 0,
 					date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
+					firstCommentId: '',
 					id: timelines.length + 1,
 					status: 'Motion'
 				});
@@ -131,6 +137,7 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 			timelines.push({
 				commentsCount: 0,
 				date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
+				firstCommentId: '',
 				id: timelines.length + 1,
 				status: 'Motion'
 			});
@@ -140,6 +147,7 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 				timelines.push({
 					commentsCount: 0,
 					date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
+					firstCommentId: '',
 					id: timelines.length + 1,
 					status: 'Referendum'
 				});
@@ -151,27 +159,30 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 			timelines.push({
 				commentsCount: 0,
 				date: getTimelineDate(obj?.blockNumber?.number, currentBlock),
+				firstCommentId: '',
 				id: timelines.length + 1,
 				status: 'Tech. Comm. Proposal'
 			});
 		}
 
 		if(timelines.length > 1) {
-			timelines = timelines.map((timelineObj, i) => ({
-				...timelineObj,
-				commentsCount: i === (timelines.length - 1) ? post.comments.length : getCommentCountBetweenDates(timelineObj.date, timelines[i + 1].date)
-			}));
+			timelines = timelines.map((timelineObj, i) => {
+				const { count, firstCommentId } = getCommentCountAndFirstIdBetweenDates(i === 0 ? moment(post.comments[0].created_at) : timelineObj.date, timelines[i + 1]?.date || moment());
+				return{
+					...timelineObj,
+					commentsCount: count,
+					firstCommentId
+				};
+			});
 		}
 	}
 
-	useEffect(() => {
-		if(timelines.length < 1 || timelineid) return;
-		setTimelineId(timelines[0].id);
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [timelines]);
-
-	const handleTimelineClick = ({ id } : {id: number}) => {
-		setTimelineId(id);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const handleTimelineClick = (e: React.MouseEvent<HTMLElement>, link: {title: React.ReactNode; href: string;}) => {
+		if(link.href === '#') {
+			e.preventDefault();
+			return;
+		}
 	};
 
 	return (
@@ -198,23 +209,19 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 			<div className='block xl:grid grid-cols-12'>
 				{
 					onchain_link && !!post.comments?.length && currentBlock && timelines.length > 1 &&
-					<div className='h-screen hidden xl:block col-start-1 col-end-2 min-w-[100px] -ml-2 sticky top-[10%] pt-10'>
-						<Anchor className='h-full' onClick={(e: React.MouseEvent<HTMLElement>) => {e.preventDefault();}}>
-							{timelines.map(({ date, id, status, commentsCount }) => {
+					<div className='hidden h-screen xl:block col-start-1 col-end-2 min-w-[100px] -ml-2 sticky top-[10%] pt-10'>
+						<Anchor className='h-full min-w-[140px]' onClick={handleTimelineClick}>
+							{timelines.map(({ commentsCount, date, firstCommentId, id, status }) => {
 								return (
 									<AnchorLink
 										key={id}
-										href="#"
+										href={`#${firstCommentId}`}
 										title={
-											<button disabled={true} onClick={() => handleTimelineClick({ id })} className={'text-xs flex flex-col border-none outline-none items-end w-full text-sidebarBlue'}>
-												{
-													<div className='flex flex-col mr-1 text-right gap-y-0.5'>
-														{id > 0 && <div>{date.format('MMM Do')}</div>}
-														<div>{status}</div>
-														<div className={'text-sidebarBlue text-xs font-normal'}>({commentsCount})</div>
-													</div>
-												}
-											</button>
+											<div className='flex flex-col'>
+												<div className='text-xs mb-1'>{date.format('MMM Do')}</div>
+												<div className='mb-1 font-medium break-words whitespace-pre-wrap'>{status}</div>
+												<div className='text-xs'>({commentsCount})</div>
+											</div>
 										}
 									/>);
 							})}
