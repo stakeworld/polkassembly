@@ -67,6 +67,8 @@ const getTimelineDate = (no: number, currentBlock: BN) => {
 };
 
 const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, post, refetch, toggleEdit, Sidebar, TrackerButtonComp } : Props) => {
+	const targetOffset = window.innerHeight / 2;
+
 	const { content, onchain_link } = post;
 	const currentBlock = useCurrentBlock();
 
@@ -210,7 +212,7 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 				{
 					onchain_link && !!post.comments?.length && currentBlock && timelines.length > 1 &&
 					<div className='hidden h-screen xl:block col-start-1 col-end-2 min-w-[100px] -ml-2 sticky top-[10%] pt-10'>
-						<Anchor className='h-full min-w-[140px]' onClick={handleTimelineClick}>
+						<Anchor targetOffset={targetOffset} className='h-full min-w-[140px]' onClick={handleTimelineClick}>
 							{timelines.map(({ commentsCount, date, firstCommentId, id, status }) => {
 								return (
 									<AnchorLink
