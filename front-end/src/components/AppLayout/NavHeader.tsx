@@ -127,10 +127,8 @@ export default styled(NavHeader)`
 	
 	.v2-box {
 		font-family: 'Poppins';
-		font-weight: 600;
 		margin: max(1rem, 3vw);
 		border: 0.25px solid;
-		border-radius: 3px;
 		padding: 6px 12px;
 		border-image: conic-gradient(from var(--angle), var(--c2), var(--c1) 0.1turn, var(--c1) 0.15turn, var(--c2) 0.25turn) 15;
 		animation: borderRotate var(--d) linear infinite forwards;

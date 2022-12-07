@@ -144,7 +144,7 @@ const columns: ColumnsType<AllPostsRowData> = [
 		title: '#',
 		dataIndex: 'index',
 		key: 'index',
-		width: 65,
+		width: 75,
 		fixed: 'left'
 	},
 	{

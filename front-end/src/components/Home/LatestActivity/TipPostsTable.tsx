@@ -33,7 +33,7 @@ const columns: ColumnsType<TipPostsRowData> = [
 		title: '#',
 		dataIndex: 'postId',
 		key: 'index',
-		width: 65,
+		width: 75,
 		fixed: 'left'
 	},
 	{
