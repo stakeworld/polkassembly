@@ -109,7 +109,7 @@ const createReferendumStatusV2: Task<NomidotReferendumStatusUpdate[]> = {
         value.map(async ref => {
           const { referendumId, status } = ref;
 
-          await prisma.createReferendumStatus({
+          await prisma.createReferendumStatusV2({
             blockNumber: {
               connect: {
                 number: blockNumber.toNumber(),

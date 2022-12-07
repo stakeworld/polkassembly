@@ -35,7 +35,7 @@ export const referendumStatusV2 = {
   SUBMITTED: 'Submitted',
   DECIDING: 'Deciding',
   APPROVED: 'Approved',
-  Confirmed: 'Confirmed',
+  CONFIRMED: 'Confirmed',
   REJECTED: 'Rejected',
   CANCELLED: 'Cancelled',
   TIMEDOUT: 'TimedOut',
