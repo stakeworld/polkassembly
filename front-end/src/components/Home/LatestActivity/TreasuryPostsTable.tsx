@@ -32,7 +32,7 @@ const columns: ColumnsType<TreasuryPostsRowData> = [
 		title: '#',
 		dataIndex: 'onChainId',
 		key: 'index',
-		width: 65,
+		width: 75,
 		fixed: 'left'
 	},
 	{

@@ -30,7 +30,7 @@ const columns: ColumnsType<DiscussionPostsRowData> = [
 		title: '#',
 		dataIndex: 'postId',
 		key: 'postId',
-		width: 65,
+		width: 75,
 		fixed: 'left'
 	},
 	{

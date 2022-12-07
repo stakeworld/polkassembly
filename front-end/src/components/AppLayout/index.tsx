@@ -367,6 +367,7 @@ export default styled(AppLayout)`
 
 .auth-sider-menu > li:first-child {
   margin-bottom: 25px;
+  margin-top: 15px;
 }
 
 .ant-empty-image{
