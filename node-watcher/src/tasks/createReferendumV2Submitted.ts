@@ -28,7 +28,7 @@ const eventField = [
 ];
 
 const createReferendumV2: Task<NomidotReferendumV2[]> = {
-  name: 'createReferendum',
+  name: 'createReferendumV2',
   read: async (
     blockHash: Hash,
     cached: Cached,
@@ -40,11 +40,8 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
         ({ event: { method, section } }) =>
           section === 'referenda' && [
             "Submitted",
-            "DecisionStarted",
         ].includes(method)
     );
-
-    console.log('referendumEvents', JSON.stringify(referendumEvents));
 
     const results: NomidotReferendumV2[] = [];
 
@@ -53,9 +50,7 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
         const referendumRawEvent: NomidotReferendumV2RawEvent = data.reduce(
           (prev, curr, index) => {
             const type = eventField[index];
-
-            console.log(index, curr.toJSON());
-
+            
             return {
               ...prev,
               [type]: curr.toJSON(),
@@ -102,7 +97,7 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
             trackNumber: referendumInfo.ongoing?.track,
             origin: referendumInfo.ongoing?.origin?.origins || 'root',
             preimageHash: preimageHash,
-            status: referendumStatusV2.ONGOING,
+            status: referendumStatusV2.SUBMITTED,
             enactmentAt: referendumInfo.ongoing?.enactment?.at,
             enactmentAfter: referendumInfo.ongoing?.enactment?.after,
             SubmittedAt: referendumInfo.ongoing?.submitted,
@@ -165,59 +160,35 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
             })[0]
           : undefined;
 
-        await prisma.upsertReferendumV2({
-            where: {
-                referendumId: referendumIndex,
-            },
-            update: {
-                trackNumber: trackNumber,
-                origin: origin,
-                preimage: notedPreimage
-                    ? {
-                        connect: {
-                        id: notedPreimage.id,
-                        },
-                    }
-                    : undefined,
-                preimageHash: preimageHash.toString(),
-                referendumId: referendumIndex,
-                enactmentAt: enactmentAt?.toString(),
-                enactmentAfter: enactmentAfter?.toString(),
-                submittedAt: SubmittedAt.toString(),
-                submitted: submitted,
-                decisionDeposit: decisionDeposit,
-                deciding: deciding,
-            },
-            create: {
-                trackNumber: trackNumber,
-                origin: origin,
-                preimage: notedPreimage
-                    ? {
-                        connect: {
-                        id: notedPreimage.id,
-                        },
-                    }
-                    : undefined,
-                preimageHash: preimageHash.toString(),
-                referendumId: referendumIndex,
-                referendumStatus: {
-                    create: {
-                    blockNumber: {
-                        connect: {
-                        number: blockNumber.toNumber(),
-                        },
+        await prisma.createReferendumV2({
+            trackNumber: trackNumber,
+            origin: origin,
+            preimage: notedPreimage
+                ? {
+                    connect: {
+                    id: notedPreimage.id,
                     },
-                    status,
-                    uniqueStatus: `${referendumIndex}_${status}`,
+                }
+                : undefined,
+            preimageHash: preimageHash.toString(),
+            referendumId: referendumIndex,
+            referendumStatus: {
+                create: {
+                blockNumber: {
+                    connect: {
+                    number: blockNumber.toNumber(),
                     },
                 },
-                enactmentAt: enactmentAt?.toString(),
-                enactmentAfter: enactmentAfter?.toString(),
-                submittedAt: SubmittedAt?.toString(),
-                decisionDeposit: decisionDeposit,
-                deciding: deciding,
-                submitted: submitted,
-            }
+                status,
+                uniqueStatus: `${referendumIndex}_${status}`,
+                },
+            },
+            enactmentAt: enactmentAt?.toString(),
+            enactmentAfter: enactmentAfter?.toString(),
+            submittedAt: SubmittedAt?.toString(),
+            decisionDeposit: decisionDeposit,
+            deciding: deciding,
+            submitted: submitted,
         });
       })
     );
