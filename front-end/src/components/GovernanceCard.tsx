@@ -117,7 +117,7 @@ const GovernanceCard = function ({
 
 						{comments && <>
 							<div className='flex items-center'>
-								<CommentOutlined className='mr-1' /> {comments} comments
+								<CommentOutlined className='mr-1' /> {comments}
 							</div>
 						</>}
 					</div>

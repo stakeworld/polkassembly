@@ -105,7 +105,7 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 						? <Space>
 							{identity && mainDisplay && <IdentityBadge identity={identity} flags={flags} />}
 							<Tooltip color='#E5007A' title={popupContent}>
-								<div className={'header display_inline identityName flex flex-col gap-y-1'}>
+								<div className={'header display_inline identityName max-w-[85px] max-w-[30px] flex flex-col gap-y-1'}>
 									{ t1 && <span className='truncate text-navBlue'>{t1}</span> }
 									{sub && <span className='sub truncate text-navBlue'>{sub}</span>}
 								</div>
@@ -114,7 +114,7 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 						: <>
 							<div className={'description display_inline flex items-center'}>
 								{identity && mainDisplay && <IdentityBadge identity={identity} flags={flags} />}
-								<span title={mainDisplay || address} className={`${textClassName} truncate identityName flex gap-x-1 ml-0.5 pl-1.5`}>
+								<span title={mainDisplay || address} className={`${textClassName} identityName max-w-[85px] flex gap-x-1 ml-0.5 pl-1.5`}>
 									{ t1 && <span className={`truncate text-navBlue ${identity && mainDisplay && '-ml-1.5'}`}>{ t1 }</span> }
 									{sub && <span className={'sub truncate text-navBlue'}>{sub}</span>}
 								</span>
@@ -127,7 +127,7 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 								<Space>
 									<Space className={'header'}>
 										{identity && mainDisplay && !extensionName && <IdentityBadge identity={identity} flags={flags} />}
-										<span className='identityName flex flex-col gap-y-1'>
+										<span className='identityName max-w-[85px] flex flex-col gap-y-1'>
 											{ t2 && <span className={`${textClassName} truncate text-navBlue`}>{ t2 }</span> }
 											{!extensionName && sub && <span className={`${textClassName} sub truncate text-navBlue`}>{sub}</span>}
 										</span>
@@ -138,7 +138,7 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 							: <div>
 								<Space className={'header'}>
 									{identity && mainDisplay && !extensionName && <IdentityBadge identity={identity} flags={flags} />}
-									<span className='identityName flex flex-col gap-y-1'>
+									<span className='identityName max-w-[85px] flex flex-col gap-y-1'>
 										{ t2 && <span className={`${textClassName} truncate text-navBlue`}>{ t2 }</span> }
 										{!extensionName && sub && <span className={`${textClassName} sub truncate text-navBlue`}>{sub}</span>}
 									</span>
@@ -166,7 +166,7 @@ export default styled(Address)`
 		margin-right: 0.25rem;
 	}
 
-	.identityName{
+	.identityName {
 		filter: grayscale(100%);
 	}
 

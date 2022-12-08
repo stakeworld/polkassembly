@@ -43,7 +43,7 @@ const ReferendaListing = ({ className, data, loading } : Props) => {
 									address={post.onchain_link.proposer_address}
 									comments={post.comments_aggregate.aggregate?.count
 										? post.comments_aggregate.aggregate.count.toString()
-										: 'no'}
+										: '0'}
 									method={post.onchain_link.onchain_referendum[0]?.preimage?.method}
 									onchainId={onchainId}
 									status={post.onchain_link.onchain_referendum[0]?.referendumStatus?.[0].status}

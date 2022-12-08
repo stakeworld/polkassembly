@@ -241,7 +241,7 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 	return (
 		<div className={`${className} grid grid-rows-2 grid-cols-2 grid-flow-col gap-4 lg:gap-0 lg:flex`}>
 			{/* Available */}
-			<div className="flex-1 lg:mr-7 bg-white drop-shadow-md p-3 lg:p-6 rounded-md">
+			<div className="flex-1 flex flex-col lg:mr-7 bg-white drop-shadow-md p-3 lg:p-6 rounded-md">
 				<div className="text-navBlue text-xs flex items-center">
 					<span className="mr-2">
 						Available
@@ -251,7 +251,7 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 						text='Funds collected through a portion of block production rewards, transaction fees, slashing, staking inefficiencies, etc.'
 					/>
 				</div>
-				<div className="mt-3 text-sidebarBlue font-medium text-lg">
+				<div className="mt-3 flex-1 text-sidebarBlue font-medium text-lg">
 					{result.value ?
 						<span>
 							{formatUSDWithUnits(formatBnBalance(
@@ -278,9 +278,9 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 			</div>
 
 			{/* CurrentPrice */}
-			<div className="flex-1 lg:mr-7 bg-white drop-shadow-md p-3 lg:p-6 rounded-md">
+			<div className="flex-1 flex flex-col lg:mr-7 bg-white drop-shadow-md p-3 lg:p-6 rounded-md">
 				<div className="text-navBlue text-xs">Current Price of {chainProperties[NETWORK].tokenSymbol}</div>
-				<div className="mt-3 text-sidebarBlue font-medium text-lg">
+				<div className="mt-3 flex-1 text-sidebarBlue font-medium text-lg">
 					{currentTokenPrice && !isNaN(Number(currentTokenPrice))
 						? `$${currentTokenPrice}`
 						: <LoadingOutlined />
@@ -300,7 +300,7 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 			</div>
 
 			{/* Spend Period */}
-			{!inTreasuryProposals &&  <div className="flex-1 lg:mr-7 bg-white drop-shadow-md p-3 lg:p-6 rounded-md">
+			{!inTreasuryProposals &&  <div className="flex-1 flex flex-col lg:mr-7 bg-white drop-shadow-md p-3 lg:p-6 rounded-md">
 				<div className="text-navBlue text-xs flex items-center">
 					<span className="mr-2">
 						Spend Period
@@ -311,7 +311,7 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 					/>
 				</div>
 
-				<div className="mt-3 text-sidebarBlue font-medium text-lg">
+				<div className="mt-3 flex-1 text-sidebarBlue font-medium text-lg">
 					{spendPeriod?.total
 						? <span>
 							<span>{spendPeriod.days} </span>
@@ -330,7 +330,7 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 			</div>}
 
 			{/* Next Burn */}
-			<div className="flex-1 bg-white drop-shadow-md p-3 lg:p-6 rounded-md">
+			<div className="flex-1 flex flex-col bg-white drop-shadow-md p-3 lg:p-6 rounded-md">
 				<div className="text-navBlue text-xs flex items-center">
 					<span className="mr-2">
 						Next Burn
@@ -341,7 +341,7 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 					/>
 				</div>
 
-				<div className="mt-3 text-sidebarBlue font-medium text-lg">
+				<div className="mt-3 flex-1 text-sidebarBlue font-medium text-lg">
 					{result.burn ? (
 						<span>
 							{formatUSDWithUnits(formatBnBalance(
