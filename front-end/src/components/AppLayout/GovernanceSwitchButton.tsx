@@ -5,8 +5,7 @@
 import { SyncOutlined } from '@ant-design/icons';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-
-import { gov2Routes } from './SwitchRoutes';
+import checkGov2Route from 'src/util/checkGov2Route';
 
 interface Props {
 	className?: string;
@@ -14,12 +13,12 @@ interface Props {
 
 const GovernanceSwitchButton = ({ className } : Props) => {
 	const { pathname } = useLocation();
-	const isGov2Route: boolean = gov2Routes.includes(pathname.split('/')[1]);
+	const isGov2Route: boolean = checkGov2Route(pathname);
 
 	return (
 		<div className={`${className} v2-button-wrapper`}>
 			<Link className='v2-box font-semibold rounded-md text-sidebarBlue hover:text-pink_primary flex items-center' to={isGov2Route ? '/' : '/gov-2'}>
-				<p className='mr-2'><SyncOutlined /></p>
+				<p className='mr-2 -mt-1'><SyncOutlined /></p>
 				<p> {isGov2Route ? 'Governance V1' : 'Governance V2'} </p>
 			</Link>
 		</div>

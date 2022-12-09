@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 /* eslint-disable sort-keys */
-import { BellOutlined, BookOutlined, DownOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { BellOutlined, BookOutlined, DownOutlined, FileImageOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import styled from '@xstyled/styled-components';
 import { Avatar, Drawer, Dropdown, Layout, Menu, MenuProps } from 'antd';
 import { ItemType } from 'antd/lib/menu/hooks/useItems';
@@ -16,11 +16,12 @@ import { trackInfo } from 'src/global/post_trackInfo';
 import { logout } from 'src/services/auth.service';
 import { PostOrigin } from 'src/types';
 import { AuctionAdminIcon, BountiesIcon, CalendarIcon, DemocracyProposalsIcon, DiscussionsIcon, FellowshipGroupIcon, GovernanceGroupIcon, MembersIcon, MotionsIcon, NewsIcon, OverviewIcon, ParachainsIcon, ReferendaIcon, RootIcon, StakingAdminIcon, TipsIcon, TreasuryGroupIcon, TreasuryProposalsIcon } from 'src/ui-components/CustomIcons';
+import checkGov2Route from 'src/util/checkGov2Route';
 
 import Footer from './Footer';
 import GovernanceSwitchButton from './GovernanceSwitchButton';
 import NavHeader from './NavHeader';
-import SwitchRoutes, { gov2Routes } from './SwitchRoutes';
+import SwitchRoutes from './SwitchRoutes';
 
 const { Content, Sider } = Layout;
 
@@ -197,7 +198,7 @@ let gov2OverviewItems = [
 	getSiderMenuItem('Calendar', '/calendar', <CalendarIcon className='text-white' />),
 	getSiderMenuItem('News', '/news', <NewsIcon className='text-white' />),
 	getSiderMenuItem('Parachains', '/parachains', <ParachainsIcon className='text-white' />),
-	getSiderMenuItem('Preimages', '/preimages')
+	getSiderMenuItem('Preimages', '/preimages', <FileImageOutlined />)
 
 ];
 
@@ -244,7 +245,7 @@ const AppLayout = ({ className }: { className?:string }) => {
 	const navigate = useNavigate();
 	const { pathname } = useLocation();
 
-	const isGov2Route: boolean = gov2Routes.includes(pathname.split('/')[1]);
+	const isGov2Route: boolean = checkGov2Route(pathname);
 
 	const handleMenuClick = (menuItem: any) => {
 		if(['userMenu', 'tracksHeading'].includes(menuItem.key)) return;
@@ -393,5 +394,9 @@ export default styled(AppLayout)`
 	.ant-menu-inline-collapsed-noicon {
 		color: pink_primary;
 	}
+}
+
+.ant-menu-sub {
+	background: #fff !important;
 }
 `;

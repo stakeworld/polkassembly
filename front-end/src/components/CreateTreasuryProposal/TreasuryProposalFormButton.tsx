@@ -414,8 +414,6 @@ const TreasuryProposalFormButton = ({
 };
 
 export default styled(TreasuryProposalFormButton)`
-
-
 	.textarea-input {
 		min-height: 100;
 		margin-left: 1.5em !important;
@@ -435,4 +433,3 @@ export default styled(TreasuryProposalFormButton)`
 		-moz-appearance: textfield;
 	}
 `;
-

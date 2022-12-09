@@ -250,7 +250,7 @@ const AllPostsTable = () => {
 
 	const [refetch, { data, error }] = useGetLatestPostsLazyQuery({
 		variables: {
-			limit: 10
+			limit: 8
 		}
 	});
 
