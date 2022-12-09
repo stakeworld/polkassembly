@@ -394,4 +394,8 @@ export default styled(AppLayout)`
 		color: pink_primary;
 	}
 }
+
+.ant-menu-sub {
+	background: #fff !important;
+}
 `;

@@ -46,6 +46,11 @@ const PostReferendumV2Info = ({ onchainLink, setOtherProposalsSidebarAddr }: Pro
 
 		const time = blockToTime(currentBlock.toNumber() - blockNo);
 		const timeArr = time.split(' ');
+
+		if (!timeArr[0] || !timeArr[1] || !timeArr[2]) {
+			return moment().utc().format('DD MMM YYYY');
+		}
+
 		const days = Number(timeArr[0].replace('d', ''));
 		const hours = Number(timeArr[1].replace('h', ''));
 		const minutes = Number(timeArr[2].replace('m', ''));
@@ -90,7 +95,7 @@ const PostReferendumV2Info = ({ onchainLink, setOtherProposalsSidebarAddr }: Pro
 						</div>
 					</li>}
 					{trackNumber && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
-						<h6 className='col-span-2'>Track Number</h6>
+						<h6 className='col-span-2'>Track Name</h6>
 						<div className='text-navBlue col-span-4 md:col-span-6 overflow-hidden'>
 							{getTrackNameFromNumber(trackNumber)}
 						</div>
