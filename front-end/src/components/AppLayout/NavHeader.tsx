@@ -49,7 +49,7 @@ const NavHeader = ({ className, sidedrawer, setSidedrawer } : Props) => {
 			<MenuOutlined className='lg:hidden mr-5' onClick={() => {
 				setSidedrawer(!sidedrawer);
 			}} />
-			<nav className='w-full lg:w-5/6 lg:mx-auto flex items-center justify-between'>
+			<nav className='w-full lg:w-5/6 lg:mx-auto flex items-center justify-between h-[60px] max-h-[60px]'>
 				<Link className='flex' to={isGov2Route ? '/gov-2' : '/'}><PALogoBlack /></Link>
 
 				<div className="flex items-center justify-between w-max lg:w-[82%] xl:w-[63%] 2xl:w-[55%]">
