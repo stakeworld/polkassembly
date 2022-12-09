@@ -5,7 +5,8 @@
 /* eslint-disable sort-keys */
 import styled from '@xstyled/styled-components';
 import { Tabs } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import AllPostsTable from './AllPostsTable';
 import BountyPostsTable from './BountyPostsTable';
@@ -17,6 +18,9 @@ import TipPostsTable from './TipPostsTable';
 import TreasuryPostsTable from './TreasuryPostsTable';
 
 const LatestActivity = ({ className }: {className?:string}) => {
+
+	const [currentTab, setCurrentTab] = useState('all');
+
 	const tabItems = [
 		{ label: 'All', key: 'all', children: <AllPostsTable /> },
 		{ label: 'Discussions', key: 'discussions', children: <DiscussionPostsTable /> },
@@ -30,11 +34,15 @@ const LatestActivity = ({ className }: {className?:string}) => {
 
 	return (
 		<div className={`${className} bg-white drop-shadow-md p-4 lg:p-6 rounded-md`}>
-			<h2 className='dashboard-heading mb-6'>Latest Activity</h2>
+			<div className="flex justify-between items-center">
+				<h2 className='dashboard-heading mb-6'>Latest Activity</h2>
+				{currentTab !== 'all' && <Link className='text-sidebarBlue font-medium hover:text-pink_primary py-0.5 px-2 rounded-lg' to={`/${currentTab}`}>View all</Link>}
+			</div>
 			<Tabs
+				className='ant-tabs-tab-bg-white text-sidebarBlue font-medium'
 				type="card"
 				items={tabItems}
-				className='ant-tabs-tab-bg-white text-sidebarBlue font-medium'
+				onChange={(key) => setCurrentTab(key)}
 			/>
 		</div>
 	);
