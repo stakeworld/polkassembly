@@ -16,11 +16,12 @@ import { trackInfo } from 'src/global/post_trackInfo';
 import { logout } from 'src/services/auth.service';
 import { PostOrigin } from 'src/types';
 import { AuctionAdminIcon, BountiesIcon, CalendarIcon, DemocracyProposalsIcon, DiscussionsIcon, FellowshipGroupIcon, GovernanceGroupIcon, MembersIcon, MotionsIcon, NewsIcon, OverviewIcon, ParachainsIcon, ReferendaIcon, RootIcon, StakingAdminIcon, TipsIcon, TreasuryGroupIcon, TreasuryProposalsIcon } from 'src/ui-components/CustomIcons';
+import checkGov2Route from 'src/util/checkGov2Route';
 
 import Footer from './Footer';
 import GovernanceSwitchButton from './GovernanceSwitchButton';
 import NavHeader from './NavHeader';
-import SwitchRoutes, { gov2Routes } from './SwitchRoutes';
+import SwitchRoutes from './SwitchRoutes';
 
 const { Content, Sider } = Layout;
 
@@ -244,7 +245,7 @@ const AppLayout = ({ className }: { className?:string }) => {
 	const navigate = useNavigate();
 	const { pathname } = useLocation();
 
-	const isGov2Route: boolean = gov2Routes.includes(pathname.split('/')[1]);
+	const isGov2Route: boolean = checkGov2Route(pathname);
 
 	const handleMenuClick = (menuItem: any) => {
 		if(['userMenu', 'tracksHeading'].includes(menuItem.key)) return;
