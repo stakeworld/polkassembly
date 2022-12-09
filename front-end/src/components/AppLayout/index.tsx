@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 /* eslint-disable sort-keys */
-import { BellOutlined, BookOutlined, DownOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { BellOutlined, BookOutlined, DownOutlined, FileImageOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import styled from '@xstyled/styled-components';
 import { Avatar, Drawer, Dropdown, Layout, Menu, MenuProps } from 'antd';
 import { ItemType } from 'antd/lib/menu/hooks/useItems';
@@ -198,7 +198,7 @@ let gov2OverviewItems = [
 	getSiderMenuItem('Calendar', '/calendar', <CalendarIcon className='text-white' />),
 	getSiderMenuItem('News', '/news', <NewsIcon className='text-white' />),
 	getSiderMenuItem('Parachains', '/parachains', <ParachainsIcon className='text-white' />),
-	getSiderMenuItem('Preimages', '/preimages')
+	getSiderMenuItem('Preimages', '/preimages', <FileImageOutlined />)
 
 ];
 
