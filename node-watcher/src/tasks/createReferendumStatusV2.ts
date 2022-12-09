@@ -78,7 +78,7 @@ const createReferendumStatusV2: Task<NomidotReferendumStatusUpdate[]> = {
           return null;
         }
 
-        const relatedReferendum = await prisma.referendum({
+        const relatedReferendum = await prisma.referendumV2({
           referendumId: referendumRawEvent.ReferendumIndex,
         });
 
