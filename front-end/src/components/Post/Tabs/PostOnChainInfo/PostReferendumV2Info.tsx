@@ -10,10 +10,12 @@ import { OnchainLinkReferendumV2Fragment } from 'src/types';
 import Address from 'src/ui-components/Address';
 import blockToTime from 'src/util/blockToTime';
 import formatBnBalance from 'src/util/formatBnBalance';
+import getNetwork from 'src/util/getNetwork';
 
 import ArgumentsTableJSONView from './ArgumentsTableJSONView';
 import OnchainInfoWrapper from './OnchainInfoWrapper';
 
+const network = getNetwork();
 interface Props{
 	onchainLink: OnchainLinkReferendumV2Fragment
 	setOtherProposalsSidebarAddr: (address: string) => void
@@ -103,25 +105,45 @@ const PostReferendumV2Info = ({ onchainLink, setOtherProposalsSidebarAddr }: Pro
 					{enactmentAfter && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
 						<h6 className='col-span-2'>Enactment After</h6>
 						<div className='text-navBlue col-span-4 md:col-span-6 overflow-hidden'>
-							{formattedBlockToTime(Number(enactmentAfter))}
+							{enactmentAfter.length < 8 ? enactmentAfter :
+								<div>
+									<span>{formattedBlockToTime(Number(enactmentAfter))}</span>
+									<a href={`https://${network}.subscan.io/block/${enactmentAfter}`} target='_blank' rel='noreferrer' className='ml-3 text-pink_secondary'>#{enactmentAfter}</a>
+								</div>
+							}
 						</div>
 					</li>}
 					{enactmentAt && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
 						<h6 className='col-span-2'>Enactment At</h6>
 						<div className='text-navBlue col-span-4 md:col-span-6 overflow-hidden'>
-							{formattedBlockToTime(Number(enactmentAt))}
+							{enactmentAt.length < 8 ? enactmentAt :
+								<div>
+									<span>{formattedBlockToTime(Number(enactmentAt))}</span>
+									<a href={`https://${network}.subscan.io/block/${enactmentAt}`} target='_blank' rel='noreferrer' className='ml-3 text-pink_secondary'>#{enactmentAt}</a>
+								</div>
+							}
 						</div>
 					</li>}
 					{deciding && deciding.since && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
 						<h6 className='col-span-2'>Deciding Since</h6>
 						<div className='text-navBlue col-span-4 md:col-span-6 overflow-hidden'>
-							{formattedBlockToTime(deciding.since)}
+							{`${deciding.since}`.length < 8 ? deciding.since :
+								<div>
+									<span>{formattedBlockToTime(deciding.since)}</span>
+									<a href={`https://${network}.subscan.io/block/${deciding.since}`} target='_blank' rel='noreferrer' className='ml-3 text-pink_secondary'>#{deciding.since}</a>
+								</div>
+							}
 						</div>
 					</li>}
 					{deciding && deciding.confirming && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
 						<h6 className='col-span-2'>Confirming</h6>
 						<div className='text-navBlue col-span-4 md:col-span-6 overflow-hidden'>
-							{formattedBlockToTime(deciding.confirming)}
+							{`${deciding.confirming}`.length < 8 ? deciding.confirming :
+								<div>
+									<span>{formattedBlockToTime(deciding.confirming)}</span>
+									<a href={`https://${network}.subscan.io/block/${deciding.confirming}`} target='_blank' rel='noreferrer' className='ml-3 text-pink_secondary'>#{deciding.confirming}</a>
+								</div>
+							}
 						</div>
 					</li>}
 					{decisionDeposit && decisionDeposit.amount && <li className='grid grid-cols-6 md:grid-cols-8 gap-x-5 border-b py-1.5'>
