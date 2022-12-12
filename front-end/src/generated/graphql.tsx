@@ -10116,6 +10116,7 @@ export type ReferendumV2 = {
   referendumId: Scalars['Int'];
   referendumStatus?: Maybe<Array<ReferendumStatusV2>>;
   submitted?: Maybe<Scalars['Json']>;
+  tally?: Maybe<Scalars['Json']>;
   submittedAt: Scalars['String'];
   trackNumber: Scalars['Int'];
 };
@@ -29871,7 +29872,7 @@ export type ReferendumV2PostAndCommentsQuery = (
       & Pick<Onchain_Links, 'proposer_address' | 'track' | 'origin'>
       & { onchain_referendumv2: Array<Maybe<(
         { __typename?: 'ReferendumV2' }
-        & Pick<ReferendumV2, 'deciding' | 'decisionDeposit' | 'enactmentAfter' | 'enactmentAt' | 'id' | 'origin' | 'preimageHash' | 'referendumId' | 'trackNumber' | 'submitted' | 'submittedAt'>
+        & Pick<ReferendumV2, 'deciding' | 'decisionDeposit' | 'enactmentAfter' | 'enactmentAt' | 'id' | 'origin' | 'preimageHash' | 'referendumId' | 'trackNumber' | 'tally' | 'submitted' | 'submittedAt'>
         & { referendumStatus?: Maybe<Array<(
           { __typename?: 'ReferendumStatusV2' }
           & Pick<ReferendumStatusV2, 'id' | 'status'>
@@ -35160,6 +35161,7 @@ export const ReferendumV2PostAndCommentsDocument = gql`
         preimageHash
         referendumId
         trackNumber
+        tally
         submitted
         submittedAt
         referendumStatus(orderBy: id_DESC) {
