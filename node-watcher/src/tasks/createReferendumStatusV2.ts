@@ -25,6 +25,15 @@ const eventField = [
   'Tally',
 ];
 
+function hexToNumber(str: string) {
+  if (/^0x[0-9A-F]+$/i.test(str)) {
+    // Convert the hexadecimal string to a number
+    return parseInt(str, 16);
+  } else {
+    return str;
+  }
+}
+
 /*
  *  ======= Table (Referendum Status Update) ======
  */
@@ -95,9 +104,9 @@ const createReferendumStatusV2: Task<NomidotReferendumV2StatusUpdate[]> = {
         let tallyData: Tally | undefined = {};
         
         if (referendumRawEvent.Tally){
-          tallyData.ayes = referendumRawEvent.Tally.ayes ? BigInt(parseInt(referendumRawEvent.Tally.ayes, 16)).toString() : undefined;
-          tallyData.nays = referendumRawEvent.Tally.nays ? BigInt(parseInt(referendumRawEvent.Tally.nays, 16)).toString() : undefined;
-          tallyData.support = referendumRawEvent.Tally.support ? BigInt(parseInt(referendumRawEvent.Tally.support, 16)).toString() : undefined;
+          tallyData.ayes = referendumRawEvent.Tally.ayes ? hexToNumber(referendumRawEvent.Tally.ayes).toString() : "0";
+          tallyData.nays = referendumRawEvent.Tally.nays ? hexToNumber(referendumRawEvent.Tally.nays).toString() : "0";
+          tallyData.support = referendumRawEvent.Tally.support ? hexToNumber(referendumRawEvent.Tally.support).toString() : "0";
         }
 
         const result: NomidotReferendumV2StatusUpdate = {
