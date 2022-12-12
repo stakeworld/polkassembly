@@ -95,9 +95,9 @@ const createReferendumStatusV2: Task<NomidotReferendumV2StatusUpdate[]> = {
         let tallyData: Tally | undefined = {};
         
         if (referendumRawEvent.Tally){
-          tallyData.ayes = referendumRawEvent.Tally.ayes ? BigInt(parseInt(referendumRawEvent.Tally.ayes, 16)).toString() : undefined;
-          tallyData.nays = referendumRawEvent.Tally.nays ? BigInt(parseInt(referendumRawEvent.Tally.nays, 16)).toString() : undefined;
-          tallyData.support = referendumRawEvent.Tally.support ? BigInt(parseInt(referendumRawEvent.Tally.support, 16)).toString() : undefined;
+          tallyData.ayes = referendumRawEvent.Tally.ayes ? BigInt(parseInt(referendumRawEvent.Tally.ayes, 16)).toString() : "0";
+          tallyData.nays = referendumRawEvent.Tally.nays ? BigInt(parseInt(referendumRawEvent.Tally.nays, 16)).toString() : "0";
+          tallyData.support = referendumRawEvent.Tally.support ? BigInt(parseInt(referendumRawEvent.Tally.support, 16)).toString() : "0";
         }
 
         const result: NomidotReferendumV2StatusUpdate = {
