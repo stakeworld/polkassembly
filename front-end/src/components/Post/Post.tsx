@@ -387,7 +387,7 @@ const Post = ({
 		return latestState;
 	};
 
-	const isSidebarAvailable = isMotion || isProposal || isTreasuryProposal || isReferendum || isTipProposal || isReferendumV2;
+	const isSidebarAvailable = isDiscussion(post) || isMotion || isProposal || isTreasuryProposal || isReferendum || isTipProposal || isReferendumV2;
 
 	return (
 		<>
