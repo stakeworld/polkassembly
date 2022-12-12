@@ -57,7 +57,6 @@ export default styled(StatusTag).attrs(( { status }: Props) => ({
 		}
 	}
 
-	&.${gov2ReferendumStatus.ONGOING},
 	&.${gov2ReferendumStatus.SUBMITTED},
 	&.${referendumStatus.STARTED},
 	&.${proposalStatus.PROPOSED},
@@ -85,7 +84,6 @@ export default styled(StatusTag).attrs(( { status }: Props) => ({
 		}
 	}
 
-	&.${gov2ReferendumStatus.APPROVED},
 	&.${gov2ReferendumStatus.CONFIRMED},
 	&.${proposalStatus.TABLED},
 	&.${referendumStatus.PASSED},
