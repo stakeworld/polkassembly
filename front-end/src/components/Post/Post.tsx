@@ -266,6 +266,7 @@ const Post = ({
 					status={postStatus}
 					canEdit={canEdit}
 					startTime={post.created_at}
+					tally={isReferendumV2 ? (post as any).onchain_link?.onchain_referendumv2?.[0]?.tally : undefined}
 				/>
 				{isDiscussion(post) && <Poll postId={post.id} canEdit={post.author?.id === id} />}
 				<OptionPoll postId={post.id} canEdit={post.author?.id === id} />
