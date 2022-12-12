@@ -6,6 +6,9 @@ import { DesktopOutlined, FileTextOutlined, HomeFilled, PlayCircleFilled, Twitte
 import styled from '@xstyled/styled-components';
 import { Space } from 'antd';
 import React, { useEffect } from 'react';
+import bg1 from 'src/assets/gov2-info-bg.png';
+import bg2 from 'src/assets/gov2-info-bg-2.png';
+import bg3 from 'src/assets/gov2-info-bg-3.png';
 // import Gov2InfoBG from 'src/assets/gov2-info-bg.png';
 import { useNetworkSocialsLazyQuery } from 'src/generated/graphql';
 import { CubeIcon, DiscordIcon, GithubIcon, RedditIcon, TelegramIcon } from 'src/ui-components/CustomIcons';
@@ -65,9 +68,12 @@ export const socialLinks = (blockchain_socials: any) => {
 	);
 };
 
-const gov2Link = ({ className, icon, link, text, subText } : { className?: string, icon?:any, link:string, text:string, subText:string }) =>
+const gov2Link = ({ className, bgImage, icon, link, text, subText } : { className?: string, bgImage:any, icon?:any, link:string, text:string, subText:string }) =>
 	<a href={link} target='_blank' rel='noreferrer' className={`${className} group flex min-w-[260px] max-w-[260px]`}>
-		<div className="group-hover:text-pink_secondary mr-3 flex items-center justify-center min-w-[132px] h-[75px] bg-[url('/src/assets/gov2-info-bg.png')]">
+		<div
+			style={{ backgroundImage: `url(${bgImage})` }}
+			className="group-hover:text-pink_secondary mr-3 flex items-center justify-center min-w-[132px] h-[75px]"
+		>
 			{icon}
 		</div>
 
@@ -106,6 +112,7 @@ const AboutNetwork = ({ className, showGov2Links } : { className?: string, showG
 				showGov2Links &&
 				<div className='mt-10 pb-2 flex justify-between xl:w-[90%] overflow-x-auto'>
 					{gov2Link({
+						bgImage: bg1,
 						className: 'mr-12 lg:mr-9',
 						icon: <PlayCircleFilled className='text-white text-xl' />,
 						link:'https://www.youtube.com/watch?v=EF93ZM_P_Oc',
@@ -114,6 +121,7 @@ const AboutNetwork = ({ className, showGov2Links } : { className?: string, showG
 					})}
 
 					{gov2Link({
+						bgImage: bg2,
 						className: 'mr-12 lg:mr-9',
 						icon: <DesktopOutlined className='text-white text-xl' />,
 						link: 'https://medium.com/polkadot-network/gov2-polkadots-next-generation-of-decentralised-governance-4d9ef657d11b',
@@ -122,6 +130,7 @@ const AboutNetwork = ({ className, showGov2Links } : { className?: string, showG
 					})}
 
 					{gov2Link({
+						bgImage: bg3,
 						className: 'mr-12 lg:mr-0',
 						icon: <FileTextOutlined className='text-white text-xl' />,
 						link: 'https://wiki.polkadot.network/docs/learn-governance',

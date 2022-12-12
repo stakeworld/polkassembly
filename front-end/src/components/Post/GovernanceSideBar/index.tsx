@@ -59,7 +59,7 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 	const { api, apiReady } = useContext(ApiContext);
 	const [lastVote, setLastVote] = useState<string | null | undefined>(undefined);
 
-	const canVote = !!status && !![proposalStatus.PROPOSED, referendumStatus.STARTED, motionStatus.PROPOSED, tipStatus.OPENED, gov2ReferendumStatus.ONGOING].includes(status);
+	const canVote = !!status && !![proposalStatus.PROPOSED, referendumStatus.STARTED, motionStatus.PROPOSED, tipStatus.OPENED, gov2ReferendumStatus.ONGOING, gov2ReferendumStatus.DECIDING, gov2ReferendumStatus.SUBMITTED].includes(status);
 	const onchainTipProposal = (onchainLink as OnchainLinkTipFragment)?.onchain_tip;
 
 	const onAccountChange = (address: string) => {
