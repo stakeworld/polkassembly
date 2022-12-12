@@ -10,11 +10,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { useUserDetailsContext } from 'src/context';
 import NetworkDropdown from 'src/ui-components/NetworkDropdown';
 import SearchBar from 'src/ui-components/SearchBar';
+import checkGov2Route from 'src/util/checkGov2Route';
 import styled  from 'styled-components';
 
 import { ReactComponent as PALogoBlack } from '../../assets/pa-logo-black.svg';
 import GovernanceSwitchButton from './GovernanceSwitchButton';
-import { gov2Routes } from './SwitchRoutes';
 
 interface Props {
 	className?: string
@@ -23,7 +23,6 @@ interface Props {
 }
 
 const CSSVariables = styled.div`
-
 	@property --angle {
 		syntax: '<angle>';
 		initial-value: 90deg;
@@ -43,14 +42,14 @@ const NavHeader = ({ className, sidedrawer, setSidedrawer } : Props) => {
 	const { pathname } = useLocation();
 	const { username } = currentUser;
 
-	const isGov2Route: boolean = gov2Routes.includes(pathname.split('/')[1]);
+	const isGov2Route: boolean = checkGov2Route(pathname);
 
 	return (
 		<Header className={`${className} sticky top-0 flex items-center bg-white h-[60px] max-h-[60px] px-6 z-50 leading-normal border-b-2 border-pink_primary`}>
 			<MenuOutlined className='lg:hidden mr-5' onClick={() => {
 				setSidedrawer(!sidedrawer);
 			}} />
-			<nav className='w-full lg:w-5/6 lg:mx-auto flex items-center justify-between'>
+			<nav className='w-full lg:w-5/6 lg:mx-auto flex items-center justify-between h-[60px] max-h-[60px]'>
 				<Link className='flex' to={isGov2Route ? '/gov-2' : '/'}><PALogoBlack /></Link>
 
 				<div className="flex items-center justify-between w-max lg:w-[82%] xl:w-[63%] 2xl:w-[55%]">
@@ -127,10 +126,8 @@ export default styled(NavHeader)`
 	
 	.v2-box {
 		font-family: 'Poppins';
-		font-weight: 600;
 		margin: max(1rem, 3vw);
 		border: 0.25px solid;
-		border-radius: 3px;
 		padding: 6px 12px;
 		border-image: conic-gradient(from var(--angle), var(--c2), var(--c1) 0.1turn, var(--c1) 0.15turn, var(--c2) 0.25turn) 15;
 		animation: borderRotate var(--d) linear infinite forwards;

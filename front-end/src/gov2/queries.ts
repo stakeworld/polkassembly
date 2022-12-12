@@ -209,6 +209,7 @@ export const REFERENDUMV2_POST_AND_COMMENTS = gql`
                     preimageHash
                     referendumId
                     trackNumber
+                    tally
                     submitted
                     submittedAt
                     referendumStatus(orderBy: id_DESC){

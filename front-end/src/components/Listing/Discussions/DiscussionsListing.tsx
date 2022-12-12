@@ -38,6 +38,7 @@ const DiscussionsListing = ({ className, data, loading } : Props) => {
 										created_at={post.created_at}
 										title={post.title || 'No title'}
 										username={post.author.username}
+										topic={post.topic.name}
 									/>
 								</Link>
 							</div>

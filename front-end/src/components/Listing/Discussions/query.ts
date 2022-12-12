@@ -23,6 +23,10 @@ const postFields = gql`
             name
             id
         }
+        topic {
+            name
+            id
+        }
         last_update {
             last_update
         }
@@ -57,6 +61,42 @@ export const QUERY_DISCUSSIONS_ID_DESC = gql`
 export const QUERY_DISCUSSIONS_ID_ASC = gql`
     query DiscussionPostsIdAsc($limit: Int! = 20, $offset: Int! = 0) {
         posts(order_by: {id: asc}, limit: $limit, offset: $offset, where: {type: {id: {_eq: 1}}}) {
+            ...postFields
+            post_reactions {
+                reaction
+            }
+        }
+    }
+    ${postFields}
+`;
+
+export const QUERY_LATEST_DISCUSSIONS_FILTERED = gql`
+    query LatestDiscussionPostsFiltered($limit: Int! = 20, $offset: Int! = 0, $topic: String!) {
+        posts(order_by: {last_update: {last_update: desc}}, limit: $limit, offset: $offset, where: {type: {id: {_eq: 1}}, topic: {name: {_eq: $topic}}}) {
+            ...postFields
+            post_reactions {
+                reaction
+            }
+        }
+    }
+    ${postFields}
+`;
+
+export const QUERY_DISCUSSIONS_ID_DESC_FILTERED = gql`
+    query DiscussionPostsIdDescFiltered($limit: Int! = 20, $offset: Int! = 0, $topic: String!) {
+        posts(order_by: {id: desc}, limit: $limit, offset: $offset, where: {type: {id: {_eq: 1}}, topic: {name: {_eq: $topic}}}) {
+            ...postFields
+            post_reactions {
+                reaction
+            }
+        }
+    }
+    ${postFields}
+`;
+
+export const QUERY_DISCUSSIONS_ID_ASC_FILTERED = gql`
+    query DiscussionPostsIdAscFiltered($limit: Int! = 20, $offset: Int! = 0, $topic: String!) {
+        posts(order_by: {id: asc}, limit: $limit, offset: $offset, where: {type: {id: {_eq: 1}}, topic: {name: {_eq: $topic}}}) {
             ...postFields
             post_reactions {
                 reaction

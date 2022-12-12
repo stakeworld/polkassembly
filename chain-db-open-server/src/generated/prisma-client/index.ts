@@ -2212,7 +2212,9 @@ export type ReferendumV2OrderByInput =
   | "decisionDeposit_ASC"
   | "decisionDeposit_DESC"
   | "deciding_ASC"
-  | "deciding_DESC";
+  | "deciding_DESC"
+  | "tally_ASC"
+  | "tally_DESC";
 
 export type RewardOrderByInput =
   | "id_ASC"
@@ -7766,6 +7768,7 @@ export interface ReferendumV2CreateWithoutPreimageInput {
   submitted?: Maybe<Json>;
   decisionDeposit?: Maybe<Json>;
   deciding?: Maybe<Json>;
+  tally?: Maybe<Json>;
 }
 
 export interface ReferendumStatusV2CreateManyWithoutReferendumInput {
@@ -7932,6 +7935,7 @@ export interface ReferendumV2UpdateWithoutPreimageDataInput {
   submitted?: Maybe<Json>;
   decisionDeposit?: Maybe<Json>;
   deciding?: Maybe<Json>;
+  tally?: Maybe<Json>;
 }
 
 export interface ReferendumStatusV2UpdateManyWithoutReferendumInput {
@@ -8643,6 +8647,7 @@ export interface ReferendumV2CreateWithoutReferendumStatusInput {
   submitted?: Maybe<Json>;
   decisionDeposit?: Maybe<Json>;
   deciding?: Maybe<Json>;
+  tally?: Maybe<Json>;
 }
 
 export interface PreimageV2CreateOneWithoutReferendumInput {
@@ -8691,6 +8696,7 @@ export interface ReferendumV2UpdateWithoutReferendumStatusDataInput {
   submitted?: Maybe<Json>;
   decisionDeposit?: Maybe<Json>;
   deciding?: Maybe<Json>;
+  tally?: Maybe<Json>;
 }
 
 export interface PreimageV2UpdateOneWithoutReferendumInput {
@@ -8744,6 +8750,7 @@ export interface ReferendumV2CreateInput {
   submitted?: Maybe<Json>;
   decisionDeposit?: Maybe<Json>;
   deciding?: Maybe<Json>;
+  tally?: Maybe<Json>;
 }
 
 export interface ReferendumV2UpdateInput {
@@ -8759,6 +8766,7 @@ export interface ReferendumV2UpdateInput {
   submitted?: Maybe<Json>;
   decisionDeposit?: Maybe<Json>;
   deciding?: Maybe<Json>;
+  tally?: Maybe<Json>;
 }
 
 export interface ReferendumV2UpdateManyMutationInput {
@@ -8772,6 +8780,7 @@ export interface ReferendumV2UpdateManyMutationInput {
   submitted?: Maybe<Json>;
   decisionDeposit?: Maybe<Json>;
   deciding?: Maybe<Json>;
+  tally?: Maybe<Json>;
 }
 
 export interface ReferendumVoteCreateInput {
@@ -13063,6 +13072,7 @@ export interface ReferendumV2 {
   submitted?: Json;
   decisionDeposit?: Json;
   deciding?: Json;
+  tally?: Json;
 }
 
 export interface ReferendumV2Promise
@@ -13089,6 +13099,7 @@ export interface ReferendumV2Promise
   submitted: () => Promise<Json>;
   decisionDeposit: () => Promise<Json>;
   deciding: () => Promise<Json>;
+  tally: () => Promise<Json>;
 }
 
 export interface ReferendumV2Subscription
@@ -13117,6 +13128,7 @@ export interface ReferendumV2Subscription
   submitted: () => Promise<AsyncIterator<Json>>;
   decisionDeposit: () => Promise<AsyncIterator<Json>>;
   deciding: () => Promise<AsyncIterator<Json>>;
+  tally: () => Promise<AsyncIterator<Json>>;
 }
 
 export interface ReferendumV2NullablePromise
@@ -13143,6 +13155,7 @@ export interface ReferendumV2NullablePromise
   submitted: () => Promise<Json>;
   decisionDeposit: () => Promise<Json>;
   deciding: () => Promise<Json>;
+  tally: () => Promise<Json>;
 }
 
 export interface ReferendumStatusV2 {
@@ -16412,6 +16425,7 @@ export interface ReferendumV2PreviousValues {
   submitted?: Json;
   decisionDeposit?: Json;
   deciding?: Json;
+  tally?: Json;
 }
 
 export interface ReferendumV2PreviousValuesPromise
@@ -16428,6 +16442,7 @@ export interface ReferendumV2PreviousValuesPromise
   submitted: () => Promise<Json>;
   decisionDeposit: () => Promise<Json>;
   deciding: () => Promise<Json>;
+  tally: () => Promise<Json>;
 }
 
 export interface ReferendumV2PreviousValuesSubscription
@@ -16444,6 +16459,7 @@ export interface ReferendumV2PreviousValuesSubscription
   submitted: () => Promise<AsyncIterator<Json>>;
   decisionDeposit: () => Promise<AsyncIterator<Json>>;
   deciding: () => Promise<AsyncIterator<Json>>;
+  tally: () => Promise<AsyncIterator<Json>>;
 }
 
 export interface ReferendumVoteSubscriptionPayload {
