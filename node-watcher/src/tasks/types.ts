@@ -268,6 +268,7 @@ export interface NomidotReferendumV2 {
   submitted?: Json;
   decisionDeposit?: Json;
   deciding: Json;
+  tally?: Tally;
 }
 
 export interface NomidotReferendumRawEvent {
@@ -279,6 +280,7 @@ export interface NomidotReferendumV2RawEvent {
   ReferendumIndex?: number;
   TrackNumber?: number;
   HashInfo?: any;
+  Tally?: Tally;
 }
 
 export interface NomidotArgument {
@@ -349,6 +351,18 @@ export interface NomidotMotionStatusUpdate {
 export interface NomidotReferendumStatusUpdate {
   referendumId: number;
   status: string;
+}
+
+export interface NomidotReferendumV2StatusUpdate {
+  referendumId: number;
+  status: string;
+  tally?: Tally;
+}
+
+export interface Tally {
+  ayes?: string;
+  nays?: string;
+  support?: string
 }
 
 export interface NomidotTechCommitteeProposalStatusUpdate {

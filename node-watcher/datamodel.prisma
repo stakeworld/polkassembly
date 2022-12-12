@@ -341,6 +341,7 @@ type ReferendumV2 {
   submitted: Json
   decisionDeposit: Json
   deciding: Json
+  tally: Json
 }
 
 type ReferendumStatusV2 {
