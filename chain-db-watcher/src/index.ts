@@ -334,17 +334,21 @@ const startSubscriptions = (client: SubscriptionClient): void => {
 	}).subscribe({
 		next: ({ data }): void => {
 			console.log('ReferendumStatusV2 data received', JSON.stringify(data, null, 2));
-			const {
-				referendum,
-				status
-			} = data?.referendumStatusV2?.node;
 
-			referendumV2DiscussionExists(referendum.refendumId).then(alreadyExist => {
+			const referendum = data?.referendumStatusV2?.node?.referendum;
+			const status = data?.referendumStatusV2?.node?.status;
+
+			if (!referendum || !status || !referendum?.refendumId) {
+				console.error(chalk.red(`ReferendumStatusV2 data received is not valid: ${JSON.stringify(data, null, 2)}`));
+				return;
+			}
+
+			referendumV2DiscussionExists(referendum?.refendumId).then(alreadyExist => {
 				if (!alreadyExist) {
-					throw new Error(`Status recieved for refendumId ${referendum.refendumId} which is not present in discussion db`);
+					throw new Error(`Status recieved for refendumId ${referendum?.refendumId} which is not present in discussion db`);
 				} else {
 					updateDiscussionReferendumV2Status({
-						referendumId: referendum.refendumId,
+						referendumId: referendum?.refendumId,
 						status
 					});
 				}

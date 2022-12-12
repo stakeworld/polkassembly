@@ -6660,6 +6660,7 @@ type ReferendumV2 {
   submitted: Json
   decisionDeposit: Json
   deciding: Json
+  tally: Json
 }
 
 type ReferendumV2Connection {
@@ -6681,6 +6682,7 @@ input ReferendumV2CreateInput {
   submitted: Json
   decisionDeposit: Json
   deciding: Json
+  tally: Json
 }
 
 input ReferendumV2CreateOneWithoutPreimageInput {
@@ -6705,6 +6707,7 @@ input ReferendumV2CreateWithoutPreimageInput {
   submitted: Json
   decisionDeposit: Json
   deciding: Json
+  tally: Json
 }
 
 input ReferendumV2CreateWithoutReferendumStatusInput {
@@ -6719,6 +6722,7 @@ input ReferendumV2CreateWithoutReferendumStatusInput {
   submitted: Json
   decisionDeposit: Json
   deciding: Json
+  tally: Json
 }
 
 type ReferendumV2Edge {
@@ -6749,6 +6753,8 @@ enum ReferendumV2OrderByInput {
   decisionDeposit_DESC
   deciding_ASC
   deciding_DESC
+  tally_ASC
+  tally_DESC
 }
 
 type ReferendumV2PreviousValues {
@@ -6763,6 +6769,7 @@ type ReferendumV2PreviousValues {
   submitted: Json
   decisionDeposit: Json
   deciding: Json
+  tally: Json
 }
 
 type ReferendumV2SubscriptionPayload {
@@ -6796,6 +6803,7 @@ input ReferendumV2UpdateInput {
   submitted: Json
   decisionDeposit: Json
   deciding: Json
+  tally: Json
 }
 
 input ReferendumV2UpdateManyMutationInput {
@@ -6809,6 +6817,7 @@ input ReferendumV2UpdateManyMutationInput {
   submitted: Json
   decisionDeposit: Json
   deciding: Json
+  tally: Json
 }
 
 input ReferendumV2UpdateOneRequiredWithoutReferendumStatusInput {
@@ -6839,6 +6848,7 @@ input ReferendumV2UpdateWithoutPreimageDataInput {
   submitted: Json
   decisionDeposit: Json
   deciding: Json
+  tally: Json
 }
 
 input ReferendumV2UpdateWithoutReferendumStatusDataInput {
@@ -6853,6 +6863,7 @@ input ReferendumV2UpdateWithoutReferendumStatusDataInput {
   submitted: Json
   decisionDeposit: Json
   deciding: Json
+  tally: Json
 }
 
 input ReferendumV2UpsertWithoutPreimageInput {
