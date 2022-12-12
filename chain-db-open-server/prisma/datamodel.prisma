@@ -181,7 +181,6 @@ type Referendum {
   referendumStatus: [ReferendumStatus]! @relation(name: "ReferendumStatusFromReferendum")
   voteThreshold: String!
   referendumVote: [ReferendumVote] @relation(name: "ReferendumVoteFromReferendum")
-
 }
 
 type ReferendumStatus {
@@ -342,6 +341,7 @@ type ReferendumV2 {
   submitted: Json
   decisionDeposit: Json
   deciding: Json
+  tally: Json
 }
 
 type ReferendumStatusV2 {
