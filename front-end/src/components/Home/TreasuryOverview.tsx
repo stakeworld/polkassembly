@@ -263,7 +263,8 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 								}
 							))} <span className='text-navBlue'>{chainProperties[NETWORK]?.tokenSymbol}</span>
 						</span>
-						: <LoadingOutlined />
+						: 'N/A'
+						// : <LoadingOutlined /> TODO: Enable when fixed
 					}
 				</div>
 				<Divider className='my-3' />
@@ -271,7 +272,8 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 					<span className='mr-2 text-sidebarBlue font-medium'>
 						{availableUSD
 							? `~ $${availableUSD}`
-							: <LoadingOutlined />
+							: 'N/A'
+							// : <LoadingOutlined /> TODO: Enable when fixed
 						}
 					</span>
 				</div>
@@ -281,7 +283,7 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 			<div className="flex-1 flex flex-col lg:mr-7 bg-white drop-shadow-md p-3 lg:p-6 rounded-md">
 				<div className="text-navBlue text-xs hidden md:block">Current Price of {chainProperties[NETWORK].tokenSymbol}</div>
 				<div className="text-navBlue text-xs block md:hidden">{chainProperties[NETWORK].tokenSymbol} Price</div>
-				<div className="mt-3 text-sidebarBlue font-medium text-lg">
+				<div className="mt-3 flex-1 text-sidebarBlue font-medium text-lg">
 					{currentTokenPrice && !isNaN(Number(currentTokenPrice))
 						? `$${currentTokenPrice}`
 						: <LoadingOutlined />
@@ -355,8 +357,8 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 								}
 							))} <span className='text-navBlue'>{chainProperties[NETWORK]?.tokenSymbol}</span>
 						</span>
-					) :
-						<LoadingOutlined />
+					) : 'N/A'
+					// : <LoadingOutlined /> TODO: Enable when fixed
 					}
 				</div>
 				<Divider className='my-3' />
@@ -364,7 +366,8 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 					<span className='mr-2 text-sidebarBlue font-medium'>
 						{nextBurnUSD
 							? `~ $${nextBurnUSD}`
-							: <LoadingOutlined />
+							: 'N/A'
+							// : <LoadingOutlined /> TODO: Enable when fixed
 						}
 					</span>
 				</div>

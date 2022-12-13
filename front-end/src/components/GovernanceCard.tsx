@@ -109,15 +109,15 @@ const GovernanceCard = function ({
 							<span>{getFormattedLike(reaction.dislike)}</span>
 						</div>
 						<Divider className='hidden md:inline-block' type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
-						{relativeCreatedAt && <>
-							<div className='hidden lg:flex items-center'>
-								<ClockCircleOutlined className='mr-1' /> {relativeCreatedAt}
-							</div><Divider type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
-						</>}
-
 						{comments && <>
 							<div className='flex items-center'>
 								<CommentOutlined className='mr-1' /> {comments}
+							</div>
+							<Divider type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
+						</>}
+						{relativeCreatedAt && <>
+							<div className='hidden lg:flex items-center'>
+								<ClockCircleOutlined className='mr-1' /> {relativeCreatedAt}
 							</div>
 						</>}
 					</div>

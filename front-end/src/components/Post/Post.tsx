@@ -387,8 +387,6 @@ const Post = ({
 		return latestState;
 	};
 
-	const isSidebarAvailable = isDiscussion(post) || isMotion || isProposal || isTreasuryProposal || isReferendum || isTipProposal || isReferendumV2;
-
 	return (
 		<>
 			<div className={`${className} flex flex-col xl:flex-row`}>
@@ -455,7 +453,7 @@ const Post = ({
 					</div>
 				</div>
 
-				{!isEditing && isSidebarAvailable? <Sidebar className='hidden xl:block' />: null}
+				{!isEditing ? <Sidebar className='hidden xl:block' />: null}
 			</div>
 
 			<SidebarRight
