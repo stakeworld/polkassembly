@@ -312,7 +312,7 @@ const startSubscriptions = (client: SubscriptionClient): void => {
 				addDiscussionPostAndReferendumV2({
 					trackNumber,
 					origin,
-					status: referendumStatus.pop()?.status || 'Submitted',
+					status: referendumStatus?.pop()?.status || 'Submitted',
 					referendumId,
 					proposer: author || preimage?.author,
 					preimageArguments: preimage?.preimageArguments
