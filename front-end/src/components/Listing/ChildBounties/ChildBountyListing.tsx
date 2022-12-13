@@ -43,7 +43,7 @@ const ChildBountyListing = ({ className, data, loading } : Props) => {
 									address={post.onchain_link.proposer_address}
 									comments={post.comments_aggregate.aggregate?.count
 										? post.comments_aggregate.aggregate.count.toString()
-										: 'no'}
+										: '0'}
 									onchainId={onchainId}
 									status={post.onchain_link.onchain_child_bounty[0]?.childBountyStatus?.[0].status}
 									title={post.title}

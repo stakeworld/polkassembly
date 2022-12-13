@@ -266,6 +266,7 @@ const Post = ({
 					status={postStatus}
 					canEdit={canEdit}
 					startTime={post.created_at}
+					tally={isReferendumV2 ? (post as any).onchain_link?.onchain_referendumv2?.[0]?.tally : undefined}
 				/>
 				{isDiscussion(post) && <Poll postId={post.id} canEdit={post.author?.id === id} />}
 				<OptionPoll postId={post.id} canEdit={post.author?.id === id} />
@@ -387,8 +388,6 @@ const Post = ({
 		return latestState;
 	};
 
-	const isSidebarAvailable = isMotion || isProposal || isTreasuryProposal || isReferendum || isTipProposal || isReferendumV2;
-
 	return (
 		<>
 			<div className={`${className} flex flex-col xl:flex-row`}>
@@ -455,7 +454,7 @@ const Post = ({
 					</div>
 				</div>
 
-				{!isEditing && isSidebarAvailable? <Sidebar className='hidden xl:block' />: null}
+				{!isEditing ? <Sidebar className='hidden xl:block' />: null}
 			</div>
 
 			<SidebarRight

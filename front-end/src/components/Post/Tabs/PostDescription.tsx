@@ -192,7 +192,7 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 			{content && <Markdown md={content} />}
 
 			{/* Actions Bar */}
-			<div id='actions-bar' className={`flex md:items-center mt-9 ${canEdit && 'flex-col'} md:flex-row mb-8`}>
+			<div id='actions-bar' className={`flex flex-col md:items-center mt-9 ${canEdit && 'flex-col'} md:flex-row mb-8`}>
 				<div className='flex items-center'>
 					<PostReactionBar className='reactions' postId={post.id} />
 					{id && !isEditing && <SubscriptionButton postId={post.id}/>}

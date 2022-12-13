@@ -45,7 +45,7 @@ const NavHeader = ({ className, sidedrawer, setSidedrawer } : Props) => {
 	const isGov2Route: boolean = checkGov2Route(pathname);
 
 	return (
-		<Header className={`${className} sticky top-0 flex items-center bg-white h-[60px] max-h-[60px] px-6 z-50 leading-normal border-b-2 border-pink_primary drop-shadow-lg`}>
+		<Header className={`${className} shadow-md sticky top-0 flex items-center bg-white h-[60px] max-h-[60px] px-6 z-50 leading-normal border-b-2 border-pink_primary`}>
 			<MenuOutlined className='lg:hidden mr-5' onClick={() => {
 				setSidedrawer(!sidedrawer);
 			}} />

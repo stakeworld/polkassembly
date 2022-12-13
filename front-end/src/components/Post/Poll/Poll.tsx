@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { QueryLazyOptions } from '@apollo/client';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import ErrorAlert from 'src/ui-components/ErrorAlert';
 
 import { UserDetailsContext } from '../../../context/UserDetailsContext';
@@ -24,6 +24,10 @@ interface Props {
 const Poll = ({ pollId, endBlock, canEdit, pollRefetch }: Props) => {
 	const { id } = useContext(UserDetailsContext);
 	const [refetch, { data, error }] = usePollVotesLazyQuery({ variables: { pollId } });
+	useEffect(() => {
+		refetch();
+	}, [refetch]);
+
 	let ayes = 0;
 	let nays = 0;
 	let ownVote: Vote | null = null;
