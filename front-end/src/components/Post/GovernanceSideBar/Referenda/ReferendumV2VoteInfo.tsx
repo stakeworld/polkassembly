@@ -88,7 +88,7 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 				setOffset(offset - (votesList?.length || 0));
 			}
 		} else {
-			if(votesList && votesList?.length < 10 && offset > 0) return;
+			if(votesList && votesList?.length < 10) return;
 			setOffset(offset + (votesList?.length || 0));
 		}
 	}

@@ -100,7 +100,7 @@ export default styled(Reply)`
 	}
 
 	.comment-content {
-		padding: 0.8rem 2rem;
+		padding: 0.8rem 0 0.8rem 2rem;
 		width: 100%;
 	}
 `;

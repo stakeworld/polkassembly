@@ -24,7 +24,7 @@ const CreationLabel = ({ className, children, created_at, defaultAddress, text, 
 	const relativeCreatedAt = getRelativeCreatedAt(created_at);
 
 	return <div className={`${className} text-navBlue text-xs flex flex-col md:flex-row md:items-center`}>
-		<div className='flex flex-col min-[320px]:flex-row min-[320px]:items-center w-full min-[320px]:w-auto'>
+		<div className='flex min-[320px]:flex-row min-[320px]:items-center w-full min-[320px]:w-auto'>
 			<div className='flex items-center'>
 				{!text && <span className='mr-1'>By:</span>}
 				<NameLabel

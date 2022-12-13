@@ -11,10 +11,13 @@ import { useUserDetailsContext } from 'src/context';
 import NetworkDropdown from 'src/ui-components/NetworkDropdown';
 import SearchBar from 'src/ui-components/SearchBar';
 import checkGov2Route from 'src/util/checkGov2Route';
+import getNetwork from 'src/util/getNetwork';
 import styled  from 'styled-components';
 
 import { ReactComponent as PALogoBlack } from '../../assets/pa-logo-black.svg';
 import GovernanceSwitchButton from './GovernanceSwitchButton';
+
+const network = getNetwork();
 
 interface Props {
 	className?: string
@@ -29,7 +32,7 @@ const CSSVariables = styled.div`
 		inherits: true;
 	}
 
-	--d: 2500ms;
+	--d: 3500ms;
 	--angle: 90deg;
 	--gradX: 100%;
 	--gradY: 50%;
@@ -53,9 +56,13 @@ const NavHeader = ({ className, sidedrawer, setSidedrawer } : Props) => {
 				<Link className='flex' to={isGov2Route ? '/gov-2' : '/'}><PALogoBlack /></Link>
 
 				<div className="flex items-center justify-between w-max lg:w-[82%] xl:w-[63%] 2xl:w-[55%]">
-					<CSSVariables>
-						<GovernanceSwitchButton className='hidden lg:flex min-w-[120px] mr-6 lg:mr-5 xl:mr-0' />
-					</CSSVariables>
+					{
+						network === 'kusama' ?
+							<CSSVariables>
+								<GovernanceSwitchButton className='hidden lg:flex min-w-[120px] mr-6 lg:mr-5 xl:mr-0' />
+							</CSSVariables> :
+							<div className='hidden lg:flex min-w-[120px] mr-6 lg:mr-5 xl:mr-0'></div>
+					}
 
 					<Space className='flex items-center justify-between'>
 						<SearchBar/>
