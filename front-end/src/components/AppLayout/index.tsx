@@ -17,11 +17,14 @@ import { logout } from 'src/services/auth.service';
 import { PostOrigin } from 'src/types';
 import { AuctionAdminIcon, BountiesIcon, CalendarIcon, DemocracyProposalsIcon, DiscussionsIcon, FellowshipGroupIcon, GovernanceGroupIcon, MembersIcon, MotionsIcon, NewsIcon, OverviewIcon, ParachainsIcon, ReferendaIcon, RootIcon, StakingAdminIcon, TipsIcon, TreasuryGroupIcon, TreasuryProposalsIcon } from 'src/ui-components/CustomIcons';
 import checkGov2Route from 'src/util/checkGov2Route';
+import getNetwork from 'src/util/getNetwork';
 
 import Footer from './Footer';
 import GovernanceSwitchButton from './GovernanceSwitchButton';
 import NavHeader from './NavHeader';
 import SwitchRoutes from './SwitchRoutes';
+
+const network = getNetwork();
 
 const { Content, Sider } = Layout;
 
@@ -122,7 +125,7 @@ const gov1Items: {[x:string]: ItemType[]} = {
 	]
 };
 
-if(window.screen.width < 1024) {
+if(window.screen.width < 1024 && network === 'kusama') {
 	gov1Items.overviewItems = [
 		getSiderMenuItem(<GovernanceSwitchButton className='flex lg:hidden' />, 'gov-2', ''),
 		...gov1Items.overviewItems
@@ -202,7 +205,7 @@ let gov2OverviewItems = [
 
 ];
 
-if(window.screen.width < 1024) {
+if(window.screen.width < 1024 && network === 'kusama') {
 	gov2OverviewItems = [
 		getSiderMenuItem(<GovernanceSwitchButton className='flex lg:hidden' />, '/', ''),
 		...gov2OverviewItems

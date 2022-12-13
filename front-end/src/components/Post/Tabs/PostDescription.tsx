@@ -228,7 +228,7 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 											}
 										/>
 										:
-										<div className='flex flex-col ml-5'>
+										<div key={id} className='flex flex-col ml-5 cursor-default'>
 											<div className='text-xs mb-1'>{date.format('MMM Do')}</div>
 											<div className='mb-1 font-medium break-words whitespace-pre-wrap'>{status}</div>
 											<div className='text-xs'>({commentsCount})</div>
