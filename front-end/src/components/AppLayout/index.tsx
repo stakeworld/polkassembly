@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 /* eslint-disable sort-keys */
-import { BellOutlined, BookOutlined, DownOutlined, FileImageOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { BellOutlined, BookOutlined, DownOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import styled from '@xstyled/styled-components';
 import { Avatar, Drawer, Dropdown, Layout, Menu, MenuProps } from 'antd';
 import { ItemType } from 'antd/lib/menu/hooks/useItems';
@@ -15,7 +15,7 @@ import { useLogoutMutation } from 'src/generated/graphql';
 import { trackInfo } from 'src/global/post_trackInfo';
 import { logout } from 'src/services/auth.service';
 import { PostOrigin } from 'src/types';
-import { AuctionAdminIcon, BountiesIcon, CalendarIcon, DemocracyProposalsIcon, DiscussionsIcon, FellowshipGroupIcon, GovernanceGroupIcon, MembersIcon, MotionsIcon, NewsIcon, OverviewIcon, ParachainsIcon, ReferendaIcon, RootIcon, StakingAdminIcon, TipsIcon, TreasuryGroupIcon, TreasuryProposalsIcon } from 'src/ui-components/CustomIcons';
+import { AuctionAdminIcon, BountiesIcon, CalendarIcon, DemocracyProposalsIcon, DiscussionsIcon, FellowshipGroupIcon, GovernanceGroupIcon, MembersIcon, MotionsIcon, NewsIcon, OverviewIcon, ParachainsIcon, PreimagesIcon, ReferendaIcon, RootIcon, StakingAdminIcon, TipsIcon, TreasuryGroupIcon, TreasuryProposalsIcon } from 'src/ui-components/CustomIcons';
 import checkGov2Route from 'src/util/checkGov2Route';
 import getNetwork from 'src/util/getNetwork';
 
@@ -201,7 +201,7 @@ let gov2OverviewItems = [
 	getSiderMenuItem('Calendar', '/calendar', <CalendarIcon className='text-white' />),
 	getSiderMenuItem('News', '/news', <NewsIcon className='text-white' />),
 	getSiderMenuItem('Parachains', '/parachains', <ParachainsIcon className='text-white' />),
-	getSiderMenuItem('Preimages', '/preimages', <FileImageOutlined />)
+	getSiderMenuItem('Preimages', '/preimages', <PreimagesIcon className='text-sidebarBlue' />)
 
 ];
 
@@ -217,13 +217,13 @@ const gov2Items:MenuProps['items'] = [
 	// Tracks Heading
 	getSiderMenuItem(<span className='text-navBlue hover:text-navBlue ml-2 uppercase text-base font-medium'>Tracks</span>, 'tracksHeading', null),
 	...gov2TrackItems.mainItems,
-	getSiderMenuItem('Governance', 'gov2_governance_group', <GovernanceGroupIcon className='text-white' />, [
+	getSiderMenuItem('Governance', 'gov2_governance_group', <GovernanceGroupIcon className='text-sidebarBlue' />, [
 		...gov2TrackItems.governanceItems
 	]),
-	getSiderMenuItem('Treasury', 'gov2_treasury_group', <TreasuryGroupIcon className='text-white' />, [
+	getSiderMenuItem('Treasury', 'gov2_treasury_group', <TreasuryGroupIcon className='text-sidebarBlue' />, [
 		...gov2TrackItems.treasuryItems
 	]),
-	getSiderMenuItem('Fellowship', 'gov2_fellowship_group', <FellowshipGroupIcon className='text-white' />, [
+	getSiderMenuItem('Fellowship', 'gov2_fellowship_group', <FellowshipGroupIcon className='text-sidebarBlue' />, [
 		...gov2TrackItems.fellowshipItems
 	])
 ];

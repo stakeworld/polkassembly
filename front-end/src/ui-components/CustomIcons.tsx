@@ -17,6 +17,7 @@ import { ReactComponent as DiscussionsSVG } from 'src/assets/sidebar/discussions
 import { ReactComponent as AuctionAdminSVG } from 'src/assets/sidebar/gov2_auction_admin.svg';
 import { ReactComponent as FellowshipGroupSVG } from 'src/assets/sidebar/gov2_fellowship_group.svg';
 import { ReactComponent as GovernanceGroupSVG } from 'src/assets/sidebar/gov2_governance_group.svg';
+import { ReactComponent as PreimagesSVG } from 'src/assets/sidebar/gov2_preimages.svg';
 import { ReactComponent as RootSVG } from 'src/assets/sidebar/gov2_root.svg';
 import { ReactComponent as StakingAdminSVG } from 'src/assets/sidebar/gov2_staking_admin.svg';
 import { ReactComponent as TreasuryGroupSVG } from 'src/assets/sidebar/gov2_treasury_group.svg';
@@ -119,4 +120,8 @@ export const TreasuryGroupIcon = (props: Partial<CustomIconComponentProps>) => (
 
 export const FellowshipGroupIcon = (props: Partial<CustomIconComponentProps>) => (
 	<Icon component={FellowshipGroupSVG} {...props} />
+);
+
+export const PreimagesIcon = (props: Partial<CustomIconComponentProps>) => (
+	<Icon component={PreimagesSVG} {...props} />
 );
