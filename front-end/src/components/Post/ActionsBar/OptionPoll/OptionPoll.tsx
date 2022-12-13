@@ -8,6 +8,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { useAddOptionPollVoteMutation, useDeleteOptionPollVoteMutation,useOptionPollVotesLazyQuery } from 'src/generated/graphql';
 import ErrorAlert from 'src/ui-components/ErrorAlert';
+import GovSidebarCard from 'src/ui-components/GovSidebarCard';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
 
 interface Props {
@@ -82,7 +83,7 @@ const OptionPoll = ({ className, optionPollId, question, options, endAt }: Props
 	}
 
 	return (
-		<div className={className}>
+		<GovSidebarCard className={className}>
 			<div className="flex items-center mb-6">
 				<h3 className='dashboard-heading'><span className='text-navBlue mr-1'>Poll:</span>{question}?</h3>
 				<HelperTooltip className='ml-2 -mt-0.5' text={id ? 'Click on option to vote' : 'Please login to vote'} />
@@ -115,7 +116,7 @@ const OptionPoll = ({ className, optionPollId, question, options, endAt }: Props
 					<span>Poll Ended</span>
 				</>}
 			</div>
-		</div>
+		</GovSidebarCard>
 	);
 };
 

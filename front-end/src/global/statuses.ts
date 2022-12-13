@@ -21,12 +21,10 @@ export const referendumStatus = {
 };
 
 export const gov2ReferendumStatus = {
-	APPROVED: 'Approved',
 	CANCELLED: 'Cancelled',
 	CONFIRMED: 'Confirmed',
 	DECIDING: 'Deciding',
 	KILLED: 'Killed',
-	ONGOING: 'Ongoing',
 	REJECTED: 'Rejected',
 	SUBMITTED: 'Submitted',
 	TIMEDOUT: 'Timedout'

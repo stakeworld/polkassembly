@@ -34,7 +34,7 @@ const DiscussionsListing = ({ className, data, loading } : Props) => {
 										defaultAddress={post.author[defaultAddressField]}
 										comments={post.comments_aggregate.aggregate?.count
 											? post.comments_aggregate.aggregate.count.toString()
-											: 'no'}
+											: '0'}
 										created_at={post.created_at}
 										title={post.title || 'No title'}
 										username={post.author.username}

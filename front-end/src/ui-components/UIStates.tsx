@@ -21,7 +21,7 @@ export const ErrorState = ({ errorMessage } : { errorMessage:string }) => {
 		<Result
 			icon={<FrownOutlined />}
 			title={cleanError(errorMessage)}
-			extra={<Button type="primary" className='text-pink_primary hover:text-white' onClick={() => window.location.reload()}>Refresh</Button>}
+			extra={<Button className='bg-pink_primary text-white rounded-md hover:bg-pink_secondary duration-300 transition-colors' onClick={() => window.location.reload()}>Refresh</Button>}
 		/>
 	);
 };

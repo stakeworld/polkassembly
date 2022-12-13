@@ -13,19 +13,24 @@ import formatBnBalance from 'src/util/formatBnBalance';
 interface Props {
 	className?: string;
 	referendumId: number;
+	tally?: any;
 }
 
-const ReferendumV2VotingStatus = ({ className, referendumId }: Props) => {
+type VoteInfo = {
+	aye_amount: BN;
+	nay_amount: BN;
+	support_amount: BN;
+}
+
+const ZERO_BN = new BN(0);
+
+const ReferendumV2VotingStatus = ({ className, referendumId, tally }: Props) => {
 	const { api, apiReady } = useContext(ApiContext);
 	const [loading, setLoading] = useState<boolean>(false);
-	const [referendumInfo, setReferendumInfo] = useState<any | null>(null);
+	const [referendumInfo, setReferendumInfo] = useState<VoteInfo | null>(null);
 
 	const getReferendaInfo = useCallback(async () => {
-		if (!api) {
-			return;
-		}
-
-		if (!apiReady) {
+		if (!api || !apiReady) {
 			return;
 		}
 
@@ -33,7 +38,7 @@ const ReferendumV2VotingStatus = ({ className, referendumId }: Props) => {
 
 		const parsedReferendumInfo: any = referendumInfoOf.toJSON();
 
-		const voteInfo = {
+		const voteInfo:VoteInfo = {
 			aye_amount: typeof parsedReferendumInfo.ongoing.tally.ayes === 'string' ? new BN(parsedReferendumInfo.ongoing.tally.ayes.slice(2), 'hex') : new BN(parsedReferendumInfo.ongoing.tally.ayes),
 			nay_amount: typeof parsedReferendumInfo.ongoing.tally.nays === 'string' ? new BN(parsedReferendumInfo.ongoing.tally.nays.slice(2), 'hex') : new BN(parsedReferendumInfo.ongoing.tally.nays),
 			support_amount: typeof parsedReferendumInfo.ongoing.tally.support === 'string' ? new BN(parsedReferendumInfo.ongoing.tally.support.slice(2), 'hex') : new BN(parsedReferendumInfo.ongoing.tally.support)
@@ -43,25 +48,26 @@ const ReferendumV2VotingStatus = ({ className, referendumId }: Props) => {
 	}, [api, apiReady, referendumId]);
 
 	useEffect(() => {
-		if (!api) {
-			return;
+		if(tally) {
+			const voteInfo:VoteInfo = {
+				aye_amount: tally.ayes ? new BN(tally.ayes) : ZERO_BN,
+				nay_amount: tally.nays ? new BN(tally.nays) : ZERO_BN,
+				support_amount: tally.support ? new BN(tally.support) : ZERO_BN
+			};
+			setReferendumInfo(voteInfo);
+		} else {
+			if (!api || !apiReady) {
+				return;
+			}
+
+			setLoading(true);
+
+			getReferendaInfo();
+
+			setLoading(false);
 		}
-
-		if (!apiReady) {
-			return;
-		}
-
-		setLoading(true);
-
-		let unsubscribe: () => void;
-
-		getReferendaInfo();
-
-		setLoading(false);
-
-		return () => unsubscribe && unsubscribe();
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	},[api, apiReady, referendumId]);
+	},[api, apiReady, referendumId, tally]);
 
 	return (
 		<GovSidebarCard className={className}>
