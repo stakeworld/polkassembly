@@ -43,7 +43,7 @@ const ProposalsListing = ({ className, data, loading } : Props) => {
 									address={post.onchain_link.proposer_address}
 									comments={post.comments_aggregate.aggregate?.count
 										? post.comments_aggregate.aggregate.count.toString()
-										: 'no'}
+										: '0'}
 									method={post.onchain_link.onchain_proposal[0]?.preimage?.method}
 									onchainId={onchainId}
 									status={post.onchain_link.onchain_proposal[0]?.proposalStatus?.[0].status}

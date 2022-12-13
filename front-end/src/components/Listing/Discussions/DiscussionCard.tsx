@@ -38,7 +38,7 @@ const DiscussionCard = ({
 					<h1 className='text-sidebarBlue font-medium text-sm'>{title}</h1>
 					<Space className="mt-3 font-medium text-navBlue text-xs flex flex-col md:flex-row items-start md:items-center">
 						<Space className='flex items-center'>
-							by {defaultAddress ? <Address address={defaultAddress} displayInline={true} popupContent={username} /> : username}
+							By: {defaultAddress ? <Address address={defaultAddress} displayInline={true} popupContent={username} /> : username}
 							<span>in</span><TopicTag topic={topic} />
 						</Space>
 						<Divider className='hidden md:inline-block' type="vertical" style={{ borderLeft: '1px solid #90A0B7' }} />
@@ -52,7 +52,7 @@ const DiscussionCard = ({
 
 							{comments && <>
 								<div className='flex items-center'>
-									<CommentOutlined className='mr-1' /> {comments} comments
+									<CommentOutlined className='mr-1' /> {comments}
 								</div>
 							</>}
 						</div>

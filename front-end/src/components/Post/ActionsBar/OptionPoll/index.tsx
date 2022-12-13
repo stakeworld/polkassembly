@@ -5,7 +5,6 @@
 import React, { useEffect } from 'react';
 import { useOptionPollLazyQuery } from 'src/generated/graphql';
 import ErrorAlert from 'src/ui-components/ErrorAlert';
-import GovSidebarCard from 'src/ui-components/GovSidebarCard';
 
 import OptionPoll from './OptionPoll';
 
@@ -27,7 +26,7 @@ export default ({ className, postId, canEdit }: Props) => {
 		return null;
 	}
 
-	return <GovSidebarCard className={className}>
+	return <div className={className}>
 		{data?.option_poll.map(poll => (
 			<OptionPoll
 				key={poll.id}
@@ -38,5 +37,5 @@ export default ({ className, postId, canEdit }: Props) => {
 				canEdit={canEdit}
 			/>
 		))}
-	</GovSidebarCard>;
+	</div>;
 };
