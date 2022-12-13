@@ -291,7 +291,7 @@ const startSubscriptions = (client: SubscriptionClient): void => {
 	}).subscribe({
 		next: ({ data }): void => {
 			console.log('ReferendumV2 data received', JSON.stringify(data, null, 2));
-			if (data?.referendumV2.mutation === subscriptionMutation.Created) {
+			if (data?.referendumV2?.mutation === subscriptionMutation.Created) {
 				const {
 					referendumId,
 					referendumStatus,
