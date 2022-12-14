@@ -54,6 +54,11 @@ export interface NomidotEra {
   startSessionIndex: SessionIndex;
 }
 
+export interface NomidotTreasuryStatusUpdate {
+  treasuryProposalId: number;
+  status: string;
+}
+
 export interface NomidotHeartBeat {
   authorityId: AccountId;
   sessionIndex: SessionIndex;
@@ -136,7 +141,8 @@ export type Nomidot =
   | NomidotCouncilMotionVote[]
   | NomidotReferendumV2[]
   | NomidotReferendumV2RawEvent[]
-  | NomidotPreimageV2[];
+  | NomidotPreimageV2[]
+  | NomidotTreasuryStatusUpdate[];
 
 
 
