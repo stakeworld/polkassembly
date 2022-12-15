@@ -86,18 +86,22 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 		api.derive.balances
 			?.account(u8aToHex(result.treasuryAccount))
 			.then((treasuryBalance) => {
-				setTreasuryBalance(treasuryBalance);
+				api.query.system.account(result.treasuryAccount).then(res => {
+					const freeBalance = new BN(res?.data?.free) || BN_ZERO;
+					treasuryBalance.freeBalance = freeBalance as Balance;
+					setTreasuryBalance(treasuryBalance);
+				}).catch(e => console.error(e));
 			});
 
 		if (treasuryBalance) {
 			setResult(() => ({
 				burn:
-					treasuryBalance.freeBalance.gt(BN_ZERO) &&
+				treasuryBalance.freeBalance.gt(BN_ZERO) &&
 					!api.consts.treasury.burn.isZero()
-						? api.consts.treasury.burn
-							.mul(treasuryBalance.freeBalance)
-							.div(BN_MILLION)
-						: BN_ZERO,
+					? api.consts.treasury.burn
+						.mul(treasuryBalance.freeBalance)
+						.div(BN_MILLION)
+					: BN_ZERO,
 				spendPeriod: api.consts.treasury
 					? api.consts.treasury.spendPeriod
 					: BN_ZERO,
