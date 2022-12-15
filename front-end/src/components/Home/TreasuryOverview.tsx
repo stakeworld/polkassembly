@@ -89,8 +89,11 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 				api.query.system.account(result.treasuryAccount).then(res => {
 					const freeBalance = new BN(res?.data?.free) || BN_ZERO;
 					treasuryBalance.freeBalance = freeBalance as Balance;
-					setTreasuryBalance(treasuryBalance);
-				}).catch(e => console.error(e));
+				})
+					.catch(e => console.error(e))
+					.finally(() => {
+						setTreasuryBalance(treasuryBalance);
+					});
 			});
 
 		if (treasuryBalance) {
@@ -267,8 +270,7 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 								}
 							))} <span className='text-navBlue'>{chainProperties[NETWORK]?.tokenSymbol}</span>
 						</span>
-						: 'N/A'
-						// : <LoadingOutlined /> TODO: Enable when fixed
+						: <LoadingOutlined />
 					}
 				</div>
 				<Divider className='my-3' />
@@ -276,8 +278,7 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 					<span className='mr-2 text-sidebarBlue font-medium'>
 						{availableUSD
 							? `~ $${availableUSD}`
-							: 'N/A'
-							// : <LoadingOutlined /> TODO: Enable when fixed
+							: <LoadingOutlined />
 						}
 					</span>
 				</div>
@@ -361,8 +362,7 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 								}
 							))} <span className='text-navBlue'>{chainProperties[NETWORK]?.tokenSymbol}</span>
 						</span>
-					) : 'N/A'
-					// : <LoadingOutlined /> TODO: Enable when fixed
+					) : <LoadingOutlined />
 					}
 				</div>
 				<Divider className='my-3' />
@@ -370,8 +370,7 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 					<span className='mr-2 text-sidebarBlue font-medium'>
 						{nextBurnUSD
 							? `~ $${nextBurnUSD}`
-							: 'N/A'
-							// : <LoadingOutlined /> TODO: Enable when fixed
+							: <LoadingOutlined />
 						}
 					</span>
 				</div>
