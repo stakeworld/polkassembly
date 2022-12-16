@@ -111,7 +111,7 @@ const DelegateModal = ({ trackNum } : { trackNum:number }) => {
 					message: 'Delegation successful.',
 					status: NotificationStatus.SUCCESS
 				});
-
+				setLoading(false);
 				console.log(`Delegation: completed at block hash #${status.asInBlock.toString()}`);
 			} else {
 				console.log(`Delegation: Current status: ${status.type}`);
@@ -124,7 +124,6 @@ const DelegateModal = ({ trackNum } : { trackNum:number }) => {
 				message: error.message,
 				status: NotificationStatus.ERROR
 			});
-		}).finally(() => {
 			setLoading(false);
 		});
 	};

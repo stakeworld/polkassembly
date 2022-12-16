@@ -17,19 +17,13 @@ const Balance = ({ address, onChange }: Props) => {
 	useEffect(() => {
 		if (!api || !apiReady || !address) return;
 
-		let unsubscribe: () => void;
-
-		api.derive.balances.account(address, (info: any) => {
-			const balanceStr = info.freeBalance?.toString() || '0';
+		api.query.system.account(address).then(res => {
+			const balanceStr = res?.data?.free?.toString() || '0';
 			setBalance(balanceStr);
 			if(onChange){
 				onChange(balanceStr);
 			}
-		})
-			.then(unsub => { unsubscribe = unsub; })
-			.catch(e => console.error(e));
-
-		return () => unsubscribe && unsubscribe();
+		}).catch(e => console.error(e));
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [address, api, apiReady]);
 
