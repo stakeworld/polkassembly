@@ -7,7 +7,7 @@ import { Spin } from 'antd';
 import BN from 'bn.js';
 import React, { memo, useContext, useEffect, useMemo, useState } from 'react';
 import { ApiContext } from 'src/context/ApiContext';
-import subscanApiHeaders from 'src/global/subscanApiHeaders';
+import { subscanApiHeaders } from 'src/global/apiHeaders';
 import { useFetch } from 'src/hooks';
 import { getFailingThreshold } from 'src/polkassemblyutils';
 import { LoadingStatusType } from 'src/types';

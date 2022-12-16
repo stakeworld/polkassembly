@@ -2,8 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { subscanApiHeaders } from 'src/global/apiHeaders';
 import { chainProperties } from 'src/global/networkConstants';
-import subscanApiHeaders from 'src/global/subscanApiHeaders';
 import getNetwork from 'src/util/getNetwork';
 
 import formatUSDWithUnits from './formatUSDWithUnits';

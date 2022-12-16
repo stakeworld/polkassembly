@@ -6,7 +6,7 @@ import React from 'react';
 
 const CountBadgePill = ({ className, label, count } :  {className?:string, label?:string, count?: string}) => <div className={`${className} flex items-center gap-x-2`}>
 	{label && label}
-	{count && <span className='bg-gray-200 rounded-full px-2 py-0.5 text-xs font-medium'>{count}</span>}
+	{count != null && count != undefined && <span className='bg-gray-200 rounded-full px-2 py-0.5 text-xs font-medium'>{count}</span>}
 </div>;
 
 export default CountBadgePill;

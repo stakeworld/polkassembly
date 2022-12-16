@@ -4,6 +4,7 @@
 
 import { DislikeFilled, LeftOutlined, LikeFilled, RightOutlined } from '@ant-design/icons';
 import React, { useCallback, useEffect, useState } from 'react';
+import { subsquidApiHeaders } from 'src/global/apiHeaders';
 import Address from 'src/ui-components/Address';
 import ErrorAlert from 'src/ui-components/ErrorAlert';
 import GovSidebarCard from 'src/ui-components/GovSidebarCard';
@@ -25,6 +26,7 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 
 	const fetchVotesData = useCallback(() => {
 		setLoading(true);
+		// TODO: Change to v2
 		fetch('https://squid.subsquid.io/harvester/v/1/graphql',
 			{ body: JSON.stringify({
 				query: `query MyQuery {
@@ -52,13 +54,7 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 					}
 				}`
 			}),
-			headers: {
-				'Accept': 'application/json, multipart/mixed',
-				'content-type': 'application/json',
-				'Sec-Fetch-Dest': 'empty',
-				'Sec-Fetch-Mode': 'cors',
-				'Sec-Fetch-Site': 'same-origin'
-			},
+			headers: subsquidApiHeaders,
 			method: 'POST'
 			})
 			.then(async (res) => {

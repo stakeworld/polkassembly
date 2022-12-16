@@ -5,7 +5,7 @@
 import { DislikeFilled, LikeFilled } from '@ant-design/icons';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { ApiContext } from 'src/context/ApiContext';
-import subscanApiHeaders from 'src/global/subscanApiHeaders';
+import { subscanApiHeaders } from 'src/global/apiHeaders';
 import GovSidebarCard from 'src/ui-components/GovSidebarCard';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
 import getNetwork from 'src/util/getNetwork';
