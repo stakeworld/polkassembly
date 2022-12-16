@@ -5,7 +5,7 @@ import { Col, Row } from 'antd';
 import BN from 'bn.js';
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { ApiContext } from 'src/context/ApiContext';
-import subscanApiHeaders from 'src/global/subscanApiHeaders';
+import { subscanApiHeaders } from 'src/global/apiHeaders';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
 import { PostEmptyState } from 'src/ui-components/UIStates';
 import formatBnBalance from 'src/util/formatBnBalance';

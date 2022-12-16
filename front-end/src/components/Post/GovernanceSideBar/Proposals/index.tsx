@@ -4,8 +4,8 @@
 
 import { formatBalance } from '@polkadot/util';
 import React, { useCallback, useEffect, useState } from 'react';
+import { subscanApiHeaders } from 'src/global/apiHeaders';
 import { chainProperties } from 'src/global/networkConstants';
-import subscanApiHeaders from 'src/global/subscanApiHeaders';
 import { LoadingStatusType } from 'src/types';
 import GovSidebarCard from 'src/ui-components/GovSidebarCard';
 import getNetwork from 'src/util/getNetwork';

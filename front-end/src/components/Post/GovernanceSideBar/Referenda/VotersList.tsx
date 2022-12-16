@@ -6,7 +6,7 @@ import { DislikeFilled, LeftOutlined, LikeFilled, RightOutlined } from '@ant-des
 import { LoadingOutlined } from '@ant-design/icons';
 import { Pagination, PaginationProps, Spin } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
-import subscanApiHeaders from 'src/global/subscanApiHeaders';
+import { subscanApiHeaders } from 'src/global/apiHeaders';
 import { LoadingStatusType } from 'src/types';
 import Address from 'src/ui-components/Address';
 import GovSidebarCard from 'src/ui-components/GovSidebarCard';
