@@ -226,7 +226,9 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 				footer={null}
 			>
 				{!onlyVote && quizLevel === 0 ? <WelcomeScreen setQuizLevel={setQuizLevel} />
-					: !onlyVote && quizLevel === 1 ? <QuizForm quiz={quiz} referendumId={referendumId} setQuizLevel={setQuizLevel}/>
+					: !onlyVote && quizLevel === 1 ? <Spin spinning={loadingStatus.isLoading} indicator={<LoadingOutlined />}>
+						<QuizForm setLoading={setLoadingStatus} quiz={quiz} referendumId={referendumId} setQuizLevel={setQuizLevel}/>
+					</Spin>
 						: <Spin spinning={loadingStatus.isLoading} indicator={<LoadingOutlined />}>
 							{onlyVote && <div className='p-3 mb-7 flex items-center justify-center text-sidebarBlue bg-opacity-10 text-[14px] bg-pink_primary rounded-md'><span>You&apos;re missing on a chance to win an exclusive NFT. Take Quiz Now</span></div>}
 							<h4 className='dashboard-heading mb-7'>Cast Your Vote</h4>

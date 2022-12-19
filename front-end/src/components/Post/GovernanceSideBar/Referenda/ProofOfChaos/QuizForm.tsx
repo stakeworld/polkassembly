@@ -5,15 +5,17 @@
 import { Signer } from '@polkadot/api/types';
 import { Button, Form, Radio } from 'antd';
 import React, { useContext, useEffect,useState } from 'react';
+import ExtensionNotDetected from 'src/components/ExtensionNotDetected';
 import { ApiContext } from 'src/context/ApiContext';
 import { useGetAllAccounts } from 'src/hooks';
+import ErrorAlert from 'src/ui-components/ErrorAlert';
 
 import { SubmitQuizAnswers } from './data/quiz-service';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const QuizForm = ({ className, quiz, referendumId, setQuizLevel }: { className?: string, referendumId: Number | null | undefined, quiz: any, setQuizLevel: (level: Number) => void }) => {
+const QuizForm = ({ className, quiz, referendumId, setLoading, setQuizLevel }: { className?: string, referendumId: Number | null | undefined, quiz: any, setLoading: any, setQuizLevel: (level: Number) => void }) => {
 
-	const { accounts, accountsMap, signersMap } = useGetAllAccounts();
+	const { accounts, accountsMap, noAccounts, noExtension, signersMap } = useGetAllAccounts();
 
 	const { api, apiReady } = useContext(ApiContext);
 
@@ -33,8 +35,7 @@ const QuizForm = ({ className, quiz, referendumId, setQuizLevel }: { className?:
 
 		const signer: Signer = signersMap[accountsMap[address]];
 		setSigner(signer);
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [address]);
+	}, [accountsMap, address, api, apiReady, signersMap]);
 
 	useEffect(() => {
 		if(!accounts || accounts.length === 0 ) return;
@@ -48,7 +49,7 @@ const QuizForm = ({ className, quiz, referendumId, setQuizLevel }: { className?:
 			console.log(e);
 			return;
 		}
-		console.log('submit');
+		setLoading({ isLoading: true, message: 'Sending Answers' });
 		SubmitQuizAnswers(signer, referendumId, address, userAnswers.quizAnswers[`${referendumId}`], quiz.version, api).then(
 			() => {
 				setQuizLevel(2);
@@ -63,7 +64,7 @@ const QuizForm = ({ className, quiz, referendumId, setQuizLevel }: { className?:
 						}
 					}
 				}));
-				console.log(userAnswers);
+				setLoading({ isLoading: false, message: '' });
 			}
 		);
 	};
@@ -71,7 +72,6 @@ const QuizForm = ({ className, quiz, referendumId, setQuizLevel }: { className?:
 	function onChangeInputs( e: any, questionIndex: Number, options: Number ) {
 		console.log(e.target.value);
 		const qAnswer: any = [];
-		// const checkboxes = document.querySelectorAll(`[name=ref${referendumId}question${questionIndex}]`);
 		console.log(options);
 		Array(options).fill(0).forEach((_, i) => {
 			const ans = i === e.target.value ? true : false;
@@ -99,36 +99,40 @@ const QuizForm = ({ className, quiz, referendumId, setQuizLevel }: { className?:
 	return (
 		<div className={className}>
 			<h4 className='dashboard-heading mb-7'>Take Quiz and Vote</h4>
-			<Form form={form} className='max-h-full overflow-y-auto' onFinish={onSend}>
-				{quiz?.questions?.map(( { text, answerOptions }: { text: string, answerOptions: Array<any> }, i:any) => {
-					const selectOptions = answerOptions?.map( (a,j) => {
-						return {
-							label: <div className='text-sidebarBlue font-medium hover:text-pink_primary duration-300 transition-colors'>{a.text}</div>,
-							value: j
-							// bind the checked value of the inputs to state values
-							// checked: userAnswers?.answers?.[i] && userAnswers?.answers?.[i][j]
-						};
-					});
-					return (
-						<>
-							<div className='text-sidebarBlue font-medium text-[14px] mb-2'>{`Q${i + 1})`} {text}</div>
-							<Form.Item name='radio' rules={[{ required: true }]}>
-								<Radio.Group className='w-full' onChange={(e) => onChangeInputs(e, i, selectOptions.length)}>
-									{selectOptions.map((option) => (
-										<div key={option.value} className='border-[1px] border-solid border-grey_border rounded-md mb-2 px-2 py-1 w-full'>
-											<Radio name={ `ref${referendumId}question${i}` } value={option.value}>{option.label}</Radio>
-										</div>
-									))}
-								</Radio.Group>
-							</Form.Item>
-						</>
+			{noAccounts && <ErrorAlert errorMsg='You need at least one account in your wallet extenstion to use this feature.' />}
+			{noExtension && <ExtensionNotDetected />}
+			{!noAccounts && !noExtension &&
+						<Form form={form} className='max-h-full overflow-y-auto' onFinish={onSend}>
+							{quiz?.questions?.map(( { text, answerOptions }: { text: string, answerOptions: Array<any> }, i:any) => {
+								const selectOptions = answerOptions?.map( (a,j) => {
+									return {
+										label: <div className='text-sidebarBlue font-medium hover:text-pink_primary duration-300 transition-colors'>{a.text}</div>,
+										value: j
+									// bind the checked value of the inputs to state values
+									// checked: userAnswers?.answers?.[i] && userAnswers?.answers?.[i][j]
+									};
+								});
+								return (
+									<>
+										<div className='text-sidebarBlue font-medium text-[14px] mb-2'>{`Q${i + 1})`} {text}</div>
+										<Form.Item name='radio' rules={[{ required: true }]}>
+											<Radio.Group className='w-full' onChange={(e) => onChangeInputs(e, i, selectOptions.length)}>
+												{selectOptions.map((option) => (
+													<div key={option.value} className='border-[1px] border-solid border-grey_border rounded-md mb-2 px-2 py-1 w-full'>
+														<Radio name={ `ref${referendumId}question${i}` } value={option.value}>{option.label}</Radio>
+													</div>
+												))}
+											</Radio.Group>
+										</Form.Item>
+									</>
 
-					);
-				})}
-				<div className='flex justify-end'>
-					<Button htmlType='submit' className='bg-pink_primary hover:bg-pink_secondary text-white border-pink_primary hover:border-pink_primary rounded-md'>Next</Button>
-				</div>
-			</Form>
+								);
+							})}
+							<div className='flex justify-end'>
+								<Button htmlType='submit' className='bg-pink_primary hover:bg-pink_secondary text-white border-pink_primary hover:border-pink_primary rounded-md'>Next</Button>
+							</div>
+						</Form>
+			}
 		</div>
 	);
 };
