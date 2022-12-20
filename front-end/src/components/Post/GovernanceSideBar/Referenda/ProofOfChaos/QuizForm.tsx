@@ -8,12 +8,13 @@ import React, { useContext, useEffect,useState } from 'react';
 import ExtensionNotDetected from 'src/components/ExtensionNotDetected';
 import { ApiContext } from 'src/context/ApiContext';
 import { useGetAllAccounts } from 'src/hooks';
+import { LoadingStatusType } from 'src/types';
 import ErrorAlert from 'src/ui-components/ErrorAlert';
 
 import { SubmitQuizAnswers } from './data/quiz-service';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const QuizForm = ({ className, quiz, referendumId, setLoading, setQuizLevel }: { className?: string, referendumId: Number | null | undefined, quiz: any, setLoading: any, setQuizLevel: (level: Number) => void }) => {
+const QuizForm = ({ className, quiz, referendumId, setLoading, setQuizLevel }: { className?: string, referendumId: Number | null | undefined, quiz: any, setLoading: (status: LoadingStatusType) => void, setQuizLevel: (level: Number) => void }) => {
 
 	const { accounts, accountsMap, noAccounts, noExtension, signersMap } = useGetAllAccounts();
 
@@ -49,8 +50,7 @@ const QuizForm = ({ className, quiz, referendumId, setLoading, setQuizLevel }: {
 			console.log(e);
 			return;
 		}
-		setLoading({ isLoading: true, message: 'Sending Answers' });
-		SubmitQuizAnswers(signer, referendumId, address, userAnswers.quizAnswers[`${referendumId}`], quiz.version, api).then(
+		SubmitQuizAnswers(signer, setLoading, referendumId, address, userAnswers.quizAnswers[`${referendumId}`], quiz.version, api).then(
 			() => {
 				setQuizLevel(2);
 				setUserAnswers((state: any) => ({
@@ -64,7 +64,6 @@ const QuizForm = ({ className, quiz, referendumId, setLoading, setQuizLevel }: {
 						}
 					}
 				}));
-				setLoading({ isLoading: false, message: '' });
 			}
 		);
 	};

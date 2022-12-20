@@ -3,17 +3,21 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { NotificationStatus } from 'src/types';
+import { LoadingStatusType } from 'src/types';
 import queueNotification from 'src/ui-components/QueueNotification';
 
 import { SendAndFinalize } from './sendAndFinalize';
 
-export async function SubmitQuizAnswers(signer: any, ref: any, address: string, userAnswers: any, quizVersion: any, api: any) {
+export async function SubmitQuizAnswers(signer: any, setLoading: (status: LoadingStatusType) => void, ref: any, address: string, userAnswers: any, quizVersion: any, api: any) {
+
+	setLoading({ isLoading: true, message: 'Sending Answers' });
 
 	const promiseFunction =  async (resolve: any, reject: any ) => {
 		try {
 			console.log('in submit quiz promise func', address, signer);
 			const transaction = await getQuizAnswersRemarkTx(api, ref, userAnswers, quizVersion);
 			const { success } = await SendAndFinalize(api, transaction, signer, address);
+			setLoading({ isLoading: false, message: '' });
 			resolve( success );
 		} catch( error ) {
 			if ( error === 'signAndSend cancelled') {
@@ -22,8 +26,10 @@ export async function SubmitQuizAnswers(signer: any, ref: any, address: string, 
 					message: error.message,
 					status: NotificationStatus.ERROR
 				});
+				setLoading({ isLoading: false, message: '' });
 				reject( 'cancelled' );
 			} else {
+				setLoading({ isLoading: false, message: '' });
 				reject( error );
 			}
 		}

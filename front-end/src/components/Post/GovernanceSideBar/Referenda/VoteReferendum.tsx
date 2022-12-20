@@ -8,6 +8,7 @@ import styled from '@xstyled/styled-components';
 import { Button, Form, Modal, Select, Spin } from 'antd';
 import BN from 'bn.js';
 import React, { useCallback, useContext, useEffect,useMemo,useState } from 'react';
+import frowningFace from 'src/assets/frowning-face.png';
 import { ApiContext } from 'src/context/ApiContext';
 import { LoadingStatusType,NotificationStatus } from 'src/types';
 import AccountSelectionForm from 'src/ui-components/AccountSelectionForm';
@@ -202,18 +203,19 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 
 	return (
 		<div className={className}>
+			{quiz?.questions &&
 			<Button
 				className='bg-pink_primary hover:bg-pink_secondary text-lg mb-3 text-white border-pink_primary hover:border-pink_primary rounded-lg flex items-center justify-center p-7 w-[95%] mx-auto'
 				onClick={() => openModal(false)}
 			>
 				Take Quiz and Vote
-			</Button>
+			</Button>}
 			<Button
 				type='primary'
 				className='rounded-lg mb-6 flex items-center justify-center text-lg p-7 w-[95%] mx-auto'
 				onClick={() => openModal(true)}
 			>
-				{lastVote == null || lastVote == undefined  ? 'Only Cast Vote' : 'Cast Vote Again' }
+				{lastVote == null || lastVote == undefined  ? quiz?.questions ? 'Only Cast Vote' : 'Cast Vote' : 'Cast Vote Again' }
 			</Button>
 			<Modal
 				open={showModal}
@@ -224,13 +226,14 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 					setOnlyVote(false);
 				}}
 				footer={null}
+				width={600}
 			>
 				{!onlyVote && quizLevel === 0 ? <WelcomeScreen setQuizLevel={setQuizLevel} />
 					: !onlyVote && quizLevel === 1 ? <Spin spinning={loadingStatus.isLoading} indicator={<LoadingOutlined />}>
 						<QuizForm setLoading={setLoadingStatus} quiz={quiz} referendumId={referendumId} setQuizLevel={setQuizLevel}/>
 					</Spin>
 						: <Spin spinning={loadingStatus.isLoading} indicator={<LoadingOutlined />}>
-							{onlyVote && <div className='p-3 mb-7 flex items-center justify-center text-sidebarBlue bg-opacity-10 text-[14px] bg-pink_primary rounded-md'><span>You&apos;re missing on a chance to win an exclusive NFT. Take Quiz Now</span></div>}
+							{onlyVote && quiz?.questions && <div className='p-3 mb-7 flex items-center justify-center text-sidebarBlue bg-opacity-10 text-[14px] bg-pink_primary rounded-md'><img src={frowningFace} height={25} width={25} className='mr-2' alt='frowning-face' /><span> You&apos;re missing on a chance to win an exclusive NFT. <span className='text-pink_primary underline cursor-pointer' onClick={() => { setQuizLevel(0); setOnlyVote(false); }}>Take Quiz Now</span></span></div>}
 							<h4 className='dashboard-heading mb-7'>Cast Your Vote</h4>
 							<BalanceInput
 								label={'Lock balance'}
