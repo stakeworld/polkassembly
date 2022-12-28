@@ -75,5 +75,6 @@ ApiPromise.create({ provider })
     }
   })
   .catch(e => {
+    console.error(e.stack);
     l.error(`Connection error: ${e}`);
   });
