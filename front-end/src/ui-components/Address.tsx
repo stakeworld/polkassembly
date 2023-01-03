@@ -22,9 +22,10 @@ interface Props {
 	disableAddress?:boolean
 	shortenAddressLength?:number
 	textClassName?:string
+	inCouncilMember?: boolean
 }
 
-const Address = ({ address, className, displayInline, disableIdenticon, extensionName, popupContent, disableAddress, textClassName, shortenAddressLength }: Props): JSX.Element => {
+const Address = ({ address, className, displayInline, disableIdenticon, extensionName, inCouncilMember, popupContent, disableAddress, textClassName, shortenAddressLength }: Props): JSX.Element => {
 	const { api, apiReady } = useContext(ApiContext);
 	const [mainDisplay, setMainDisplay] = useState<string>('');
 	const [sub, setSub] = useState<string | null>(null);
@@ -105,18 +106,18 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 						? <Space>
 							{identity && mainDisplay && <IdentityBadge identity={identity} flags={flags} />}
 							<Tooltip color='#E5007A' title={popupContent}>
-								<div className={'header display_inline identityName max-w-[85px] max-w-[30px] flex flex-col gap-y-1'}>
-									{ t1 && <span className='truncate text-navBlue'>{t1}</span> }
-									{sub && <span className='sub truncate text-navBlue'>{sub}</span>}
+								<div className={`header display_inline identityName ${!inCouncilMember && 'max-w-[85px]'} flex flex-col gap-y-1`}>
+									{ t1 && <span className={`${!inCouncilMember && 'truncate'} text-navBlue`}>{t1}</span> }
+									{sub && <span className={`sub ${!inCouncilMember && 'truncate'} text-navBlue`}>{sub}</span>}
 								</div>
 							</Tooltip>
 						</Space>
 						: <>
 							<div className={'description display_inline flex items-center'}>
 								{identity && mainDisplay && <IdentityBadge identity={identity} flags={flags} />}
-								<span title={mainDisplay || address} className={`${textClassName} identityName max-w-[85px] flex gap-x-1 ml-0.5 pl-1.5`}>
-									{ t1 && <span className={`truncate text-navBlue ${identity && mainDisplay && '-ml-1.5'}`}>{ t1 }</span> }
-									{sub && <span className={'sub truncate text-navBlue'}>{sub}</span>}
+								<span title={mainDisplay || address} className={`${textClassName} identityName ${!inCouncilMember && 'max-w-[85px]'} flex gap-x-1 ml-0.5 pl-1.5`}>
+									{ t1 && <span className={`${!inCouncilMember && 'truncate'} text-navBlue ${identity && mainDisplay && '-ml-1.5'}`}>{ t1 }</span> }
+									{sub && <span className={`sub ${!inCouncilMember && 'truncate'} text-navBlue`}>{sub}</span>}
 								</span>
 							</div>
 						</>
@@ -127,9 +128,9 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 								<Space>
 									<Space className={'header'}>
 										{identity && mainDisplay && !extensionName && <IdentityBadge identity={identity} flags={flags} />}
-										<span className='identityName max-w-[85px] flex flex-col gap-y-1'>
-											{ t2 && <span className={`${textClassName} truncate text-navBlue`}>{ t2 }</span> }
-											{!extensionName && sub && <span className={`${textClassName} sub truncate text-navBlue`}>{sub}</span>}
+										<span className={`identityName ${!inCouncilMember && 'max-w-[85px]'} flex flex-col gap-y-1`}>
+											{ t2 && <span className={`${textClassName} ${!inCouncilMember && 'truncate'} text-navBlue`}>{ t2 }</span> }
+											{!extensionName && sub && <span className={`${textClassName} sub ${inCouncilMember && 'truncate'} text-navBlue`}>{sub}</span>}
 										</span>
 									</Space>
 									<div className={'description display_inline'}>{shortenAddress(address, shortenAddressLength)}</div>
@@ -138,9 +139,9 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 							: <div>
 								<Space className={'header'}>
 									{identity && mainDisplay && !extensionName && <IdentityBadge identity={identity} flags={flags} />}
-									<span className='identityName max-w-[85px] flex flex-col gap-y-1'>
-										{ t2 && <span className={`${textClassName} truncate text-navBlue`}>{ t2 }</span> }
-										{!extensionName && sub && <span className={`${textClassName} sub truncate text-navBlue`}>{sub}</span>}
+									<span className={`identityName ${!inCouncilMember && 'max-w-[85px]'} flex flex-col gap-y-1`}>
+										{ t2 && <span className={`${textClassName} ${!inCouncilMember && 'truncate'} text-navBlue`}>{ t2 }</span> }
+										{!extensionName && sub && <span className={`${textClassName} sub ${!inCouncilMember && 'truncate'} text-navBlue`}>{sub}</span>}
 									</span>
 								</Space>
 								<div className={'description text-xs ml-0.5'}>{shortenAddress(address, shortenAddressLength)}</div>

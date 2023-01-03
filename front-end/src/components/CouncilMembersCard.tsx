@@ -22,7 +22,7 @@ const CouncilMembersCard = function ({
 		<div className={`${className} border-2 border-grey_light hover:border-pink_primary hover:shadow-xl transition-all duration-200 rounded-md p-3 md:p-4`}>
 			<div className="flex justify-between">
 				<div className="content">
-					<Address address={data} />
+					<Address inCouncilMember={true} address={data} />
 				</div>
 				{data === prime && <StatusTag status={'Prime'}/>}
 			</div>

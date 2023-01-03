@@ -30,7 +30,7 @@ const ProposalVoteInfo = ({ className, deposit, loadingStatus, seconds }:  Props
 
 					<div className="flex justify-between mb-5">
 						<h6>Endorsed by</h6>
-						<div className='text-navBlue'>{seconds ? <div>{seconds} addresses</div> : null}</div>
+						<div className='text-navBlue'>{seconds ? <div>{seconds} addresses</div> : '-'}</div>
 					</div>
 
 					<div className="flex justify-between mb-5">
