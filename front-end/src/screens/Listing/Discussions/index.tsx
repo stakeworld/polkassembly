@@ -12,17 +12,18 @@ const Discussions = () => {
 
 	return (
 		<>
-			<h1 className='dashboard-heading mb-4 md:mb-6'>Discussions</h1>
+			<div className='w-full flex flex-col sm:flex-row sm:items-center'>
+				<h1 className='dashboard-heading flex-1 mb-4 sm:mb-0'>Discussions</h1>
+				<Link to="/post/create" >
+					<Button disabled={!id} type={!id ? 'primary': 'default'} className={`flex items-center justify-center ${id && 'bg-pink_primary hover:bg-pink_secondary text-white transition-colors duration-300'} h-[40px] md:h-[69px] w-full rounded-md`}>Add New Post</Button>
+				</Link>
+			</div>
 
 			{/* Intro and Create Post Button */}
-			<div className="flex flex-col md:flex-row">
+			<div className='mt-8'>
 				<p className="text-sidebarBlue text-sm md:text-base font-medium bg-white p-4 md:p-8 rounded-md w-full shadow-md mb-4">
 					This is the place to discuss all things polkadot. Anyone can start a new discussion.
 				</p>
-
-				<Link to="/post/create" >
-					<Button disabled={!id} className={`md:ml-9 flex items-center justify-center ${id && 'bg-pink_primary hover:bg-pink_secondary text-white transition-colors duration-300'} h-[40px] md:h-[69px] w-full md:w-[300px] rounded-md`}>Add New Post</Button>
-				</Link>
 			</div>
 
 			<DiscussionsContainer className='mt-8' />
