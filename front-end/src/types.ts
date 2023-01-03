@@ -191,7 +191,7 @@ export const PostOrigin = {
 	MEDIUM_SPENDER : 'MediumSpender',
 	REFERENDUM_CANCELLER : 'ReferendumCanceller',
 	REFERENDUM_KILLER : 'ReferendumKiller',
-	ROOT : 'Root',
+	ROOT : 'root',
 	SMALL_SPENDER : 'SmallSpender',
 	SMALL_TIPPER : 'SmallTipper',
 	STAKING_ADMIN : 'StakingAdmin',
