@@ -14,15 +14,19 @@ export async function SubmitQuizAnswers(signer: any, setLoading: (status: Loadin
 
 	const promiseFunction =  async (resolve: any, reject: any ) => {
 		try {
-			console.log('in submit quiz promise func', address, signer);
 			const transaction = await getQuizAnswersRemarkTx(api, ref, userAnswers, quizVersion);
-			const { success } = await SendAndFinalize(api, transaction, signer, address);
+			const success = await SendAndFinalize(api, transaction, signer, address);
+			queueNotification({
+				header: 'Submission Done Successfully!',
+				message: 'Your answers are submitted!',
+				status: NotificationStatus.SUCCESS
+			});
 			setLoading({ isLoading: false, message: '' });
 			resolve( success );
 		} catch( error ) {
 			if ( error === 'signAndSend cancelled') {
 				queueNotification({
-					header: 'Voting failed!',
+					header: 'Submission failed!',
 					message: error.message,
 					status: NotificationStatus.ERROR
 				});
@@ -39,7 +43,6 @@ export async function SubmitQuizAnswers(signer: any, setLoading: (status: Loadin
 }
 
 async function getQuizAnswersRemarkTx(api: any, ref: any, userAnswers: any, quizVersion: any) {
-	console.log('in getQuizAnswers');
 	const answerArray: any = [];
 	const answerObject = {
 		answers: null,

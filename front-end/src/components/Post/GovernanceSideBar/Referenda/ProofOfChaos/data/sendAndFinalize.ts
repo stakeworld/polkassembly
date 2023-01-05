@@ -13,7 +13,6 @@ export const SendAndFinalize = async (
 			return;
 		}
 		try {
-			console.log('in try of send and finalize');
 			const unsub = await tx.signAndSend(
 				address, { signer: signer }, ({ status, dispatchError }: any) => {
 					if (status.isInBlock) {

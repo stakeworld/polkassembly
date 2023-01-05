@@ -163,6 +163,7 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 				});
 				setLastVote(aye ? 'aye' : 'nay');
 				console.log(`Completed at block hash #${status.asInBlock.toString()}`);
+				setShowModal(false);
 			} else {
 				if (status.isBroadcast){
 					setLoadingStatus({ isLoading: true, message: 'Broadcasting the vote' });
@@ -229,7 +230,7 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 				width={600}
 			>
 				{!onlyVote && quizLevel === 0 ? <WelcomeScreen setQuizLevel={setQuizLevel} />
-					: !onlyVote && quizLevel === 1 ? <Spin spinning={loadingStatus.isLoading} indicator={<LoadingOutlined />}>
+					: !onlyVote && quizLevel === 1 ? <Spin tip='Sending answers...' spinning={loadingStatus.isLoading} indicator={<LoadingOutlined />}>
 						<QuizForm setLoading={setLoadingStatus} quiz={quiz} referendumId={referendumId} setQuizLevel={setQuizLevel}/>
 					</Spin>
 						: <Spin spinning={loadingStatus.isLoading} indicator={<LoadingOutlined />}>
