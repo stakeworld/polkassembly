@@ -20,14 +20,14 @@ interface Props {
 
 const ParachainInfoCard = ({ className, network, projects }: Props) => {
 	const polkadotMetrics = {
-		auction: '14th',
+		auction: 'No Live Auction',
 		crowdloans: '5',
 		parachains: '14',
 		projects: projects
 	};
 
 	const kusamaMetrics = {
-		auction: '31st',
+		auction: '36th and 65th',
 		crowdloans: '5',
 		parachains: '29',
 		projects: projects
