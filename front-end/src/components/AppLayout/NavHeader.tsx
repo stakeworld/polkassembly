@@ -9,6 +9,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useUserDetailsContext } from 'src/context';
 import NetworkDropdown from 'src/ui-components/NetworkDropdown';
+import RPCDropdown from 'src/ui-components/RPCDropdown';
 import SearchBar from 'src/ui-components/SearchBar';
 import checkGov2Route from 'src/util/checkGov2Route';
 import getNetwork from 'src/util/getNetwork';
@@ -52,7 +53,7 @@ const NavHeader = ({ className, sidedrawer, setSidedrawer } : Props) => {
 			<MenuOutlined className='lg:hidden mr-5' onClick={() => {
 				setSidedrawer(!sidedrawer);
 			}} />
-			<nav className='w-full lg:w-5/6 lg:mx-auto flex items-center justify-between h-[60px] max-h-[60px]'>
+			<nav className='w-full lg:w-11/12 lg:mx-auto flex items-center justify-between h-[60px] max-h-[60px]'>
 				<Link className='flex' to={isGov2Route ? '/gov-2' : '/'}><PALogoBlack /></Link>
 
 				<div className="flex items-center justify-between w-max lg:w-[82%] xl:w-[63%] 2xl:w-[55%]">
@@ -70,6 +71,7 @@ const NavHeader = ({ className, sidedrawer, setSidedrawer } : Props) => {
 							<BellOutlined />
 						</Link>
 						<NetworkDropdown setSidedrawer={setSidedrawer} />
+						<RPCDropdown/>
 						{!username
 							&& <div className='flex items-center lg:gap-x-2 ml-2 lg:ml-4'>
 								<Link className='text-navBlue hover:text-pink_primary font-medium' onClick={() => {setSidedrawer(false);}} to='/login'>Login</Link>

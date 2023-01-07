@@ -105,7 +105,7 @@ const NetworkDropdown: FC<{setSidedrawer: React.Dispatch<React.SetStateAction<bo
 			}}
 			>
 				<img
-					className='w-[20px] h-[20px] mr-2 rounded-full'
+					className='w-[20px] h-[20px] mr-4 rounded-full'
 					src={chainProperties[currentNetwork]?.logo ? chainProperties[currentNetwork].logo : chainLogo}
 					alt='Logo'
 				/>
