@@ -48,4 +48,8 @@ export default styled(TopicTag)`
 		background-color: pink_primary !important;
 		color: white;
 	}
+	&.General {
+		background-color: general_tag !important;
+		color: black_full;
+	}
 `;

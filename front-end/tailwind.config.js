@@ -37,6 +37,7 @@ module.exports = {
         aye_green: "#2ED47A",
         nay_red: "#FF3C5F",
         comment_bg: "#F9FAFB",
+        general_tag: "#EF905B"
       }
     }
   },
