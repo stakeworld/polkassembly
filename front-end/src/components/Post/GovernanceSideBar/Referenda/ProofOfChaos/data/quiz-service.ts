@@ -10,7 +10,7 @@ import { SendAndFinalize } from './sendAndFinalize';
 
 export async function SubmitQuizAnswers(signer: any, setLoading: (status: LoadingStatusType) => void, ref: any, address: string, userAnswers: any, quizVersion: any, api: any) {
 
-	setLoading({ isLoading: true, message: 'Sending Answers' });
+	setLoading({ isLoading: true, message: 'Sending Answers...' });
 
 	const promiseFunction =  async (resolve: any, reject: any ) => {
 		try {

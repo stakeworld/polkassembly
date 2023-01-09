@@ -230,10 +230,10 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 				width={600}
 			>
 				{!onlyVote && quizLevel === 0 ? <WelcomeScreen setQuizLevel={setQuizLevel} />
-					: !onlyVote && quizLevel === 1 ? <Spin tip='Sending answers...' spinning={loadingStatus.isLoading} indicator={<LoadingOutlined />}>
+					: !onlyVote && quizLevel === 1 ? <Spin tip={loadingStatus.message} spinning={loadingStatus.isLoading} indicator={<LoadingOutlined />}>
 						<QuizForm setLoading={setLoadingStatus} quiz={quiz} referendumId={referendumId} setQuizLevel={setQuizLevel}/>
 					</Spin>
-						: <Spin spinning={loadingStatus.isLoading} indicator={<LoadingOutlined />}>
+						: <Spin tip={loadingStatus.message} spinning={loadingStatus.isLoading} indicator={<LoadingOutlined />}>
 							{onlyVote && quiz?.questions && <div className='p-3 mb-7 flex items-center justify-center text-sidebarBlue bg-opacity-10 text-[14px] bg-pink_primary rounded-md'><img src={frowningFace} height={25} width={25} className='mr-2' alt='frowning-face' /><span> You&apos;re missing on a chance to win an exclusive NFT. <span className='text-pink_primary underline cursor-pointer' onClick={() => { setQuizLevel(0); setOnlyVote(false); }}>Take Quiz Now</span></span></div>}
 							<h4 className='dashboard-heading mb-7'>Cast Your Vote</h4>
 							<BalanceInput
