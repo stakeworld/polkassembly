@@ -69,15 +69,7 @@ const RPCDropdown = ({ className }: Props) => {
 		let cancel = false;
 		if(cancel) return;
 
-		const items: MenuProps['items'] = [
-			{
-				label: <span className='text-[12px]'>RPC Endpoints</span>,
-				type: 'group'
-			},
-			{
-				type: 'divider'
-			}
-		];
+		const items: MenuProps['items'] = [];
 
 		rpcEndpoints.forEach((endpointData) => {
 			const optionObj = {
