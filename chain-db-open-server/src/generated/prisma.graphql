@@ -38,6 +38,14 @@ type AggregateEra {
   count: Int!
 }
 
+type AggregateFellowshipReferendum {
+  count: Int!
+}
+
+type AggregateFellowshipReferendumStatus {
+  count: Int!
+}
+
 type AggregateHeartBeat {
   count: Int!
 }
@@ -2064,6 +2072,571 @@ input EraWhereUniqueInput {
   index: Int
 }
 
+type FellowshipReferendum {
+  id: Int!
+  trackNumber: Int!
+  origin: String!
+  preimage: PreimageV2
+  preimageHash: String!
+  referendumId: Int!
+  referendumStatus(where: FellowshipReferendumStatusWhereInput, orderBy: FellowshipReferendumStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [FellowshipReferendumStatus!]
+  enactmentAt: String
+  enactmentAfter: String
+  submittedAt: String!
+  submitted: Json
+  decisionDeposit: Json
+  deciding: Json
+  tally: Json
+}
+
+type FellowshipReferendumConnection {
+  pageInfo: PageInfo!
+  edges: [FellowshipReferendumEdge]!
+  aggregate: AggregateFellowshipReferendum!
+}
+
+input FellowshipReferendumCreateInput {
+  trackNumber: Int!
+  origin: String!
+  preimage: PreimageV2CreateOneWithoutFellowshipreferendumInput
+  preimageHash: String!
+  referendumId: Int!
+  referendumStatus: FellowshipReferendumStatusCreateManyWithoutReferendumInput
+  enactmentAt: String
+  enactmentAfter: String
+  submittedAt: String!
+  submitted: Json
+  decisionDeposit: Json
+  deciding: Json
+  tally: Json
+}
+
+input FellowshipReferendumCreateOneWithoutPreimageInput {
+  create: FellowshipReferendumCreateWithoutPreimageInput
+  connect: FellowshipReferendumWhereUniqueInput
+}
+
+input FellowshipReferendumCreateOneWithoutReferendumStatusInput {
+  create: FellowshipReferendumCreateWithoutReferendumStatusInput
+  connect: FellowshipReferendumWhereUniqueInput
+}
+
+input FellowshipReferendumCreateWithoutPreimageInput {
+  trackNumber: Int!
+  origin: String!
+  preimageHash: String!
+  referendumId: Int!
+  referendumStatus: FellowshipReferendumStatusCreateManyWithoutReferendumInput
+  enactmentAt: String
+  enactmentAfter: String
+  submittedAt: String!
+  submitted: Json
+  decisionDeposit: Json
+  deciding: Json
+  tally: Json
+}
+
+input FellowshipReferendumCreateWithoutReferendumStatusInput {
+  trackNumber: Int!
+  origin: String!
+  preimage: PreimageV2CreateOneWithoutFellowshipreferendumInput
+  preimageHash: String!
+  referendumId: Int!
+  enactmentAt: String
+  enactmentAfter: String
+  submittedAt: String!
+  submitted: Json
+  decisionDeposit: Json
+  deciding: Json
+  tally: Json
+}
+
+type FellowshipReferendumEdge {
+  node: FellowshipReferendum!
+  cursor: String!
+}
+
+enum FellowshipReferendumOrderByInput {
+  id_ASC
+  id_DESC
+  trackNumber_ASC
+  trackNumber_DESC
+  origin_ASC
+  origin_DESC
+  preimageHash_ASC
+  preimageHash_DESC
+  referendumId_ASC
+  referendumId_DESC
+  enactmentAt_ASC
+  enactmentAt_DESC
+  enactmentAfter_ASC
+  enactmentAfter_DESC
+  submittedAt_ASC
+  submittedAt_DESC
+  submitted_ASC
+  submitted_DESC
+  decisionDeposit_ASC
+  decisionDeposit_DESC
+  deciding_ASC
+  deciding_DESC
+  tally_ASC
+  tally_DESC
+}
+
+type FellowshipReferendumPreviousValues {
+  id: Int!
+  trackNumber: Int!
+  origin: String!
+  preimageHash: String!
+  referendumId: Int!
+  enactmentAt: String
+  enactmentAfter: String
+  submittedAt: String!
+  submitted: Json
+  decisionDeposit: Json
+  deciding: Json
+  tally: Json
+}
+
+type FellowshipReferendumStatus {
+  id: ID!
+  blockNumber: BlockNumber!
+  referendum: FellowshipReferendum!
+  status: String!
+  uniqueStatus: String!
+}
+
+type FellowshipReferendumStatusConnection {
+  pageInfo: PageInfo!
+  edges: [FellowshipReferendumStatusEdge]!
+  aggregate: AggregateFellowshipReferendumStatus!
+}
+
+input FellowshipReferendumStatusCreateInput {
+  id: ID
+  blockNumber: BlockNumberCreateOneInput!
+  referendum: FellowshipReferendumCreateOneWithoutReferendumStatusInput!
+  status: String!
+  uniqueStatus: String!
+}
+
+input FellowshipReferendumStatusCreateManyWithoutReferendumInput {
+  create: [FellowshipReferendumStatusCreateWithoutReferendumInput!]
+  connect: [FellowshipReferendumStatusWhereUniqueInput!]
+}
+
+input FellowshipReferendumStatusCreateWithoutReferendumInput {
+  id: ID
+  blockNumber: BlockNumberCreateOneInput!
+  status: String!
+  uniqueStatus: String!
+}
+
+type FellowshipReferendumStatusEdge {
+  node: FellowshipReferendumStatus!
+  cursor: String!
+}
+
+enum FellowshipReferendumStatusOrderByInput {
+  id_ASC
+  id_DESC
+  status_ASC
+  status_DESC
+  uniqueStatus_ASC
+  uniqueStatus_DESC
+}
+
+type FellowshipReferendumStatusPreviousValues {
+  id: ID!
+  status: String!
+  uniqueStatus: String!
+}
+
+input FellowshipReferendumStatusScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  status: String
+  status_not: String
+  status_in: [String!]
+  status_not_in: [String!]
+  status_lt: String
+  status_lte: String
+  status_gt: String
+  status_gte: String
+  status_contains: String
+  status_not_contains: String
+  status_starts_with: String
+  status_not_starts_with: String
+  status_ends_with: String
+  status_not_ends_with: String
+  uniqueStatus: String
+  uniqueStatus_not: String
+  uniqueStatus_in: [String!]
+  uniqueStatus_not_in: [String!]
+  uniqueStatus_lt: String
+  uniqueStatus_lte: String
+  uniqueStatus_gt: String
+  uniqueStatus_gte: String
+  uniqueStatus_contains: String
+  uniqueStatus_not_contains: String
+  uniqueStatus_starts_with: String
+  uniqueStatus_not_starts_with: String
+  uniqueStatus_ends_with: String
+  uniqueStatus_not_ends_with: String
+  AND: [FellowshipReferendumStatusScalarWhereInput!]
+  OR: [FellowshipReferendumStatusScalarWhereInput!]
+  NOT: [FellowshipReferendumStatusScalarWhereInput!]
+}
+
+type FellowshipReferendumStatusSubscriptionPayload {
+  mutation: MutationType!
+  node: FellowshipReferendumStatus
+  updatedFields: [String!]
+  previousValues: FellowshipReferendumStatusPreviousValues
+}
+
+input FellowshipReferendumStatusSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: FellowshipReferendumStatusWhereInput
+  AND: [FellowshipReferendumStatusSubscriptionWhereInput!]
+  OR: [FellowshipReferendumStatusSubscriptionWhereInput!]
+  NOT: [FellowshipReferendumStatusSubscriptionWhereInput!]
+}
+
+input FellowshipReferendumStatusUpdateInput {
+  blockNumber: BlockNumberUpdateOneRequiredInput
+  referendum: FellowshipReferendumUpdateOneRequiredWithoutReferendumStatusInput
+  status: String
+  uniqueStatus: String
+}
+
+input FellowshipReferendumStatusUpdateManyDataInput {
+  status: String
+  uniqueStatus: String
+}
+
+input FellowshipReferendumStatusUpdateManyMutationInput {
+  status: String
+  uniqueStatus: String
+}
+
+input FellowshipReferendumStatusUpdateManyWithoutReferendumInput {
+  create: [FellowshipReferendumStatusCreateWithoutReferendumInput!]
+  delete: [FellowshipReferendumStatusWhereUniqueInput!]
+  connect: [FellowshipReferendumStatusWhereUniqueInput!]
+  set: [FellowshipReferendumStatusWhereUniqueInput!]
+  disconnect: [FellowshipReferendumStatusWhereUniqueInput!]
+  update: [FellowshipReferendumStatusUpdateWithWhereUniqueWithoutReferendumInput!]
+  upsert: [FellowshipReferendumStatusUpsertWithWhereUniqueWithoutReferendumInput!]
+  deleteMany: [FellowshipReferendumStatusScalarWhereInput!]
+  updateMany: [FellowshipReferendumStatusUpdateManyWithWhereNestedInput!]
+}
+
+input FellowshipReferendumStatusUpdateManyWithWhereNestedInput {
+  where: FellowshipReferendumStatusScalarWhereInput!
+  data: FellowshipReferendumStatusUpdateManyDataInput!
+}
+
+input FellowshipReferendumStatusUpdateWithoutReferendumDataInput {
+  blockNumber: BlockNumberUpdateOneRequiredInput
+  status: String
+  uniqueStatus: String
+}
+
+input FellowshipReferendumStatusUpdateWithWhereUniqueWithoutReferendumInput {
+  where: FellowshipReferendumStatusWhereUniqueInput!
+  data: FellowshipReferendumStatusUpdateWithoutReferendumDataInput!
+}
+
+input FellowshipReferendumStatusUpsertWithWhereUniqueWithoutReferendumInput {
+  where: FellowshipReferendumStatusWhereUniqueInput!
+  update: FellowshipReferendumStatusUpdateWithoutReferendumDataInput!
+  create: FellowshipReferendumStatusCreateWithoutReferendumInput!
+}
+
+input FellowshipReferendumStatusWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  blockNumber: BlockNumberWhereInput
+  referendum: FellowshipReferendumWhereInput
+  status: String
+  status_not: String
+  status_in: [String!]
+  status_not_in: [String!]
+  status_lt: String
+  status_lte: String
+  status_gt: String
+  status_gte: String
+  status_contains: String
+  status_not_contains: String
+  status_starts_with: String
+  status_not_starts_with: String
+  status_ends_with: String
+  status_not_ends_with: String
+  uniqueStatus: String
+  uniqueStatus_not: String
+  uniqueStatus_in: [String!]
+  uniqueStatus_not_in: [String!]
+  uniqueStatus_lt: String
+  uniqueStatus_lte: String
+  uniqueStatus_gt: String
+  uniqueStatus_gte: String
+  uniqueStatus_contains: String
+  uniqueStatus_not_contains: String
+  uniqueStatus_starts_with: String
+  uniqueStatus_not_starts_with: String
+  uniqueStatus_ends_with: String
+  uniqueStatus_not_ends_with: String
+  AND: [FellowshipReferendumStatusWhereInput!]
+  OR: [FellowshipReferendumStatusWhereInput!]
+  NOT: [FellowshipReferendumStatusWhereInput!]
+}
+
+input FellowshipReferendumStatusWhereUniqueInput {
+  id: ID
+  uniqueStatus: String
+}
+
+type FellowshipReferendumSubscriptionPayload {
+  mutation: MutationType!
+  node: FellowshipReferendum
+  updatedFields: [String!]
+  previousValues: FellowshipReferendumPreviousValues
+}
+
+input FellowshipReferendumSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: FellowshipReferendumWhereInput
+  AND: [FellowshipReferendumSubscriptionWhereInput!]
+  OR: [FellowshipReferendumSubscriptionWhereInput!]
+  NOT: [FellowshipReferendumSubscriptionWhereInput!]
+}
+
+input FellowshipReferendumUpdateInput {
+  trackNumber: Int
+  origin: String
+  preimage: PreimageV2UpdateOneWithoutFellowshipreferendumInput
+  preimageHash: String
+  referendumId: Int
+  referendumStatus: FellowshipReferendumStatusUpdateManyWithoutReferendumInput
+  enactmentAt: String
+  enactmentAfter: String
+  submittedAt: String
+  submitted: Json
+  decisionDeposit: Json
+  deciding: Json
+  tally: Json
+}
+
+input FellowshipReferendumUpdateManyMutationInput {
+  trackNumber: Int
+  origin: String
+  preimageHash: String
+  referendumId: Int
+  enactmentAt: String
+  enactmentAfter: String
+  submittedAt: String
+  submitted: Json
+  decisionDeposit: Json
+  deciding: Json
+  tally: Json
+}
+
+input FellowshipReferendumUpdateOneRequiredWithoutReferendumStatusInput {
+  create: FellowshipReferendumCreateWithoutReferendumStatusInput
+  update: FellowshipReferendumUpdateWithoutReferendumStatusDataInput
+  upsert: FellowshipReferendumUpsertWithoutReferendumStatusInput
+  connect: FellowshipReferendumWhereUniqueInput
+}
+
+input FellowshipReferendumUpdateOneWithoutPreimageInput {
+  create: FellowshipReferendumCreateWithoutPreimageInput
+  update: FellowshipReferendumUpdateWithoutPreimageDataInput
+  upsert: FellowshipReferendumUpsertWithoutPreimageInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: FellowshipReferendumWhereUniqueInput
+}
+
+input FellowshipReferendumUpdateWithoutPreimageDataInput {
+  trackNumber: Int
+  origin: String
+  preimageHash: String
+  referendumId: Int
+  referendumStatus: FellowshipReferendumStatusUpdateManyWithoutReferendumInput
+  enactmentAt: String
+  enactmentAfter: String
+  submittedAt: String
+  submitted: Json
+  decisionDeposit: Json
+  deciding: Json
+  tally: Json
+}
+
+input FellowshipReferendumUpdateWithoutReferendumStatusDataInput {
+  trackNumber: Int
+  origin: String
+  preimage: PreimageV2UpdateOneWithoutFellowshipreferendumInput
+  preimageHash: String
+  referendumId: Int
+  enactmentAt: String
+  enactmentAfter: String
+  submittedAt: String
+  submitted: Json
+  decisionDeposit: Json
+  deciding: Json
+  tally: Json
+}
+
+input FellowshipReferendumUpsertWithoutPreimageInput {
+  update: FellowshipReferendumUpdateWithoutPreimageDataInput!
+  create: FellowshipReferendumCreateWithoutPreimageInput!
+}
+
+input FellowshipReferendumUpsertWithoutReferendumStatusInput {
+  update: FellowshipReferendumUpdateWithoutReferendumStatusDataInput!
+  create: FellowshipReferendumCreateWithoutReferendumStatusInput!
+}
+
+input FellowshipReferendumWhereInput {
+  id: Int
+  id_not: Int
+  id_in: [Int!]
+  id_not_in: [Int!]
+  id_lt: Int
+  id_lte: Int
+  id_gt: Int
+  id_gte: Int
+  trackNumber: Int
+  trackNumber_not: Int
+  trackNumber_in: [Int!]
+  trackNumber_not_in: [Int!]
+  trackNumber_lt: Int
+  trackNumber_lte: Int
+  trackNumber_gt: Int
+  trackNumber_gte: Int
+  origin: String
+  origin_not: String
+  origin_in: [String!]
+  origin_not_in: [String!]
+  origin_lt: String
+  origin_lte: String
+  origin_gt: String
+  origin_gte: String
+  origin_contains: String
+  origin_not_contains: String
+  origin_starts_with: String
+  origin_not_starts_with: String
+  origin_ends_with: String
+  origin_not_ends_with: String
+  preimage: PreimageV2WhereInput
+  preimageHash: String
+  preimageHash_not: String
+  preimageHash_in: [String!]
+  preimageHash_not_in: [String!]
+  preimageHash_lt: String
+  preimageHash_lte: String
+  preimageHash_gt: String
+  preimageHash_gte: String
+  preimageHash_contains: String
+  preimageHash_not_contains: String
+  preimageHash_starts_with: String
+  preimageHash_not_starts_with: String
+  preimageHash_ends_with: String
+  preimageHash_not_ends_with: String
+  referendumId: Int
+  referendumId_not: Int
+  referendumId_in: [Int!]
+  referendumId_not_in: [Int!]
+  referendumId_lt: Int
+  referendumId_lte: Int
+  referendumId_gt: Int
+  referendumId_gte: Int
+  referendumStatus_every: FellowshipReferendumStatusWhereInput
+  referendumStatus_some: FellowshipReferendumStatusWhereInput
+  referendumStatus_none: FellowshipReferendumStatusWhereInput
+  enactmentAt: String
+  enactmentAt_not: String
+  enactmentAt_in: [String!]
+  enactmentAt_not_in: [String!]
+  enactmentAt_lt: String
+  enactmentAt_lte: String
+  enactmentAt_gt: String
+  enactmentAt_gte: String
+  enactmentAt_contains: String
+  enactmentAt_not_contains: String
+  enactmentAt_starts_with: String
+  enactmentAt_not_starts_with: String
+  enactmentAt_ends_with: String
+  enactmentAt_not_ends_with: String
+  enactmentAfter: String
+  enactmentAfter_not: String
+  enactmentAfter_in: [String!]
+  enactmentAfter_not_in: [String!]
+  enactmentAfter_lt: String
+  enactmentAfter_lte: String
+  enactmentAfter_gt: String
+  enactmentAfter_gte: String
+  enactmentAfter_contains: String
+  enactmentAfter_not_contains: String
+  enactmentAfter_starts_with: String
+  enactmentAfter_not_starts_with: String
+  enactmentAfter_ends_with: String
+  enactmentAfter_not_ends_with: String
+  submittedAt: String
+  submittedAt_not: String
+  submittedAt_in: [String!]
+  submittedAt_not_in: [String!]
+  submittedAt_lt: String
+  submittedAt_lte: String
+  submittedAt_gt: String
+  submittedAt_gte: String
+  submittedAt_contains: String
+  submittedAt_not_contains: String
+  submittedAt_starts_with: String
+  submittedAt_not_starts_with: String
+  submittedAt_ends_with: String
+  submittedAt_not_ends_with: String
+  AND: [FellowshipReferendumWhereInput!]
+  OR: [FellowshipReferendumWhereInput!]
+  NOT: [FellowshipReferendumWhereInput!]
+}
+
+input FellowshipReferendumWhereUniqueInput {
+  id: Int
+  referendumId: Int
+}
+
 type HeartBeat {
   id: ID!
   sessionIndex: Session!
@@ -3136,6 +3709,18 @@ type Mutation {
   upsertEra(where: EraWhereUniqueInput!, create: EraCreateInput!, update: EraUpdateInput!): Era!
   deleteEra(where: EraWhereUniqueInput!): Era
   deleteManyEras(where: EraWhereInput): BatchPayload!
+  createFellowshipReferendum(data: FellowshipReferendumCreateInput!): FellowshipReferendum!
+  updateFellowshipReferendum(data: FellowshipReferendumUpdateInput!, where: FellowshipReferendumWhereUniqueInput!): FellowshipReferendum
+  updateManyFellowshipReferendums(data: FellowshipReferendumUpdateManyMutationInput!, where: FellowshipReferendumWhereInput): BatchPayload!
+  upsertFellowshipReferendum(where: FellowshipReferendumWhereUniqueInput!, create: FellowshipReferendumCreateInput!, update: FellowshipReferendumUpdateInput!): FellowshipReferendum!
+  deleteFellowshipReferendum(where: FellowshipReferendumWhereUniqueInput!): FellowshipReferendum
+  deleteManyFellowshipReferendums(where: FellowshipReferendumWhereInput): BatchPayload!
+  createFellowshipReferendumStatus(data: FellowshipReferendumStatusCreateInput!): FellowshipReferendumStatus!
+  updateFellowshipReferendumStatus(data: FellowshipReferendumStatusUpdateInput!, where: FellowshipReferendumStatusWhereUniqueInput!): FellowshipReferendumStatus
+  updateManyFellowshipReferendumStatuses(data: FellowshipReferendumStatusUpdateManyMutationInput!, where: FellowshipReferendumStatusWhereInput): BatchPayload!
+  upsertFellowshipReferendumStatus(where: FellowshipReferendumStatusWhereUniqueInput!, create: FellowshipReferendumStatusCreateInput!, update: FellowshipReferendumStatusUpdateInput!): FellowshipReferendumStatus!
+  deleteFellowshipReferendumStatus(where: FellowshipReferendumStatusWhereUniqueInput!): FellowshipReferendumStatus
+  deleteManyFellowshipReferendumStatuses(where: FellowshipReferendumStatusWhereInput): BatchPayload!
   createHeartBeat(data: HeartBeatCreateInput!): HeartBeat!
   updateHeartBeat(data: HeartBeatUpdateInput!, where: HeartBeatWhereUniqueInput!): HeartBeat
   updateManyHeartBeats(data: HeartBeatUpdateManyMutationInput!, where: HeartBeatWhereInput): BatchPayload!
@@ -4880,6 +5465,7 @@ type PreimageV2 {
   preimageArguments(where: PreimageArgumentV2WhereInput, orderBy: PreimageArgumentV2OrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PreimageArgumentV2!]
   preimageStatus(where: PreimageStatusV2WhereInput, orderBy: PreimageStatusV2OrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PreimageStatusV2!]
   referendum: ReferendumV2
+  fellowshipreferendum: FellowshipReferendum
   section: String!
   length: Int!
 }
@@ -4902,8 +5488,14 @@ input PreimageV2CreateInput {
   preimageArguments: PreimageArgumentV2CreateManyWithoutPreimageInput
   preimageStatus: PreimageStatusV2CreateManyWithoutPreimageInput
   referendum: ReferendumV2CreateOneWithoutPreimageInput
+  fellowshipreferendum: FellowshipReferendumCreateOneWithoutPreimageInput
   section: String!
   length: Int!
+}
+
+input PreimageV2CreateOneWithoutFellowshipreferendumInput {
+  create: PreimageV2CreateWithoutFellowshipreferendumInput
+  connect: PreimageV2WhereUniqueInput
 }
 
 input PreimageV2CreateOneWithoutPreimageArgumentsInput {
@@ -4921,6 +5513,22 @@ input PreimageV2CreateOneWithoutReferendumInput {
   connect: PreimageV2WhereUniqueInput
 }
 
+input PreimageV2CreateWithoutFellowshipreferendumInput {
+  id: ID
+  author: String!
+  depositAmount: String
+  hash: String!
+  metaDescription: String!
+  method: String!
+  enactmentPeriod: String
+  origin: String
+  preimageArguments: PreimageArgumentV2CreateManyWithoutPreimageInput
+  preimageStatus: PreimageStatusV2CreateManyWithoutPreimageInput
+  referendum: ReferendumV2CreateOneWithoutPreimageInput
+  section: String!
+  length: Int!
+}
+
 input PreimageV2CreateWithoutPreimageArgumentsInput {
   id: ID
   author: String!
@@ -4932,6 +5540,7 @@ input PreimageV2CreateWithoutPreimageArgumentsInput {
   origin: String
   preimageStatus: PreimageStatusV2CreateManyWithoutPreimageInput
   referendum: ReferendumV2CreateOneWithoutPreimageInput
+  fellowshipreferendum: FellowshipReferendumCreateOneWithoutPreimageInput
   section: String!
   length: Int!
 }
@@ -4947,6 +5556,7 @@ input PreimageV2CreateWithoutPreimageStatusInput {
   origin: String
   preimageArguments: PreimageArgumentV2CreateManyWithoutPreimageInput
   referendum: ReferendumV2CreateOneWithoutPreimageInput
+  fellowshipreferendum: FellowshipReferendumCreateOneWithoutPreimageInput
   section: String!
   length: Int!
 }
@@ -4962,6 +5572,7 @@ input PreimageV2CreateWithoutReferendumInput {
   origin: String
   preimageArguments: PreimageArgumentV2CreateManyWithoutPreimageInput
   preimageStatus: PreimageStatusV2CreateManyWithoutPreimageInput
+  fellowshipreferendum: FellowshipReferendumCreateOneWithoutPreimageInput
   section: String!
   length: Int!
 }
@@ -5036,6 +5647,7 @@ input PreimageV2UpdateInput {
   preimageArguments: PreimageArgumentV2UpdateManyWithoutPreimageInput
   preimageStatus: PreimageStatusV2UpdateManyWithoutPreimageInput
   referendum: ReferendumV2UpdateOneWithoutPreimageInput
+  fellowshipreferendum: FellowshipReferendumUpdateOneWithoutPreimageInput
   section: String
   length: Int
 }
@@ -5066,6 +5678,15 @@ input PreimageV2UpdateOneRequiredWithoutPreimageStatusInput {
   connect: PreimageV2WhereUniqueInput
 }
 
+input PreimageV2UpdateOneWithoutFellowshipreferendumInput {
+  create: PreimageV2CreateWithoutFellowshipreferendumInput
+  update: PreimageV2UpdateWithoutFellowshipreferendumDataInput
+  upsert: PreimageV2UpsertWithoutFellowshipreferendumInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: PreimageV2WhereUniqueInput
+}
+
 input PreimageV2UpdateOneWithoutReferendumInput {
   create: PreimageV2CreateWithoutReferendumInput
   update: PreimageV2UpdateWithoutReferendumDataInput
@@ -5073,6 +5694,21 @@ input PreimageV2UpdateOneWithoutReferendumInput {
   delete: Boolean
   disconnect: Boolean
   connect: PreimageV2WhereUniqueInput
+}
+
+input PreimageV2UpdateWithoutFellowshipreferendumDataInput {
+  author: String
+  depositAmount: String
+  hash: String
+  metaDescription: String
+  method: String
+  enactmentPeriod: String
+  origin: String
+  preimageArguments: PreimageArgumentV2UpdateManyWithoutPreimageInput
+  preimageStatus: PreimageStatusV2UpdateManyWithoutPreimageInput
+  referendum: ReferendumV2UpdateOneWithoutPreimageInput
+  section: String
+  length: Int
 }
 
 input PreimageV2UpdateWithoutPreimageArgumentsDataInput {
@@ -5085,6 +5721,7 @@ input PreimageV2UpdateWithoutPreimageArgumentsDataInput {
   origin: String
   preimageStatus: PreimageStatusV2UpdateManyWithoutPreimageInput
   referendum: ReferendumV2UpdateOneWithoutPreimageInput
+  fellowshipreferendum: FellowshipReferendumUpdateOneWithoutPreimageInput
   section: String
   length: Int
 }
@@ -5099,6 +5736,7 @@ input PreimageV2UpdateWithoutPreimageStatusDataInput {
   origin: String
   preimageArguments: PreimageArgumentV2UpdateManyWithoutPreimageInput
   referendum: ReferendumV2UpdateOneWithoutPreimageInput
+  fellowshipreferendum: FellowshipReferendumUpdateOneWithoutPreimageInput
   section: String
   length: Int
 }
@@ -5113,8 +5751,14 @@ input PreimageV2UpdateWithoutReferendumDataInput {
   origin: String
   preimageArguments: PreimageArgumentV2UpdateManyWithoutPreimageInput
   preimageStatus: PreimageStatusV2UpdateManyWithoutPreimageInput
+  fellowshipreferendum: FellowshipReferendumUpdateOneWithoutPreimageInput
   section: String
   length: Int
+}
+
+input PreimageV2UpsertWithoutFellowshipreferendumInput {
+  update: PreimageV2UpdateWithoutFellowshipreferendumDataInput!
+  create: PreimageV2CreateWithoutFellowshipreferendumInput!
 }
 
 input PreimageV2UpsertWithoutPreimageArgumentsInput {
@@ -5252,6 +5896,7 @@ input PreimageV2WhereInput {
   preimageStatus_some: PreimageStatusV2WhereInput
   preimageStatus_none: PreimageStatusV2WhereInput
   referendum: ReferendumV2WhereInput
+  fellowshipreferendum: FellowshipReferendumWhereInput
   section: String
   section_not: String
   section_in: [String!]
@@ -5883,6 +6528,12 @@ type Query {
   era(where: EraWhereUniqueInput!): Era
   eras(where: EraWhereInput, orderBy: EraOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Era]!
   erasConnection(where: EraWhereInput, orderBy: EraOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EraConnection!
+  fellowshipReferendum(where: FellowshipReferendumWhereUniqueInput!): FellowshipReferendum
+  fellowshipReferendums(where: FellowshipReferendumWhereInput, orderBy: FellowshipReferendumOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [FellowshipReferendum]!
+  fellowshipReferendumsConnection(where: FellowshipReferendumWhereInput, orderBy: FellowshipReferendumOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FellowshipReferendumConnection!
+  fellowshipReferendumStatus(where: FellowshipReferendumStatusWhereUniqueInput!): FellowshipReferendumStatus
+  fellowshipReferendumStatuses(where: FellowshipReferendumStatusWhereInput, orderBy: FellowshipReferendumStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [FellowshipReferendumStatus]!
+  fellowshipReferendumStatusesConnection(where: FellowshipReferendumStatusWhereInput, orderBy: FellowshipReferendumStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FellowshipReferendumStatusConnection!
   heartBeat(where: HeartBeatWhereUniqueInput!): HeartBeat
   heartBeats(where: HeartBeatWhereInput, orderBy: HeartBeatOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [HeartBeat]!
   heartBeatsConnection(where: HeartBeatWhereInput, orderBy: HeartBeatOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): HeartBeatConnection!
@@ -7839,6 +8490,8 @@ type Subscription {
   councilMember(where: CouncilMemberSubscriptionWhereInput): CouncilMemberSubscriptionPayload
   councilMotionVote(where: CouncilMotionVoteSubscriptionWhereInput): CouncilMotionVoteSubscriptionPayload
   era(where: EraSubscriptionWhereInput): EraSubscriptionPayload
+  fellowshipReferendum(where: FellowshipReferendumSubscriptionWhereInput): FellowshipReferendumSubscriptionPayload
+  fellowshipReferendumStatus(where: FellowshipReferendumStatusSubscriptionWhereInput): FellowshipReferendumStatusSubscriptionPayload
   heartBeat(where: HeartBeatSubscriptionWhereInput): HeartBeatSubscriptionPayload
   motion(where: MotionSubscriptionWhereInput): MotionSubscriptionPayload
   motionProposalArgument(where: MotionProposalArgumentSubscriptionWhereInput): MotionProposalArgumentSubscriptionPayload

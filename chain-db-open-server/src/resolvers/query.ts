@@ -627,6 +627,50 @@ const Query = {
   ) {
     return prisma.referendumStatusV2(referendumStatusWhereUniqueInput);
   },
+  fellowshipReferendums(
+    _parent: any,
+    { where, orderBy, skip, after, before, first, last }: Selectors,
+    { prisma }: Context
+  ) {
+    return prisma.fellowshipReferendums({
+      where,
+      orderBy,
+      skip,
+      after,
+      before,
+      first,
+      last,
+    });
+  },
+  fellowshipReferendum(
+    _parent: any,
+    { fellowshipReferendumWhereUniqueInput }: Selectors,
+    { prisma }: Context
+  ) {
+    return prisma.fellowshipReferendum(fellowshipReferendumWhereUniqueInput);
+  },
+  fellowshipReferendumStatuses(
+    _parent: any,
+    { where, orderBy, skip, after, before, first, last }: Selectors,
+    { prisma }: Context
+  ) {
+    return prisma.fellowshipReferendumStatuses({
+      where,
+      orderBy,
+      skip,
+      after,
+      before,
+      first,
+      last,
+    });
+  },
+  fellowshipReferendumStatus(
+    _parent: any,
+    { fellowshipReferendumStatusWhereUniqueInput }: Selectors,
+    { prisma }: Context
+  ) {
+    return prisma.fellowshipReferendumStatus(fellowshipReferendumStatusWhereUniqueInput);
+  },
   referendumVotes(
     _parent: any,
     { where, orderBy, skip, after, before, first, last }: Selectors,

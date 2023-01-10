@@ -363,6 +363,7 @@ export interface Tally {
   ayes?: string;
   nays?: string;
   support?: string
+  bareAyes?: string;
 }
 
 export interface NomidotTechCommitteeProposalStatusUpdate {

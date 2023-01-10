@@ -6,6 +6,7 @@ import { OnchainBountyFragment, OnchainChildBountyFragment, OnchainMotionFragmen
 import { DiscussionBountyFragment, DiscussionChildBountyFragment, DiscussionMotionFragment, DiscussionProposalFragment, DiscussionReferendumFragment, DiscussionTechCommitteeProposalFragment, DiscussionTipFragment, DiscussionTreasuryProposalFragment } from './generated/discussion-db-graphql';
 
 export interface OnchainSyncData {
+    fellowshipReferendum?: Array<any | null> | null;
     motions?: Array<OnchainMotionFragment | null> | null;
     proposals?: Array<OnchainProposalFragment | null> | null;
     referenda?: Array<OnchainReferendumFragment | null> | null;
@@ -22,6 +23,7 @@ export interface DiscussionSyncData {
     proposals?: Array<DiscussionProposalFragment | null> | null;
     referenda?: Array<DiscussionReferendumFragment | null> | null;
     referendumV2?: Array<any | null> | null;
+    fellowshipReferendum?: Array<any | null> | null;
     tips?: Array<DiscussionTipFragment | null> | null;
     treasuryProposals?: Array<DiscussionTreasuryProposalFragment | null> | null;
     bounties?: Array<DiscussionBountyFragment | null> | null;
@@ -44,6 +46,7 @@ export interface OnchainSyncMap {
     proposals?: ObjectMap;
     referenda?: ReferendumObjectMap;
     referendumV2?: ReferendumV2ObjectMap;
+    fellowshipReferendum?: FellowshipReferendumObjectMap;
     tips?: ObjectMap;
     bounties?: ObjectMap;
     childBounties?: ObjectMap;
@@ -65,6 +68,15 @@ export interface OnchainReferendaV2ValueSyncType {
     status: string;
 }
 
+export interface OnchainFellowshipReferendaValueSyncType {
+    preimageHash: string;
+    blockCreationNumber: number;
+    trackNumber: number;
+    origin: string;
+    author: string;
+    status: string;
+}
+
 export interface OnchainMotionSyncType {
     author: string;
     treasuryProposalId?: number;
@@ -76,6 +88,7 @@ export interface DiscussionSyncMap {
     proposals?: ObjectMap;
     referenda?: ObjectMap;
     referendumV2?: ObjectMap;
+    fellowshipReferendum?: ObjectMap;
     tips?: ObjectMap;
     bounties?: ObjectMap;
     childBounties?: ObjectMap;
@@ -89,3 +102,4 @@ export type ObjectMap = {[index: string]: string};
 export type MotionObjectMap = {[index: string]: OnchainMotionSyncType};
 export type ReferendumObjectMap = {[index: string]: OnchainReferendaValueSyncType};
 export type ReferendumV2ObjectMap = {[index: string]: OnchainReferendaV2ValueSyncType};
+export type FellowshipReferendumObjectMap = {[index: string]: OnchainFellowshipReferendaValueSyncType};

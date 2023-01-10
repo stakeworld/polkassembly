@@ -7,6 +7,7 @@ import chalk from 'chalk';
 import {
 	addDiscussionPostAndBounty,
 	addDiscussionPostAndChildBounty,
+	addDiscussionPostAndFellowshipReferendum,
 	addDiscussionPostAndMotion,
 	addDiscussionPostAndProposal,
 	addDiscussionPostAndReferendumV2,
@@ -16,10 +17,11 @@ import {
 	addDiscussionReferendum,
 	updateTreasuryProposalWithMotion
 } from '../graphql_helpers';
-import { MotionObjectMap, ObjectMap, OnchainMotionSyncType, ReferendumObjectMap, ReferendumV2ObjectMap, SyncData, TreasuryDeduplicateMotionMap } from '../types';
+import { FellowshipReferendumObjectMap, MotionObjectMap, ObjectMap, OnchainMotionSyncType, ReferendumObjectMap, ReferendumV2ObjectMap, SyncData, TreasuryDeduplicateMotionMap } from '../types';
 import {
 	getDiscussionBounties,
 	getDiscussionChildBounties,
+	getDiscussionFellowshipReferendum,
 	getDiscussionMotions,
 	getDiscussionProposals,
 	getDiscussionReferenda,
@@ -29,6 +31,7 @@ import {
 	getDiscussionTreasuryProposals,
 	getOnChainBounties,
 	getOnChainChildBounties,
+	getOnChainFellowshipReferendum,
 	getOnChainMotions,
 	getOnChainProposals,
 	getOnchainReferenda,
@@ -41,6 +44,7 @@ import { getMaps } from './utils';
 
 const getSyncData = async (): Promise<SyncData | undefined> => {
 	try {
+		const discussionFellowshipReferendum = await getDiscussionFellowshipReferendum();
 		const discussionMotions = await getDiscussionMotions();
 		const discussionProposals = await getDiscussionProposals();
 		const discussionReferenda = await getDiscussionReferenda();
@@ -51,6 +55,7 @@ const getSyncData = async (): Promise<SyncData | undefined> => {
 		const discussionChildBounties = await getDiscussionChildBounties();
 		const discussionTechCommitteeProposals = await getDiscussionTechCommitteeProposals();
 
+		const onChainFellowshipReferendum = await getOnChainFellowshipReferendum();
 		const onChainMotions = await getOnChainMotions();
 		const onChainProposals = await getOnChainProposals();
 		const onchainReferenda = await getOnchainReferenda();
@@ -65,6 +70,7 @@ const getSyncData = async (): Promise<SyncData | undefined> => {
 			discussion: {
 				bounties: discussionBounties,
 				childBounties: discussionChildBounties,
+				fellowshipReferendum: discussionFellowshipReferendum,
 				motions: discussionMotions,
 				proposals: discussionProposals,
 				referenda: discussionReferenda,
@@ -77,6 +83,7 @@ const getSyncData = async (): Promise<SyncData | undefined> => {
 			onchain: {
 				bounties: onChainBounties,
 				childBounties: onChainChildBounties,
+				fellowshipReferendum: onChainFellowshipReferendum,
 				motions: onChainMotions,
 				proposals: onChainProposals,
 				referenda: onchainReferenda,
@@ -206,6 +213,22 @@ const syncReferendumV2 = async (onchainReferendaV2: ReferendumV2ObjectMap, discu
 		}));
 };
 
+const syncFellowshipReferendum = async (onchainFellowshipReferenda: FellowshipReferendumObjectMap, discussionFellowshipReferenda: ObjectMap): Promise<void[]> => {
+	return Promise.all(
+		Object.keys(onchainFellowshipReferenda).map(async (key) => {
+			// If this referendum doesn't exist in the discussion DB
+			if (!discussionFellowshipReferenda[key]) {
+				await addDiscussionPostAndFellowshipReferendum({
+					origin: onchainFellowshipReferenda[key].origin,
+					proposer: onchainFellowshipReferenda[key].author,
+					referendumId: Number(key),
+					status: onchainFellowshipReferenda[key].status,
+					trackNumber: onchainFellowshipReferenda[key].trackNumber
+				});
+			}
+		}));
+};
+
 const getTreasuryDeduplicatedMotionsMap = (motionObjectMap: MotionObjectMap): TreasuryDeduplicateMotionMap => {
 	// this map will contain the treasury with the array of motions linked to it
 	// eg: {
@@ -268,6 +291,10 @@ export const syncDBs = async (): Promise<void> => {
 		syncMaps?.onchain?.referendumV2 &&
 		syncMaps?.discussion?.referendumV2 &&
 		await syncReferendumV2(syncMaps.onchain.referendumV2, syncMaps.discussion.referendumV2);
+
+		syncMaps?.onchain?.fellowshipReferendum &&
+		syncMaps?.discussion?.fellowshipReferendum &&
+		await syncFellowshipReferendum(syncMaps.onchain.fellowshipReferendum, syncMaps.discussion.fellowshipReferendum);
 
 		console.log('✅ Syncing finished.');
 	} catch (err) {

@@ -364,6 +364,7 @@ type PreimageV2 {
   preimageArguments: [PreimageArgumentV2]! @relation(name: "ArgumentForPreimageV2")
   preimageStatus: [PreimageStatusV2]! @relation(name: "PreimageStatusV2FromPreimage")
   referendum: ReferendumV2 @relation(name: "PreimageV2ForReferendumV2", link: INLINE)
+  fellowshipreferendum: FellowshipReferendum @relation(name: "PreimageV2ForFellowshipReferendum", link: INLINE)
   section: String!
   length: Int!
 }
@@ -380,4 +381,29 @@ type PreimageArgumentV2 {
   name: String!
   preimage: PreimageV2! @relation(name: "ArgumentForPreimageV2", link: INLINE)
   value: String!
+}
+
+type FellowshipReferendum {
+  id: Int! @id(strategy: SEQUENCE) @sequence(name: "FELLOWSHIPREFERENDUM_SEQUENCE" initialValue:1 allocationSize:1)
+  trackNumber: Int!
+  origin: String!
+  preimage: PreimageV2 @relation(name: "PreimageV2ForFellowshipReferendum")
+  preimageHash: String!
+  referendumId: Int! @unique
+  referendumStatus: [FellowshipReferendumStatus]! @relation(name: "FellowshipReferendumStatusFromFellowshipReferendum")
+  enactmentAt: String
+  enactmentAfter: String
+  submittedAt: String!
+  submitted: Json
+  decisionDeposit: Json
+  deciding: Json
+  tally: Json
+}
+
+type FellowshipReferendumStatus {
+  id: ID! @id
+  blockNumber: BlockNumber! @relation(name: "FellowshipReferendumStatusAtBlockNumber", link: INLINE)
+  referendum: FellowshipReferendum! @relation(name: "FellowshipReferendumStatusFromFellowshipReferendum", link: INLINE)
+  status: String!
+  uniqueStatus: String! @unique
 }
