@@ -8,7 +8,8 @@ export const onchainLinkProposalPost = gql`
     fragment onchainLinkProposalPost on onchain_links {
         onchain_proposal {
             proposalId
-            proposalStatus(first: 1) {
+            proposalStatus {
+                status
                 blockNumber {
                     number
                 }
@@ -21,7 +22,8 @@ export const onchainLinkBountyPost = gql`
     fragment onchainLinkBountyPost on onchain_links {
         onchain_bounty {
             bountyId
-            bountyStatus(first: 1) {
+            bountyStatus {
+                status
                 blockNumber {
                     number
                 }
@@ -34,7 +36,8 @@ export const onchainLinkMotionPost = gql`
     fragment onchainLinkMotionPost on onchain_links {
         onchain_motion {
             motionProposalId
-            motionStatus(first: 1) {
+            motionStatus {
+                status
                 blockNumber {
                     number
                 }
@@ -47,7 +50,8 @@ export const onchainLinkReferendumPost = gql`
     fragment onchainLinkReferendumPost on onchain_links {
         onchain_referendum {
             referendumId
-            referendumStatus(first: 1) {
+            referendumStatus {
+                status
                 blockNumber {
                     number
                 }
@@ -60,7 +64,8 @@ export const onchainLinkTechCommitteeProposalPost = gql`
     fragment onchainLinkTechCommitteeProposalPost on onchain_links {
         onchain_tech_committee_proposal {
             proposalId
-            status(first: 1) {
+            status {
+                status
                 blockNumber {
                     number
                 }
@@ -73,7 +78,8 @@ export const onchainLinkTreasurySpendProposal = gql`
     fragment onchainLinkTreasurySpendProposal on onchain_links {
         onchain_treasury_spend_proposal {
             treasuryProposalId
-            treasuryStatus(first: 1) {
+            treasuryStatus {
+                status
                 blockNumber {
                     number
                 }
