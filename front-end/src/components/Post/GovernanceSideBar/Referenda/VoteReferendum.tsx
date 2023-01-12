@@ -7,9 +7,11 @@ import { InjectedAccount } from '@polkadot/extension-inject/types';
 import styled from '@xstyled/styled-components';
 import { Button, Form, Modal, Select, Spin } from 'antd';
 import BN from 'bn.js';
-import React, { useCallback, useContext, useEffect,useMemo,useState } from 'react';
+import React, { useContext,useMemo,useState } from 'react';
 import frowningFace from 'src/assets/frowning-face.png';
+import VoteSuccessful from 'src/assets/lottie-graphics/VoteSuccessful';
 import { ApiContext } from 'src/context/ApiContext';
+import useQuizData from 'src/hooks/useQuizData';
 import { LoadingStatusType,NotificationStatus } from 'src/types';
 import AccountSelectionForm from 'src/ui-components/AccountSelectionForm';
 import BalanceInput from 'src/ui-components/BalanceInput';
@@ -37,10 +39,12 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 	const [lockedBalance, setLockedBalance] = useState<BN | undefined>(undefined);
 	const [onlyVote, setOnlyVote] = useState<boolean>(false);
 	const [quizLevel, setQuizLevel] = useState<Number>(0);
-	const [quiz, setQuiz] = useState<any>({});
+	const [voteComplete, setVoteComplete] = useState<boolean>(false);
 	const { api, apiReady } = useContext(ApiContext);
 	const [loadingStatus, setLoadingStatus] = useState<LoadingStatusType>({ isLoading: false, message: '' });
 	const CONVICTIONS: [number, number][] = [1, 2, 4, 8, 16, 32].map((lock, index) => [index + 1, lock]);
+
+	const quiz = useQuizData(referendumId);
 
 	const convictionOpts = useMemo(() => [
 		<Select.Option key={0} value={0}>{'0.1x voting balance, no lockup period'}</Select.Option>,
@@ -56,77 +60,6 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 	};
 
 	const onBalanceChange = (balance: BN) => setLockedBalance(balance);
-
-	const fetchQuizData = useCallback(() => {
-		// setLoading(true);
-		fetch('https://squid.subsquid.io/referenda-dashboard/v/1/graphql',
-			{ body: JSON.stringify({
-				query: `query QuizzesQuery {
-                    quizzes(where: {referendumIndex_eq: ${referendumId}}) {
-                      blockNumber
-                      creator
-                      id
-                      referendumIndex
-                      timestamp
-                      version
-                      questions {
-                        id
-                        quizId
-                        text
-                        indexCorrectAnswerHistory {
-                          blockNumber
-                          correctIndex
-                          id
-                          questionId
-                          submitter
-                          timestamp
-                          version
-                        }
-                        answerOptions {
-                          id
-                          questionId
-                          text
-                        }
-                      }
-                      submissions {
-                        answers {
-                          id
-                        }
-                        blockNumber
-                        id
-                        quizId
-                        referendumIndex
-                        timestamp
-                        version
-                        wallet
-                      }
-                    }
-                  }`
-			}),
-			headers: {
-				'Accept': 'application/json, multipart/mixed',
-				'content-type': 'application/json'
-				// 'Sec-Fetch-Dest': 'empty',
-				// 'Sec-Fetch-Mode': 'cors',
-				// 'Sec-Fetch-Site': 'same-origin'
-			},
-			method: 'POST'
-			})
-			.then(async (res) => {
-				const response = await res.json();
-				if(response && response.data && response.data.quizzes) {
-					setQuiz(response.data.quizzes[0]);
-					console.log(response.data);
-				}
-			}).catch((err) => {
-				console.log(err);
-				console.log('Error in fetching voters :', err);
-			});
-	}, [ referendumId]);
-
-	useEffect(() => {
-		fetchQuizData();
-	}, [fetchQuizData, referendumId]);
 
 	const voteReferendum = async (aye: boolean) => {
 		if (!referendumId && referendumId !== 0) {
@@ -163,7 +96,7 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 				});
 				setLastVote(aye ? 'aye' : 'nay');
 				console.log(`Completed at block hash #${status.asInBlock.toString()}`);
-				setShowModal(false);
+				setVoteComplete(true);
 			} else {
 				if (status.isBroadcast){
 					setLoadingStatus({ isLoading: true, message: 'Broadcasting the vote' });
@@ -173,6 +106,7 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 		}).catch((error) => {
 			setLoadingStatus({ isLoading: false, message: '' });
 			console.log(':( transaction failed');
+			setVoteComplete(false);
 			console.error('ERROR:', error);
 			queueNotification({
 				header: 'Failed!',
@@ -205,12 +139,12 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 	return (
 		<div className={className}>
 			{quiz?.questions &&
-			<Button
-				className='bg-pink_primary hover:bg-pink_secondary text-lg mb-3 text-white border-pink_primary hover:border-pink_primary rounded-lg flex items-center justify-center p-7 w-[95%] mx-auto'
-				onClick={() => openModal(false)}
-			>
+				<Button
+					className='bg-pink_primary hover:bg-pink_secondary text-lg mb-3 text-white border-pink_primary hover:border-pink_primary rounded-lg flex items-center justify-center p-7 w-[95%] mx-auto'
+					onClick={() => openModal(false)}
+				>
 				Take Quiz and Vote
-			</Button>}
+				</Button>}
 			<Button
 				type='primary'
 				className='rounded-lg mb-6 flex items-center justify-center text-lg p-7 w-[95%] mx-auto'
@@ -225,15 +159,16 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 					setShowModal(false);
 					setQuizLevel(0);
 					setOnlyVote(false);
+					setVoteComplete(false);
 				}}
 				footer={null}
 				width={600}
 			>
 				{!onlyVote && quizLevel === 0 ? <WelcomeScreen setQuizLevel={setQuizLevel} />
 					: !onlyVote && quizLevel === 1 ? <Spin tip={loadingStatus.message} spinning={loadingStatus.isLoading} indicator={<LoadingOutlined />}>
-						<QuizForm setLoading={setLoadingStatus} quiz={quiz} referendumId={referendumId} setQuizLevel={setQuizLevel}/>
+						<QuizForm loading={loadingStatus.isLoading} setLoading={setLoadingStatus} quiz={quiz} referendumId={referendumId} setQuizLevel={setQuizLevel}/>
 					</Spin>
-						: <Spin tip={loadingStatus.message} spinning={loadingStatus.isLoading} indicator={<LoadingOutlined />}>
+						: voteComplete ? <VoteSuccessful message={`Vote on Referendum #${referendumId} is successful.`} /> : <Spin tip={loadingStatus.message} spinning={loadingStatus.isLoading} indicator={<LoadingOutlined />}>
 							{onlyVote && quiz?.questions && <div className='p-3 mb-7 flex items-center justify-center text-sidebarBlue bg-opacity-10 text-[14px] bg-pink_primary rounded-md'><img src={frowningFace} height={25} width={25} className='mr-2' alt='frowning-face' /><span> You&apos;re missing on a chance to win an exclusive NFT. <span className='text-pink_primary underline cursor-pointer' onClick={() => { setQuizLevel(0); setOnlyVote(false); }}>Take Quiz Now</span></span></div>}
 							<h4 className='dashboard-heading mb-7'>Cast Your Vote</h4>
 							<BalanceInput

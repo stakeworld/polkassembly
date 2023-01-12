@@ -5,6 +5,8 @@
 import { Signer } from '@polkadot/api/types';
 import { Button, Form, Radio } from 'antd';
 import React, { useContext, useEffect,useState } from 'react';
+import SendingNFT from 'src/assets/lottie-graphics/SendingNFT';
+import WrongQuizAnswers from 'src/assets/lottie-graphics/WrongQuizAnswers';
 import ExtensionNotDetected from 'src/components/ExtensionNotDetected';
 import { ApiContext } from 'src/context/ApiContext';
 import { useGetAllAccounts } from 'src/hooks';
@@ -14,7 +16,14 @@ import ErrorAlert from 'src/ui-components/ErrorAlert';
 import { SubmitQuizAnswers } from './data/quiz-service';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const QuizForm = ({ className, quiz, referendumId, setLoading, setQuizLevel }: { className?: string, referendumId: Number | null | undefined, quiz: any, setLoading: (status: LoadingStatusType) => void, setQuizLevel: (level: Number) => void }) => {
+const QuizForm = ({ className, loading, quiz, referendumId, setLoading, setQuizLevel }: { className?: string, loading?: boolean, referendumId: Number | null | undefined, quiz: any, setLoading: (status: LoadingStatusType) => void, setQuizLevel: (level: Number) => void }) => {
+
+	const correctAnswersIndex = quiz?.questions?.map(( question: any ) => {
+		return {
+			correctIndex: question?.indexCorrectAnswerHistory?.correctIndex,
+			questionId: question?.id
+		};
+	});
 
 	const { accounts, accountsMap, noAccounts, noExtension, signersMap } = useGetAllAccounts();
 
@@ -23,6 +32,7 @@ const QuizForm = ({ className, quiz, referendumId, setLoading, setQuizLevel }: {
 	const [userAnswers, setUserAnswers] = useState<any>({});
 	const [address, setAddress] = useState<string>('');
 	const [signer, setSigner] = useState<Signer>();
+	const [wrongAnswer, setWrongAnswer] = useState<boolean>(false);
 	const [form] = Form.useForm();
 
 	useEffect(() => {
@@ -52,7 +62,20 @@ const QuizForm = ({ className, quiz, referendumId, setLoading, setQuizLevel }: {
 		}
 		SubmitQuizAnswers(signer, setLoading, referendumId, address, userAnswers.quizAnswers[`${referendumId}`], quiz.version, api).then(
 			() => {
-				setQuizLevel(2);
+				const correctAnswer = correctAnswersIndex?.map((a: any) => {
+					return userAnswers.quizAnswers[`${referendumId}`].answers[`${a.questionId}`][a.correctIndex - 1] === true;
+				});
+				if(!correctAnswer.includes(false)){
+					setQuizLevel(2);
+					setWrongAnswer(false);
+				}
+				else{
+					setWrongAnswer(true);
+					setTimeout(() => {
+						setWrongAnswer(false);
+						setQuizLevel(2);
+					}, 5000);
+				}
 				setUserAnswers((state: any) => ({
 					...state,
 					quizAnswers: {
@@ -68,7 +91,7 @@ const QuizForm = ({ className, quiz, referendumId, setLoading, setQuizLevel }: {
 		);
 	};
 
-	function onChangeInputs( e: any, questionIndex: Number, options: Number ) {
+	function onChangeInputs( e: any, questionIndex: string, options: number ) {
 		console.log(e.target.value);
 		const qAnswer: any = [];
 		console.log(options);
@@ -96,41 +119,43 @@ const QuizForm = ({ className, quiz, referendumId, setLoading, setQuizLevel }: {
 	}
 
 	return (
-		<div className={className}>
+		<div className={`${className} `}>
 			<h4 className='dashboard-heading mb-7'>Take Quiz and Vote</h4>
 			{noAccounts && <ErrorAlert errorMsg='You need at least one account in your wallet extenstion to use this feature.' />}
 			{noExtension && <ExtensionNotDetected />}
-			{!noAccounts && !noExtension &&
-						<Form form={form} className='max-h-full overflow-y-auto' onFinish={onSend}>
-							{quiz?.questions?.map(( { text, answerOptions }: { text: string, answerOptions: Array<any> }, i:any) => {
-								const selectOptions = answerOptions?.map( (a,j) => {
-									return {
-										label: <div className='text-sidebarBlue font-medium hover:text-pink_primary duration-300 transition-colors'>{a.text}</div>,
-										value: j
-									// bind the checked value of the inputs to state values
-									// checked: userAnswers?.answers?.[i] && userAnswers?.answers?.[i][j]
-									};
-								});
-								return (
-									<>
-										<div className='text-sidebarBlue font-medium text-[14px] mb-2'>{`Q${i + 1})`} {text}</div>
-										<Form.Item name='radio' rules={[{ required: true }]}>
-											<Radio.Group className='w-full' onChange={(e) => onChangeInputs(e, i, selectOptions.length)}>
-												{selectOptions.map((option) => (
-													<div key={option.value} className='border-[1px] border-solid border-grey_border rounded-md mb-2 px-2 py-1 w-full'>
-														<Radio name={ `ref${referendumId}question${i}` } value={option.value}>{option.label}</Radio>
-													</div>
-												))}
-											</Radio.Group>
-										</Form.Item>
-									</>
+			{loading && <SendingNFT/>}
+			{wrongAnswer && <WrongQuizAnswers/>}
+			{!noAccounts && !noExtension && quiz?.questions &&
+				<Form form={form} className='max-h-full overflow-y-auto' onFinish={onSend}>
+					{quiz?.questions?.map(( { text, answerOptions, id }: { text: string, answerOptions: Array<any>, id: string }, i:any) => {
+						const selectOptions = answerOptions?.map( (a,j) => {
+							return {
+								label: <div className='text-sidebarBlue font-medium hover:text-pink_primary duration-300 transition-colors'>{a.text}</div>,
+								value: j
+								// bind the checked value of the inputs to state values
+								// checked: userAnswers?.answers?.[i] && userAnswers?.answers?.[i][j]
+							};
+						});
+						return (
+							<>
+								<div className='text-sidebarBlue font-medium text-[14px] mb-2'>{`Q${i + 1})`} {text}</div>
+								<Form.Item name='radio' rules={[{ required: true }]}>
+									<Radio.Group className='w-full' onChange={(e) => onChangeInputs(e, id, selectOptions.length)}>
+										{selectOptions.map((option) => (
+											<div key={option.value} className='border-[1px] border-solid border-grey_border rounded-md mb-2 px-2 py-1 w-full'>
+												<Radio name={ `ref${referendumId}question${i}` } value={option.value}>{option.label}</Radio>
+											</div>
+										))}
+									</Radio.Group>
+								</Form.Item>
+							</>
 
-								);
-							})}
-							<div className='flex justify-end'>
-								<Button htmlType='submit' className='bg-pink_primary hover:bg-pink_secondary text-white border-pink_primary hover:border-pink_primary rounded-md'>Next</Button>
-							</div>
-						</Form>
+						);
+					})}
+					<div className='flex justify-end'>
+						<Button htmlType='submit' className='bg-pink_primary hover:bg-pink_secondary text-white border-pink_primary hover:border-pink_primary rounded-md'>Next</Button>
+					</div>
+				</Form>
 			}
 		</div>
 	);
