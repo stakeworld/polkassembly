@@ -2,9 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ClockCircleOutlined } from '@ant-design/icons';
-import { Timeline } from 'antd';
 import BN from 'bn.js';
+import moment from 'moment';
 import * as React from 'react';
 import { useBlockTime, useCurrentBlock } from 'src/hooks';
 import StatusTag from 'src/ui-components/StatusTag';
@@ -18,76 +17,99 @@ interface BlockStatus {
 	status: string
 }
 
-interface Props {
-	className?: string
-	statuses: BlockStatus[]
+interface ITimelineContainerProps {
+	className?: string;
+	statuses: BlockStatus[];
+	title?: string;
 }
 
 function sortfunc(a: BlockStatus, b: BlockStatus) {
 	return a.blockNumber - b.blockNumber;
 }
 
-const TimelineContainer = ({ className, statuses }: Props) => {
+const TimelineContainer: React.FC<ITimelineContainerProps> = (props) => {
+	const { statuses, title } = props;
 	const { blocktime } = useBlockTime();
 	const ZERO = new BN(0);
 	const currentBlock = useCurrentBlock() || ZERO;
 
-	const StatusDiv = ({ status, position } : { status: string, position: string }) => {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const StatusDiv = ({ status } : { status: string }) => {
 		return (
-			<div className={`${position === 'left' ? 'flex-row-reverse ml-4 -mr-[70px] lg:-mr-[94px]' : 'mr-4 -ml-[70px] lg:-ml-[94px]'} flex items-center`}>
-				<div className="h-[2px] bg-gray-200 w-[20px] lg:w-[40px]" />
+			<div className='flex items-center absolute -top-3.5 justify-center'>
 				<StatusTag colorInverted={true} status={status}/>
 			</div>
 		);
 	};
 
-	const TimelineItems = (isMobile:boolean) =>
-		statuses.sort(sortfunc).map(({ blockNumber, status }, index) => (
-			<Timeline.Item key={status} position={index % 2 == 0 ? 'right' : 'left'}>
-				<div className={`${(index+1) % 2 != 0 && !isMobile ? 'mr-6 lg:mr-14 ml-auto' : 'ml-6 lg:ml-12'} bg-white rounded-md border border-gray-200 p-6 max-w-[450px]`}>
-					<div className="flex items-start justify-between max-w-[400px]">
-						{
-							((index+1) % 2 == 0 || isMobile) && <StatusDiv status={status} position={'right'} />
-						}
-
-						<div className='text-sm'>
-							<div className='flex items-center mb-4'>
-								Block:
-								<a className='text-pink_primary ml-2' href={`https://${NETWORK}.subscan.io/block/${blockNumber}`} target='_blank' rel="noreferrer">
-									#{`${blockNumber} `}
-								</a>
-							</div>
-							<div>
-								{currentBlock.toNumber() &&
-									<div className='flex items-center'><ClockCircleOutlined className='mr-2' /> {blockToTime(currentBlock.toNumber() - blockNumber, blocktime)} ago</div>
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const TimelineItems = (isMobile:boolean) => {
+		return (
+			<section className={`flex-1 flex ${isMobile? 'flex-col items-start gap-y-20 py-20': 'items-center'}`}>
+				{
+					statuses.sort(sortfunc).map(({ blockNumber, status }, index) => {
+						const date = blockToTime(currentBlock.toNumber() - blockNumber, blocktime);
+						const dateSplit = date.split(' ');
+						const days = Number(dateSplit[0].replace('d', ''));
+						const hours = Number(dateSplit[1].replace('h', ''));
+						const minutes = Number(dateSplit[2].replace('m', ''));
+						const blockDate = moment().subtract({
+							day: days,
+							hour: hours,
+							minute: minutes
+						}).format('Do MMMM, YYYY');
+						return (
+							<div key={status} className='flex items-center flex-1 w-full'>
+								{
+									index === 0 || isMobile?
+										<div className='grow-[2] min-w-[20px] h-[1px] bg-[#F796C9]'></div>
+										: null
+								}
+								<article className='flex flex-col items-center gap-y-2 font-normal text-sidebarBlue px-[14px] pb-4 pt-8 rounded-lg border border-[#F796C9] relative'>
+									<StatusDiv status={status} />
+									<p className='flex items-center gap-x-1'>
+										Block:
+										<a className='text-pink_primary font-medium' href={`https://${NETWORK}.subscan.io/block/${blockNumber}`} target='_blank' rel="noreferrer">
+											#{`${blockNumber} `}
+										</a>
+									</p>
+									{
+										currentBlock.toNumber() ?
+											(
+												<p className='flex items-center'>{blockDate}</p>
+											)
+											: null
+									}
+								</article>
+								{
+									(index !== statuses.length - 1) && !isMobile ?
+										<div className='grow-[1] min-w-[10px] h-[1px] bg-[#F796C9]'></div>
+										: null
 								}
 							</div>
-						</div>
-
-						{
-							((index+1) % 2 != 0 && !isMobile) && <StatusDiv status={status} position={'left'} />
-						}
-					</div>
-				</div>
-			</Timeline.Item>
-		));
+						);
+					})
+				}
+			</section>
+		);
+	};
 
 	return (
-		<div className={className}>
-			<div className="hidden xl:block">
-				<Timeline mode="alternate">
-					{TimelineItems(false)}
-					<Timeline.Item></Timeline.Item>
-				</Timeline>
+		<section className='flex'>
+			<div className='min-h-[300px] bg-pink_primary w-[2px] relative'>
+				<span className='bg-pink_primary rounded-2xl font-medium text-base text-white min-w-[100px] px-5 h-[33px] flex items-center justify-center absolute -left-5 -top-5'>
+					{title}
+				</span>
+				<span className='bg-pink_primary rounded-full absolute -bottom-1 -left-1 w-[10px] h-[10px]'>
+				</span>
 			</div>
-
-			<div className="block xl:hidden mx-auto">
-				<Timeline mode="left">
-					{TimelineItems(true)}
-					<Timeline.Item></Timeline.Item>
-				</Timeline>
+			<div className="hidden md:flex flex-1">
+				{TimelineItems(false)}
 			</div>
-		</div>
+			<div className="flex md:hidden flex-1">
+				{TimelineItems(true)}
+			</div>
+		</section>
 	);
 };
 

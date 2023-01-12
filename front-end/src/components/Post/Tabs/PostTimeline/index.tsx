@@ -2,13 +2,13 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import React from 'react';
+import React, { FC } from 'react';
 import { BountyPostFragment, ChildBountyPostFragment, MotionPostFragment, ProposalPostFragment, ReferendumPostFragment, TechCommitteeProposalPostFragment,TipPostFragment, TreasuryProposalPostFragment } from 'src/generated/graphql';
 import { ReferendumV2PostFragment } from 'src/types';
 
 import TimelineContainer from './TimelineContainer';
 
-interface Props {
+interface IPostTimelineProps {
 	className?: string;
 	isBounty?: boolean;
 	isMotion?: boolean;
@@ -30,29 +30,30 @@ interface Props {
 	techCommitteeProposalPost: TechCommitteeProposalPostFragment | undefined;
 }
 
-const PostTimeline = ({
-	className,
-	isBounty,
-	isMotion,
-	isProposal,
-	isReferendum,
-	isReferendumV2,
-	isTreasuryProposal,
-	isTechCommitteeProposal,
-	isTipProposal,
-	isChildBounty,
-	referendumPost,
-	referendumV2Post,
-	proposalPost,
-	motionPost,
-	treasuryPost,
-	tipPost,
-	bountyPost,
-	childBountyPost,
-	techCommitteeProposalPost
-} : Props) => {
+const PostTimeline: FC<IPostTimelineProps> = (props) => {
+	const {
+		className,
+		isBounty,
+		isMotion,
+		isProposal,
+		isReferendum,
+		isReferendumV2,
+		isTreasuryProposal,
+		isTechCommitteeProposal,
+		isTipProposal,
+		isChildBounty,
+		referendumPost,
+		referendumV2Post,
+		proposalPost,
+		motionPost,
+		treasuryPost,
+		tipPost,
+		bountyPost,
+		childBountyPost,
+		techCommitteeProposalPost
+	} = props;
 	return (
-		<div className={`${className} mt-4`}>
+		<div className={`${className} p-10`}>
 			{ isTechCommitteeProposal &&
 				<TimelineContainer
 					statuses={techCommitteeProposalPost?.onchain_link?.onchain_tech_committee_proposal?.[0]?.status?.map(s => ({
@@ -99,6 +100,7 @@ const PostTimeline = ({
 							blockNumber: s.blockNumber?.number || 0,
 							status: s.status || ''
 						})) || []}
+						title='Referendum'
 					/>
 			}
 			{ isReferendumV2 &&
