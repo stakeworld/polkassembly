@@ -6,7 +6,6 @@ import { Signer } from '@polkadot/api/types';
 import { Button, Form, Radio } from 'antd';
 import React, { useContext, useEffect,useState } from 'react';
 import SendingNFT from 'src/assets/lottie-graphics/SendingNFT';
-import WrongQuizAnswers from 'src/assets/lottie-graphics/WrongQuizAnswers';
 import ExtensionNotDetected from 'src/components/ExtensionNotDetected';
 import { ApiContext } from 'src/context/ApiContext';
 import { useGetAllAccounts } from 'src/hooks';
@@ -18,13 +17,6 @@ import { SubmitQuizAnswers } from './data/quiz-service';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const QuizForm = ({ className, loading, quiz, referendumId, setLoading, setQuizLevel }: { className?: string, loading?: boolean, referendumId: Number | null | undefined, quiz: any, setLoading: (status: LoadingStatusType) => void, setQuizLevel: (level: Number) => void }) => {
 
-	const correctAnswersIndex = quiz?.questions?.map(( question: any ) => {
-		return {
-			correctIndex: question?.indexCorrectAnswerHistory?.correctIndex,
-			questionId: question?.id
-		};
-	});
-
 	const { accounts, accountsMap, noAccounts, noExtension, signersMap } = useGetAllAccounts();
 
 	const { api, apiReady } = useContext(ApiContext);
@@ -32,7 +24,6 @@ const QuizForm = ({ className, loading, quiz, referendumId, setLoading, setQuizL
 	const [userAnswers, setUserAnswers] = useState<any>({});
 	const [address, setAddress] = useState<string>('');
 	const [signer, setSigner] = useState<Signer>();
-	const [wrongAnswer, setWrongAnswer] = useState<boolean>(false);
 	const [form] = Form.useForm();
 
 	useEffect(() => {
@@ -62,20 +53,7 @@ const QuizForm = ({ className, loading, quiz, referendumId, setLoading, setQuizL
 		}
 		SubmitQuizAnswers(signer, setLoading, referendumId, address, userAnswers.quizAnswers[`${referendumId}`], quiz.version, api).then(
 			() => {
-				const correctAnswer = correctAnswersIndex?.map((a: any) => {
-					return userAnswers.quizAnswers[`${referendumId}`].answers[`${a.questionId}`][a.correctIndex - 1] === true;
-				});
-				if(!correctAnswer.includes(false)){
-					setQuizLevel(2);
-					setWrongAnswer(false);
-				}
-				else{
-					setWrongAnswer(true);
-					setTimeout(() => {
-						setWrongAnswer(false);
-						setQuizLevel(2);
-					}, 5000);
-				}
+				setQuizLevel(2);
 				setUserAnswers((state: any) => ({
 					...state,
 					quizAnswers: {
@@ -123,8 +101,7 @@ const QuizForm = ({ className, loading, quiz, referendumId, setLoading, setQuizL
 			<h4 className='dashboard-heading mb-7'>Take Quiz and Vote</h4>
 			{noAccounts && <ErrorAlert errorMsg='You need at least one account in your wallet extenstion to use this feature.' />}
 			{noExtension && <ExtensionNotDetected />}
-			{loading && <SendingNFT/>}
-			{wrongAnswer && <WrongQuizAnswers/>}
+			{loading && <SendingNFT message='Sending Answers...'/>}
 			{!noAccounts && !noExtension && quiz?.questions &&
 				<Form form={form} className='max-h-full overflow-y-auto' onFinish={onSend}>
 					{quiz?.questions?.map(( { text, answerOptions, id }: { text: string, answerOptions: Array<any>, id: string }, i:any) => {

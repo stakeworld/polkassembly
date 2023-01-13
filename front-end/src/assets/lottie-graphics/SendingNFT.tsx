@@ -8,10 +8,11 @@ import Lottie from 'react-lottie-player';
 import SendingNFTJson from './lottie-files/gift-outline.json';
 
 interface Props {
+	message?: string
 	width?: number
 }
 
-function SendingNFT({ width = 250 }: Props): ReactElement {
+function SendingNFT({ message, width = 250 }: Props): ReactElement {
 
 	return (
 		<div>
@@ -23,7 +24,7 @@ function SendingNFT({ width = 250 }: Props): ReactElement {
 				}}
 				play={true}
 			/>
-			<div className='text-sidebarBlue font-medium w-full text-center' >Sending Your NFT...</div>
+			<div className='text-sidebarBlue font-medium w-full text-center' >{message}</div>
 		</div>
 	);
 }
