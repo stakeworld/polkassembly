@@ -21,6 +21,7 @@ interface ITimelineContainerProps {
 	className?: string;
 	statuses: BlockStatus[];
 	title?: string;
+	last?: boolean;
 }
 
 function sortfunc(a: BlockStatus, b: BlockStatus) {
@@ -28,10 +29,11 @@ function sortfunc(a: BlockStatus, b: BlockStatus) {
 }
 
 const TimelineContainer: React.FC<ITimelineContainerProps> = (props) => {
-	const { statuses, title } = props;
+	const { statuses, title, last } = props;
 	const { blocktime } = useBlockTime();
 	const ZERO = new BN(0);
 	const currentBlock = useCurrentBlock() || ZERO;
+	if (statuses.length === 0) return null;
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const StatusDiv = ({ status } : { status: string }) => {
@@ -62,10 +64,10 @@ const TimelineContainer: React.FC<ITimelineContainerProps> = (props) => {
 							<div key={status} className='flex items-center flex-1 w-full'>
 								{
 									index === 0 || isMobile?
-										<div className='grow-[2] min-w-[20px] h-[1px] bg-[#F796C9]'></div>
+										<div className='grow-[1.5] min-w-[20px] max-w-[100px] h-[1px] bg-[#F796C9]'></div>
 										: null
 								}
-								<article className='flex flex-col items-center gap-y-2 font-normal text-sidebarBlue px-[14px] pb-4 pt-8 rounded-lg border border-[#F796C9] relative'>
+								<article className={`flex flex-col items-center gap-y-2 font-normal text-sidebarBlue px-[14px] pb-4 pt-8 rounded-lg border border-[#F796C9] relative ${(index === statuses.length - 1 && last)? 'border-dashed': ''}`}>
 									<StatusDiv status={status} />
 									<p className='flex items-center gap-x-1'>
 										Block:
@@ -83,7 +85,7 @@ const TimelineContainer: React.FC<ITimelineContainerProps> = (props) => {
 								</article>
 								{
 									(index !== statuses.length - 1) && !isMobile ?
-										<div className='grow-[1] min-w-[10px] h-[1px] bg-[#F796C9]'></div>
+										<div className='grow-[1] min-w-[10px] max-w-[75px] h-[1px] bg-[#F796C9]'></div>
 										: null
 								}
 							</div>

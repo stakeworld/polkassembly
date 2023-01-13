@@ -52,6 +52,7 @@ const PostTimeline: FC<IPostTimelineProps> = (props) => {
 		childBountyPost,
 		techCommitteeProposalPost
 	} = props;
+	console.log(props);
 	return (
 		<div className={`${className} p-10`}>
 			{ isTechCommitteeProposal &&
@@ -79,29 +80,67 @@ const PostTimeline: FC<IPostTimelineProps> = (props) => {
 					/>
 			}
 			{ isMotion &&
+				<>
 					<TimelineContainer
 						statuses={motionPost?.onchain_link?.onchain_motion?.[0]?.motionStatus?.map(s => ({
 							blockNumber: s.blockNumber?.number || 0,
-							status: s.status || ''
+							status: (s as any).status || ''
 						})) || []}
+						title='Motion'
 					/>
+					<TimelineContainer
+						statuses={motionPost?.onchain_link?.onchain_referendum?.[0]?.referendumStatus?.map(s => ({
+							blockNumber: s.blockNumber?.number || 0,
+							status: (s as any).status || ''
+						})) || []}
+						title='Referendum'
+						last={true}
+					/>
+				</>
 			}
 			{ isProposal &&
+				<>
 					<TimelineContainer
 						statuses={proposalPost?.onchain_link?.onchain_proposal?.[0]?.proposalStatus?.map(s => ({
 							blockNumber: s.blockNumber?.number || 0,
 							status: s.status || ''
 						})) || []}
+						title='Proposal'
 					/>
-			}
-			{ isReferendum &&
 					<TimelineContainer
-						statuses={referendumPost?.onchain_link?.onchain_referendum?.[0]?.referendumStatus?.map(s => ({
+						statuses={proposalPost?.onchain_link?.onchain_referendum?.[0]?.referendumStatus?.map((s: any) => ({
 							blockNumber: s.blockNumber?.number || 0,
 							status: s.status || ''
 						})) || []}
 						title='Referendum'
 					/>
+				</>
+			}
+			{ isReferendum &&
+					<>
+						<TimelineContainer
+							statuses={referendumPost?.onchain_link?.onchain_proposal?.[0]?.proposalStatus?.map(s => ({
+								blockNumber: s.blockNumber?.number || 0,
+								status: (s as any).status || ''
+							})) || []}
+							title='Proposal'
+						/>
+						<TimelineContainer
+							statuses={referendumPost?.onchain_link?.onchain_motion?.[0]?.motionStatus?.map(s => ({
+								blockNumber: s.blockNumber?.number || 0,
+								status: (s as any).status || ''
+							})) || []}
+							title='Motion'
+						/>
+						<TimelineContainer
+							statuses={referendumPost?.onchain_link?.onchain_referendum?.[0]?.referendumStatus?.map(s => ({
+								blockNumber: s.blockNumber?.number || 0,
+								status: s.status || ''
+							})) || []}
+							title='Referendum'
+							last={true}
+						/>
+					</>
 			}
 			{ isReferendumV2 &&
 					<TimelineContainer
