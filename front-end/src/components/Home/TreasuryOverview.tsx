@@ -12,8 +12,8 @@ import BN from 'bn.js';
 import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
 import { ApiContext } from 'src/context/ApiContext';
+import { subscanApiHeaders } from 'src/global/apiHeaders';
 import { chainProperties } from 'src/global/networkConstants';
-import subscanApiHeaders from 'src/global/subscanApiHeaders';
 import { useBlockTime } from 'src/hooks';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
 import blockToDays from 'src/util/blockToDays';
@@ -86,18 +86,25 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 		api.derive.balances
 			?.account(u8aToHex(result.treasuryAccount))
 			.then((treasuryBalance) => {
-				setTreasuryBalance(treasuryBalance);
+				api.query.system.account(result.treasuryAccount).then(res => {
+					const freeBalance = new BN(res?.data?.free) || BN_ZERO;
+					treasuryBalance.freeBalance = freeBalance as Balance;
+				})
+					.catch(e => console.error(e))
+					.finally(() => {
+						setTreasuryBalance(treasuryBalance);
+					});
 			});
 
 		if (treasuryBalance) {
 			setResult(() => ({
 				burn:
-					treasuryBalance.freeBalance.gt(BN_ZERO) &&
+				treasuryBalance.freeBalance.gt(BN_ZERO) &&
 					!api.consts.treasury.burn.isZero()
-						? api.consts.treasury.burn
-							.mul(treasuryBalance.freeBalance)
-							.div(BN_MILLION)
-						: BN_ZERO,
+					? api.consts.treasury.burn
+						.mul(treasuryBalance.freeBalance)
+						.div(BN_MILLION)
+					: BN_ZERO,
 				spendPeriod: api.consts.treasury
 					? api.consts.treasury.spendPeriod
 					: BN_ZERO,
@@ -241,7 +248,7 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 	return (
 		<div className={`${className} grid grid-rows-2 grid-cols-2 grid-flow-col gap-4 lg:gap-0 lg:flex`}>
 			{/* Available */}
-			<div className="flex-1 lg:mr-7 bg-white drop-shadow-md p-3 lg:p-6 rounded-md">
+			<div className="flex-1 flex flex-col lg:mr-7 bg-white drop-shadow-md p-3 lg:p-6 rounded-md">
 				<div className="text-navBlue text-xs flex items-center">
 					<span className="mr-2">
 						Available
@@ -251,7 +258,7 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 						text='Funds collected through a portion of block production rewards, transaction fees, slashing, staking inefficiencies, etc.'
 					/>
 				</div>
-				<div className="mt-3 text-sidebarBlue font-medium text-lg">
+				<div className="mt-3 flex-1 text-sidebarBlue font-medium text-lg">
 					{result.value ?
 						<span>
 							{formatUSDWithUnits(formatBnBalance(
@@ -278,9 +285,10 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 			</div>
 
 			{/* CurrentPrice */}
-			<div className="flex-1 lg:mr-7 bg-white drop-shadow-md p-3 lg:p-6 rounded-md">
-				<div className="text-navBlue text-xs">Current Price of {chainProperties[NETWORK].tokenSymbol}</div>
-				<div className="mt-3 text-sidebarBlue font-medium text-lg">
+			<div className="flex-1 flex flex-col lg:mr-7 bg-white drop-shadow-md p-3 lg:p-6 rounded-md">
+				<div className="text-navBlue text-xs hidden md:block">Current Price of {chainProperties[NETWORK].tokenSymbol}</div>
+				<div className="text-navBlue text-xs block md:hidden">{chainProperties[NETWORK].tokenSymbol} Price</div>
+				<div className="mt-3 flex-1 text-sidebarBlue font-medium text-lg">
 					{currentTokenPrice && !isNaN(Number(currentTokenPrice))
 						? `$${currentTokenPrice}`
 						: <LoadingOutlined />
@@ -300,7 +308,7 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 			</div>
 
 			{/* Spend Period */}
-			{!inTreasuryProposals &&  <div className="flex-1 lg:mr-7 bg-white drop-shadow-md p-3 lg:p-6 rounded-md">
+			{!inTreasuryProposals &&  <div className="flex-1 flex flex-col lg:mr-7 bg-white drop-shadow-md p-3 lg:p-6 rounded-md">
 				<div className="text-navBlue text-xs flex items-center">
 					<span className="mr-2">
 						Spend Period
@@ -311,13 +319,14 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 					/>
 				</div>
 
-				<div className="mt-3 text-sidebarBlue font-medium text-lg">
+				<div className="mt-3 flex-1 text-sidebarBlue font-medium text-lg">
 					{spendPeriod?.total
 						? <span>
-							<span>{spendPeriod.days} </span>
-							<span className='text-navBlue'>days </span>
-							<span>{spendPeriod.hours} </span>
-							<span className='text-navBlue'>hrs </span>
+							<span className='text-xs md:text-lg'>{spendPeriod.days} </span>
+							<span className='text-navBlue hidden md:inline-block mr-1'>days </span>
+							<span className='text-navBlue inline-block md:hidden mr-1 text-xs'>d </span>
+							<span className='text-xs md:text-lg'>{spendPeriod.hours} </span>
+							<span className='text-navBlue text-xs md:text-lg'>hrs </span>
 							<span className="text-navBlue text-xs"> / {spendPeriod.total} days </span>
 						</span>
 						: <LoadingOutlined />
@@ -330,7 +339,7 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 			</div>}
 
 			{/* Next Burn */}
-			<div className="flex-1 bg-white drop-shadow-md p-3 lg:p-6 rounded-md">
+			<div className="flex-1 flex flex-col bg-white drop-shadow-md p-3 lg:p-6 rounded-md">
 				<div className="text-navBlue text-xs flex items-center">
 					<span className="mr-2">
 						Next Burn
@@ -341,7 +350,7 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 					/>
 				</div>
 
-				<div className="mt-3 text-sidebarBlue font-medium text-lg">
+				<div className="mt-3 flex-1 text-sidebarBlue font-medium text-lg">
 					{result.burn ? (
 						<span>
 							{formatUSDWithUnits(formatBnBalance(
@@ -353,8 +362,7 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 								}
 							))} <span className='text-navBlue'>{chainProperties[NETWORK]?.tokenSymbol}</span>
 						</span>
-					) :
-						<LoadingOutlined />
+					) : <LoadingOutlined />
 					}
 				</div>
 				<Divider className='my-3' />

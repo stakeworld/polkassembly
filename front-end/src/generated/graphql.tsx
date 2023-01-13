@@ -10116,6 +10116,7 @@ export type ReferendumV2 = {
   referendumId: Scalars['Int'];
   referendumStatus?: Maybe<Array<ReferendumStatusV2>>;
   submitted?: Maybe<Scalars['Json']>;
+  tally?: Maybe<Scalars['Json']>;
   submittedAt: Scalars['String'];
   trackNumber: Scalars['Int'];
 };
@@ -29871,7 +29872,7 @@ export type ReferendumV2PostAndCommentsQuery = (
       & Pick<Onchain_Links, 'proposer_address' | 'track' | 'origin'>
       & { onchain_referendumv2: Array<Maybe<(
         { __typename?: 'ReferendumV2' }
-        & Pick<ReferendumV2, 'deciding' | 'decisionDeposit' | 'enactmentAfter' | 'enactmentAt' | 'id' | 'origin' | 'preimageHash' | 'referendumId' | 'trackNumber' | 'submitted' | 'submittedAt'>
+        & Pick<ReferendumV2, 'deciding' | 'decisionDeposit' | 'enactmentAfter' | 'enactmentAt' | 'id' | 'origin' | 'preimageHash' | 'referendumId' | 'trackNumber' | 'tally' | 'submitted' | 'submittedAt'>
         & { referendumStatus?: Maybe<Array<(
           { __typename?: 'ReferendumStatusV2' }
           & Pick<ReferendumStatusV2, 'id' | 'status'>
@@ -30690,6 +30691,9 @@ export type PostFieldsFragment = (
   ), type: (
     { __typename?: 'post_types' }
     & Pick<Post_Types, 'name' | 'id'>
+  ), topic: (
+    { __typename?: 'post_topics' }
+    & Pick<Post_Topics, 'name' | 'id'>
   ), last_update?: Maybe<(
     { __typename?: 'post_last_update' }
     & Pick<Post_Last_Update, 'last_update'>
@@ -30737,6 +30741,62 @@ export type DiscussionPostsIdAscQueryVariables = Exact<{
   offset?: Scalars['Int'];
 }>;
 
+export type LatestDiscussionPostsFilteredQueryVariables = Exact<{
+  limit?: Scalars['Int'];
+  offset?: Scalars['Int'];
+  topic: Scalars['String'];
+}>;
+
+
+export type LatestDiscussionPostsFilteredQuery = (
+  { __typename?: 'query_root' }
+  & { posts: Array<(
+    { __typename?: 'posts' }
+    & { post_reactions: Array<(
+      { __typename?: 'post_reactions' }
+      & Pick<Post_Reactions, 'reaction'>
+    )> }
+    & PostFieldsFragment
+  )> }
+);
+
+export type DiscussionPostsIdDescFilteredQueryVariables = Exact<{
+  limit?: Scalars['Int'];
+  offset?: Scalars['Int'];
+  topic: Scalars['String'];
+}>;
+
+
+export type DiscussionPostsIdDescFilteredQuery = (
+  { __typename?: 'query_root' }
+  & { posts: Array<(
+    { __typename?: 'posts' }
+    & { post_reactions: Array<(
+      { __typename?: 'post_reactions' }
+      & Pick<Post_Reactions, 'reaction'>
+    )> }
+    & PostFieldsFragment
+  )> }
+);
+
+export type DiscussionPostsIdAscFilteredQueryVariables = Exact<{
+  limit?: Scalars['Int'];
+  offset?: Scalars['Int'];
+  topic: Scalars['String'];
+}>;
+
+
+export type DiscussionPostsIdAscFilteredQuery = (
+  { __typename?: 'query_root' }
+  & { posts: Array<(
+    { __typename?: 'posts' }
+    & { post_reactions: Array<(
+      { __typename?: 'post_reactions' }
+      & Pick<Post_Reactions, 'reaction'>
+    )> }
+    & PostFieldsFragment
+  )> }
+);
 
 export type DiscussionPostsIdAscQuery = (
   { __typename?: 'query_root' }
@@ -33033,6 +33093,10 @@ export const PostFieldsFragmentDoc = gql`
     name
     id
   }
+  topic {
+    name
+    id
+  }
   last_update {
     last_update
   }
@@ -35097,6 +35161,7 @@ export const ReferendumV2PostAndCommentsDocument = gql`
         preimageHash
         referendumId
         trackNumber
+        tally
         submitted
         submittedAt
         referendumStatus(orderBy: id_DESC) {
@@ -36508,6 +36573,135 @@ export function useDiscussionPostsIdAscLazyQuery(baseOptions?: ApolloReactHooks.
 export type DiscussionPostsIdAscQueryHookResult = ReturnType<typeof useDiscussionPostsIdAscQuery>;
 export type DiscussionPostsIdAscLazyQueryHookResult = ReturnType<typeof useDiscussionPostsIdAscLazyQuery>;
 export type DiscussionPostsIdAscQueryResult = ApolloReactCommon.QueryResult<DiscussionPostsIdAscQuery, DiscussionPostsIdAscQueryVariables>;
+export const LatestDiscussionPostsFilteredDocument = gql`
+    query LatestDiscussionPostsFiltered($limit: Int! = 20, $offset: Int! = 0, $topic: String!) {
+  posts(
+    order_by: {last_update: {last_update: desc}}
+    limit: $limit
+    offset: $offset
+    where: {type: {id: {_eq: 1}}, topic: {name: {_eq: $topic}}}
+  ) {
+    ...postFields
+    post_reactions {
+      reaction
+    }
+  }
+}
+    ${PostFieldsFragmentDoc}`;
+
+/**
+ * __useLatestDiscussionPostsFilteredQuery__
+ *
+ * To run a query within a React component, call `useLatestDiscussionPostsFilteredQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLatestDiscussionPostsFilteredQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLatestDiscussionPostsFilteredQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *      topic: // value for 'topic'
+ *   },
+ * });
+ */
+export function useLatestDiscussionPostsFilteredQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<LatestDiscussionPostsFilteredQuery, LatestDiscussionPostsFilteredQueryVariables>) {
+        return ApolloReactHooks.useQuery<LatestDiscussionPostsFilteredQuery, LatestDiscussionPostsFilteredQueryVariables>(LatestDiscussionPostsFilteredDocument, baseOptions);
+      }
+export function useLatestDiscussionPostsFilteredLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<LatestDiscussionPostsFilteredQuery, LatestDiscussionPostsFilteredQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<LatestDiscussionPostsFilteredQuery, LatestDiscussionPostsFilteredQueryVariables>(LatestDiscussionPostsFilteredDocument, baseOptions);
+        }
+export type LatestDiscussionPostsFilteredQueryHookResult = ReturnType<typeof useLatestDiscussionPostsFilteredQuery>;
+export type LatestDiscussionPostsFilteredLazyQueryHookResult = ReturnType<typeof useLatestDiscussionPostsFilteredLazyQuery>;
+export type LatestDiscussionPostsFilteredQueryResult = ApolloReactCommon.QueryResult<LatestDiscussionPostsFilteredQuery, LatestDiscussionPostsFilteredQueryVariables>;
+export const DiscussionPostsIdDescFilteredDocument = gql`
+    query DiscussionPostsIdDescFiltered($limit: Int! = 20, $offset: Int! = 0, $topic: String!) {
+  posts(
+    order_by: {id: desc}
+    limit: $limit
+    offset: $offset
+    where: {type: {id: {_eq: 1}}, topic: {name: {_eq: $topic}}}
+  ) {
+    ...postFields
+    post_reactions {
+      reaction
+    }
+  }
+}
+    ${PostFieldsFragmentDoc}`;
+
+/**
+ * __useDiscussionPostsIdDescFilteredQuery__
+ *
+ * To run a query within a React component, call `useDiscussionPostsIdDescFilteredQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDiscussionPostsIdDescFilteredQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDiscussionPostsIdDescFilteredQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *      topic: // value for 'topic'
+ *   },
+ * });
+ */
+export function useDiscussionPostsIdDescFilteredQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<DiscussionPostsIdDescFilteredQuery, DiscussionPostsIdDescFilteredQueryVariables>) {
+        return ApolloReactHooks.useQuery<DiscussionPostsIdDescFilteredQuery, DiscussionPostsIdDescFilteredQueryVariables>(DiscussionPostsIdDescFilteredDocument, baseOptions);
+      }
+export function useDiscussionPostsIdDescFilteredLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<DiscussionPostsIdDescFilteredQuery, DiscussionPostsIdDescFilteredQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<DiscussionPostsIdDescFilteredQuery, DiscussionPostsIdDescFilteredQueryVariables>(DiscussionPostsIdDescFilteredDocument, baseOptions);
+        }
+export type DiscussionPostsIdDescFilteredQueryHookResult = ReturnType<typeof useDiscussionPostsIdDescFilteredQuery>;
+export type DiscussionPostsIdDescFilteredLazyQueryHookResult = ReturnType<typeof useDiscussionPostsIdDescFilteredLazyQuery>;
+export type DiscussionPostsIdDescFilteredQueryResult = ApolloReactCommon.QueryResult<DiscussionPostsIdDescFilteredQuery, DiscussionPostsIdDescFilteredQueryVariables>;
+export const DiscussionPostsIdAscFilteredDocument = gql`
+    query DiscussionPostsIdAscFiltered($limit: Int! = 20, $offset: Int! = 0, $topic: String!) {
+  posts(
+    order_by: {id: asc}
+    limit: $limit
+    offset: $offset
+    where: {type: {id: {_eq: 1}}, topic: {name: {_eq: $topic}}}
+  ) {
+    ...postFields
+    post_reactions {
+      reaction
+    }
+  }
+}
+    ${PostFieldsFragmentDoc}`;
+
+/**
+ * __useDiscussionPostsIdAscFilteredQuery__
+ *
+ * To run a query within a React component, call `useDiscussionPostsIdAscFilteredQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDiscussionPostsIdAscFilteredQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDiscussionPostsIdAscFilteredQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *      topic: // value for 'topic'
+ *   },
+ * });
+ */
+export function useDiscussionPostsIdAscFilteredQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<DiscussionPostsIdAscFilteredQuery, DiscussionPostsIdAscFilteredQueryVariables>) {
+        return ApolloReactHooks.useQuery<DiscussionPostsIdAscFilteredQuery, DiscussionPostsIdAscFilteredQueryVariables>(DiscussionPostsIdAscFilteredDocument, baseOptions);
+      }
+export function useDiscussionPostsIdAscFilteredLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<DiscussionPostsIdAscFilteredQuery, DiscussionPostsIdAscFilteredQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<DiscussionPostsIdAscFilteredQuery, DiscussionPostsIdAscFilteredQueryVariables>(DiscussionPostsIdAscFilteredDocument, baseOptions);
+        }
+export type DiscussionPostsIdAscFilteredQueryHookResult = ReturnType<typeof useDiscussionPostsIdAscFilteredQuery>;
+export type DiscussionPostsIdAscFilteredLazyQueryHookResult = ReturnType<typeof useDiscussionPostsIdAscFilteredLazyQuery>;
+export type DiscussionPostsIdAscFilteredQueryResult = ApolloReactCommon.QueryResult<DiscussionPostsIdAscFilteredQuery, DiscussionPostsIdAscFilteredQueryVariables>;
 export const MotionPostAndCommentsDocument = gql`
     query MotionPostAndComments($id: Int!) {
   posts(where: {onchain_link: {onchain_motion_id: {_eq: $id}}}) {

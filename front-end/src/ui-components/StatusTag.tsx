@@ -49,15 +49,14 @@ export default styled(StatusTag).attrs(( { status }: Props) => ({
 	}
 
 	&.${gov2ReferendumStatus.DECIDING} {
-		border-color: #FFA621;
-		background: #FFA621;
+		border-color: #CA5CDD;
+		background: #CA5CDD;
 		
 		&.inverted {
-			color: #FFA621;
+			color: #CA5CDD;
 		}
 	}
 
-	&.${gov2ReferendumStatus.ONGOING},
 	&.${gov2ReferendumStatus.SUBMITTED},
 	&.${referendumStatus.STARTED},
 	&.${proposalStatus.PROPOSED},
@@ -85,7 +84,6 @@ export default styled(StatusTag).attrs(( { status }: Props) => ({
 		}
 	}
 
-	&.${gov2ReferendumStatus.APPROVED},
 	&.${gov2ReferendumStatus.CONFIRMED},
 	&.${proposalStatus.TABLED},
 	&.${referendumStatus.PASSED},

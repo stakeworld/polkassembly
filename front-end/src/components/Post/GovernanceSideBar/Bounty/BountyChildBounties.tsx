@@ -27,18 +27,28 @@ const BountyChildBounties = ({ onchainId }: Props) => {
 			<GovSidebarCard>
 				<h4 className='dashboard-heading mb-6'>{data.childBounties.length} Child Bounties</h4>
 
-				{data.childBounties.map(childBounty => (
-					childBounty && <Link to={`/child_bounty/${childBounty.childBountyId}`} key={childBounty.childBountyId} className='mb-6'>
-						<div className='my-4 border-2 border-grey_light hover:border-pink_primary hover:shadow-xl transition-all duration-200 rounded-md p-2 md:p-4'>
-							<div className="flex justify-between gap-x-4">
-								<div className='w-[70%] break-words'>
-									<h5>{childBounty.description} || {`#${childBounty.childBountyId} Untitled`}</h5>
+				{data.childBounties.map(childBounty => {
+
+					const urlRegex = /(https?:\/\/[^\s]+)/g;
+					const description = childBounty?.description;
+
+					const words = description?.split(' ');
+					const descriptionWithURL = words?.map((word, i) => {
+						return word.match(urlRegex) ? <a onClick={(e) => e.stopPropagation()} key={`${word}${i}`} href={word} rel="noreferrer" target='_blank'>{word}{' '}</a> : word + ' ';
+					});
+
+					return (
+						childBounty && <Link to={`/child_bounty/${childBounty.childBountyId}`} key={childBounty.childBountyId} className='mb-6'>
+							<div className='my-4 border-2 border-grey_light hover:border-pink_primary hover:shadow-xl transition-all duration-200 rounded-md p-2 md:p-4'>
+								<div className="flex justify-between gap-x-4">
+									<div className='w-[70%] break-words'>
+										<h5 id='desc'>{descriptionWithURL || `#${childBounty.childBountyId} Untitled`}</h5>
+									</div>
+									{childBounty.childBountyStatus && childBounty.childBountyStatus.length > 0 && <StatusTag className='statusTag' status={childBounty.childBountyStatus?.[childBounty.childBountyStatus.length - 1]?.status} />}
 								</div>
-								{childBounty.childBountyStatus && childBounty.childBountyStatus.length > 0 && <StatusTag className='statusTag' status={childBounty.childBountyStatus?.[childBounty.childBountyStatus.length - 1]?.status} />}
 							</div>
-						</div>
-					</Link>
-				))}
+						</Link>
+					);})}
 			</GovSidebarCard>
 			: <></>
 	);

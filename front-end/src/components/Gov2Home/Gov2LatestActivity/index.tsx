@@ -5,40 +5,55 @@
 /* eslint-disable sort-keys */
 import styled from '@xstyled/styled-components';
 import { Tabs } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import DiscussionPostsTable from 'src/components/Home/LatestActivity/DiscussionPostsTable';
 import { trackInfo } from 'src/global/post_trackInfo';
+import useGov1PostsCount from 'src/hooks/useGov1PostsCount';
+import useGov2PostsCount from 'src/hooks/useGov2PostsCount';
+import CountBadgePill from 'src/ui-components/CountBadgePill';
 
 import AllGov2PostsTable from './AllGov2PostsTable';
 import TrackPostsTable from './TrackPostsTable';
 
-const tabItems = [
-	{ label: 'All', key: 'all', children: <AllGov2PostsTable /> },
-	{ label: 'Discussions', key: 'discussions', children: <DiscussionPostsTable /> }
-];
-
-for (const trackName of Object.keys(trackInfo)) {
-	tabItems.push({
-		label: trackName.split(/(?=[A-Z])/).join(' '),
-		key: trackName,
-		children: <TrackPostsTable trackNumber={trackInfo[trackName].trackId} />
-	});
-}
-
 const Gov2LatestActivity = ({ className }: {className?:string}) => {
+	const [currentTab, setCurrentTab] = useState('all');
+	const { discussionsCount } = useGov1PostsCount();
+	const gov2Counts = useGov2PostsCount();
+
+	const tabItems = [
+		{ label: 'All', key: 'all', children: <AllGov2PostsTable /> },
+		{ label: <CountBadgePill label='Discussions' count={discussionsCount} />,
+			key: 'discussions',
+			children: <DiscussionPostsTable />
+		}
+	];
+
+	for (const trackName of Object.keys(trackInfo)) {
+		tabItems.push({
+			label: <CountBadgePill label={trackName.split(/(?=[A-Z])/).join(' ')} count={gov2Counts[trackName]} />,
+			key: trackName.split(/(?=[A-Z])/).join('-').toLowerCase(),
+			children: <TrackPostsTable trackNumber={trackInfo[trackName].trackId} />
+		});
+	}
+
 	return (
 		<div className={`${className} bg-white drop-shadow-md p-2 lg:p-6 rounded-md`}>
-			<h2 className='dashboard-heading mb-6'>Latest Activity</h2>
+			<div className="flex justify-between items-center">
+				<h2 className='dashboard-heading mb-6'>Latest Activity</h2>
+				{currentTab !== 'all' && <Link className='text-sidebarBlue font-medium hover:text-pink_primary py-0.5 px-2 rounded-lg' to={`/${currentTab}`}>View all</Link>}
+			</div>
 			<Tabs
 				type="card"
 				items={tabItems}
 				className='ant-tabs-tab-bg-white text-sidebarBlue font-medium'
+				onChange={(key) => setCurrentTab(key)}
 			/>
 		</div>
 	);
 };
 
-export default styled(Gov2LatestActivity)`
+export default React.memo(styled(Gov2LatestActivity)`
 	th {
 		color: nav_link !important;
 	}
@@ -73,4 +88,4 @@ export default styled(Gov2LatestActivity)`
 	.ant-tabs-tab-bg-white .ant-tabs-nav:before{
 		border-bottom: 1px solid #E1E6EB;
 	}
-`;
+`);

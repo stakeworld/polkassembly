@@ -291,7 +291,7 @@ const startSubscriptions = (client: SubscriptionClient): void => {
 	}).subscribe({
 		next: ({ data }): void => {
 			console.log('ReferendumV2 data received', JSON.stringify(data, null, 2));
-			if (data?.referendmV2.mutation === subscriptionMutation.Created) {
+			if (data?.referendumV2?.mutation === subscriptionMutation.Created) {
 				const {
 					referendumId,
 					referendumStatus,
@@ -299,20 +299,20 @@ const startSubscriptions = (client: SubscriptionClient): void => {
 					trackNumber,
 					preimage,
 					submitted
-				} = data?.referendmV2?.node;
+				} = data?.referendumV2?.node;
 
 				let author = null;
 
 				try {
 					author = submitted?.who;
 				} catch {
-					console.log('error getting author for referendumV2 submitted not present', JSON.stringify(data?.referendmV2?.node));
+					console.log('error getting author for referendumV2 submitted not present', JSON.stringify(data?.referendumV2?.node));
 				}
 
 				addDiscussionPostAndReferendumV2({
 					trackNumber,
 					origin,
-					status: referendumStatus,
+					status: referendumStatus?.pop()?.status || 'Submitted',
 					referendumId,
 					proposer: author || preimage?.author,
 					preimageArguments: preimage?.preimageArguments
@@ -334,17 +334,21 @@ const startSubscriptions = (client: SubscriptionClient): void => {
 	}).subscribe({
 		next: ({ data }): void => {
 			console.log('ReferendumStatusV2 data received', JSON.stringify(data, null, 2));
-			const {
-				referendum,
-				status
-			} = data?.referendumStatusV2?.node;
 
-			referendumV2DiscussionExists(referendum.refendumId).then(alreadyExist => {
+			const referendum = data?.referendumStatusV2?.node?.referendum;
+			const status = data?.referendumStatusV2?.node?.status;
+
+			if (!referendum || !status || !referendum?.referendumId) {
+				console.error(chalk.red(`ReferendumStatusV2 data received is not valid: ${JSON.stringify(data, null, 2)}`));
+				return;
+			}
+
+			referendumV2DiscussionExists(referendum?.referendumId).then(alreadyExist => {
 				if (!alreadyExist) {
-					throw new Error(`Status recieved for refendumId ${referendum.refendumId} which is not present in discussion db`);
+					throw new Error(`Status recieved for referendumId ${referendum?.referendumId} which is not present in discussion db`);
 				} else {
 					updateDiscussionReferendumV2Status({
-						referendumId: referendum.refendumId,
+						referendumId: referendum?.referendumId,
 						status
 					});
 				}

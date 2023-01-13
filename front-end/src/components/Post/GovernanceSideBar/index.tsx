@@ -46,9 +46,10 @@ interface Props {
 	onchainLink?: OnchainLinkReferendumV2Fragment | OnchainLinkTechCommitteeProposalFragment | OnchainLinkBountyFragment | OnchainLinkChildBountyFragment | OnchainLinkMotionFragment | OnchainLinkProposalFragment | OnchainLinkReferendumFragment | OnchainLinkTreasuryProposalFragment | OnchainLinkTipFragment
 	status?: string
 	startTime: string
+	tally?: any
 }
 
-const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal, isReferendum, isReferendumV2, isTipProposal, isTreasuryProposal, onchainId, onchainLink, startTime, status }: Props) => {
+const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal, isReferendum, isReferendumV2, isTipProposal, isTreasuryProposal, onchainId, onchainLink, startTime, status, tally }: Props) => {
 	const [address, setAddress] = useState<string>('');
 	const [accounts, setAccounts] = useState<InjectedAccount[]>([]);
 	const [extensionNotFound, setExtensionNotFound] = useState(false);
@@ -59,7 +60,7 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 	const { api, apiReady } = useContext(ApiContext);
 	const [lastVote, setLastVote] = useState<string | null | undefined>(undefined);
 
-	const canVote = !!status && !![proposalStatus.PROPOSED, referendumStatus.STARTED, motionStatus.PROPOSED, tipStatus.OPENED, gov2ReferendumStatus.ONGOING].includes(status);
+	const canVote = !!status && !![proposalStatus.PROPOSED, referendumStatus.STARTED, motionStatus.PROPOSED, tipStatus.OPENED, gov2ReferendumStatus.SUBMITTED, gov2ReferendumStatus.DECIDING, gov2ReferendumStatus.SUBMITTED].includes(status);
 	const onchainTipProposal = (onchainLink as OnchainLinkTipFragment)?.onchain_tip;
 
 	const onAccountChange = (address: string) => {
@@ -331,7 +332,7 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 							{(onchainId || onchainId === 0) && (onchainLink as OnchainLinkReferendumV2Fragment).onchain_referendumv2 &&
 								<>
 									<div className={className}>
-										<ReferendumV2VotingStatus referendumId={onchainId as number} />
+										<ReferendumV2VotingStatus referendumId={onchainId as number} tally={tally} />
 									</div>
 									<div className={className}>
 										<ReferendumV2VoteInfo

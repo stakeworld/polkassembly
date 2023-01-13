@@ -30,7 +30,7 @@ const columns: ColumnsType<DiscussionPostsRowData> = [
 		title: '#',
 		dataIndex: 'postId',
 		key: 'postId',
-		width: 65,
+		width: 75,
 		fixed: 'left'
 	},
 	{
@@ -103,7 +103,7 @@ const DiscussionPostsTable = () => {
 					createdAt: post.created_at,
 					postId: post.id,
 					postCategory: PostCategory.DISCUSSION,
-					topic: post.type.name
+					topic: post.topic.name
 				};
 
 				tableData.push(tableDataObj);

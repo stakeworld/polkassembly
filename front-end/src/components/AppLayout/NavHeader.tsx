@@ -9,12 +9,16 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useUserDetailsContext } from 'src/context';
 import NetworkDropdown from 'src/ui-components/NetworkDropdown';
+import RPCDropdown from 'src/ui-components/RPCDropdown';
 import SearchBar from 'src/ui-components/SearchBar';
+import checkGov2Route from 'src/util/checkGov2Route';
+import getNetwork from 'src/util/getNetwork';
 import styled  from 'styled-components';
 
 import { ReactComponent as PALogoBlack } from '../../assets/pa-logo-black.svg';
 import GovernanceSwitchButton from './GovernanceSwitchButton';
-import { gov2Routes } from './SwitchRoutes';
+
+const network = getNetwork();
 
 interface Props {
 	className?: string
@@ -23,14 +27,13 @@ interface Props {
 }
 
 const CSSVariables = styled.div`
-
 	@property --angle {
 		syntax: '<angle>';
 		initial-value: 90deg;
 		inherits: true;
 	}
 
-	--d: 2500ms;
+	--d: 3500ms;
 	--angle: 90deg;
 	--gradX: 100%;
 	--gradY: 50%;
@@ -43,20 +46,24 @@ const NavHeader = ({ className, sidedrawer, setSidedrawer } : Props) => {
 	const { pathname } = useLocation();
 	const { username } = currentUser;
 
-	const isGov2Route: boolean = gov2Routes.includes(pathname.split('/')[1]);
+	const isGov2Route: boolean = checkGov2Route(pathname);
 
 	return (
-		<Header className={`${className} sticky top-0 flex items-center bg-white h-[60px] max-h-[60px] px-6 z-50 leading-normal border-b-2 border-pink_primary drop-shadow-lg`}>
+		<Header className={`${className} shadow-md sticky top-0 flex items-center bg-white h-[60px] max-h-[60px] px-6 z-50 leading-normal border-b-2 border-pink_primary`}>
 			<MenuOutlined className='lg:hidden mr-5' onClick={() => {
 				setSidedrawer(!sidedrawer);
 			}} />
-			<nav className='w-full lg:w-5/6 lg:mx-auto flex items-center justify-between'>
+			<nav className='w-full lg:w-11/12 lg:mx-auto flex items-center justify-between h-[60px] max-h-[60px]'>
 				<Link className='flex' to={isGov2Route ? '/gov-2' : '/'}><PALogoBlack /></Link>
 
 				<div className="flex items-center justify-between w-max lg:w-[82%] xl:w-[63%] 2xl:w-[55%]">
-					<CSSVariables>
-						<GovernanceSwitchButton className='hidden lg:flex min-w-[120px] mr-6 lg:mr-5 xl:mr-0' />
-					</CSSVariables>
+					{
+						network === 'kusama' ?
+							<CSSVariables>
+								<GovernanceSwitchButton className='hidden lg:flex min-w-[120px] mr-6 lg:mr-5 xl:mr-0' />
+							</CSSVariables> :
+							<div className='hidden lg:flex min-w-[120px] mr-6 lg:mr-5 xl:mr-0'></div>
+					}
 
 					<Space className='flex items-center justify-between'>
 						<SearchBar/>
@@ -64,6 +71,7 @@ const NavHeader = ({ className, sidedrawer, setSidedrawer } : Props) => {
 							<BellOutlined />
 						</Link>
 						<NetworkDropdown setSidedrawer={setSidedrawer} />
+						<RPCDropdown/>
 						{!username
 							&& <div className='flex items-center lg:gap-x-2 ml-2 lg:ml-4'>
 								<Link className='text-navBlue hover:text-pink_primary font-medium' onClick={() => {setSidedrawer(false);}} to='/login'>Login</Link>
@@ -127,10 +135,8 @@ export default styled(NavHeader)`
 	
 	.v2-box {
 		font-family: 'Poppins';
-		font-weight: 600;
 		margin: max(1rem, 3vw);
 		border: 0.25px solid;
-		border-radius: 3px;
 		padding: 6px 12px;
 		border-image: conic-gradient(from var(--angle), var(--c2), var(--c1) 0.1turn, var(--c1) 0.15turn, var(--c2) 0.25turn) 15;
 		animation: borderRotate var(--d) linear infinite forwards;

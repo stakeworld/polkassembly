@@ -9,7 +9,7 @@ import { Anchor, Button } from 'antd';
 import BN from 'bn.js';
 import moment from 'moment';
 import React from 'react';
-// import PASmallCirclePNG from 'src/assets/pa-small-circle.png';
+import smallPALogo from 'src/assets/pa-small-circle.png';
 import { DiscussionPostFragment, Exact, MotionPostFragment,ProposalPostFragment, ReferendumPostFragment,  TreasuryProposalPostFragment } from 'src/generated/graphql';
 import { useCurrentBlock } from 'src/hooks';
 import Markdown from 'src/ui-components/Markdown';
@@ -192,7 +192,7 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 			{content && <Markdown md={content} />}
 
 			{/* Actions Bar */}
-			<div id='actions-bar' className={`flex md:items-center mt-9 ${canEdit && 'flex-col'} md:flex-row mb-8`}>
+			<div id='actions-bar' className={`flex flex-col md:items-center mt-9 ${canEdit && 'flex-col'} md:flex-row mb-8`}>
 				<div className='flex items-center'>
 					<PostReactionBar className='reactions' postId={post.id} />
 					{id && !isEditing && <SubscriptionButton postId={post.id}/>}
@@ -215,17 +215,25 @@ const PostDescription = ({ className, canEdit, id, isEditing, isOnchainPost, pos
 						<Anchor targetOffset={targetOffset} className='h-full min-w-[140px]' onClick={handleTimelineClick}>
 							{timelines.map(({ commentsCount, date, firstCommentId, id, status }) => {
 								return (
-									<AnchorLink
-										key={id}
-										href={`#${firstCommentId}`}
-										title={
-											<div className='flex flex-col'>
-												<div className='text-xs mb-1'>{date.format('MMM Do')}</div>
-												<div className='mb-1 font-medium break-words whitespace-pre-wrap'>{status}</div>
-												<div className='text-xs'>({commentsCount})</div>
-											</div>
-										}
-									/>);
+									commentsCount > 0 ?
+										<AnchorLink
+											key={id}
+											href={`#${firstCommentId}`}
+											title={
+												<div className='flex flex-col'>
+													<div className='text-xs mb-1'>{date.format('MMM Do')}</div>
+													<div className='mb-1 font-medium break-words whitespace-pre-wrap'>{status}</div>
+													<div className='text-xs'>({commentsCount})</div>
+												</div>
+											}
+										/>
+										:
+										<div key={id} className='flex flex-col ml-5 cursor-default'>
+											<div className='text-xs mb-1'>{date.format('MMM Do')}</div>
+											<div className='mb-1 font-medium break-words whitespace-pre-wrap'>{status}</div>
+											<div className='text-xs'>({commentsCount})</div>
+										</div>
+								);
 							})}
 						</Anchor>
 					</div>
@@ -255,6 +263,25 @@ export default React.memo(styled(PostDescription)`
 		display: flex;
 		flex-direction: column;
 		gap: 96px;
+	}
+
+	.ant-anchor-ink {
+		margin-left: 5px;
+	}
+	
+	.ant-anchor-link {
+		margin-left: 5px;
+	}
+
+	.ant-anchor-ink-ball-visible {
+		display: block !important;
+		background: url(${smallPALogo}) !important;
+		background-repeat: no-repeat !important;
+		background-position: center !important;
+		height: 18px !important;
+		width: 18px !important;
+		border: none !important;
+		border-radius: 50% !important;
 	}
 }
 `);

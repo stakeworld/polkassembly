@@ -4,6 +4,7 @@
 
 import { DislikeFilled, LeftOutlined, LikeFilled, RightOutlined } from '@ant-design/icons';
 import React, { useCallback, useEffect, useState } from 'react';
+import { subsquidApiHeaders } from 'src/global/apiHeaders';
 import Address from 'src/ui-components/Address';
 import ErrorAlert from 'src/ui-components/ErrorAlert';
 import GovSidebarCard from 'src/ui-components/GovSidebarCard';
@@ -25,6 +26,7 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 
 	const fetchVotesData = useCallback(() => {
 		setLoading(true);
+		// TODO: Change to v2
 		fetch('https://squid.subsquid.io/harvester/v/1/graphql',
 			{ body: JSON.stringify({
 				query: `query MyQuery {
@@ -52,13 +54,7 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 					}
 				}`
 			}),
-			headers: {
-				'Accept': 'application/json, multipart/mixed',
-				'content-type': 'application/json',
-				'Sec-Fetch-Dest': 'empty',
-				'Sec-Fetch-Mode': 'cors',
-				'Sec-Fetch-Site': 'same-origin'
-			},
+			headers: subsquidApiHeaders,
 			method: 'POST'
 			})
 			.then(async (res) => {
@@ -88,7 +84,7 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 				setOffset(offset - (votesList?.length || 0));
 			}
 		} else {
-			if(votesList && votesList?.length < 10 && offset > 0) return;
+			if(votesList && votesList?.length < 10) return;
 			setOffset(offset + (votesList?.length || 0));
 		}
 	}
@@ -115,25 +111,27 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 						</div>
 
 						{votesList.map((voteData: any, index:number) =>
-							<div className='flex items-center justify-between mb-9' key={index}>
-								<div className='w-[110px] max-w-[110px] overflow-ellipsis'>
-									<Address textClassName='w-[90px] text-xs' displayInline={true} address={voteData.voter} />
+							voteData.balance.value !== undefined ?
+								<div className='flex items-center justify-between mb-9' key={index}>
+									<div className='w-[110px] max-w-[110px] overflow-ellipsis'>
+										<Address textClassName='w-[90px] text-xs' displayInline={true} address={voteData.voter} />
+									</div>
+
+									<div className='w-[80px] max-w-[80px] overflow-ellipsis'>{formatBnBalance(voteData.balance.value, { numberAfterComma: 2, withUnit: true })}</div>
+
+									<div className='w-[50px] max-w-[50px] overflow-ellipsis'>{voteData.lockPeriod}x</div>
+
+									{voteData.decision === 'yes' ?
+										<div className='flex items-center text-aye_green text-md w-[20px] max-w-[20px]'>
+											<LikeFilled className='mr-2' />
+										</div>
+										:
+										<div className='flex items-center text-nay_red text-md w-[20px] max-w-[20px]'>
+											<DislikeFilled className='mr-2' />
+										</div>
+									}
 								</div>
-
-								<div className='w-[80px] max-w-[80px] overflow-ellipsis'>{formatBnBalance(voteData.balance.value, { numberAfterComma: 2, withUnit: true })}</div>
-
-								<div className='w-[50px] max-w-[50px] overflow-ellipsis'>{voteData.lockPeriod}x</div>
-
-								{voteData.decision === 'yes' ?
-									<div className='flex items-center text-aye_green text-md w-[20px] max-w-[20px]'>
-										<LikeFilled className='mr-2' />
-									</div>
-									:
-									<div className='flex items-center text-nay_red text-md w-[20px] max-w-[20px]'>
-										<DislikeFilled className='mr-2' />
-									</div>
-								}
-							</div>
+								: <></>
 						)}
 
 					</div>

@@ -11,27 +11,39 @@ import newProposalStatus from '../util/newProposalStatus';
 import { referendumStatusV2, proposalStatus } from '../util/statuses';
 import {
   Cached,
-  NomidotReferendumRawEvent,
   NomidotReferendumStatusUpdate,
+  NomidotReferendumV2RawEvent,
+  NomidotReferendumV2StatusUpdate,
+  Tally,
   Task,
 } from './types';
 
 const l = logger('Task: Referendum Status Update');
 
 const eventField = [
-  'ReferendumIndex'
+  'ReferendumIndex',
+  'Tally',
 ];
+
+function hexToNumber(str: string) {
+  if (/^0x[0-9A-F]+$/i.test(str)) {
+    // Convert the hexadecimal string to a number
+    return parseInt(str, 16);
+  } else {
+    return str;
+  }
+}
 
 /*
  *  ======= Table (Referendum Status Update) ======
  */
-const createReferendumStatusV2: Task<NomidotReferendumStatusUpdate[]> = {
+const createReferendumStatusV2: Task<NomidotReferendumV2StatusUpdate[]> = {
   name: 'createReferendumStatusUpdate',
   read: async (
     _blockHash: Hash,
     cached: Cached,
     _api: ApiPromise
-  ): Promise<NomidotReferendumStatusUpdate[]> => {
+  ): Promise<NomidotReferendumV2StatusUpdate[]> => {
     const { events } = cached;
 
     // The "Started" event is taken care of by the createReferendum
@@ -44,7 +56,7 @@ const createReferendumStatusV2: Task<NomidotReferendumStatusUpdate[]> = {
           .includes(method)
     );
 
-    const results: NomidotReferendumStatusUpdate[] = [];
+    const results: NomidotReferendumV2StatusUpdate[] = [];
 
     if (!referendumEvents) {
       return results;
@@ -52,7 +64,7 @@ const createReferendumStatusV2: Task<NomidotReferendumStatusUpdate[]> = {
 
     await Promise.all(
       referendumEvents.map(async ({ event: { data, typeDef, method } }) => {
-        const referendumRawEvent: NomidotReferendumRawEvent = data.reduce(
+        const referendumRawEvent: NomidotReferendumV2RawEvent = data.reduce(
           (prev, curr, index) => {
             let type = eventField[index];
 
@@ -78,7 +90,7 @@ const createReferendumStatusV2: Task<NomidotReferendumStatusUpdate[]> = {
           return null;
         }
 
-        const relatedReferendum = await prisma.referendum({
+        const relatedReferendum = await prisma.referendumV2({
           referendumId: referendumRawEvent.ReferendumIndex,
         });
 
@@ -89,9 +101,18 @@ const createReferendumStatusV2: Task<NomidotReferendumStatusUpdate[]> = {
           return [];
         }
 
-        const result: NomidotReferendumStatusUpdate = {
+        let tallyData: Tally | undefined = {};
+        
+        if (referendumRawEvent.Tally){
+          tallyData.ayes = referendumRawEvent.Tally.ayes ? hexToNumber(referendumRawEvent.Tally.ayes).toString() : "0";
+          tallyData.nays = referendumRawEvent.Tally.nays ? hexToNumber(referendumRawEvent.Tally.nays).toString() : "0";
+          tallyData.support = referendumRawEvent.Tally.support ? hexToNumber(referendumRawEvent.Tally.support).toString() : "0";
+        }
+
+        const result: NomidotReferendumV2StatusUpdate = {
           referendumId: referendumRawEvent.ReferendumIndex,
           status: method,
+          tally: tallyData,
         };
         l.log(`Nomidot Referendum Status Update: ${JSON.stringify(result)}`);
         results.push(result);
@@ -102,12 +123,12 @@ const createReferendumStatusV2: Task<NomidotReferendumStatusUpdate[]> = {
   },
   write: async (
     blockNumber: BlockNumber,
-    value: NomidotReferendumStatusUpdate[]
+    value: NomidotReferendumV2StatusUpdate[]
   ) => {
     if (value && value.length) {
       await Promise.all(
         value.map(async ref => {
-          const { referendumId, status } = ref;
+          const { referendumId, status, tally } = ref;
 
           await prisma.createReferendumStatusV2({
             blockNumber: {
@@ -123,6 +144,24 @@ const createReferendumStatusV2: Task<NomidotReferendumStatusUpdate[]> = {
             status,
             uniqueStatus: `${referendumId}_${status}`,
           });
+
+          if (tally) {
+            const relatedReferendum = await prisma.referendumV2({
+              referendumId: referendumId
+            });
+
+            if (relatedReferendum){
+              await prisma.updateReferendumV2({
+                where: {
+                  id: relatedReferendum.id
+                },
+                data: {
+                  tally: tally
+                }
+              })
+            }
+          }
+
 
           // if the referendum got executed
           // and if this is calling a democracy.clearPublicProps

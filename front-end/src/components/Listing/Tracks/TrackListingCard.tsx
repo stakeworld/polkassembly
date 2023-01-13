@@ -18,10 +18,11 @@ const TrackListingCard = ({ className, trackName } : Props) => {
 
 	const items = [
 		{ label: 'All', key: 'All', children: <TrackListingAllTabContent trackName={trackName} /> },
-		{ label: 'Approved', key: 'Approved', children: <TrackListingStatusTabContent trackName={trackName} status='Approved' /> },
+		{ label: 'Confirmed', key: 'Confirmed', children: <TrackListingStatusTabContent trackName={trackName} status='Confirmed' /> },
 		{ label: 'Cancelled', key: 'Cancelled', children: <TrackListingStatusTabContent trackName={trackName} status='Cancelled' /> },
+		{ label: 'Deciding', key: 'Deciding', children: <TrackListingStatusTabContent trackName={trackName} status='Deciding' /> },
 		{ label: 'Killed', key: 'Killed', children: <TrackListingStatusTabContent trackName={trackName} status='Killed' /> },
-		{ label: 'Ongoing', key: 'Ongoing', children: <TrackListingStatusTabContent trackName={trackName} status='Ongoing' /> },
+		{ label: 'Submitted', key: 'Submitted', children: <TrackListingStatusTabContent trackName={trackName} status='Submitted' /> },
 		{ label: 'Rejected', key: 'Rejected', children: <TrackListingStatusTabContent trackName={trackName} status='Rejected' /> },
 		{ label: 'Timed Out', key: 'Timedout', children: <TrackListingStatusTabContent trackName={trackName} status='Timedout' /> }
 	];

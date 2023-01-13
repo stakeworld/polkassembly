@@ -5,7 +5,10 @@
 /* eslint-disable sort-keys */
 import styled from '@xstyled/styled-components';
 import { Tabs } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import useGov1PostsCount from 'src/hooks/useGov1PostsCount';
+import CountBadgePill from 'src/ui-components/CountBadgePill';
 
 import AllPostsTable from './AllPostsTable';
 import BountyPostsTable from './BountyPostsTable';
@@ -17,24 +20,66 @@ import TipPostsTable from './TipPostsTable';
 import TreasuryPostsTable from './TreasuryPostsTable';
 
 const LatestActivity = ({ className }: {className?:string}) => {
+
+	const [currentTab, setCurrentTab] = useState('all');
+
+	const {
+		allPostsCount,
+		discussionsCount,
+		proposalsCount,
+		referendaCount,
+		motionsCount,
+		treasuryCount,
+		bountiesCount,
+		tipsCount
+	} = useGov1PostsCount();
+
 	const tabItems = [
-		{ label: 'All', key: 'all', children: <AllPostsTable /> },
-		{ label: 'Discussions', key: 'discussions', children: <DiscussionPostsTable /> },
-		{ label: 'Proposals', key: 'proposals', children: <ProposalPostsTable /> },
-		{ label: 'Referenda', key: 'referenda', children: <ReferendaPostsTable /> },
-		{ label: 'Motions', key: 'motions', children: <MotionPostsTable /> },
-		{ label: 'Treasury Proposals', key: 'treasury-proposals', children: <TreasuryPostsTable /> },
-		{ label: 'Bounties', key: 'bounties', children: <BountyPostsTable /> },
-		{ label: 'Tips', key: 'tips', children: <TipPostsTable /> }
+		{ label: <CountBadgePill label='All' count={allPostsCount} />,
+			key: 'all',
+			children: <AllPostsTable />
+		},
+		{ label: <CountBadgePill label='Discussions' count={discussionsCount} />,
+			key: 'discussions',
+			children: <DiscussionPostsTable />
+		},
+		{ label: <CountBadgePill label='Proposals' count={proposalsCount} />,
+			key: 'proposals',
+			children: <ProposalPostsTable />
+		},
+		{ label: <CountBadgePill label='Referenda' count={referendaCount} />,
+			key: 'referenda',
+			children: <ReferendaPostsTable />
+		},
+		{ label: <CountBadgePill label='Motions' count={motionsCount} />,
+			key: 'motions',
+			children: <MotionPostsTable />
+		},
+		{ label: <CountBadgePill label='Treasury Proposals' count={treasuryCount} />,
+			key: 'treasury-proposals',
+			children: <TreasuryPostsTable />
+		},
+		{ label: <CountBadgePill label='Bounties' count={bountiesCount} />,
+			key: 'bounties',
+			children: <BountyPostsTable />
+		},
+		{ label: <CountBadgePill label='Tips' count={tipsCount} />,
+			key: 'tips',
+			children: <TipPostsTable />
+		}
 	];
 
 	return (
 		<div className={`${className} bg-white drop-shadow-md p-4 lg:p-6 rounded-md`}>
-			<h2 className='dashboard-heading mb-6'>Latest Activity</h2>
+			<div className="flex justify-between items-center">
+				<h2 className='dashboard-heading mb-6'>Latest Activity</h2>
+				{currentTab !== 'all' && <Link className='text-sidebarBlue font-medium hover:text-pink_primary py-0.5 px-2 rounded-lg' to={`/${currentTab}`}>View all</Link>}
+			</div>
 			<Tabs
+				className='ant-tabs-tab-bg-white text-sidebarBlue font-medium'
 				type="card"
 				items={tabItems}
-				className='ant-tabs-tab-bg-white text-sidebarBlue font-medium'
+				onChange={(key) => setCurrentTab(key)}
 			/>
 		</div>
 	);

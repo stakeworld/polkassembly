@@ -124,11 +124,12 @@ const createPreimageV2: Task<NomidotPreimageV2[]> = {
 
         const status = Object.keys(preimageStatusJSON)[0]
 
+        console.log(preimageStatusJSON);
         const preimageStatusEvent = {
           status: Object.keys(preimageStatusJSON)[0],
-          deposit: preimageStatusJSON[status].deposit[1],
+          deposit: preimageStatusJSON[status].deposit ? preimageStatusJSON[status].deposit[1] : preimageStatusJSON[status][1],
           size: preimageStatusJSON[status].len,
-          author: preimageStatusJSON[status].deposit[0],
+          author: preimageStatusJSON[status].deposit ? preimageStatusJSON[status].deposit[0] : preimageStatusJSON[status][0],
         }
 
         l.log('preimageStatusEvent', preimageStatusEvent);

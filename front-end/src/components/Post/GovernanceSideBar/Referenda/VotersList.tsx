@@ -6,7 +6,7 @@ import { DislikeFilled, LeftOutlined, LikeFilled, RightOutlined } from '@ant-des
 import { LoadingOutlined } from '@ant-design/icons';
 import { Pagination, PaginationProps, Spin } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
-import subscanApiHeaders from 'src/global/subscanApiHeaders';
+import { subscanApiHeaders } from 'src/global/apiHeaders';
 import { LoadingStatusType } from 'src/types';
 import Address from 'src/ui-components/Address';
 import GovSidebarCard from 'src/ui-components/GovSidebarCard';
@@ -24,7 +24,7 @@ const VotersList = ({ className, referendumId } : Props) => {
 	const [loadingStatus, setLoadingStatus] = useState<LoadingStatusType>({ isLoading: true, message:'Loading votes' });
 	const [votersList, setVotersList] = useState<any | null>(null);
 	const [count, setCount] = useState<number | undefined>(undefined);
-	const [currentPage, setCurrentPage] = useState<number>(1);
+	const [currentPage, setCurrentPage] = useState<number>(0);
 
 	const fetchVotersList = useCallback(() => {
 		setLoadingStatus({
@@ -65,7 +65,7 @@ const VotersList = ({ className, referendumId } : Props) => {
 	}, [fetchVotersList]);
 
 	const onChange: PaginationProps['onChange'] = page => {
-		setCurrentPage(page);
+		setCurrentPage(page - 1);
 	};
 
 	return (
@@ -116,7 +116,7 @@ const VotersList = ({ className, referendumId } : Props) => {
 								onChange={onChange}
 								total={count}
 								showSizeChanger={false}
-								pageSize={30}
+								pageSize={10}
 								responsive={true}
 								hideOnSinglePage={true}
 								nextIcon={<div className='-mt-1 ml-1'><RightOutlined /></div>}

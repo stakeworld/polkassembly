@@ -1,7 +1,7 @@
 // Copyright 2019-2020 @Premiurly/polkassembly authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-import { DownOutlined, PlusOutlined, UpOutlined } from '@ant-design/icons';
+import { DownOutlined, MinusCircleOutlined, PlusOutlined, UpOutlined } from '@ant-design/icons';
 import { web3Accounts, web3Enable, web3FromSource } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import { stringToHex } from '@polkadot/util';
@@ -77,7 +77,9 @@ const MultiSignatureAddress: FC<Props> = ({ open, dismissModal }) => {
 
 	const handleAddSignatories = (isAdd: boolean, address = '') => {
 		if (isAdd) {
-			setSignatories({ ...signatories, [Object.keys(signatories).length]: address });
+			if (!isSelected(address)) {
+				setSignatories({ ...signatories, [Object.keys(signatories).length]: address });
+			}
 		} else {
 			setSignatories((prev) => {
 				const key = Object.keys(signatories).find((key) => signatories[key] === address);
@@ -237,6 +239,22 @@ const MultiSignatureAddress: FC<Props> = ({ open, dismissModal }) => {
 		}
 	};
 
+	const onSignatoriesAddressRemove = (e: any) => {
+		const oldSignatories = { ...signatories };
+		delete oldSignatories[e.currentTarget.id];
+		let i = 0;
+		const newSignatories = {};
+		Object.keys(oldSignatories).forEach((key) => {
+			// @ts-ignore
+			newSignatories[i] = oldSignatories[key];
+			i++;
+		});
+		setSignatories(newSignatories);
+	};
+
+	const onSignatoriesAddressChange = (e:any) => {
+		setSignatories((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+	};
 	return (
 		<Modal
 			closable={false}
@@ -285,16 +303,23 @@ const MultiSignatureAddress: FC<Props> = ({ open, dismissModal }) => {
 					</label>
 					<div className='flex flex-col gap-y-2'>
 						{Object.keys(signatories).map(i => (
-							<Input
-								key={i}
-								id={i}
-								value={signatories[i]}
-								onChange={(e) => {
-									setSignatories((prev) => ({ ...prev, [e.target.id]: e.target.value }));
-								}}
-								placeholder='Enter signatory addresses'
-								className="rounded-md py-3 px-4 border-grey_border"
-							/>
+							<div className='flex items-center relative' key={i}>
+								<Input
+									id={i}
+									value={signatories[i]}
+									onChange={onSignatoriesAddressChange}
+									placeholder='Enter signatory addresses'
+									className="rounded-md py-3 px-4 border-grey_border"
+								/>
+								<button
+									type='button'
+									id={i}
+									className='border-none outline-none flex items-center justify-center absolute right-2'
+									onClick={onSignatoriesAddressRemove}
+								>
+									<MinusCircleOutlined />
+								</button>
+							</div>
 						))}
 					</div>
 					{
@@ -308,12 +333,15 @@ const MultiSignatureAddress: FC<Props> = ({ open, dismissModal }) => {
 								</span>
 								{showSignatoryAccounts ? <UpOutlined /> : <DownOutlined />}
 							</Button>
-							<p className='font-medium text-sm text-pink_primary p-0 m-0 outline-none border-none bg-transparent flex items-center gap-x-2'>
+							<Button
+								onClick={() => handleAddSignatories(true, '')}
+								className='font-medium text-sm text-pink_primary p-0 m-0 outline-none border-none bg-transparent flex items-center'
+							>
 								<PlusOutlined />
 								<span>
 									Add Account
 								</span>
-							</p>
+							</Button>
 						</div>
 					}
 					<article className='flex flex-col gap-y-3'>
@@ -333,6 +361,12 @@ const MultiSignatureAddress: FC<Props> = ({ open, dismissModal }) => {
 					<Form.Item
 						name="multisigAddress"
 						className='m-0 mt-2.5'
+						rules={[
+							{
+								message: 'Multisig Address is required',
+								required: true
+							}
+						]}
 					>
 						<Input
 							placeholder='Enter a valid multisig address'
@@ -354,6 +388,12 @@ const MultiSignatureAddress: FC<Props> = ({ open, dismissModal }) => {
 					<Form.Item
 						name="threshold"
 						className='m-0 mt-2.5 w-full'
+						rules={[
+							{
+								message: 'Threshold is required',
+								required: true
+							}
+						]}
 					>
 						<InputNumber
 							type='number'

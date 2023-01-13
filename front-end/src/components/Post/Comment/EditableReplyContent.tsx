@@ -143,18 +143,18 @@ const EditableReplyContent = ({ authorId, className, commentId, content, replyId
 						:
 						<>
 							<Markdown md={content} />
-							<div className='actions-bar'>
+							<div className='flex items-center flex-wrap'>
 								{id === authorId &&
 									<Button className={'text-pink_primary flex items-center border-none shadow-none'} disabled={loading} onClick={toggleEdit}>
 										{
 											loading
-												? <span className='flex items-center'><LoadingOutlined className='mr-2' /> Editing</span>
-												: <span className='flex items-center'><FormOutlined className='mr-2' /> Edit</span>
+												? <span className='flex items-center text-xs'><LoadingOutlined className='mr-2' /> Editing</span>
+												: <span className='flex items-center text-xs'><FormOutlined className='mr-2' /> Edit</span>
 										}
 									</Button>
 								}
-								{id === authorId && <Button className={'text-pink_primary flex items-center border-none shadow-none'} onClick={deleteReply}><DeleteOutlined />Delete</Button>}
-								{id && !isEditing && <ReportButton type='comment' contentId={commentId + '#' + replyId} />}
+								{id === authorId && <Button className={'text-pink_primary flex items-center border-none shadow-none text-xs'} onClick={deleteReply}><DeleteOutlined />Delete</Button>}
+								{id && !isEditing && <ReportButton className='text-xs' type='comment' contentId={commentId + '#' + replyId} />}
 							</div>
 						</>
 				}
@@ -169,11 +169,6 @@ export default styled(EditableReplyContent)`
 		width: 100%;
 		display: flex;
 		justify-content: flex-end;
-	}
-
-	.actions-bar {
-		display: flex;
-		align-items: center;
 	}
 
 	.reactions {

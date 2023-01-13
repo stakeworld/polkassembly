@@ -75,4 +75,4 @@ healthMonitor:
     # polkassembly frontend-service
     REACT_SERVER: "http://frontend-service:80"
     # polkadot rpc node
-    ARCHIVE_NODE_ENDPOINT: "wss://kusama-rpc.polkadot.io"
+    ARCHIVE_NODE_ENDPOINT: "wss://kusama.api.onfinality.io/public-ws"

@@ -15,12 +15,16 @@ import { useLogoutMutation } from 'src/generated/graphql';
 import { trackInfo } from 'src/global/post_trackInfo';
 import { logout } from 'src/services/auth.service';
 import { PostOrigin } from 'src/types';
-import { AuctionAdminIcon, BountiesIcon, CalendarIcon, DemocracyProposalsIcon, DiscussionsIcon, FellowshipGroupIcon, GovernanceGroupIcon, MembersIcon, MotionsIcon, NewsIcon, OverviewIcon, ParachainsIcon, ReferendaIcon, RootIcon, StakingAdminIcon, TipsIcon, TreasuryGroupIcon, TreasuryProposalsIcon } from 'src/ui-components/CustomIcons';
+import { AuctionAdminIcon, BountiesIcon, CalendarIcon, DemocracyProposalsIcon, DiscussionsIcon, FellowshipGroupIcon, GovernanceGroupIcon, MembersIcon, MotionsIcon, NewsIcon, OverviewIcon, ParachainsIcon, PreimagesIcon, ReferendaIcon, RootIcon, StakingAdminIcon, TipsIcon, TreasuryGroupIcon, TreasuryProposalsIcon } from 'src/ui-components/CustomIcons';
+import checkGov2Route from 'src/util/checkGov2Route';
+import getNetwork from 'src/util/getNetwork';
 
 import Footer from './Footer';
 import GovernanceSwitchButton from './GovernanceSwitchButton';
 import NavHeader from './NavHeader';
-import SwitchRoutes, { gov2Routes } from './SwitchRoutes';
+import SwitchRoutes from './SwitchRoutes';
+
+const network = getNetwork();
 
 const { Content, Sider } = Layout;
 
@@ -121,7 +125,7 @@ const gov1Items: {[x:string]: ItemType[]} = {
 	]
 };
 
-if(window.screen.width < 1024) {
+if(window.screen.width < 1024 && network === 'kusama') {
 	gov1Items.overviewItems = [
 		getSiderMenuItem(<GovernanceSwitchButton className='flex lg:hidden' />, 'gov-2', ''),
 		...gov1Items.overviewItems
@@ -197,11 +201,11 @@ let gov2OverviewItems = [
 	getSiderMenuItem('Calendar', '/calendar', <CalendarIcon className='text-white' />),
 	getSiderMenuItem('News', '/news', <NewsIcon className='text-white' />),
 	getSiderMenuItem('Parachains', '/parachains', <ParachainsIcon className='text-white' />),
-	getSiderMenuItem('Preimages', '/preimages')
+	getSiderMenuItem('Preimages', '/preimages', <PreimagesIcon className='text-sidebarBlue' />)
 
 ];
 
-if(window.screen.width < 1024) {
+if(window.screen.width < 1024 && network === 'kusama') {
 	gov2OverviewItems = [
 		getSiderMenuItem(<GovernanceSwitchButton className='flex lg:hidden' />, '/', ''),
 		...gov2OverviewItems
@@ -213,13 +217,13 @@ const gov2Items:MenuProps['items'] = [
 	// Tracks Heading
 	getSiderMenuItem(<span className='text-navBlue hover:text-navBlue ml-2 uppercase text-base font-medium'>Tracks</span>, 'tracksHeading', null),
 	...gov2TrackItems.mainItems,
-	getSiderMenuItem('Governance', 'gov2_governance_group', <GovernanceGroupIcon className='text-white' />, [
+	getSiderMenuItem('Governance', 'gov2_governance_group', <GovernanceGroupIcon className='text-sidebarBlue' />, [
 		...gov2TrackItems.governanceItems
 	]),
-	getSiderMenuItem('Treasury', 'gov2_treasury_group', <TreasuryGroupIcon className='text-white' />, [
+	getSiderMenuItem('Treasury', 'gov2_treasury_group', <TreasuryGroupIcon className='text-sidebarBlue' />, [
 		...gov2TrackItems.treasuryItems
 	]),
-	getSiderMenuItem('Fellowship', 'gov2_fellowship_group', <FellowshipGroupIcon className='text-white' />, [
+	getSiderMenuItem('Fellowship', 'gov2_fellowship_group', <FellowshipGroupIcon className='text-sidebarBlue' />, [
 		...gov2TrackItems.fellowshipItems
 	])
 ];
@@ -244,7 +248,7 @@ const AppLayout = ({ className }: { className?:string }) => {
 	const navigate = useNavigate();
 	const { pathname } = useLocation();
 
-	const isGov2Route: boolean = gov2Routes.includes(pathname.split('/')[1]);
+	const isGov2Route: boolean = checkGov2Route(pathname);
 
 	const handleMenuClick = (menuItem: any) => {
 		if(['userMenu', 'tracksHeading'].includes(menuItem.key)) return;
@@ -373,6 +377,7 @@ export default styled(AppLayout)`
 
 .auth-sider-menu > li:first-child {
   margin-bottom: 25px;
+  margin-top: 15px;
 }
 
 .ant-empty-image{
@@ -392,5 +397,9 @@ export default styled(AppLayout)`
 	.ant-menu-inline-collapsed-noicon {
 		color: pink_primary;
 	}
+}
+
+.ant-menu-sub {
+	background: #fff !important;
 }
 `;
