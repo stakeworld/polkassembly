@@ -15,7 +15,7 @@ interface Props {
 function SendingNFT({ message, width = 250 }: Props): ReactElement {
 
 	return (
-		<div>
+		<div className='w-full flex flex-col justify-center items-center'>
 			<Lottie
 				animationData={SendingNFTJson}
 				style={{
@@ -24,7 +24,7 @@ function SendingNFT({ message, width = 250 }: Props): ReactElement {
 				}}
 				play={true}
 			/>
-			<div className='text-sidebarBlue font-medium w-full text-center' >{message}</div>
+			<div className='text-sidebarBlue font-medium' >{message}</div>
 		</div>
 	);
 }

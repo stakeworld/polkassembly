@@ -230,35 +230,36 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 				{!onlyVote && quizLevel === 0 ? <WelcomeScreen setQuizLevel={setQuizLevel} />
 					: !onlyVote && quizLevel === 1 ?
 						<QuizForm loading={loadingStatus.isLoading} setLoading={setLoadingStatus} quiz={quiz} referendumId={referendumId} setQuizLevel={setQuizLevel}/>
-						: voteComplete ? <VoteSuccessful message={`Vote on Referendum #${referendumId} is successful.`} /> : <Spin tip={loadingStatus.message} spinning={loadingStatus.isLoading} indicator={<LoadingOutlined />}>
-							{onlyVote && quiz?.questions && <div className='p-3 mb-7 flex items-center justify-center text-sidebarBlue bg-opacity-10 text-[14px] bg-pink_primary rounded-md'><img src={frowningFace} height={25} width={25} className='mr-2' alt='frowning-face' /><span> You&apos;re missing on a chance to win an exclusive NFT. <span className='text-pink_primary underline cursor-pointer' onClick={() => { setQuizLevel(0); setOnlyVote(false); }}>Take Quiz Now</span></span></div>}
-							<h4 className='dashboard-heading mb-7'>Cast Your Vote</h4>
-							<BalanceInput
-								label={'Lock balance'}
-								helpText={'Amount of you are willing to lock for this vote.'}
-								placeholder={'123'}
-								onChange={onBalanceChange}
-							/>
+						: voteComplete ? <VoteSuccessful message={`Vote on Referendum #${referendumId} is successful.`} />
+							: <Spin tip={loadingStatus.message} spinning={loadingStatus.isLoading} indicator={<LoadingOutlined />}>
+								{onlyVote && quiz?.questions && <div className='p-3 mb-7 flex items-center justify-center text-sidebarBlue bg-opacity-10 text-[14px] bg-pink_primary rounded-md'><img src={frowningFace} height={25} width={25} className='mr-2' alt='frowning-face' /><span> You&apos;re missing on a chance to win an exclusive NFT. <span className='text-pink_primary underline cursor-pointer' onClick={() => { setQuizLevel(0); setOnlyVote(false); }}>Take Quiz Now</span></span></div>}
+								<h4 className='dashboard-heading mb-7'>Cast Your Vote</h4>
+								<BalanceInput
+									label={'Lock balance'}
+									helpText={'Amount of you are willing to lock for this vote.'}
+									placeholder={'123'}
+									onChange={onBalanceChange}
+								/>
 
-							<AccountSelectionForm
-								title='Vote with Account'
-								accounts={accounts}
-								address={address}
-								withBalance
-								onAccountChange={onAccountChange}
-							/>
+								<AccountSelectionForm
+									title='Vote with Account'
+									accounts={accounts}
+									address={address}
+									withBalance
+									onAccountChange={onAccountChange}
+								/>
 
-							<VoteLock className='mt-6' />
+								<VoteLock className='mt-6' />
 
-							<AyeNayButtons
-								className='mt-6 max-w-[156px]'
-								size='large'
-								disabled={!apiReady}
-								onClickAye={() => voteReferendum(true)}
-								onClickNay={() => voteReferendum(false)}
-							/>
+								<AyeNayButtons
+									className='mt-6 max-w-[156px]'
+									size='large'
+									disabled={!apiReady}
+									onClickAye={() => voteReferendum(true)}
+									onClickNay={() => voteReferendum(false)}
+								/>
 
-						</Spin> }
+							</Spin> }
 			</Modal>
 		</div>
 	);

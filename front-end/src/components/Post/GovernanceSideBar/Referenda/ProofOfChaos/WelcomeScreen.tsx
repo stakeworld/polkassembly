@@ -3,15 +3,15 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 import { Button } from 'antd';
 import React from 'react';
+import nftImage from 'src/assets/baby-robot-nft.webp';
 import backgroundPOC from 'src/assets/background-POC.png';
-import nftImage from 'src/assets/nft-POC.png';
 import styled from 'styled-components';
 
 const WelcomeScreen = ({ className, setQuizLevel }: {className?: string, setQuizLevel: (level: Number) => void}) => {
 	return (
 		<div className={className}>
 			<div className='flex justify-center relative mb-3'>
-				<img className='h-[400px] w-[252px] z-10 lg:h-[430px]  lg:w-[282px] relative nft-image' src={nftImage} alt='nft' />
+				<img className='h-[200px] w-[180px] md:h-[250px]  md:w-[220px] z-10 lg:h-[330px]  lg:w-[282px] rounded-md relative nft-image' src={nftImage} alt='nft' />
 				<img src={backgroundPOC} className='absolute z-8 h-full w-full' alt='celebrate' />
 			</div>
 			<div className='flex flex-col items-center'>

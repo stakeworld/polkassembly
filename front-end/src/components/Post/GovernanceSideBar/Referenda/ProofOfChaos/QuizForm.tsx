@@ -98,8 +98,7 @@ const QuizForm = ({ className, loading, quiz, referendumId, setLoading, setQuizL
 			<h4 className='dashboard-heading mb-7'>Take Quiz and Vote</h4>
 			{noAccounts && <ErrorAlert errorMsg='You need at least one account in your wallet extenstion to use this feature.' />}
 			{noExtension && <ExtensionNotDetected />}
-			{loading && <SendingNFT message='Sending Answers...'/>}
-			{!noAccounts && !noExtension && quiz?.questions &&
+			{loading ? <SendingNFT message='Sending Answers...'/> : !noAccounts && !noExtension && quiz?.questions &&
 				<Form form={form} className='max-h-full overflow-y-auto' onFinish={onSend}>
 					{quiz?.questions?.map(( { text, answerOptions, id }: { text: string, answerOptions: Array<any>, id: string }, i:any) => {
 						const selectOptions = answerOptions?.map( (a,j) => {
@@ -113,7 +112,7 @@ const QuizForm = ({ className, loading, quiz, referendumId, setLoading, setQuizL
 						return (
 							<>
 								<div className='text-sidebarBlue font-medium text-[14px] mb-2'>{`Q${i + 1})`} {text}</div>
-								<Form.Item name='radio' rules={[{ required: true }]}>
+								<Form.Item name={`Question ${i+1}`} rules={[{ required: true }]}>
 									<Radio.Group className='w-full' onChange={(e) => onChangeInputs(e, id, selectOptions.length)}>
 										{selectOptions.map((option) => (
 											<div key={option.value} className='border-[1px] border-solid border-grey_border rounded-md mb-2 px-2 py-1 w-full'>
