@@ -127,7 +127,7 @@ export const chainProperties: types.ChainPropType = {
 		category: 'kusama',
 		chainId: 0,
 		logo: kusamaLogo,
-		rpcEndpoint: 'wss://kusama-rpc.polkadot.io',
+		rpcEndpoint: 'wss://kusama.api.onfinality.io/public-ws',
 		ss58Format: 2,
 		tokenDecimals: 12,
 		tokenSymbol: tokenSymbol.KSM
