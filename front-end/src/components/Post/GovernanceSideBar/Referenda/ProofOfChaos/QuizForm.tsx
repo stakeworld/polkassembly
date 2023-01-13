@@ -70,9 +70,7 @@ const QuizForm = ({ className, loading, quiz, referendumId, setLoading, setQuizL
 	};
 
 	function onChangeInputs( e: any, questionIndex: string, options: number ) {
-		console.log(e.target.value);
 		const qAnswer: any = [];
-		console.log(options);
 		Array(options).fill(0).forEach((_, i) => {
 			const ans = i === e.target.value ? true : false;
 			qAnswer.push(ans);
@@ -93,7 +91,6 @@ const QuizForm = ({ className, loading, quiz, referendumId, setLoading, setQuizL
 				}
 			}
 		}));
-		console.log(userAnswers);
 	}
 
 	return (

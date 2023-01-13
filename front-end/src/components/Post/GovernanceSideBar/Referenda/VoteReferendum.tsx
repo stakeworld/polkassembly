@@ -11,6 +11,7 @@ import React, { useCallback, useContext,useEffect,useMemo,useState } from 'react
 import frowningFace from 'src/assets/frowning-face.png';
 import VoteSuccessful from 'src/assets/lottie-graphics/VoteSuccessful';
 import { ApiContext } from 'src/context/ApiContext';
+import { subsquidApiHeaders } from 'src/global/apiHeaders';
 import { LoadingStatusType,NotificationStatus } from 'src/types';
 import AccountSelectionForm from 'src/ui-components/AccountSelectionForm';
 import BalanceInput from 'src/ui-components/BalanceInput';
@@ -105,13 +106,7 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
                     }
                   }`
 			}),
-			headers: {
-				'Accept': 'application/json, multipart/mixed',
-				'content-type': 'application/json'
-				// 'Sec-Fetch-Dest': 'empty',
-				// 'Sec-Fetch-Mode': 'cors',
-				// 'Sec-Fetch-Site': 'same-origin'
-			},
+			headers: subsquidApiHeaders,
 			method: 'POST'
 			})
 			.then(async (res) => {
@@ -214,8 +209,8 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 				Take Quiz and Vote
 				</Button>}
 			<Button
-				type='primary'
-				className='rounded-lg mb-6 flex items-center justify-center text-lg p-7 w-[95%] mx-auto'
+				type={quiz?.questions ? 'primary' : 'default'}
+				className={`rounded-lg mb-6 flex items-center justify-center text-lg p-7 w-[95%] mx-auto ${!quiz?.questions && 'bg-pink_primary hover:bg-pink_secondary text-white border-pink_primary hover:border-pink_primary'}`}
 				onClick={() => openModal(true)}
 			>
 				{lastVote == null || lastVote == undefined  ? quiz?.questions ? 'Only Cast Vote' : 'Cast Vote' : 'Cast Vote Again' }
