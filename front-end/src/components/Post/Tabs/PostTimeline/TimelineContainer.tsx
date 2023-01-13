@@ -21,7 +21,6 @@ interface ITimelineContainerProps {
 	className?: string;
 	statuses: BlockStatus[];
 	title?: string;
-	last?: boolean;
 }
 
 function sortfunc(a: BlockStatus, b: BlockStatus) {
@@ -29,7 +28,7 @@ function sortfunc(a: BlockStatus, b: BlockStatus) {
 }
 
 const TimelineContainer: React.FC<ITimelineContainerProps> = (props) => {
-	const { statuses, title, last } = props;
+	const { statuses, title } = props;
 	const { blocktime } = useBlockTime();
 	const ZERO = new BN(0);
 	const currentBlock = useCurrentBlock() || ZERO;
@@ -61,13 +60,9 @@ const TimelineContainer: React.FC<ITimelineContainerProps> = (props) => {
 							minute: minutes
 						}).format('Do MMMM, YYYY');
 						return (
-							<div key={status} className='flex items-center flex-1 w-full'>
-								{
-									index === 0 || isMobile?
-										<div className='grow-[1.5] min-w-[20px] max-w-[100px] h-[1px] bg-[#F796C9]'></div>
-										: null
-								}
-								<article className={`flex flex-col items-center gap-y-2 font-normal text-sidebarBlue px-[14px] pb-4 pt-8 rounded-lg border border-[#F796C9] relative ${(index === statuses.length - 1 && last)? 'border-dashed': ''}`}>
+							<div key={status} className={`flex flex-1 items-center ${index === 0? 'max-w-[258px] ': 'max-w-[211px] '}`}>
+								<div className='flex-1 min-w-[20px] h-[1px] bg-navBlue'></div>
+								<article className='flex flex-col items-center gap-y-2 font-normal text-sidebarBlue px-[14px] pb-4 pt-8 rounded-lg border border-navBlue relative bg-comment_bg'>
 									<StatusDiv status={status} />
 									<p className='flex items-center gap-x-1'>
 										Block:
@@ -83,11 +78,6 @@ const TimelineContainer: React.FC<ITimelineContainerProps> = (props) => {
 											: null
 									}
 								</article>
-								{
-									(index !== statuses.length - 1) && !isMobile ?
-										<div className='grow-[1] min-w-[10px] max-w-[75px] h-[1px] bg-[#F796C9]'></div>
-										: null
-								}
 							</div>
 						);
 					})
@@ -99,16 +89,16 @@ const TimelineContainer: React.FC<ITimelineContainerProps> = (props) => {
 	return (
 		<section className='flex'>
 			<div className='min-h-[300px] bg-pink_primary w-[2px] relative'>
-				<span className='bg-pink_primary rounded-2xl font-medium text-base text-white min-w-[100px] px-5 h-[33px] flex items-center justify-center absolute -left-5 -top-5'>
+				<span className='bg-pink_primary rounded-2xl font-medium text-base text-white whitespace-nowrap min-w-[100px] px-5 h-[33px] flex items-center justify-center absolute -left-5 -top-5'>
 					{title}
 				</span>
 				<span className='bg-pink_primary rounded-full absolute -bottom-1 -left-1 w-[10px] h-[10px]'>
 				</span>
 			</div>
-			<div className="hidden md:flex flex-1">
+			<div className="hidden md:flex flex-1 overflow-hidden">
 				{TimelineItems(false)}
 			</div>
-			<div className="flex md:hidden flex-1">
+			<div className="flex md:hidden flex-1 overflow-hidden">
 				{TimelineItems(true)}
 			</div>
 		</section>

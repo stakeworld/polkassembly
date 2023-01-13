@@ -52,7 +52,7 @@ const PostTimeline: FC<IPostTimelineProps> = (props) => {
 		childBountyPost,
 		techCommitteeProposalPost
 	} = props;
-	console.log(props);
+
 	return (
 		<div className={`${className} p-10`}>
 			{ isTechCommitteeProposal &&
@@ -61,6 +61,7 @@ const PostTimeline: FC<IPostTimelineProps> = (props) => {
 						blockNumber: s.blockNumber?.number || 0,
 						status: s.status || ''
 					})) || []}
+					title='Tech Committee Proposal'
 				/>
 			}
 			{ isBounty &&
@@ -69,6 +70,7 @@ const PostTimeline: FC<IPostTimelineProps> = (props) => {
 						blockNumber: s.blockNumber?.number || 0,
 						status: s.status || ''
 					})) || []}
+					title='Bounty'
 				/>
 			}
 			{ isChildBounty &&
@@ -77,6 +79,7 @@ const PostTimeline: FC<IPostTimelineProps> = (props) => {
 							blockNumber: s.blockNumber?.number || 0,
 							status: s.status || ''
 						})) || []}
+						title='Child Bounty'
 					/>
 			}
 			{ isMotion &&
@@ -94,7 +97,6 @@ const PostTimeline: FC<IPostTimelineProps> = (props) => {
 							status: (s as any).status || ''
 						})) || []}
 						title='Referendum'
-						last={true}
 					/>
 				</>
 			}
@@ -138,7 +140,6 @@ const PostTimeline: FC<IPostTimelineProps> = (props) => {
 								status: s.status || ''
 							})) || []}
 							title='Referendum'
-							last={true}
 						/>
 					</>
 			}
@@ -148,15 +149,26 @@ const PostTimeline: FC<IPostTimelineProps> = (props) => {
 							blockNumber: s.blockNumber?.number || 0,
 							status: s.status || ''
 						})) || []}
+						title='Referendum'
 					/>
 			}
 			{ isTreasuryProposal &&
-					<TimelineContainer
-						statuses={treasuryPost?.onchain_link?.onchain_treasury_spend_proposal?.[0]?.treasuryStatus?.map(s => ({
-							blockNumber: s.blockNumber?.number || 0,
-							status: s.status || ''
-						})) || []}
-					/>
+			<>
+				<TimelineContainer
+					statuses={treasuryPost?.onchain_link?.onchain_treasury_spend_proposal?.[0]?.treasuryStatus?.map(s => ({
+						blockNumber: s.blockNumber?.number || 0,
+						status: s.status || ''
+					})) || []}
+					title='Treasury Proposal'
+				/>
+				<TimelineContainer
+					statuses={treasuryPost?.onchain_link?.onchain_motion?.[0]?.motionStatus?.map(s => ({
+						blockNumber: s.blockNumber?.number || 0,
+						status: (s as any).status || ''
+					})) || []}
+					title='Motion'
+				/>
+			</>
 			}
 			{ isTipProposal &&
 					<TimelineContainer
@@ -164,6 +176,7 @@ const PostTimeline: FC<IPostTimelineProps> = (props) => {
 							blockNumber: s.blockNumber?.number || 0,
 							status: s.status || ''
 						})) || []}
+						title='Tip'
 					/>
 			}
 		</div>
