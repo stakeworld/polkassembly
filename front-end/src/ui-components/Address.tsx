@@ -174,7 +174,6 @@ export default styled(Address)`
 	.header {
 		color: black_text;
 		font-weight: 500;
-		margin-right: 0.4rem;
 	}
 
 	.description {
