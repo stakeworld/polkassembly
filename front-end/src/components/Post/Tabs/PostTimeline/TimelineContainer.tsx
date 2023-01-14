@@ -27,6 +27,19 @@ function sortfunc(a: BlockStatus, b: BlockStatus) {
 	return a.blockNumber - b.blockNumber;
 }
 
+function getBlockDate(currentBlockToNumber: number, blockNumber: number, blockTime?: number) {
+	const date = blockToTime(currentBlockToNumber - blockNumber, blockTime);
+	const dateSplit = date.split(' ');
+	const days = Number(dateSplit[0].replace('d', ''));
+	const hours = Number(dateSplit[1].replace('h', ''));
+	const minutes = Number(dateSplit[2].replace('m', ''));
+	return moment().subtract({
+		day: days,
+		hour: hours,
+		minute: minutes
+	});
+}
+
 const TimelineContainer: React.FC<ITimelineContainerProps> = (props) => {
 	const { statuses, title } = props;
 	const { blocktime } = useBlockTime();
@@ -34,7 +47,6 @@ const TimelineContainer: React.FC<ITimelineContainerProps> = (props) => {
 	const currentBlock = useCurrentBlock() || ZERO;
 	if (statuses.length === 0) return null;
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const StatusDiv = ({ status } : { status: string }) => {
 		return (
 			<div className='flex items-center absolute -top-3.5 justify-center'>
@@ -43,22 +55,13 @@ const TimelineContainer: React.FC<ITimelineContainerProps> = (props) => {
 		);
 	};
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const TimelineItems = (isMobile:boolean) => {
 		return (
 			<section className={`flex-1 flex ${isMobile? 'flex-col items-start gap-y-20 py-20': 'items-center'}`}>
 				{
 					statuses.sort(sortfunc).map(({ blockNumber, status }, index) => {
-						const date = blockToTime(currentBlock.toNumber() - blockNumber, blocktime);
-						const dateSplit = date.split(' ');
-						const days = Number(dateSplit[0].replace('d', ''));
-						const hours = Number(dateSplit[1].replace('h', ''));
-						const minutes = Number(dateSplit[2].replace('m', ''));
-						const blockDate = moment().subtract({
-							day: days,
-							hour: hours,
-							minute: minutes
-						}).format('Do MMMM, YYYY');
+						const currentBlockToNumber = currentBlock.toNumber();
+						const blockDate = getBlockDate(currentBlockToNumber, blockNumber, blocktime).format('Do MMMM, YYYY');
 						return (
 							<div key={status} className={`flex flex-1 items-center ${index === 0? 'max-w-[258px] ': 'max-w-[211px] '}`}>
 								<div className='flex-1 min-w-[20px] h-[1px] bg-navBlue'></div>
@@ -71,7 +74,7 @@ const TimelineContainer: React.FC<ITimelineContainerProps> = (props) => {
 										</a>
 									</p>
 									{
-										currentBlock.toNumber() ?
+										currentBlockToNumber ?
 											(
 												<p className='flex items-center'>{blockDate}</p>
 											)
