@@ -209,8 +209,7 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 				Take Quiz and Vote
 				</Button>}
 			<Button
-				type={quiz?.questions ? 'primary' : 'default'}
-				className={`rounded-lg mb-6 flex items-center justify-center text-lg p-7 w-[95%] mx-auto ${!quiz?.questions && 'bg-pink_primary hover:bg-pink_secondary text-white border-pink_primary hover:border-pink_primary'}`}
+				className={`rounded-lg mb-6 flex items-center justify-center text-lg p-7 w-[95%] mx-auto ${!quiz?.questions ? 'bg-pink_primary hover:bg-pink_secondary text-white border-pink_primary hover:border-pink_primary' : 'border-pink_primary text-pink_primary hover:bg-pink_primary hover:text-white'}`}
 				onClick={() => openModal(true)}
 			>
 				{lastVote == null || lastVote == undefined  ? quiz?.questions ? 'Only Cast Vote' : 'Cast Vote' : 'Cast Vote Again' }

@@ -57,5 +57,5 @@ async function getQuizAnswersRemarkTx(api: any, ref: any, userAnswers: any, quiz
 	}
 	answerObject.answers = answerArray;
 	answerObject.quizVersion = quizVersion;
-	return api.tx.system.remark('PROOFOFCHAOS::' + ref + '::ANSWERS::' + JSON.stringify(answerObject));
+	return api.tx.system.remarkWithEvent('PROOFOFCHAOS::' + ref + '::ANSWERS::' + JSON.stringify(answerObject));
 }
