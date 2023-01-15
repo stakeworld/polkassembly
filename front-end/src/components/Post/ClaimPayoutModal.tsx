@@ -16,10 +16,11 @@ import queueNotification from 'src/ui-components/QueueNotification';
 interface Props {
 	className?: string;
 	parentBountyId:number | undefined;
-	childBountyId:number | undefined;
+	childBountyId?:number | undefined;
+	isChildBounty?: boolean;
 }
 
-const ClaimPayoutModal = ({ className, parentBountyId, childBountyId } : Props) => {
+const ClaimPayoutModal = ({ className, parentBountyId, childBountyId, isChildBounty } : Props) => {
 	const { api, apiReady } = useContext(ApiContext);
 
 	const [showModal, setShowModal] = useState<boolean>(false);
@@ -55,7 +56,7 @@ const ClaimPayoutModal = ({ className, parentBountyId, childBountyId } : Props) 
 	};
 
 	const handleSignAndSubmit = async () => {
-		if(!selectedAddress || !parentBountyId || !childBountyId || isLoading) return;
+		if(!selectedAddress || !parentBountyId || (isChildBounty && !childBountyId) || isLoading) return;
 
 		if (!api) {
 			return;
@@ -72,7 +73,7 @@ const ClaimPayoutModal = ({ className, parentBountyId, childBountyId } : Props) 
 		setIsLoading(true);
 
 		try {
-			const claim = api.tx.childBounties.claimChildBounty(parentBountyId, childBountyId);
+			const claim = isChildBounty && childBountyId? api.tx.childBounties.claimChildBounty(parentBountyId, childBountyId): api.tx.bounties.claimBounty(parentBountyId);
 			claim.signAndSend(selectedAddress, ({ status }) => {
 				if (status.isInBlock) {
 					queueNotification({
