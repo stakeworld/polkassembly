@@ -232,8 +232,8 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 		// const spendPeriodRemaining: number = totalSpendPeriod - spendPeriodElapsed;
 		const time = blockToTime(currentBlock.toNumber() % (result.spendPeriod.toNumber()), blocktime);
 		const timeArr = time.split(' ');
-		const days = timeArr[0].replace('d', '');
-		const hours = timeArr[1].replace('h', '');
+		const days = timeArr[0].replace(/\D/g, '');
+		const hours = timeArr[1].replace(/\D/g, '');
 		setSpendPeriod({
 			days,
 			hours,
