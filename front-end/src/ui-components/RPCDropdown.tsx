@@ -91,7 +91,7 @@ const RPCDropdown = ({ className }: Props) => {
 	const dropdownLabel = () => {
 		let label = '';
 
-		KusamaRPCEndpoints.some((endpointData) => {
+		rpcEndpoints.some((endpointData) => {
 			if(endpointData.endpoint == endpoint){
 				label = `${endpointData.display_label?.substring(4, endpointData.display_label.length)}`;
 				return true;
