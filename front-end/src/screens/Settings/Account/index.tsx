@@ -7,6 +7,7 @@ import React, { FC, useState } from 'react';
 import { useUserDetailsContext } from 'src/context';
 import Header from 'src/screens/Settings/Header';
 import AddressComponent from 'src/ui-components/Address';
+import getEncodedAddress from 'src/util/getEncodedAddress';
 
 import Address from './Address';
 import MultiSignatureAddress from './MultiSignatureAddress';
@@ -85,12 +86,19 @@ const Account: FC<Props> = ({ className }) => {
 						Linked Addresses
 					</p>
 					<ul className='list-none flex flex-col gap-y-3 mt-3'>
-						{currentUser.addresses?.map((address) => {
-							return <li key={address}>
-								<AddressComponent
-									address={address}
-								/>
-							</li>;
+						{currentUser.addresses?.map((address, index) => {
+							const encodedAddress = getEncodedAddress(address);
+							const isLinked = encodedAddress && currentUser.addresses?.includes(encodedAddress);
+							if (!isLinked) {
+								return null;
+							}
+							return (
+								<li key={index}>
+									<AddressComponent
+										address={encodedAddress}
+									/>
+								</li>
+							);
 						})}
 					</ul>
 				</section>: null}
