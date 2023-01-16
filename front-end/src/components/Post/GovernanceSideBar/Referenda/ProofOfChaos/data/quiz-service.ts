@@ -27,7 +27,7 @@ export async function SubmitQuizAnswers(signer: any, setLoading: (status: Loadin
 			if ( error === 'signAndSend cancelled') {
 				queueNotification({
 					header: 'Submission failed!',
-					message: error.message,
+					message: error,
 					status: NotificationStatus.ERROR
 				});
 				setLoading({ isLoading: false, message: '' });

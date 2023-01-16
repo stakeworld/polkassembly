@@ -41,6 +41,7 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 	const [quizLevel, setQuizLevel] = useState<Number>(0);
 	const [quiz, setQuiz] = useState<any>({});
 	const [voteComplete, setVoteComplete] = useState<boolean>(false);
+	const [submitQuizAddress, setSubmitQuizAddress] = useState<string>(address);
 	const { api, apiReady } = useContext(ApiContext);
 	const [loadingStatus, setLoadingStatus] = useState<LoadingStatusType>({ isLoading: false, message: '' });
 	const CONVICTIONS: [number, number][] = [1, 2, 4, 8, 16, 32].map((lock, index) => [index + 1, lock]);
@@ -228,7 +229,17 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 			>
 				{!onlyVote && quizLevel === 0 ? <WelcomeScreen setQuizLevel={setQuizLevel} />
 					: !onlyVote && quizLevel === 1 ?
-						<QuizForm loading={loadingStatus.isLoading} setLoading={setLoadingStatus} quiz={quiz} referendumId={referendumId} setQuizLevel={setQuizLevel}/>
+						<QuizForm
+							setSubmitQuizAddress={setSubmitQuizAddress}
+							accounts={accounts}
+							address={address}
+							onAccountChange={onAccountChange}
+							loading={loadingStatus.isLoading}
+							setLoading={setLoadingStatus}
+							quiz={quiz}
+							referendumId={referendumId}
+							setQuizLevel={setQuizLevel}
+						/>
 						: voteComplete ? <VoteSuccessful message={`Vote on Referendum #${referendumId} is successful.`} />
 							: <Spin tip={loadingStatus.message} spinning={loadingStatus.isLoading} indicator={<LoadingOutlined />}>
 								{onlyVote && quiz?.questions && <div className='p-3 mb-7 flex items-center justify-center text-sidebarBlue bg-opacity-10 text-[14px] bg-pink_primary rounded-md'><img src={frowningFace} height={25} width={25} className='mr-2' alt='frowning-face' /><span> You&apos;re missing on a chance to win an exclusive NFT. <span className='text-pink_primary underline cursor-pointer' onClick={() => { setQuizLevel(0); setOnlyVote(false); }}>Take Quiz Now</span></span></div>}
@@ -247,6 +258,7 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 									withBalance
 									onAccountChange={onAccountChange}
 								/>
+								{submitQuizAddress !== address && !onlyVote ? <div className='font-medium text-red_primary'>The NFT reward will be sent only if quiz and voter wallet address are the same.</div> : null}
 
 								<VoteLock className='mt-6' />
 

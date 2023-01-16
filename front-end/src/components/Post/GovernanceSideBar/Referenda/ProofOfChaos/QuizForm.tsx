@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Signer } from '@polkadot/api/types';
+import { InjectedAccount } from '@polkadot/extension-inject/types';
 import { Button, Form, Radio } from 'antd';
 import React, { useContext, useEffect,useState } from 'react';
 import SendingNFT from 'src/assets/lottie-graphics/SendingNFT';
@@ -10,18 +11,18 @@ import ExtensionNotDetected from 'src/components/ExtensionNotDetected';
 import { ApiContext } from 'src/context/ApiContext';
 import { useGetAllAccounts } from 'src/hooks';
 import { LoadingStatusType } from 'src/types';
+import AccountSelectionForm from 'src/ui-components/AccountSelectionForm';
 import ErrorAlert from 'src/ui-components/ErrorAlert';
 
 import { SubmitQuizAnswers } from './data/quiz-service';
 
-const QuizForm = ({ className, loading, quiz, referendumId, setLoading, setQuizLevel }: { className?: string, loading?: boolean, referendumId: Number | null | undefined, quiz: any, setLoading: (status: LoadingStatusType) => void, setQuizLevel: (level: Number) => void }) => {
+const QuizForm = ({ accounts, address, className, loading, onAccountChange, quiz, referendumId, setLoading, setQuizLevel, setSubmitQuizAddress }: { accounts: InjectedAccount[], address: string, className?: string, loading?: boolean, onAccountChange: (address: string) => void, referendumId: Number | null | undefined, setSubmitQuizAddress: (address: string) => void, quiz: any, setLoading: (status: LoadingStatusType) => void, setQuizLevel: (level: Number) => void }) => {
 
-	const { accounts, accountsMap, noAccounts, noExtension, signersMap } = useGetAllAccounts();
+	const { accountsMap, noAccounts, noExtension, signersMap } = useGetAllAccounts();
 
 	const { api, apiReady } = useContext(ApiContext);
 
 	const [userAnswers, setUserAnswers] = useState<any>({});
-	const [address, setAddress] = useState<string>('');
 	const [signer, setSigner] = useState<Signer>();
 	const [form] = Form.useForm();
 
@@ -37,11 +38,6 @@ const QuizForm = ({ className, loading, quiz, referendumId, setLoading, setQuizL
 		const signer: Signer = signersMap[accountsMap[address]];
 		setSigner(signer);
 	}, [accountsMap, address, api, apiReady, signersMap]);
-
-	useEffect(() => {
-		if(!accounts || accounts.length === 0 ) return;
-		setAddress(accounts[0].address);
-	}, [accounts]);
 
 	const onSend = async () => {
 		try{
@@ -64,6 +60,7 @@ const QuizForm = ({ className, loading, quiz, referendumId, setLoading, setQuizL
 						}
 					}
 				}));
+				setSubmitQuizAddress(address);
 			}
 		);
 	};
@@ -99,6 +96,16 @@ const QuizForm = ({ className, loading, quiz, referendumId, setLoading, setQuizL
 			{noExtension && <ExtensionNotDetected />}
 			{loading ? <SendingNFT message='Sending Answers...' waitMessage='Please hang in tight!'/> : !noAccounts && !noExtension && quiz?.questions &&
 				<Form form={form} className='max-h-full overflow-y-auto' onFinish={onSend}>
+					<Form.Item>
+						<AccountSelectionForm
+							title='Submit with Account'
+							accounts={accounts}
+							address={address}
+							withBalance
+							onAccountChange={onAccountChange}
+						/>
+					</Form.Item>
+
 					{quiz?.questions?.map(( { text, answerOptions, id }: { text: string, answerOptions: Array<any>, id: string }, i:any) => {
 						const selectOptions = answerOptions?.map( (a,j) => {
 							return {
