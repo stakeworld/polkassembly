@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 import styled from '@xstyled/styled-components';
 import { Row, Switch } from 'antd';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useUserDetailsContext } from 'src/context';
 import Header from 'src/screens/Settings/Header';
 import AddressComponent from 'src/ui-components/Address';
@@ -39,6 +39,10 @@ const Account: FC<Props> = ({ className }) => {
 	const [isMultiSigAddress, setIsMultiSigAddress] = useState(false);
 	const [isLinkProxy, setIsLinkProxy] = useState(false);
 	const currentUser = useUserDetailsContext();
+	const [addresses, setAddresses] = useState<string[]>([]);
+	useEffect(() => {
+		setAddresses(Array.from(new Set(currentUser.addresses)));
+	}, [currentUser.addresses]);
 
 	return (
 		<Row className={`${className} flex flex-col w-full`}>
@@ -80,17 +84,19 @@ const Account: FC<Props> = ({ className }) => {
 						dismissModal={() => setIsLinkProxy(false)}
 					/>
 				</section>
-				{currentUser && currentUser.addresses && currentUser.addresses.length > 0? <section>
+				{addresses.length > 0? <section>
 					<p className='text-sm font-normal tracking-wide leading-6'>
 						Linked Addresses
 					</p>
 					<ul className='list-none flex flex-col gap-y-3 mt-3'>
-						{currentUser.addresses?.map((address) => {
-							return <li key={address}>
-								<AddressComponent
-									address={address}
-								/>
-							</li>;
+						{addresses.map((address) => {
+							return (
+								<li key={address}>
+									<AddressComponent
+										address={address}
+									/>
+								</li>
+							);
 						})}
 					</ul>
 				</section>: null}
