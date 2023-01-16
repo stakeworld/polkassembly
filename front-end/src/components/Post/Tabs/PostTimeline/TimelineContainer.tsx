@@ -50,7 +50,7 @@ const TimelineContainer: React.FC<ITimelineContainerProps> = (props) => {
 	const StatusDiv = ({ status } : { status: string }) => {
 		return (
 			<div className='flex items-center absolute -top-3.5 justify-center'>
-				<StatusTag colorInverted={true} status={status}/>
+				<StatusTag colorInverted={false} status={status}/>
 			</div>
 		);
 	};
@@ -67,7 +67,7 @@ const TimelineContainer: React.FC<ITimelineContainerProps> = (props) => {
 								<div className='flex-1 min-w-[20px] h-[1px] bg-navBlue'></div>
 								<article className='flex flex-col items-center gap-y-2 font-normal text-sidebarBlue px-[14px] pb-4 pt-8 rounded-lg border border-navBlue relative bg-comment_bg'>
 									<StatusDiv status={status} />
-									<p className='flex items-center gap-x-1'>
+									<p className='flex items-center gap-x-1 m-0'>
 										Block:
 										<a className='text-pink_primary font-medium' href={`https://${NETWORK}.subscan.io/block/${blockNumber}`} target='_blank' rel="noreferrer">
 											#{`${blockNumber} `}
@@ -76,7 +76,7 @@ const TimelineContainer: React.FC<ITimelineContainerProps> = (props) => {
 									{
 										currentBlockToNumber ?
 											(
-												<p className='flex items-center'>{blockDate}</p>
+												<p className='flex items-center m-0'>{blockDate}</p>
 											)
 											: null
 									}
