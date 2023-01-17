@@ -223,6 +223,7 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 					setQuizLevel(0);
 					setOnlyVote(false);
 					setVoteComplete(false);
+					setLoadingStatus({ isLoading: false, message: '' });
 				}}
 				footer={null}
 				width={600}
