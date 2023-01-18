@@ -28,15 +28,26 @@ function sortfunc(a: BlockStatus, b: BlockStatus) {
 }
 
 function getBlockDate(currentBlockToNumber: number, blockNumber: number, blockTime?: number) {
-	const date = blockToTime(currentBlockToNumber - blockNumber, blockTime);
-	const dateSplit = date.split(' ');
-	const days = Number(dateSplit[0].replace('d', ''));
-	const hours = Number(dateSplit[1].replace('h', ''));
-	const minutes = Number(dateSplit[2].replace('m', ''));
+	const line = blockToTime(currentBlockToNumber - blockNumber, blockTime);
+	if (!line || typeof line !== 'string') return null;
+	const words = line.split(' ');
+
+	const daysTimeObj = { d: 0, h: 0, m: 0 };
+	words.forEach((word) => {
+		if (word && typeof word === 'string' && word.length > 1) {
+			const lastChar = word.charAt(word.length - 1) as keyof typeof daysTimeObj;
+			if (!['d', 'h', 'm'].includes(lastChar)) return;
+
+			const num = Number(word.replace(lastChar, ''));
+			if (isNaN(num)) return;
+			daysTimeObj[lastChar] = num;
+		}
+	});
+	const { d, h, m } = daysTimeObj;
 	return moment().subtract({
-		day: days,
-		hour: hours,
-		minute: minutes
+		day: d,
+		hour: h,
+		minute: m
 	});
 }
 
@@ -61,7 +72,7 @@ const TimelineContainer: React.FC<ITimelineContainerProps> = (props) => {
 				{
 					statuses.sort(sortfunc).map(({ blockNumber, status }, index) => {
 						const currentBlockToNumber = currentBlock.toNumber();
-						const blockDate = getBlockDate(currentBlockToNumber, blockNumber, blocktime).format('Do MMMM, YYYY');
+						const blockDate = getBlockDate(currentBlockToNumber, blockNumber, blocktime);
 						return (
 							<div key={status} className={`flex flex-1 items-center ${index === 0? 'max-w-[258px] ': 'max-w-[211px] '}`}>
 								<div className='flex-1 min-w-[20px] h-[1px] bg-navBlue'></div>
@@ -74,9 +85,9 @@ const TimelineContainer: React.FC<ITimelineContainerProps> = (props) => {
 										</a>
 									</p>
 									{
-										currentBlockToNumber ?
+										currentBlockToNumber && blockDate ?
 											(
-												<p className='flex items-center m-0'>{blockDate}</p>
+												<p className='flex items-center m-0'>{blockDate.format('Do MMMM, YYYY')}</p>
 											)
 											: null
 									}
