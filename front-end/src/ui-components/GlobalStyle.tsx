@@ -25,6 +25,13 @@ export const GlobalStyle = createGlobalStyle`
 	::-webkit-scrollbar-thumb:hover {
 		background: #555; 
 	}
+	.scroll-hidden::-webkit-scrollbar {
+		display: none;
+	}
+	.scroll-hidden {
+		-ms-overflow-style: none;  /* IE and Edge */
+		scrollbar-width: none;  /* Firefox */
+	}
 
 	body {
 			margin: 0;

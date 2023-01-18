@@ -109,10 +109,10 @@ const TimelineContainer: React.FC<ITimelineContainerProps> = (props) => {
 				<span className='bg-pink_primary rounded-full absolute -bottom-1 -left-1 w-[10px] h-[10px]'>
 				</span>
 			</div>
-			<div className="hidden md:flex flex-1 overflow-hidden">
+			<div className="hidden md:flex flex-1 overflow-x-scroll scroll-hidden cursor-ew-resize">
 				{TimelineItems(false)}
 			</div>
-			<div className="flex md:hidden flex-1 overflow-hidden">
+			<div className="flex md:hidden flex-1 overflow-x-scroll scroll-hidden cursor-ew-resize">
 				{TimelineItems(true)}
 			</div>
 		</section>
