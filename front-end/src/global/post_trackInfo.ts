@@ -68,7 +68,7 @@ export const trackInfo: TrackInfoType = {
 		trackId: 32
 	},
 	[PostOrigin.MEDIUM_SPENDER] : {
-		description: 'Origin able to spend up to 5,000 KSM from the treasury at once.',
+		description: 'Origin able to spend up to 3,333 KSM from the treasury at once.',
 		group: 'Treasury',
 		trackId: 33
 	},
