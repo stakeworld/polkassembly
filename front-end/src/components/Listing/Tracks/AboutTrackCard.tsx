@@ -50,13 +50,13 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 
 		const blockSeconds = seconds*blockTimeSeconds;
 
-		if(blockSeconds > 60 && blockSeconds < 3600) {
+		if(blockSeconds >= 60 && blockSeconds < 3600) {
 			divisor = 60;
 			text = 'min';
-		} else if (blockSeconds > 3600 && blockSeconds < 86400) {
+		} else if (blockSeconds >= 3600 && blockSeconds < 86400) {
 			divisor = 3600;
 			text = 'hrs';
-		} else if (blockSeconds > 86400) {
+		} else if (blockSeconds >= 86400) {
 			divisor = 86400;
 			text = 'days';
 		}
