@@ -116,17 +116,18 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 				if(response && response.data && response.data.quizzes) {
 					setQuiz(response.data.quizzes[0]);
 				}
+				const hasSubmitted = response.data.quizzes[0]?.submissions ? response.data.quizzes[0]?.submissions.some((e: any) => e.wallet === address) : false;
+				setHasUserSubmitted(hasSubmitted);
+				console.log(response.data.quizzes[0]);
 			}).catch((err) => {
 				console.log(err);
 				console.log('Error in fetching voters :', err);
 			});
-	}, [ referendumId]);
+	}, [address, referendumId]);
 
 	useEffect(() => {
 		fetchQuizData();
-		const hasSubmitted = quiz?.submissions ? quiz?.submissions.some((e: any) => e.wallet === address) : false;
-		setHasUserSubmitted(hasSubmitted);
-	}, [address, fetchQuizData, quiz?.submissions, referendumId]);
+	}, [ fetchQuizData, referendumId]);
 
 	const voteReferendum = async (aye: boolean) => {
 		if (!referendumId && referendumId !== 0) {
