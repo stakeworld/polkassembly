@@ -12,7 +12,7 @@ import { Alert, Button, Divider } from 'antd';
 import React, { FC, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUserDetailsContext } from 'src/context';
-import { useAddressLoginMutation, useAddressLoginStartMutation } from 'src/generated/graphql';
+import { useAddressLoginMutation, useAddressLoginStartMutation, useAddressSignupConfirmMutation, useAddressSignupStartMutation } from 'src/generated/graphql';
 import { APPNAME } from 'src/global/appName';
 import { handleTokenChange } from 'src/services/auth.service';
 import { Wallet } from 'src/types';
@@ -21,6 +21,7 @@ import AuthForm from 'src/ui-components/AuthForm';
 import FilteredError from 'src/ui-components/FilteredError';
 import Loader from 'src/ui-components/Loader';
 import getEncodedAddress from 'src/util/getEncodedAddress';
+import getNetwork from 'src/util/getNetwork';
 
 import { ReactComponent as NovaWalletIcon } from '../../assets/wallet/nova-wallet-star.svg';
 import { ReactComponent as PolkadotJSIcon } from '../../assets/wallet/polkadotjs-icon.svg';
@@ -65,7 +66,10 @@ const Web3Login: FC<Props> = ({
 	const [accountsNotFound, setAccountsNotFound] = useState(false);
 	const navigate = useNavigate();
 	const [addressLoginStartMutation] = useAddressLoginStartMutation();
-	const [addressLoginMutation, { loading }] = useAddressLoginMutation();
+	const [addressLoginMutation, { loading: loginLoading }] = useAddressLoginMutation();
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [addressSignupStartMutation] = useAddressSignupStartMutation();
+	const [addressSignupConfirmMutation, { loading: signUpLoading }] = useAddressSignupConfirmMutation();
 	const currentUser = useUserDetailsContext();
 	useEffect(() => {
 		if (!accounts?.length) {
@@ -202,19 +206,56 @@ const Web3Login: FC<Props> = ({
 				type: 'bytes'
 			});
 
-			const { data: loginResult } = await addressLoginMutation({
-				variables: {
-					address: address,
-					signature
-				}
-			});
+			try{
 
-			if (loginResult?.addressLogin?.token) {
-				handleTokenChange(loginResult.addressLogin.token, currentUser);
-				navigate(-1);
-			} else {
-				throw new Error('Web3 Login failed');
+				const { data: loginResult } = await addressLoginMutation({
+					variables: {
+						address: address,
+						signature
+					}
+				});
+				if (loginResult?.addressLogin?.token) {
+					handleTokenChange(loginResult.addressLogin.token, currentUser);
+					navigate(-1);
+				} else {
+					throw new Error('Web3 Login failed');
+				}
+			} catch (error) {
+				setErr(error);
+				const { data: startResult } = await addressSignupStartMutation({
+					variables: {
+						address: address
+					}
+				});
+
+				const signMessage = startResult?.addressSignupStart?.signMessage;
+
+				if (!signMessage) {
+					throw new Error('Challenge message not found');
+				}
+
+				const { signature } = await signRaw({
+					address: address,
+					data: stringToHex(signMessage),
+					type: 'bytes'
+				});
+
+				const { data: signResult } = await addressSignupConfirmMutation({
+					variables: {
+						address: address,
+						network: getNetwork(),
+						signature
+					}
+				});
+
+				if (signResult?.addressSignupConfirm?.token) {
+					handleTokenChange(signResult.addressSignupConfirm.token, currentUser);
+					navigate(-1);
+				} else {
+					throw new Error('Web3 Login failed');
+				}
 			}
+
 		} catch (error) {
 			setErr(error);
 		}
@@ -272,7 +313,7 @@ const Web3Login: FC<Props> = ({
 						</div>
 						<div className="flex justify-center items-center">
 							<Button
-								disabled={loading}
+								disabled={loginLoading || signUpLoading}
 								htmlType="submit"
 								size="large"
 								className="bg-pink_primary w-56 rounded-md outline-none border-none text-white"
@@ -286,7 +327,7 @@ const Web3Login: FC<Props> = ({
 									<span className="text-grey_primary text-md">Or</span>
 									<Button
 										className="p-0 border-none outline-none text-pink_primary text-md font-semibold"
-										disabled={loading}
+										disabled={loginLoading || signUpLoading}
 										onClick={handleToggle}
 									>
                     Login with Username

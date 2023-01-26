@@ -16,15 +16,20 @@ const UserProfile = () => {
 	const { id, username } = useUserDetailsContext();
 	const [editProfile, setEditProfile] = useState<boolean>(false);
 
-	const [refetch, { data, error }] = useGetUserDetailsLazyQuery({
+	const [getData, { called, data, error, refetch }] = useGetUserDetailsLazyQuery({
 		variables: {
 			user_id: Number(id)
 		}
 	});
 
 	useEffect(() => {
-		refetch();
-	}, [refetch]);
+		if (called) {
+			refetch();
+		} else {
+			getData();
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [called]);
 	return (
 		<section className='w-full bg-white shadow-md p-8 rounded-md flex flex-col'>
 			<SidebarRight open={editProfile} closeSidebar={() => setEditProfile(false)}>
