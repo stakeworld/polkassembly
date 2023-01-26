@@ -50,7 +50,7 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
         const referendumRawEvent: NomidotReferendumV2RawEvent = data.reduce(
           (prev, curr, index) => {
             const type = eventField[index];
-            
+
             return {
               ...prev,
               [type]: curr.toJSON(),
@@ -69,14 +69,15 @@ const createReferendumV2: Task<NomidotReferendumV2[]> = {
           );
           return null;
         }
-        if (!referendumRawEvent.HashInfo?.legacy?.hash && !referendumRawEvent.HashInfo?.lookup?.hash && !referendumRawEvent.HashInfo?.inline?.hash) {
+
+        if (!referendumRawEvent.HashInfo?.inline && !referendumRawEvent.HashInfo?.legacy?.hash && !referendumRawEvent.HashInfo?.lookup?.hash && !referendumRawEvent.HashInfo?.inline?.hash) {
           l.error(
             `Expected preimageHash is missing in the event: ${referendumRawEvent.ReferendumIndex}`
           );
           return null;
         }
 
-        const preimageHash = referendumRawEvent.HashInfo?.legacy?.hash || referendumRawEvent.HashInfo?.lookup?.hash || referendumRawEvent.HashInfo?.inline?.hash;
+        const preimageHash = referendumRawEvent.HashInfo?.inline || referendumRawEvent.HashInfo?.legacy?.hash || referendumRawEvent.HashInfo?.lookup?.hash || referendumRawEvent.HashInfo?.inline?.hash;
 
         const referendumInfoRaw: Option<PalletReferendaReferendumInfoConvictionVotingTally> = await api.query.referenda.referendumInfoFor(referendumRawEvent.ReferendumIndex);
 
