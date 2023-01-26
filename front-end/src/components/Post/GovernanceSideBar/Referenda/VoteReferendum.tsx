@@ -118,7 +118,6 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 				}
 				const hasSubmitted = response.data.quizzes[0]?.submissions ? response.data.quizzes[0]?.submissions.some((e: any) => e.wallet === address) : false;
 				setHasUserSubmitted(hasSubmitted);
-				console.log(response.data.quizzes[0]);
 			}).catch((err) => {
 				console.log(err);
 				console.log('Error in fetching voters :', err);
