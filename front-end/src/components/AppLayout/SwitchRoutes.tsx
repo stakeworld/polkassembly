@@ -5,6 +5,7 @@
 import React from 'react';
 import { Navigate, Route, Routes, useParams } from 'react-router-dom';
 import { trackInfo } from 'src/global/post_trackInfo';
+import AllianceMembers from 'src/screens/Alliance/Members';
 import CalendarView from 'src/screens/CalendarView';
 import CouncilBoard from 'src/screens/CouncilBoard';
 import CreatePost from 'src/screens/CreatePost';
@@ -164,6 +165,8 @@ const SwitchRoutes = () => {
 			<Route path="/fellowship-admin" element={<TrackListing trackName={PostOrigin.FELLOWSHIP_ADMIN} />} />
 
 			<Route path='/referenda/:id' element={<ReferendumV2Post />} />
+
+			<Route path='/alliance-members' element={<AllianceMembers />} />
 
 			<Route path="*" element={<NotFound />} />
 
