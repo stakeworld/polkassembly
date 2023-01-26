@@ -43,6 +43,7 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 	const [voteComplete, setVoteComplete] = useState<boolean>(false);
 	const [submitQuizAddress, setSubmitQuizAddress] = useState<string>(address);
 	const { api, apiReady } = useContext(ApiContext);
+	const [hasUserSubmitted, setHasUserSubmitted] = useState<boolean>(false);
 	const [loadingStatus, setLoadingStatus] = useState<LoadingStatusType>({ isLoading: false, message: '' });
 	const CONVICTIONS: [number, number][] = [1, 2, 4, 8, 16, 32].map((lock, index) => [index + 1, lock]);
 
@@ -123,7 +124,9 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 
 	useEffect(() => {
 		fetchQuizData();
-	}, [fetchQuizData, referendumId]);
+		const hasSubmitted = quiz?.submissions ? quiz?.submissions.some((e: any) => e.wallet === address) : false;
+		setHasUserSubmitted(hasSubmitted);
+	}, [address, fetchQuizData, quiz?.submissions, referendumId]);
 
 	const voteReferendum = async (aye: boolean) => {
 		if (!referendumId && referendumId !== 0) {
@@ -207,7 +210,7 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 					className='bg-pink_primary hover:bg-pink_secondary text-lg mb-3 text-white border-pink_primary hover:border-pink_primary rounded-lg flex items-center justify-center p-7 w-[95%] mx-auto'
 					onClick={() => openModal(false)}
 				>
-				Take Quiz and Vote
+					{hasUserSubmitted ? 'Submit Quiz Again' : 'Take Quiz and Vote'}
 				</Button>}
 			<Button
 				className={`rounded-lg mb-6 flex items-center justify-center text-lg p-7 w-[95%] mx-auto ${!quiz?.questions ? 'bg-pink_primary hover:bg-pink_secondary text-white border-pink_primary hover:border-pink_primary' : 'border-pink_primary text-pink_primary hover:bg-pink_primary hover:text-white'}`}
