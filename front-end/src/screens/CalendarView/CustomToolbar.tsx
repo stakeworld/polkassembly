@@ -125,9 +125,8 @@ function CustomToolbar(props: any) {
 
 	useEffect(() => {
 		setSelectedMonth(props.date.getMonth());
-		const now = new Date();
 		props.date.setMonth(props.date.getMonth());
-		props.date.setYear(now.getFullYear());
+		props.date.setYear(props.date.getFullYear());
 		props.onNavigate('current');
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
