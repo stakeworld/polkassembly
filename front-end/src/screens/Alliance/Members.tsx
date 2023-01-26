@@ -12,7 +12,7 @@ const Members = () => {
 			{/* Intro and Create Post Button */}
 			<div className="flex flex-col md:flex-row">
 				<p className="text-sidebarBlue text-sm md:text-base font-medium bg-white p-4 md:p-8 rounded-md w-full shadow-md mb-4">
-                Alliance is the body of elected members that consists of several on-chain accounts. The Alliance can act as a representative for &quot;passive&quot; (non-voting) stakeholders. Council members have two main tasks: proposing referenda for the overall stakeholder group to vote on and cancelling malicious referenda.
+					The Alliance Pallet provides a collective that curates a list of accounts and URLs, deemed by the voting members to be unscrupulous actors. The Alliance provides a set of ethics against bad behavior, and provides recognition and influence for those teams that contribute something back to the ecosystem.
 				</p>
 			</div>
 			<AllianceMembers className='mt-8' />
