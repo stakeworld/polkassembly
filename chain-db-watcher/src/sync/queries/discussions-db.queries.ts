@@ -142,3 +142,13 @@ export const getDiscussionReferendumV2 = gql`
         }
     }
 `;
+
+export const getDiscussionFellowshipReferendum = gql`
+    query getDiscussionFellowshipReferendum{
+        onchain_links(where: {onchain_fellowship_referendum_id: {_is_null: false}}){
+            id
+            onchain_fellowship_referendum_id
+            proposer_address
+        }
+    }
+`;

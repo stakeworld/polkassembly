@@ -4,7 +4,7 @@
 
 /* eslint-disable camelcase */
 import { OnchainMotionFragment } from 'src/generated/chain-db-graphql';
-import { OnchainMotionSyncType, OnchainReferendaV2ValueSyncType, OnchainReferendaValueSyncType, SyncData, SyncMap } from 'src/types';
+import { OnchainFellowshipReferendaValueSyncType, OnchainMotionSyncType, OnchainReferendaV2ValueSyncType, OnchainReferendaValueSyncType, SyncData, SyncMap } from 'src/types';
 
 export const getMotionTreasuryProposalId = (section: string, motionProposalArguments: OnchainMotionFragment['motionProposalArguments']): number | undefined => {
 	let treasuryProposalId: number | undefined;
@@ -242,6 +242,44 @@ export const getMaps = (syncData: SyncData): SyncMap => {
 			}
 		}, {});
 
+	const discussionFellowshipReferendumMap = syncData?.discussion.fellowshipReferendum?.reduce(
+		(prev, curr) => {
+			// edgecase those id can be 0
+			if ((curr?.onchain_fellowship_referendum_id || curr?.onchain_fellowship_referendum_id === 0) && (curr?.id || curr?.id === 0)) {
+				return {
+					...prev,
+					[curr.onchain_fellowship_referendum_id]: curr.id
+				};
+			} else {
+				return prev || {};
+			}
+		}, {});
+
+	const onchainFellowshipReferendumMap = syncData?.onchain.referendumV2?.reduce(
+		(prev, curr) => {
+			if ((curr?.referendumId || curr?.referendumId === 0) && (curr?.id || curr?.id === 0)) {
+				let author = null;
+				try {
+					author = curr.submitted?.who;
+				} catch {
+					console.log('error getting author for referendumV2 submitted not present', JSON.stringify(curr));
+				}
+				return {
+					...prev,
+					[curr.referendumId]: {
+						author: author || curr?.preimage?.proposer,
+						blockCreationNumber: curr?.referendumStatus?.[0]?.blockNumber?.number,
+						origin: curr?.origin,
+						preimageHash: curr?.preimage?.hash,
+						status: curr?.referendumStatus?.[0]?.status,
+						trackNumber: curr?.trackNumber
+					} as OnchainFellowshipReferendaValueSyncType
+				};
+			} else {
+				return prev || {};
+			}
+		}, {});
+
 	const onchainReferendumV2Map = syncData?.onchain.referendumV2?.reduce(
 		(prev, curr) => {
 			if ((curr?.referendumId || curr?.referendumId === 0) && (curr?.id || curr?.id === 0)) {
@@ -271,6 +309,7 @@ export const getMaps = (syncData: SyncData): SyncMap => {
 		discussion: {
 			bounties: discussionBountyMap,
 			childBounties: discussionChildBountyMap,
+			fellowshipReferendum: discussionFellowshipReferendumMap,
 			motions: discussionMotionMap,
 			proposals: discussionProposalMap,
 			referenda: discussionReferendaMap,
@@ -282,6 +321,7 @@ export const getMaps = (syncData: SyncData): SyncMap => {
 		onchain: {
 			bounties: onchainBountyMap,
 			childBounties: onchainChildBountyMap,
+			fellowshipReferendum: onchainFellowshipReferendumMap,
 			motions: onchainMotionMap,
 			proposals: onchainProposalMap,
 			referenda: onchainReferendaMap,

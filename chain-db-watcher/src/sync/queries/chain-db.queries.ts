@@ -228,3 +228,34 @@ export const getOnchainReferendumV2 = gql`
     }
 `;
 
+export const getOnchainFellowshipReferendum = gql`
+    query getOnchainFellowshipReferendum($startBlock: Int!) {
+        fellowshipReferendums (
+            where: {
+                referendumStatus_some: {
+                    AND: [
+                        { status_in: ["Ongoing", "Submitted"] }
+                        { blockNumber: { number_gte: $startBlock } }
+                    ]
+                }
+            }
+        ){
+            ...onchainFellowshipReferendum
+        }
+    }
+    fragment onchainFellowshipReferendum on FellowshipReferendum {
+        id
+        referendumId
+        origin
+        trackNumber
+        referendumStatus(last: 1) {
+            status
+        }
+        preimageHash
+        preimage {
+            author
+            hash
+        }
+        submitted
+    }
+`;

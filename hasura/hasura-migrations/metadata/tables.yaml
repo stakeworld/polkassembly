@@ -476,6 +476,16 @@
       - onchain_referendumv2_id
       remote_schema: chain-db
     name: onchain_referendumv2
+  - definition:
+      remote_field:
+        fellowshipReferendums:
+          arguments:
+            where:
+              referendumId: $onchain_fellowship_referendum_id
+      hasura_fields:
+      - onchain_fellowship_referendum_id
+      remote_schema: chain-db
+    name: onchain_fellowship_referendum
   insert_permissions:
   - role: proposal_bot
     permission:
@@ -483,6 +493,8 @@
       columns:
       - onchain_bounty_id
       - onchain_child_bounty_id
+      - onchain_fellowship_referendum_id
+      - onchain_fellowship_referendum_status
       - onchain_motion_id
       - onchain_proposal_id
       - onchain_referendum_id
@@ -499,43 +511,47 @@
   - role: anonymous
     permission:
       columns:
-      - created_at
       - id
-      - onchain_bounty_id
-      - onchain_child_bounty_id
-      - onchain_motion_id
-      - onchain_proposal_id
-      - onchain_referendum_id
-      - onchain_referendumv2_id
-      - onchain_referendumv2_status
-      - onchain_tech_committee_proposal_id
-      - onchain_tip_id
-      - onchain_treasury_proposal_id
-      - origin
+      - created_at
       - post_id
+      - onchain_proposal_id
       - proposer_address
+      - onchain_referendum_id
+      - onchain_motion_id
+      - onchain_treasury_proposal_id
+      - onchain_tip_id
+      - onchain_bounty_id
+      - onchain_tech_committee_proposal_id
+      - onchain_child_bounty_id
+      - onchain_referendumv2_id
       - track
+      - onchain_referendumv2_status
+      - origin
+      - onchain_fellowship_referendum_id
+      - onchain_fellowship_referendum_status
       filter: {}
       allow_aggregations: true
   - role: event_bot
     permission:
       columns:
-      - created_at
       - id
       - onchain_bounty_id
       - onchain_child_bounty_id
+      - onchain_fellowship_referendum_id
       - onchain_motion_id
       - onchain_proposal_id
       - onchain_referendum_id
       - onchain_referendumv2_id
-      - onchain_referendumv2_status
       - onchain_tech_committee_proposal_id
-      - onchain_tip_id
       - onchain_treasury_proposal_id
-      - origin
       - post_id
-      - proposer_address
       - track
+      - onchain_fellowship_referendum_status
+      - onchain_referendumv2_status
+      - onchain_tip_id
+      - origin
+      - proposer_address
+      - created_at
       filter: {}
       allow_aggregations: true
   - role: proposal_bot
@@ -545,6 +561,8 @@
       - id
       - onchain_bounty_id
       - onchain_child_bounty_id
+      - onchain_fellowship_referendum_id
+      - onchain_fellowship_referendum_status
       - onchain_motion_id
       - onchain_proposal_id
       - onchain_referendum_id
@@ -565,6 +583,8 @@
       - id
       - onchain_bounty_id
       - onchain_child_bounty_id
+      - onchain_fellowship_referendum_id
+      - onchain_fellowship_referendum_status
       - onchain_motion_id
       - onchain_proposal_id
       - onchain_referendum_id
@@ -585,6 +605,8 @@
       columns:
       - onchain_bounty_id
       - onchain_child_bounty_id
+      - onchain_fellowship_referendum_id
+      - onchain_fellowship_referendum_status
       - onchain_motion_id
       - onchain_proposal_id
       - onchain_referendum_id

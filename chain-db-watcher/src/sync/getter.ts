@@ -242,6 +242,28 @@ export const getDiscussionReferendumV2 = async (): Promise<Array<any | null> | u
 	}
 };
 
+export const getDiscussionFellowshipReferendum = async (): Promise<Array<any | null> | undefined> => {
+	if (!discussionGraphqlUrl) {
+		throw new Error(
+			'Environment variable for the DISCUSSION_DB_GRAPHQL_URL not set'
+		);
+	}
+	try {
+		const client = new GraphQLClient(discussionGraphqlUrl, { headers: {} });
+
+		const discussionSdk = getDiscussionSdk(client);
+		const data = await discussionSdk.getDiscussionFellowshipReferendum();
+
+		return data?.onchain_links;
+	} catch (err) {
+		console.error(chalk.red('getDiscussionFellowshipReferendum execution'), err);
+		err.response?.errors &&
+			console.error(chalk.red('GraphQL response errors', err.response.errors));
+		err.response?.data &&
+			console.error(chalk.red('Response data if available', err.response.data));
+	}
+};
+
 export const getOnChainMotions = async (): Promise<Array<OnchainMotionFragment | null> | undefined> => {
 	if (!onchainGraphqlServerUrl) {
 		throw new Error(
@@ -442,6 +464,29 @@ export const getOnChainReferendumV2s = async (): Promise<Array<any | null> | und
 		return data?.referendumV2s;
 	} catch (err) {
 		console.error(chalk.red('getOnChainReferndumV2s execution'), err);
+		err.response?.errors &&
+			console.error(chalk.red('GraphQL response errors', err.response.errors));
+		err.response?.data &&
+			console.error(chalk.red('Response data if available', err.response.data));
+	}
+};
+
+export const getOnChainFellowshipReferendum = async (): Promise<Array<any | null> | undefined> => {
+	if (!onchainGraphqlServerUrl) {
+		throw new Error(
+			'Environment variable for the CHAIN_DB_GRAPHQL_URL not set'
+		);
+	}
+
+	try {
+		const client = new GraphQLClient(onchainGraphqlServerUrl, { headers: {} });
+
+		const onchainSdk = getOnchainSdk(client);
+		const data = await onchainSdk.getOnchainFellowshipReferendum({ startBlock });
+
+		return data?.fellowshipReferendums;
+	} catch (err) {
+		console.error(chalk.red('getOnChainFellowshipReferendum execution'), err);
 		err.response?.errors &&
 			console.error(chalk.red('GraphQL response errors', err.response.errors));
 		err.response?.data &&

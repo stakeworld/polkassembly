@@ -303,3 +303,56 @@ export const referendumStatusV2Subscription = gql`
         }
     }
 `;
+
+export const fellowshipReferendumSubscription = gql`
+    subscription fellowshipReferendumSubscription($startBlock: Int!) {
+        fellowshipReferendum(
+            where: {
+                node: {
+                    referendumStatus_some: {
+                        AND: [
+                            { status_in: ["Ongoing", "Submitted"] }
+                            { blockNumber: { number_gte: $startBlock } }
+                        ]
+                    }
+                }
+            }
+        ) {
+            mutation
+            node {
+                id
+                referendumId
+                origin
+                trackNumber
+                referendumStatus(last: 1) {
+                    status
+                }
+                preimageHash
+                preimage {
+                    author
+                    hash
+                }
+            }
+        }
+    }
+`;
+
+export const fellowshipReferendumStatusSubscription = gql`
+    subscription fellowshipReferendumStatusSubscription($startBlock: Int!) {
+        fellowshipReferendumStatus(
+            where: {node: {blockNumber: {number_gte: $startBlock}}}
+        ) {
+            mutation
+            node {
+                id
+                referendum{
+                    referendumId
+                }
+                status
+                blockNumber {
+                    number
+                }
+            }
+        }
+    }
+`;

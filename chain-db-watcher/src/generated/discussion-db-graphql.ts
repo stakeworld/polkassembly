@@ -105,6 +105,16 @@ export type AggregateEra = {
   count: Scalars['Int'];
 };
 
+export type AggregateFellowshipReferendum = {
+  __typename?: 'AggregateFellowshipReferendum';
+  count: Scalars['Int'];
+};
+
+export type AggregateFellowshipReferendumStatus = {
+  __typename?: 'AggregateFellowshipReferendumStatus';
+  count: Scalars['Int'];
+};
+
 export type AggregateHeartBeat = {
   __typename?: 'AggregateHeartBeat';
   count: Scalars['Int'];
@@ -5057,6 +5067,791 @@ export type EraWhereUniqueInput = {
   index?: Maybe<Scalars['Int']>;
 };
 
+export type FellowshipReferendum = {
+  __typename?: 'FellowshipReferendum';
+  deciding?: Maybe<Scalars['Json']>;
+  decisionDeposit?: Maybe<Scalars['Json']>;
+  enactmentAfter?: Maybe<Scalars['String']>;
+  enactmentAt?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  origin: Scalars['String'];
+  preimage?: Maybe<PreimageV2>;
+  preimageHash: Scalars['String'];
+  referendumId: Scalars['Int'];
+  referendumStatus?: Maybe<Array<FellowshipReferendumStatus>>;
+  submitted?: Maybe<Scalars['Json']>;
+  submittedAt: Scalars['String'];
+  tally?: Maybe<Scalars['Json']>;
+  trackNumber: Scalars['Int'];
+};
+
+
+export type FellowshipReferendumReferendumStatusArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<FellowshipReferendumStatusOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  where?: Maybe<FellowshipReferendumStatusWhereInput>;
+};
+
+/** A connection to a list of items. */
+export type FellowshipReferendumConnection = {
+  __typename?: 'FellowshipReferendumConnection';
+  aggregate: AggregateFellowshipReferendum;
+  /** A list of edges. */
+  edges: Array<Maybe<FellowshipReferendumEdge>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+export type FellowshipReferendumCreateInput = {
+  deciding?: Maybe<Scalars['Json']>;
+  decisionDeposit?: Maybe<Scalars['Json']>;
+  enactmentAfter?: Maybe<Scalars['String']>;
+  enactmentAt?: Maybe<Scalars['String']>;
+  origin: Scalars['String'];
+  preimage?: Maybe<PreimageV2CreateOneWithoutFellowshipreferendumInput>;
+  preimageHash: Scalars['String'];
+  referendumId: Scalars['Int'];
+  referendumStatus?: Maybe<FellowshipReferendumStatusCreateManyWithoutReferendumInput>;
+  submitted?: Maybe<Scalars['Json']>;
+  submittedAt: Scalars['String'];
+  tally?: Maybe<Scalars['Json']>;
+  trackNumber: Scalars['Int'];
+};
+
+export type FellowshipReferendumCreateOneWithoutPreimageInput = {
+  connect?: Maybe<FellowshipReferendumWhereUniqueInput>;
+  create?: Maybe<FellowshipReferendumCreateWithoutPreimageInput>;
+};
+
+export type FellowshipReferendumCreateOneWithoutReferendumStatusInput = {
+  connect?: Maybe<FellowshipReferendumWhereUniqueInput>;
+  create?: Maybe<FellowshipReferendumCreateWithoutReferendumStatusInput>;
+};
+
+export type FellowshipReferendumCreateWithoutPreimageInput = {
+  deciding?: Maybe<Scalars['Json']>;
+  decisionDeposit?: Maybe<Scalars['Json']>;
+  enactmentAfter?: Maybe<Scalars['String']>;
+  enactmentAt?: Maybe<Scalars['String']>;
+  origin: Scalars['String'];
+  preimageHash: Scalars['String'];
+  referendumId: Scalars['Int'];
+  referendumStatus?: Maybe<FellowshipReferendumStatusCreateManyWithoutReferendumInput>;
+  submitted?: Maybe<Scalars['Json']>;
+  submittedAt: Scalars['String'];
+  tally?: Maybe<Scalars['Json']>;
+  trackNumber: Scalars['Int'];
+};
+
+export type FellowshipReferendumCreateWithoutReferendumStatusInput = {
+  deciding?: Maybe<Scalars['Json']>;
+  decisionDeposit?: Maybe<Scalars['Json']>;
+  enactmentAfter?: Maybe<Scalars['String']>;
+  enactmentAt?: Maybe<Scalars['String']>;
+  origin: Scalars['String'];
+  preimage?: Maybe<PreimageV2CreateOneWithoutFellowshipreferendumInput>;
+  preimageHash: Scalars['String'];
+  referendumId: Scalars['Int'];
+  submitted?: Maybe<Scalars['Json']>;
+  submittedAt: Scalars['String'];
+  tally?: Maybe<Scalars['Json']>;
+  trackNumber: Scalars['Int'];
+};
+
+/** An edge in a connection. */
+export type FellowshipReferendumEdge = {
+  __typename?: 'FellowshipReferendumEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  node: FellowshipReferendum;
+};
+
+export enum FellowshipReferendumOrderByInput {
+  DecidingAsc = 'deciding_ASC',
+  DecidingDesc = 'deciding_DESC',
+  DecisionDepositAsc = 'decisionDeposit_ASC',
+  DecisionDepositDesc = 'decisionDeposit_DESC',
+  EnactmentAfterAsc = 'enactmentAfter_ASC',
+  EnactmentAfterDesc = 'enactmentAfter_DESC',
+  EnactmentAtAsc = 'enactmentAt_ASC',
+  EnactmentAtDesc = 'enactmentAt_DESC',
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  OriginAsc = 'origin_ASC',
+  OriginDesc = 'origin_DESC',
+  PreimageHashAsc = 'preimageHash_ASC',
+  PreimageHashDesc = 'preimageHash_DESC',
+  ReferendumIdAsc = 'referendumId_ASC',
+  ReferendumIdDesc = 'referendumId_DESC',
+  SubmittedAtAsc = 'submittedAt_ASC',
+  SubmittedAtDesc = 'submittedAt_DESC',
+  SubmittedAsc = 'submitted_ASC',
+  SubmittedDesc = 'submitted_DESC',
+  TallyAsc = 'tally_ASC',
+  TallyDesc = 'tally_DESC',
+  TrackNumberAsc = 'trackNumber_ASC',
+  TrackNumberDesc = 'trackNumber_DESC'
+}
+
+export type FellowshipReferendumPreviousValues = {
+  __typename?: 'FellowshipReferendumPreviousValues';
+  deciding?: Maybe<Scalars['Json']>;
+  decisionDeposit?: Maybe<Scalars['Json']>;
+  enactmentAfter?: Maybe<Scalars['String']>;
+  enactmentAt?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  origin: Scalars['String'];
+  preimageHash: Scalars['String'];
+  referendumId: Scalars['Int'];
+  submitted?: Maybe<Scalars['Json']>;
+  submittedAt: Scalars['String'];
+  tally?: Maybe<Scalars['Json']>;
+  trackNumber: Scalars['Int'];
+};
+
+export type FellowshipReferendumStatus = Node & {
+  __typename?: 'FellowshipReferendumStatus';
+  blockNumber: BlockNumber;
+  id: Scalars['ID'];
+  referendum: FellowshipReferendum;
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+};
+
+/** A connection to a list of items. */
+export type FellowshipReferendumStatusConnection = {
+  __typename?: 'FellowshipReferendumStatusConnection';
+  aggregate: AggregateFellowshipReferendumStatus;
+  /** A list of edges. */
+  edges: Array<Maybe<FellowshipReferendumStatusEdge>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+export type FellowshipReferendumStatusCreateInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  referendum: FellowshipReferendumCreateOneWithoutReferendumStatusInput;
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+};
+
+export type FellowshipReferendumStatusCreateManyWithoutReferendumInput = {
+  connect?: Maybe<Array<FellowshipReferendumStatusWhereUniqueInput>>;
+  create?: Maybe<Array<FellowshipReferendumStatusCreateWithoutReferendumInput>>;
+};
+
+export type FellowshipReferendumStatusCreateWithoutReferendumInput = {
+  blockNumber: BlockNumberCreateOneInput;
+  id?: Maybe<Scalars['ID']>;
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+};
+
+/** An edge in a connection. */
+export type FellowshipReferendumStatusEdge = {
+  __typename?: 'FellowshipReferendumStatusEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  node: FellowshipReferendumStatus;
+};
+
+export enum FellowshipReferendumStatusOrderByInput {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  StatusAsc = 'status_ASC',
+  StatusDesc = 'status_DESC',
+  UniqueStatusAsc = 'uniqueStatus_ASC',
+  UniqueStatusDesc = 'uniqueStatus_DESC'
+}
+
+export type FellowshipReferendumStatusPreviousValues = {
+  __typename?: 'FellowshipReferendumStatusPreviousValues';
+  id: Scalars['ID'];
+  status: Scalars['String'];
+  uniqueStatus: Scalars['String'];
+};
+
+export type FellowshipReferendumStatusScalarWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<FellowshipReferendumStatusScalarWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<FellowshipReferendumStatusScalarWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<FellowshipReferendumStatusScalarWhereInput>>;
+  id?: Maybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<Scalars['ID']>;
+  status?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  status_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  status_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  status_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  status_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  status_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  status_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  status_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  status_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  status_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  status_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  status_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  status_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  status_starts_with?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  uniqueStatus_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  uniqueStatus_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  uniqueStatus_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  uniqueStatus_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  uniqueStatus_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  uniqueStatus_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  uniqueStatus_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  uniqueStatus_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  uniqueStatus_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  uniqueStatus_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  uniqueStatus_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  uniqueStatus_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  uniqueStatus_starts_with?: Maybe<Scalars['String']>;
+};
+
+export type FellowshipReferendumStatusSubscriptionPayload = {
+  __typename?: 'FellowshipReferendumStatusSubscriptionPayload';
+  mutation: MutationType;
+  node?: Maybe<FellowshipReferendumStatus>;
+  previousValues?: Maybe<FellowshipReferendumStatusPreviousValues>;
+  updatedFields?: Maybe<Array<Scalars['String']>>;
+};
+
+export type FellowshipReferendumStatusSubscriptionWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<FellowshipReferendumStatusSubscriptionWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<FellowshipReferendumStatusSubscriptionWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<FellowshipReferendumStatusSubscriptionWhereInput>>;
+  /** The subscription event gets dispatched when it's listed in mutation_in */
+  mutation_in?: Maybe<Array<MutationType>>;
+  node?: Maybe<FellowshipReferendumStatusWhereInput>;
+  /** The subscription event gets only dispatched when one of the updated fields names is included in this list */
+  updatedFields_contains?: Maybe<Scalars['String']>;
+  /** The subscription event gets only dispatched when all of the field names included in this list have been updated */
+  updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
+  /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
+  updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type FellowshipReferendumStatusUpdateInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  referendum?: Maybe<FellowshipReferendumUpdateOneRequiredWithoutReferendumStatusInput>;
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type FellowshipReferendumStatusUpdateManyDataInput = {
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type FellowshipReferendumStatusUpdateManyMutationInput = {
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type FellowshipReferendumStatusUpdateManyWithoutReferendumInput = {
+  connect?: Maybe<Array<FellowshipReferendumStatusWhereUniqueInput>>;
+  create?: Maybe<Array<FellowshipReferendumStatusCreateWithoutReferendumInput>>;
+  delete?: Maybe<Array<FellowshipReferendumStatusWhereUniqueInput>>;
+  deleteMany?: Maybe<Array<FellowshipReferendumStatusScalarWhereInput>>;
+  disconnect?: Maybe<Array<FellowshipReferendumStatusWhereUniqueInput>>;
+  set?: Maybe<Array<FellowshipReferendumStatusWhereUniqueInput>>;
+  update?: Maybe<Array<FellowshipReferendumStatusUpdateWithWhereUniqueWithoutReferendumInput>>;
+  updateMany?: Maybe<Array<FellowshipReferendumStatusUpdateManyWithWhereNestedInput>>;
+  upsert?: Maybe<Array<FellowshipReferendumStatusUpsertWithWhereUniqueWithoutReferendumInput>>;
+};
+
+export type FellowshipReferendumStatusUpdateManyWithWhereNestedInput = {
+  data: FellowshipReferendumStatusUpdateManyDataInput;
+  where: FellowshipReferendumStatusScalarWhereInput;
+};
+
+export type FellowshipReferendumStatusUpdateWithoutReferendumDataInput = {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  status?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type FellowshipReferendumStatusUpdateWithWhereUniqueWithoutReferendumInput = {
+  data: FellowshipReferendumStatusUpdateWithoutReferendumDataInput;
+  where: FellowshipReferendumStatusWhereUniqueInput;
+};
+
+export type FellowshipReferendumStatusUpsertWithWhereUniqueWithoutReferendumInput = {
+  create: FellowshipReferendumStatusCreateWithoutReferendumInput;
+  update: FellowshipReferendumStatusUpdateWithoutReferendumDataInput;
+  where: FellowshipReferendumStatusWhereUniqueInput;
+};
+
+export type FellowshipReferendumStatusWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<FellowshipReferendumStatusWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<FellowshipReferendumStatusWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<FellowshipReferendumStatusWhereInput>>;
+  blockNumber?: Maybe<BlockNumberWhereInput>;
+  id?: Maybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<Scalars['ID']>;
+  referendum?: Maybe<FellowshipReferendumWhereInput>;
+  status?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  status_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  status_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  status_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  status_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  status_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  status_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  status_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  status_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  status_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  status_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  status_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  status_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  status_starts_with?: Maybe<Scalars['String']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  uniqueStatus_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  uniqueStatus_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  uniqueStatus_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  uniqueStatus_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  uniqueStatus_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  uniqueStatus_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  uniqueStatus_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  uniqueStatus_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  uniqueStatus_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  uniqueStatus_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  uniqueStatus_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  uniqueStatus_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  uniqueStatus_starts_with?: Maybe<Scalars['String']>;
+};
+
+export type FellowshipReferendumStatusWhereUniqueInput = {
+  id?: Maybe<Scalars['ID']>;
+  uniqueStatus?: Maybe<Scalars['String']>;
+};
+
+export type FellowshipReferendumSubscriptionPayload = {
+  __typename?: 'FellowshipReferendumSubscriptionPayload';
+  mutation: MutationType;
+  node?: Maybe<FellowshipReferendum>;
+  previousValues?: Maybe<FellowshipReferendumPreviousValues>;
+  updatedFields?: Maybe<Array<Scalars['String']>>;
+};
+
+export type FellowshipReferendumSubscriptionWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<FellowshipReferendumSubscriptionWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<FellowshipReferendumSubscriptionWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<FellowshipReferendumSubscriptionWhereInput>>;
+  /** The subscription event gets dispatched when it's listed in mutation_in */
+  mutation_in?: Maybe<Array<MutationType>>;
+  node?: Maybe<FellowshipReferendumWhereInput>;
+  /** The subscription event gets only dispatched when one of the updated fields names is included in this list */
+  updatedFields_contains?: Maybe<Scalars['String']>;
+  /** The subscription event gets only dispatched when all of the field names included in this list have been updated */
+  updatedFields_contains_every?: Maybe<Array<Scalars['String']>>;
+  /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
+  updatedFields_contains_some?: Maybe<Array<Scalars['String']>>;
+};
+
+export type FellowshipReferendumUpdateInput = {
+  deciding?: Maybe<Scalars['Json']>;
+  decisionDeposit?: Maybe<Scalars['Json']>;
+  enactmentAfter?: Maybe<Scalars['String']>;
+  enactmentAt?: Maybe<Scalars['String']>;
+  origin?: Maybe<Scalars['String']>;
+  preimage?: Maybe<PreimageV2UpdateOneWithoutFellowshipreferendumInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  referendumId?: Maybe<Scalars['Int']>;
+  referendumStatus?: Maybe<FellowshipReferendumStatusUpdateManyWithoutReferendumInput>;
+  submitted?: Maybe<Scalars['Json']>;
+  submittedAt?: Maybe<Scalars['String']>;
+  tally?: Maybe<Scalars['Json']>;
+  trackNumber?: Maybe<Scalars['Int']>;
+};
+
+export type FellowshipReferendumUpdateManyMutationInput = {
+  deciding?: Maybe<Scalars['Json']>;
+  decisionDeposit?: Maybe<Scalars['Json']>;
+  enactmentAfter?: Maybe<Scalars['String']>;
+  enactmentAt?: Maybe<Scalars['String']>;
+  origin?: Maybe<Scalars['String']>;
+  preimageHash?: Maybe<Scalars['String']>;
+  referendumId?: Maybe<Scalars['Int']>;
+  submitted?: Maybe<Scalars['Json']>;
+  submittedAt?: Maybe<Scalars['String']>;
+  tally?: Maybe<Scalars['Json']>;
+  trackNumber?: Maybe<Scalars['Int']>;
+};
+
+export type FellowshipReferendumUpdateOneRequiredWithoutReferendumStatusInput = {
+  connect?: Maybe<FellowshipReferendumWhereUniqueInput>;
+  create?: Maybe<FellowshipReferendumCreateWithoutReferendumStatusInput>;
+  update?: Maybe<FellowshipReferendumUpdateWithoutReferendumStatusDataInput>;
+  upsert?: Maybe<FellowshipReferendumUpsertWithoutReferendumStatusInput>;
+};
+
+export type FellowshipReferendumUpdateOneWithoutPreimageInput = {
+  connect?: Maybe<FellowshipReferendumWhereUniqueInput>;
+  create?: Maybe<FellowshipReferendumCreateWithoutPreimageInput>;
+  delete?: Maybe<Scalars['Boolean']>;
+  disconnect?: Maybe<Scalars['Boolean']>;
+  update?: Maybe<FellowshipReferendumUpdateWithoutPreimageDataInput>;
+  upsert?: Maybe<FellowshipReferendumUpsertWithoutPreimageInput>;
+};
+
+export type FellowshipReferendumUpdateWithoutPreimageDataInput = {
+  deciding?: Maybe<Scalars['Json']>;
+  decisionDeposit?: Maybe<Scalars['Json']>;
+  enactmentAfter?: Maybe<Scalars['String']>;
+  enactmentAt?: Maybe<Scalars['String']>;
+  origin?: Maybe<Scalars['String']>;
+  preimageHash?: Maybe<Scalars['String']>;
+  referendumId?: Maybe<Scalars['Int']>;
+  referendumStatus?: Maybe<FellowshipReferendumStatusUpdateManyWithoutReferendumInput>;
+  submitted?: Maybe<Scalars['Json']>;
+  submittedAt?: Maybe<Scalars['String']>;
+  tally?: Maybe<Scalars['Json']>;
+  trackNumber?: Maybe<Scalars['Int']>;
+};
+
+export type FellowshipReferendumUpdateWithoutReferendumStatusDataInput = {
+  deciding?: Maybe<Scalars['Json']>;
+  decisionDeposit?: Maybe<Scalars['Json']>;
+  enactmentAfter?: Maybe<Scalars['String']>;
+  enactmentAt?: Maybe<Scalars['String']>;
+  origin?: Maybe<Scalars['String']>;
+  preimage?: Maybe<PreimageV2UpdateOneWithoutFellowshipreferendumInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  referendumId?: Maybe<Scalars['Int']>;
+  submitted?: Maybe<Scalars['Json']>;
+  submittedAt?: Maybe<Scalars['String']>;
+  tally?: Maybe<Scalars['Json']>;
+  trackNumber?: Maybe<Scalars['Int']>;
+};
+
+export type FellowshipReferendumUpsertWithoutPreimageInput = {
+  create: FellowshipReferendumCreateWithoutPreimageInput;
+  update: FellowshipReferendumUpdateWithoutPreimageDataInput;
+};
+
+export type FellowshipReferendumUpsertWithoutReferendumStatusInput = {
+  create: FellowshipReferendumCreateWithoutReferendumStatusInput;
+  update: FellowshipReferendumUpdateWithoutReferendumStatusDataInput;
+};
+
+export type FellowshipReferendumWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<FellowshipReferendumWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<FellowshipReferendumWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<FellowshipReferendumWhereInput>>;
+  enactmentAfter?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  enactmentAfter_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  enactmentAfter_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  enactmentAfter_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  enactmentAfter_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  enactmentAfter_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  enactmentAfter_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  enactmentAfter_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  enactmentAfter_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  enactmentAfter_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  enactmentAfter_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  enactmentAfter_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  enactmentAfter_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  enactmentAfter_starts_with?: Maybe<Scalars['String']>;
+  enactmentAt?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  enactmentAt_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  enactmentAt_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  enactmentAt_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  enactmentAt_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  enactmentAt_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  enactmentAt_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  enactmentAt_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  enactmentAt_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  enactmentAt_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  enactmentAt_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  enactmentAt_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  enactmentAt_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  enactmentAt_starts_with?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['Int']>>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['Int']>>;
+  origin?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  origin_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  origin_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  origin_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  origin_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  origin_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  origin_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  origin_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  origin_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  origin_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  origin_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  origin_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  origin_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  origin_starts_with?: Maybe<Scalars['String']>;
+  preimage?: Maybe<PreimageV2WhereInput>;
+  preimageHash?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  preimageHash_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  preimageHash_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  preimageHash_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  preimageHash_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  preimageHash_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  preimageHash_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  preimageHash_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  preimageHash_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  preimageHash_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  preimageHash_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  preimageHash_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  preimageHash_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  preimageHash_starts_with?: Maybe<Scalars['String']>;
+  referendumId?: Maybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  referendumId_gt?: Maybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  referendumId_gte?: Maybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  referendumId_in?: Maybe<Array<Scalars['Int']>>;
+  /** All values less than the given value. */
+  referendumId_lt?: Maybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  referendumId_lte?: Maybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  referendumId_not?: Maybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  referendumId_not_in?: Maybe<Array<Scalars['Int']>>;
+  referendumStatus_every?: Maybe<FellowshipReferendumStatusWhereInput>;
+  referendumStatus_none?: Maybe<FellowshipReferendumStatusWhereInput>;
+  referendumStatus_some?: Maybe<FellowshipReferendumStatusWhereInput>;
+  submittedAt?: Maybe<Scalars['String']>;
+  /** All values containing the given string. */
+  submittedAt_contains?: Maybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  submittedAt_ends_with?: Maybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  submittedAt_gt?: Maybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  submittedAt_gte?: Maybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  submittedAt_in?: Maybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  submittedAt_lt?: Maybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  submittedAt_lte?: Maybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  submittedAt_not?: Maybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  submittedAt_not_contains?: Maybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  submittedAt_not_ends_with?: Maybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  submittedAt_not_in?: Maybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  submittedAt_not_starts_with?: Maybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  submittedAt_starts_with?: Maybe<Scalars['String']>;
+  trackNumber?: Maybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  trackNumber_gt?: Maybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  trackNumber_gte?: Maybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  trackNumber_in?: Maybe<Array<Scalars['Int']>>;
+  /** All values less than the given value. */
+  trackNumber_lt?: Maybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  trackNumber_lte?: Maybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  trackNumber_not?: Maybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  trackNumber_not_in?: Maybe<Array<Scalars['Int']>>;
+};
+
+export type FellowshipReferendumWhereUniqueInput = {
+  id?: Maybe<Scalars['Int']>;
+  referendumId?: Maybe<Scalars['Int']>;
+};
+
 export type HeartBeat = Node & {
   __typename?: 'HeartBeat';
   authorityId: Scalars['String'];
@@ -7003,6 +7798,8 @@ export type Mutation_Root = {
   createCouncilMember: CouncilMember;
   createCouncilMotionVote: CouncilMotionVote;
   createEra: Era;
+  createFellowshipReferendum: FellowshipReferendum;
+  createFellowshipReferendumStatus: FellowshipReferendumStatus;
   createHeartBeat: HeartBeat;
   createMotion: Motion;
   createMotionProposalArgument: MotionProposalArgument;
@@ -7049,6 +7846,8 @@ export type Mutation_Root = {
   deleteCouncilMember?: Maybe<CouncilMember>;
   deleteCouncilMotionVote?: Maybe<CouncilMotionVote>;
   deleteEra?: Maybe<Era>;
+  deleteFellowshipReferendum?: Maybe<FellowshipReferendum>;
+  deleteFellowshipReferendumStatus?: Maybe<FellowshipReferendumStatus>;
   deleteHeartBeat?: Maybe<HeartBeat>;
   deleteManyBlockIndexes: BatchPayload;
   deleteManyBlockNumbers: BatchPayload;
@@ -7060,6 +7859,8 @@ export type Mutation_Root = {
   deleteManyCouncilMotionVotes: BatchPayload;
   deleteManyCouncils: BatchPayload;
   deleteManyEras: BatchPayload;
+  deleteManyFellowshipReferendumStatuses: BatchPayload;
+  deleteManyFellowshipReferendums: BatchPayload;
   deleteManyHeartBeats: BatchPayload;
   deleteManyMotionProposalArguments: BatchPayload;
   deleteManyMotionStatuses: BatchPayload;
@@ -7296,6 +8097,8 @@ export type Mutation_Root = {
   updateCouncilMember?: Maybe<CouncilMember>;
   updateCouncilMotionVote?: Maybe<CouncilMotionVote>;
   updateEra?: Maybe<Era>;
+  updateFellowshipReferendum?: Maybe<FellowshipReferendum>;
+  updateFellowshipReferendumStatus?: Maybe<FellowshipReferendumStatus>;
   updateHeartBeat?: Maybe<HeartBeat>;
   updateManyBlockIndexes: BatchPayload;
   updateManyBlockNumbers: BatchPayload;
@@ -7306,6 +8109,8 @@ export type Mutation_Root = {
   updateManyCouncilMembers: BatchPayload;
   updateManyCouncilMotionVotes: BatchPayload;
   updateManyEras: BatchPayload;
+  updateManyFellowshipReferendumStatuses: BatchPayload;
+  updateManyFellowshipReferendums: BatchPayload;
   updateManyHeartBeats: BatchPayload;
   updateManyMotionProposalArguments: BatchPayload;
   updateManyMotionStatuses: BatchPayload;
@@ -7452,6 +8257,8 @@ export type Mutation_Root = {
   upsertCouncilMember: CouncilMember;
   upsertCouncilMotionVote: CouncilMotionVote;
   upsertEra: Era;
+  upsertFellowshipReferendum: FellowshipReferendum;
+  upsertFellowshipReferendumStatus: FellowshipReferendumStatus;
   upsertHeartBeat: HeartBeat;
   upsertMotion: Motion;
   upsertMotionProposalArgument: MotionProposalArgument;
@@ -7640,6 +8447,18 @@ export type Mutation_RootCreateCouncilMotionVoteArgs = {
 /** mutation root */
 export type Mutation_RootCreateEraArgs = {
   data: EraCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateFellowshipReferendumArgs = {
+  data: FellowshipReferendumCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateFellowshipReferendumStatusArgs = {
+  data: FellowshipReferendumStatusCreateInput;
 };
 
 
@@ -7928,6 +8747,18 @@ export type Mutation_RootDeleteEraArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDeleteFellowshipReferendumArgs = {
+  where: FellowshipReferendumWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteFellowshipReferendumStatusArgs = {
+  where: FellowshipReferendumStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootDeleteHeartBeatArgs = {
   where: HeartBeatWhereUniqueInput;
 };
@@ -7990,6 +8821,18 @@ export type Mutation_RootDeleteManyCouncilsArgs = {
 /** mutation root */
 export type Mutation_RootDeleteManyErasArgs = {
   where?: Maybe<EraWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyFellowshipReferendumStatusesArgs = {
+  where?: Maybe<FellowshipReferendumStatusWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyFellowshipReferendumsArgs = {
+  where?: Maybe<FellowshipReferendumWhereInput>;
 };
 
 
@@ -9042,6 +9885,20 @@ export type Mutation_RootUpdateEraArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdateFellowshipReferendumArgs = {
+  data: FellowshipReferendumUpdateInput;
+  where: FellowshipReferendumWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateFellowshipReferendumStatusArgs = {
+  data: FellowshipReferendumStatusUpdateInput;
+  where: FellowshipReferendumStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdateHeartBeatArgs = {
   data: HeartBeatUpdateInput;
   where: HeartBeatWhereUniqueInput;
@@ -9108,6 +9965,20 @@ export type Mutation_RootUpdateManyCouncilMotionVotesArgs = {
 export type Mutation_RootUpdateManyErasArgs = {
   data: EraUpdateManyMutationInput;
   where?: Maybe<EraWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyFellowshipReferendumStatusesArgs = {
+  data: FellowshipReferendumStatusUpdateManyMutationInput;
+  where?: Maybe<FellowshipReferendumStatusWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyFellowshipReferendumsArgs = {
+  data: FellowshipReferendumUpdateManyMutationInput;
+  where?: Maybe<FellowshipReferendumWhereInput>;
 };
 
 
@@ -9928,6 +10799,22 @@ export type Mutation_RootUpsertEraArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpsertFellowshipReferendumArgs = {
+  create: FellowshipReferendumCreateInput;
+  update: FellowshipReferendumUpdateInput;
+  where: FellowshipReferendumWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertFellowshipReferendumStatusArgs = {
+  create: FellowshipReferendumStatusCreateInput;
+  update: FellowshipReferendumStatusUpdateInput;
+  where: FellowshipReferendumStatusWhereUniqueInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpsertHeartBeatArgs = {
   create: HeartBeatCreateInput;
   update: HeartBeatUpdateInput;
@@ -10744,6 +11631,8 @@ export type Onchain_Links = {
   /** Remote relationship field */
   onchain_child_bounty: Array<Maybe<ChildBounty>>;
   onchain_child_bounty_id?: Maybe<Scalars['Int']>;
+  onchain_fellowship_referendum_id?: Maybe<Scalars['Int']>;
+  onchain_fellowship_referendum_status?: Maybe<Scalars['String']>;
   /** Remote relationship field */
   onchain_motion: Array<Maybe<Motion>>;
   onchain_motion_id?: Maybe<Scalars['Int']>;
@@ -11018,6 +11907,7 @@ export type Onchain_Links_Avg_Fields = {
   id?: Maybe<Scalars['Float']>;
   onchain_bounty_id?: Maybe<Scalars['Float']>;
   onchain_child_bounty_id?: Maybe<Scalars['Float']>;
+  onchain_fellowship_referendum_id?: Maybe<Scalars['Float']>;
   onchain_motion_id?: Maybe<Scalars['Float']>;
   onchain_proposal_id?: Maybe<Scalars['Float']>;
   onchain_referendum_id?: Maybe<Scalars['Float']>;
@@ -11033,6 +11923,7 @@ export type Onchain_Links_Avg_Order_By = {
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
   onchain_child_bounty_id?: Maybe<Order_By>;
+  onchain_fellowship_referendum_id?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
   onchain_referendum_id?: Maybe<Order_By>;
@@ -11052,6 +11943,8 @@ export type Onchain_Links_Bool_Exp = {
   id?: Maybe<Int_Comparison_Exp>;
   onchain_bounty_id?: Maybe<Int_Comparison_Exp>;
   onchain_child_bounty_id?: Maybe<Int_Comparison_Exp>;
+  onchain_fellowship_referendum_id?: Maybe<Int_Comparison_Exp>;
+  onchain_fellowship_referendum_status?: Maybe<String_Comparison_Exp>;
   onchain_motion_id?: Maybe<Int_Comparison_Exp>;
   onchain_post_discussion_links?: Maybe<Onchain_Post_Discussion_Link_Bool_Exp>;
   onchain_proposal_id?: Maybe<Int_Comparison_Exp>;
@@ -11093,6 +11986,7 @@ export type Onchain_Links_Inc_Input = {
   id?: Maybe<Scalars['Int']>;
   onchain_bounty_id?: Maybe<Scalars['Int']>;
   onchain_child_bounty_id?: Maybe<Scalars['Int']>;
+  onchain_fellowship_referendum_id?: Maybe<Scalars['Int']>;
   onchain_motion_id?: Maybe<Scalars['Int']>;
   onchain_proposal_id?: Maybe<Scalars['Int']>;
   onchain_referendum_id?: Maybe<Scalars['Int']>;
@@ -11109,6 +12003,8 @@ export type Onchain_Links_Insert_Input = {
   id?: Maybe<Scalars['Int']>;
   onchain_bounty_id?: Maybe<Scalars['Int']>;
   onchain_child_bounty_id?: Maybe<Scalars['Int']>;
+  onchain_fellowship_referendum_id?: Maybe<Scalars['Int']>;
+  onchain_fellowship_referendum_status?: Maybe<Scalars['String']>;
   onchain_motion_id?: Maybe<Scalars['Int']>;
   onchain_post_discussion_links?: Maybe<Onchain_Post_Discussion_Link_Arr_Rel_Insert_Input>;
   onchain_proposal_id?: Maybe<Scalars['Int']>;
@@ -11132,6 +12028,8 @@ export type Onchain_Links_Max_Fields = {
   id?: Maybe<Scalars['Int']>;
   onchain_bounty_id?: Maybe<Scalars['Int']>;
   onchain_child_bounty_id?: Maybe<Scalars['Int']>;
+  onchain_fellowship_referendum_id?: Maybe<Scalars['Int']>;
+  onchain_fellowship_referendum_status?: Maybe<Scalars['String']>;
   onchain_motion_id?: Maybe<Scalars['Int']>;
   onchain_proposal_id?: Maybe<Scalars['Int']>;
   onchain_referendum_id?: Maybe<Scalars['Int']>;
@@ -11152,6 +12050,8 @@ export type Onchain_Links_Max_Order_By = {
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
   onchain_child_bounty_id?: Maybe<Order_By>;
+  onchain_fellowship_referendum_id?: Maybe<Order_By>;
+  onchain_fellowship_referendum_status?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
   onchain_referendum_id?: Maybe<Order_By>;
@@ -11173,6 +12073,8 @@ export type Onchain_Links_Min_Fields = {
   id?: Maybe<Scalars['Int']>;
   onchain_bounty_id?: Maybe<Scalars['Int']>;
   onchain_child_bounty_id?: Maybe<Scalars['Int']>;
+  onchain_fellowship_referendum_id?: Maybe<Scalars['Int']>;
+  onchain_fellowship_referendum_status?: Maybe<Scalars['String']>;
   onchain_motion_id?: Maybe<Scalars['Int']>;
   onchain_proposal_id?: Maybe<Scalars['Int']>;
   onchain_referendum_id?: Maybe<Scalars['Int']>;
@@ -11193,6 +12095,8 @@ export type Onchain_Links_Min_Order_By = {
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
   onchain_child_bounty_id?: Maybe<Order_By>;
+  onchain_fellowship_referendum_id?: Maybe<Order_By>;
+  onchain_fellowship_referendum_status?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
   onchain_referendum_id?: Maybe<Order_By>;
@@ -11235,6 +12139,8 @@ export type Onchain_Links_Order_By = {
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
   onchain_child_bounty_id?: Maybe<Order_By>;
+  onchain_fellowship_referendum_id?: Maybe<Order_By>;
+  onchain_fellowship_referendum_status?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
   onchain_post_discussion_links_aggregate?: Maybe<Onchain_Post_Discussion_Link_Aggregate_Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
@@ -11267,6 +12173,10 @@ export enum Onchain_Links_Select_Column {
   /** column name */
   OnchainChildBountyId = 'onchain_child_bounty_id',
   /** column name */
+  OnchainFellowshipReferendumId = 'onchain_fellowship_referendum_id',
+  /** column name */
+  OnchainFellowshipReferendumStatus = 'onchain_fellowship_referendum_status',
+  /** column name */
   OnchainMotionId = 'onchain_motion_id',
   /** column name */
   OnchainProposalId = 'onchain_proposal_id',
@@ -11298,6 +12208,8 @@ export type Onchain_Links_Set_Input = {
   id?: Maybe<Scalars['Int']>;
   onchain_bounty_id?: Maybe<Scalars['Int']>;
   onchain_child_bounty_id?: Maybe<Scalars['Int']>;
+  onchain_fellowship_referendum_id?: Maybe<Scalars['Int']>;
+  onchain_fellowship_referendum_status?: Maybe<Scalars['String']>;
   onchain_motion_id?: Maybe<Scalars['Int']>;
   onchain_proposal_id?: Maybe<Scalars['Int']>;
   onchain_referendum_id?: Maybe<Scalars['Int']>;
@@ -11318,6 +12230,7 @@ export type Onchain_Links_Stddev_Fields = {
   id?: Maybe<Scalars['Float']>;
   onchain_bounty_id?: Maybe<Scalars['Float']>;
   onchain_child_bounty_id?: Maybe<Scalars['Float']>;
+  onchain_fellowship_referendum_id?: Maybe<Scalars['Float']>;
   onchain_motion_id?: Maybe<Scalars['Float']>;
   onchain_proposal_id?: Maybe<Scalars['Float']>;
   onchain_referendum_id?: Maybe<Scalars['Float']>;
@@ -11333,6 +12246,7 @@ export type Onchain_Links_Stddev_Order_By = {
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
   onchain_child_bounty_id?: Maybe<Order_By>;
+  onchain_fellowship_referendum_id?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
   onchain_referendum_id?: Maybe<Order_By>;
@@ -11349,6 +12263,7 @@ export type Onchain_Links_Stddev_Pop_Fields = {
   id?: Maybe<Scalars['Float']>;
   onchain_bounty_id?: Maybe<Scalars['Float']>;
   onchain_child_bounty_id?: Maybe<Scalars['Float']>;
+  onchain_fellowship_referendum_id?: Maybe<Scalars['Float']>;
   onchain_motion_id?: Maybe<Scalars['Float']>;
   onchain_proposal_id?: Maybe<Scalars['Float']>;
   onchain_referendum_id?: Maybe<Scalars['Float']>;
@@ -11364,6 +12279,7 @@ export type Onchain_Links_Stddev_Pop_Order_By = {
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
   onchain_child_bounty_id?: Maybe<Order_By>;
+  onchain_fellowship_referendum_id?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
   onchain_referendum_id?: Maybe<Order_By>;
@@ -11380,6 +12296,7 @@ export type Onchain_Links_Stddev_Samp_Fields = {
   id?: Maybe<Scalars['Float']>;
   onchain_bounty_id?: Maybe<Scalars['Float']>;
   onchain_child_bounty_id?: Maybe<Scalars['Float']>;
+  onchain_fellowship_referendum_id?: Maybe<Scalars['Float']>;
   onchain_motion_id?: Maybe<Scalars['Float']>;
   onchain_proposal_id?: Maybe<Scalars['Float']>;
   onchain_referendum_id?: Maybe<Scalars['Float']>;
@@ -11395,6 +12312,7 @@ export type Onchain_Links_Stddev_Samp_Order_By = {
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
   onchain_child_bounty_id?: Maybe<Order_By>;
+  onchain_fellowship_referendum_id?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
   onchain_referendum_id?: Maybe<Order_By>;
@@ -11411,6 +12329,7 @@ export type Onchain_Links_Sum_Fields = {
   id?: Maybe<Scalars['Int']>;
   onchain_bounty_id?: Maybe<Scalars['Int']>;
   onchain_child_bounty_id?: Maybe<Scalars['Int']>;
+  onchain_fellowship_referendum_id?: Maybe<Scalars['Int']>;
   onchain_motion_id?: Maybe<Scalars['Int']>;
   onchain_proposal_id?: Maybe<Scalars['Int']>;
   onchain_referendum_id?: Maybe<Scalars['Int']>;
@@ -11426,6 +12345,7 @@ export type Onchain_Links_Sum_Order_By = {
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
   onchain_child_bounty_id?: Maybe<Order_By>;
+  onchain_fellowship_referendum_id?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
   onchain_referendum_id?: Maybe<Order_By>;
@@ -11446,6 +12366,10 @@ export enum Onchain_Links_Update_Column {
   OnchainBountyId = 'onchain_bounty_id',
   /** column name */
   OnchainChildBountyId = 'onchain_child_bounty_id',
+  /** column name */
+  OnchainFellowshipReferendumId = 'onchain_fellowship_referendum_id',
+  /** column name */
+  OnchainFellowshipReferendumStatus = 'onchain_fellowship_referendum_status',
   /** column name */
   OnchainMotionId = 'onchain_motion_id',
   /** column name */
@@ -11478,6 +12402,7 @@ export type Onchain_Links_Var_Pop_Fields = {
   id?: Maybe<Scalars['Float']>;
   onchain_bounty_id?: Maybe<Scalars['Float']>;
   onchain_child_bounty_id?: Maybe<Scalars['Float']>;
+  onchain_fellowship_referendum_id?: Maybe<Scalars['Float']>;
   onchain_motion_id?: Maybe<Scalars['Float']>;
   onchain_proposal_id?: Maybe<Scalars['Float']>;
   onchain_referendum_id?: Maybe<Scalars['Float']>;
@@ -11493,6 +12418,7 @@ export type Onchain_Links_Var_Pop_Order_By = {
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
   onchain_child_bounty_id?: Maybe<Order_By>;
+  onchain_fellowship_referendum_id?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
   onchain_referendum_id?: Maybe<Order_By>;
@@ -11509,6 +12435,7 @@ export type Onchain_Links_Var_Samp_Fields = {
   id?: Maybe<Scalars['Float']>;
   onchain_bounty_id?: Maybe<Scalars['Float']>;
   onchain_child_bounty_id?: Maybe<Scalars['Float']>;
+  onchain_fellowship_referendum_id?: Maybe<Scalars['Float']>;
   onchain_motion_id?: Maybe<Scalars['Float']>;
   onchain_proposal_id?: Maybe<Scalars['Float']>;
   onchain_referendum_id?: Maybe<Scalars['Float']>;
@@ -11524,6 +12451,7 @@ export type Onchain_Links_Var_Samp_Order_By = {
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
   onchain_child_bounty_id?: Maybe<Order_By>;
+  onchain_fellowship_referendum_id?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
   onchain_referendum_id?: Maybe<Order_By>;
@@ -11540,6 +12468,7 @@ export type Onchain_Links_Variance_Fields = {
   id?: Maybe<Scalars['Float']>;
   onchain_bounty_id?: Maybe<Scalars['Float']>;
   onchain_child_bounty_id?: Maybe<Scalars['Float']>;
+  onchain_fellowship_referendum_id?: Maybe<Scalars['Float']>;
   onchain_motion_id?: Maybe<Scalars['Float']>;
   onchain_proposal_id?: Maybe<Scalars['Float']>;
   onchain_referendum_id?: Maybe<Scalars['Float']>;
@@ -11555,6 +12484,7 @@ export type Onchain_Links_Variance_Order_By = {
   id?: Maybe<Order_By>;
   onchain_bounty_id?: Maybe<Order_By>;
   onchain_child_bounty_id?: Maybe<Order_By>;
+  onchain_fellowship_referendum_id?: Maybe<Order_By>;
   onchain_motion_id?: Maybe<Order_By>;
   onchain_proposal_id?: Maybe<Order_By>;
   onchain_referendum_id?: Maybe<Order_By>;
@@ -17048,6 +17978,7 @@ export type PreimageV2 = Node & {
   author: Scalars['String'];
   depositAmount?: Maybe<Scalars['String']>;
   enactmentPeriod?: Maybe<Scalars['String']>;
+  fellowshipreferendum?: Maybe<FellowshipReferendum>;
   hash: Scalars['String'];
   id: Scalars['ID'];
   length: Scalars['Int'];
@@ -17096,6 +18027,7 @@ export type PreimageV2CreateInput = {
   author: Scalars['String'];
   depositAmount?: Maybe<Scalars['String']>;
   enactmentPeriod?: Maybe<Scalars['String']>;
+  fellowshipreferendum?: Maybe<FellowshipReferendumCreateOneWithoutPreimageInput>;
   hash: Scalars['String'];
   id?: Maybe<Scalars['ID']>;
   length: Scalars['Int'];
@@ -17106,6 +18038,11 @@ export type PreimageV2CreateInput = {
   preimageStatus?: Maybe<PreimageStatusV2CreateManyWithoutPreimageInput>;
   referendum?: Maybe<ReferendumV2CreateOneWithoutPreimageInput>;
   section: Scalars['String'];
+};
+
+export type PreimageV2CreateOneWithoutFellowshipreferendumInput = {
+  connect?: Maybe<PreimageV2WhereUniqueInput>;
+  create?: Maybe<PreimageV2CreateWithoutFellowshipreferendumInput>;
 };
 
 export type PreimageV2CreateOneWithoutPreimageArgumentsInput = {
@@ -17123,10 +18060,27 @@ export type PreimageV2CreateOneWithoutReferendumInput = {
   create?: Maybe<PreimageV2CreateWithoutReferendumInput>;
 };
 
+export type PreimageV2CreateWithoutFellowshipreferendumInput = {
+  author: Scalars['String'];
+  depositAmount?: Maybe<Scalars['String']>;
+  enactmentPeriod?: Maybe<Scalars['String']>;
+  hash: Scalars['String'];
+  id?: Maybe<Scalars['ID']>;
+  length: Scalars['Int'];
+  metaDescription: Scalars['String'];
+  method: Scalars['String'];
+  origin?: Maybe<Scalars['String']>;
+  preimageArguments?: Maybe<PreimageArgumentV2CreateManyWithoutPreimageInput>;
+  preimageStatus?: Maybe<PreimageStatusV2CreateManyWithoutPreimageInput>;
+  referendum?: Maybe<ReferendumV2CreateOneWithoutPreimageInput>;
+  section: Scalars['String'];
+};
+
 export type PreimageV2CreateWithoutPreimageArgumentsInput = {
   author: Scalars['String'];
   depositAmount?: Maybe<Scalars['String']>;
   enactmentPeriod?: Maybe<Scalars['String']>;
+  fellowshipreferendum?: Maybe<FellowshipReferendumCreateOneWithoutPreimageInput>;
   hash: Scalars['String'];
   id?: Maybe<Scalars['ID']>;
   length: Scalars['Int'];
@@ -17142,6 +18096,7 @@ export type PreimageV2CreateWithoutPreimageStatusInput = {
   author: Scalars['String'];
   depositAmount?: Maybe<Scalars['String']>;
   enactmentPeriod?: Maybe<Scalars['String']>;
+  fellowshipreferendum?: Maybe<FellowshipReferendumCreateOneWithoutPreimageInput>;
   hash: Scalars['String'];
   id?: Maybe<Scalars['ID']>;
   length: Scalars['Int'];
@@ -17157,6 +18112,7 @@ export type PreimageV2CreateWithoutReferendumInput = {
   author: Scalars['String'];
   depositAmount?: Maybe<Scalars['String']>;
   enactmentPeriod?: Maybe<Scalars['String']>;
+  fellowshipreferendum?: Maybe<FellowshipReferendumCreateOneWithoutPreimageInput>;
   hash: Scalars['String'];
   id?: Maybe<Scalars['ID']>;
   length: Scalars['Int'];
@@ -17244,6 +18200,7 @@ export type PreimageV2UpdateInput = {
   author?: Maybe<Scalars['String']>;
   depositAmount?: Maybe<Scalars['String']>;
   enactmentPeriod?: Maybe<Scalars['String']>;
+  fellowshipreferendum?: Maybe<FellowshipReferendumUpdateOneWithoutPreimageInput>;
   hash?: Maybe<Scalars['String']>;
   length?: Maybe<Scalars['Int']>;
   metaDescription?: Maybe<Scalars['String']>;
@@ -17281,6 +18238,15 @@ export type PreimageV2UpdateOneRequiredWithoutPreimageStatusInput = {
   upsert?: Maybe<PreimageV2UpsertWithoutPreimageStatusInput>;
 };
 
+export type PreimageV2UpdateOneWithoutFellowshipreferendumInput = {
+  connect?: Maybe<PreimageV2WhereUniqueInput>;
+  create?: Maybe<PreimageV2CreateWithoutFellowshipreferendumInput>;
+  delete?: Maybe<Scalars['Boolean']>;
+  disconnect?: Maybe<Scalars['Boolean']>;
+  update?: Maybe<PreimageV2UpdateWithoutFellowshipreferendumDataInput>;
+  upsert?: Maybe<PreimageV2UpsertWithoutFellowshipreferendumInput>;
+};
+
 export type PreimageV2UpdateOneWithoutReferendumInput = {
   connect?: Maybe<PreimageV2WhereUniqueInput>;
   create?: Maybe<PreimageV2CreateWithoutReferendumInput>;
@@ -17290,10 +18256,26 @@ export type PreimageV2UpdateOneWithoutReferendumInput = {
   upsert?: Maybe<PreimageV2UpsertWithoutReferendumInput>;
 };
 
+export type PreimageV2UpdateWithoutFellowshipreferendumDataInput = {
+  author?: Maybe<Scalars['String']>;
+  depositAmount?: Maybe<Scalars['String']>;
+  enactmentPeriod?: Maybe<Scalars['String']>;
+  hash?: Maybe<Scalars['String']>;
+  length?: Maybe<Scalars['Int']>;
+  metaDescription?: Maybe<Scalars['String']>;
+  method?: Maybe<Scalars['String']>;
+  origin?: Maybe<Scalars['String']>;
+  preimageArguments?: Maybe<PreimageArgumentV2UpdateManyWithoutPreimageInput>;
+  preimageStatus?: Maybe<PreimageStatusV2UpdateManyWithoutPreimageInput>;
+  referendum?: Maybe<ReferendumV2UpdateOneWithoutPreimageInput>;
+  section?: Maybe<Scalars['String']>;
+};
+
 export type PreimageV2UpdateWithoutPreimageArgumentsDataInput = {
   author?: Maybe<Scalars['String']>;
   depositAmount?: Maybe<Scalars['String']>;
   enactmentPeriod?: Maybe<Scalars['String']>;
+  fellowshipreferendum?: Maybe<FellowshipReferendumUpdateOneWithoutPreimageInput>;
   hash?: Maybe<Scalars['String']>;
   length?: Maybe<Scalars['Int']>;
   metaDescription?: Maybe<Scalars['String']>;
@@ -17308,6 +18290,7 @@ export type PreimageV2UpdateWithoutPreimageStatusDataInput = {
   author?: Maybe<Scalars['String']>;
   depositAmount?: Maybe<Scalars['String']>;
   enactmentPeriod?: Maybe<Scalars['String']>;
+  fellowshipreferendum?: Maybe<FellowshipReferendumUpdateOneWithoutPreimageInput>;
   hash?: Maybe<Scalars['String']>;
   length?: Maybe<Scalars['Int']>;
   metaDescription?: Maybe<Scalars['String']>;
@@ -17322,6 +18305,7 @@ export type PreimageV2UpdateWithoutReferendumDataInput = {
   author?: Maybe<Scalars['String']>;
   depositAmount?: Maybe<Scalars['String']>;
   enactmentPeriod?: Maybe<Scalars['String']>;
+  fellowshipreferendum?: Maybe<FellowshipReferendumUpdateOneWithoutPreimageInput>;
   hash?: Maybe<Scalars['String']>;
   length?: Maybe<Scalars['Int']>;
   metaDescription?: Maybe<Scalars['String']>;
@@ -17330,6 +18314,11 @@ export type PreimageV2UpdateWithoutReferendumDataInput = {
   preimageArguments?: Maybe<PreimageArgumentV2UpdateManyWithoutPreimageInput>;
   preimageStatus?: Maybe<PreimageStatusV2UpdateManyWithoutPreimageInput>;
   section?: Maybe<Scalars['String']>;
+};
+
+export type PreimageV2UpsertWithoutFellowshipreferendumInput = {
+  create: PreimageV2CreateWithoutFellowshipreferendumInput;
+  update: PreimageV2UpdateWithoutFellowshipreferendumDataInput;
 };
 
 export type PreimageV2UpsertWithoutPreimageArgumentsInput = {
@@ -17435,6 +18424,7 @@ export type PreimageV2WhereInput = {
   enactmentPeriod_not_starts_with?: Maybe<Scalars['String']>;
   /** All values starting with the given string. */
   enactmentPeriod_starts_with?: Maybe<Scalars['String']>;
+  fellowshipreferendum?: Maybe<FellowshipReferendumWhereInput>;
   hash?: Maybe<Scalars['String']>;
   /** All values containing the given string. */
   hash_contains?: Maybe<Scalars['String']>;
@@ -19083,6 +20073,12 @@ export type Query_Root = {
   era?: Maybe<Era>;
   eras: Array<Maybe<Era>>;
   erasConnection: EraConnection;
+  fellowshipReferendum?: Maybe<FellowshipReferendum>;
+  fellowshipReferendumStatus?: Maybe<FellowshipReferendumStatus>;
+  fellowshipReferendumStatuses: Array<Maybe<FellowshipReferendumStatus>>;
+  fellowshipReferendumStatusesConnection: FellowshipReferendumStatusConnection;
+  fellowshipReferendums: Array<Maybe<FellowshipReferendum>>;
+  fellowshipReferendumsConnection: FellowshipReferendumConnection;
   heartBeat?: Maybe<HeartBeat>;
   heartBeats: Array<Maybe<HeartBeat>>;
   heartBeatsConnection: HeartBeatConnection;
@@ -19686,6 +20682,66 @@ export type Query_RootErasConnectionArgs = {
   orderBy?: Maybe<EraOrderByInput>;
   skip?: Maybe<Scalars['Int']>;
   where?: Maybe<EraWhereInput>;
+};
+
+
+/** query root */
+export type Query_RootFellowshipReferendumArgs = {
+  where: FellowshipReferendumWhereUniqueInput;
+};
+
+
+/** query root */
+export type Query_RootFellowshipReferendumStatusArgs = {
+  where: FellowshipReferendumStatusWhereUniqueInput;
+};
+
+
+/** query root */
+export type Query_RootFellowshipReferendumStatusesArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<FellowshipReferendumStatusOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  where?: Maybe<FellowshipReferendumStatusWhereInput>;
+};
+
+
+/** query root */
+export type Query_RootFellowshipReferendumStatusesConnectionArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<FellowshipReferendumStatusOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  where?: Maybe<FellowshipReferendumStatusWhereInput>;
+};
+
+
+/** query root */
+export type Query_RootFellowshipReferendumsArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<FellowshipReferendumOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  where?: Maybe<FellowshipReferendumWhereInput>;
+};
+
+
+/** query root */
+export type Query_RootFellowshipReferendumsConnectionArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<FellowshipReferendumOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  where?: Maybe<FellowshipReferendumWhereInput>;
 };
 
 
@@ -21986,6 +23042,7 @@ export type ReferendumV2 = {
   referendumStatus?: Maybe<Array<ReferendumStatusV2>>;
   submitted?: Maybe<Scalars['Json']>;
   submittedAt: Scalars['String'];
+  tally?: Maybe<Scalars['Json']>;
   trackNumber: Scalars['Int'];
 };
 
@@ -22022,6 +23079,7 @@ export type ReferendumV2CreateInput = {
   referendumStatus?: Maybe<ReferendumStatusV2CreateManyWithoutReferendumInput>;
   submitted?: Maybe<Scalars['Json']>;
   submittedAt: Scalars['String'];
+  tally?: Maybe<Scalars['Json']>;
   trackNumber: Scalars['Int'];
 };
 
@@ -22046,6 +23104,7 @@ export type ReferendumV2CreateWithoutPreimageInput = {
   referendumStatus?: Maybe<ReferendumStatusV2CreateManyWithoutReferendumInput>;
   submitted?: Maybe<Scalars['Json']>;
   submittedAt: Scalars['String'];
+  tally?: Maybe<Scalars['Json']>;
   trackNumber: Scalars['Int'];
 };
 
@@ -22060,6 +23119,7 @@ export type ReferendumV2CreateWithoutReferendumStatusInput = {
   referendumId: Scalars['Int'];
   submitted?: Maybe<Scalars['Json']>;
   submittedAt: Scalars['String'];
+  tally?: Maybe<Scalars['Json']>;
   trackNumber: Scalars['Int'];
 };
 
@@ -22093,6 +23153,8 @@ export enum ReferendumV2OrderByInput {
   SubmittedAtDesc = 'submittedAt_DESC',
   SubmittedAsc = 'submitted_ASC',
   SubmittedDesc = 'submitted_DESC',
+  TallyAsc = 'tally_ASC',
+  TallyDesc = 'tally_DESC',
   TrackNumberAsc = 'trackNumber_ASC',
   TrackNumberDesc = 'trackNumber_DESC'
 }
@@ -22109,6 +23171,7 @@ export type ReferendumV2PreviousValues = {
   referendumId: Scalars['Int'];
   submitted?: Maybe<Scalars['Json']>;
   submittedAt: Scalars['String'];
+  tally?: Maybe<Scalars['Json']>;
   trackNumber: Scalars['Int'];
 };
 
@@ -22150,6 +23213,7 @@ export type ReferendumV2UpdateInput = {
   referendumStatus?: Maybe<ReferendumStatusV2UpdateManyWithoutReferendumInput>;
   submitted?: Maybe<Scalars['Json']>;
   submittedAt?: Maybe<Scalars['String']>;
+  tally?: Maybe<Scalars['Json']>;
   trackNumber?: Maybe<Scalars['Int']>;
 };
 
@@ -22163,6 +23227,7 @@ export type ReferendumV2UpdateManyMutationInput = {
   referendumId?: Maybe<Scalars['Int']>;
   submitted?: Maybe<Scalars['Json']>;
   submittedAt?: Maybe<Scalars['String']>;
+  tally?: Maybe<Scalars['Json']>;
   trackNumber?: Maybe<Scalars['Int']>;
 };
 
@@ -22193,6 +23258,7 @@ export type ReferendumV2UpdateWithoutPreimageDataInput = {
   referendumStatus?: Maybe<ReferendumStatusV2UpdateManyWithoutReferendumInput>;
   submitted?: Maybe<Scalars['Json']>;
   submittedAt?: Maybe<Scalars['String']>;
+  tally?: Maybe<Scalars['Json']>;
   trackNumber?: Maybe<Scalars['Int']>;
 };
 
@@ -22207,6 +23273,7 @@ export type ReferendumV2UpdateWithoutReferendumStatusDataInput = {
   referendumId?: Maybe<Scalars['Int']>;
   submitted?: Maybe<Scalars['Json']>;
   submittedAt?: Maybe<Scalars['String']>;
+  tally?: Maybe<Scalars['Json']>;
   trackNumber?: Maybe<Scalars['Int']>;
 };
 
@@ -24378,6 +25445,8 @@ export type Subscription_Root = {
   councilMember?: Maybe<CouncilMemberSubscriptionPayload>;
   councilMotionVote?: Maybe<CouncilMotionVoteSubscriptionPayload>;
   era?: Maybe<EraSubscriptionPayload>;
+  fellowshipReferendum?: Maybe<FellowshipReferendumSubscriptionPayload>;
+  fellowshipReferendumStatus?: Maybe<FellowshipReferendumStatusSubscriptionPayload>;
   heartBeat?: Maybe<HeartBeatSubscriptionPayload>;
   motion?: Maybe<MotionSubscriptionPayload>;
   motionProposalArgument?: Maybe<MotionProposalArgumentSubscriptionPayload>;
@@ -24663,6 +25732,18 @@ export type Subscription_RootCouncilMotionVoteArgs = {
 /** subscription root */
 export type Subscription_RootEraArgs = {
   where?: Maybe<EraSubscriptionWhereInput>;
+};
+
+
+/** subscription root */
+export type Subscription_RootFellowshipReferendumArgs = {
+  where?: Maybe<FellowshipReferendumSubscriptionWhereInput>;
+};
+
+
+/** subscription root */
+export type Subscription_RootFellowshipReferendumStatusArgs = {
+  where?: Maybe<FellowshipReferendumStatusSubscriptionWhereInput>;
 };
 
 
@@ -29345,6 +30426,47 @@ export type AddPostAndReferendumV2MutationMutation = (
   )> }
 );
 
+export type AddPostAndFellowshipReferendumMutationMutationVariables = {
+  onchainReferendumId: Scalars['Int'];
+  authorId: Scalars['Int'];
+  proposerAddress: Scalars['String'];
+  status: Scalars['String'];
+  track: Scalars['Int'];
+  origin: Scalars['String'];
+  content: Scalars['String'];
+  topicId: Scalars['Int'];
+  typeId: Scalars['Int'];
+};
+
+
+export type AddPostAndFellowshipReferendumMutationMutation = (
+  { __typename: 'mutation_root' }
+  & { insert_onchain_links?: Maybe<(
+    { __typename?: 'onchain_links_mutation_response' }
+    & { returning: Array<(
+      { __typename?: 'onchain_links' }
+      & Pick<Onchain_Links, 'id'>
+    )> }
+  )> }
+);
+
+export type UpdateDiscussionFellowshipReferendumMutationMutationVariables = {
+  onchainReferendumId: Scalars['Int'];
+  status: Scalars['String'];
+};
+
+
+export type UpdateDiscussionFellowshipReferendumMutationMutation = (
+  { __typename: 'mutation_root' }
+  & { update_onchain_links?: Maybe<(
+    { __typename?: 'onchain_links_mutation_response' }
+    & { returning: Array<(
+      { __typename?: 'onchain_links' }
+      & Pick<Onchain_Links, 'id'>
+    )> }
+  )> }
+);
+
 export type UpdateDiscussionReferendumV2MutationMutationVariables = {
   onchainReferendumId: Scalars['Int'];
   status: Scalars['String'];
@@ -29565,6 +30687,19 @@ export type GetDiscussionReferendumV2ByIdQuery = (
   )> }
 );
 
+export type GetDiscussionFellowshipReferendumByIdQueryVariables = {
+  onchainReferendumId: Scalars['Int'];
+};
+
+
+export type GetDiscussionFellowshipReferendumByIdQuery = (
+  { __typename?: 'query_root' }
+  & { onchain_links: Array<(
+    { __typename?: 'onchain_links' }
+    & Pick<Onchain_Links, 'id'>
+  )> }
+);
+
 export type GetDiscussionMotionsQueryVariables = {};
 
 
@@ -29730,6 +30865,17 @@ export type GetDiscussionReferendumV2Query = (
   )> }
 );
 
+export type GetDiscussionFellowshipReferendumQueryVariables = {};
+
+
+export type GetDiscussionFellowshipReferendumQuery = (
+  { __typename?: 'query_root' }
+  & { onchain_links: Array<(
+    { __typename?: 'onchain_links' }
+    & Pick<Onchain_Links, 'id' | 'onchain_fellowship_referendum_id' | 'proposer_address'>
+  )> }
+);
+
 export const DiscussionMotionFragmentDoc = gql`
     fragment discussionMotion on onchain_links {
   id
@@ -29885,6 +31031,26 @@ export const AddPostAndReferendumV2MutationDocument = gql`
   }
 }
     `;
+export const AddPostAndFellowshipReferendumMutationDocument = gql`
+    mutation addPostAndFellowshipReferendumMutation($onchainReferendumId: Int!, $authorId: Int!, $proposerAddress: String!, $status: String!, $track: Int!, $origin: String!, $content: String!, $topicId: Int!, $typeId: Int!) {
+  __typename
+  insert_onchain_links(objects: {onchain_fellowship_referendum_id: $onchainReferendumId, proposer_address: $proposerAddress, origin: $origin, track: $track, onchain_fellowship_referendum_status: $status, post: {data: {author_id: $authorId, content: $content, topic_id: $topicId, type_id: $typeId}}}) {
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const UpdateDiscussionFellowshipReferendumMutationDocument = gql`
+    mutation updateDiscussionFellowshipReferendumMutation($onchainReferendumId: Int!, $status: String!) {
+  __typename
+  update_onchain_links(where: {onchain_fellowship_referendum_id: {_eq: $onchainReferendumId}}, _set: {onchain_fellowship_referendum_status: $status}) {
+    returning {
+      id
+    }
+  }
+}
+    `;
 export const UpdateDiscussionReferendumV2MutationDocument = gql`
     mutation updateDiscussionReferendumV2Mutation($onchainReferendumId: Int!, $status: String!) {
   __typename
@@ -30000,6 +31166,13 @@ export const GetDiscussionReferendumV2ByIdDocument = gql`
   }
 }
     `;
+export const GetDiscussionFellowshipReferendumByIdDocument = gql`
+    query getDiscussionFellowshipReferendumById($onchainReferendumId: Int!) {
+  onchain_links(where: {onchain_fellowship_referendum_id: {_eq: $onchainReferendumId}}) {
+    id
+  }
+}
+    `;
 export const GetDiscussionMotionsDocument = gql`
     query getDiscussionMotions {
   onchain_links(where: {onchain_motion_id: {_is_null: false}}) {
@@ -30089,6 +31262,15 @@ export const GetDiscussionReferendumV2Document = gql`
   }
 }
     `;
+export const GetDiscussionFellowshipReferendumDocument = gql`
+    query getDiscussionFellowshipReferendum {
+  onchain_links(where: {onchain_fellowship_referendum_id: {_is_null: false}}) {
+    id
+    onchain_fellowship_referendum_id
+    proposer_address
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
 
@@ -30125,6 +31307,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     addPostAndReferendumV2Mutation(variables: AddPostAndReferendumV2MutationMutationVariables): Promise<AddPostAndReferendumV2MutationMutation> {
       return withWrapper(() => client.request<AddPostAndReferendumV2MutationMutation>(print(AddPostAndReferendumV2MutationDocument), variables));
+    },
+    addPostAndFellowshipReferendumMutation(variables: AddPostAndFellowshipReferendumMutationMutationVariables): Promise<AddPostAndFellowshipReferendumMutationMutation> {
+      return withWrapper(() => client.request<AddPostAndFellowshipReferendumMutationMutation>(print(AddPostAndFellowshipReferendumMutationDocument), variables));
+    },
+    updateDiscussionFellowshipReferendumMutation(variables: UpdateDiscussionFellowshipReferendumMutationMutationVariables): Promise<UpdateDiscussionFellowshipReferendumMutationMutation> {
+      return withWrapper(() => client.request<UpdateDiscussionFellowshipReferendumMutationMutation>(print(UpdateDiscussionFellowshipReferendumMutationDocument), variables));
     },
     updateDiscussionReferendumV2Mutation(variables: UpdateDiscussionReferendumV2MutationMutationVariables): Promise<UpdateDiscussionReferendumV2MutationMutation> {
       return withWrapper(() => client.request<UpdateDiscussionReferendumV2MutationMutation>(print(UpdateDiscussionReferendumV2MutationDocument), variables));
@@ -30174,6 +31362,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     getDiscussionReferendumV2ById(variables: GetDiscussionReferendumV2ByIdQueryVariables): Promise<GetDiscussionReferendumV2ByIdQuery> {
       return withWrapper(() => client.request<GetDiscussionReferendumV2ByIdQuery>(print(GetDiscussionReferendumV2ByIdDocument), variables));
     },
+    getDiscussionFellowshipReferendumById(variables: GetDiscussionFellowshipReferendumByIdQueryVariables): Promise<GetDiscussionFellowshipReferendumByIdQuery> {
+      return withWrapper(() => client.request<GetDiscussionFellowshipReferendumByIdQuery>(print(GetDiscussionFellowshipReferendumByIdDocument), variables));
+    },
     getDiscussionMotions(variables?: GetDiscussionMotionsQueryVariables): Promise<GetDiscussionMotionsQuery> {
       return withWrapper(() => client.request<GetDiscussionMotionsQuery>(print(GetDiscussionMotionsDocument), variables));
     },
@@ -30206,6 +31397,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getDiscussionReferendumV2(variables?: GetDiscussionReferendumV2QueryVariables): Promise<GetDiscussionReferendumV2Query> {
       return withWrapper(() => client.request<GetDiscussionReferendumV2Query>(print(GetDiscussionReferendumV2Document), variables));
+    },
+    getDiscussionFellowshipReferendum(variables?: GetDiscussionFellowshipReferendumQueryVariables): Promise<GetDiscussionFellowshipReferendumQuery> {
+      return withWrapper(() => client.request<GetDiscussionFellowshipReferendumQuery>(print(GetDiscussionFellowshipReferendumDocument), variables));
     }
   };
 }

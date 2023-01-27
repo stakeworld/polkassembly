@@ -366,6 +366,24 @@ const resolvers = {
       return prisma.referendumStatusV2({ id: parent.id }).blockNumber();
     },
   },
+  FellowshipReferendum: {
+    preimage(parent: any) {
+      return prisma.fellowshipReferendum({ id: parent.id }).preimage();
+    },
+    referendumStatus(
+      parent: any,
+      { where, orderBy, skip, after, before, first, last }: Selectors
+    ) {
+      return prisma
+        .fellowshipReferendum({ id: parent.id })
+        .referendumStatus({ where, orderBy, skip, after, before, first, last });
+    },
+  },
+  FellowshipReferendumStatus: {
+    blockNumber(parent: any) {
+      return prisma.fellowshipReferendumStatus({ id: parent.id }).blockNumber();
+    },
+  },
 };
 
 const server = new GraphQLServer({

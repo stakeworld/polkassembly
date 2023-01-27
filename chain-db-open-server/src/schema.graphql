@@ -32,6 +32,12 @@ type Query {
   era(where: EraWhereUniqueInput!): Era
   eras(where: EraWhereInput, orderBy: EraOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Era]!
   erasConnection(where: EraWhereInput, orderBy: EraOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EraConnection!
+  fellowshipReferendum(where: FellowshipReferendumWhereUniqueInput!): FellowshipReferendum
+  fellowshipReferendums(where: FellowshipReferendumWhereInput, orderBy: FellowshipReferendumOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [FellowshipReferendum]!
+  fellowshipReferendumsConnection(where: FellowshipReferendumWhereInput, orderBy: FellowshipReferendumOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FellowshipReferendumConnection!
+  fellowshipReferendumStatus(where: FellowshipReferendumStatusWhereUniqueInput!): FellowshipReferendumStatus
+  fellowshipReferendumStatuses(where: FellowshipReferendumStatusWhereInput, orderBy: FellowshipReferendumStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [FellowshipReferendumStatus]!
+  fellowshipReferendumStatusesConnection(where: FellowshipReferendumStatusWhereInput, orderBy: FellowshipReferendumStatusOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FellowshipReferendumStatusConnection!
   heartBeat(where: HeartBeatWhereUniqueInput!): HeartBeat
   heartBeats(where: HeartBeatWhereInput, orderBy: HeartBeatOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [HeartBeat]!
   heartBeatsConnection(where: HeartBeatWhereInput, orderBy: HeartBeatOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): HeartBeatConnection!
@@ -142,6 +148,8 @@ type Subscription {
   councilMember(where: CouncilMemberSubscriptionWhereInput): CouncilMemberSubscriptionPayload
   councilMotionVote(where: CouncilMotionVoteSubscriptionWhereInput): CouncilMotionVoteSubscriptionPayload
   era(where: EraSubscriptionWhereInput): EraSubscriptionPayload
+  fellowshipReferendum(where: FellowshipReferendumSubscriptionWhereInput): FellowshipReferendumSubscriptionPayload
+  fellowshipReferendumStatus(where: FellowshipReferendumStatusSubscriptionWhereInput): FellowshipReferendumStatusSubscriptionPayload
   heartBeat(where: HeartBeatSubscriptionWhereInput): HeartBeatSubscriptionPayload
   motion(where: MotionSubscriptionWhereInput): MotionSubscriptionPayload
   motionProposalArgument(where: MotionProposalArgumentSubscriptionWhereInput): MotionProposalArgumentSubscriptionPayload

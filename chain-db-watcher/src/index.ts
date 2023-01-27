@@ -13,6 +13,7 @@ import ws from 'ws';
 import {
 	addDiscussionPostAndBounty,
 	addDiscussionPostAndChildBounty,
+	addDiscussionPostAndFellowshipReferendum,
 	addDiscussionPostAndMotion,
 	addDiscussionPostAndProposal,
 	addDiscussionPostAndReferendumV2,
@@ -22,16 +23,18 @@ import {
 	addDiscussionReferendum,
 	bountyDiscussionExists,
 	childBountyDiscussionExists,
+	fellowshipReferendumDiscussionExists,
 	motionDiscussionExists,
 	proposalDiscussionExists,
 	referendumV2DiscussionExists,
 	techCommitteeProposalDiscussionExists,
 	tipDiscussionExists,
 	treasuryProposalDiscussionExists,
+	updateDiscussionFellowshipReferendumStatus,
 	updateDiscussionReferendumV2Status,
 	updateTreasuryProposalWithMotion
 } from './graphql_helpers';
-import { bountySubscription, childBountySubscription, motionSubscription, proposalSubscription, referendumStatusV2Subscription, referendumSubscription, referendumV2Subscription, techCommitteeProposalSubscription, tipSubscription, treasurySpendProposalSubscription } from './queries';
+import { bountySubscription, childBountySubscription, fellowshipReferendumStatusSubscription, fellowshipReferendumSubscription, motionSubscription, proposalSubscription, referendumStatusV2Subscription, referendumSubscription, referendumV2Subscription, techCommitteeProposalSubscription, tipSubscription, treasurySpendProposalSubscription } from './queries';
 import { syncDBs } from './sync';
 import { getMotionTreasuryProposalId } from './sync/utils';
 
@@ -357,6 +360,82 @@ const startSubscriptions = (client: SubscriptionClient): void => {
 		error: error => { throw new Error(`Subscription (referendumStatusV2) error: ${JSON.stringify(error)}`); },
 		complete: () => {
 			console.log('Subscription (referendumStatusV2) completed');
+			process.exit(1);
+		}
+	});
+
+	execute(link, {
+		query: fellowshipReferendumSubscription,
+		variables: { startBlock }
+	}).subscribe({
+		next: ({ data }): void => {
+			console.log('Fellowship Referendum data received', JSON.stringify(data, null, 2));
+			if (data?.fellowshipReferendum?.mutation === subscriptionMutation.Created) {
+				const {
+					referendumId,
+					referendumStatus,
+					origin,
+					trackNumber,
+					preimage,
+					submitted
+				} = data?.fellowshipReferendum?.node;
+
+				let author = null;
+
+				try {
+					author = submitted?.who;
+				} catch {
+					console.log('error getting author for referendumV2 submitted not present', JSON.stringify(data?.fellowshipReferendum?.node));
+				}
+
+				addDiscussionPostAndFellowshipReferendum({
+					trackNumber,
+					origin,
+					status: referendumStatus?.pop()?.status || 'Submitted',
+					referendumId,
+					proposer: author || preimage?.author,
+					preimageArguments: preimage?.preimageArguments
+				}).catch(e => {
+					console.error(chalk.red(e));
+				});
+			}
+		},
+		error: error => { throw new Error(`Subscription (fellowshipReferendum) error: ${JSON.stringify(error)}`); },
+		complete: () => {
+			console.log('Subscription (fellowshipReferendum) completed');
+			process.exit(1);
+		}
+	});
+
+	execute(link, {
+		query: fellowshipReferendumStatusSubscription,
+		variables: { startBlock }
+	}).subscribe({
+		next: ({ data }): void => {
+			console.log('FellowshipReferendumStatus data received', JSON.stringify(data, null, 2));
+
+			const referendum = data?.fellowshipReferendumStatus?.node?.referendum;
+			const status = data?.fellowshipReferendumStatus?.node?.status;
+
+			if (!referendum || !status || !referendum?.referendumId) {
+				console.error(chalk.red(`FellowshipReferendumStatus data received is not valid: ${JSON.stringify(data, null, 2)}`));
+				return;
+			}
+
+			fellowshipReferendumDiscussionExists(referendum?.referendumId).then(alreadyExist => {
+				if (!alreadyExist) {
+					throw new Error(`Status recieved for referendumId ${referendum?.referendumId} which is not present in discussion db`);
+				} else {
+					updateDiscussionFellowshipReferendumStatus({
+						referendumId: referendum?.referendumId,
+						status
+					});
+				}
+			}).catch(error => console.error(chalk.red(error)));
+		},
+		error: error => { throw new Error(`Subscription (FellowshipReferendumStatus) error: ${JSON.stringify(error)}`); },
+		complete: () => {
+			console.log('Subscription (FellowshipReferendumStatus) completed');
 			process.exit(1);
 		}
 	});

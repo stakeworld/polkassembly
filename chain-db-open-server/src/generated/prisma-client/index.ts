@@ -26,6 +26,12 @@ export interface Exists {
   councilMember: (where?: CouncilMemberWhereInput) => Promise<boolean>;
   councilMotionVote: (where?: CouncilMotionVoteWhereInput) => Promise<boolean>;
   era: (where?: EraWhereInput) => Promise<boolean>;
+  fellowshipReferendum: (
+    where?: FellowshipReferendumWhereInput
+  ) => Promise<boolean>;
+  fellowshipReferendumStatus: (
+    where?: FellowshipReferendumStatusWhereInput
+  ) => Promise<boolean>;
   heartBeat: (where?: HeartBeatWhereInput) => Promise<boolean>;
   motion: (where?: MotionWhereInput) => Promise<boolean>;
   motionProposalArgument: (
@@ -295,6 +301,48 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => EraConnectionPromise;
+  fellowshipReferendum: (
+    where: FellowshipReferendumWhereUniqueInput
+  ) => FellowshipReferendumNullablePromise;
+  fellowshipReferendums: (args?: {
+    where?: FellowshipReferendumWhereInput;
+    orderBy?: FellowshipReferendumOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<FellowshipReferendum>;
+  fellowshipReferendumsConnection: (args?: {
+    where?: FellowshipReferendumWhereInput;
+    orderBy?: FellowshipReferendumOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FellowshipReferendumConnectionPromise;
+  fellowshipReferendumStatus: (
+    where: FellowshipReferendumStatusWhereUniqueInput
+  ) => FellowshipReferendumStatusNullablePromise;
+  fellowshipReferendumStatuses: (args?: {
+    where?: FellowshipReferendumStatusWhereInput;
+    orderBy?: FellowshipReferendumStatusOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<FellowshipReferendumStatus>;
+  fellowshipReferendumStatusesConnection: (args?: {
+    where?: FellowshipReferendumStatusWhereInput;
+    orderBy?: FellowshipReferendumStatusOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FellowshipReferendumStatusConnectionPromise;
   heartBeat: (where: HeartBeatWhereUniqueInput) => HeartBeatNullablePromise;
   heartBeats: (args?: {
     where?: HeartBeatWhereInput;
@@ -1125,6 +1173,50 @@ export interface Prisma {
   }) => EraPromise;
   deleteEra: (where: EraWhereUniqueInput) => EraPromise;
   deleteManyEras: (where?: EraWhereInput) => BatchPayloadPromise;
+  createFellowshipReferendum: (
+    data: FellowshipReferendumCreateInput
+  ) => FellowshipReferendumPromise;
+  updateFellowshipReferendum: (args: {
+    data: FellowshipReferendumUpdateInput;
+    where: FellowshipReferendumWhereUniqueInput;
+  }) => FellowshipReferendumPromise;
+  updateManyFellowshipReferendums: (args: {
+    data: FellowshipReferendumUpdateManyMutationInput;
+    where?: FellowshipReferendumWhereInput;
+  }) => BatchPayloadPromise;
+  upsertFellowshipReferendum: (args: {
+    where: FellowshipReferendumWhereUniqueInput;
+    create: FellowshipReferendumCreateInput;
+    update: FellowshipReferendumUpdateInput;
+  }) => FellowshipReferendumPromise;
+  deleteFellowshipReferendum: (
+    where: FellowshipReferendumWhereUniqueInput
+  ) => FellowshipReferendumPromise;
+  deleteManyFellowshipReferendums: (
+    where?: FellowshipReferendumWhereInput
+  ) => BatchPayloadPromise;
+  createFellowshipReferendumStatus: (
+    data: FellowshipReferendumStatusCreateInput
+  ) => FellowshipReferendumStatusPromise;
+  updateFellowshipReferendumStatus: (args: {
+    data: FellowshipReferendumStatusUpdateInput;
+    where: FellowshipReferendumStatusWhereUniqueInput;
+  }) => FellowshipReferendumStatusPromise;
+  updateManyFellowshipReferendumStatuses: (args: {
+    data: FellowshipReferendumStatusUpdateManyMutationInput;
+    where?: FellowshipReferendumStatusWhereInput;
+  }) => BatchPayloadPromise;
+  upsertFellowshipReferendumStatus: (args: {
+    where: FellowshipReferendumStatusWhereUniqueInput;
+    create: FellowshipReferendumStatusCreateInput;
+    update: FellowshipReferendumStatusUpdateInput;
+  }) => FellowshipReferendumStatusPromise;
+  deleteFellowshipReferendumStatus: (
+    where: FellowshipReferendumStatusWhereUniqueInput
+  ) => FellowshipReferendumStatusPromise;
+  deleteManyFellowshipReferendumStatuses: (
+    where?: FellowshipReferendumStatusWhereInput
+  ) => BatchPayloadPromise;
   createHeartBeat: (data: HeartBeatCreateInput) => HeartBeatPromise;
   updateHeartBeat: (args: {
     data: HeartBeatUpdateInput;
@@ -1778,6 +1870,12 @@ export interface Subscription {
   era: (
     where?: EraSubscriptionWhereInput
   ) => EraSubscriptionPayloadSubscription;
+  fellowshipReferendum: (
+    where?: FellowshipReferendumSubscriptionWhereInput
+  ) => FellowshipReferendumSubscriptionPayloadSubscription;
+  fellowshipReferendumStatus: (
+    where?: FellowshipReferendumStatusSubscriptionWhereInput
+  ) => FellowshipReferendumStatusSubscriptionPayloadSubscription;
   heartBeat: (
     where?: HeartBeatSubscriptionWhereInput
   ) => HeartBeatSubscriptionPayloadSubscription;
@@ -2054,6 +2152,62 @@ export type EraOrderByInput =
   | "totalPoints_ASC"
   | "totalPoints_DESC";
 
+export type PreimageArgumentV2OrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "value_ASC"
+  | "value_DESC";
+
+export type PreimageStatusV2OrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "status_ASC"
+  | "status_DESC";
+
+export type ReferendumStatusV2OrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "status_ASC"
+  | "status_DESC"
+  | "uniqueStatus_ASC"
+  | "uniqueStatus_DESC";
+
+export type FellowshipReferendumStatusOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "status_ASC"
+  | "status_DESC"
+  | "uniqueStatus_ASC"
+  | "uniqueStatus_DESC";
+
+export type FellowshipReferendumOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "trackNumber_ASC"
+  | "trackNumber_DESC"
+  | "origin_ASC"
+  | "origin_DESC"
+  | "preimageHash_ASC"
+  | "preimageHash_DESC"
+  | "referendumId_ASC"
+  | "referendumId_DESC"
+  | "enactmentAt_ASC"
+  | "enactmentAt_DESC"
+  | "enactmentAfter_ASC"
+  | "enactmentAfter_DESC"
+  | "submittedAt_ASC"
+  | "submittedAt_DESC"
+  | "submitted_ASC"
+  | "submitted_DESC"
+  | "decisionDeposit_ASC"
+  | "decisionDeposit_DESC"
+  | "deciding_ASC"
+  | "deciding_DESC"
+  | "tally_ASC"
+  | "tally_DESC";
+
 export type HeartBeatOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -2119,28 +2273,6 @@ export type PreimageOrderByInput =
   | "method_DESC"
   | "section_ASC"
   | "section_DESC";
-
-export type PreimageArgumentV2OrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
-  | "value_ASC"
-  | "value_DESC";
-
-export type PreimageStatusV2OrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "status_ASC"
-  | "status_DESC";
-
-export type ReferendumStatusV2OrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "status_ASC"
-  | "status_DESC"
-  | "uniqueStatus_ASC"
-  | "uniqueStatus_DESC";
 
 export type PreimageV2OrderByInput =
   | "id_ASC"
@@ -3906,6 +4038,570 @@ export interface SessionWhereInput {
   NOT?: Maybe<SessionWhereInput[] | SessionWhereInput>;
 }
 
+export type FellowshipReferendumWhereUniqueInput = AtLeastOne<{
+  id: Maybe<Int>;
+  referendumId?: Maybe<Int>;
+}>;
+
+export interface PreimageArgumentV2WhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  preimage?: Maybe<PreimageV2WhereInput>;
+  value?: Maybe<String>;
+  value_not?: Maybe<String>;
+  value_in?: Maybe<String[] | String>;
+  value_not_in?: Maybe<String[] | String>;
+  value_lt?: Maybe<String>;
+  value_lte?: Maybe<String>;
+  value_gt?: Maybe<String>;
+  value_gte?: Maybe<String>;
+  value_contains?: Maybe<String>;
+  value_not_contains?: Maybe<String>;
+  value_starts_with?: Maybe<String>;
+  value_not_starts_with?: Maybe<String>;
+  value_ends_with?: Maybe<String>;
+  value_not_ends_with?: Maybe<String>;
+  AND?: Maybe<PreimageArgumentV2WhereInput[] | PreimageArgumentV2WhereInput>;
+  OR?: Maybe<PreimageArgumentV2WhereInput[] | PreimageArgumentV2WhereInput>;
+  NOT?: Maybe<PreimageArgumentV2WhereInput[] | PreimageArgumentV2WhereInput>;
+}
+
+export interface PreimageV2WhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  author?: Maybe<String>;
+  author_not?: Maybe<String>;
+  author_in?: Maybe<String[] | String>;
+  author_not_in?: Maybe<String[] | String>;
+  author_lt?: Maybe<String>;
+  author_lte?: Maybe<String>;
+  author_gt?: Maybe<String>;
+  author_gte?: Maybe<String>;
+  author_contains?: Maybe<String>;
+  author_not_contains?: Maybe<String>;
+  author_starts_with?: Maybe<String>;
+  author_not_starts_with?: Maybe<String>;
+  author_ends_with?: Maybe<String>;
+  author_not_ends_with?: Maybe<String>;
+  depositAmount?: Maybe<String>;
+  depositAmount_not?: Maybe<String>;
+  depositAmount_in?: Maybe<String[] | String>;
+  depositAmount_not_in?: Maybe<String[] | String>;
+  depositAmount_lt?: Maybe<String>;
+  depositAmount_lte?: Maybe<String>;
+  depositAmount_gt?: Maybe<String>;
+  depositAmount_gte?: Maybe<String>;
+  depositAmount_contains?: Maybe<String>;
+  depositAmount_not_contains?: Maybe<String>;
+  depositAmount_starts_with?: Maybe<String>;
+  depositAmount_not_starts_with?: Maybe<String>;
+  depositAmount_ends_with?: Maybe<String>;
+  depositAmount_not_ends_with?: Maybe<String>;
+  hash?: Maybe<String>;
+  hash_not?: Maybe<String>;
+  hash_in?: Maybe<String[] | String>;
+  hash_not_in?: Maybe<String[] | String>;
+  hash_lt?: Maybe<String>;
+  hash_lte?: Maybe<String>;
+  hash_gt?: Maybe<String>;
+  hash_gte?: Maybe<String>;
+  hash_contains?: Maybe<String>;
+  hash_not_contains?: Maybe<String>;
+  hash_starts_with?: Maybe<String>;
+  hash_not_starts_with?: Maybe<String>;
+  hash_ends_with?: Maybe<String>;
+  hash_not_ends_with?: Maybe<String>;
+  metaDescription?: Maybe<String>;
+  metaDescription_not?: Maybe<String>;
+  metaDescription_in?: Maybe<String[] | String>;
+  metaDescription_not_in?: Maybe<String[] | String>;
+  metaDescription_lt?: Maybe<String>;
+  metaDescription_lte?: Maybe<String>;
+  metaDescription_gt?: Maybe<String>;
+  metaDescription_gte?: Maybe<String>;
+  metaDescription_contains?: Maybe<String>;
+  metaDescription_not_contains?: Maybe<String>;
+  metaDescription_starts_with?: Maybe<String>;
+  metaDescription_not_starts_with?: Maybe<String>;
+  metaDescription_ends_with?: Maybe<String>;
+  metaDescription_not_ends_with?: Maybe<String>;
+  method?: Maybe<String>;
+  method_not?: Maybe<String>;
+  method_in?: Maybe<String[] | String>;
+  method_not_in?: Maybe<String[] | String>;
+  method_lt?: Maybe<String>;
+  method_lte?: Maybe<String>;
+  method_gt?: Maybe<String>;
+  method_gte?: Maybe<String>;
+  method_contains?: Maybe<String>;
+  method_not_contains?: Maybe<String>;
+  method_starts_with?: Maybe<String>;
+  method_not_starts_with?: Maybe<String>;
+  method_ends_with?: Maybe<String>;
+  method_not_ends_with?: Maybe<String>;
+  enactmentPeriod?: Maybe<String>;
+  enactmentPeriod_not?: Maybe<String>;
+  enactmentPeriod_in?: Maybe<String[] | String>;
+  enactmentPeriod_not_in?: Maybe<String[] | String>;
+  enactmentPeriod_lt?: Maybe<String>;
+  enactmentPeriod_lte?: Maybe<String>;
+  enactmentPeriod_gt?: Maybe<String>;
+  enactmentPeriod_gte?: Maybe<String>;
+  enactmentPeriod_contains?: Maybe<String>;
+  enactmentPeriod_not_contains?: Maybe<String>;
+  enactmentPeriod_starts_with?: Maybe<String>;
+  enactmentPeriod_not_starts_with?: Maybe<String>;
+  enactmentPeriod_ends_with?: Maybe<String>;
+  enactmentPeriod_not_ends_with?: Maybe<String>;
+  origin?: Maybe<String>;
+  origin_not?: Maybe<String>;
+  origin_in?: Maybe<String[] | String>;
+  origin_not_in?: Maybe<String[] | String>;
+  origin_lt?: Maybe<String>;
+  origin_lte?: Maybe<String>;
+  origin_gt?: Maybe<String>;
+  origin_gte?: Maybe<String>;
+  origin_contains?: Maybe<String>;
+  origin_not_contains?: Maybe<String>;
+  origin_starts_with?: Maybe<String>;
+  origin_not_starts_with?: Maybe<String>;
+  origin_ends_with?: Maybe<String>;
+  origin_not_ends_with?: Maybe<String>;
+  preimageArguments_every?: Maybe<PreimageArgumentV2WhereInput>;
+  preimageArguments_some?: Maybe<PreimageArgumentV2WhereInput>;
+  preimageArguments_none?: Maybe<PreimageArgumentV2WhereInput>;
+  preimageStatus_every?: Maybe<PreimageStatusV2WhereInput>;
+  preimageStatus_some?: Maybe<PreimageStatusV2WhereInput>;
+  preimageStatus_none?: Maybe<PreimageStatusV2WhereInput>;
+  referendum?: Maybe<ReferendumV2WhereInput>;
+  fellowshipreferendum?: Maybe<FellowshipReferendumWhereInput>;
+  section?: Maybe<String>;
+  section_not?: Maybe<String>;
+  section_in?: Maybe<String[] | String>;
+  section_not_in?: Maybe<String[] | String>;
+  section_lt?: Maybe<String>;
+  section_lte?: Maybe<String>;
+  section_gt?: Maybe<String>;
+  section_gte?: Maybe<String>;
+  section_contains?: Maybe<String>;
+  section_not_contains?: Maybe<String>;
+  section_starts_with?: Maybe<String>;
+  section_not_starts_with?: Maybe<String>;
+  section_ends_with?: Maybe<String>;
+  section_not_ends_with?: Maybe<String>;
+  length?: Maybe<Int>;
+  length_not?: Maybe<Int>;
+  length_in?: Maybe<Int[] | Int>;
+  length_not_in?: Maybe<Int[] | Int>;
+  length_lt?: Maybe<Int>;
+  length_lte?: Maybe<Int>;
+  length_gt?: Maybe<Int>;
+  length_gte?: Maybe<Int>;
+  AND?: Maybe<PreimageV2WhereInput[] | PreimageV2WhereInput>;
+  OR?: Maybe<PreimageV2WhereInput[] | PreimageV2WhereInput>;
+  NOT?: Maybe<PreimageV2WhereInput[] | PreimageV2WhereInput>;
+}
+
+export interface PreimageStatusV2WhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  blockNumber?: Maybe<BlockNumberWhereInput>;
+  preimage?: Maybe<PreimageV2WhereInput>;
+  status?: Maybe<String>;
+  status_not?: Maybe<String>;
+  status_in?: Maybe<String[] | String>;
+  status_not_in?: Maybe<String[] | String>;
+  status_lt?: Maybe<String>;
+  status_lte?: Maybe<String>;
+  status_gt?: Maybe<String>;
+  status_gte?: Maybe<String>;
+  status_contains?: Maybe<String>;
+  status_not_contains?: Maybe<String>;
+  status_starts_with?: Maybe<String>;
+  status_not_starts_with?: Maybe<String>;
+  status_ends_with?: Maybe<String>;
+  status_not_ends_with?: Maybe<String>;
+  AND?: Maybe<PreimageStatusV2WhereInput[] | PreimageStatusV2WhereInput>;
+  OR?: Maybe<PreimageStatusV2WhereInput[] | PreimageStatusV2WhereInput>;
+  NOT?: Maybe<PreimageStatusV2WhereInput[] | PreimageStatusV2WhereInput>;
+}
+
+export interface ReferendumV2WhereInput {
+  id?: Maybe<Int>;
+  id_not?: Maybe<Int>;
+  id_in?: Maybe<Int[] | Int>;
+  id_not_in?: Maybe<Int[] | Int>;
+  id_lt?: Maybe<Int>;
+  id_lte?: Maybe<Int>;
+  id_gt?: Maybe<Int>;
+  id_gte?: Maybe<Int>;
+  trackNumber?: Maybe<Int>;
+  trackNumber_not?: Maybe<Int>;
+  trackNumber_in?: Maybe<Int[] | Int>;
+  trackNumber_not_in?: Maybe<Int[] | Int>;
+  trackNumber_lt?: Maybe<Int>;
+  trackNumber_lte?: Maybe<Int>;
+  trackNumber_gt?: Maybe<Int>;
+  trackNumber_gte?: Maybe<Int>;
+  origin?: Maybe<String>;
+  origin_not?: Maybe<String>;
+  origin_in?: Maybe<String[] | String>;
+  origin_not_in?: Maybe<String[] | String>;
+  origin_lt?: Maybe<String>;
+  origin_lte?: Maybe<String>;
+  origin_gt?: Maybe<String>;
+  origin_gte?: Maybe<String>;
+  origin_contains?: Maybe<String>;
+  origin_not_contains?: Maybe<String>;
+  origin_starts_with?: Maybe<String>;
+  origin_not_starts_with?: Maybe<String>;
+  origin_ends_with?: Maybe<String>;
+  origin_not_ends_with?: Maybe<String>;
+  preimage?: Maybe<PreimageV2WhereInput>;
+  preimageHash?: Maybe<String>;
+  preimageHash_not?: Maybe<String>;
+  preimageHash_in?: Maybe<String[] | String>;
+  preimageHash_not_in?: Maybe<String[] | String>;
+  preimageHash_lt?: Maybe<String>;
+  preimageHash_lte?: Maybe<String>;
+  preimageHash_gt?: Maybe<String>;
+  preimageHash_gte?: Maybe<String>;
+  preimageHash_contains?: Maybe<String>;
+  preimageHash_not_contains?: Maybe<String>;
+  preimageHash_starts_with?: Maybe<String>;
+  preimageHash_not_starts_with?: Maybe<String>;
+  preimageHash_ends_with?: Maybe<String>;
+  preimageHash_not_ends_with?: Maybe<String>;
+  referendumId?: Maybe<Int>;
+  referendumId_not?: Maybe<Int>;
+  referendumId_in?: Maybe<Int[] | Int>;
+  referendumId_not_in?: Maybe<Int[] | Int>;
+  referendumId_lt?: Maybe<Int>;
+  referendumId_lte?: Maybe<Int>;
+  referendumId_gt?: Maybe<Int>;
+  referendumId_gte?: Maybe<Int>;
+  referendumStatus_every?: Maybe<ReferendumStatusV2WhereInput>;
+  referendumStatus_some?: Maybe<ReferendumStatusV2WhereInput>;
+  referendumStatus_none?: Maybe<ReferendumStatusV2WhereInput>;
+  enactmentAt?: Maybe<String>;
+  enactmentAt_not?: Maybe<String>;
+  enactmentAt_in?: Maybe<String[] | String>;
+  enactmentAt_not_in?: Maybe<String[] | String>;
+  enactmentAt_lt?: Maybe<String>;
+  enactmentAt_lte?: Maybe<String>;
+  enactmentAt_gt?: Maybe<String>;
+  enactmentAt_gte?: Maybe<String>;
+  enactmentAt_contains?: Maybe<String>;
+  enactmentAt_not_contains?: Maybe<String>;
+  enactmentAt_starts_with?: Maybe<String>;
+  enactmentAt_not_starts_with?: Maybe<String>;
+  enactmentAt_ends_with?: Maybe<String>;
+  enactmentAt_not_ends_with?: Maybe<String>;
+  enactmentAfter?: Maybe<String>;
+  enactmentAfter_not?: Maybe<String>;
+  enactmentAfter_in?: Maybe<String[] | String>;
+  enactmentAfter_not_in?: Maybe<String[] | String>;
+  enactmentAfter_lt?: Maybe<String>;
+  enactmentAfter_lte?: Maybe<String>;
+  enactmentAfter_gt?: Maybe<String>;
+  enactmentAfter_gte?: Maybe<String>;
+  enactmentAfter_contains?: Maybe<String>;
+  enactmentAfter_not_contains?: Maybe<String>;
+  enactmentAfter_starts_with?: Maybe<String>;
+  enactmentAfter_not_starts_with?: Maybe<String>;
+  enactmentAfter_ends_with?: Maybe<String>;
+  enactmentAfter_not_ends_with?: Maybe<String>;
+  submittedAt?: Maybe<String>;
+  submittedAt_not?: Maybe<String>;
+  submittedAt_in?: Maybe<String[] | String>;
+  submittedAt_not_in?: Maybe<String[] | String>;
+  submittedAt_lt?: Maybe<String>;
+  submittedAt_lte?: Maybe<String>;
+  submittedAt_gt?: Maybe<String>;
+  submittedAt_gte?: Maybe<String>;
+  submittedAt_contains?: Maybe<String>;
+  submittedAt_not_contains?: Maybe<String>;
+  submittedAt_starts_with?: Maybe<String>;
+  submittedAt_not_starts_with?: Maybe<String>;
+  submittedAt_ends_with?: Maybe<String>;
+  submittedAt_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ReferendumV2WhereInput[] | ReferendumV2WhereInput>;
+  OR?: Maybe<ReferendumV2WhereInput[] | ReferendumV2WhereInput>;
+  NOT?: Maybe<ReferendumV2WhereInput[] | ReferendumV2WhereInput>;
+}
+
+export interface ReferendumStatusV2WhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  blockNumber?: Maybe<BlockNumberWhereInput>;
+  referendum?: Maybe<ReferendumV2WhereInput>;
+  status?: Maybe<String>;
+  status_not?: Maybe<String>;
+  status_in?: Maybe<String[] | String>;
+  status_not_in?: Maybe<String[] | String>;
+  status_lt?: Maybe<String>;
+  status_lte?: Maybe<String>;
+  status_gt?: Maybe<String>;
+  status_gte?: Maybe<String>;
+  status_contains?: Maybe<String>;
+  status_not_contains?: Maybe<String>;
+  status_starts_with?: Maybe<String>;
+  status_not_starts_with?: Maybe<String>;
+  status_ends_with?: Maybe<String>;
+  status_not_ends_with?: Maybe<String>;
+  uniqueStatus?: Maybe<String>;
+  uniqueStatus_not?: Maybe<String>;
+  uniqueStatus_in?: Maybe<String[] | String>;
+  uniqueStatus_not_in?: Maybe<String[] | String>;
+  uniqueStatus_lt?: Maybe<String>;
+  uniqueStatus_lte?: Maybe<String>;
+  uniqueStatus_gt?: Maybe<String>;
+  uniqueStatus_gte?: Maybe<String>;
+  uniqueStatus_contains?: Maybe<String>;
+  uniqueStatus_not_contains?: Maybe<String>;
+  uniqueStatus_starts_with?: Maybe<String>;
+  uniqueStatus_not_starts_with?: Maybe<String>;
+  uniqueStatus_ends_with?: Maybe<String>;
+  uniqueStatus_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ReferendumStatusV2WhereInput[] | ReferendumStatusV2WhereInput>;
+  OR?: Maybe<ReferendumStatusV2WhereInput[] | ReferendumStatusV2WhereInput>;
+  NOT?: Maybe<ReferendumStatusV2WhereInput[] | ReferendumStatusV2WhereInput>;
+}
+
+export interface FellowshipReferendumWhereInput {
+  id?: Maybe<Int>;
+  id_not?: Maybe<Int>;
+  id_in?: Maybe<Int[] | Int>;
+  id_not_in?: Maybe<Int[] | Int>;
+  id_lt?: Maybe<Int>;
+  id_lte?: Maybe<Int>;
+  id_gt?: Maybe<Int>;
+  id_gte?: Maybe<Int>;
+  trackNumber?: Maybe<Int>;
+  trackNumber_not?: Maybe<Int>;
+  trackNumber_in?: Maybe<Int[] | Int>;
+  trackNumber_not_in?: Maybe<Int[] | Int>;
+  trackNumber_lt?: Maybe<Int>;
+  trackNumber_lte?: Maybe<Int>;
+  trackNumber_gt?: Maybe<Int>;
+  trackNumber_gte?: Maybe<Int>;
+  origin?: Maybe<String>;
+  origin_not?: Maybe<String>;
+  origin_in?: Maybe<String[] | String>;
+  origin_not_in?: Maybe<String[] | String>;
+  origin_lt?: Maybe<String>;
+  origin_lte?: Maybe<String>;
+  origin_gt?: Maybe<String>;
+  origin_gte?: Maybe<String>;
+  origin_contains?: Maybe<String>;
+  origin_not_contains?: Maybe<String>;
+  origin_starts_with?: Maybe<String>;
+  origin_not_starts_with?: Maybe<String>;
+  origin_ends_with?: Maybe<String>;
+  origin_not_ends_with?: Maybe<String>;
+  preimage?: Maybe<PreimageV2WhereInput>;
+  preimageHash?: Maybe<String>;
+  preimageHash_not?: Maybe<String>;
+  preimageHash_in?: Maybe<String[] | String>;
+  preimageHash_not_in?: Maybe<String[] | String>;
+  preimageHash_lt?: Maybe<String>;
+  preimageHash_lte?: Maybe<String>;
+  preimageHash_gt?: Maybe<String>;
+  preimageHash_gte?: Maybe<String>;
+  preimageHash_contains?: Maybe<String>;
+  preimageHash_not_contains?: Maybe<String>;
+  preimageHash_starts_with?: Maybe<String>;
+  preimageHash_not_starts_with?: Maybe<String>;
+  preimageHash_ends_with?: Maybe<String>;
+  preimageHash_not_ends_with?: Maybe<String>;
+  referendumId?: Maybe<Int>;
+  referendumId_not?: Maybe<Int>;
+  referendumId_in?: Maybe<Int[] | Int>;
+  referendumId_not_in?: Maybe<Int[] | Int>;
+  referendumId_lt?: Maybe<Int>;
+  referendumId_lte?: Maybe<Int>;
+  referendumId_gt?: Maybe<Int>;
+  referendumId_gte?: Maybe<Int>;
+  referendumStatus_every?: Maybe<FellowshipReferendumStatusWhereInput>;
+  referendumStatus_some?: Maybe<FellowshipReferendumStatusWhereInput>;
+  referendumStatus_none?: Maybe<FellowshipReferendumStatusWhereInput>;
+  enactmentAt?: Maybe<String>;
+  enactmentAt_not?: Maybe<String>;
+  enactmentAt_in?: Maybe<String[] | String>;
+  enactmentAt_not_in?: Maybe<String[] | String>;
+  enactmentAt_lt?: Maybe<String>;
+  enactmentAt_lte?: Maybe<String>;
+  enactmentAt_gt?: Maybe<String>;
+  enactmentAt_gte?: Maybe<String>;
+  enactmentAt_contains?: Maybe<String>;
+  enactmentAt_not_contains?: Maybe<String>;
+  enactmentAt_starts_with?: Maybe<String>;
+  enactmentAt_not_starts_with?: Maybe<String>;
+  enactmentAt_ends_with?: Maybe<String>;
+  enactmentAt_not_ends_with?: Maybe<String>;
+  enactmentAfter?: Maybe<String>;
+  enactmentAfter_not?: Maybe<String>;
+  enactmentAfter_in?: Maybe<String[] | String>;
+  enactmentAfter_not_in?: Maybe<String[] | String>;
+  enactmentAfter_lt?: Maybe<String>;
+  enactmentAfter_lte?: Maybe<String>;
+  enactmentAfter_gt?: Maybe<String>;
+  enactmentAfter_gte?: Maybe<String>;
+  enactmentAfter_contains?: Maybe<String>;
+  enactmentAfter_not_contains?: Maybe<String>;
+  enactmentAfter_starts_with?: Maybe<String>;
+  enactmentAfter_not_starts_with?: Maybe<String>;
+  enactmentAfter_ends_with?: Maybe<String>;
+  enactmentAfter_not_ends_with?: Maybe<String>;
+  submittedAt?: Maybe<String>;
+  submittedAt_not?: Maybe<String>;
+  submittedAt_in?: Maybe<String[] | String>;
+  submittedAt_not_in?: Maybe<String[] | String>;
+  submittedAt_lt?: Maybe<String>;
+  submittedAt_lte?: Maybe<String>;
+  submittedAt_gt?: Maybe<String>;
+  submittedAt_gte?: Maybe<String>;
+  submittedAt_contains?: Maybe<String>;
+  submittedAt_not_contains?: Maybe<String>;
+  submittedAt_starts_with?: Maybe<String>;
+  submittedAt_not_starts_with?: Maybe<String>;
+  submittedAt_ends_with?: Maybe<String>;
+  submittedAt_not_ends_with?: Maybe<String>;
+  AND?: Maybe<
+    FellowshipReferendumWhereInput[] | FellowshipReferendumWhereInput
+  >;
+  OR?: Maybe<FellowshipReferendumWhereInput[] | FellowshipReferendumWhereInput>;
+  NOT?: Maybe<
+    FellowshipReferendumWhereInput[] | FellowshipReferendumWhereInput
+  >;
+}
+
+export interface FellowshipReferendumStatusWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  blockNumber?: Maybe<BlockNumberWhereInput>;
+  referendum?: Maybe<FellowshipReferendumWhereInput>;
+  status?: Maybe<String>;
+  status_not?: Maybe<String>;
+  status_in?: Maybe<String[] | String>;
+  status_not_in?: Maybe<String[] | String>;
+  status_lt?: Maybe<String>;
+  status_lte?: Maybe<String>;
+  status_gt?: Maybe<String>;
+  status_gte?: Maybe<String>;
+  status_contains?: Maybe<String>;
+  status_not_contains?: Maybe<String>;
+  status_starts_with?: Maybe<String>;
+  status_not_starts_with?: Maybe<String>;
+  status_ends_with?: Maybe<String>;
+  status_not_ends_with?: Maybe<String>;
+  uniqueStatus?: Maybe<String>;
+  uniqueStatus_not?: Maybe<String>;
+  uniqueStatus_in?: Maybe<String[] | String>;
+  uniqueStatus_not_in?: Maybe<String[] | String>;
+  uniqueStatus_lt?: Maybe<String>;
+  uniqueStatus_lte?: Maybe<String>;
+  uniqueStatus_gt?: Maybe<String>;
+  uniqueStatus_gte?: Maybe<String>;
+  uniqueStatus_contains?: Maybe<String>;
+  uniqueStatus_not_contains?: Maybe<String>;
+  uniqueStatus_starts_with?: Maybe<String>;
+  uniqueStatus_not_starts_with?: Maybe<String>;
+  uniqueStatus_ends_with?: Maybe<String>;
+  uniqueStatus_not_ends_with?: Maybe<String>;
+  AND?: Maybe<
+    | FellowshipReferendumStatusWhereInput[]
+    | FellowshipReferendumStatusWhereInput
+  >;
+  OR?: Maybe<
+    | FellowshipReferendumStatusWhereInput[]
+    | FellowshipReferendumStatusWhereInput
+  >;
+  NOT?: Maybe<
+    | FellowshipReferendumStatusWhereInput[]
+    | FellowshipReferendumStatusWhereInput
+  >;
+}
+
+export type FellowshipReferendumStatusWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  uniqueStatus?: Maybe<String>;
+}>;
+
 export type HeartBeatWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
@@ -4132,392 +4828,6 @@ export type PreimageArgumentWhereUniqueInput = AtLeastOne<{
 export type PreimageArgumentV2WhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
-
-export interface PreimageArgumentV2WhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  preimage?: Maybe<PreimageV2WhereInput>;
-  value?: Maybe<String>;
-  value_not?: Maybe<String>;
-  value_in?: Maybe<String[] | String>;
-  value_not_in?: Maybe<String[] | String>;
-  value_lt?: Maybe<String>;
-  value_lte?: Maybe<String>;
-  value_gt?: Maybe<String>;
-  value_gte?: Maybe<String>;
-  value_contains?: Maybe<String>;
-  value_not_contains?: Maybe<String>;
-  value_starts_with?: Maybe<String>;
-  value_not_starts_with?: Maybe<String>;
-  value_ends_with?: Maybe<String>;
-  value_not_ends_with?: Maybe<String>;
-  AND?: Maybe<PreimageArgumentV2WhereInput[] | PreimageArgumentV2WhereInput>;
-  OR?: Maybe<PreimageArgumentV2WhereInput[] | PreimageArgumentV2WhereInput>;
-  NOT?: Maybe<PreimageArgumentV2WhereInput[] | PreimageArgumentV2WhereInput>;
-}
-
-export interface PreimageV2WhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  author?: Maybe<String>;
-  author_not?: Maybe<String>;
-  author_in?: Maybe<String[] | String>;
-  author_not_in?: Maybe<String[] | String>;
-  author_lt?: Maybe<String>;
-  author_lte?: Maybe<String>;
-  author_gt?: Maybe<String>;
-  author_gte?: Maybe<String>;
-  author_contains?: Maybe<String>;
-  author_not_contains?: Maybe<String>;
-  author_starts_with?: Maybe<String>;
-  author_not_starts_with?: Maybe<String>;
-  author_ends_with?: Maybe<String>;
-  author_not_ends_with?: Maybe<String>;
-  depositAmount?: Maybe<String>;
-  depositAmount_not?: Maybe<String>;
-  depositAmount_in?: Maybe<String[] | String>;
-  depositAmount_not_in?: Maybe<String[] | String>;
-  depositAmount_lt?: Maybe<String>;
-  depositAmount_lte?: Maybe<String>;
-  depositAmount_gt?: Maybe<String>;
-  depositAmount_gte?: Maybe<String>;
-  depositAmount_contains?: Maybe<String>;
-  depositAmount_not_contains?: Maybe<String>;
-  depositAmount_starts_with?: Maybe<String>;
-  depositAmount_not_starts_with?: Maybe<String>;
-  depositAmount_ends_with?: Maybe<String>;
-  depositAmount_not_ends_with?: Maybe<String>;
-  hash?: Maybe<String>;
-  hash_not?: Maybe<String>;
-  hash_in?: Maybe<String[] | String>;
-  hash_not_in?: Maybe<String[] | String>;
-  hash_lt?: Maybe<String>;
-  hash_lte?: Maybe<String>;
-  hash_gt?: Maybe<String>;
-  hash_gte?: Maybe<String>;
-  hash_contains?: Maybe<String>;
-  hash_not_contains?: Maybe<String>;
-  hash_starts_with?: Maybe<String>;
-  hash_not_starts_with?: Maybe<String>;
-  hash_ends_with?: Maybe<String>;
-  hash_not_ends_with?: Maybe<String>;
-  metaDescription?: Maybe<String>;
-  metaDescription_not?: Maybe<String>;
-  metaDescription_in?: Maybe<String[] | String>;
-  metaDescription_not_in?: Maybe<String[] | String>;
-  metaDescription_lt?: Maybe<String>;
-  metaDescription_lte?: Maybe<String>;
-  metaDescription_gt?: Maybe<String>;
-  metaDescription_gte?: Maybe<String>;
-  metaDescription_contains?: Maybe<String>;
-  metaDescription_not_contains?: Maybe<String>;
-  metaDescription_starts_with?: Maybe<String>;
-  metaDescription_not_starts_with?: Maybe<String>;
-  metaDescription_ends_with?: Maybe<String>;
-  metaDescription_not_ends_with?: Maybe<String>;
-  method?: Maybe<String>;
-  method_not?: Maybe<String>;
-  method_in?: Maybe<String[] | String>;
-  method_not_in?: Maybe<String[] | String>;
-  method_lt?: Maybe<String>;
-  method_lte?: Maybe<String>;
-  method_gt?: Maybe<String>;
-  method_gte?: Maybe<String>;
-  method_contains?: Maybe<String>;
-  method_not_contains?: Maybe<String>;
-  method_starts_with?: Maybe<String>;
-  method_not_starts_with?: Maybe<String>;
-  method_ends_with?: Maybe<String>;
-  method_not_ends_with?: Maybe<String>;
-  enactmentPeriod?: Maybe<String>;
-  enactmentPeriod_not?: Maybe<String>;
-  enactmentPeriod_in?: Maybe<String[] | String>;
-  enactmentPeriod_not_in?: Maybe<String[] | String>;
-  enactmentPeriod_lt?: Maybe<String>;
-  enactmentPeriod_lte?: Maybe<String>;
-  enactmentPeriod_gt?: Maybe<String>;
-  enactmentPeriod_gte?: Maybe<String>;
-  enactmentPeriod_contains?: Maybe<String>;
-  enactmentPeriod_not_contains?: Maybe<String>;
-  enactmentPeriod_starts_with?: Maybe<String>;
-  enactmentPeriod_not_starts_with?: Maybe<String>;
-  enactmentPeriod_ends_with?: Maybe<String>;
-  enactmentPeriod_not_ends_with?: Maybe<String>;
-  origin?: Maybe<String>;
-  origin_not?: Maybe<String>;
-  origin_in?: Maybe<String[] | String>;
-  origin_not_in?: Maybe<String[] | String>;
-  origin_lt?: Maybe<String>;
-  origin_lte?: Maybe<String>;
-  origin_gt?: Maybe<String>;
-  origin_gte?: Maybe<String>;
-  origin_contains?: Maybe<String>;
-  origin_not_contains?: Maybe<String>;
-  origin_starts_with?: Maybe<String>;
-  origin_not_starts_with?: Maybe<String>;
-  origin_ends_with?: Maybe<String>;
-  origin_not_ends_with?: Maybe<String>;
-  preimageArguments_every?: Maybe<PreimageArgumentV2WhereInput>;
-  preimageArguments_some?: Maybe<PreimageArgumentV2WhereInput>;
-  preimageArguments_none?: Maybe<PreimageArgumentV2WhereInput>;
-  preimageStatus_every?: Maybe<PreimageStatusV2WhereInput>;
-  preimageStatus_some?: Maybe<PreimageStatusV2WhereInput>;
-  preimageStatus_none?: Maybe<PreimageStatusV2WhereInput>;
-  referendum?: Maybe<ReferendumV2WhereInput>;
-  section?: Maybe<String>;
-  section_not?: Maybe<String>;
-  section_in?: Maybe<String[] | String>;
-  section_not_in?: Maybe<String[] | String>;
-  section_lt?: Maybe<String>;
-  section_lte?: Maybe<String>;
-  section_gt?: Maybe<String>;
-  section_gte?: Maybe<String>;
-  section_contains?: Maybe<String>;
-  section_not_contains?: Maybe<String>;
-  section_starts_with?: Maybe<String>;
-  section_not_starts_with?: Maybe<String>;
-  section_ends_with?: Maybe<String>;
-  section_not_ends_with?: Maybe<String>;
-  length?: Maybe<Int>;
-  length_not?: Maybe<Int>;
-  length_in?: Maybe<Int[] | Int>;
-  length_not_in?: Maybe<Int[] | Int>;
-  length_lt?: Maybe<Int>;
-  length_lte?: Maybe<Int>;
-  length_gt?: Maybe<Int>;
-  length_gte?: Maybe<Int>;
-  AND?: Maybe<PreimageV2WhereInput[] | PreimageV2WhereInput>;
-  OR?: Maybe<PreimageV2WhereInput[] | PreimageV2WhereInput>;
-  NOT?: Maybe<PreimageV2WhereInput[] | PreimageV2WhereInput>;
-}
-
-export interface PreimageStatusV2WhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  blockNumber?: Maybe<BlockNumberWhereInput>;
-  preimage?: Maybe<PreimageV2WhereInput>;
-  status?: Maybe<String>;
-  status_not?: Maybe<String>;
-  status_in?: Maybe<String[] | String>;
-  status_not_in?: Maybe<String[] | String>;
-  status_lt?: Maybe<String>;
-  status_lte?: Maybe<String>;
-  status_gt?: Maybe<String>;
-  status_gte?: Maybe<String>;
-  status_contains?: Maybe<String>;
-  status_not_contains?: Maybe<String>;
-  status_starts_with?: Maybe<String>;
-  status_not_starts_with?: Maybe<String>;
-  status_ends_with?: Maybe<String>;
-  status_not_ends_with?: Maybe<String>;
-  AND?: Maybe<PreimageStatusV2WhereInput[] | PreimageStatusV2WhereInput>;
-  OR?: Maybe<PreimageStatusV2WhereInput[] | PreimageStatusV2WhereInput>;
-  NOT?: Maybe<PreimageStatusV2WhereInput[] | PreimageStatusV2WhereInput>;
-}
-
-export interface ReferendumV2WhereInput {
-  id?: Maybe<Int>;
-  id_not?: Maybe<Int>;
-  id_in?: Maybe<Int[] | Int>;
-  id_not_in?: Maybe<Int[] | Int>;
-  id_lt?: Maybe<Int>;
-  id_lte?: Maybe<Int>;
-  id_gt?: Maybe<Int>;
-  id_gte?: Maybe<Int>;
-  trackNumber?: Maybe<Int>;
-  trackNumber_not?: Maybe<Int>;
-  trackNumber_in?: Maybe<Int[] | Int>;
-  trackNumber_not_in?: Maybe<Int[] | Int>;
-  trackNumber_lt?: Maybe<Int>;
-  trackNumber_lte?: Maybe<Int>;
-  trackNumber_gt?: Maybe<Int>;
-  trackNumber_gte?: Maybe<Int>;
-  origin?: Maybe<String>;
-  origin_not?: Maybe<String>;
-  origin_in?: Maybe<String[] | String>;
-  origin_not_in?: Maybe<String[] | String>;
-  origin_lt?: Maybe<String>;
-  origin_lte?: Maybe<String>;
-  origin_gt?: Maybe<String>;
-  origin_gte?: Maybe<String>;
-  origin_contains?: Maybe<String>;
-  origin_not_contains?: Maybe<String>;
-  origin_starts_with?: Maybe<String>;
-  origin_not_starts_with?: Maybe<String>;
-  origin_ends_with?: Maybe<String>;
-  origin_not_ends_with?: Maybe<String>;
-  preimage?: Maybe<PreimageV2WhereInput>;
-  preimageHash?: Maybe<String>;
-  preimageHash_not?: Maybe<String>;
-  preimageHash_in?: Maybe<String[] | String>;
-  preimageHash_not_in?: Maybe<String[] | String>;
-  preimageHash_lt?: Maybe<String>;
-  preimageHash_lte?: Maybe<String>;
-  preimageHash_gt?: Maybe<String>;
-  preimageHash_gte?: Maybe<String>;
-  preimageHash_contains?: Maybe<String>;
-  preimageHash_not_contains?: Maybe<String>;
-  preimageHash_starts_with?: Maybe<String>;
-  preimageHash_not_starts_with?: Maybe<String>;
-  preimageHash_ends_with?: Maybe<String>;
-  preimageHash_not_ends_with?: Maybe<String>;
-  referendumId?: Maybe<Int>;
-  referendumId_not?: Maybe<Int>;
-  referendumId_in?: Maybe<Int[] | Int>;
-  referendumId_not_in?: Maybe<Int[] | Int>;
-  referendumId_lt?: Maybe<Int>;
-  referendumId_lte?: Maybe<Int>;
-  referendumId_gt?: Maybe<Int>;
-  referendumId_gte?: Maybe<Int>;
-  referendumStatus_every?: Maybe<ReferendumStatusV2WhereInput>;
-  referendumStatus_some?: Maybe<ReferendumStatusV2WhereInput>;
-  referendumStatus_none?: Maybe<ReferendumStatusV2WhereInput>;
-  enactmentAt?: Maybe<String>;
-  enactmentAt_not?: Maybe<String>;
-  enactmentAt_in?: Maybe<String[] | String>;
-  enactmentAt_not_in?: Maybe<String[] | String>;
-  enactmentAt_lt?: Maybe<String>;
-  enactmentAt_lte?: Maybe<String>;
-  enactmentAt_gt?: Maybe<String>;
-  enactmentAt_gte?: Maybe<String>;
-  enactmentAt_contains?: Maybe<String>;
-  enactmentAt_not_contains?: Maybe<String>;
-  enactmentAt_starts_with?: Maybe<String>;
-  enactmentAt_not_starts_with?: Maybe<String>;
-  enactmentAt_ends_with?: Maybe<String>;
-  enactmentAt_not_ends_with?: Maybe<String>;
-  enactmentAfter?: Maybe<String>;
-  enactmentAfter_not?: Maybe<String>;
-  enactmentAfter_in?: Maybe<String[] | String>;
-  enactmentAfter_not_in?: Maybe<String[] | String>;
-  enactmentAfter_lt?: Maybe<String>;
-  enactmentAfter_lte?: Maybe<String>;
-  enactmentAfter_gt?: Maybe<String>;
-  enactmentAfter_gte?: Maybe<String>;
-  enactmentAfter_contains?: Maybe<String>;
-  enactmentAfter_not_contains?: Maybe<String>;
-  enactmentAfter_starts_with?: Maybe<String>;
-  enactmentAfter_not_starts_with?: Maybe<String>;
-  enactmentAfter_ends_with?: Maybe<String>;
-  enactmentAfter_not_ends_with?: Maybe<String>;
-  submittedAt?: Maybe<String>;
-  submittedAt_not?: Maybe<String>;
-  submittedAt_in?: Maybe<String[] | String>;
-  submittedAt_not_in?: Maybe<String[] | String>;
-  submittedAt_lt?: Maybe<String>;
-  submittedAt_lte?: Maybe<String>;
-  submittedAt_gt?: Maybe<String>;
-  submittedAt_gte?: Maybe<String>;
-  submittedAt_contains?: Maybe<String>;
-  submittedAt_not_contains?: Maybe<String>;
-  submittedAt_starts_with?: Maybe<String>;
-  submittedAt_not_starts_with?: Maybe<String>;
-  submittedAt_ends_with?: Maybe<String>;
-  submittedAt_not_ends_with?: Maybe<String>;
-  AND?: Maybe<ReferendumV2WhereInput[] | ReferendumV2WhereInput>;
-  OR?: Maybe<ReferendumV2WhereInput[] | ReferendumV2WhereInput>;
-  NOT?: Maybe<ReferendumV2WhereInput[] | ReferendumV2WhereInput>;
-}
-
-export interface ReferendumStatusV2WhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  blockNumber?: Maybe<BlockNumberWhereInput>;
-  referendum?: Maybe<ReferendumV2WhereInput>;
-  status?: Maybe<String>;
-  status_not?: Maybe<String>;
-  status_in?: Maybe<String[] | String>;
-  status_not_in?: Maybe<String[] | String>;
-  status_lt?: Maybe<String>;
-  status_lte?: Maybe<String>;
-  status_gt?: Maybe<String>;
-  status_gte?: Maybe<String>;
-  status_contains?: Maybe<String>;
-  status_not_contains?: Maybe<String>;
-  status_starts_with?: Maybe<String>;
-  status_not_starts_with?: Maybe<String>;
-  status_ends_with?: Maybe<String>;
-  status_not_ends_with?: Maybe<String>;
-  uniqueStatus?: Maybe<String>;
-  uniqueStatus_not?: Maybe<String>;
-  uniqueStatus_in?: Maybe<String[] | String>;
-  uniqueStatus_not_in?: Maybe<String[] | String>;
-  uniqueStatus_lt?: Maybe<String>;
-  uniqueStatus_lte?: Maybe<String>;
-  uniqueStatus_gt?: Maybe<String>;
-  uniqueStatus_gte?: Maybe<String>;
-  uniqueStatus_contains?: Maybe<String>;
-  uniqueStatus_not_contains?: Maybe<String>;
-  uniqueStatus_starts_with?: Maybe<String>;
-  uniqueStatus_not_starts_with?: Maybe<String>;
-  uniqueStatus_ends_with?: Maybe<String>;
-  uniqueStatus_not_ends_with?: Maybe<String>;
-  AND?: Maybe<ReferendumStatusV2WhereInput[] | ReferendumStatusV2WhereInput>;
-  OR?: Maybe<ReferendumStatusV2WhereInput[] | ReferendumStatusV2WhereInput>;
-  NOT?: Maybe<ReferendumStatusV2WhereInput[] | ReferendumStatusV2WhereInput>;
-}
 
 export type PreimageStatusWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
@@ -7309,6 +7619,742 @@ export interface EraUpdateManyMutationInput {
   individualPoints?: Maybe<EraUpdateindividualPointsInput>;
 }
 
+export interface FellowshipReferendumCreateInput {
+  trackNumber: Int;
+  origin: String;
+  preimage?: Maybe<PreimageV2CreateOneWithoutFellowshipreferendumInput>;
+  preimageHash: String;
+  referendumId: Int;
+  referendumStatus?: Maybe<
+    FellowshipReferendumStatusCreateManyWithoutReferendumInput
+  >;
+  enactmentAt?: Maybe<String>;
+  enactmentAfter?: Maybe<String>;
+  submittedAt: String;
+  submitted?: Maybe<Json>;
+  decisionDeposit?: Maybe<Json>;
+  deciding?: Maybe<Json>;
+  tally?: Maybe<Json>;
+}
+
+export interface PreimageV2CreateOneWithoutFellowshipreferendumInput {
+  create?: Maybe<PreimageV2CreateWithoutFellowshipreferendumInput>;
+  connect?: Maybe<PreimageV2WhereUniqueInput>;
+}
+
+export interface PreimageV2CreateWithoutFellowshipreferendumInput {
+  id?: Maybe<ID_Input>;
+  author: String;
+  depositAmount?: Maybe<String>;
+  hash: String;
+  metaDescription: String;
+  method: String;
+  enactmentPeriod?: Maybe<String>;
+  origin?: Maybe<String>;
+  preimageArguments?: Maybe<PreimageArgumentV2CreateManyWithoutPreimageInput>;
+  preimageStatus?: Maybe<PreimageStatusV2CreateManyWithoutPreimageInput>;
+  referendum?: Maybe<ReferendumV2CreateOneWithoutPreimageInput>;
+  section: String;
+  length: Int;
+}
+
+export interface PreimageArgumentV2CreateManyWithoutPreimageInput {
+  create?: Maybe<
+    | PreimageArgumentV2CreateWithoutPreimageInput[]
+    | PreimageArgumentV2CreateWithoutPreimageInput
+  >;
+  connect?: Maybe<
+    PreimageArgumentV2WhereUniqueInput[] | PreimageArgumentV2WhereUniqueInput
+  >;
+}
+
+export interface PreimageArgumentV2CreateWithoutPreimageInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  value: String;
+}
+
+export interface PreimageStatusV2CreateManyWithoutPreimageInput {
+  create?: Maybe<
+    | PreimageStatusV2CreateWithoutPreimageInput[]
+    | PreimageStatusV2CreateWithoutPreimageInput
+  >;
+  connect?: Maybe<
+    PreimageStatusV2WhereUniqueInput[] | PreimageStatusV2WhereUniqueInput
+  >;
+}
+
+export interface PreimageStatusV2CreateWithoutPreimageInput {
+  id?: Maybe<ID_Input>;
+  blockNumber: BlockNumberCreateOneInput;
+  status: String;
+}
+
+export interface ReferendumV2CreateOneWithoutPreimageInput {
+  create?: Maybe<ReferendumV2CreateWithoutPreimageInput>;
+  connect?: Maybe<ReferendumV2WhereUniqueInput>;
+}
+
+export interface ReferendumV2CreateWithoutPreimageInput {
+  trackNumber: Int;
+  origin: String;
+  preimageHash: String;
+  referendumId: Int;
+  referendumStatus?: Maybe<ReferendumStatusV2CreateManyWithoutReferendumInput>;
+  enactmentAt?: Maybe<String>;
+  enactmentAfter?: Maybe<String>;
+  submittedAt: String;
+  submitted?: Maybe<Json>;
+  decisionDeposit?: Maybe<Json>;
+  deciding?: Maybe<Json>;
+  tally?: Maybe<Json>;
+}
+
+export interface ReferendumStatusV2CreateManyWithoutReferendumInput {
+  create?: Maybe<
+    | ReferendumStatusV2CreateWithoutReferendumInput[]
+    | ReferendumStatusV2CreateWithoutReferendumInput
+  >;
+  connect?: Maybe<
+    ReferendumStatusV2WhereUniqueInput[] | ReferendumStatusV2WhereUniqueInput
+  >;
+}
+
+export interface ReferendumStatusV2CreateWithoutReferendumInput {
+  id?: Maybe<ID_Input>;
+  blockNumber: BlockNumberCreateOneInput;
+  status: String;
+  uniqueStatus: String;
+}
+
+export interface FellowshipReferendumStatusCreateManyWithoutReferendumInput {
+  create?: Maybe<
+    | FellowshipReferendumStatusCreateWithoutReferendumInput[]
+    | FellowshipReferendumStatusCreateWithoutReferendumInput
+  >;
+  connect?: Maybe<
+    | FellowshipReferendumStatusWhereUniqueInput[]
+    | FellowshipReferendumStatusWhereUniqueInput
+  >;
+}
+
+export interface FellowshipReferendumStatusCreateWithoutReferendumInput {
+  id?: Maybe<ID_Input>;
+  blockNumber: BlockNumberCreateOneInput;
+  status: String;
+  uniqueStatus: String;
+}
+
+export interface FellowshipReferendumUpdateInput {
+  trackNumber?: Maybe<Int>;
+  origin?: Maybe<String>;
+  preimage?: Maybe<PreimageV2UpdateOneWithoutFellowshipreferendumInput>;
+  preimageHash?: Maybe<String>;
+  referendumId?: Maybe<Int>;
+  referendumStatus?: Maybe<
+    FellowshipReferendumStatusUpdateManyWithoutReferendumInput
+  >;
+  enactmentAt?: Maybe<String>;
+  enactmentAfter?: Maybe<String>;
+  submittedAt?: Maybe<String>;
+  submitted?: Maybe<Json>;
+  decisionDeposit?: Maybe<Json>;
+  deciding?: Maybe<Json>;
+  tally?: Maybe<Json>;
+}
+
+export interface PreimageV2UpdateOneWithoutFellowshipreferendumInput {
+  create?: Maybe<PreimageV2CreateWithoutFellowshipreferendumInput>;
+  update?: Maybe<PreimageV2UpdateWithoutFellowshipreferendumDataInput>;
+  upsert?: Maybe<PreimageV2UpsertWithoutFellowshipreferendumInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<PreimageV2WhereUniqueInput>;
+}
+
+export interface PreimageV2UpdateWithoutFellowshipreferendumDataInput {
+  author?: Maybe<String>;
+  depositAmount?: Maybe<String>;
+  hash?: Maybe<String>;
+  metaDescription?: Maybe<String>;
+  method?: Maybe<String>;
+  enactmentPeriod?: Maybe<String>;
+  origin?: Maybe<String>;
+  preimageArguments?: Maybe<PreimageArgumentV2UpdateManyWithoutPreimageInput>;
+  preimageStatus?: Maybe<PreimageStatusV2UpdateManyWithoutPreimageInput>;
+  referendum?: Maybe<ReferendumV2UpdateOneWithoutPreimageInput>;
+  section?: Maybe<String>;
+  length?: Maybe<Int>;
+}
+
+export interface PreimageArgumentV2UpdateManyWithoutPreimageInput {
+  create?: Maybe<
+    | PreimageArgumentV2CreateWithoutPreimageInput[]
+    | PreimageArgumentV2CreateWithoutPreimageInput
+  >;
+  delete?: Maybe<
+    PreimageArgumentV2WhereUniqueInput[] | PreimageArgumentV2WhereUniqueInput
+  >;
+  connect?: Maybe<
+    PreimageArgumentV2WhereUniqueInput[] | PreimageArgumentV2WhereUniqueInput
+  >;
+  set?: Maybe<
+    PreimageArgumentV2WhereUniqueInput[] | PreimageArgumentV2WhereUniqueInput
+  >;
+  disconnect?: Maybe<
+    PreimageArgumentV2WhereUniqueInput[] | PreimageArgumentV2WhereUniqueInput
+  >;
+  update?: Maybe<
+    | PreimageArgumentV2UpdateWithWhereUniqueWithoutPreimageInput[]
+    | PreimageArgumentV2UpdateWithWhereUniqueWithoutPreimageInput
+  >;
+  upsert?: Maybe<
+    | PreimageArgumentV2UpsertWithWhereUniqueWithoutPreimageInput[]
+    | PreimageArgumentV2UpsertWithWhereUniqueWithoutPreimageInput
+  >;
+  deleteMany?: Maybe<
+    PreimageArgumentV2ScalarWhereInput[] | PreimageArgumentV2ScalarWhereInput
+  >;
+  updateMany?: Maybe<
+    | PreimageArgumentV2UpdateManyWithWhereNestedInput[]
+    | PreimageArgumentV2UpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface PreimageArgumentV2UpdateWithWhereUniqueWithoutPreimageInput {
+  where: PreimageArgumentV2WhereUniqueInput;
+  data: PreimageArgumentV2UpdateWithoutPreimageDataInput;
+}
+
+export interface PreimageArgumentV2UpdateWithoutPreimageDataInput {
+  name?: Maybe<String>;
+  value?: Maybe<String>;
+}
+
+export interface PreimageArgumentV2UpsertWithWhereUniqueWithoutPreimageInput {
+  where: PreimageArgumentV2WhereUniqueInput;
+  update: PreimageArgumentV2UpdateWithoutPreimageDataInput;
+  create: PreimageArgumentV2CreateWithoutPreimageInput;
+}
+
+export interface PreimageArgumentV2ScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  value?: Maybe<String>;
+  value_not?: Maybe<String>;
+  value_in?: Maybe<String[] | String>;
+  value_not_in?: Maybe<String[] | String>;
+  value_lt?: Maybe<String>;
+  value_lte?: Maybe<String>;
+  value_gt?: Maybe<String>;
+  value_gte?: Maybe<String>;
+  value_contains?: Maybe<String>;
+  value_not_contains?: Maybe<String>;
+  value_starts_with?: Maybe<String>;
+  value_not_starts_with?: Maybe<String>;
+  value_ends_with?: Maybe<String>;
+  value_not_ends_with?: Maybe<String>;
+  AND?: Maybe<
+    PreimageArgumentV2ScalarWhereInput[] | PreimageArgumentV2ScalarWhereInput
+  >;
+  OR?: Maybe<
+    PreimageArgumentV2ScalarWhereInput[] | PreimageArgumentV2ScalarWhereInput
+  >;
+  NOT?: Maybe<
+    PreimageArgumentV2ScalarWhereInput[] | PreimageArgumentV2ScalarWhereInput
+  >;
+}
+
+export interface PreimageArgumentV2UpdateManyWithWhereNestedInput {
+  where: PreimageArgumentV2ScalarWhereInput;
+  data: PreimageArgumentV2UpdateManyDataInput;
+}
+
+export interface PreimageArgumentV2UpdateManyDataInput {
+  name?: Maybe<String>;
+  value?: Maybe<String>;
+}
+
+export interface PreimageStatusV2UpdateManyWithoutPreimageInput {
+  create?: Maybe<
+    | PreimageStatusV2CreateWithoutPreimageInput[]
+    | PreimageStatusV2CreateWithoutPreimageInput
+  >;
+  delete?: Maybe<
+    PreimageStatusV2WhereUniqueInput[] | PreimageStatusV2WhereUniqueInput
+  >;
+  connect?: Maybe<
+    PreimageStatusV2WhereUniqueInput[] | PreimageStatusV2WhereUniqueInput
+  >;
+  set?: Maybe<
+    PreimageStatusV2WhereUniqueInput[] | PreimageStatusV2WhereUniqueInput
+  >;
+  disconnect?: Maybe<
+    PreimageStatusV2WhereUniqueInput[] | PreimageStatusV2WhereUniqueInput
+  >;
+  update?: Maybe<
+    | PreimageStatusV2UpdateWithWhereUniqueWithoutPreimageInput[]
+    | PreimageStatusV2UpdateWithWhereUniqueWithoutPreimageInput
+  >;
+  upsert?: Maybe<
+    | PreimageStatusV2UpsertWithWhereUniqueWithoutPreimageInput[]
+    | PreimageStatusV2UpsertWithWhereUniqueWithoutPreimageInput
+  >;
+  deleteMany?: Maybe<
+    PreimageStatusV2ScalarWhereInput[] | PreimageStatusV2ScalarWhereInput
+  >;
+  updateMany?: Maybe<
+    | PreimageStatusV2UpdateManyWithWhereNestedInput[]
+    | PreimageStatusV2UpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface PreimageStatusV2UpdateWithWhereUniqueWithoutPreimageInput {
+  where: PreimageStatusV2WhereUniqueInput;
+  data: PreimageStatusV2UpdateWithoutPreimageDataInput;
+}
+
+export interface PreimageStatusV2UpdateWithoutPreimageDataInput {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  status?: Maybe<String>;
+}
+
+export interface PreimageStatusV2UpsertWithWhereUniqueWithoutPreimageInput {
+  where: PreimageStatusV2WhereUniqueInput;
+  update: PreimageStatusV2UpdateWithoutPreimageDataInput;
+  create: PreimageStatusV2CreateWithoutPreimageInput;
+}
+
+export interface PreimageStatusV2ScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  status?: Maybe<String>;
+  status_not?: Maybe<String>;
+  status_in?: Maybe<String[] | String>;
+  status_not_in?: Maybe<String[] | String>;
+  status_lt?: Maybe<String>;
+  status_lte?: Maybe<String>;
+  status_gt?: Maybe<String>;
+  status_gte?: Maybe<String>;
+  status_contains?: Maybe<String>;
+  status_not_contains?: Maybe<String>;
+  status_starts_with?: Maybe<String>;
+  status_not_starts_with?: Maybe<String>;
+  status_ends_with?: Maybe<String>;
+  status_not_ends_with?: Maybe<String>;
+  AND?: Maybe<
+    PreimageStatusV2ScalarWhereInput[] | PreimageStatusV2ScalarWhereInput
+  >;
+  OR?: Maybe<
+    PreimageStatusV2ScalarWhereInput[] | PreimageStatusV2ScalarWhereInput
+  >;
+  NOT?: Maybe<
+    PreimageStatusV2ScalarWhereInput[] | PreimageStatusV2ScalarWhereInput
+  >;
+}
+
+export interface PreimageStatusV2UpdateManyWithWhereNestedInput {
+  where: PreimageStatusV2ScalarWhereInput;
+  data: PreimageStatusV2UpdateManyDataInput;
+}
+
+export interface PreimageStatusV2UpdateManyDataInput {
+  status?: Maybe<String>;
+}
+
+export interface ReferendumV2UpdateOneWithoutPreimageInput {
+  create?: Maybe<ReferendumV2CreateWithoutPreimageInput>;
+  update?: Maybe<ReferendumV2UpdateWithoutPreimageDataInput>;
+  upsert?: Maybe<ReferendumV2UpsertWithoutPreimageInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<ReferendumV2WhereUniqueInput>;
+}
+
+export interface ReferendumV2UpdateWithoutPreimageDataInput {
+  trackNumber?: Maybe<Int>;
+  origin?: Maybe<String>;
+  preimageHash?: Maybe<String>;
+  referendumId?: Maybe<Int>;
+  referendumStatus?: Maybe<ReferendumStatusV2UpdateManyWithoutReferendumInput>;
+  enactmentAt?: Maybe<String>;
+  enactmentAfter?: Maybe<String>;
+  submittedAt?: Maybe<String>;
+  submitted?: Maybe<Json>;
+  decisionDeposit?: Maybe<Json>;
+  deciding?: Maybe<Json>;
+  tally?: Maybe<Json>;
+}
+
+export interface ReferendumStatusV2UpdateManyWithoutReferendumInput {
+  create?: Maybe<
+    | ReferendumStatusV2CreateWithoutReferendumInput[]
+    | ReferendumStatusV2CreateWithoutReferendumInput
+  >;
+  delete?: Maybe<
+    ReferendumStatusV2WhereUniqueInput[] | ReferendumStatusV2WhereUniqueInput
+  >;
+  connect?: Maybe<
+    ReferendumStatusV2WhereUniqueInput[] | ReferendumStatusV2WhereUniqueInput
+  >;
+  set?: Maybe<
+    ReferendumStatusV2WhereUniqueInput[] | ReferendumStatusV2WhereUniqueInput
+  >;
+  disconnect?: Maybe<
+    ReferendumStatusV2WhereUniqueInput[] | ReferendumStatusV2WhereUniqueInput
+  >;
+  update?: Maybe<
+    | ReferendumStatusV2UpdateWithWhereUniqueWithoutReferendumInput[]
+    | ReferendumStatusV2UpdateWithWhereUniqueWithoutReferendumInput
+  >;
+  upsert?: Maybe<
+    | ReferendumStatusV2UpsertWithWhereUniqueWithoutReferendumInput[]
+    | ReferendumStatusV2UpsertWithWhereUniqueWithoutReferendumInput
+  >;
+  deleteMany?: Maybe<
+    ReferendumStatusV2ScalarWhereInput[] | ReferendumStatusV2ScalarWhereInput
+  >;
+  updateMany?: Maybe<
+    | ReferendumStatusV2UpdateManyWithWhereNestedInput[]
+    | ReferendumStatusV2UpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface ReferendumStatusV2UpdateWithWhereUniqueWithoutReferendumInput {
+  where: ReferendumStatusV2WhereUniqueInput;
+  data: ReferendumStatusV2UpdateWithoutReferendumDataInput;
+}
+
+export interface ReferendumStatusV2UpdateWithoutReferendumDataInput {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  status?: Maybe<String>;
+  uniqueStatus?: Maybe<String>;
+}
+
+export interface ReferendumStatusV2UpsertWithWhereUniqueWithoutReferendumInput {
+  where: ReferendumStatusV2WhereUniqueInput;
+  update: ReferendumStatusV2UpdateWithoutReferendumDataInput;
+  create: ReferendumStatusV2CreateWithoutReferendumInput;
+}
+
+export interface ReferendumStatusV2ScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  status?: Maybe<String>;
+  status_not?: Maybe<String>;
+  status_in?: Maybe<String[] | String>;
+  status_not_in?: Maybe<String[] | String>;
+  status_lt?: Maybe<String>;
+  status_lte?: Maybe<String>;
+  status_gt?: Maybe<String>;
+  status_gte?: Maybe<String>;
+  status_contains?: Maybe<String>;
+  status_not_contains?: Maybe<String>;
+  status_starts_with?: Maybe<String>;
+  status_not_starts_with?: Maybe<String>;
+  status_ends_with?: Maybe<String>;
+  status_not_ends_with?: Maybe<String>;
+  uniqueStatus?: Maybe<String>;
+  uniqueStatus_not?: Maybe<String>;
+  uniqueStatus_in?: Maybe<String[] | String>;
+  uniqueStatus_not_in?: Maybe<String[] | String>;
+  uniqueStatus_lt?: Maybe<String>;
+  uniqueStatus_lte?: Maybe<String>;
+  uniqueStatus_gt?: Maybe<String>;
+  uniqueStatus_gte?: Maybe<String>;
+  uniqueStatus_contains?: Maybe<String>;
+  uniqueStatus_not_contains?: Maybe<String>;
+  uniqueStatus_starts_with?: Maybe<String>;
+  uniqueStatus_not_starts_with?: Maybe<String>;
+  uniqueStatus_ends_with?: Maybe<String>;
+  uniqueStatus_not_ends_with?: Maybe<String>;
+  AND?: Maybe<
+    ReferendumStatusV2ScalarWhereInput[] | ReferendumStatusV2ScalarWhereInput
+  >;
+  OR?: Maybe<
+    ReferendumStatusV2ScalarWhereInput[] | ReferendumStatusV2ScalarWhereInput
+  >;
+  NOT?: Maybe<
+    ReferendumStatusV2ScalarWhereInput[] | ReferendumStatusV2ScalarWhereInput
+  >;
+}
+
+export interface ReferendumStatusV2UpdateManyWithWhereNestedInput {
+  where: ReferendumStatusV2ScalarWhereInput;
+  data: ReferendumStatusV2UpdateManyDataInput;
+}
+
+export interface ReferendumStatusV2UpdateManyDataInput {
+  status?: Maybe<String>;
+  uniqueStatus?: Maybe<String>;
+}
+
+export interface ReferendumV2UpsertWithoutPreimageInput {
+  update: ReferendumV2UpdateWithoutPreimageDataInput;
+  create: ReferendumV2CreateWithoutPreimageInput;
+}
+
+export interface PreimageV2UpsertWithoutFellowshipreferendumInput {
+  update: PreimageV2UpdateWithoutFellowshipreferendumDataInput;
+  create: PreimageV2CreateWithoutFellowshipreferendumInput;
+}
+
+export interface FellowshipReferendumStatusUpdateManyWithoutReferendumInput {
+  create?: Maybe<
+    | FellowshipReferendumStatusCreateWithoutReferendumInput[]
+    | FellowshipReferendumStatusCreateWithoutReferendumInput
+  >;
+  delete?: Maybe<
+    | FellowshipReferendumStatusWhereUniqueInput[]
+    | FellowshipReferendumStatusWhereUniqueInput
+  >;
+  connect?: Maybe<
+    | FellowshipReferendumStatusWhereUniqueInput[]
+    | FellowshipReferendumStatusWhereUniqueInput
+  >;
+  set?: Maybe<
+    | FellowshipReferendumStatusWhereUniqueInput[]
+    | FellowshipReferendumStatusWhereUniqueInput
+  >;
+  disconnect?: Maybe<
+    | FellowshipReferendumStatusWhereUniqueInput[]
+    | FellowshipReferendumStatusWhereUniqueInput
+  >;
+  update?: Maybe<
+    | FellowshipReferendumStatusUpdateWithWhereUniqueWithoutReferendumInput[]
+    | FellowshipReferendumStatusUpdateWithWhereUniqueWithoutReferendumInput
+  >;
+  upsert?: Maybe<
+    | FellowshipReferendumStatusUpsertWithWhereUniqueWithoutReferendumInput[]
+    | FellowshipReferendumStatusUpsertWithWhereUniqueWithoutReferendumInput
+  >;
+  deleteMany?: Maybe<
+    | FellowshipReferendumStatusScalarWhereInput[]
+    | FellowshipReferendumStatusScalarWhereInput
+  >;
+  updateMany?: Maybe<
+    | FellowshipReferendumStatusUpdateManyWithWhereNestedInput[]
+    | FellowshipReferendumStatusUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface FellowshipReferendumStatusUpdateWithWhereUniqueWithoutReferendumInput {
+  where: FellowshipReferendumStatusWhereUniqueInput;
+  data: FellowshipReferendumStatusUpdateWithoutReferendumDataInput;
+}
+
+export interface FellowshipReferendumStatusUpdateWithoutReferendumDataInput {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  status?: Maybe<String>;
+  uniqueStatus?: Maybe<String>;
+}
+
+export interface FellowshipReferendumStatusUpsertWithWhereUniqueWithoutReferendumInput {
+  where: FellowshipReferendumStatusWhereUniqueInput;
+  update: FellowshipReferendumStatusUpdateWithoutReferendumDataInput;
+  create: FellowshipReferendumStatusCreateWithoutReferendumInput;
+}
+
+export interface FellowshipReferendumStatusScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  status?: Maybe<String>;
+  status_not?: Maybe<String>;
+  status_in?: Maybe<String[] | String>;
+  status_not_in?: Maybe<String[] | String>;
+  status_lt?: Maybe<String>;
+  status_lte?: Maybe<String>;
+  status_gt?: Maybe<String>;
+  status_gte?: Maybe<String>;
+  status_contains?: Maybe<String>;
+  status_not_contains?: Maybe<String>;
+  status_starts_with?: Maybe<String>;
+  status_not_starts_with?: Maybe<String>;
+  status_ends_with?: Maybe<String>;
+  status_not_ends_with?: Maybe<String>;
+  uniqueStatus?: Maybe<String>;
+  uniqueStatus_not?: Maybe<String>;
+  uniqueStatus_in?: Maybe<String[] | String>;
+  uniqueStatus_not_in?: Maybe<String[] | String>;
+  uniqueStatus_lt?: Maybe<String>;
+  uniqueStatus_lte?: Maybe<String>;
+  uniqueStatus_gt?: Maybe<String>;
+  uniqueStatus_gte?: Maybe<String>;
+  uniqueStatus_contains?: Maybe<String>;
+  uniqueStatus_not_contains?: Maybe<String>;
+  uniqueStatus_starts_with?: Maybe<String>;
+  uniqueStatus_not_starts_with?: Maybe<String>;
+  uniqueStatus_ends_with?: Maybe<String>;
+  uniqueStatus_not_ends_with?: Maybe<String>;
+  AND?: Maybe<
+    | FellowshipReferendumStatusScalarWhereInput[]
+    | FellowshipReferendumStatusScalarWhereInput
+  >;
+  OR?: Maybe<
+    | FellowshipReferendumStatusScalarWhereInput[]
+    | FellowshipReferendumStatusScalarWhereInput
+  >;
+  NOT?: Maybe<
+    | FellowshipReferendumStatusScalarWhereInput[]
+    | FellowshipReferendumStatusScalarWhereInput
+  >;
+}
+
+export interface FellowshipReferendumStatusUpdateManyWithWhereNestedInput {
+  where: FellowshipReferendumStatusScalarWhereInput;
+  data: FellowshipReferendumStatusUpdateManyDataInput;
+}
+
+export interface FellowshipReferendumStatusUpdateManyDataInput {
+  status?: Maybe<String>;
+  uniqueStatus?: Maybe<String>;
+}
+
+export interface FellowshipReferendumUpdateManyMutationInput {
+  trackNumber?: Maybe<Int>;
+  origin?: Maybe<String>;
+  preimageHash?: Maybe<String>;
+  referendumId?: Maybe<Int>;
+  enactmentAt?: Maybe<String>;
+  enactmentAfter?: Maybe<String>;
+  submittedAt?: Maybe<String>;
+  submitted?: Maybe<Json>;
+  decisionDeposit?: Maybe<Json>;
+  deciding?: Maybe<Json>;
+  tally?: Maybe<Json>;
+}
+
+export interface FellowshipReferendumStatusCreateInput {
+  id?: Maybe<ID_Input>;
+  blockNumber: BlockNumberCreateOneInput;
+  referendum: FellowshipReferendumCreateOneWithoutReferendumStatusInput;
+  status: String;
+  uniqueStatus: String;
+}
+
+export interface FellowshipReferendumCreateOneWithoutReferendumStatusInput {
+  create?: Maybe<FellowshipReferendumCreateWithoutReferendumStatusInput>;
+  connect?: Maybe<FellowshipReferendumWhereUniqueInput>;
+}
+
+export interface FellowshipReferendumCreateWithoutReferendumStatusInput {
+  trackNumber: Int;
+  origin: String;
+  preimage?: Maybe<PreimageV2CreateOneWithoutFellowshipreferendumInput>;
+  preimageHash: String;
+  referendumId: Int;
+  enactmentAt?: Maybe<String>;
+  enactmentAfter?: Maybe<String>;
+  submittedAt: String;
+  submitted?: Maybe<Json>;
+  decisionDeposit?: Maybe<Json>;
+  deciding?: Maybe<Json>;
+  tally?: Maybe<Json>;
+}
+
+export interface FellowshipReferendumStatusUpdateInput {
+  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
+  referendum?: Maybe<
+    FellowshipReferendumUpdateOneRequiredWithoutReferendumStatusInput
+  >;
+  status?: Maybe<String>;
+  uniqueStatus?: Maybe<String>;
+}
+
+export interface FellowshipReferendumUpdateOneRequiredWithoutReferendumStatusInput {
+  create?: Maybe<FellowshipReferendumCreateWithoutReferendumStatusInput>;
+  update?: Maybe<FellowshipReferendumUpdateWithoutReferendumStatusDataInput>;
+  upsert?: Maybe<FellowshipReferendumUpsertWithoutReferendumStatusInput>;
+  connect?: Maybe<FellowshipReferendumWhereUniqueInput>;
+}
+
+export interface FellowshipReferendumUpdateWithoutReferendumStatusDataInput {
+  trackNumber?: Maybe<Int>;
+  origin?: Maybe<String>;
+  preimage?: Maybe<PreimageV2UpdateOneWithoutFellowshipreferendumInput>;
+  preimageHash?: Maybe<String>;
+  referendumId?: Maybe<Int>;
+  enactmentAt?: Maybe<String>;
+  enactmentAfter?: Maybe<String>;
+  submittedAt?: Maybe<String>;
+  submitted?: Maybe<Json>;
+  decisionDeposit?: Maybe<Json>;
+  deciding?: Maybe<Json>;
+  tally?: Maybe<Json>;
+}
+
+export interface FellowshipReferendumUpsertWithoutReferendumStatusInput {
+  update: FellowshipReferendumUpdateWithoutReferendumStatusDataInput;
+  create: FellowshipReferendumCreateWithoutReferendumStatusInput;
+}
+
+export interface FellowshipReferendumStatusUpdateManyMutationInput {
+  status?: Maybe<String>;
+  uniqueStatus?: Maybe<String>;
+}
+
 export interface HeartBeatCreateInput {
   id?: Maybe<ID_Input>;
   sessionIndex: SessionCreateOneInput;
@@ -7731,37 +8777,26 @@ export interface PreimageV2CreateWithoutPreimageArgumentsInput {
   origin?: Maybe<String>;
   preimageStatus?: Maybe<PreimageStatusV2CreateManyWithoutPreimageInput>;
   referendum?: Maybe<ReferendumV2CreateOneWithoutPreimageInput>;
+  fellowshipreferendum?: Maybe<
+    FellowshipReferendumCreateOneWithoutPreimageInput
+  >;
   section: String;
   length: Int;
 }
 
-export interface PreimageStatusV2CreateManyWithoutPreimageInput {
-  create?: Maybe<
-    | PreimageStatusV2CreateWithoutPreimageInput[]
-    | PreimageStatusV2CreateWithoutPreimageInput
-  >;
-  connect?: Maybe<
-    PreimageStatusV2WhereUniqueInput[] | PreimageStatusV2WhereUniqueInput
-  >;
+export interface FellowshipReferendumCreateOneWithoutPreimageInput {
+  create?: Maybe<FellowshipReferendumCreateWithoutPreimageInput>;
+  connect?: Maybe<FellowshipReferendumWhereUniqueInput>;
 }
 
-export interface PreimageStatusV2CreateWithoutPreimageInput {
-  id?: Maybe<ID_Input>;
-  blockNumber: BlockNumberCreateOneInput;
-  status: String;
-}
-
-export interface ReferendumV2CreateOneWithoutPreimageInput {
-  create?: Maybe<ReferendumV2CreateWithoutPreimageInput>;
-  connect?: Maybe<ReferendumV2WhereUniqueInput>;
-}
-
-export interface ReferendumV2CreateWithoutPreimageInput {
+export interface FellowshipReferendumCreateWithoutPreimageInput {
   trackNumber: Int;
   origin: String;
   preimageHash: String;
   referendumId: Int;
-  referendumStatus?: Maybe<ReferendumStatusV2CreateManyWithoutReferendumInput>;
+  referendumStatus?: Maybe<
+    FellowshipReferendumStatusCreateManyWithoutReferendumInput
+  >;
   enactmentAt?: Maybe<String>;
   enactmentAfter?: Maybe<String>;
   submittedAt: String;
@@ -7769,23 +8804,6 @@ export interface ReferendumV2CreateWithoutPreimageInput {
   decisionDeposit?: Maybe<Json>;
   deciding?: Maybe<Json>;
   tally?: Maybe<Json>;
-}
-
-export interface ReferendumStatusV2CreateManyWithoutReferendumInput {
-  create?: Maybe<
-    | ReferendumStatusV2CreateWithoutReferendumInput[]
-    | ReferendumStatusV2CreateWithoutReferendumInput
-  >;
-  connect?: Maybe<
-    ReferendumStatusV2WhereUniqueInput[] | ReferendumStatusV2WhereUniqueInput
-  >;
-}
-
-export interface ReferendumStatusV2CreateWithoutReferendumInput {
-  id?: Maybe<ID_Input>;
-  blockNumber: BlockNumberCreateOneInput;
-  status: String;
-  uniqueStatus: String;
 }
 
 export interface PreimageArgumentV2UpdateInput {
@@ -7811,124 +8829,30 @@ export interface PreimageV2UpdateWithoutPreimageArgumentsDataInput {
   origin?: Maybe<String>;
   preimageStatus?: Maybe<PreimageStatusV2UpdateManyWithoutPreimageInput>;
   referendum?: Maybe<ReferendumV2UpdateOneWithoutPreimageInput>;
+  fellowshipreferendum?: Maybe<
+    FellowshipReferendumUpdateOneWithoutPreimageInput
+  >;
   section?: Maybe<String>;
   length?: Maybe<Int>;
 }
 
-export interface PreimageStatusV2UpdateManyWithoutPreimageInput {
-  create?: Maybe<
-    | PreimageStatusV2CreateWithoutPreimageInput[]
-    | PreimageStatusV2CreateWithoutPreimageInput
-  >;
-  delete?: Maybe<
-    PreimageStatusV2WhereUniqueInput[] | PreimageStatusV2WhereUniqueInput
-  >;
-  connect?: Maybe<
-    PreimageStatusV2WhereUniqueInput[] | PreimageStatusV2WhereUniqueInput
-  >;
-  set?: Maybe<
-    PreimageStatusV2WhereUniqueInput[] | PreimageStatusV2WhereUniqueInput
-  >;
-  disconnect?: Maybe<
-    PreimageStatusV2WhereUniqueInput[] | PreimageStatusV2WhereUniqueInput
-  >;
-  update?: Maybe<
-    | PreimageStatusV2UpdateWithWhereUniqueWithoutPreimageInput[]
-    | PreimageStatusV2UpdateWithWhereUniqueWithoutPreimageInput
-  >;
-  upsert?: Maybe<
-    | PreimageStatusV2UpsertWithWhereUniqueWithoutPreimageInput[]
-    | PreimageStatusV2UpsertWithWhereUniqueWithoutPreimageInput
-  >;
-  deleteMany?: Maybe<
-    PreimageStatusV2ScalarWhereInput[] | PreimageStatusV2ScalarWhereInput
-  >;
-  updateMany?: Maybe<
-    | PreimageStatusV2UpdateManyWithWhereNestedInput[]
-    | PreimageStatusV2UpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface PreimageStatusV2UpdateWithWhereUniqueWithoutPreimageInput {
-  where: PreimageStatusV2WhereUniqueInput;
-  data: PreimageStatusV2UpdateWithoutPreimageDataInput;
-}
-
-export interface PreimageStatusV2UpdateWithoutPreimageDataInput {
-  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
-  status?: Maybe<String>;
-}
-
-export interface PreimageStatusV2UpsertWithWhereUniqueWithoutPreimageInput {
-  where: PreimageStatusV2WhereUniqueInput;
-  update: PreimageStatusV2UpdateWithoutPreimageDataInput;
-  create: PreimageStatusV2CreateWithoutPreimageInput;
-}
-
-export interface PreimageStatusV2ScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  status?: Maybe<String>;
-  status_not?: Maybe<String>;
-  status_in?: Maybe<String[] | String>;
-  status_not_in?: Maybe<String[] | String>;
-  status_lt?: Maybe<String>;
-  status_lte?: Maybe<String>;
-  status_gt?: Maybe<String>;
-  status_gte?: Maybe<String>;
-  status_contains?: Maybe<String>;
-  status_not_contains?: Maybe<String>;
-  status_starts_with?: Maybe<String>;
-  status_not_starts_with?: Maybe<String>;
-  status_ends_with?: Maybe<String>;
-  status_not_ends_with?: Maybe<String>;
-  AND?: Maybe<
-    PreimageStatusV2ScalarWhereInput[] | PreimageStatusV2ScalarWhereInput
-  >;
-  OR?: Maybe<
-    PreimageStatusV2ScalarWhereInput[] | PreimageStatusV2ScalarWhereInput
-  >;
-  NOT?: Maybe<
-    PreimageStatusV2ScalarWhereInput[] | PreimageStatusV2ScalarWhereInput
-  >;
-}
-
-export interface PreimageStatusV2UpdateManyWithWhereNestedInput {
-  where: PreimageStatusV2ScalarWhereInput;
-  data: PreimageStatusV2UpdateManyDataInput;
-}
-
-export interface PreimageStatusV2UpdateManyDataInput {
-  status?: Maybe<String>;
-}
-
-export interface ReferendumV2UpdateOneWithoutPreimageInput {
-  create?: Maybe<ReferendumV2CreateWithoutPreimageInput>;
-  update?: Maybe<ReferendumV2UpdateWithoutPreimageDataInput>;
-  upsert?: Maybe<ReferendumV2UpsertWithoutPreimageInput>;
+export interface FellowshipReferendumUpdateOneWithoutPreimageInput {
+  create?: Maybe<FellowshipReferendumCreateWithoutPreimageInput>;
+  update?: Maybe<FellowshipReferendumUpdateWithoutPreimageDataInput>;
+  upsert?: Maybe<FellowshipReferendumUpsertWithoutPreimageInput>;
   delete?: Maybe<Boolean>;
   disconnect?: Maybe<Boolean>;
-  connect?: Maybe<ReferendumV2WhereUniqueInput>;
+  connect?: Maybe<FellowshipReferendumWhereUniqueInput>;
 }
 
-export interface ReferendumV2UpdateWithoutPreimageDataInput {
+export interface FellowshipReferendumUpdateWithoutPreimageDataInput {
   trackNumber?: Maybe<Int>;
   origin?: Maybe<String>;
   preimageHash?: Maybe<String>;
   referendumId?: Maybe<Int>;
-  referendumStatus?: Maybe<ReferendumStatusV2UpdateManyWithoutReferendumInput>;
+  referendumStatus?: Maybe<
+    FellowshipReferendumStatusUpdateManyWithoutReferendumInput
+  >;
   enactmentAt?: Maybe<String>;
   enactmentAfter?: Maybe<String>;
   submittedAt?: Maybe<String>;
@@ -7938,124 +8862,9 @@ export interface ReferendumV2UpdateWithoutPreimageDataInput {
   tally?: Maybe<Json>;
 }
 
-export interface ReferendumStatusV2UpdateManyWithoutReferendumInput {
-  create?: Maybe<
-    | ReferendumStatusV2CreateWithoutReferendumInput[]
-    | ReferendumStatusV2CreateWithoutReferendumInput
-  >;
-  delete?: Maybe<
-    ReferendumStatusV2WhereUniqueInput[] | ReferendumStatusV2WhereUniqueInput
-  >;
-  connect?: Maybe<
-    ReferendumStatusV2WhereUniqueInput[] | ReferendumStatusV2WhereUniqueInput
-  >;
-  set?: Maybe<
-    ReferendumStatusV2WhereUniqueInput[] | ReferendumStatusV2WhereUniqueInput
-  >;
-  disconnect?: Maybe<
-    ReferendumStatusV2WhereUniqueInput[] | ReferendumStatusV2WhereUniqueInput
-  >;
-  update?: Maybe<
-    | ReferendumStatusV2UpdateWithWhereUniqueWithoutReferendumInput[]
-    | ReferendumStatusV2UpdateWithWhereUniqueWithoutReferendumInput
-  >;
-  upsert?: Maybe<
-    | ReferendumStatusV2UpsertWithWhereUniqueWithoutReferendumInput[]
-    | ReferendumStatusV2UpsertWithWhereUniqueWithoutReferendumInput
-  >;
-  deleteMany?: Maybe<
-    ReferendumStatusV2ScalarWhereInput[] | ReferendumStatusV2ScalarWhereInput
-  >;
-  updateMany?: Maybe<
-    | ReferendumStatusV2UpdateManyWithWhereNestedInput[]
-    | ReferendumStatusV2UpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface ReferendumStatusV2UpdateWithWhereUniqueWithoutReferendumInput {
-  where: ReferendumStatusV2WhereUniqueInput;
-  data: ReferendumStatusV2UpdateWithoutReferendumDataInput;
-}
-
-export interface ReferendumStatusV2UpdateWithoutReferendumDataInput {
-  blockNumber?: Maybe<BlockNumberUpdateOneRequiredInput>;
-  status?: Maybe<String>;
-  uniqueStatus?: Maybe<String>;
-}
-
-export interface ReferendumStatusV2UpsertWithWhereUniqueWithoutReferendumInput {
-  where: ReferendumStatusV2WhereUniqueInput;
-  update: ReferendumStatusV2UpdateWithoutReferendumDataInput;
-  create: ReferendumStatusV2CreateWithoutReferendumInput;
-}
-
-export interface ReferendumStatusV2ScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  status?: Maybe<String>;
-  status_not?: Maybe<String>;
-  status_in?: Maybe<String[] | String>;
-  status_not_in?: Maybe<String[] | String>;
-  status_lt?: Maybe<String>;
-  status_lte?: Maybe<String>;
-  status_gt?: Maybe<String>;
-  status_gte?: Maybe<String>;
-  status_contains?: Maybe<String>;
-  status_not_contains?: Maybe<String>;
-  status_starts_with?: Maybe<String>;
-  status_not_starts_with?: Maybe<String>;
-  status_ends_with?: Maybe<String>;
-  status_not_ends_with?: Maybe<String>;
-  uniqueStatus?: Maybe<String>;
-  uniqueStatus_not?: Maybe<String>;
-  uniqueStatus_in?: Maybe<String[] | String>;
-  uniqueStatus_not_in?: Maybe<String[] | String>;
-  uniqueStatus_lt?: Maybe<String>;
-  uniqueStatus_lte?: Maybe<String>;
-  uniqueStatus_gt?: Maybe<String>;
-  uniqueStatus_gte?: Maybe<String>;
-  uniqueStatus_contains?: Maybe<String>;
-  uniqueStatus_not_contains?: Maybe<String>;
-  uniqueStatus_starts_with?: Maybe<String>;
-  uniqueStatus_not_starts_with?: Maybe<String>;
-  uniqueStatus_ends_with?: Maybe<String>;
-  uniqueStatus_not_ends_with?: Maybe<String>;
-  AND?: Maybe<
-    ReferendumStatusV2ScalarWhereInput[] | ReferendumStatusV2ScalarWhereInput
-  >;
-  OR?: Maybe<
-    ReferendumStatusV2ScalarWhereInput[] | ReferendumStatusV2ScalarWhereInput
-  >;
-  NOT?: Maybe<
-    ReferendumStatusV2ScalarWhereInput[] | ReferendumStatusV2ScalarWhereInput
-  >;
-}
-
-export interface ReferendumStatusV2UpdateManyWithWhereNestedInput {
-  where: ReferendumStatusV2ScalarWhereInput;
-  data: ReferendumStatusV2UpdateManyDataInput;
-}
-
-export interface ReferendumStatusV2UpdateManyDataInput {
-  status?: Maybe<String>;
-  uniqueStatus?: Maybe<String>;
-}
-
-export interface ReferendumV2UpsertWithoutPreimageInput {
-  update: ReferendumV2UpdateWithoutPreimageDataInput;
-  create: ReferendumV2CreateWithoutPreimageInput;
+export interface FellowshipReferendumUpsertWithoutPreimageInput {
+  update: FellowshipReferendumUpdateWithoutPreimageDataInput;
+  create: FellowshipReferendumCreateWithoutPreimageInput;
 }
 
 export interface PreimageV2UpsertWithoutPreimageArgumentsInput {
@@ -8152,24 +8961,11 @@ export interface PreimageV2CreateWithoutPreimageStatusInput {
   origin?: Maybe<String>;
   preimageArguments?: Maybe<PreimageArgumentV2CreateManyWithoutPreimageInput>;
   referendum?: Maybe<ReferendumV2CreateOneWithoutPreimageInput>;
+  fellowshipreferendum?: Maybe<
+    FellowshipReferendumCreateOneWithoutPreimageInput
+  >;
   section: String;
   length: Int;
-}
-
-export interface PreimageArgumentV2CreateManyWithoutPreimageInput {
-  create?: Maybe<
-    | PreimageArgumentV2CreateWithoutPreimageInput[]
-    | PreimageArgumentV2CreateWithoutPreimageInput
-  >;
-  connect?: Maybe<
-    PreimageArgumentV2WhereUniqueInput[] | PreimageArgumentV2WhereUniqueInput
-  >;
-}
-
-export interface PreimageArgumentV2CreateWithoutPreimageInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  value: String;
 }
 
 export interface PreimageStatusV2UpdateInput {
@@ -8195,122 +8991,11 @@ export interface PreimageV2UpdateWithoutPreimageStatusDataInput {
   origin?: Maybe<String>;
   preimageArguments?: Maybe<PreimageArgumentV2UpdateManyWithoutPreimageInput>;
   referendum?: Maybe<ReferendumV2UpdateOneWithoutPreimageInput>;
+  fellowshipreferendum?: Maybe<
+    FellowshipReferendumUpdateOneWithoutPreimageInput
+  >;
   section?: Maybe<String>;
   length?: Maybe<Int>;
-}
-
-export interface PreimageArgumentV2UpdateManyWithoutPreimageInput {
-  create?: Maybe<
-    | PreimageArgumentV2CreateWithoutPreimageInput[]
-    | PreimageArgumentV2CreateWithoutPreimageInput
-  >;
-  delete?: Maybe<
-    PreimageArgumentV2WhereUniqueInput[] | PreimageArgumentV2WhereUniqueInput
-  >;
-  connect?: Maybe<
-    PreimageArgumentV2WhereUniqueInput[] | PreimageArgumentV2WhereUniqueInput
-  >;
-  set?: Maybe<
-    PreimageArgumentV2WhereUniqueInput[] | PreimageArgumentV2WhereUniqueInput
-  >;
-  disconnect?: Maybe<
-    PreimageArgumentV2WhereUniqueInput[] | PreimageArgumentV2WhereUniqueInput
-  >;
-  update?: Maybe<
-    | PreimageArgumentV2UpdateWithWhereUniqueWithoutPreimageInput[]
-    | PreimageArgumentV2UpdateWithWhereUniqueWithoutPreimageInput
-  >;
-  upsert?: Maybe<
-    | PreimageArgumentV2UpsertWithWhereUniqueWithoutPreimageInput[]
-    | PreimageArgumentV2UpsertWithWhereUniqueWithoutPreimageInput
-  >;
-  deleteMany?: Maybe<
-    PreimageArgumentV2ScalarWhereInput[] | PreimageArgumentV2ScalarWhereInput
-  >;
-  updateMany?: Maybe<
-    | PreimageArgumentV2UpdateManyWithWhereNestedInput[]
-    | PreimageArgumentV2UpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface PreimageArgumentV2UpdateWithWhereUniqueWithoutPreimageInput {
-  where: PreimageArgumentV2WhereUniqueInput;
-  data: PreimageArgumentV2UpdateWithoutPreimageDataInput;
-}
-
-export interface PreimageArgumentV2UpdateWithoutPreimageDataInput {
-  name?: Maybe<String>;
-  value?: Maybe<String>;
-}
-
-export interface PreimageArgumentV2UpsertWithWhereUniqueWithoutPreimageInput {
-  where: PreimageArgumentV2WhereUniqueInput;
-  update: PreimageArgumentV2UpdateWithoutPreimageDataInput;
-  create: PreimageArgumentV2CreateWithoutPreimageInput;
-}
-
-export interface PreimageArgumentV2ScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  value?: Maybe<String>;
-  value_not?: Maybe<String>;
-  value_in?: Maybe<String[] | String>;
-  value_not_in?: Maybe<String[] | String>;
-  value_lt?: Maybe<String>;
-  value_lte?: Maybe<String>;
-  value_gt?: Maybe<String>;
-  value_gte?: Maybe<String>;
-  value_contains?: Maybe<String>;
-  value_not_contains?: Maybe<String>;
-  value_starts_with?: Maybe<String>;
-  value_not_starts_with?: Maybe<String>;
-  value_ends_with?: Maybe<String>;
-  value_not_ends_with?: Maybe<String>;
-  AND?: Maybe<
-    PreimageArgumentV2ScalarWhereInput[] | PreimageArgumentV2ScalarWhereInput
-  >;
-  OR?: Maybe<
-    PreimageArgumentV2ScalarWhereInput[] | PreimageArgumentV2ScalarWhereInput
-  >;
-  NOT?: Maybe<
-    PreimageArgumentV2ScalarWhereInput[] | PreimageArgumentV2ScalarWhereInput
-  >;
-}
-
-export interface PreimageArgumentV2UpdateManyWithWhereNestedInput {
-  where: PreimageArgumentV2ScalarWhereInput;
-  data: PreimageArgumentV2UpdateManyDataInput;
-}
-
-export interface PreimageArgumentV2UpdateManyDataInput {
-  name?: Maybe<String>;
-  value?: Maybe<String>;
 }
 
 export interface PreimageV2UpsertWithoutPreimageStatusInput {
@@ -8334,6 +9019,9 @@ export interface PreimageV2CreateInput {
   preimageArguments?: Maybe<PreimageArgumentV2CreateManyWithoutPreimageInput>;
   preimageStatus?: Maybe<PreimageStatusV2CreateManyWithoutPreimageInput>;
   referendum?: Maybe<ReferendumV2CreateOneWithoutPreimageInput>;
+  fellowshipreferendum?: Maybe<
+    FellowshipReferendumCreateOneWithoutPreimageInput
+  >;
   section: String;
   length: Int;
 }
@@ -8349,6 +9037,9 @@ export interface PreimageV2UpdateInput {
   preimageArguments?: Maybe<PreimageArgumentV2UpdateManyWithoutPreimageInput>;
   preimageStatus?: Maybe<PreimageStatusV2UpdateManyWithoutPreimageInput>;
   referendum?: Maybe<ReferendumV2UpdateOneWithoutPreimageInput>;
+  fellowshipreferendum?: Maybe<
+    FellowshipReferendumUpdateOneWithoutPreimageInput
+  >;
   section?: Maybe<String>;
   length?: Maybe<Int>;
 }
@@ -8666,6 +9357,9 @@ export interface PreimageV2CreateWithoutReferendumInput {
   origin?: Maybe<String>;
   preimageArguments?: Maybe<PreimageArgumentV2CreateManyWithoutPreimageInput>;
   preimageStatus?: Maybe<PreimageStatusV2CreateManyWithoutPreimageInput>;
+  fellowshipreferendum?: Maybe<
+    FellowshipReferendumCreateOneWithoutPreimageInput
+  >;
   section: String;
   length: Int;
 }
@@ -8718,6 +9412,9 @@ export interface PreimageV2UpdateWithoutReferendumDataInput {
   origin?: Maybe<String>;
   preimageArguments?: Maybe<PreimageArgumentV2UpdateManyWithoutPreimageInput>;
   preimageStatus?: Maybe<PreimageStatusV2UpdateManyWithoutPreimageInput>;
+  fellowshipreferendum?: Maybe<
+    FellowshipReferendumUpdateOneWithoutPreimageInput
+  >;
   section?: Maybe<String>;
   length?: Maybe<Int>;
 }
@@ -9922,6 +10619,46 @@ export interface EraSubscriptionWhereInput {
   AND?: Maybe<EraSubscriptionWhereInput[] | EraSubscriptionWhereInput>;
   OR?: Maybe<EraSubscriptionWhereInput[] | EraSubscriptionWhereInput>;
   NOT?: Maybe<EraSubscriptionWhereInput[] | EraSubscriptionWhereInput>;
+}
+
+export interface FellowshipReferendumSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<FellowshipReferendumWhereInput>;
+  AND?: Maybe<
+    | FellowshipReferendumSubscriptionWhereInput[]
+    | FellowshipReferendumSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    | FellowshipReferendumSubscriptionWhereInput[]
+    | FellowshipReferendumSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    | FellowshipReferendumSubscriptionWhereInput[]
+    | FellowshipReferendumSubscriptionWhereInput
+  >;
+}
+
+export interface FellowshipReferendumStatusSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<FellowshipReferendumStatusWhereInput>;
+  AND?: Maybe<
+    | FellowshipReferendumStatusSubscriptionWhereInput[]
+    | FellowshipReferendumStatusSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    | FellowshipReferendumStatusSubscriptionWhereInput[]
+    | FellowshipReferendumStatusSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    | FellowshipReferendumStatusSubscriptionWhereInput[]
+    | FellowshipReferendumStatusSubscriptionWhereInput
+  >;
 }
 
 export interface HeartBeatSubscriptionWhereInput {
@@ -12319,6 +13056,575 @@ export interface AggregateEraSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
+export interface FellowshipReferendum {
+  id: Int;
+  trackNumber: Int;
+  origin: String;
+  preimageHash: String;
+  referendumId: Int;
+  enactmentAt?: String;
+  enactmentAfter?: String;
+  submittedAt: String;
+  submitted?: Json;
+  decisionDeposit?: Json;
+  deciding?: Json;
+  tally?: Json;
+}
+
+export interface FellowshipReferendumPromise
+  extends Promise<FellowshipReferendum>,
+    Fragmentable {
+  id: () => Promise<Int>;
+  trackNumber: () => Promise<Int>;
+  origin: () => Promise<String>;
+  preimage: <T = PreimageV2Promise>() => T;
+  preimageHash: () => Promise<String>;
+  referendumId: () => Promise<Int>;
+  referendumStatus: <T = FragmentableArray<FellowshipReferendumStatus>>(args?: {
+    where?: FellowshipReferendumStatusWhereInput;
+    orderBy?: FellowshipReferendumStatusOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  enactmentAt: () => Promise<String>;
+  enactmentAfter: () => Promise<String>;
+  submittedAt: () => Promise<String>;
+  submitted: () => Promise<Json>;
+  decisionDeposit: () => Promise<Json>;
+  deciding: () => Promise<Json>;
+  tally: () => Promise<Json>;
+}
+
+export interface FellowshipReferendumSubscription
+  extends Promise<AsyncIterator<FellowshipReferendum>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<Int>>;
+  trackNumber: () => Promise<AsyncIterator<Int>>;
+  origin: () => Promise<AsyncIterator<String>>;
+  preimage: <T = PreimageV2Subscription>() => T;
+  preimageHash: () => Promise<AsyncIterator<String>>;
+  referendumId: () => Promise<AsyncIterator<Int>>;
+  referendumStatus: <
+    T = Promise<AsyncIterator<FellowshipReferendumStatusSubscription>>
+  >(args?: {
+    where?: FellowshipReferendumStatusWhereInput;
+    orderBy?: FellowshipReferendumStatusOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  enactmentAt: () => Promise<AsyncIterator<String>>;
+  enactmentAfter: () => Promise<AsyncIterator<String>>;
+  submittedAt: () => Promise<AsyncIterator<String>>;
+  submitted: () => Promise<AsyncIterator<Json>>;
+  decisionDeposit: () => Promise<AsyncIterator<Json>>;
+  deciding: () => Promise<AsyncIterator<Json>>;
+  tally: () => Promise<AsyncIterator<Json>>;
+}
+
+export interface FellowshipReferendumNullablePromise
+  extends Promise<FellowshipReferendum | null>,
+    Fragmentable {
+  id: () => Promise<Int>;
+  trackNumber: () => Promise<Int>;
+  origin: () => Promise<String>;
+  preimage: <T = PreimageV2Promise>() => T;
+  preimageHash: () => Promise<String>;
+  referendumId: () => Promise<Int>;
+  referendumStatus: <T = FragmentableArray<FellowshipReferendumStatus>>(args?: {
+    where?: FellowshipReferendumStatusWhereInput;
+    orderBy?: FellowshipReferendumStatusOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  enactmentAt: () => Promise<String>;
+  enactmentAfter: () => Promise<String>;
+  submittedAt: () => Promise<String>;
+  submitted: () => Promise<Json>;
+  decisionDeposit: () => Promise<Json>;
+  deciding: () => Promise<Json>;
+  tally: () => Promise<Json>;
+}
+
+export interface PreimageV2 {
+  id: ID_Output;
+  author: String;
+  depositAmount?: String;
+  hash: String;
+  metaDescription: String;
+  method: String;
+  enactmentPeriod?: String;
+  origin?: String;
+  section: String;
+  length: Int;
+}
+
+export interface PreimageV2Promise extends Promise<PreimageV2>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  author: () => Promise<String>;
+  depositAmount: () => Promise<String>;
+  hash: () => Promise<String>;
+  metaDescription: () => Promise<String>;
+  method: () => Promise<String>;
+  enactmentPeriod: () => Promise<String>;
+  origin: () => Promise<String>;
+  preimageArguments: <T = FragmentableArray<PreimageArgumentV2>>(args?: {
+    where?: PreimageArgumentV2WhereInput;
+    orderBy?: PreimageArgumentV2OrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  preimageStatus: <T = FragmentableArray<PreimageStatusV2>>(args?: {
+    where?: PreimageStatusV2WhereInput;
+    orderBy?: PreimageStatusV2OrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  referendum: <T = ReferendumV2Promise>() => T;
+  fellowshipreferendum: <T = FellowshipReferendumPromise>() => T;
+  section: () => Promise<String>;
+  length: () => Promise<Int>;
+}
+
+export interface PreimageV2Subscription
+  extends Promise<AsyncIterator<PreimageV2>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  author: () => Promise<AsyncIterator<String>>;
+  depositAmount: () => Promise<AsyncIterator<String>>;
+  hash: () => Promise<AsyncIterator<String>>;
+  metaDescription: () => Promise<AsyncIterator<String>>;
+  method: () => Promise<AsyncIterator<String>>;
+  enactmentPeriod: () => Promise<AsyncIterator<String>>;
+  origin: () => Promise<AsyncIterator<String>>;
+  preimageArguments: <
+    T = Promise<AsyncIterator<PreimageArgumentV2Subscription>>
+  >(args?: {
+    where?: PreimageArgumentV2WhereInput;
+    orderBy?: PreimageArgumentV2OrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  preimageStatus: <
+    T = Promise<AsyncIterator<PreimageStatusV2Subscription>>
+  >(args?: {
+    where?: PreimageStatusV2WhereInput;
+    orderBy?: PreimageStatusV2OrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  referendum: <T = ReferendumV2Subscription>() => T;
+  fellowshipreferendum: <T = FellowshipReferendumSubscription>() => T;
+  section: () => Promise<AsyncIterator<String>>;
+  length: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface PreimageV2NullablePromise
+  extends Promise<PreimageV2 | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  author: () => Promise<String>;
+  depositAmount: () => Promise<String>;
+  hash: () => Promise<String>;
+  metaDescription: () => Promise<String>;
+  method: () => Promise<String>;
+  enactmentPeriod: () => Promise<String>;
+  origin: () => Promise<String>;
+  preimageArguments: <T = FragmentableArray<PreimageArgumentV2>>(args?: {
+    where?: PreimageArgumentV2WhereInput;
+    orderBy?: PreimageArgumentV2OrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  preimageStatus: <T = FragmentableArray<PreimageStatusV2>>(args?: {
+    where?: PreimageStatusV2WhereInput;
+    orderBy?: PreimageStatusV2OrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  referendum: <T = ReferendumV2Promise>() => T;
+  fellowshipreferendum: <T = FellowshipReferendumPromise>() => T;
+  section: () => Promise<String>;
+  length: () => Promise<Int>;
+}
+
+export interface PreimageArgumentV2 {
+  id: ID_Output;
+  name: String;
+  value: String;
+}
+
+export interface PreimageArgumentV2Promise
+  extends Promise<PreimageArgumentV2>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  preimage: <T = PreimageV2Promise>() => T;
+  value: () => Promise<String>;
+}
+
+export interface PreimageArgumentV2Subscription
+  extends Promise<AsyncIterator<PreimageArgumentV2>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  preimage: <T = PreimageV2Subscription>() => T;
+  value: () => Promise<AsyncIterator<String>>;
+}
+
+export interface PreimageArgumentV2NullablePromise
+  extends Promise<PreimageArgumentV2 | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  preimage: <T = PreimageV2Promise>() => T;
+  value: () => Promise<String>;
+}
+
+export interface PreimageStatusV2 {
+  id: ID_Output;
+  status: String;
+}
+
+export interface PreimageStatusV2Promise
+  extends Promise<PreimageStatusV2>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  blockNumber: <T = BlockNumberPromise>() => T;
+  preimage: <T = PreimageV2Promise>() => T;
+  status: () => Promise<String>;
+}
+
+export interface PreimageStatusV2Subscription
+  extends Promise<AsyncIterator<PreimageStatusV2>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  blockNumber: <T = BlockNumberSubscription>() => T;
+  preimage: <T = PreimageV2Subscription>() => T;
+  status: () => Promise<AsyncIterator<String>>;
+}
+
+export interface PreimageStatusV2NullablePromise
+  extends Promise<PreimageStatusV2 | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  blockNumber: <T = BlockNumberPromise>() => T;
+  preimage: <T = PreimageV2Promise>() => T;
+  status: () => Promise<String>;
+}
+
+export interface ReferendumV2 {
+  id: Int;
+  trackNumber: Int;
+  origin: String;
+  preimageHash: String;
+  referendumId: Int;
+  enactmentAt?: String;
+  enactmentAfter?: String;
+  submittedAt: String;
+  submitted?: Json;
+  decisionDeposit?: Json;
+  deciding?: Json;
+  tally?: Json;
+}
+
+export interface ReferendumV2Promise
+  extends Promise<ReferendumV2>,
+    Fragmentable {
+  id: () => Promise<Int>;
+  trackNumber: () => Promise<Int>;
+  origin: () => Promise<String>;
+  preimage: <T = PreimageV2Promise>() => T;
+  preimageHash: () => Promise<String>;
+  referendumId: () => Promise<Int>;
+  referendumStatus: <T = FragmentableArray<ReferendumStatusV2>>(args?: {
+    where?: ReferendumStatusV2WhereInput;
+    orderBy?: ReferendumStatusV2OrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  enactmentAt: () => Promise<String>;
+  enactmentAfter: () => Promise<String>;
+  submittedAt: () => Promise<String>;
+  submitted: () => Promise<Json>;
+  decisionDeposit: () => Promise<Json>;
+  deciding: () => Promise<Json>;
+  tally: () => Promise<Json>;
+}
+
+export interface ReferendumV2Subscription
+  extends Promise<AsyncIterator<ReferendumV2>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<Int>>;
+  trackNumber: () => Promise<AsyncIterator<Int>>;
+  origin: () => Promise<AsyncIterator<String>>;
+  preimage: <T = PreimageV2Subscription>() => T;
+  preimageHash: () => Promise<AsyncIterator<String>>;
+  referendumId: () => Promise<AsyncIterator<Int>>;
+  referendumStatus: <
+    T = Promise<AsyncIterator<ReferendumStatusV2Subscription>>
+  >(args?: {
+    where?: ReferendumStatusV2WhereInput;
+    orderBy?: ReferendumStatusV2OrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  enactmentAt: () => Promise<AsyncIterator<String>>;
+  enactmentAfter: () => Promise<AsyncIterator<String>>;
+  submittedAt: () => Promise<AsyncIterator<String>>;
+  submitted: () => Promise<AsyncIterator<Json>>;
+  decisionDeposit: () => Promise<AsyncIterator<Json>>;
+  deciding: () => Promise<AsyncIterator<Json>>;
+  tally: () => Promise<AsyncIterator<Json>>;
+}
+
+export interface ReferendumV2NullablePromise
+  extends Promise<ReferendumV2 | null>,
+    Fragmentable {
+  id: () => Promise<Int>;
+  trackNumber: () => Promise<Int>;
+  origin: () => Promise<String>;
+  preimage: <T = PreimageV2Promise>() => T;
+  preimageHash: () => Promise<String>;
+  referendumId: () => Promise<Int>;
+  referendumStatus: <T = FragmentableArray<ReferendumStatusV2>>(args?: {
+    where?: ReferendumStatusV2WhereInput;
+    orderBy?: ReferendumStatusV2OrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  enactmentAt: () => Promise<String>;
+  enactmentAfter: () => Promise<String>;
+  submittedAt: () => Promise<String>;
+  submitted: () => Promise<Json>;
+  decisionDeposit: () => Promise<Json>;
+  deciding: () => Promise<Json>;
+  tally: () => Promise<Json>;
+}
+
+export interface ReferendumStatusV2 {
+  id: ID_Output;
+  status: String;
+  uniqueStatus: String;
+}
+
+export interface ReferendumStatusV2Promise
+  extends Promise<ReferendumStatusV2>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  blockNumber: <T = BlockNumberPromise>() => T;
+  referendum: <T = ReferendumV2Promise>() => T;
+  status: () => Promise<String>;
+  uniqueStatus: () => Promise<String>;
+}
+
+export interface ReferendumStatusV2Subscription
+  extends Promise<AsyncIterator<ReferendumStatusV2>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  blockNumber: <T = BlockNumberSubscription>() => T;
+  referendum: <T = ReferendumV2Subscription>() => T;
+  status: () => Promise<AsyncIterator<String>>;
+  uniqueStatus: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ReferendumStatusV2NullablePromise
+  extends Promise<ReferendumStatusV2 | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  blockNumber: <T = BlockNumberPromise>() => T;
+  referendum: <T = ReferendumV2Promise>() => T;
+  status: () => Promise<String>;
+  uniqueStatus: () => Promise<String>;
+}
+
+export interface FellowshipReferendumStatus {
+  id: ID_Output;
+  status: String;
+  uniqueStatus: String;
+}
+
+export interface FellowshipReferendumStatusPromise
+  extends Promise<FellowshipReferendumStatus>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  blockNumber: <T = BlockNumberPromise>() => T;
+  referendum: <T = FellowshipReferendumPromise>() => T;
+  status: () => Promise<String>;
+  uniqueStatus: () => Promise<String>;
+}
+
+export interface FellowshipReferendumStatusSubscription
+  extends Promise<AsyncIterator<FellowshipReferendumStatus>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  blockNumber: <T = BlockNumberSubscription>() => T;
+  referendum: <T = FellowshipReferendumSubscription>() => T;
+  status: () => Promise<AsyncIterator<String>>;
+  uniqueStatus: () => Promise<AsyncIterator<String>>;
+}
+
+export interface FellowshipReferendumStatusNullablePromise
+  extends Promise<FellowshipReferendumStatus | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  blockNumber: <T = BlockNumberPromise>() => T;
+  referendum: <T = FellowshipReferendumPromise>() => T;
+  status: () => Promise<String>;
+  uniqueStatus: () => Promise<String>;
+}
+
+export interface FellowshipReferendumConnection {
+  pageInfo: PageInfo;
+  edges: FellowshipReferendumEdge[];
+}
+
+export interface FellowshipReferendumConnectionPromise
+  extends Promise<FellowshipReferendumConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<FellowshipReferendumEdge>>() => T;
+  aggregate: <T = AggregateFellowshipReferendumPromise>() => T;
+}
+
+export interface FellowshipReferendumConnectionSubscription
+  extends Promise<AsyncIterator<FellowshipReferendumConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <
+    T = Promise<AsyncIterator<FellowshipReferendumEdgeSubscription>>
+  >() => T;
+  aggregate: <T = AggregateFellowshipReferendumSubscription>() => T;
+}
+
+export interface FellowshipReferendumEdge {
+  node: FellowshipReferendum;
+  cursor: String;
+}
+
+export interface FellowshipReferendumEdgePromise
+  extends Promise<FellowshipReferendumEdge>,
+    Fragmentable {
+  node: <T = FellowshipReferendumPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface FellowshipReferendumEdgeSubscription
+  extends Promise<AsyncIterator<FellowshipReferendumEdge>>,
+    Fragmentable {
+  node: <T = FellowshipReferendumSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateFellowshipReferendum {
+  count: Int;
+}
+
+export interface AggregateFellowshipReferendumPromise
+  extends Promise<AggregateFellowshipReferendum>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateFellowshipReferendumSubscription
+  extends Promise<AsyncIterator<AggregateFellowshipReferendum>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface FellowshipReferendumStatusConnection {
+  pageInfo: PageInfo;
+  edges: FellowshipReferendumStatusEdge[];
+}
+
+export interface FellowshipReferendumStatusConnectionPromise
+  extends Promise<FellowshipReferendumStatusConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<FellowshipReferendumStatusEdge>>() => T;
+  aggregate: <T = AggregateFellowshipReferendumStatusPromise>() => T;
+}
+
+export interface FellowshipReferendumStatusConnectionSubscription
+  extends Promise<AsyncIterator<FellowshipReferendumStatusConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <
+    T = Promise<AsyncIterator<FellowshipReferendumStatusEdgeSubscription>>
+  >() => T;
+  aggregate: <T = AggregateFellowshipReferendumStatusSubscription>() => T;
+}
+
+export interface FellowshipReferendumStatusEdge {
+  node: FellowshipReferendumStatus;
+  cursor: String;
+}
+
+export interface FellowshipReferendumStatusEdgePromise
+  extends Promise<FellowshipReferendumStatusEdge>,
+    Fragmentable {
+  node: <T = FellowshipReferendumStatusPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface FellowshipReferendumStatusEdgeSubscription
+  extends Promise<AsyncIterator<FellowshipReferendumStatusEdge>>,
+    Fragmentable {
+  node: <T = FellowshipReferendumStatusSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateFellowshipReferendumStatus {
+  count: Int;
+}
+
+export interface AggregateFellowshipReferendumStatusPromise
+  extends Promise<AggregateFellowshipReferendumStatus>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateFellowshipReferendumStatusSubscription
+  extends Promise<AsyncIterator<AggregateFellowshipReferendumStatus>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
 export interface HeartBeat {
   id: ID_Output;
   authorityId: String;
@@ -12876,322 +14182,6 @@ export interface AggregatePreimageArgumentSubscription
   extends Promise<AsyncIterator<AggregatePreimageArgument>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface PreimageArgumentV2 {
-  id: ID_Output;
-  name: String;
-  value: String;
-}
-
-export interface PreimageArgumentV2Promise
-  extends Promise<PreimageArgumentV2>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  preimage: <T = PreimageV2Promise>() => T;
-  value: () => Promise<String>;
-}
-
-export interface PreimageArgumentV2Subscription
-  extends Promise<AsyncIterator<PreimageArgumentV2>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  preimage: <T = PreimageV2Subscription>() => T;
-  value: () => Promise<AsyncIterator<String>>;
-}
-
-export interface PreimageArgumentV2NullablePromise
-  extends Promise<PreimageArgumentV2 | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  preimage: <T = PreimageV2Promise>() => T;
-  value: () => Promise<String>;
-}
-
-export interface PreimageV2 {
-  id: ID_Output;
-  author: String;
-  depositAmount?: String;
-  hash: String;
-  metaDescription: String;
-  method: String;
-  enactmentPeriod?: String;
-  origin?: String;
-  section: String;
-  length: Int;
-}
-
-export interface PreimageV2Promise extends Promise<PreimageV2>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  author: () => Promise<String>;
-  depositAmount: () => Promise<String>;
-  hash: () => Promise<String>;
-  metaDescription: () => Promise<String>;
-  method: () => Promise<String>;
-  enactmentPeriod: () => Promise<String>;
-  origin: () => Promise<String>;
-  preimageArguments: <T = FragmentableArray<PreimageArgumentV2>>(args?: {
-    where?: PreimageArgumentV2WhereInput;
-    orderBy?: PreimageArgumentV2OrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  preimageStatus: <T = FragmentableArray<PreimageStatusV2>>(args?: {
-    where?: PreimageStatusV2WhereInput;
-    orderBy?: PreimageStatusV2OrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  referendum: <T = ReferendumV2Promise>() => T;
-  section: () => Promise<String>;
-  length: () => Promise<Int>;
-}
-
-export interface PreimageV2Subscription
-  extends Promise<AsyncIterator<PreimageV2>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  author: () => Promise<AsyncIterator<String>>;
-  depositAmount: () => Promise<AsyncIterator<String>>;
-  hash: () => Promise<AsyncIterator<String>>;
-  metaDescription: () => Promise<AsyncIterator<String>>;
-  method: () => Promise<AsyncIterator<String>>;
-  enactmentPeriod: () => Promise<AsyncIterator<String>>;
-  origin: () => Promise<AsyncIterator<String>>;
-  preimageArguments: <
-    T = Promise<AsyncIterator<PreimageArgumentV2Subscription>>
-  >(args?: {
-    where?: PreimageArgumentV2WhereInput;
-    orderBy?: PreimageArgumentV2OrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  preimageStatus: <
-    T = Promise<AsyncIterator<PreimageStatusV2Subscription>>
-  >(args?: {
-    where?: PreimageStatusV2WhereInput;
-    orderBy?: PreimageStatusV2OrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  referendum: <T = ReferendumV2Subscription>() => T;
-  section: () => Promise<AsyncIterator<String>>;
-  length: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface PreimageV2NullablePromise
-  extends Promise<PreimageV2 | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  author: () => Promise<String>;
-  depositAmount: () => Promise<String>;
-  hash: () => Promise<String>;
-  metaDescription: () => Promise<String>;
-  method: () => Promise<String>;
-  enactmentPeriod: () => Promise<String>;
-  origin: () => Promise<String>;
-  preimageArguments: <T = FragmentableArray<PreimageArgumentV2>>(args?: {
-    where?: PreimageArgumentV2WhereInput;
-    orderBy?: PreimageArgumentV2OrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  preimageStatus: <T = FragmentableArray<PreimageStatusV2>>(args?: {
-    where?: PreimageStatusV2WhereInput;
-    orderBy?: PreimageStatusV2OrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  referendum: <T = ReferendumV2Promise>() => T;
-  section: () => Promise<String>;
-  length: () => Promise<Int>;
-}
-
-export interface PreimageStatusV2 {
-  id: ID_Output;
-  status: String;
-}
-
-export interface PreimageStatusV2Promise
-  extends Promise<PreimageStatusV2>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  blockNumber: <T = BlockNumberPromise>() => T;
-  preimage: <T = PreimageV2Promise>() => T;
-  status: () => Promise<String>;
-}
-
-export interface PreimageStatusV2Subscription
-  extends Promise<AsyncIterator<PreimageStatusV2>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  blockNumber: <T = BlockNumberSubscription>() => T;
-  preimage: <T = PreimageV2Subscription>() => T;
-  status: () => Promise<AsyncIterator<String>>;
-}
-
-export interface PreimageStatusV2NullablePromise
-  extends Promise<PreimageStatusV2 | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  blockNumber: <T = BlockNumberPromise>() => T;
-  preimage: <T = PreimageV2Promise>() => T;
-  status: () => Promise<String>;
-}
-
-export interface ReferendumV2 {
-  id: Int;
-  trackNumber: Int;
-  origin: String;
-  preimageHash: String;
-  referendumId: Int;
-  enactmentAt?: String;
-  enactmentAfter?: String;
-  submittedAt: String;
-  submitted?: Json;
-  decisionDeposit?: Json;
-  deciding?: Json;
-  tally?: Json;
-}
-
-export interface ReferendumV2Promise
-  extends Promise<ReferendumV2>,
-    Fragmentable {
-  id: () => Promise<Int>;
-  trackNumber: () => Promise<Int>;
-  origin: () => Promise<String>;
-  preimage: <T = PreimageV2Promise>() => T;
-  preimageHash: () => Promise<String>;
-  referendumId: () => Promise<Int>;
-  referendumStatus: <T = FragmentableArray<ReferendumStatusV2>>(args?: {
-    where?: ReferendumStatusV2WhereInput;
-    orderBy?: ReferendumStatusV2OrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  enactmentAt: () => Promise<String>;
-  enactmentAfter: () => Promise<String>;
-  submittedAt: () => Promise<String>;
-  submitted: () => Promise<Json>;
-  decisionDeposit: () => Promise<Json>;
-  deciding: () => Promise<Json>;
-  tally: () => Promise<Json>;
-}
-
-export interface ReferendumV2Subscription
-  extends Promise<AsyncIterator<ReferendumV2>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<Int>>;
-  trackNumber: () => Promise<AsyncIterator<Int>>;
-  origin: () => Promise<AsyncIterator<String>>;
-  preimage: <T = PreimageV2Subscription>() => T;
-  preimageHash: () => Promise<AsyncIterator<String>>;
-  referendumId: () => Promise<AsyncIterator<Int>>;
-  referendumStatus: <
-    T = Promise<AsyncIterator<ReferendumStatusV2Subscription>>
-  >(args?: {
-    where?: ReferendumStatusV2WhereInput;
-    orderBy?: ReferendumStatusV2OrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  enactmentAt: () => Promise<AsyncIterator<String>>;
-  enactmentAfter: () => Promise<AsyncIterator<String>>;
-  submittedAt: () => Promise<AsyncIterator<String>>;
-  submitted: () => Promise<AsyncIterator<Json>>;
-  decisionDeposit: () => Promise<AsyncIterator<Json>>;
-  deciding: () => Promise<AsyncIterator<Json>>;
-  tally: () => Promise<AsyncIterator<Json>>;
-}
-
-export interface ReferendumV2NullablePromise
-  extends Promise<ReferendumV2 | null>,
-    Fragmentable {
-  id: () => Promise<Int>;
-  trackNumber: () => Promise<Int>;
-  origin: () => Promise<String>;
-  preimage: <T = PreimageV2Promise>() => T;
-  preimageHash: () => Promise<String>;
-  referendumId: () => Promise<Int>;
-  referendumStatus: <T = FragmentableArray<ReferendumStatusV2>>(args?: {
-    where?: ReferendumStatusV2WhereInput;
-    orderBy?: ReferendumStatusV2OrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  enactmentAt: () => Promise<String>;
-  enactmentAfter: () => Promise<String>;
-  submittedAt: () => Promise<String>;
-  submitted: () => Promise<Json>;
-  decisionDeposit: () => Promise<Json>;
-  deciding: () => Promise<Json>;
-  tally: () => Promise<Json>;
-}
-
-export interface ReferendumStatusV2 {
-  id: ID_Output;
-  status: String;
-  uniqueStatus: String;
-}
-
-export interface ReferendumStatusV2Promise
-  extends Promise<ReferendumStatusV2>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  blockNumber: <T = BlockNumberPromise>() => T;
-  referendum: <T = ReferendumV2Promise>() => T;
-  status: () => Promise<String>;
-  uniqueStatus: () => Promise<String>;
-}
-
-export interface ReferendumStatusV2Subscription
-  extends Promise<AsyncIterator<ReferendumStatusV2>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  blockNumber: <T = BlockNumberSubscription>() => T;
-  referendum: <T = ReferendumV2Subscription>() => T;
-  status: () => Promise<AsyncIterator<String>>;
-  uniqueStatus: () => Promise<AsyncIterator<String>>;
-}
-
-export interface ReferendumStatusV2NullablePromise
-  extends Promise<ReferendumStatusV2 | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  blockNumber: <T = BlockNumberPromise>() => T;
-  referendum: <T = ReferendumV2Promise>() => T;
-  status: () => Promise<String>;
-  uniqueStatus: () => Promise<String>;
 }
 
 export interface PreimageArgumentV2Connection {
@@ -15517,6 +16507,129 @@ export interface EraPreviousValuesSubscription
   individualPoints: () => Promise<AsyncIterator<String[]>>;
 }
 
+export interface FellowshipReferendumSubscriptionPayload {
+  mutation: MutationType;
+  node: FellowshipReferendum;
+  updatedFields: String[];
+  previousValues: FellowshipReferendumPreviousValues;
+}
+
+export interface FellowshipReferendumSubscriptionPayloadPromise
+  extends Promise<FellowshipReferendumSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = FellowshipReferendumPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = FellowshipReferendumPreviousValuesPromise>() => T;
+}
+
+export interface FellowshipReferendumSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<FellowshipReferendumSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = FellowshipReferendumSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = FellowshipReferendumPreviousValuesSubscription>() => T;
+}
+
+export interface FellowshipReferendumPreviousValues {
+  id: Int;
+  trackNumber: Int;
+  origin: String;
+  preimageHash: String;
+  referendumId: Int;
+  enactmentAt?: String;
+  enactmentAfter?: String;
+  submittedAt: String;
+  submitted?: Json;
+  decisionDeposit?: Json;
+  deciding?: Json;
+  tally?: Json;
+}
+
+export interface FellowshipReferendumPreviousValuesPromise
+  extends Promise<FellowshipReferendumPreviousValues>,
+    Fragmentable {
+  id: () => Promise<Int>;
+  trackNumber: () => Promise<Int>;
+  origin: () => Promise<String>;
+  preimageHash: () => Promise<String>;
+  referendumId: () => Promise<Int>;
+  enactmentAt: () => Promise<String>;
+  enactmentAfter: () => Promise<String>;
+  submittedAt: () => Promise<String>;
+  submitted: () => Promise<Json>;
+  decisionDeposit: () => Promise<Json>;
+  deciding: () => Promise<Json>;
+  tally: () => Promise<Json>;
+}
+
+export interface FellowshipReferendumPreviousValuesSubscription
+  extends Promise<AsyncIterator<FellowshipReferendumPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<Int>>;
+  trackNumber: () => Promise<AsyncIterator<Int>>;
+  origin: () => Promise<AsyncIterator<String>>;
+  preimageHash: () => Promise<AsyncIterator<String>>;
+  referendumId: () => Promise<AsyncIterator<Int>>;
+  enactmentAt: () => Promise<AsyncIterator<String>>;
+  enactmentAfter: () => Promise<AsyncIterator<String>>;
+  submittedAt: () => Promise<AsyncIterator<String>>;
+  submitted: () => Promise<AsyncIterator<Json>>;
+  decisionDeposit: () => Promise<AsyncIterator<Json>>;
+  deciding: () => Promise<AsyncIterator<Json>>;
+  tally: () => Promise<AsyncIterator<Json>>;
+}
+
+export interface FellowshipReferendumStatusSubscriptionPayload {
+  mutation: MutationType;
+  node: FellowshipReferendumStatus;
+  updatedFields: String[];
+  previousValues: FellowshipReferendumStatusPreviousValues;
+}
+
+export interface FellowshipReferendumStatusSubscriptionPayloadPromise
+  extends Promise<FellowshipReferendumStatusSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = FellowshipReferendumStatusPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = FellowshipReferendumStatusPreviousValuesPromise>() => T;
+}
+
+export interface FellowshipReferendumStatusSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<FellowshipReferendumStatusSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = FellowshipReferendumStatusSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <
+    T = FellowshipReferendumStatusPreviousValuesSubscription
+  >() => T;
+}
+
+export interface FellowshipReferendumStatusPreviousValues {
+  id: ID_Output;
+  status: String;
+  uniqueStatus: String;
+}
+
+export interface FellowshipReferendumStatusPreviousValuesPromise
+  extends Promise<FellowshipReferendumStatusPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  status: () => Promise<String>;
+  uniqueStatus: () => Promise<String>;
+}
+
+export interface FellowshipReferendumStatusPreviousValuesSubscription
+  extends Promise<AsyncIterator<FellowshipReferendumStatusPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  status: () => Promise<AsyncIterator<String>>;
+  uniqueStatus: () => Promise<AsyncIterator<String>>;
+}
+
 export interface HeartBeatSubscriptionPayload {
   mutation: MutationType;
   node: HeartBeat;
@@ -17375,6 +18488,14 @@ export const models: Model[] = [
   },
   {
     name: "PreimageArgumentV2",
+    embedded: false
+  },
+  {
+    name: "FellowshipReferendum",
+    embedded: false
+  },
+  {
+    name: "FellowshipReferendumStatus",
     embedded: false
   }
 ];
