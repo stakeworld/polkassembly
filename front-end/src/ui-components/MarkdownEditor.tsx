@@ -5,7 +5,7 @@
 import 'react-mde/lib/styles/css/react-mde-all.css';
 
 import styled from '@xstyled/styled-components';
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import ReactMde, { Suggestion } from 'react-mde';
 
 import Markdown from './Markdown';
@@ -165,28 +165,6 @@ interface Props {
 
 function MarkdownEditor(props: Props): React.ReactElement {
 
-	const ref = useRef<ReactMde>(null!);
-
-	useEffect(() => {
-		const header = ref.current?.finalRefs?.textarea?.current?.parentNode?.parentNode?.parentNode?.firstChild;
-		(header as any).style.display = 'none';
-		const onFocus = () => {
-			(header as any).style.display = '';
-		};
-		const onBlur = (e: MouseEvent) => {
-			if ((e.currentTarget as any)?.value?.length === 0) {
-				(header as any).style.display = 'none';
-			}
-		};
-		ref.current?.finalRefs?.textarea?.current?.addEventListener('focus', onFocus as any);
-		ref.current?.finalRefs?.textarea?.current?.addEventListener('blur', onBlur as any);
-		return () => {
-			ref.current?.finalRefs?.textarea?.current?.removeEventListener('focus', onFocus as any);
-			// eslint-disable-next-line react-hooks/exhaustive-deps
-			ref.current?.finalRefs?.textarea?.current?.removeEventListener('blur', onBlur as any);
-		};
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [ref.current]);
 	const [selectedTab, setSelectedTab] = React.useState<'write' | 'preview'>('write');
 
 	const loadSuggestions = async (text: string) => {
@@ -206,7 +184,6 @@ function MarkdownEditor(props: Props): React.ReactElement {
 	return (
 		<StyledTextArea className='container'>
 			<ReactMde
-				ref={ref}
 				generateMarkdownPreview={markdown => Promise.resolve(<Markdown isPreview={true} md={markdown} />) }
 				minEditorHeight={props.height}
 				minPreviewHeight={props.height}
