@@ -161,33 +161,32 @@ const Web3Login: FC<Props> = ({
 		if (!accounts.length) {
 			return getAccounts(chosenWallet);
 		}
+		const injectedWindow = window as Window & InjectedWindow;
+
+		let wallet = isWeb3Injected
+			? injectedWindow.injectedWeb3[chosenWallet]
+			: null;
+
+		if (!wallet) {
+			wallet = Object.values(injectedWindow.injectedWeb3)[0];
+		}
+
+		if (!wallet) {
+			setExtensionNotFound(true);
+			setIsAccountLoading(false);
+			return;
+		} else {
+			setExtensionNotFound(false);
+		}
+
+		const injected = await wallet.enable(APPNAME);
+
+		const signRaw = injected && injected.signer && injected.signer.signRaw;
+
+		if (!signRaw) {
+			return console.error('Signer not available');
+		}
 		try {
-			const injectedWindow = window as Window & InjectedWindow;
-
-			let wallet = isWeb3Injected
-				? injectedWindow.injectedWeb3[chosenWallet]
-				: null;
-
-			if (!wallet) {
-				wallet = Object.values(injectedWindow.injectedWeb3)[0];
-			}
-
-			if (!wallet) {
-				setExtensionNotFound(true);
-				setIsAccountLoading(false);
-				return;
-			} else {
-				setExtensionNotFound(false);
-			}
-
-			const injected = await wallet.enable(APPNAME);
-
-			const signRaw = injected && injected.signer && injected.signer.signRaw;
-
-			if (!signRaw) {
-				return console.error('Signer not available');
-			}
-
 			const { data: startResult } = await addressLoginStartMutation({
 				variables: {
 					address: address
@@ -206,22 +205,23 @@ const Web3Login: FC<Props> = ({
 				type: 'bytes'
 			});
 
-			try{
-
-				const { data: loginResult } = await addressLoginMutation({
-					variables: {
-						address: address,
-						signature
-					}
-				});
-				if (loginResult?.addressLogin?.token) {
-					handleTokenChange(loginResult.addressLogin.token, currentUser);
-					navigate(-1);
-				} else {
-					throw new Error('Web3 Login failed');
+			const { data: loginResult } = await addressLoginMutation({
+				variables: {
+					address: address,
+					signature
 				}
-			} catch (error) {
-				setErr(error);
+			});
+			if (loginResult?.addressLogin?.token) {
+				handleTokenChange(loginResult.addressLogin.token, currentUser);
+				navigate(-1);
+			} else {
+				throw new Error('Web3 Login failed');
+			}
+
+		} catch (error) {
+			setErr(error);
+			if(error?.message === 'GraphQL error: Login with web3 account failed. Address not linked to any account.'){
+
 				const { data: startResult } = await addressSignupStartMutation({
 					variables: {
 						address: address
@@ -255,9 +255,6 @@ const Web3Login: FC<Props> = ({
 					throw new Error('Web3 Login failed');
 				}
 			}
-
-		} catch (error) {
-			setErr(error);
 		}
 	};
 	const handleToggle = () => setDisplayWeb2();
