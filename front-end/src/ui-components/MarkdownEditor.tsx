@@ -5,7 +5,7 @@
 import 'react-mde/lib/styles/css/react-mde-all.css';
 
 import styled from '@xstyled/styled-components';
-import React, { useRef } from 'react';
+import React from 'react';
 import ReactMde, { Suggestion } from 'react-mde';
 
 import Markdown from './Markdown';
@@ -165,8 +165,6 @@ interface Props {
 
 function MarkdownEditor(props: Props): React.ReactElement {
 
-	const ref = useRef<ReactMde>(null!);
-
 	const [selectedTab, setSelectedTab] = React.useState<'write' | 'preview'>('write');
 
 	const loadSuggestions = async (text: string) => {
@@ -186,7 +184,6 @@ function MarkdownEditor(props: Props): React.ReactElement {
 	return (
 		<StyledTextArea className='container'>
 			<ReactMde
-				ref={ref}
 				generateMarkdownPreview={markdown => Promise.resolve(<Markdown isPreview={true} md={markdown} />) }
 				minEditorHeight={props.height}
 				minPreviewHeight={props.height}
