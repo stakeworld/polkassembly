@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 import { CameraOutlined, CloseOutlined, LinkOutlined, PlusOutlined } from '@ant-design/icons';
-import { QueryLazyOptions } from '@apollo/client';
+import { ApolloQueryResult } from '@apollo/client';
 import { Alert, Button, Input, Modal, Tag } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Exact, GetUserDetailsQuery, useAddProfileMutation } from 'src/generated/graphql';
@@ -13,9 +13,9 @@ import noUserImage from '../../assets/no-user-img.png';
 
 interface Props {
     setEditProfile: React.Dispatch<React.SetStateAction<boolean>>
-	refetch: (options?: QueryLazyOptions<Exact<{
+	refetch: (variables?: Exact<{
 		user_id: number;
-	}>> | undefined) => void
+	}> | undefined) => Promise<ApolloQueryResult<GetUserDetailsQuery>>
     id?: number | null;
     data?: GetUserDetailsQuery
 }
@@ -218,7 +218,7 @@ const EditProfileModal = ({ data, refetch, setEditProfile, id }: Props) => {
 						<img className='flex h-w-32 w-32 rounded-full' src={finalImgUrl ? finalImgUrl : userImage} alt="user avatar" />
 						{updatePhotoButton}
 					</div>
-					: <div className=''>
+					: <div className='relative'>
 						<img className='flex h-w-32 w-32 rounded-full' src={noUserImage} alt="user avatar" />
 						{updatePhotoButton}
 					</div>
