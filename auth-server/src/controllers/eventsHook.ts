@@ -134,6 +134,11 @@ const sendOwnProposalCreated = async (onchainLink: OnchainLinkType): Promise<Hoo
 	}
 
 	const type = getPostType(onchainLink);
+
+	if (type === PostTypeEnum.POST) {
+		return { sendOwnProposalCreatedMessage: messages.EVENT_PROPOSAL_CREATED_MAIL_SENT };
+	}
+
 	const id = getPostId(type, onchainLink);
 	const url = getPostLink(type, id);
 
@@ -208,6 +213,11 @@ const sendNewProposalCreated = async (onchainLink: OnchainLinkType, responseMess
 		}
 
 		const type = getPostType(onchainLink);
+
+		if (type === PostTypeEnum.POST) {
+			return { sendOwnProposalCreatedMessage: messages.EVENT_PROPOSAL_CREATED_MAIL_SENT };
+		}
+
 		const id = getPostId(type, onchainLink);
 		const url = getPostLink(type, id);
 
