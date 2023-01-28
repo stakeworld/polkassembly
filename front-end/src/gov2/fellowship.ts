@@ -123,6 +123,65 @@ export const GOV2_FELLOWSHIP_POSTS_BY_TRACK_AND_STATUS = gql`
     ${authorFields}
 `;
 
+export const GOV2_FELLOWSHIP_POSTS_BY_TRACK = gql`
+    query GetGov2FellowshipPostsByTrack($track: Int!, $limit: Int! = 10) {
+        posts(limit: $limit, where: {onchain_link: {onchain_fellowship_referendum_id: {_is_null: false}, track: {_eq: $track}}}, order_by: {id: desc}) {
+            id
+            title
+            author {
+                ...authorFields
+            }
+            created_at
+            updated_at
+            comments_aggregate {
+                aggregate {
+                    count
+                }
+            }
+            type {
+                name
+                id
+            }
+            topic {
+                id
+                name
+            }
+            onchain_link {
+                proposer_address
+                track
+                origin
+                onchain_fellowship_referendum {
+                    deciding
+                    decisionDeposit
+                    enactmentAfter
+                    enactmentAt
+                    id
+                    origin
+                    preimageHash
+                    trackNumber
+                    submitted
+                    submittedAt
+                    referendumId
+                    referendumStatus(last: 1) {
+                        id
+                        status
+                    }
+                    preimage {
+                        method
+                        metaDescription
+                        section
+                    }
+                }
+                onchain_fellowship_referendum_id
+            }
+            post_reactions {
+                reaction
+            }
+        }
+    }
+    ${authorFields}
+`;
+
 export const FELLOWSHIP_REFERENDUM_POST_AND_COMMENTS = gql`
     query FellowshipReferendumPostAndComments ($id:Int!) {
         posts(where: {onchain_link: {onchain_fellowship_referendum_id: {_eq: $id}}}) {

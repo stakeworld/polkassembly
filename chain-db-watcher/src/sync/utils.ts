@@ -255,7 +255,7 @@ export const getMaps = (syncData: SyncData): SyncMap => {
 			}
 		}, {});
 
-	const onchainFellowshipReferendumMap = syncData?.onchain.referendumV2?.reduce(
+	const onchainFellowshipReferendumMap = syncData?.onchain.fellowshipReferendum?.reduce(
 		(prev, curr) => {
 			if ((curr?.referendumId || curr?.referendumId === 0) && (curr?.id || curr?.id === 0)) {
 				let author = null;
