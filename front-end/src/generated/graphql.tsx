@@ -32004,8 +32004,53 @@ export type GetGov2FellowshipPostsByTrackAndStatusQueryVariables = Exact<{
   limit?: Scalars['Int'];
 }>;
 
+export type GetGov2FellowshipPostsByTrackQueryVariables = Exact<{
+  track: Scalars['Int'];
+  limit?: Scalars['Int'];
+}>;
 
 export type GetGov2FellowshipPostsByTrackAndStatusQuery = (
+  { __typename?: 'query_root' }
+  & { posts: Array<(
+    { __typename?: 'posts' }
+    & Pick<Posts, 'id' | 'title' | 'created_at' | 'updated_at'>
+    & { author?: Maybe<(
+      { __typename?: 'User' }
+      & AuthorFieldsFragment
+    )>, comments_aggregate: (
+      { __typename?: 'comments_aggregate' }
+      & { aggregate?: Maybe<(
+        { __typename?: 'comments_aggregate_fields' }
+        & Pick<Comments_Aggregate_Fields, 'count'>
+      )> }
+    ), type: (
+      { __typename?: 'post_types' }
+      & Pick<Post_Types, 'name' | 'id'>
+    ), topic: (
+      { __typename?: 'post_topics' }
+      & Pick<Post_Topics, 'id' | 'name'>
+    ), onchain_link?: Maybe<(
+      { __typename?: 'onchain_links' }
+      & Pick<Onchain_Links, 'proposer_address' | 'track' | 'origin' | 'onchain_fellowship_referendum_id'>
+      & { onchain_fellowship_referendum: Array<Maybe<(
+        { __typename?: 'FellowshipReferendum' }
+        & Pick<FellowshipReferendum, 'deciding' | 'decisionDeposit' | 'enactmentAfter' | 'enactmentAt' | 'id' | 'origin' | 'preimageHash' | 'trackNumber' | 'submitted' | 'submittedAt' | 'referendumId'>
+        & { referendumStatus?: Maybe<Array<(
+          { __typename?: 'FellowshipReferendumStatus' }
+          & Pick<FellowshipReferendumStatus, 'id' | 'status'>
+        )>>, preimage?: Maybe<(
+          { __typename?: 'PreimageV2' }
+          & Pick<PreimageV2, 'method' | 'metaDescription' | 'section'>
+        )> }
+      )>> }
+    )>, post_reactions: Array<(
+      { __typename?: 'post_reactions' }
+      & Pick<Post_Reactions, 'reaction'>
+    )> }
+  )> }
+);
+
+export type GetGov2FellowshipPostsByTrackQuery = (
   { __typename?: 'query_root' }
   & { posts: Array<(
     { __typename?: 'posts' }
@@ -38139,6 +38184,93 @@ export function useFellowshipReferendumPostAndCommentsLazyQuery(baseOptions?: Ap
 export type FellowshipReferendumPostAndCommentsQueryHookResult = ReturnType<typeof useFellowshipReferendumPostAndCommentsQuery>;
 export type FellowshipReferendumPostAndCommentsLazyQueryHookResult = ReturnType<typeof useFellowshipReferendumPostAndCommentsLazyQuery>;
 export type FellowshipReferendumPostAndCommentsQueryResult = ApolloReactCommon.QueryResult<FellowshipReferendumPostAndCommentsQuery, FellowshipReferendumPostAndCommentsQueryVariables>;
+export const GetGov2FellowshipPostsByTrackDocument = gql`
+    query GetGov2FellowshipPostsByTrack($track: Int!, $limit: Int! = 10) {
+  posts(
+    limit: $limit
+    where: {onchain_link: {onchain_fellowship_referendum_id: {_is_null: false}, track: {_eq: $track}}}
+    order_by: {id: desc}
+  ) {
+    id
+    title
+    author {
+      ...authorFields
+    }
+    created_at
+    updated_at
+    comments_aggregate {
+      aggregate {
+        count
+      }
+    }
+    type {
+      name
+      id
+    }
+    topic {
+      id
+      name
+    }
+    onchain_link {
+      proposer_address
+      track
+      origin
+      onchain_fellowship_referendum {
+        deciding
+        decisionDeposit
+        enactmentAfter
+        enactmentAt
+        id
+        origin
+        preimageHash
+        trackNumber
+        submitted
+        submittedAt
+        referendumId
+        referendumStatus(last: 1) {
+          id
+          status
+        }
+        preimage {
+          method
+          metaDescription
+          section
+        }
+      }
+      onchain_fellowship_referendum_id
+    }
+    post_reactions {
+      reaction
+    }
+  }
+}
+    ${AuthorFieldsFragmentDoc}`;
+/**
+ * __useGetGov2FellowshipPostsByTrackQuery__
+ *
+ * To run a query within a React component, call `useGetGov2FellowshipPostsByTrackQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGov2FellowshipPostsByTrackAndQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGov2FellowshipPostsByTrackQuery({
+ *   variables: {
+ *      track: // value for 'track'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useGetGov2FellowshipPostsByTrackQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetGov2FellowshipPostsByTrackQuery, GetGov2FellowshipPostsByTrackQueryVariables>) {
+  return ApolloReactHooks.useQuery<GetGov2FellowshipPostsByTrackQuery, GetGov2FellowshipPostsByTrackQueryVariables>(GetGov2FellowshipPostsByTrackDocument, baseOptions);
+}
+export function useGetGov2FellowshipPostsByTrackLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetGov2FellowshipPostsByTrackQuery, GetGov2FellowshipPostsByTrackQueryVariables>) {
+    return ApolloReactHooks.useLazyQuery<GetGov2FellowshipPostsByTrackQuery, GetGov2FellowshipPostsByTrackQueryVariables>(GetGov2FellowshipPostsByTrackDocument, baseOptions);
+  }
+export type GetGov2FellowshipPostsByTrackQueryHookResult = ReturnType<typeof useGetGov2FellowshipPostsByTrackQuery>;
+export type GetGov2FellowshipPostsByTrackLazyQueryHookResult = ReturnType<typeof useGetGov2FellowshipPostsByTrackLazyQuery>;
+export type GetGov2FellowshipPostsByTrackQueryResult = ApolloReactCommon.QueryResult<GetGov2FellowshipPostsByTrackQuery, GetGov2FellowshipPostsByTrackQueryVariables>;
 export const LatestDiscussionPostsDocument = gql`
     query LatestDiscussionPosts($limit: Int! = 20, $offset: Int! = 0) {
   posts(
