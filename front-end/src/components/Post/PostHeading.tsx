@@ -7,6 +7,7 @@ import { noTitle } from 'src/global/noTitle';
 import CreationLabel from 'src/ui-components/CreationLabel';
 import StatusTag from 'src/ui-components/StatusTag';
 import UpdateLabel from 'src/ui-components/UpdateLabel';
+import formatBnBalance from 'src/util/formatBnBalance';
 import getDefaultAddressField from 'src/util/getDefaultAddressField';
 
 import { DiscussionPostFragment, MotionPostFragment,ProposalPostFragment, ReferendumPostFragment, TreasuryProposalPostFragment } from '../../generated/graphql';
@@ -17,8 +18,9 @@ interface Props {
 	onchainId?: string | number | null
 	post: DiscussionPostFragment | ProposalPostFragment | ReferendumPostFragment| TreasuryProposalPostFragment| MotionPostFragment
 	postStatus?: string
+	spendAmount?: string
 }
-const PostHeading = ({ className, isTipProposal, onchainId, post, postStatus }:Props) => {
+const PostHeading = ({ className, isTipProposal, onchainId, post, postStatus, spendAmount }:Props) => {
 	const { author, created_at, content, title, updated_at } = post;
 
 	if (!author || !author.username || !content) return <div>Post not available</div>;
@@ -28,7 +30,10 @@ const PostHeading = ({ className, isTipProposal, onchainId, post, postStatus }:P
 
 	return (
 		<div className={className}>
-			{postStatus && <StatusTag className='mb-3' status={postStatus}/>}
+			<div className="flex justify-between items-center">
+				{postStatus && <StatusTag className='mb-3' status={postStatus}/>}
+				{ spendAmount && <h5 className='text-md text-sidebarBlue font-medium'>Requested: {formatBnBalance(spendAmount, { numberAfterComma: 2, withUnit: true })}</h5>}
+			</div>
 			<h2 className='text-lg font-medium mb-1'>{(onchainId || onchainId === 0) && !isTipProposal && `#${onchainId}`} {title || noTitle}</h2>
 			<div className='mb-8'>
 				<>

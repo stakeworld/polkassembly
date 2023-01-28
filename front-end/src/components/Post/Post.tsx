@@ -126,6 +126,7 @@ const Post = ({
 	let definedOnchainLink: OnchainLinkReferendumV2Fragment | OnchainLinkTechCommitteeProposalFragment | OnchainLinkBountyFragment | OnchainLinkChildBountyFragment | OnchainLinkMotionFragment | OnchainLinkReferendumFragment | OnchainLinkProposalFragment | OnchainLinkTipFragment | OnchainLinkTreasuryProposalFragment | undefined;
 	let postStatus: string | undefined;
 	let redirection: Redirection = {};
+	let spendAmt: string | undefined;
 
 	if (post && isTechCommitteeProposal) {
 		techCommitteeProposalPost = post as TechCommitteeProposalPostFragment;
@@ -159,6 +160,8 @@ const Post = ({
 		referendumV2Post = post as ReferendumV2PostFragment;
 		definedOnchainLink = referendumV2Post.onchain_link as OnchainLinkReferendumV2Fragment;
 		onchainId = definedOnchainLink.onchain_referendumv2[0]?.referendumId;
+		spendAmt = definedOnchainLink?.onchain_referendumv2?.[0]?.preimage?.preimageArguments?.[0].name == 'amount' ?
+			definedOnchainLink?.onchain_referendumv2?.[0]?.preimage?.preimageArguments?.[0].value : undefined;
 		postStatus = referendumV2Post?.onchain_link?.onchain_referendumv2?.[0]?.referendumStatus?.[0].status;
 	}
 
@@ -191,6 +194,7 @@ const Post = ({
 	if (post && isTreasuryProposal) {
 		treasuryPost = post as TreasuryProposalPostFragment;
 		definedOnchainLink = treasuryPost.onchain_link as OnchainLinkTreasuryProposalFragment;
+		spendAmt = definedOnchainLink.onchain_treasury_spend_proposal?.[0]?.value;
 		onchainId = definedOnchainLink.onchain_treasury_proposal_id;
 		postStatus = treasuryPost?.onchain_link?.onchain_treasury_spend_proposal?.[0]?.treasuryStatus?.[0].status;
 		if (definedOnchainLink.onchain_motion_id || definedOnchainLink.onchain_motion_id === 0){
@@ -451,7 +455,14 @@ const Post = ({
 						/>}
 
 						{!isEditing && <>
-							<PostHeading className='mb-8' isTipProposal={isTipProposal} onchainId={onchainId} post={post as any} postStatus={postStatus} />
+							<PostHeading
+								className='mb-8'
+								isTipProposal={isTipProposal}
+								onchainId={onchainId}
+								post={post as any}
+								postStatus={postStatus}
+								spendAmount={spendAmt}
+							/>
 
 							<Tabs
 								type="card"
