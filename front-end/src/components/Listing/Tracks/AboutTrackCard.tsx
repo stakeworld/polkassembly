@@ -20,11 +20,12 @@ import DelegateModal from './DelegateModal';
 interface Props {
 	className?: string;
 	trackName: string;
+	isMemberReferenda?: boolean
 }
 
 const currentNetwork = getNetwork();
 
-const AboutTrackCard = ({ className, trackName } : Props) => {
+const AboutTrackCard = ({ className, trackName, isMemberReferenda } : Props) => {
 	const trackMetaData = trackInfo[trackName];
 
 	const { blocktime } = useBlockTime();
@@ -34,7 +35,7 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 	const [getData, { called, data, error, loading, refetch }] = useGetTrackInfoLazyQuery({ variables: {
 		track: trackMetaData.trackId
 	} });
-
+	console.log('track info', data);
 	useEffect(() => {
 		if (called) {
 			refetch();
@@ -63,7 +64,6 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 
 		return `${blockSeconds/divisor} ${text}`;
 	};
-
 	return (
 		<div className={`${className} bg-white drop-shadow-md rounded-md p-4 md:p-8 text-sidebarBlue`}>
 			<div className="flex justify-between capitalize font-medium">
@@ -71,10 +71,10 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 						About {trackName.split(/(?=[A-Z])/).join(' ')}
 				</h2>
 
-				<h2 className="text-sm text-pink_primary">{trackMetaData.group}</h2>
+				<h2 className="text-sm text-pink_primary">{ isMemberReferenda? 'Member Referenda' : trackMetaData.group }</h2>
 			</div>
 
-			<p className="mt-5 text-sm font-normal">{trackMetaData.description}</p>
+			<p className="mt-5 text-sm font-normal">{isMemberReferenda? 'Aggregation of data across all membership referenda' :  trackMetaData.description}</p>
 
 			{error && <ErrorAlert className="mt-8" errorMsg={error.message} />}
 
@@ -90,9 +90,11 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 							</Row>
 							}
 
-							{data?.track_info[0].decision_deposit && <Row className='mt-3'>
-								<Col span={15} className='font-bold'>Decision Deposit:</Col>
-								<Col span={9}>{data?.track_info[0].decision_deposit && formatBnBalance(data?.track_info[0].decision_deposit, { numberAfterComma: 2, withUnit: false })}({chainProperties[currentNetwork].tokenSymbol})</Col>
+							{data?.track_info[0].decision_period && <Row className='mt-3'>
+								<Col span={15} className='font-bold'>Decision Period:</Col>
+								<Col span={9}>
+									{secondsToRelevantTime(data?.track_info[0].decision_period)}
+								</Col>
 							</Row>
 							}
 						</Col>
@@ -109,17 +111,19 @@ const AboutTrackCard = ({ className, trackName } : Props) => {
 							</Row>}
 						</Col>
 
-						<Col xs={24} sm={24} md={12} lg={12} xl={8}>
+						{!isMemberReferenda && <Col xs={24} sm={24} md={12} lg={12} xl={8}>
 							{data?.track_info[0].min_enactment_period &&<Row>
 								<Col xs={15} xl={19} className='font-bold'>Min Enactment Period:</Col>
 								<Col xs={9} xl={5} className='whitespace-pre'>{secondsToRelevantTime(data?.track_info[0].min_enactment_period)}</Col>
 							</Row>}
 
-							{data?.track_info[0].decision_period && <Row className='mt-3'>
-								<Col xs={15} xl={19} className='font-bold'>Decision Period:</Col>
-								<Col xs={9} xl={5} className='whitespace-pre'>{secondsToRelevantTime(data?.track_info[0].decision_period)}</Col>
+							{data?.track_info[0].decision_deposit && <Row className='mt-3'>
+								<Col xs={15} xl={19} className='font-bold'>Decision Deopsit:</Col>
+								<Col xs={9} xl={5} className='whitespace-pre'>
+									{data?.track_info[0].decision_deposit && formatBnBalance(data?.track_info[0].decision_deposit, { numberAfterComma: 2, withUnit: false })}({chainProperties[currentNetwork].tokenSymbol})
+								</Col>
 							</Row>}
-						</Col>
+						</Col>}
 
 						{/* <Col xs={24} sm={24} md={12} lg={12} xl={6}>
 							<Row>

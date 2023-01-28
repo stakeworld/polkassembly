@@ -32,6 +32,8 @@ import NotificationSettings from 'src/screens/NotificationSettings';
 import BountyPost from 'src/screens/Posts/BountyPost';
 import ChildBountyPost from 'src/screens/Posts/ChildBountyPost';
 import DiscussionPost from 'src/screens/Posts/DiscussionPost';
+import MemberReferendumPost from 'src/screens/Posts/MemberReferenumPost';
+// import MemberReferendumPost from 'src/screens/Posts/MemberReferenumPost';
 import MotionPost from 'src/screens/Posts/MotionPost';
 import ProposalPost from 'src/screens/Posts/ProposalPost';
 import ReferendumPost from 'src/screens/Posts/ReferendumPost';
@@ -163,6 +165,10 @@ const SwitchRoutes = () => {
 			<Route path="/fellowship" element={<FellowshipMembers />} />
 			<Route path="/whitelisted-caller" element={<TrackListing trackName={PostOrigin.WHITELISTED_CALLER} />} />
 			<Route path="/fellowship-admin" element={<TrackListing trackName={PostOrigin.FELLOWSHIP_ADMIN} />} />
+			<Route path="/member-referenda">
+				<Route index element={<TrackListing trackName={PostOrigin.MEMBER_REFERENDA} isMemberReferenda = {true} />} />
+				<Route path=':id' element={<MemberReferendumPost/> } />
+			</Route>
 
 			<Route path='/referenda/:id' element={<ReferendumV2Post />} />
 

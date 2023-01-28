@@ -15,6 +15,7 @@ interface DiscussionProps {
 	isProposal?: boolean
 	isReferendum?: boolean
 	isReferendumV2?: boolean
+	isFellowshipReferendum?: boolean
 	isTreasuryProposal?: boolean
 	isTechCommitteeProposal?: boolean
 	isTipProposal?: boolean
@@ -27,6 +28,7 @@ const TrackerButton = function ({
 	isProposal,
 	isReferendum,
 	isReferendumV2,
+	isFellowshipReferendum,
 	isTreasuryProposal,
 	isTechCommitteeProposal,
 	isTipProposal
@@ -47,6 +49,9 @@ const TrackerButton = function ({
 	}
 	if (isReferendumV2) {
 		postType = 'referendumV2';
+	}
+	if (isFellowshipReferendum) {
+		postType = 'fellowshipReferendum';
 	}
 	if (isTreasuryProposal) {
 		postType = 'treasuryProposal';

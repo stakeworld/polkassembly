@@ -15,6 +15,7 @@ interface IPostTimelineProps {
 	isProposal?: boolean;
 	isReferendum?: boolean;
 	isReferendumV2?: boolean;
+	isFellowshipReferendum?: boolean;
 	isTreasuryProposal?: boolean;
 	isTechCommitteeProposal?: boolean;
 	isTipProposal?: boolean;
@@ -38,6 +39,7 @@ const PostTimeline: FC<IPostTimelineProps> = (props) => {
 		isProposal,
 		isReferendum,
 		isReferendumV2,
+		isFellowshipReferendum,
 		isTreasuryProposal,
 		isTechCommitteeProposal,
 		isTipProposal,
@@ -144,6 +146,15 @@ const PostTimeline: FC<IPostTimelineProps> = (props) => {
 					</>
 			}
 			{ isReferendumV2 &&
+					<TimelineContainer
+						statuses={referendumV2Post?.onchain_link?.onchain_referendumv2?.[0]?.referendumStatus?.map(s => ({
+							blockNumber: s.blockNumber?.number || 0,
+							status: s.status || ''
+						})) || []}
+						title='Referendum'
+					/>
+			}
+			{ isFellowshipReferendum &&
 					<TimelineContainer
 						statuses={referendumV2Post?.onchain_link?.onchain_referendumv2?.[0]?.referendumStatus?.map(s => ({
 							blockNumber: s.blockNumber?.number || 0,

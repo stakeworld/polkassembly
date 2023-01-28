@@ -181,6 +181,9 @@ const gov2TrackItems: {[x:string]: ItemType[]} = {
 	treasuryItems: [],
 	fellowshipItems: [
 		getSiderMenuItem('Members', '/fellowship')
+	],
+	memberItems : [
+		getSiderMenuItem('Member Referenda', '/member-referenda')
 	]
 };
 

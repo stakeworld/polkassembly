@@ -76,5 +76,10 @@ export const trackInfo: TrackInfoType = {
 		description: 'Origin able to spend up to 5,000 KSM from the treasury at once.',
 		group: 'Treasury',
 		trackId: 34
+	},
+	[PostOrigin.MEMBER_REFERENDA] : {
+		description: 'Origin for spending (any amount of) funds.',
+		group: 'Fellowship',
+		trackId: 3
 	}
 };

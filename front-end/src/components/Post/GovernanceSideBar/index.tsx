@@ -12,7 +12,7 @@ import { ApiContext } from 'src/context/ApiContext';
 import { OnchainLinkBountyFragment, OnchainLinkChildBountyFragment, OnchainLinkMotionFragment, OnchainLinkProposalFragment, OnchainLinkReferendumFragment, OnchainLinkTechCommitteeProposalFragment, OnchainLinkTipFragment, OnchainLinkTreasuryProposalFragment } from 'src/generated/graphql';
 import { APPNAME } from 'src/global/appName';
 import { gov2ReferendumStatus, motionStatus, proposalStatus, referendumStatus, tipStatus } from 'src/global/statuses';
-import { OnchainLinkReferendumV2Fragment, Wallet } from 'src/types';
+import { OnchainLinkFellowshipReferendumFragment, OnchainLinkReferendumV2Fragment, Wallet } from 'src/types';
 import GovSidebarCard from 'src/ui-components/GovSidebarCard';
 import getEncodedAddress from 'src/util/getEncodedAddress';
 import styled from 'styled-components';
@@ -39,11 +39,12 @@ interface Props {
 	isProposal?: boolean
 	isReferendum?: boolean
 	isReferendumV2?: boolean
+	isFellowshipReferendum?: boolean
 	isTreasuryProposal?: boolean
 	isTipProposal?: boolean
 	isTechCommitteeProposal?: boolean
 	onchainId?: string | number | null
-	onchainLink?: OnchainLinkReferendumV2Fragment | OnchainLinkTechCommitteeProposalFragment | OnchainLinkBountyFragment | OnchainLinkChildBountyFragment | OnchainLinkMotionFragment | OnchainLinkProposalFragment | OnchainLinkReferendumFragment | OnchainLinkTreasuryProposalFragment | OnchainLinkTipFragment
+	onchainLink?: OnchainLinkReferendumV2Fragment | OnchainLinkTechCommitteeProposalFragment | OnchainLinkBountyFragment | OnchainLinkChildBountyFragment | OnchainLinkMotionFragment | OnchainLinkProposalFragment | OnchainLinkReferendumFragment | OnchainLinkTreasuryProposalFragment | OnchainLinkTipFragment | OnchainLinkFellowshipReferendumFragment
 	status?: string
 	startTime: string
 	tally?: any
