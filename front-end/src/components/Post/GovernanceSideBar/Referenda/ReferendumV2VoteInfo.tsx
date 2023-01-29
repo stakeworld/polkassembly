@@ -27,10 +27,10 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 	const fetchVotesData = useCallback(() => {
 		setLoading(true);
 		// TODO: Change to v2
-		fetch('https://squid.subsquid.io/harvester/v/1/graphql',
+		fetch('https://squid.subsquid.io/harvester/v/v3/graphql',
 			{ body: JSON.stringify({
 				query: `query MyQuery {
-				votes(where: {type_eq: ReferendumV2, proposal: {index_eq: ${referendumId}}}, limit: ${10}, offset: ${offset}, orderBy: id_DESC) {
+				convictionVotes(where: {type_eq: ReferendumV2, removedAtBlock_isNull: true proposal: {index_eq: ${referendumId}}}, limit: ${10}, offset: ${offset}, orderBy: id_DESC) {
 						type
 						balance {
 							... on SplitVoteBalance {
@@ -41,12 +41,12 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 								value
 							}
 						}
-						blockNumber
+						createdAtBlock
 						decision
 						id
 						lockPeriod
 						proposalId
-						timestamp
+						createdAt
 						voter
 						proposal {
 							index
@@ -59,8 +59,8 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 			})
 			.then(async (res) => {
 				const response = await res.json();
-				if(response && response.data && response.data.votes) {
-					const votesData = response.data.votes;
+				if(response && response.data && response.data.convictionVotes) {
+					const votesData = response.data.convictionVotes;
 					setVotesList(votesData);
 				}
 			}).catch((err) => {

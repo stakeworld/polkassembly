@@ -17,7 +17,7 @@ for (const trackName of Object.keys(trackInfo)) {
 	initResponse[trackName] = '';
 	// TODO: Change to v2
 	countFetches.push(
-		fetch('https://squid.subsquid.io/harvester/v/1/graphql',
+		fetch('https://squid.subsquid.io/harvester/v/v3/graphql',
 			{ body: JSON.stringify({
 				query: `query MyQuery {
 					proposalsConnection(
