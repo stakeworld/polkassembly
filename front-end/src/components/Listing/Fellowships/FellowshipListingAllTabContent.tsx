@@ -11,7 +11,7 @@ import { LoadingState, PostEmptyState } from 'src/ui-components/UIStates';
 
 interface Props {
 	className?: string;
-	trackName: string;
+	trackName?: string;
 }
 
 const FellowshipListingAllTabContent = ({ className } : Props) => {
@@ -34,7 +34,6 @@ const FellowshipListingAllTabContent = ({ className } : Props) => {
 	if(error) return <div className={className}><ErrorAlert errorMsg={error.message} /></div>;
 
 	if(!data || loading) return <div className={className}><LoadingState /></div>;
-	console.log('All data',data);
 	const noPost = !data.posts || !data.posts.length;
 	const atLeastOneCurrentReferendum = data.posts.some((post) => {
 		if(post.onchain_link?.onchain_fellowship_referendum.length){
@@ -46,7 +45,6 @@ const FellowshipListingAllTabContent = ({ className } : Props) => {
 	});
 
 	if (noPost || !atLeastOneCurrentReferendum) return <div className={className}><PostEmptyState /></div>;
-	console.log('new-data1',data);
 	return (
 		<div className={`${className} proposals__list`}>
 			{data.posts.map(

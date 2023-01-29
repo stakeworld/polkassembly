@@ -29,14 +29,13 @@ const MemberReferendumPost = ({ councilBoardSidebar=false, postID }: Props) => {
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [called]);
-	console.log('memRef',data);
 	if (error?.message) return <ErrorState errorMessage={error.message} />;
 
 	if (data) {
 		const trackName = data?.posts[0]?.onchain_link?.origin || '';
 
 		return (<div>
-			{trackName && !councilBoardSidebar && <BackToListingView trackName={trackName} />}
+			{trackName && !councilBoardSidebar && <BackToListingView trackName='member-referenda' />}
 
 			<div className='mt-6'>
 				<Post data={data} trackName={trackName} isFellowshipReferendum refetch={refetch} />

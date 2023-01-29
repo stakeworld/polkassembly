@@ -83,7 +83,6 @@ const Post = ({
 	const { setMetaContextState } = useContext(MetaContext);
 	const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 	const [proposerAddress, setProposerAddress] = useState<string>('');
-	console.log('post data', data);
 	useEffect(() => {
 		refetch();
 	}, [refetch]);

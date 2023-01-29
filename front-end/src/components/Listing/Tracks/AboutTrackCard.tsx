@@ -35,7 +35,6 @@ const AboutTrackCard = ({ className, trackName, isMemberReferenda } : Props) => 
 	const [getData, { called, data, error, loading, refetch }] = useGetTrackInfoLazyQuery({ variables: {
 		track: trackMetaData.trackId
 	} });
-	console.log('track info', data);
 	useEffect(() => {
 		if (called) {
 			refetch();
@@ -44,7 +43,6 @@ const AboutTrackCard = ({ className, trackName, isMemberReferenda } : Props) => 
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [called]);
-
 	const secondsToRelevantTime = (seconds:number): string => {
 		let divisor:number = 1;
 		let text:string = 'sec';
@@ -67,9 +65,13 @@ const AboutTrackCard = ({ className, trackName, isMemberReferenda } : Props) => 
 	return (
 		<div className={`${className} bg-white drop-shadow-md rounded-md p-4 md:p-8 text-sidebarBlue`}>
 			<div className="flex justify-between capitalize font-medium">
-				<h2 className="text-lg capitalize">
+				{isMemberReferenda?
+					<h2 className="text-lg capitalize">
 						About {trackName.split(/(?=[A-Z])/).join(' ')}
-				</h2>
+					</h2>:
+					<h2 className="text-lg capitalize">
+				Fellowship Initiates ( {trackName.split(/(?=[A-Z])/).join(' ')} )
+					</h2>}
 
 				<h2 className="text-sm text-pink_primary">{ isMemberReferenda? 'Member Referenda' : trackMetaData.group }</h2>
 			</div>

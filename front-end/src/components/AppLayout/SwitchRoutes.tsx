@@ -33,7 +33,6 @@ import BountyPost from 'src/screens/Posts/BountyPost';
 import ChildBountyPost from 'src/screens/Posts/ChildBountyPost';
 import DiscussionPost from 'src/screens/Posts/DiscussionPost';
 import MemberReferendumPost from 'src/screens/Posts/MemberReferenumPost';
-// import MemberReferendumPost from 'src/screens/Posts/MemberReferenumPost';
 import MotionPost from 'src/screens/Posts/MotionPost';
 import ProposalPost from 'src/screens/Posts/ProposalPost';
 import ReferendumPost from 'src/screens/Posts/ReferendumPost';
