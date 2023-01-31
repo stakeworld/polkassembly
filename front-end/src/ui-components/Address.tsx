@@ -104,7 +104,7 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 					// When inline disregard the extension name.
 					? popupContent
 						? <Space>
-							{identity && mainDisplay && <IdentityBadge identity={identity} flags={flags} />}
+							{identity && mainDisplay && <IdentityBadge address={address} identity={identity} flags={flags} />}
 							<Tooltip color='#E5007A' title={popupContent}>
 								<div className={`header display_inline identityName ${!inCouncilMember && 'max-w-[85px]'} flex flex-col gap-y-1`}>
 									{ t1 && <span className={`${!inCouncilMember && 'truncate'} text-navBlue`}>{t1}</span> }
@@ -114,7 +114,7 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 						</Space>
 						: <>
 							<div className={'description display_inline flex items-center'}>
-								{identity && mainDisplay && <IdentityBadge identity={identity} flags={flags} />}
+								{identity && mainDisplay && <IdentityBadge address={address} identity={identity} flags={flags} />}
 								<span title={mainDisplay || address} className={`${textClassName} identityName ${!inCouncilMember && 'max-w-[85px]'} flex gap-x-1 ml-0.5 pl-1.5`}>
 									{ t1 && <span className={`${!inCouncilMember && 'truncate'} text-navBlue ${identity && mainDisplay && '-ml-1.5'}`}>{ t1 }</span> }
 									{sub && <span className={`sub ${!inCouncilMember && 'truncate'} text-navBlue`}>{sub}</span>}
@@ -127,7 +127,7 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 							<Tooltip title={popupContent}>
 								<Space>
 									<Space className={'header'}>
-										{identity && mainDisplay && !extensionName && <IdentityBadge identity={identity} flags={flags} />}
+										{identity && mainDisplay && !extensionName && <IdentityBadge address={address} identity={identity} flags={flags} />}
 										<span className={`identityName ${!inCouncilMember && 'max-w-[85px]'} flex flex-col gap-y-1`}>
 											{ t2 && <span className={`${textClassName} ${!inCouncilMember && 'truncate'} text-navBlue`}>{ t2 }</span> }
 											{!extensionName && sub && <span className={`${textClassName} sub ${inCouncilMember && 'truncate'} text-navBlue`}>{sub}</span>}
@@ -138,7 +138,7 @@ const Address = ({ address, className, displayInline, disableIdenticon, extensio
 							</Tooltip>
 							: <div>
 								<Space className={'header'}>
-									{identity && mainDisplay && !extensionName && <IdentityBadge identity={identity} flags={flags} />}
+									{identity && mainDisplay && !extensionName && <IdentityBadge address={address} identity={identity} flags={flags} />}
 									<span className={`identityName ${!inCouncilMember && 'max-w-[85px]'} flex flex-col gap-y-1`}>
 										{ t2 && <span className={`${textClassName} ${!inCouncilMember && 'truncate'} text-navBlue`}>{ t2 }</span> }
 										{!extensionName && sub && <span className={`${textClassName} sub ${!inCouncilMember && 'truncate'} text-navBlue`}>{sub}</span>}
@@ -157,7 +157,7 @@ export default styled(Address)`
 	position: relative;
 	display: flex;
 	align-items: center;
-	
+
 	.content {
 		display: inline-block;
 		color: nav_blue !important;
