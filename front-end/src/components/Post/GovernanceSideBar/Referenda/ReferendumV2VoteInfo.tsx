@@ -27,7 +27,7 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 	const fetchVotesData = useCallback(() => {
 		setLoading(true);
 		// TODO: Change to v2
-		fetch('https://squid.subsquid.io/harvester/v/v3/graphql',
+		fetch('https://squid.subsquid.io/kusama-polkassembly/v/v1/graphql',
 			{ body: JSON.stringify({
 				query: `query MyQuery {
 				convictionVotes(where: {type_eq: ReferendumV2, removedAtBlock_isNull: true proposal: {index_eq: ${referendumId}}}, limit: ${10}, offset: ${offset}, orderBy: id_DESC) {
