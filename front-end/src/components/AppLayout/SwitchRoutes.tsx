@@ -5,7 +5,9 @@
 import React from 'react';
 import { Navigate, Route, Routes, useParams } from 'react-router-dom';
 import { trackInfo } from 'src/global/post_trackInfo';
+import AllianceAnnouncements from 'src/screens/Alliance/Announcement';
 import AllianceMembers from 'src/screens/Alliance/Members';
+import AllianceUnscrupulous from 'src/screens/Alliance/Unscrupulous';
 import CalendarView from 'src/screens/CalendarView';
 import CouncilBoard from 'src/screens/CouncilBoard';
 import CreatePost from 'src/screens/CreatePost';
@@ -167,6 +169,8 @@ const SwitchRoutes = () => {
 			<Route path='/referenda/:id' element={<ReferendumV2Post />} />
 
 			<Route path='/alliance-members' element={<AllianceMembers />} />
+			<Route path='/alliance-announcements' element={<AllianceAnnouncements />} />
+			<Route path='/alliance-unscrupulous' element={<AllianceUnscrupulous />} />
 
 			<Route path="*" element={<NotFound />} />
 
