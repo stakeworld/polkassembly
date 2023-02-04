@@ -39,7 +39,7 @@ const FellowshipMembersContainer = ({ className } : { className?:string }) => {
 				}
 			}
 
-			members = _.orderBy(members, ['rank'], ['asc']);
+			members = _.orderBy(members, ['rank'], ['desc']);
 
 			setMembers(members);
 		}).catch(err => {
@@ -70,7 +70,6 @@ const FellowshipMembersContainer = ({ className } : { className?:string }) => {
 	}
 
 	if(members.length){
-
 		return (
 			<>
 				<div className={`${className} shadow-md bg-white p-3 md:p-8 rounded-md`}>

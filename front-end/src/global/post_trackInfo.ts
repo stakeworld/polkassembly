@@ -76,5 +76,49 @@ export const trackInfo: TrackInfoType = {
 		description: 'Origin able to spend up to 5,000 KSM from the treasury at once.',
 		group: 'Treasury',
 		trackId: 34
+	},
+	[PostOrigin.MEMBER_REFERENDA] : {
+		description: 'Origin for spending (any amount of) funds.',
+		trackId: 3
+	},
+	[PostOrigin.CANDIDATES] : {
+		description: 'Origin commanded by any members of the Polkadot Fellowship (no Dan grade needed)',
+		trackId: 0
+	},
+	[PostOrigin.MEMBERS] : {
+		description: 'Origin commanded by rank 1 of the Polkadot Fellowship and with a success of 1',
+		trackId: 1
+	},
+	[PostOrigin.PROFICIENTS] : {
+		description: 'Origin commanded by rank 2 of the Polkadot Fellowship and with a success of 2',
+		trackId: 2
+	},
+	[PostOrigin.FELLOWS] : {
+		description: 'Origin commanded by Polkadot Fellows (3rd Dan fellows or greater)',
+		trackId: 3
+	},
+	[PostOrigin.SENIOR_FELLOWS] : {
+		description: 'Origin commanded by rank 4 of the Polkadot Fellowship and with a success of 4',
+		trackId: 4
+	},
+	[PostOrigin.EXPERTS] : {
+		description: 'Origin commanded by Polkadot Experts (5th Dan fellows or greater)',
+		trackId: 5
+	},
+	[PostOrigin.SENIOR_EXPERTS] : {
+		description: 'Origin commanded by rank 6 of the Polkadot Fellowship and with a success of 6',
+		trackId: 6
+	},
+	[PostOrigin.MASTERS] : {
+		description: 'Origin commanded by Polkadot Masters (7th Dan fellows of greater)',
+		trackId: 7
+	},
+	[PostOrigin.SENIOR_MASTERS] : {
+		description: 'Origin commanded by rank 8 of the Polkadot Fellowship and with a success of 8',
+		trackId: 8
+	},
+	[PostOrigin.GRAND_MASTERS] : {
+		description: 'Origin commanded by rank 9 of the Polkadot Fellowship and with a success of 9',
+		trackId: 9
 	}
 };

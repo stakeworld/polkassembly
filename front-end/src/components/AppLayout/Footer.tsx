@@ -34,7 +34,7 @@ const Footer = ({ className } : { className?:string }) => {
 						</div>
 
 						<p className="mx-auto mt-6 max-w-md text-center leading-relaxed text-sidebarBlue sm:mx-0 sm:max-w-xs sm:text-left">
-							Polkassembly is a unified platform to discuss and vote on governance proposals, motions and referandas.
+							Polkassembly is a unified platform to discuss and vote on governance proposals, motions and referendas.
 						</p>
 
 						<h2 className="mt-8 text-sidebarBlue text-sm capitalize text-center md:text-left">{network} Network Links: </h2>
