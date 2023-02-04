@@ -15,7 +15,7 @@ interface Props {
 	trackName: string;
 }
 
-const FellowshipListingStatusTabContent = ({ className, trackName } : Props) => {
+const FellowshipListingTrackTabContent = ({ className, trackName } : Props) => {
 
 	const { trackId } = trackInfo[trackName];
 
@@ -82,4 +82,4 @@ const FellowshipListingStatusTabContent = ({ className, trackName } : Props) => 
 	);
 };
 
-export default FellowshipListingStatusTabContent;
+export default FellowshipListingTrackTabContent;
