@@ -5,7 +5,7 @@
 /* eslint-disable sort-keys */
 import { LoadingOutlined } from '@ant-design/icons';
 import { Col, Divider, Row, Spin } from 'antd';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGetTrackInfoLazyQuery } from 'src/generated/graphql';
 import { chainProperties } from 'src/global/networkConstants';
 import { trackInfo } from 'src/global/post_trackInfo';
@@ -26,6 +26,8 @@ interface Props {
 const currentNetwork = getNetwork();
 
 const AboutTrackCard = ({ className, trackName, isMemberReferenda } : Props) => {
+	const [data, setData] = useState<any>(trackInfo[trackName]);
+
 	const trackMetaData = trackInfo[trackName];
 
 	const { blocktime } = useBlockTime();
@@ -36,12 +38,6 @@ const AboutTrackCard = ({ className, trackName, isMemberReferenda } : Props) => 
 		track: trackMetaData.trackId
 	} });
 
-	let data: any = queryData?.track_info?.[0];
-
-	if(trackMetaData.trackId >= 0 && trackMetaData.trackId <= 9) {
-		data = trackMetaData;
-	}
-
 	useEffect(() => {
 		if (called) {
 			refetch();
@@ -50,6 +46,12 @@ const AboutTrackCard = ({ className, trackName, isMemberReferenda } : Props) => 
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [called]);
+
+	useEffect(() => {
+		if (queryData?.track_info?.[0]) {
+			setData(queryData?.track_info?.[0]);
+		}
+	}, [queryData]);
 
 	const secondsToRelevantTime = (seconds:number): string => {
 		let divisor:number = 1;
