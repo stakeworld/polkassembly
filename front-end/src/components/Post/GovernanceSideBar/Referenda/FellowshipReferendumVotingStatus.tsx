@@ -41,7 +41,7 @@ const FellowshipReferendumVotingStatus = ({ className, referendumId }: Props) =>
 			})
 			.then(async (res) => {
 				const response = await res.json();
-				setReferendumInfo(response.data.proposals[0].tally);
+				setReferendumInfo(response?.data?.proposals?.[0]?.tally);
 			}).catch((err) => {
 				setError(err);
 				console.log('Error in fetching voters :', err);
