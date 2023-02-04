@@ -195,7 +195,6 @@ export const PostOrigin = {
 	MASTERS : 'Masters',
 	MEDIUM_SPENDER : 'MediumSpender',
 	MEMBERS : 'Members',
-	MEMBER_REFERENDA : 'MemberReferenda',
 	PROFICIENTS : 'Proficients',
 	REFERENDUM_CANCELLER : 'ReferendumCanceller',
 	REFERENDUM_KILLER : 'ReferendumKiller',
@@ -218,6 +217,7 @@ export interface TrackProps {
   'trackId': number;
   'group'?: string;
   'description': string;
+  [index: string]: any;
 }
 
 export type OnchainLinkReferendumV2Fragment = (

@@ -63,10 +63,7 @@ const BackToListingView = ({ postCategory, trackName } : Props) => {
 		<Link className='text-sidebarBlue hover:text-pink_primary' to={`/${path}`}>
 			<div className='flex items-center'>
 				<LeftOutlined className='text-xs mr-2' />
-				{trackName=='member-referenda'?
-					<span className='text-sm font-medium'>Back to <span className='capitalize'>{trackName ? 'Member Referenda' : listingPageText}</span>
-					</span>:
-					<span className='text-sm font-medium'>Back to <span className='capitalize'></span></span>}
+				<span className='text-sm font-medium'>Back to <span className='capitalize'>{listingPageText}</span></span>
 			</div>
 		</Link>
 	);

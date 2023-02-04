@@ -22,6 +22,7 @@ import BountyChildBounties from './Bounty/BountyChildBounties';
 import MotionVoteInfo from './Motions/MotionVoteInfo';
 import VoteMotion from './Motions/VoteMotion';
 import ProposalDisplay from './Proposals';
+import FellowshipReferendumVotingStatus from './Referenda/FellowshipReferendumVotingStatus';
 import ReferendumV2VoteInfo from './Referenda/ReferendumV2VoteInfo';
 import ReferendumV2VotingStatus from './Referenda/ReferendumV2VotingStatus';
 import ReferendumVoteInfo from './Referenda/ReferendumVoteInfo';
@@ -50,7 +51,7 @@ interface Props {
 	tally?: any
 }
 
-const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal, isReferendum, isReferendumV2, isTipProposal, isTreasuryProposal, onchainId, onchainLink, startTime, status, tally }: Props) => {
+const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal, isReferendum, isReferendumV2, isTipProposal, isTreasuryProposal, isFellowshipReferendum, onchainId, onchainLink, startTime, status, tally }: Props) => {
 	const [address, setAddress] = useState<string>('');
 	const [accounts, setAccounts] = useState<InjectedAccount[]>([]);
 	const [extensionNotFound, setExtensionNotFound] = useState(false);
@@ -312,7 +313,7 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 						</>
 					}
 
-					{isReferendumV2 &&
+					{(isReferendumV2 || isFellowshipReferendum) &&
 						<>
 							{canVote &&
 								<GovSidebarCard>
@@ -324,20 +325,27 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 										address={address}
 										getAccounts={getAccounts}
 										onAccountChange={onAccountChange}
-										referendumId={onchainId  as number}
-										isReferendumV2={true}
+										referendumId={onchainId as number}
+										isReferendumV2={isReferendumV2}
+										isFellowshipReferendum={isFellowshipReferendum}
 									/>
 								</GovSidebarCard>
 							}
 
-							{(onchainId || onchainId === 0) && (onchainLink as OnchainLinkReferendumV2Fragment).onchain_referendumv2 &&
+							{(onchainId || onchainId === 0) && ((onchainLink as OnchainLinkReferendumV2Fragment).onchain_referendumv2 || (onchainLink as OnchainLinkFellowshipReferendumFragment).onchain_fellowship_referendum) &&
 								<>
-									<div className={className}>
+									{isReferendumV2 && <div className={className}>
 										<ReferendumV2VotingStatus referendumId={onchainId as number} tally={tally} />
-									</div>
+									</div>}
+
+									{isFellowshipReferendum && <div className={className}>
+										<FellowshipReferendumVotingStatus referendumId={onchainId as number} />
+									</div>}
+
 									<div className={className}>
 										<ReferendumV2VoteInfo
 											referendumId={onchainId as number}
+											isFellowshipReferendum={isFellowshipReferendum}
 										/>
 									</div>
 								</>

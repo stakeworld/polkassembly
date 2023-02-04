@@ -57,7 +57,8 @@ export const gov2Routes = [
 	'track',
 	'preimages',
 	'referenda',
-	'fellowship'
+	'fellowship',
+	'member-referenda'
 ];
 
 for (const trackName of Object.keys(trackInfo)) {
@@ -165,7 +166,7 @@ const SwitchRoutes = () => {
 			<Route path="/whitelisted-caller" element={<TrackListing trackName={PostOrigin.WHITELISTED_CALLER} />} />
 			<Route path="/fellowship-admin" element={<TrackListing trackName={PostOrigin.FELLOWSHIP_ADMIN} />} />
 			<Route path="/member-referenda">
-				<Route index element={<TrackListing trackName={PostOrigin.MEMBER_REFERENDA} isMemberReferenda = {true} />} />
+				<Route index element={<TrackListing isMemberReferenda />} />
 				<Route path=':id' element={<MemberReferendumPost/> } />
 			</Route>
 

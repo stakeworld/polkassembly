@@ -9,6 +9,7 @@ import { OnchainLinkFellowshipReferendumFragment } from 'src/types';
 
 import PostBountyInfo from './PostBountyInfo';
 import PostChildBountyInfo from './PostChildBountyInfo';
+import PostFellowshipReferendumInfo from './PostFellowshipReferendumInfo';
 import PostMotionInfo from './PostMotionInfo';
 import PostProposalInfo from './PostProposalInfo';
 import PostReferendumInfo from './PostReferendumInfo';
@@ -95,8 +96,8 @@ const PostOnChainInfo = ({
 					/>
 				}
 				{ isFellowshipReferendum &&
-					<PostReferendumV2Info
-						onchainLink={definedOnchainLink as OnchainLinkReferendumV2Fragment}
+					<PostFellowshipReferendumInfo
+						onchainLink={definedOnchainLink as OnchainLinkFellowshipReferendumFragment}
 						setOtherProposalsSidebarAddr={handleOpenSidebar}
 					/>
 				}

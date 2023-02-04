@@ -5,25 +5,23 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import GovernanceCard from 'src/components/GovernanceCard';
-import { useGetGov2FellowshipPostsByTrackAndStatusLazyQuery } from 'src/generated/graphql';
+import { useGetGov2FellowshipPostsByTrackLazyQuery } from 'src/generated/graphql';
 import { trackInfo } from 'src/global/post_trackInfo';
 import ErrorAlert from 'src/ui-components/ErrorAlert';
 import { LoadingState, PostEmptyState } from 'src/ui-components/UIStates';
 
 interface Props {
 	className?: string;
-	status: string;
 	trackName: string;
 }
 
-const FellowshipListingStatusTabContent = ({ className, status, trackName } : Props) => {
+const FellowshipListingStatusTabContent = ({ className, trackName } : Props) => {
 
 	const { trackId } = trackInfo[trackName];
 
-	const [getData, { called, data, error, loading, refetch }] = useGetGov2FellowshipPostsByTrackAndStatusLazyQuery({
+	const [getData, { called, data, error, loading, refetch }] = useGetGov2FellowshipPostsByTrackLazyQuery({
 		variables : {
 			limit: 10,
-			status,
 			track: trackId
 		}
 	});

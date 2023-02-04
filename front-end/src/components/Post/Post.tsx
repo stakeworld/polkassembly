@@ -83,6 +83,7 @@ const Post = ({
 	const { setMetaContextState } = useContext(MetaContext);
 	const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 	const [proposerAddress, setProposerAddress] = useState<string>('');
+
 	useEffect(() => {
 		refetch();
 	}, [refetch]);
@@ -334,6 +335,7 @@ const Post = ({
 					isChildBounty={isChildBounty}
 					referendumPost={referendumPost}
 					referendumV2Post={referendumV2Post}
+					fellowshipReferendumPost={fellowshipReferendumPost}
 					proposalPost={proposalPost}
 					motionPost={motionPost}
 					treasuryPost={treasuryPost}
@@ -416,7 +418,7 @@ const Post = ({
 				<div className='flex-1 w-full xl:w-8/12 mx-auto xl:mr-9 mb-6 xl:mb-0'>
 
 					{
-						trackName && ( isReferendumV2 || isFellowshipReferendum)  && <AboutTrackCard trackName={trackName} className='mb-6' />
+						trackName && ( isReferendumV2 || isFellowshipReferendum)  && <AboutTrackCard trackName={trackName} isMemberReferenda={isFellowshipReferendum} className='mb-6' />
 					}
 
 					{redirection.link &&
