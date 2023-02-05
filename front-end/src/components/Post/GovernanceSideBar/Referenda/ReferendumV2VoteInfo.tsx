@@ -16,11 +16,12 @@ import formatBnBalance from 'src/util/formatBnBalance';
 interface Props {
 	className?: string
 	referendumId: number
+	isFellowshipReferendum?: boolean
 }
 
 type DecisionType = 'yes' | 'no' | 'abstain';
 
-const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
+const ReferendumV2VoteInfo = ({ className, referendumId, isFellowshipReferendum } : Props) => {
 	const [offset, setOffset] = useState<number>(0);
 	const [votesList, setVotesList] = useState<any[] | null>(null);
 	const [error, setError] = useState<any>(null);
@@ -32,7 +33,7 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 		fetch('https://squid.subsquid.io/kusama-polkassembly/v/v1/graphql',
 			{ body: JSON.stringify({
 				query: `query MyQuery {
-				convictionVotes(where: {type_eq: ReferendumV2, removedAtBlock_isNull: true proposal: {index_eq: ${referendumId}}, decision_eq: ${fetchDecision}}, limit: ${10}, offset: ${offset}, orderBy: createdAt_DESC) {
+					${isFellowshipReferendum ? 'votes' : 'convictionVotes'}(where: {type_eq: ${isFellowshipReferendum ? 'Fellowship' : 'ReferendumV2'}, ${!isFellowshipReferendum ? 'removedAtBlock_isNull: true,' : ''} proposal: {index_eq: ${referendumId}}, decision_eq: ${fetchDecision}}, limit: ${10}, offset: ${offset}, orderBy: id_DESC) {
 						type
 						balance {
 							... on SplitVoteBalance {
@@ -43,14 +44,14 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 								value
 							}
 						}
-						createdAtBlock
+						${!isFellowshipReferendum ? 'createdAtBlock' : ''}
 						decision
 						id
 						lockPeriod
 						proposalId
-						createdAt
+						${!isFellowshipReferendum ? 'createdAt' : ''}
 						voter
-						isDelegated
+						${!isFellowshipReferendum ? 'isDelegated' : ''}
 						proposal {
 							index
 						}
@@ -62,8 +63,8 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 			})
 			.then(async (res) => {
 				const response = await res.json();
-				if(response && response.data && response.data.convictionVotes) {
-					const votesData = response.data.convictionVotes;
+				if(response && response.data && (response.data.convictionVotes || response.data.votes)) {
+					const votesData = response.data.convictionVotes || response.data.votes;
 					setVotesList(votesData);
 				}
 			}).catch((err) => {
@@ -72,11 +73,29 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 			}).finally(() => {
 				setLoading(false);
 			});
-	}, [fetchDecision, offset, referendumId]);
+	}, [isFellowshipReferendum, fetchDecision, offset, referendumId]);
 
 	useEffect(() => {
 		fetchVotesData();
 	}, [fetchVotesData, offset, referendumId]);
+
+	const decisionOptions = [
+		{
+			label: <div className='flex items-center justify-center'><LikeFilled className='mr-1.5' /> <span>Ayes</span></div>,
+			value: 'yes'
+		},
+		{
+			label: <div className='flex items-center justify-center'><DislikeFilled className='mr-1.5' /> <span>Nays</span></div>,
+			value: 'no'
+		}
+	];
+
+	if(!isFellowshipReferendum) {
+		decisionOptions.push({
+			label: <div className='flex items-center justify-center'><MinusCircleFilled className='mr-1.5' /> <span>Abstain</span></div>,
+			value: 'abstain'
+		});
+	}
 
 	function handlePagination(navDirection: 'next' | 'prev'){
 		if(loading) return;
@@ -110,61 +129,48 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 						size="large"
 						defaultValue={fetchDecision}
 						onChange={(value) => {
-							setFetchDecision(String(value) as DecisionType);
 							setOffset(0);
+							setFetchDecision(String(value) as DecisionType);
 						}}
-						options={[
-							{
-								label: <div className='flex items-center justify-center'><LikeFilled className='mr-1.5' /> <span>Ayes</span></div>,
-								value: 'yes'
-							},
-							{
-								label: <div className='flex items-center justify-center'><DislikeFilled className='mr-1.5' /> <span>Nays</span></div>,
-								value: 'no'
-							},
-							{
-								label: <div className='flex items-center justify-center'><MinusCircleFilled className='mr-1.5' /> <span>Abstain</span></div>,
-								value: 'abstain'
-							}
-						]}
+						options={decisionOptions}
 					/>
 				</div>
 
 				{loading ? <LoadingState />
 					: votesList.length > 0 ?
-						<div className='flex flex-col text-xs xl:text-sm xl:max-h-screen gap-y-1 overflow-y-auto px-0 text-sidebarBlue'>
+						<div className={`flex flex-col text-xs xl:text-sm xl:max-h-screen gap-y-1 overflow-y-auto px-${isFellowshipReferendum ? '8' : '0'} text-sidebarBlue`}>
 							<div className='flex text-xs items-center justify-between mb-9 font-semibold'>
 								<div className='w-[110px]'>Voter</div>
-								<div className='w-[60px]'><span className='hidden md:inline-block'>Amount</span><span className='inline-block md:hidden'>Amt.</span></div>
-								<div className='w-[70px]'>Conviction</div>
+								{!isFellowshipReferendum && <div className='w-[60px]'><span className='hidden md:inline-block'>Amount</span><span className='inline-block md:hidden'>Amt.</span></div>}
+								{!isFellowshipReferendum && <div className='w-[70px]'>Conviction</div>}
 								<div className='w-[30px]'>Vote</div>
 							</div>
 
 							{votesList.map((voteData: any, index:number) =>
-								voteData.balance.value !== undefined ?
-									<div className='flex items-center justify-between mb-9' key={index}>
-										<div className='w-[110px] max-w-[110px] overflow-ellipsis'>
-											<Address textClassName='w-[90px] text-xs' displayInline={true} address={voteData.voter} />
-										</div>
-
-										<div className='w-[80px] max-w-[80px] overflow-ellipsis'>{formatBnBalance(voteData.balance.value, { numberAfterComma: 2, withUnit: true })}</div>
-
-										<div className='w-[50px] max-w-[50px] overflow-ellipsis'>{voteData.lockPeriod}x {voteData.isDelegated && '/d'}</div>
-
-										{voteData.decision === 'yes' ?
-											<div className='flex items-center text-aye_green text-md w-[20px] max-w-[20px]'>
-												<LikeFilled className='mr-2' />
-											</div>
-											: voteData.decision === 'no' ?
-												<div className='flex items-center text-nay_red text-md w-[20px] max-w-[20px]'>
-													<DislikeFilled className='mr-2' />
-												</div>
-												: <div className='flex items-center text-gray-500 text-md w-[20px] max-w-[20px]'>
-													<MinusCircleFilled className='mr-2' />
-												</div>
-										}
+								<div className='flex items-center justify-between mb-9' key={index}>
+									<div className='w-[110px] max-w-[110px] overflow-ellipsis'>
+										<Address textClassName='w-[90px] text-xs' displayInline={true} address={voteData.voter} />
 									</div>
-									: <></>
+
+									{!isFellowshipReferendum && voteData.balance.value !== undefined ? <div className='w-[80px] max-w-[80px] overflow-ellipsis'>{formatBnBalance(voteData.balance.value, { numberAfterComma: 2, withUnit: true })}</div> : <div>-</div>}
+
+									<div className='w-[50px] max-w-[50px] overflow-ellipsis'>
+										{voteData.lockPeriod ? <span>{voteData.lockPeriod}x {voteData?.isDelegated && '/d'}</span> : <span>-</span>}
+									</div>
+
+									{voteData.decision === 'yes' ?
+										<div className='flex items-center text-aye_green text-md w-[20px] max-w-[20px]'>
+											<LikeFilled className='mr-2' />
+										</div>
+										: voteData.decision === 'no' ?
+											<div className='flex items-center text-nay_red text-md w-[20px] max-w-[20px]'>
+												<DislikeFilled className='mr-2' />
+											</div>
+											: <div className='flex items-center text-gray-500 text-md w-[20px] max-w-[20px]'>
+												<MinusCircleFilled className='mr-2' />
+											</div>
+									}
+								</div>
 							)}
 
 						</div>

@@ -12,7 +12,7 @@ import { ApiContext } from 'src/context/ApiContext';
 import { OnchainLinkBountyFragment, OnchainLinkChildBountyFragment, OnchainLinkMotionFragment, OnchainLinkProposalFragment, OnchainLinkReferendumFragment, OnchainLinkTechCommitteeProposalFragment, OnchainLinkTipFragment, OnchainLinkTreasuryProposalFragment } from 'src/generated/graphql';
 import { APPNAME } from 'src/global/appName';
 import { gov2ReferendumStatus, motionStatus, proposalStatus, referendumStatus, tipStatus } from 'src/global/statuses';
-import { OnchainLinkReferendumV2Fragment, Wallet } from 'src/types';
+import { OnchainLinkFellowshipReferendumFragment, OnchainLinkReferendumV2Fragment, Wallet } from 'src/types';
 import GovSidebarCard from 'src/ui-components/GovSidebarCard';
 import getEncodedAddress from 'src/util/getEncodedAddress';
 import styled from 'styled-components';
@@ -22,6 +22,7 @@ import BountyChildBounties from './Bounty/BountyChildBounties';
 import MotionVoteInfo from './Motions/MotionVoteInfo';
 import VoteMotion from './Motions/VoteMotion';
 import ProposalDisplay from './Proposals';
+import FellowshipReferendumVotingStatus from './Referenda/FellowshipReferendumVotingStatus';
 import ReferendumV2VoteInfo from './Referenda/ReferendumV2VoteInfo';
 import ReferendumV2VotingStatus from './Referenda/ReferendumV2VotingStatus';
 import ReferendumVoteInfo from './Referenda/ReferendumVoteInfo';
@@ -39,17 +40,18 @@ interface Props {
 	isProposal?: boolean
 	isReferendum?: boolean
 	isReferendumV2?: boolean
+	isFellowshipReferendum?: boolean
 	isTreasuryProposal?: boolean
 	isTipProposal?: boolean
 	isTechCommitteeProposal?: boolean
 	onchainId?: string | number | null
-	onchainLink?: OnchainLinkReferendumV2Fragment | OnchainLinkTechCommitteeProposalFragment | OnchainLinkBountyFragment | OnchainLinkChildBountyFragment | OnchainLinkMotionFragment | OnchainLinkProposalFragment | OnchainLinkReferendumFragment | OnchainLinkTreasuryProposalFragment | OnchainLinkTipFragment
+	onchainLink?: OnchainLinkReferendumV2Fragment | OnchainLinkTechCommitteeProposalFragment | OnchainLinkBountyFragment | OnchainLinkChildBountyFragment | OnchainLinkMotionFragment | OnchainLinkProposalFragment | OnchainLinkReferendumFragment | OnchainLinkTreasuryProposalFragment | OnchainLinkTipFragment | OnchainLinkFellowshipReferendumFragment
 	status?: string
 	startTime: string
 	tally?: any
 }
 
-const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal, isReferendum, isReferendumV2, isTipProposal, isTreasuryProposal, onchainId, onchainLink, startTime, status, tally }: Props) => {
+const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal, isReferendum, isReferendumV2, isTipProposal, isTreasuryProposal, isFellowshipReferendum, onchainId, onchainLink, startTime, status, tally }: Props) => {
 	const [address, setAddress] = useState<string>('');
 	const [accounts, setAccounts] = useState<InjectedAccount[]>([]);
 	const [extensionNotFound, setExtensionNotFound] = useState(false);
@@ -311,7 +313,7 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 						</>
 					}
 
-					{isReferendumV2 &&
+					{(isReferendumV2 || isFellowshipReferendum) &&
 						<>
 							{canVote &&
 								<GovSidebarCard>
@@ -323,20 +325,27 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 										address={address}
 										getAccounts={getAccounts}
 										onAccountChange={onAccountChange}
-										referendumId={onchainId  as number}
-										isReferendumV2={true}
+										referendumId={onchainId as number}
+										isReferendumV2={isReferendumV2}
+										isFellowshipReferendum={isFellowshipReferendum}
 									/>
 								</GovSidebarCard>
 							}
 
-							{(onchainId || onchainId === 0) && (onchainLink as OnchainLinkReferendumV2Fragment).onchain_referendumv2 &&
+							{(onchainId || onchainId === 0) && ((onchainLink as OnchainLinkReferendumV2Fragment).onchain_referendumv2 || (onchainLink as OnchainLinkFellowshipReferendumFragment).onchain_fellowship_referendum) &&
 								<>
-									<div className={className}>
+									{isReferendumV2 && <div className={className}>
 										<ReferendumV2VotingStatus referendumId={onchainId as number} tally={tally} />
-									</div>
+									</div>}
+
+									{isFellowshipReferendum && <div className={className}>
+										<FellowshipReferendumVotingStatus referendumId={onchainId as number} />
+									</div>}
+
 									<div className={className}>
 										<ReferendumV2VoteInfo
 											referendumId={onchainId as number}
+											isFellowshipReferendum={isFellowshipReferendum}
 										/>
 									</div>
 								</>
