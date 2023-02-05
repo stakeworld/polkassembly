@@ -1,10 +1,9 @@
 // Copyright 2019-2020 @Premiurly/polkassembly authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-
 import { DislikeFilled, LeftOutlined, LikeFilled, RightOutlined } from '@ant-design/icons';
 import { LoadingOutlined } from '@ant-design/icons';
-import { Pagination, PaginationProps, Spin } from 'antd';
+import { Pagination, PaginationProps, Segmented, Spin } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { subscanApiHeaders } from 'src/global/apiHeaders';
 import { LoadingStatusType } from 'src/types';
@@ -25,6 +24,7 @@ const VotersList = ({ className, referendumId } : Props) => {
 	const [votersList, setVotersList] = useState<any | null>(null);
 	const [count, setCount] = useState<number | undefined>(undefined);
 	const [currentPage, setCurrentPage] = useState<number>(0);
+	const [showAyes, setShowAyes] = useState(true);
 
 	const fetchVotersList = useCallback(() => {
 		setLoadingStatus({
@@ -74,8 +74,30 @@ const VotersList = ({ className, referendumId } : Props) => {
 				votersList &&
 				<GovSidebarCard className={`${className}`}>
 					<Spin spinning={loadingStatus.isLoading} indicator={<LoadingOutlined />}>
-						<div className="flex justify-between mb-6 bg-white z-10">
+						<div className="flex justify-between mb-4 bg-white z-10">
 							<h6 className='dashboard-heading'>Voters</h6>
+						</div>
+
+						<div className="w-full flex items-center justify-center mb-8">
+							<Segmented
+								block
+								className='px-3 py-2 rounded-md w-full'
+								size="large"
+								defaultValue={showAyes ? 'ayes' : 'nays'}
+								onChange={(value) => setShowAyes(value === 'ayes')}
+								options={[
+									{
+										icon: <LikeFilled />,
+										label: 'Ayes',
+										value: 'ayes'
+									},
+									{
+										icon: <DislikeFilled />,
+										label: 'Nays',
+										value: 'nays'
+									}
+								]}
+							/>
 						</div>
 
 						<div className='flex flex-col text-xs xl:text-sm xl:max-h-screen gap-y-1 overflow-y-auto px-0 text-sidebarBlue'>
@@ -86,7 +108,7 @@ const VotersList = ({ className, referendumId } : Props) => {
 								<div className='w-[30px]'>Vote</div>
 							</div>
 
-							{votersList.map((voteData: any, index:number) =>
+							{votersList.filter((voteData: any) => voteData.passed === showAyes).map((voteData: any, index:number) =>
 								<div className='flex items-center justify-between mb-9' key={index}>
 									<div className='w-[110px] max-w-[110px] overflow-ellipsis'>
 										<Address textClassName='w-[75px]' displayInline={true} address={voteData.account.address} />
