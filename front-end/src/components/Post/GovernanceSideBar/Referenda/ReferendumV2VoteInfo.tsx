@@ -2,7 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DislikeFilled, LeftOutlined, LikeFilled, RightOutlined } from '@ant-design/icons';
+import { DislikeFilled, LeftOutlined, LikeFilled, MinusCircleFilled, RightOutlined } from '@ant-design/icons';
+import { Segmented } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { subsquidApiHeaders } from 'src/global/apiHeaders';
 import Address from 'src/ui-components/Address';
@@ -18,18 +19,21 @@ interface Props {
 	isFellowshipReferendum?: boolean
 }
 
+type DecisionType = 'yes' | 'no' | 'abstain';
+
 const ReferendumV2VoteInfo = ({ className, referendumId, isFellowshipReferendum } : Props) => {
 	const [offset, setOffset] = useState<number>(0);
 	const [votesList, setVotesList] = useState<any[] | null>(null);
 	const [error, setError] = useState<any>(null);
 	const [loading, setLoading] = useState<boolean>(true);
+	const [fetchDecision, setFetchDecision] = useState<DecisionType>('yes');
 
 	const fetchVotesData = useCallback(() => {
 		setLoading(true);
 		fetch('https://squid.subsquid.io/kusama-polkassembly/v/v1/graphql',
 			{ body: JSON.stringify({
 				query: `query MyQuery {
-				${isFellowshipReferendum ? 'votes' : 'convictionVotes'}(where: {type_eq: ${isFellowshipReferendum ? 'Fellowship' : 'ReferendumV2'}, ${!isFellowshipReferendum ? 'removedAtBlock_isNull: true,' : ''} proposal: {index_eq: ${referendumId}}}, limit: ${10}, offset: ${offset}, orderBy: id_DESC) {
+					${isFellowshipReferendum ? 'votes' : 'convictionVotes'}(where: {type_eq: ${isFellowshipReferendum ? 'Fellowship' : 'ReferendumV2'}, ${!isFellowshipReferendum ? 'removedAtBlock_isNull: true,' : ''} proposal: {index_eq: ${referendumId}}, decision_eq: ${fetchDecision}}, limit: ${10}, offset: ${offset}, orderBy: id_DESC) {
 						type
 						balance {
 							... on SplitVoteBalance {
@@ -47,6 +51,7 @@ const ReferendumV2VoteInfo = ({ className, referendumId, isFellowshipReferendum 
 						proposalId
 						${!isFellowshipReferendum ? 'createdAt' : ''}
 						voter
+						${!isFellowshipReferendum ? 'isDelegated' : ''}
 						proposal {
 							index
 						}
@@ -68,13 +73,33 @@ const ReferendumV2VoteInfo = ({ className, referendumId, isFellowshipReferendum 
 			}).finally(() => {
 				setLoading(false);
 			});
-	}, [isFellowshipReferendum, offset, referendumId]);
+	}, [isFellowshipReferendum, fetchDecision, offset, referendumId]);
 
 	useEffect(() => {
 		fetchVotesData();
 	}, [fetchVotesData, offset, referendumId]);
 
+	const decisionOptions = [
+		{
+			label: <div className='flex items-center justify-center'><LikeFilled className='mr-1.5' /> <span>Ayes</span></div>,
+			value: 'yes'
+		},
+		{
+			label: <div className='flex items-center justify-center'><DislikeFilled className='mr-1.5' /> <span>Nays</span></div>,
+			value: 'no'
+		}
+	];
+
+	if(!isFellowshipReferendum) {
+		decisionOptions.push({
+			label: <div className='flex items-center justify-center'><MinusCircleFilled className='mr-1.5' /> <span>Abstain</span></div>,
+			value: 'abstain'
+		});
+	}
+
 	function handlePagination(navDirection: 'next' | 'prev'){
+		if(loading) return;
+
 		if(navDirection == 'prev') {
 			if(offset == 0) return;
 			if(offset < 20) {
@@ -91,72 +116,74 @@ const ReferendumV2VoteInfo = ({ className, referendumId, isFellowshipReferendum 
 	if(error) return <GovSidebarCard className={className}><ErrorAlert errorMsg='Error in fetching votes, please try again.' /></GovSidebarCard>;
 
 	if(votesList) {
+		return (
+			<GovSidebarCard className={className}>
+				<div className="flex justify-between mb-6 bg-white z-10">
+					<h6 className='dashboard-heading'>Voters</h6>
+				</div>
 
-		if(loading) return <GovSidebarCard className={className}><LoadingState /></GovSidebarCard>;
+				<div className="w-full flex items-center justify-center mb-8">
+					<Segmented
+						block
+						className='px-3 py-2 rounded-md w-full'
+						size="large"
+						defaultValue={fetchDecision}
+						onChange={(value) => {
+							setOffset(0);
+							setFetchDecision(String(value) as DecisionType);
+						}}
+						options={decisionOptions}
+					/>
+				</div>
 
-		if(votesList.length > 0) {
-			return (
-				<GovSidebarCard className={className}>
-					<div className="flex justify-between mb-6 bg-white z-10">
-						<h6 className='dashboard-heading'>Voters</h6>
-					</div>
+				{loading ? <LoadingState />
+					: votesList.length > 0 ?
+						<div className={`flex flex-col text-xs xl:text-sm xl:max-h-screen gap-y-1 overflow-y-auto px-${isFellowshipReferendum ? '8' : '0'} text-sidebarBlue`}>
+							<div className='flex text-xs items-center justify-between mb-9 font-semibold'>
+								<div className='w-[110px]'>Voter</div>
+								{!isFellowshipReferendum && <div className='w-[60px]'><span className='hidden md:inline-block'>Amount</span><span className='inline-block md:hidden'>Amt.</span></div>}
+								{!isFellowshipReferendum && <div className='w-[70px]'>Conviction</div>}
+								<div className='w-[30px]'>Vote</div>
+							</div>
 
-					<div className={`flex flex-col text-xs xl:text-sm xl:max-h-screen gap-y-1 overflow-y-auto px-${isFellowshipReferendum ? '8' : '0'} text-sidebarBlue`}>
-						<div className='flex text-xs items-center justify-between mb-9 font-semibold'>
-							<div className='w-[110px]'>Voter</div>
-							{!isFellowshipReferendum && <div className='w-[60px]'><span className='hidden md:inline-block'>Amount</span><span className='inline-block md:hidden'>Amt.</span></div>}
-							{!isFellowshipReferendum && <div className='w-[70px]'>Conviction</div>}
-							<div className='w-[30px]'>Vote</div>
-						</div>
-
-						{votesList.map((voteData: any, index:number) =>
-							voteData.balance.value !== undefined ?
+							{votesList.map((voteData: any, index:number) =>
 								<div className='flex items-center justify-between mb-9' key={index}>
 									<div className='w-[110px] max-w-[110px] overflow-ellipsis'>
 										<Address textClassName='w-[90px] text-xs' displayInline={true} address={voteData.voter} />
 									</div>
 
-									{!isFellowshipReferendum && <div className='w-[80px] max-w-[80px] overflow-ellipsis'>{formatBnBalance(voteData.balance.value, { numberAfterComma: 2, withUnit: true })}</div>}
+									{!isFellowshipReferendum && voteData.balance.value !== undefined ? <div className='w-[80px] max-w-[80px] overflow-ellipsis'>{formatBnBalance(voteData.balance.value, { numberAfterComma: 2, withUnit: true })}</div> : <div>-</div>}
 
-									{!isFellowshipReferendum && <div className='w-[50px] max-w-[50px] overflow-ellipsis'>{voteData.lockPeriod}x</div>}
+									<div className='w-[50px] max-w-[50px] overflow-ellipsis'>
+										{voteData.lockPeriod ? <span>{voteData.lockPeriod}x {voteData?.isDelegated && '/d'}</span> : <span>-</span>}
+									</div>
 
 									{voteData.decision === 'yes' ?
 										<div className='flex items-center text-aye_green text-md w-[20px] max-w-[20px]'>
 											<LikeFilled className='mr-2' />
 										</div>
-										:
-										<div className='flex items-center text-nay_red text-md w-[20px] max-w-[20px]'>
-											<DislikeFilled className='mr-2' />
-										</div>
+										: voteData.decision === 'no' ?
+											<div className='flex items-center text-nay_red text-md w-[20px] max-w-[20px]'>
+												<DislikeFilled className='mr-2' />
+											</div>
+											: <div className='flex items-center text-gray-500 text-md w-[20px] max-w-[20px]'>
+												<MinusCircleFilled className='mr-2' />
+											</div>
 									}
 								</div>
-								: <></>
-						)}
+							)}
 
-					</div>
+						</div>
+						: <PostEmptyState />
+				}
 
-					<div className="flex items-center justify-center pt-6 bg-white z-10">
-						<div className={`mr-5 flex items-center ${offset === 0 ? ' cursor-default' : 'cursor-pointer hover:text-pink_primary'}`} onClick={() => handlePagination('prev')}><LeftOutlined className='mr-1' /> Prev</div>
-						<div className={`ml-5  flex items-center ${votesList.length < 10 ? ' cursor-default' : 'cursor-pointer hover:text-pink_primary'}`} onClick={() => handlePagination('next')}>Next <RightOutlined  className='ml-1' /></div>
-					</div>
+				<div className="flex items-center justify-center pt-6 bg-white z-10">
+					<div className={`mr-5 flex items-center ${offset === 0 ? ' cursor-default' : 'cursor-pointer hover:text-pink_primary'}`} onClick={() => handlePagination('prev')}><LeftOutlined className='mr-1' /> Prev</div>
+					<div className={`ml-5  flex items-center ${votesList.length < 10 ? ' cursor-default' : 'cursor-pointer hover:text-pink_primary'}`} onClick={() => handlePagination('next')}>Next <RightOutlined  className='ml-1' /></div>
+				</div>
 
-				</GovSidebarCard>
-			);
-		}
-
-		if(votesList.length === 0 && offset > 0) {
-			<div className="flex items-center justify-center pt-6 bg-white z-10">
-				<div className={`mr-5 flex items-center ${offset === 0 ? ' cursor-default' : 'cursor-pointer hover:text-pink_primary'}`} onClick={() => handlePagination('prev')}><LeftOutlined className='mr-1' /> Prev</div>
-				<div className={`ml-5  flex items-center ${votesList.length < 10 ? ' cursor-default' : 'cursor-pointer hover:text-pink_primary'}`} onClick={() => handlePagination('next')}>Next <RightOutlined  className='ml-1' /></div>
-			</div>;
-		}
-
-		return <GovSidebarCard className={className}>
-			<div className="flex justify-between mb-6 bg-white z-10">
-				<h6 className='dashboard-heading'>Voters</h6>
-			</div>
-			<PostEmptyState />
-		</GovSidebarCard>;
+			</GovSidebarCard>
+		);
 	}
 
 	return <GovSidebarCard className={className}><LoadingState /></GovSidebarCard>;

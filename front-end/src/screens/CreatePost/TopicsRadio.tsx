@@ -44,7 +44,7 @@ const TopicsRadio = ({ className, onTopicSelection }: Props) => {
 
 		return (
 			<div className={`${className} overflow-x-auto`}>
-				<Segmented options={topicOptions} onChange={onTopicChange} />
+				<Segmented className='px-3 py-2 rounded-md' options={topicOptions} onChange={onTopicChange} />
 			</div>
 		);
 	}
