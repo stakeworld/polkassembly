@@ -4,7 +4,7 @@
 
 import React, { FC } from 'react';
 import { BountyPostFragment, ChildBountyPostFragment, MotionPostFragment, ProposalPostFragment, ReferendumPostFragment, TechCommitteeProposalPostFragment,TipPostFragment, TreasuryProposalPostFragment } from 'src/generated/graphql';
-import { ReferendumV2PostFragment } from 'src/types';
+import { FellowshipReferendumPostFragment, ReferendumV2PostFragment } from 'src/types';
 
 import TimelineContainer from './TimelineContainer';
 
@@ -15,19 +15,21 @@ interface IPostTimelineProps {
 	isProposal?: boolean;
 	isReferendum?: boolean;
 	isReferendumV2?: boolean;
+	isFellowshipReferendum?: boolean;
 	isTreasuryProposal?: boolean;
 	isTechCommitteeProposal?: boolean;
 	isTipProposal?: boolean;
 	isChildBounty?: boolean;
-	referendumPost: ReferendumPostFragment | undefined;
-	referendumV2Post: ReferendumV2PostFragment | undefined;
-	proposalPost: ProposalPostFragment | undefined;
-	motionPost: MotionPostFragment | undefined;
-	treasuryPost: TreasuryProposalPostFragment | undefined;
-	tipPost: TipPostFragment | undefined;
-	bountyPost: BountyPostFragment | undefined;
-	childBountyPost: ChildBountyPostFragment | undefined;
-	techCommitteeProposalPost: TechCommitteeProposalPostFragment | undefined;
+	referendumPost?: ReferendumPostFragment;
+	referendumV2Post?: ReferendumV2PostFragment;
+	proposalPost?: ProposalPostFragment;
+	motionPost?: MotionPostFragment;
+	treasuryPost?: TreasuryProposalPostFragment;
+	tipPost?: TipPostFragment;
+	bountyPost?: BountyPostFragment;
+	childBountyPost?: ChildBountyPostFragment;
+	techCommitteeProposalPost?: TechCommitteeProposalPostFragment;
+	fellowshipReferendumPost?: FellowshipReferendumPostFragment;
 }
 
 const PostTimeline: FC<IPostTimelineProps> = (props) => {
@@ -38,6 +40,7 @@ const PostTimeline: FC<IPostTimelineProps> = (props) => {
 		isProposal,
 		isReferendum,
 		isReferendumV2,
+		isFellowshipReferendum,
 		isTreasuryProposal,
 		isTechCommitteeProposal,
 		isTipProposal,
@@ -50,7 +53,8 @@ const PostTimeline: FC<IPostTimelineProps> = (props) => {
 		tipPost,
 		bountyPost,
 		childBountyPost,
-		techCommitteeProposalPost
+		techCommitteeProposalPost,
+		fellowshipReferendumPost
 	} = props;
 
 	return (
@@ -150,6 +154,15 @@ const PostTimeline: FC<IPostTimelineProps> = (props) => {
 							status: s.status || ''
 						})) || []}
 						title='Referendum'
+					/>
+			}
+			{ isFellowshipReferendum &&
+					<TimelineContainer
+						statuses={fellowshipReferendumPost?.onchain_link?.onchain_fellowship_referendum?.[0]?.referendumStatus?.map(s => ({
+							blockNumber: s.blockNumber?.number || 0,
+							status: s.status || ''
+						})) || []}
+						title='Fellowship Referendum'
 					/>
 			}
 			{ isTreasuryProposal &&

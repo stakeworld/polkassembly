@@ -7,20 +7,25 @@ import React from 'react';
 import formatBnBalance from 'src/util/formatBnBalance';
 
 interface Props {
-	ayeVotes: BN,
+	ayeVotes?: BN,
 	className?: string,
-	nayVotes: BN,
+	nayVotes?: BN,
+	ayesNum?: number,
+	naysNum?: number,
+	isFellowshipReferendum?: boolean
 }
+
+const ZERO = new BN(0);
 
 const bnToIntBalance = function (bn: BN): number{
 	return  Number(formatBnBalance(bn, { numberAfterComma: 2, withThousandDelimitor: false }));
 };
 
-const VoteProgress = ({ ayeVotes, className, nayVotes }: Props) => {
+const VoteProgress = ({ ayeVotes, className, nayVotes, ayesNum, naysNum }: Props) => {
 
-	const ayeVotesNumber = bnToIntBalance(ayeVotes);
-	const nayVotesNumber = bnToIntBalance(nayVotes);
-	const totalVotesNumber = bnToIntBalance(ayeVotes.add(nayVotes));
+	const ayeVotesNumber = ayesNum === undefined ? bnToIntBalance(ayeVotes || ZERO) : Number(ayesNum);
+	const nayVotesNumber = naysNum === undefined ? bnToIntBalance(nayVotes || ZERO) : Number(naysNum);
+	const totalVotesNumber = (ayesNum === undefined || naysNum === undefined) ? bnToIntBalance(ayeVotes?.add(nayVotes|| ZERO) || ZERO) : (Number(ayesNum) + Number(naysNum));
 	const ayePercent = ayeVotesNumber/totalVotesNumber*100;
 	const nayPercent = 100 - ayePercent;
 

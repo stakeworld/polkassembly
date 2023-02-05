@@ -180,7 +180,8 @@ const gov2TrackItems: {[x:string]: ItemType[]} = {
 	governanceItems : [],
 	treasuryItems: [],
 	fellowshipItems: [
-		getSiderMenuItem('Members', '/fellowship')
+		getSiderMenuItem('Members', '/fellowship'),
+		getSiderMenuItem('Member Referenda', '/member-referenda')
 	]
 };
 

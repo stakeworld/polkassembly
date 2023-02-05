@@ -11,6 +11,7 @@ import React, { useCallback, useContext,useEffect,useMemo,useState } from 'react
 import frowningFace from 'src/assets/frowning-face.png';
 import VoteSuccessful from 'src/assets/lottie-graphics/VoteSuccessful';
 import { ApiContext } from 'src/context/ApiContext';
+import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { subsquidApiHeaders } from 'src/global/apiHeaders';
 import { LoadingStatusType,NotificationStatus } from 'src/types';
 import AccountSelectionForm from 'src/ui-components/AccountSelectionForm';
@@ -32,9 +33,12 @@ interface Props {
 	lastVote: string | null | undefined
 	setLastVote: React.Dispatch<React.SetStateAction<string | null | undefined>>
 	isReferendumV2?: boolean
+	isFellowshipReferendum?: boolean
 }
 
-const VoteReferendum = ({ className, referendumId, address, accounts, onAccountChange, getAccounts, lastVote, setLastVote, isReferendumV2 }: Props) => {
+const VoteReferendum = ({ className, referendumId, address, accounts, onAccountChange, getAccounts, lastVote, setLastVote, isReferendumV2, isFellowshipReferendum }: Props) => {
+	const { addresses } = useContext(UserDetailsContext);
+
 	const [showModal, setShowModal] = useState<boolean>(false);
 	const [lockedBalance, setLockedBalance] = useState<BN | undefined>(undefined);
 	const [onlyVote, setOnlyVote] = useState<boolean>(false);
@@ -45,6 +49,9 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 	const { api, apiReady } = useContext(ApiContext);
 	const [hasUserSubmitted, setHasUserSubmitted] = useState<boolean>(false);
 	const [loadingStatus, setLoadingStatus] = useState<LoadingStatusType>({ isLoading: false, message: '' });
+	const [isFellowshipMember, setIsFellowshipMember] = useState<boolean>(false);
+	const [fetchingFellowship, setFetchingFellowship] = useState(true);
+
 	const CONVICTIONS: [number, number][] = [1, 2, 4, 8, 16, 32].map((lock, index) => [index + 1, lock]);
 
 	const convictionOpts = useMemo(() => [
@@ -128,6 +135,47 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 		fetchQuizData();
 	}, [ fetchQuizData, referendumId]);
 
+	const checkIfFellowshipMember = async () => {
+		if (!api || !apiReady) {
+			return;
+		}
+
+		// using any because it returns some Codec types
+		api.query.fellowshipCollective.members.entries().then((entries: any) => {
+			const members: string[] = [];
+
+			for (let i = 0; i < entries.length; i++) {
+				// key split into args part to extract
+				const [{ args: [accountId] }, optInfo] = entries[i];
+				if (optInfo.isSome) {
+					members.push(accountId.toString());
+				}
+			}
+
+			addresses && addresses.some(address => {
+				if (members.includes(address)) {
+					setIsFellowshipMember(true);
+					// this breaks the loop as soon as we find a matching address
+					return true;
+				}
+				return false;
+			});
+
+			setFetchingFellowship(false);
+
+		});
+	};
+
+	useEffect(() => {
+		if (!api || !apiReady) {
+			return;
+		}
+
+		checkIfFellowshipMember();
+
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [api, apiReady]);
+
 	const voteReferendum = async (aye: boolean) => {
 		if (!referendumId && referendumId !== 0) {
 			console.error('referendumId not set');
@@ -148,8 +196,9 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 
 		if(isReferendumV2){
 			voteTx = api.tx.convictionVoting.vote(referendumId, { Standard: { balance: lockedBalance, vote: { aye, conviction } } });
-		}
-		else{
+		} else if(isFellowshipReferendum) {
+			voteTx = api.tx.fellowshipCollective.vote(referendumId, aye);
+		} else{
 			voteTx = api.tx.democracy.vote(referendumId, { Standard: { balance: lockedBalance, vote: { aye, conviction } } });
 		}
 
@@ -203,7 +252,7 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 			</Select>
 		</Form.Item>;
 
-	return (
+	const VoteUI = <>
 		<div className={className}>
 			{quiz?.questions &&
 				<Button
@@ -212,12 +261,14 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 				>
 					{hasUserSubmitted ? 'Submit Quiz Again' : 'Take Quiz and Vote'}
 				</Button>}
+
 			<Button
 				className={`rounded-lg mb-6 flex items-center justify-center text-lg p-7 w-[95%] mx-auto ${!quiz?.questions ? 'bg-pink_primary hover:bg-pink_secondary text-white border-pink_primary hover:border-pink_primary' : 'border-pink_primary text-pink_primary hover:bg-pink_primary hover:text-white'}`}
 				onClick={() => openModal(true)}
 			>
 				{lastVote == null || lastVote == undefined  ? quiz?.questions ? 'Only Cast Vote' : 'Cast Vote' : 'Cast Vote Again' }
 			</Button>
+
 			<Modal
 				open={showModal}
 				centered
@@ -248,12 +299,12 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 							: <Spin tip={loadingStatus.message} spinning={loadingStatus.isLoading} indicator={<LoadingOutlined />}>
 								{onlyVote && quiz?.questions && <div className='p-3 mb-7 flex items-center justify-center text-sidebarBlue bg-opacity-10 text-[14px] bg-pink_primary rounded-md'><img src={frowningFace} height={25} width={25} className='mr-2' alt='frowning-face' /><span> You&apos;re missing on a chance to win an exclusive NFT. <span className='text-pink_primary underline cursor-pointer' onClick={() => { setQuizLevel(0); setOnlyVote(false); }}>Take Quiz Now</span></span></div>}
 								<h4 className='dashboard-heading mb-7'>Cast Your Vote</h4>
-								<BalanceInput
+								{!isFellowshipReferendum && <BalanceInput
 									label={'Lock balance'}
 									helpText={'Amount of you are willing to lock for this vote.'}
 									placeholder={'123'}
 									onChange={onBalanceChange}
-								/>
+								/>}
 
 								<AccountSelectionForm
 									title='Vote with Account'
@@ -264,7 +315,7 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 								/>
 								{submitQuizAddress !== address && !onlyVote ? <div className='font-medium text-red_primary'>The NFT reward will be sent only if quiz and voter wallet address are the same.</div> : null}
 
-								<VoteLock className='mt-6' />
+								{!isFellowshipReferendum && <VoteLock className='mt-6' />}
 
 								<AyeNayButtons
 									className='mt-6 max-w-[156px]'
@@ -277,7 +328,20 @@ const VoteReferendum = ({ className, referendumId, address, accounts, onAccountC
 							</Spin> }
 			</Modal>
 		</div>
-	);
+	</>;
+
+	if(isFellowshipReferendum) {
+		if(!fetchingFellowship) {
+			if(isFellowshipMember) return VoteUI;
+
+			return <div className={className}>Only fellowship members may vote.</div>;
+
+		} else {
+			return <div className={className}>Fetching fellowship members...</div>;
+		}
+	}
+
+	return VoteUI;
 };
 
 export default styled(VoteReferendum)`

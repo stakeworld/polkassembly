@@ -5,7 +5,7 @@
 import { Maybe } from 'graphql/jsutils/Maybe';
 import { Dispatch, SetStateAction } from 'react';
 
-import { AuthorFieldsFragment, BlockNumber, CommentFieldsFragment, Onchain_Links, Post_Topics, Post_Types,Posts, PreimageArgumentV2, PreimageV2, ReferendumStatusV2, ReferendumV2 } from './generated/graphql';
+import { AuthorFieldsFragment, BlockNumber, CommentFieldsFragment, FellowshipReferendum, FellowshipReferendumStatus, Onchain_Links, Post_Topics, Post_Types,Posts, PreimageArgumentV2, PreimageV2, ReferendumStatusV2, ReferendumV2 } from './generated/graphql';
 import { network, tokenSymbol } from './global/networkConstants';
 
 export interface UserDetailsContextType {
@@ -185,13 +185,23 @@ export const PostOrigin = {
 	AUCTION_ADMIN : 'AuctionAdmin',
 	BIG_SPENDER : 'BigSpender',
 	BIG_TIPPER : 'BigTipper',
+	CANDIDATES : 'Candidates',
+	EXPERTS : 'Experts',
+	FELLOWS : 'Fellows',
 	FELLOWSHIP_ADMIN : 'FellowshipAdmin',
 	GENERAL_ADMIN : 'GeneralAdmin',
+	GRAND_MASTERS : 'GrandMasters',
 	LEASE_ADMIN : 'LeaseAdmin',
+	MASTERS : 'Masters',
 	MEDIUM_SPENDER : 'MediumSpender',
+	MEMBERS : 'Members',
+	PROFICIENTS : 'Proficients',
 	REFERENDUM_CANCELLER : 'ReferendumCanceller',
 	REFERENDUM_KILLER : 'ReferendumKiller',
 	ROOT : 'root',
+	SENIOR_EXPERTS : 'SeniorExperts',
+	SENIOR_FELLOWS : 'SeniorFellows',
+	SENIOR_MASTERS : 'SeniorMasters',
 	SMALL_SPENDER : 'SmallSpender',
 	SMALL_TIPPER : 'SmallTipper',
 	STAKING_ADMIN : 'StakingAdmin',
@@ -207,6 +217,7 @@ export interface TrackProps {
   'trackId': number;
   'group'?: string;
   'description': string;
+  [index: string]: any;
 }
 
 export type OnchainLinkReferendumV2Fragment = (
@@ -245,6 +256,51 @@ export type ReferendumV2PostFragment = (
     )>, onchain_link?: Maybe<(
       { __typename?: 'onchain_links' }
       & OnchainLinkReferendumV2Fragment
+    )>, topic: (
+      { __typename?: 'post_topics' }
+      & Pick<Post_Topics, 'id' | 'name'>
+    ), type: (
+      { __typename?: 'post_types' }
+      & Pick<Post_Types, 'id' | 'name'>
+    ) }
+);
+
+export type OnchainLinkFellowshipReferendumFragment = (
+  { __typename?: 'onchain_links' }
+  & Pick<Onchain_Links, 'proposer_address' | 'track' | 'origin'>
+  & { onchain_fellowship_referendum: Array<Maybe<(
+    { __typename?: 'ReferendumV2' }
+    & Pick<FellowshipReferendum, 'deciding' | 'decisionDeposit' | 'enactmentAfter' | 'enactmentAt' | 'id' | 'origin' | 'preimageHash' | 'referendumId' | 'trackNumber' | 'submitted' | 'submittedAt'>
+    & { referendumStatus?: Maybe<Array<(
+      { __typename?: 'ReferendumStatusV2' }
+      & Pick<FellowshipReferendumStatus, 'id' | 'status'>
+      & { blockNumber: (
+        { __typename?: 'BlockNumber' }
+        & Pick<BlockNumber, 'number'>
+      ) }
+    )>>, preimage?: Maybe<(
+      { __typename?: 'PreimageV2' }
+      & Pick<PreimageV2, 'method' | 'metaDescription' | 'section' | 'enactmentPeriod' | 'depositAmount' | 'hash' | 'length'>
+      & { preimageArguments?: Maybe<Array<(
+        { __typename?: 'PreimageArgumentV2' }
+        & Pick<PreimageArgumentV2, 'name' | 'value'>
+      )>> }
+    )> }
+  )>> }
+)
+
+// TODO: Should be on graphql.tsx
+export type FellowshipReferendumPostFragment = (
+  Pick<Posts, 'content' | 'created_at' | 'id' | 'updated_at' | 'title'>
+    & { author?: Maybe<(
+      { __typename?: 'User' }
+      & AuthorFieldsFragment
+    )>, comments: Array<(
+      { __typename?: 'comments' }
+      & CommentFieldsFragment
+    )>, onchain_link?: Maybe<(
+      { __typename?: 'onchain_links' }
+      & OnchainLinkFellowshipReferendumFragment
     )>, topic: (
       { __typename?: 'post_topics' }
       & Pick<Post_Topics, 'id' | 'name'>

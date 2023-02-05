@@ -6,12 +6,15 @@ import React from 'react';
 import AboutTrackCard from 'src/components/Listing/Tracks/AboutTrackCard';
 import TrackListingCard from 'src/components/Listing/Tracks/TrackListingCard';
 
-const TrackListing = ({ trackName } : { trackName: string }) => {
-
+const TrackListing = ({ trackName, isMemberReferenda } : { trackName?: string, isMemberReferenda?: boolean }) => {
 	return (
 		<>
-			<AboutTrackCard trackName={trackName} />
-			<TrackListingCard className='mt-12' trackName={trackName} />
+			{isMemberReferenda && <div className={'bg-white drop-shadow-md rounded-md p-4 md:p-8 text-sidebarBlue'}>
+				<h2 className="text-lg capitalize">Member Referenda</h2>
+				<p className="mt-5 text-sm font-normal">Aggregation of data across all membership referenda</p>
+			</div>}
+			{trackName && <AboutTrackCard trackName={trackName} isMemberReferenda={isMemberReferenda} />}
+			<TrackListingCard className='mt-12' trackName={trackName} isMemberReferenda={isMemberReferenda}/>
 		</>
 	);
 };

@@ -15,22 +15,21 @@ import formatBnBalance from 'src/util/formatBnBalance';
 interface Props {
 	className?: string
 	referendumId: number
+	isFellowshipReferendum?: boolean
 }
 
-const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
+const ReferendumV2VoteInfo = ({ className, referendumId, isFellowshipReferendum } : Props) => {
 	const [offset, setOffset] = useState<number>(0);
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [votesList, setVotesList] = useState<any[] | null>(null);
 	const [error, setError] = useState<any>(null);
 	const [loading, setLoading] = useState<boolean>(true);
 
 	const fetchVotesData = useCallback(() => {
 		setLoading(true);
-		// TODO: Change to v2
 		fetch('https://squid.subsquid.io/kusama-polkassembly/v/v1/graphql',
 			{ body: JSON.stringify({
 				query: `query MyQuery {
-				convictionVotes(where: {type_eq: ReferendumV2, removedAtBlock_isNull: true proposal: {index_eq: ${referendumId}}}, limit: ${10}, offset: ${offset}, orderBy: id_DESC) {
+				${isFellowshipReferendum ? 'votes' : 'convictionVotes'}(where: {type_eq: ${isFellowshipReferendum ? 'Fellowship' : 'ReferendumV2'}, ${!isFellowshipReferendum ? 'removedAtBlock_isNull: true,' : ''} proposal: {index_eq: ${referendumId}}}, limit: ${10}, offset: ${offset}, orderBy: id_DESC) {
 						type
 						balance {
 							... on SplitVoteBalance {
@@ -41,12 +40,12 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 								value
 							}
 						}
-						createdAtBlock
+						${!isFellowshipReferendum ? 'createdAtBlock' : ''}
 						decision
 						id
 						lockPeriod
 						proposalId
-						createdAt
+						${!isFellowshipReferendum ? 'createdAt' : ''}
 						voter
 						proposal {
 							index
@@ -59,8 +58,8 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 			})
 			.then(async (res) => {
 				const response = await res.json();
-				if(response && response.data && response.data.convictionVotes) {
-					const votesData = response.data.convictionVotes;
+				if(response && response.data && (response.data.convictionVotes || response.data.votes)) {
+					const votesData = response.data.convictionVotes || response.data.votes;
 					setVotesList(votesData);
 				}
 			}).catch((err) => {
@@ -69,7 +68,7 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 			}).finally(() => {
 				setLoading(false);
 			});
-	}, [offset, referendumId]);
+	}, [isFellowshipReferendum, offset, referendumId]);
 
 	useEffect(() => {
 		fetchVotesData();
@@ -102,11 +101,11 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 						<h6 className='dashboard-heading'>Voters</h6>
 					</div>
 
-					<div className='flex flex-col text-xs xl:text-sm xl:max-h-screen gap-y-1 overflow-y-auto px-0 text-sidebarBlue'>
+					<div className={`flex flex-col text-xs xl:text-sm xl:max-h-screen gap-y-1 overflow-y-auto px-${isFellowshipReferendum ? '8' : '0'} text-sidebarBlue`}>
 						<div className='flex text-xs items-center justify-between mb-9 font-semibold'>
 							<div className='w-[110px]'>Voter</div>
-							<div className='w-[60px]'><span className='hidden md:inline-block'>Amount</span><span className='inline-block md:hidden'>Amt.</span></div>
-							<div className='w-[70px]'>Conviction</div>
+							{!isFellowshipReferendum && <div className='w-[60px]'><span className='hidden md:inline-block'>Amount</span><span className='inline-block md:hidden'>Amt.</span></div>}
+							{!isFellowshipReferendum && <div className='w-[70px]'>Conviction</div>}
 							<div className='w-[30px]'>Vote</div>
 						</div>
 
@@ -117,9 +116,9 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 										<Address textClassName='w-[90px] text-xs' displayInline={true} address={voteData.voter} />
 									</div>
 
-									<div className='w-[80px] max-w-[80px] overflow-ellipsis'>{formatBnBalance(voteData.balance.value, { numberAfterComma: 2, withUnit: true })}</div>
+									{!isFellowshipReferendum && <div className='w-[80px] max-w-[80px] overflow-ellipsis'>{formatBnBalance(voteData.balance.value, { numberAfterComma: 2, withUnit: true })}</div>}
 
-									<div className='w-[50px] max-w-[50px] overflow-ellipsis'>{voteData.lockPeriod}x</div>
+									{!isFellowshipReferendum && <div className='w-[50px] max-w-[50px] overflow-ellipsis'>{voteData.lockPeriod}x</div>}
 
 									{voteData.decision === 'yes' ?
 										<div className='flex items-center text-aye_green text-md w-[20px] max-w-[20px]'>
