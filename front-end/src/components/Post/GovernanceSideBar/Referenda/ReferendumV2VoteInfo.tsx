@@ -2,7 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DislikeFilled, LeftOutlined, LikeFilled, RightOutlined } from '@ant-design/icons';
+import { DislikeFilled, LeftOutlined, LikeFilled, MinusCircleFilled, RightOutlined } from '@ant-design/icons';
+import { Segmented } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { subsquidApiHeaders } from 'src/global/apiHeaders';
 import Address from 'src/ui-components/Address';
@@ -17,20 +18,21 @@ interface Props {
 	referendumId: number
 }
 
+type DecisionType = 'yes' | 'no' | 'abstain';
+
 const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 	const [offset, setOffset] = useState<number>(0);
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [votesList, setVotesList] = useState<any[] | null>(null);
 	const [error, setError] = useState<any>(null);
 	const [loading, setLoading] = useState<boolean>(true);
+	const [fetchDecision, setFetchDecision] = useState<DecisionType>('yes');
 
 	const fetchVotesData = useCallback(() => {
 		setLoading(true);
-		// TODO: Change to v2
 		fetch('https://squid.subsquid.io/kusama-polkassembly/v/v1/graphql',
 			{ body: JSON.stringify({
 				query: `query MyQuery {
-				convictionVotes(where: {type_eq: ReferendumV2, removedAtBlock_isNull: true proposal: {index_eq: ${referendumId}}}, limit: ${10}, offset: ${offset}, orderBy: id_DESC) {
+				convictionVotes(where: {type_eq: ReferendumV2, removedAtBlock_isNull: true proposal: {index_eq: ${referendumId}}, decision_eq: ${fetchDecision}}, limit: ${10}, offset: ${offset}, orderBy: id_DESC) {
 						type
 						balance {
 							... on SplitVoteBalance {
@@ -69,7 +71,7 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 			}).finally(() => {
 				setLoading(false);
 			});
-	}, [offset, referendumId]);
+	}, [fetchDecision, offset, referendumId]);
 
 	useEffect(() => {
 		fetchVotesData();
@@ -102,6 +104,36 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 						<h6 className='dashboard-heading'>Voters</h6>
 					</div>
 
+					<div className="w-full flex items-center justify-center mb-8">
+						<Segmented
+							block
+							className='px-3 py-2 rounded-md w-full'
+							size="large"
+							defaultValue={fetchDecision}
+							onChange={(value) => {
+								setFetchDecision(String(value) as DecisionType);
+								setOffset(0);
+							}}
+							options={[
+								{
+									icon: <LikeFilled />,
+									label: 'Ayes',
+									value: 'yes'
+								},
+								{
+									icon: <DislikeFilled />,
+									label: 'Nays',
+									value: 'no'
+								},
+								{
+									icon: <MinusCircleFilled />,
+									label: 'Abstain',
+									value: 'abstain'
+								}
+							]}
+						/>
+					</div>
+
 					<div className='flex flex-col text-xs xl:text-sm xl:max-h-screen gap-y-1 overflow-y-auto px-0 text-sidebarBlue'>
 						<div className='flex text-xs items-center justify-between mb-9 font-semibold'>
 							<div className='w-[110px]'>Voter</div>
@@ -125,10 +157,13 @@ const ReferendumV2VoteInfo = ({ className, referendumId } : Props) => {
 										<div className='flex items-center text-aye_green text-md w-[20px] max-w-[20px]'>
 											<LikeFilled className='mr-2' />
 										</div>
-										:
-										<div className='flex items-center text-nay_red text-md w-[20px] max-w-[20px]'>
-											<DislikeFilled className='mr-2' />
-										</div>
+										: voteData.decision === 'no' ?
+											<div className='flex items-center text-nay_red text-md w-[20px] max-w-[20px]'>
+												<DislikeFilled className='mr-2' />
+											</div>
+											: <div className='flex items-center text-gray-500 text-md w-[20px] max-w-[20px]'>
+												<MinusCircleFilled className='mr-2' />
+											</div>
 									}
 								</div>
 								: <></>
