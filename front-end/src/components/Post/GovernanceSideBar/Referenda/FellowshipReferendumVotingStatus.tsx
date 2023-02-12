@@ -22,7 +22,7 @@ const FellowshipReferendumVotingStatus = ({ className, referendumId }: Props) =>
 
 	const fetchVotesData = useCallback(() => {
 		setLoading(true);
-		fetch('https://squid.subsquid.io/kusama-polkassembly/v/v1/graphql',
+		fetch('https://squid.subsquid.io/kusama-polkassembly/v/v2/graphql',
 			{ body: JSON.stringify({
 				query: `query MyQuery {
 					proposals(where: {type_eq: FellowshipReferendum, index_eq: ${referendumId}}) {
