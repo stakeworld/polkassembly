@@ -5,8 +5,7 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import { Spin } from 'antd';
 import BN from 'bn.js';
-import React, { memo, useCallback, useContext, useEffect, useState } from 'react';
-import { ApiContext } from 'src/context/ApiContext';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { subscanApiHeaders } from 'src/global/apiHeaders';
 import { getFailingThreshold } from 'src/polkassemblyutils';
 import { LoadingStatusType } from 'src/types';
@@ -23,6 +22,7 @@ import VotersList from './VotersList';
 interface Props {
 	className?: string
 	referendumId: number
+	totalIssuance: BN | null
 }
 
 type VoteInfo = {
@@ -38,8 +38,7 @@ type VoteInfo = {
 const ZERO = new BN(0);
 const NETWORK = getNetwork();
 
-const ReferendumVoteInfo = ({ className, referendumId }: Props) => {
-	const { api, apiReady } = useContext(ApiContext);
+const ReferendumVoteInfo = ({ className, referendumId, totalIssuance }: Props) => {
 	const [loadingStatus, setLoadingStatus] = useState<LoadingStatusType>({ isLoading: true, message:'Loading votes' });
 	const [voteInfo, setVoteInfo] = useState<VoteInfo | null>(null);
 	const [turnoutPercentage, setTurnoutPercentage] = useState<number | null>(null);
@@ -129,32 +128,12 @@ const ReferendumVoteInfo = ({ className, referendumId }: Props) => {
 	} , [voteInfo]);
 
 	useEffect(() => {
-		if (!api || !apiReady) return;
-		if(voteInfo && turnoutPercentage) return;
-
-		let unsubscribe: () => void;
-
-		setLoadingStatus({
-			isLoading: true,
-			message: 'Loading Data'
-		});
-
-		api.query.balances.totalIssuance((result) => {
-			fetchReferendumVoteInfo(result as BN);
-			calculateTurnoutPercentage(result as BN);
-		})
-			.then( unsub => {
-				unsubscribe = unsub;
-				setLoadingStatus({
-					isLoading: false,
-					message: 'Loading Data'
-				});
-			})
-			.catch(console.error);
-
-		return () => unsubscribe && unsubscribe();
+		if (totalIssuance) {
+			fetchReferendumVoteInfo(totalIssuance);
+			calculateTurnoutPercentage(totalIssuance);
+		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	},[api, apiReady]);
+	}, [totalIssuance]);
 
 	return (
 		<>
@@ -208,7 +187,4 @@ const ReferendumVoteInfo = ({ className, referendumId }: Props) => {
 	);
 };
 
-export default memo(ReferendumVoteInfo, (prevProps, nextProps) => {
-	// return true if the props haven't changed, false otherwise
-	return prevProps.referendumId === nextProps.referendumId;
-});
+export default memo(ReferendumVoteInfo);
