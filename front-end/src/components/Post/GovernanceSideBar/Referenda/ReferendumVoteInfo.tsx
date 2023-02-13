@@ -5,10 +5,9 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import { Spin } from 'antd';
 import BN from 'bn.js';
-import React, { memo, useContext, useEffect, useMemo, useState } from 'react';
+import React, { memo, useCallback, useContext, useEffect, useState } from 'react';
 import { ApiContext } from 'src/context/ApiContext';
 import { subscanApiHeaders } from 'src/global/apiHeaders';
-import { useFetch } from 'src/hooks';
 import { getFailingThreshold } from 'src/polkassemblyutils';
 import { LoadingStatusType } from 'src/types';
 import GovSidebarCard from 'src/ui-components/GovSidebarCard';
@@ -41,29 +40,97 @@ const NETWORK = getNetwork();
 
 const ReferendumVoteInfo = ({ className, referendumId }: Props) => {
 	const { api, apiReady } = useContext(ApiContext);
-	const [totalIssuance, setTotalIssuance] = useState<BN | null>(null);
 	const [loadingStatus, setLoadingStatus] = useState<LoadingStatusType>({ isLoading: true, message:'Loading votes' });
 	const [voteInfo, setVoteInfo] = useState<VoteInfo | null>(null);
+	const [turnoutPercentage, setTurnoutPercentage] = useState<number | null>(null);
 
-	const { data: voteInfoData, error:voteInfoError } = useFetch<any>(
-		`https://${NETWORK}.api.subscan.io/api/scan/democracy/referendum`,
-		{
+	const fetchReferendumVoteInfo = useCallback((totalIssuance: BN) => {
+		if(voteInfo) return;
+
+		setLoadingStatus({
+			isLoading: true,
+			message: 'Loading Data'
+		});
+
+		fetch(`https://${NETWORK}.api.subscan.io/api/scan/democracy/referendum`, {
 			body: JSON.stringify({
 				referendum_index: referendumId
 			}),
 			headers: subscanApiHeaders,
 			method: 'POST'
+		})
+			.then((res) => res.json())
+			.then(voteInfoData => {
+
+				if(voteInfoData && voteInfoData.data && voteInfoData.data.info) {
+					const info = voteInfoData.data.info;
+
+					const voteInfo: VoteInfo = {
+						aye_amount : ZERO,
+						aye_without_conviction: ZERO,
+						isPassing: null,
+						nay_amount: ZERO,
+						nay_without_conviction: ZERO,
+						turnout: ZERO,
+						voteThreshold: ''
+					};
+
+					voteInfo.aye_amount = new BN(info.aye_amount);
+					voteInfo.aye_without_conviction = new BN(info.aye_without_conviction);
+					voteInfo.nay_amount = new BN(info.nay_amount);
+					voteInfo.nay_without_conviction = new BN(info.nay_without_conviction);
+					voteInfo.turnout = new BN(info.turnout);
+					voteInfo.voteThreshold = info.vote_threshold.split(/(?=[A-Z])/).join(' ');
+
+					if(totalIssuance !== null) {
+						let capitalizedVoteThreshold = info.vote_threshold.toLowerCase();
+						capitalizedVoteThreshold = `${capitalizedVoteThreshold.charAt(0).toUpperCase()}${capitalizedVoteThreshold.slice(1)}`;
+						//nays needed for a referendum to fail
+						const { failingThreshold } = getFailingThreshold({
+							ayes: voteInfo.aye_amount,
+							ayesWithoutConviction: voteInfo.aye_without_conviction,
+							threshold: capitalizedVoteThreshold,
+							totalIssuance: totalIssuance
+						});
+
+						if(failingThreshold){
+							try {
+								if(voteInfo.nay_amount.gte(failingThreshold)) {
+									voteInfo.isPassing = false;
+								} else {
+									voteInfo.isPassing = true;
+								}
+							} catch(e) {
+								console.log('Error calculating Passing state: ', e);
+							}
+						}
+					}
+
+					setVoteInfo(voteInfo);
+				}
+
+			}).finally(() => {
+				setLoadingStatus({
+					isLoading: false,
+					message: 'Loading Data'
+				});
+			});
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	const calculateTurnoutPercentage = useCallback((totalIssuance: BN) => {
+		if (!voteInfo || !totalIssuance) {
+			return 0;
 		}
-	);
+		// BN doens't handle floats. If we devide a number by a bigger number (12/100 --> 0.12), the result will be 0
+		// therefore, we first multiply by 10 000, which gives (120 000/100 = 1200) go to Number which supports floats
+		// and devide by 100 to have percentage --> 12.00%
+		setTurnoutPercentage(voteInfo?.turnout.muln(10000).div(totalIssuance).toNumber()/100);
+	} , [voteInfo]);
 
 	useEffect(() => {
-		if (!api) {
-			return;
-		}
-
-		if (!apiReady) {
-			return;
-		}
+		if (!api || !apiReady) return;
+		if(voteInfo && turnoutPercentage) return;
 
 		let unsubscribe: () => void;
 
@@ -73,7 +140,8 @@ const ReferendumVoteInfo = ({ className, referendumId }: Props) => {
 		});
 
 		api.query.balances.totalIssuance((result) => {
-			setTotalIssuance(result as BN);
+			fetchReferendumVoteInfo(result as BN);
+			calculateTurnoutPercentage(result as BN);
 		})
 			.then( unsub => {
 				unsubscribe = unsub;
@@ -85,76 +153,8 @@ const ReferendumVoteInfo = ({ className, referendumId }: Props) => {
 			.catch(console.error);
 
 		return () => unsubscribe && unsubscribe();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	},[api, apiReady]);
-
-	useEffect(() => {
-		setLoadingStatus({
-			isLoading: true,
-			message: 'Loading Data'
-		});
-
-		if(!voteInfoError && voteInfoData && voteInfoData.data && voteInfoData.data.info) {
-			const info = voteInfoData.data.info;
-
-			const voteInfo: VoteInfo = {
-				aye_amount : ZERO,
-				aye_without_conviction: ZERO,
-				isPassing: null,
-				nay_amount: ZERO,
-				nay_without_conviction: ZERO,
-				turnout: ZERO,
-				voteThreshold: ''
-			};
-
-			voteInfo.aye_amount = new BN(info.aye_amount);
-			voteInfo.aye_without_conviction = new BN(info.aye_without_conviction);
-			voteInfo.nay_amount = new BN(info.nay_amount);
-			voteInfo.nay_without_conviction = new BN(info.nay_without_conviction);
-			voteInfo.turnout = new BN(info.turnout);
-			voteInfo.voteThreshold = info.vote_threshold.split(/(?=[A-Z])/).join(' ');
-
-			if(totalIssuance !== null) {
-				let capitalizedVoteThreshold = info.vote_threshold.toLowerCase();
-				capitalizedVoteThreshold = `${capitalizedVoteThreshold.charAt(0).toUpperCase()}${capitalizedVoteThreshold.slice(1)}`;
-				//nays needed for a referendum to fail
-				const { failingThreshold } = getFailingThreshold({
-					ayes: voteInfo.aye_amount,
-					ayesWithoutConviction: voteInfo.aye_without_conviction,
-					threshold: capitalizedVoteThreshold,
-					totalIssuance: totalIssuance
-				});
-
-				if(failingThreshold){
-					try {
-						if(voteInfo.nay_amount.gte(failingThreshold)) {
-							voteInfo.isPassing = false;
-						} else {
-							voteInfo.isPassing = true;
-						}
-					} catch(e) {
-						console.log('Error calculating Passing state: ', e);
-					}
-				}
-			}
-
-			setVoteInfo(voteInfo);
-		}
-
-		setLoadingStatus({
-			isLoading: false,
-			message: 'Loading Data'
-		});
-	}, [voteInfoData, voteInfoError, totalIssuance]);
-
-	const turnoutPercentage = useMemo(() => {
-		if (!voteInfo || !totalIssuance) {
-			return 0;
-		}
-		// BN doens't handle floats. If we devide a number by a bigger number (12/100 --> 0.12), the result will be 0
-		// therefore, we first multiply by 10 000, which gives (120 000/100 = 1200) go to Number which supports floats
-		// and devide by 100 to have percentage --> 12.00%
-		return voteInfo?.turnout.muln(10000).div(totalIssuance).toNumber()/100;
-	} , [voteInfo, totalIssuance]);
 
 	return (
 		<>
@@ -184,7 +184,7 @@ const ReferendumVoteInfo = ({ className, referendumId }: Props) => {
 
 							<div className='flex-1 flex flex-col justify-between ml-4 md:ml-6 2xl:ml-12 py-9'>
 								<div className='mb-auto flex items-center'>
-									<div className='mr-auto text-sidebarBlue font-medium'>Turnout {turnoutPercentage > 0 && <span className='turnoutPercentage'>({turnoutPercentage}%)</span>}</div>
+									<div className='mr-auto text-sidebarBlue font-medium'>Turnout {turnoutPercentage && turnoutPercentage > 0 && <span className='turnoutPercentage'>({turnoutPercentage}%)</span>}</div>
 									<div className='text-navBlue'>{formatBnBalance(voteInfo?.turnout, { numberAfterComma: 2, withUnit: true })}</div>
 								</div>
 
@@ -208,4 +208,7 @@ const ReferendumVoteInfo = ({ className, referendumId }: Props) => {
 	);
 };
 
-export default memo(ReferendumVoteInfo);
+export default memo(ReferendumVoteInfo, (prevProps, nextProps) => {
+	// return true if the props haven't changed, false otherwise
+	return prevProps.referendumId === nextProps.referendumId;
+});
