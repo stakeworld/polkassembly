@@ -7,7 +7,8 @@ import { Signer } from '@polkadot/api/types';
 import { isWeb3Injected, web3Enable } from '@polkadot/extension-dapp';
 import { Injected, InjectedAccount, InjectedWindow } from '@polkadot/extension-inject/types';
 import { Form } from 'antd';
-import React, { useContext, useEffect, useState } from 'react';
+import BN from 'bn.js';
+import React, { memo, useContext, useEffect, useState } from 'react';
 import { ApiContext } from 'src/context/ApiContext';
 import { OnchainLinkBountyFragment, OnchainLinkChildBountyFragment, OnchainLinkMotionFragment, OnchainLinkProposalFragment, OnchainLinkReferendumFragment, OnchainLinkTechCommitteeProposalFragment, OnchainLinkTipFragment, OnchainLinkTreasuryProposalFragment } from 'src/generated/graphql';
 import { APPNAME } from 'src/global/appName';
@@ -58,6 +59,7 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 	const [accountsNotFound, setAccountsNotFound] = useState(false);
 	const [accountsMap, setAccountsMap] = useState<{[key:string]:string}>({});
 	const [signersMap, setSignersMap] = useState<{[key:string]: Signer}>({});
+	const [totalIssuance, setTotalIssuance] = useState<BN | null>(null);
 
 	const { api, apiReady } = useContext(ApiContext);
 	const [lastVote, setLastVote] = useState<string | null | undefined>(undefined);
@@ -70,18 +72,29 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 	};
 
 	useEffect(() => {
-		if (!api) {
-			return;
-		}
-
-		if (!apiReady) {
-			return;
-		}
+		if (!api || !apiReady) return;
 
 		const signer: Signer = signersMap[accountsMap[address]];
 		api?.setSigner(signer);
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [address]);
+
+	useEffect(() => {
+		if (!api || !apiReady || totalIssuance) return;
+
+		let unsubscribe: () => void;
+
+		api.query.balances.totalIssuance((result) => {
+			setTotalIssuance(result as BN);
+		})
+			.then( unsub => {
+				unsubscribe = unsub;
+			})
+			.catch(console.error);
+
+		return () => unsubscribe && unsubscribe();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	},[api, apiReady]);
 
 	const getWalletAccounts = async (chosenWallet: Wallet): Promise<InjectedAccount[] | undefined> => {
 		const injectedWindow = window as Window & InjectedWindow;
@@ -293,6 +306,7 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 								<div className={className}>
 									<ReferendumVoteInfo
 										referendumId={onchainId as number}
+										totalIssuance={totalIssuance}
 									/>
 								</div>
 							}
@@ -391,7 +405,7 @@ const GovernanceSideBar = ({ canEdit, className, isBounty, isMotion, isProposal,
 	);
 };
 
-export default styled(GovernanceSideBar)`
+export default styled(memo(GovernanceSideBar))`
 	.edit-icon-wrapper{
 		transition: all 0.5s;
 	}
