@@ -8,7 +8,7 @@ import { AllianceApiContext } from 'src/context/AllianceApiContext';
 import { ErrorState } from 'src/ui-components/UIStates';
 import { LoadingState } from 'src/ui-components/UIStates';
 
-import MembersListing from './MembersListing';
+import AllianceAnnouncementsListing from './AllianceAnnouncementListing';
 
 const AllianceAnnouncements = ({ className } : { className?:string }) => {
 	const { api, apiReady } = useContext(AllianceApiContext);
@@ -34,17 +34,19 @@ const AllianceAnnouncements = ({ className } : { className?:string }) => {
 		return <ErrorState errorMessage={error.message} />;
 	}
 
-	return (
-		<>
-			<div className={`${className} shadow-md bg-white p-3 md:p-8 rounded-md`}>
-				<div className='flex items-center justify-between'>
-					<h1 className='dashboard-heading'>Announcements</h1>
-				</div>
+	if(announcements){
+		return (
+			<>
+				<div className={`${className} shadow-md bg-white p-3 md:p-8 rounded-md`}>
+					<div className='flex items-center justify-between'>
+						<h1 className='dashboard-heading'>Announcements</h1>
+					</div>
 
-				<MembersListing className='mt-6' data={announcements} prime={''} />
-			</div>
-		</>
-	);
+					<AllianceAnnouncementsListing className='mt-6' data={announcements} />
+				</div>
+			</>
+		);
+	}
 
 	return (
 		<div className={className}><LoadingState /></div>

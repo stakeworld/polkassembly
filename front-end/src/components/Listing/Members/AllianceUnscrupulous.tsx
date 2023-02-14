@@ -10,15 +10,13 @@ import { post_type } from 'src/global/post_types';
 import { ErrorState } from 'src/ui-components/UIStates';
 import { LoadingState } from 'src/ui-components/UIStates';
 
-import MembersListing from './MembersListing';
+import AllianceAnnouncementsListing from './AllianceAnnouncementListing';
 
 const AllianceUnscrupulous = ({ className } : { className?:string }) => {
 	const { api, apiReady } = useContext(AllianceApiContext);
 	const [error, setErr] = useState<Error | null>(null);
 	const [accounts, setAccounts] = useState<string[]>([]);
 	const [websites, setWebsites] = useState<string[]>([]);
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [alliance, setAlliance] = useState<any>();
 	useEffect(() => {
 		if (!api) {
 			return;
@@ -48,25 +46,27 @@ const AllianceUnscrupulous = ({ className } : { className?:string }) => {
 		return <ErrorState errorMessage={error.message} />;
 	}
 
-	return (
-		<>
-			<div className={`${className} shadow-md bg-white p-3 md:p-8 rounded-md`}>
-				<div className='flex items-center justify-between'>
-					<h1 className='dashboard-heading'>Accounts</h1>
+	if(accounts || websites){
+		return (
+			<>
+				<div className={`${className} shadow-md bg-white p-3 md:p-8 rounded-md`}>
+					<div className='flex items-center justify-between'>
+						<h1 className='dashboard-heading'>Accounts</h1>
+					</div>
+
+					<AllianceAnnouncementsListing className='mt-6' data={accounts} />
 				</div>
 
-				<MembersListing className='mt-6' data={accounts} prime={''} />
-			</div>
+				<div className={`${className} shadow-md bg-white p-3 md:p-8 rounded-md`}>
+					<div className='flex items-center justify-between'>
+						<h1 className='dashboard-heading'>Websites</h1>
+					</div>
 
-			<div className={`${className} shadow-md bg-white p-3 md:p-8 rounded-md`}>
-				<div className='flex items-center justify-between'>
-					<h1 className='dashboard-heading'>Websites</h1>
+					<AllianceAnnouncementsListing className='mt-6' data={websites}/>
 				</div>
-
-				<MembersListing className='mt-6' data={websites} prime={''} />
-			</div>
-		</>
-	);
+			</>
+		);
+	}
 
 	return (
 		<div className={className}><LoadingState /></div>
