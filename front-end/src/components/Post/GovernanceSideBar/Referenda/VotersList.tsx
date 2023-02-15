@@ -5,7 +5,7 @@ import { DislikeFilled, LeftOutlined, LikeFilled, RightOutlined } from '@ant-des
 import { LoadingOutlined } from '@ant-design/icons';
 import { Pagination, PaginationProps, Segmented, Spin } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
-import { subscanApiHeaders } from 'src/global/apiHeaders';
+import { subsquidApiHeaders } from 'src/global/apiHeaders';
 import { LoadingStatusType } from 'src/types';
 import Address from 'src/ui-components/Address';
 import GovSidebarCard from 'src/ui-components/GovSidebarCard';
@@ -23,8 +23,14 @@ const VotersList = ({ className, referendumId } : Props) => {
 	const [loadingStatus, setLoadingStatus] = useState<LoadingStatusType>({ isLoading: true, message:'Loading votes' });
 	const [votersList, setVotersList] = useState<any | null>(null);
 	const [count, setCount] = useState<number | undefined>(undefined);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [currentPage, setCurrentPage] = useState<number>(0);
-	const [showAyes, setShowAyes] = useState(true);
+	const [showAyes, setShowAyes] = useState('yes');
+
+	let fetchQuery = 'https://squid.subsquid.io/kusama-polkassembly/v/v2/graphql';
+	if(NETWORK === 'polkadot'){
+		fetchQuery = 'https://squid.subsquid.io/polkassembly-polkadot/v/v1/graphql';
+	}
 
 	const fetchVotersList = useCallback(() => {
 		setLoadingStatus({
@@ -32,23 +38,42 @@ const VotersList = ({ className, referendumId } : Props) => {
 			message: 'Loading Data'
 		});
 
-		fetch(`https://${NETWORK}.api.subscan.io/api/scan/democracy/votes`,
+		fetch(fetchQuery,
 			{
 				body: JSON.stringify({
-					page: currentPage,
-					referendum_index: referendumId,
-					row: 10
+					query: `query MyQuery {
+						votes(limit: 10, where: {type_eq: Referendum, decision_eq: ${showAyes}, proposal: {index_eq: ${referendumId}}}) {
+						  balance {
+							... on SplitVoteBalance {
+							  aye
+							  nay
+							  abstain
+							}
+							... on StandardVoteBalance {
+							  value
+							}
+						  }
+						  blockNumber
+						  decision
+						  lockPeriod
+						  id
+						  proposalId
+						  timestamp
+						  type
+						  voter
+						}
+					  }`
 				}),
-				headers: subscanApiHeaders,
+				headers: subsquidApiHeaders,
 				method: 'POST'
 			}).then(async (res) => {
 			const votersData = await res.json();
 
-			if(votersData && votersData.data && votersData.data.list) {
+			if(votersData && votersData.data && votersData.data.votes) {
 				if(!count) {
-					setCount(votersData.data.count);
+					setCount(votersData.data.votes.length);
 				}
-				setVotersList(votersData.data.list);
+				setVotersList(votersData.data.votes);
 			}
 
 			setLoadingStatus({
@@ -58,7 +83,7 @@ const VotersList = ({ className, referendumId } : Props) => {
 		}).catch((err) => {
 			console.error('Error in fetching vote data:', err);
 		});
-	}, [count, currentPage, referendumId]);
+	}, [count, fetchQuery, referendumId, showAyes]);
 
 	useEffect(() => {
 		fetchVotersList();
@@ -83,8 +108,8 @@ const VotersList = ({ className, referendumId } : Props) => {
 								block
 								className='px-3 py-2 rounded-md w-full'
 								size="large"
-								defaultValue={showAyes ? 'ayes' : 'nays'}
-								onChange={(value) => setShowAyes(value === 'ayes')}
+								defaultValue={showAyes === 'yes' ? 'ayes' : 'nays'}
+								onChange={(value) => setShowAyes(value === 'ayes' ? 'yes' : 'no')}
 								options={[
 									{
 										icon: <LikeFilled />,
@@ -108,17 +133,17 @@ const VotersList = ({ className, referendumId } : Props) => {
 								<div className='w-[30px]'>Vote</div>
 							</div>
 
-							{votersList.filter((voteData: any) => voteData.passed === showAyes).map((voteData: any, index:number) =>
+							{votersList.filter((voteData: any) => voteData.decision === showAyes).map((voteData: any, index:number) =>
 								<div className='flex items-center justify-between mb-9' key={index}>
 									<div className='w-[110px] max-w-[110px] overflow-ellipsis'>
-										<Address textClassName='w-[75px]' displayInline={true} address={voteData.account.address} />
+										<Address textClassName='w-[75px]' displayInline={true} address={voteData.voter} />
 									</div>
 
-									<div className='w-[80px] max-w-[80px] overflow-ellipsis'>{formatBnBalance(voteData.amount, { numberAfterComma: 2, withUnit: true })}</div>
+									<div className='w-[80px] max-w-[80px] overflow-ellipsis'>{formatBnBalance(voteData.balance.value, { numberAfterComma: 2, withUnit: true })}</div>
 
-									<div className='w-[50px] max-w-[50px] overflow-ellipsis'>{voteData.conviction}x</div>
+									<div className='w-[50px] max-w-[50px] overflow-ellipsis'>{voteData.lockPeriod}x</div>
 
-									{voteData.passed ?
+									{voteData.decision === 'yes' ?
 										<div className='flex items-center text-aye_green text-md w-[20px] max-w-[20px]'>
 											<LikeFilled className='mr-2' />
 										</div>
