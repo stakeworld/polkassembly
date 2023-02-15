@@ -13,7 +13,7 @@ import AllianceAnnouncementsListing from './AllianceAnnouncementListing';
 const AllianceAnnouncements = ({ className } : { className?:string }) => {
 	const { api, apiReady } = useContext(AllianceApiContext);
 	const [error, setErr] = useState<Error | null>(null);
-	const [announcements, setAnnouncements] = useState<string[]>([]);
+	const [announcements, setAnnouncements] = useState<any[]>([]);
 	useEffect(() => {
 		if (!api) {
 			return;
@@ -25,7 +25,10 @@ const AllianceAnnouncements = ({ className } : { className?:string }) => {
 
 		api.query.alliance.announcements().then((cids) => {
 			setAnnouncements(cids.toHuman() as string[]);
-			console.log('announcement', cids);
+			const res = cids.map((cid) => {
+				return cid.toJSON();
+			});
+			setAnnouncements(res);
 		}).catch(error => setErr(error));
 
 	}, [api, apiReady]);
