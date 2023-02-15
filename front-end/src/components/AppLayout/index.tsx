@@ -125,7 +125,7 @@ const gov1Items: {[x:string]: ItemType[]} = {
 	],
 	allianceItems: [
 		getSiderMenuItem('Members', '/alliance-members', <MembersIcon className='text-white' />),
-		getSiderMenuItem('Motions', '/alliance-motions', <MotionsIcon className='text-white' />),
+		// getSiderMenuItem('Motions', '/alliance-motions', <MotionsIcon className='text-white' />),
 		getSiderMenuItem('Announcements', '/alliance-announcements', <NewsIcon className='text-white' />),
 		getSiderMenuItem('Unscrupulous', '/alliance-unscrupulous', <ReferendaIcon className='text-white' />)
 	]
@@ -157,7 +157,7 @@ const items: MenuProps['items'] = [
 		...gov1Items.techCommItems
 	]),
 
-	getSiderMenuItem('Alliance', 'alliance', null, [
+	getSiderMenuItem('Alliance', 'alliance_group', null, [
 		...gov1Items.allianceItems
 	])
 ];
@@ -308,7 +308,7 @@ const AppLayout = ({ className }: { className?:string }) => {
 						theme="light"
 						mode="inline"
 						selectedKeys={[pathname]}
-						defaultOpenKeys={['democracy_group', 'treasury_group', 'council_group', 'tech_comm_group']}
+						defaultOpenKeys={['democracy_group', 'treasury_group', 'council_group', 'tech_comm_group', 'alliance_group']}
 						items={sidebarItems}
 						onClick={handleMenuClick}
 						className={`${username?'auth-sider-menu':''} mt-[60px]`}
@@ -319,7 +319,7 @@ const AppLayout = ({ className }: { className?:string }) => {
 						theme="light"
 						mode="inline"
 						selectedKeys={[pathname]}
-						defaultOpenKeys={['democracy_group', 'treasury_group', 'council_group', 'tech_comm_group']}
+						defaultOpenKeys={['democracy_group', 'treasury_group', 'council_group', 'tech_comm_group', 'alliance_group']}
 						items={sidebarItems}
 						onClick={handleMenuClick}
 						className={`${username?'auth-sider-menu':''} mt-[60px]`}
