@@ -79,6 +79,7 @@ export const trackInfo: TrackInfoType = {
 		trackId: 34
 	},
 	[PostOrigin.CANDIDATES] : {
+		type: 'fellowship',
 		description: 'Origin commanded by any members of the Polkadot Fellowship (no Dan grade needed)',
 		trackId: 0,
 		'name': 'candidates',
@@ -104,6 +105,7 @@ export const trackInfo: TrackInfoType = {
 		}
 	},
 	[PostOrigin.MEMBERS] : {
+		type: 'fellowship',
 		description: 'Origin commanded by rank 1 of the Polkadot Fellowship and with a success of 1',
 		trackId: 1,
 		'name': 'members',
@@ -129,6 +131,7 @@ export const trackInfo: TrackInfoType = {
 		}
 	},
 	[PostOrigin.PROFICIENTS] : {
+		type: 'fellowship',
 		description: 'Origin commanded by rank 2 of the Polkadot Fellowship and with a success of 2',
 		trackId: 2,
 		'name': 'proficients',
@@ -154,6 +157,7 @@ export const trackInfo: TrackInfoType = {
 		}
 	},
 	[PostOrigin.FELLOWS] : {
+		type: 'fellowship',
 		description: 'Origin commanded by Polkadot Fellows (3rd Dan fellows or greater)',
 		trackId: 3,
 		'name': 'fellows',
@@ -179,6 +183,7 @@ export const trackInfo: TrackInfoType = {
 		}
 	},
 	[PostOrigin.SENIOR_FELLOWS] : {
+		type: 'fellowship',
 		description: 'Origin commanded by rank 4 of the Polkadot Fellowship and with a success of 4',
 		trackId: 4,
 		'name': 'senior fellows',
@@ -204,6 +209,7 @@ export const trackInfo: TrackInfoType = {
 		}
 	},
 	[PostOrigin.EXPERTS] : {
+		type: 'fellowship',
 		description: 'Origin commanded by Polkadot Experts (5th Dan fellows or greater)',
 		trackId: 5,
 		'name': 'experts',
@@ -229,6 +235,7 @@ export const trackInfo: TrackInfoType = {
 		}
 	},
 	[PostOrigin.SENIOR_EXPERTS] : {
+		type: 'fellowship',
 		description: 'Origin commanded by rank 6 of the Polkadot Fellowship and with a success of 6',
 		trackId: 6,
 		'name': 'senior experts',
@@ -254,6 +261,7 @@ export const trackInfo: TrackInfoType = {
 		}
 	},
 	[PostOrigin.MASTERS] : {
+		type: 'fellowship',
 		description: 'Origin commanded by Polkadot Masters (7th Dan fellows of greater)',
 		trackId: 7,
 		'name': 'masters',
@@ -279,6 +287,7 @@ export const trackInfo: TrackInfoType = {
 		}
 	},
 	[PostOrigin.SENIOR_MASTERS] : {
+		type: 'fellowship',
 		description: 'Origin commanded by rank 8 of the Polkadot Fellowship and with a success of 8',
 		trackId: 8,
 		'name': 'senior masters',
@@ -304,6 +313,7 @@ export const trackInfo: TrackInfoType = {
 		}
 	},
 	[PostOrigin.GRAND_MASTERS] : {
+		type: 'fellowship',
 		description: 'Origin commanded by rank 9 of the Polkadot Fellowship and with a success of 9',
 		trackId: 9,
 		'name': 'grand masters',
