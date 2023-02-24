@@ -34,6 +34,11 @@ export const trackInfo: TrackInfoType = {
 		group: 'Fellowship',
 		trackId: 13
 	},
+	[PostOrigin.FELLOWSHIP1DAN] : {
+		description: 'Origin for managing the composition of the fellowship.',
+		group: 'Fellowship',
+		trackId: 13
+	},
 	[PostOrigin.GENERAL_ADMIN] : {
 		description: 'Origin for managing the registrar.',
 		group: 'Governance',
