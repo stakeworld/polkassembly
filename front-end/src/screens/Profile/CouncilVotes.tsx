@@ -2,17 +2,16 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DislikeFilled, LikeFilled } from '@ant-design/icons';
+/* eslint-disable */
 import {
-	ApolloClient,
-	ApolloProvider,
-	gql,
-	InMemoryCache,
-	useQuery  } from '@apollo/client';
-import { Table } from 'antd';
+	DislikeFilled,
+	LikeFilled
+} from '@ant-design/icons';
+import { Pagination, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { subsquidApiHeaders } from 'src/global/apiHeaders';
 
 // import { Link } from 'react-router-dom';
 import FilteredError from '../../ui-components/FilteredError';
@@ -21,93 +20,118 @@ import Loader from '../../ui-components/Loader';
 import getNetwork from '../../util/getNetwork';
 
 interface Props {
-	address: string;
-	className?: string
+  address: string;
+  className?: string;
 }
 
-interface SUBQUERY_LINKS_TYPE {
-	[network: string]: string
+interface SUBSQUID_LINKS_TYPE {
+  [network: string]: string;
 }
 
-const SUBQUERY_LINKS: SUBQUERY_LINKS_TYPE = {
-	kusama: 'https://api.subquery.network/sq/Premiurly/kusama-council-proposals',
-	polkadot: 'https://api.subquery.network/sq/subquery/tutorial---councillor-voting'
+const SUBSQUID_LINKS: SUBSQUID_LINKS_TYPE = {
+	kusama: 'https://squid.subsquid.io/kusama-polkassembly/v/v2/graphql',
+	polkadot: 'https://squid.subsquid.io/polkassembly-polkadot/v/v1/graphql'
 };
 
 const NETWORK = getNetwork();
 
-const client = new ApolloClient({
-	cache: new InMemoryCache(),
-	uri: SUBQUERY_LINKS[NETWORK]
-});
+const CouncilVotes = ({ className, address }: Props) => {
+	const [offset, setOffset] = useState<number>(0);
+	const [total, setTotal ] = useState<number>(0)
+	const [loading, setLoading] = useState<boolean>(false);
+	const [data, setData] = useState<any>();
+	const [error, setError] = useState<Error | null>(null);
 
-const CouncilVotes = ({ className, address } : Props) => {
+	const fetchVotesData = useCallback(() => {
+		setLoading(true);
+		fetch(`${SUBSQUID_LINKS[NETWORK]}`, {
+			body: JSON.stringify({
+				query: `query MyQuery {
+  							votes(orderBy: blockNumber_DESC, where: {voter_eq: "${address}"}, limit: ${10}, offset: ${0}) {
+    							id
+    							blockNumber
+    							decision
+    							proposal {
+      								index
+      								hash
+    							}
+  							}
+  						votesConnection(where: {voter_eq: "${address}"}, orderBy: blockNumber_DESC) {
+    						totalCount
+  					}
+				}`
+			}),
+			headers: subsquidApiHeaders,
+			method: 'POST'
+		})
+			.then(async (res) => {
+				const response = await res.json();
 
-	const VOTES_QUERY = gql`
-		query {
-			councillor (id: "${address}") {
-				id
-				numberOfVotes
-				voteHistory(orderBy:BLOCK_DESC) {
-					nodes {
-						block
-						approvedVote
-						votedYes
-						votedNo
-						proposalHash {
-							index
-							hash
-						}
-					}
-				}
-			}
-		}
-	`;
+				console.log('RESPONSE', response, res);
+				setData(response?.data?.votes);
+				setTotal(response?.data?.voteComplete?.totalCount)
+			})
+			.catch((err) => {
+				setError(err);
+				console.log('Error in fetching:', err);
+			})
+			.finally(() => {
+				setLoading(false);
+			});
+	}, [address, offset]);
 
-	const { loading, error, data } = useQuery(VOTES_QUERY);
+	useEffect(() => {
+		fetchVotesData();
+	}, [fetchVotesData, offset]);
 
-	const dataSource = data?.councillor?.voteHistory?.nodes?.length ? [...data.councillor.voteHistory.nodes.map((node:any) => ({
-		block: node?.block,
-		proposal: node.proposalHash?.index,
-		vote: node?.approvedVote
-	}) )] : [];
-
-	const columns : ColumnsType<any> = [
+	const columns: ColumnsType<any> = [
 		{
-			dataIndex:'proposal',
+			dataIndex: 'proposal',
 			key: 'proposal',
 			render: (proposal) => (
-				<Link to={`/motion/${proposal}`}>
-					<h3>Motion #{proposal}</h3>
+				<Link to={`/motion/${proposal?.index}`}>
+					<h3>
+            Motion <div id={proposal?.index}></div>
+					</h3>
 				</Link>
 			),
-			title:'Proposals'
+			title: 'Proposals'
 		},
 		{
-			dataIndex:'block',
-			key: 'block',
-			render: (block) => (
-				<a href={`https://${NETWORK}.subscan.io/block/${block}`}>
-					<h6>#{block}</h6>
+			dataIndex: 'blockNumber',
+			key: 'blockNumber',
+			render: (blockNumber) => (
+				<a href={`https://${NETWORK}.subscan.io/block/${blockNumber}`}>
+					<h6>#{blockNumber}</h6>
 				</a>
 			),
-			title:'Block'
+			title: 'Block'
 		},
 		{
-			dataIndex:'vote',
-			key: 'vote',
-			render: (vote) => (
+			dataIndex: 'decision',
+			key: 'decision',
+			render: (decision) => (
 				<>
-					{vote ? <div className='flex items-center'>
-						<LikeFilled className='text-green_primary' /> <span className='text-green_primary ml-2'>Aye</span>
-					</div> : <div className='flex items-center'>
-						<DislikeFilled className='text-red_primary' /> <span className='text-red_primary ml-2'>Nay</span>
-					</div>}
+					{decision === 'yes' ? (
+						<div className="flex items-center">
+							<LikeFilled className="text-green_primary" />{' '}
+							<span className="text-green_primary ml-2">Aye</span>
+						</div>
+					) : (
+						<div className="flex items-center">
+							<DislikeFilled className="text-red_primary" />{' '}
+							<span className="text-red_primary ml-2">Nay</span>
+						</div>
+					)}
 				</>
 			),
-			title:'Vote'
+			title: 'Vote'
 		}
 	];
+
+	const handlePagination = () => {
+		if(loading) return;		
+	}
 
 	return (
 		<div className={`${className} p-3 lg:p-6 `}>
@@ -115,19 +139,26 @@ const CouncilVotes = ({ className, address } : Props) => {
 			<div>
 				{loading ? <Loader text={'Loading...'} /> : null}
 				{error ? <FilteredError text={error.message} /> : null}
-				{data?.councillor?.voteHistory?.nodes?.length ? <Table dataSource={dataSource} columns={columns} /> : null}
+				{data?.length ? <Table dataSource={data} columns={columns} pagination={false} /> : null}
+			</div>
+
+			<div className='flex justify-end mt-6'>
+				<Pagination 
+					defaultCurrent={1}
+					pageSize={20}
+					total={total} 
+					showSizeChanger={false}
+					hideOnSinglePage={true} 
+					onChange={handlePagination} 
+					responsive={true}
+				/>
 			</div>
 		</div>
 	);
-
 };
 
 const Container = ({ address }: { address: string }) => {
-	return (
-		<ApolloProvider client={client}>
-			<CouncilVotes address={address} />
-		</ApolloProvider>
-	);
+	return <CouncilVotes address={address} />;
 };
 
 export default Container;
