@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Post from 'src/components/Post/Post';
 import { useReferendumV2PostAndCommentsLazyQuery } from 'src/generated/graphql';
+import { trackInfo } from 'src/global/post_trackInfo';
 import BackToListingView from 'src/ui-components/BackToListingView';
 import { ErrorState, LoadingState } from 'src/ui-components/UIStates';
 
@@ -33,7 +34,12 @@ const ReferendumV2Post = ({ councilBoardSidebar=false, postID }: Props) => {
 	if (error?.message) return <ErrorState errorMessage={error.message} />;
 
 	if (data) {
-		const trackName = data?.posts[0]?.onchain_link?.origin || '';
+		let trackName = '';
+		for (const key of Object.keys(trackInfo)) {
+			if(trackInfo[key].trackId == data?.posts[0]?.onchain_link?.track && trackInfo[key].type != 'fellowship') {
+				trackName = key;
+			}
+		}
 
 		return (<div>
 			{trackName && !councilBoardSidebar && <BackToListingView trackName={trackName} />}
