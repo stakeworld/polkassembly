@@ -104,7 +104,8 @@ const gov1Items: {[x:string]: ItemType[]} = {
 		getSiderMenuItem('Discussions', '/discussions', <DiscussionsIcon className='text-white' />),
 		getSiderMenuItem('Calendar', '/calendar', <CalendarIcon className='text-white' />),
 		getSiderMenuItem('News', '/news', <NewsIcon className='text-white' />),
-		getSiderMenuItem('Parachains', '/parachains', <ParachainsIcon className='text-white' />)
+		getSiderMenuItem('Parachains', '/parachains', <ParachainsIcon className='text-white' />),
+		getSiderMenuItem('Alliance', 'https://collectives.polkassembly.io/', <ParachainsIcon className='text-white' />)
 	],
 	democracyItems: [
 		getSiderMenuItem('Proposals', '/proposals', <DemocracyProposalsIcon className='text-white' />),
@@ -155,11 +156,11 @@ const items: MenuProps['items'] = [
 
 	getSiderMenuItem('Tech. Comm.', 'tech_comm_group', null, [
 		...gov1Items.techCommItems
-	]),
-
-	getSiderMenuItem('Alliance', 'alliance', null, [
-		...gov1Items.allianceItems
 	])
+
+	// getSiderMenuItem('Alliance', 'alliance', null, [
+	// ...gov1Items.allianceItems
+	// ])
 ];
 
 const collapsedItems: MenuProps['items'] = [
@@ -167,8 +168,8 @@ const collapsedItems: MenuProps['items'] = [
 	...gov1Items.democracyItems,
 	...gov1Items.treasuryItems,
 	...gov1Items.councilItems,
-	...gov1Items.techCommItems,
-	...gov1Items.allianceItems
+	...gov1Items.techCommItems
+	// ...gov1Items.allianceItems
 ];
 
 const gov2TrackItems: {[x:string]: ItemType[]} = {
@@ -264,7 +265,12 @@ const AppLayout = ({ className }: { className?:string }) => {
 
 	const handleMenuClick = (menuItem: any) => {
 		if(['userMenu', 'tracksHeading'].includes(menuItem.key)) return;
-		navigate(menuItem.key);
+		if(menuItem.key.startsWith('https')){
+			window.open(menuItem.key, '_blank');
+		}
+		else{
+			navigate(menuItem.key);
+		}
 		setSidedrawer(false);
 	};
 
