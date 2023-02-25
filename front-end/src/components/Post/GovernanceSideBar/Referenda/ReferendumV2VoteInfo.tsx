@@ -3,14 +3,15 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DislikeFilled, LeftOutlined, LikeFilled, MinusCircleFilled, RightOutlined } from '@ant-design/icons';
-import { Segmented } from 'antd';
+import { Pagination, PaginationProps, Segmented } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
-import { subsquidApiHeaders } from 'src/global/apiHeaders';
+import { subscanApiHeaders, subsquidApiHeaders } from 'src/global/apiHeaders';
 import Address from 'src/ui-components/Address';
 import ErrorAlert from 'src/ui-components/ErrorAlert';
 import GovSidebarCard from 'src/ui-components/GovSidebarCard';
 import { LoadingState, PostEmptyState } from 'src/ui-components/UIStates';
 import formatBnBalance from 'src/util/formatBnBalance';
+import getNetwork from 'src/util/getNetwork';
 
 /* eslint-disable sort-keys */
 interface Props {
@@ -21,12 +22,47 @@ interface Props {
 
 type DecisionType = 'yes' | 'no' | 'abstain';
 
+const NETWORK = getNetwork();
+
 const ReferendumV2VoteInfo = ({ className, referendumId, isFellowshipReferendum } : Props) => {
 	const [offset, setOffset] = useState<number>(0);
 	const [votesList, setVotesList] = useState<any[] | null>(null);
 	const [error, setError] = useState<any>(null);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [fetchDecision, setFetchDecision] = useState<DecisionType>('yes');
+
+	//state for subscan (it has diffrent structure and pagination)
+	const [currentPage, setCurrentPage] = useState<number>(0);
+	const [count, setCount] = useState<number | undefined>(undefined);
+	const [subscanVotersList, setSubscanVotersList] = useState<any | null>(null);
+
+	const fetchVotersListSubscan = useCallback(() => {
+		setLoading(true);
+		setVotesList([]);
+
+		fetch(`https://${NETWORK}.api.subscan.io/api/scan/referenda/votes`,
+			{
+				body: JSON.stringify({
+					page: currentPage,
+					referendum_index: referendumId,
+					row: 10
+				}),
+				headers: subscanApiHeaders,
+				method: 'POST'
+			}).then(async (res) => {
+			const votersData = await res.json();
+			if(votersData && votersData.data && votersData.data.list) {
+				if(!count) {
+					setCount(votersData.data.count);
+				}
+				setSubscanVotersList(votersData.data.list);
+			}
+		}).catch((err) => {
+			console.error('Error in fetching voters data:', err);
+		}).finally(() => {
+			setLoading(false);
+		});
+	}, [count, currentPage, referendumId]);
 
 	const fetchVotesData = useCallback(() => {
 		setLoading(true);
@@ -65,15 +101,22 @@ const ReferendumV2VoteInfo = ({ className, referendumId, isFellowshipReferendum 
 				const response = await res.json();
 				if(response && response.data && (response.data.convictionVotes || response.data.votes)) {
 					const votesData = response.data.convictionVotes || response.data.votes;
-					setVotesList(votesData);
+					if(votesData && votesData.length > 0) {
+						setVotesList(votesData);
+					}else {
+						// fetch votes from subscan
+						fetchVotersListSubscan();
+					}
 				}
 			}).catch((err) => {
 				setError(err);
-				console.log('Error in fetching voters :', err);
+				console.log('Error in fetching vote data :', err);
+				fetchVotersListSubscan();
 			}).finally(() => {
 				setLoading(false);
 			});
-	}, [isFellowshipReferendum, fetchDecision, offset, referendumId]);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isFellowshipReferendum, fetchDecision, offset, referendumId, currentPage]);
 
 	useEffect(() => {
 		fetchVotesData();
@@ -113,7 +156,25 @@ const ReferendumV2VoteInfo = ({ className, referendumId, isFellowshipReferendum 
 		}
 	}
 
-	if(error) return <GovSidebarCard className={className}><ErrorAlert errorMsg='Error in fetching votes, please try again.' /></GovSidebarCard>;
+	const onPaginationChange: PaginationProps['onChange'] = page => {
+		setCurrentPage(page - 1);
+	};
+
+	const getSubscanFetchDecision = (decision: DecisionType) => {
+		// NOTE: documentation says 'aye' but api returns 'ayes'
+		switch(decision) {
+		case 'yes':
+			return 'Ayes';
+		case 'no':
+			return 'Nays';
+		case 'abstain':
+			return 'Abstains';
+		default:
+			return 'Ayes';
+		}
+	};
+
+	if(error && (!votesList || votesList?.length === 0) && (!subscanVotersList || subscanVotersList?.length === 0)) return <GovSidebarCard className={className}><ErrorAlert errorMsg='Error in fetching votes, please try again.' /></GovSidebarCard>;
 
 	if(votesList) {
 		return (
@@ -137,7 +198,7 @@ const ReferendumV2VoteInfo = ({ className, referendumId, isFellowshipReferendum 
 				</div>
 
 				{loading ? <LoadingState />
-					: votesList.length > 0 ?
+					: votesList?.length > 0 ?
 						<div className={`flex flex-col text-xs xl:text-sm xl:max-h-screen gap-y-1 overflow-y-auto px-${isFellowshipReferendum ? '8' : '0'} text-sidebarBlue`}>
 							<div className='flex text-xs items-center justify-between mb-9 font-semibold'>
 								<div className='w-[110px]'>Voter</div>
@@ -174,13 +235,57 @@ const ReferendumV2VoteInfo = ({ className, referendumId, isFellowshipReferendum 
 							)}
 
 						</div>
-						: <PostEmptyState />
+						: subscanVotersList?.length > 0 ?
+							<>
+								{subscanVotersList.filter((voteData: any) => voteData.status === getSubscanFetchDecision(fetchDecision)).map((voteData: any, index:number) =>
+									<div className='flex items-center justify-between mb-9' key={index}>
+										<div className='w-[110px] max-w-[110px] overflow-ellipsis'>
+											<Address textClassName='w-[75px]' displayInline={true} address={voteData.account.address} />
+										</div>
+
+										<div className='w-[80px] max-w-[80px] overflow-ellipsis'>{formatBnBalance(voteData.amount, { numberAfterComma: 2, withUnit: true })}</div>
+
+										<div className='w-[50px] max-w-[50px] overflow-ellipsis'>{voteData.conviction}x</div>
+
+										{voteData.status === 'Ayes' ?
+											<div className='flex items-center text-aye_green text-md w-[20px] max-w-[20px]'>
+												<LikeFilled className='mr-2' />
+											</div>
+											: voteData.status === 'Nays' ?
+												<div className='flex items-center text-nay_red text-md w-[20px] max-w-[20px]'>
+													<DislikeFilled className='mr-2' />
+												</div> :
+												<div className='flex items-center text-gray-500 text-md w-[20px] max-w-[20px]'>
+													<MinusCircleFilled className='mr-2' />
+												</div>
+										}
+									</div>
+								)}
+							</>
+							: <PostEmptyState />
 				}
 
-				<div className="flex items-center justify-center pt-6 bg-white z-10">
-					<div className={`mr-5 flex items-center ${offset === 0 ? ' cursor-default' : 'cursor-pointer hover:text-pink_primary'}`} onClick={() => handlePagination('prev')}><LeftOutlined className='mr-1' /> Prev</div>
-					<div className={`ml-5  flex items-center ${votesList.length < 10 ? ' cursor-default' : 'cursor-pointer hover:text-pink_primary'}`} onClick={() => handlePagination('next')}>Next <RightOutlined  className='ml-1' /></div>
-				</div>
+				{
+					votesList?.length > 0 ?
+						<div className="flex items-center justify-center pt-6 bg-white z-10">
+							<div className={`mr-5 flex items-center ${offset === 0 ? ' cursor-default' : 'cursor-pointer hover:text-pink_primary'}`} onClick={() => handlePagination('prev')}><LeftOutlined className='mr-1' /> Prev</div>
+							<div className={`ml-5  flex items-center ${votesList?.length < 10 ? ' cursor-default' : 'cursor-pointer hover:text-pink_primary'}`} onClick={() => handlePagination('next')}>Next <RightOutlined  className='ml-1' /></div>
+						</div> : subscanVotersList?.length > 0 ?
+							<div className="flex justify-center pt-6 bg-white z-10">
+								<Pagination
+									size="small"
+									defaultCurrent={1}
+									onChange={onPaginationChange}
+									total={count}
+									showSizeChanger={false}
+									pageSize={10}
+									responsive={true}
+									hideOnSinglePage={true}
+									nextIcon={<div className='-mt-1 ml-1'><RightOutlined /></div>}
+									prevIcon={<div className='-mt-1 mr-1'><LeftOutlined className='-mt-10' /></div>}
+								/>
+							</div> : <></>
+				}
 
 			</GovSidebarCard>
 		);

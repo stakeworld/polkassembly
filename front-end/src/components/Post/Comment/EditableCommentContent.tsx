@@ -43,9 +43,10 @@ const EditableCommentContent = ({ authorId, className, content, commentId, refet
 
 	const [form] = Form.useForm();
 	useEffect(() => {
+		if(!isEditing) return;
 		form.setFieldValue('content', content || ''); //initialValues is not working
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [isEditing]);
 
 	const [replyForm] = Form.useForm();
 
