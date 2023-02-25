@@ -104,7 +104,8 @@ const gov1Items: {[x:string]: ItemType[]} = {
 		getSiderMenuItem('Discussions', '/discussions', <DiscussionsIcon className='text-white' />),
 		getSiderMenuItem('Calendar', '/calendar', <CalendarIcon className='text-white' />),
 		getSiderMenuItem('News', '/news', <NewsIcon className='text-white' />),
-		getSiderMenuItem('Parachains', '/parachains', <ParachainsIcon className='text-white' />)
+		getSiderMenuItem('Parachains', '/parachains', <ParachainsIcon className='text-white' />),
+		getSiderMenuItem('Alliance', 'https://collectives.polkassembly.io/', <ParachainsIcon className='text-white' />)
 	],
 	democracyItems: [
 		getSiderMenuItem('Proposals', '/proposals', <DemocracyProposalsIcon className='text-white' />),
@@ -122,12 +123,6 @@ const gov1Items: {[x:string]: ItemType[]} = {
 	],
 	techCommItems: [
 		getSiderMenuItem('Proposals', '/tech-comm-proposals', <DemocracyProposalsIcon className='text-white' />)
-	],
-	allianceItems: [
-		getSiderMenuItem('Members', '/alliance-members', <MembersIcon className='text-white' />),
-		// getSiderMenuItem('Motions', '/alliance-motions', <MotionsIcon className='text-white' />),
-		getSiderMenuItem('Announcements', '/alliance-announcements', <NewsIcon className='text-white' />),
-		getSiderMenuItem('Unscrupulous', '/alliance-unscrupulous', <ReferendaIcon className='text-white' />)
 	]
 };
 
@@ -155,10 +150,6 @@ const items: MenuProps['items'] = [
 
 	getSiderMenuItem('Tech. Comm.', 'tech_comm_group', null, [
 		...gov1Items.techCommItems
-	]),
-
-	getSiderMenuItem('Alliance', 'alliance_group', null, [
-		...gov1Items.allianceItems
 	])
 ];
 
@@ -167,8 +158,7 @@ const collapsedItems: MenuProps['items'] = [
 	...gov1Items.democracyItems,
 	...gov1Items.treasuryItems,
 	...gov1Items.councilItems,
-	...gov1Items.techCommItems,
-	...gov1Items.allianceItems
+	...gov1Items.techCommItems
 ];
 
 const gov2TrackItems: {[x:string]: ItemType[]} = {
@@ -264,7 +254,12 @@ const AppLayout = ({ className }: { className?:string }) => {
 
 	const handleMenuClick = (menuItem: any) => {
 		if(['userMenu', 'tracksHeading'].includes(menuItem.key)) return;
-		navigate(menuItem.key);
+		if(menuItem.key.startsWith('https')){
+			window.open(menuItem.key, '_blank');
+		}
+		else{
+			navigate(menuItem.key);
+		}
 		setSidedrawer(false);
 	};
 
@@ -308,7 +303,7 @@ const AppLayout = ({ className }: { className?:string }) => {
 						theme="light"
 						mode="inline"
 						selectedKeys={[pathname]}
-						defaultOpenKeys={['democracy_group', 'treasury_group', 'council_group', 'tech_comm_group', 'alliance_group']}
+						defaultOpenKeys={['democracy_group', 'treasury_group', 'council_group', 'tech_comm_group']}
 						items={sidebarItems}
 						onClick={handleMenuClick}
 						className={`${username?'auth-sider-menu':''} mt-[60px]`}
@@ -319,7 +314,7 @@ const AppLayout = ({ className }: { className?:string }) => {
 						theme="light"
 						mode="inline"
 						selectedKeys={[pathname]}
-						defaultOpenKeys={['democracy_group', 'treasury_group', 'council_group', 'tech_comm_group', 'alliance_group']}
+						defaultOpenKeys={['democracy_group', 'treasury_group', 'council_group', 'tech_comm_group']}
 						items={sidebarItems}
 						onClick={handleMenuClick}
 						className={`${username?'auth-sider-menu':''} mt-[60px]`}

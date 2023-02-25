@@ -9,7 +9,6 @@ import { BrowserRouter } from 'react-router-dom';
 import Apollo from './components/Apollo';
 import AppLayout from './components/AppLayout';
 import Modal from './components/Modal';
-import { AllianceApiContextProvider } from './context/AllianceApiContext';
 import { ApiContextProvider } from './context/ApiContext';
 import { MetaProvider } from './context/MetaContext';
 import { ModalProvider } from './context/ModalContext';
@@ -28,9 +27,7 @@ function App() {
 								<GlobalStyle />
 								<Modal/>
 								<ApiContextProvider>
-									<AllianceApiContextProvider>
-										<AppLayout />
-									</AllianceApiContextProvider>
+									<AppLayout />
 								</ApiContextProvider>
 							</Apollo>
 						</MetaProvider>
