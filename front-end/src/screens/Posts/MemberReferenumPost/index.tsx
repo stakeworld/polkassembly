@@ -7,6 +7,7 @@ import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Post from 'src/components/Post/Post';
 import { useFellowshipReferendumPostAndCommentsLazyQuery } from 'src/generated/graphql';
+import { trackInfo } from 'src/global/post_trackInfo';
 import { ErrorState, LoadingState } from 'src/ui-components/UIStates';
 
 interface Props {
@@ -32,7 +33,12 @@ const MemberReferendumPost = ({ postID }: Props) => {
 	if (error?.message) return <ErrorState errorMessage={error.message} />;
 
 	if (data) {
-		const trackName = data?.posts[0]?.onchain_link?.origin || '';
+		let trackName = '';
+		for (const key of Object.keys(trackInfo)) {
+			if(trackInfo[key].trackId == data?.posts[0]?.onchain_link?.track && trackInfo[key].type == 'fellowship') {
+				trackName = key;
+			}
+		}
 
 		return (<div>
 			<Link className='text-sidebarBlue hover:text-pink_primary' to={'/member-referenda'}>

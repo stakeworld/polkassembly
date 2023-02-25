@@ -32,6 +32,7 @@ import polkadexLogo from 'src/assets/parachain-logos/polkadex-logo.jpg';
 import polkadotLogo from 'src/assets/parachain-logos/polkadot-logo.jpg';
 import robonomicsLogo from 'src/assets/parachain-logos/robonomics-logo.jpg';
 import shidenLogo from 'src/assets/parachain-logos/shiden-logo.jpg';
+import snowLogo from 'src/assets/parachain-logos/snow-logo.png';
 import tanganikaLogo from 'src/assets/parachain-logos/tanganika-logo.png';
 import turingLogo from 'src/assets/parachain-logos/turing-logo.png';
 import westendLogo from 'src/assets/parachain-logos/westend-logo.jpg';
@@ -70,6 +71,7 @@ export const network = {
 	ROBONOMICS: 'robonomics',
 	SHIBUYA: 'shibuya',
 	SHIDEN: 'shiden',
+	SNOW: 'snow',
 	TANGANIKA: 'tanganika',
 	TINKER: 'tinker',
 	TURING: 'turing',
@@ -92,6 +94,7 @@ export const tokenSymbol = {
 	GLMR: 'GLMR',
 	HDX: 'HDX',
 	HKO: 'HKO',
+	ICZ: 'ICZ',
 	KAR: 'KAR',
 	KHA: 'KHA',
 	KILT: 'KILT',
@@ -421,6 +424,16 @@ export const chainProperties: types.ChainPropType = {
 		ss58Format: 5,
 		tokenDecimals: 12,
 		tokenSymbol: tokenSymbol.SDN
+	},
+	[network.SNOW]: {
+		blockTime: 12000,
+		category: 'kusama',
+		chainId: 0,
+		logo: snowLogo,
+		rpcEndpoint: 'wss://snow-rpc.icenetwork.io',
+		ss58Format: 2207,
+		tokenDecimals: 18,
+		tokenSymbol: tokenSymbol.ICZ
 	},
 	[network.TANGANIKA]: {
 		blockTime: 12000,

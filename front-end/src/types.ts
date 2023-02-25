@@ -188,6 +188,7 @@ export const PostOrigin = {
 	CANDIDATES : 'Candidates',
 	EXPERTS : 'Experts',
 	FELLOWS : 'Fellows',
+	FELLOWSHIP1DAN: 'Fellowship1Dan',
 	FELLOWSHIP_ADMIN : 'FellowshipAdmin',
 	GENERAL_ADMIN : 'GeneralAdmin',
 	GRAND_MASTERS : 'GrandMasters',

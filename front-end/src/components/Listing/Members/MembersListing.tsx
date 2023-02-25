@@ -5,6 +5,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import CouncilMembersCard from 'src/components/CouncilMembersCard';
+import { PostEmptyState } from 'src/ui-components/UIStates';
 
 interface Props {
   className?: string
@@ -13,6 +14,8 @@ interface Props {
 }
 
 const MembersListing = ({ className, data, prime } : Props) => {
+
+	if (!data.length) return <div className={className}><PostEmptyState /></div>;
 
 	return (
 		<div className={`${className} motions__list`}>
