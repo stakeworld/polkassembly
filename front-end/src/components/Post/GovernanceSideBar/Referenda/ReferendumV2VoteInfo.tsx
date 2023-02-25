@@ -30,7 +30,7 @@ const ReferendumV2VoteInfo = ({ className, referendumId, isFellowshipReferendum 
 
 	const fetchVotesData = useCallback(() => {
 		setLoading(true);
-		fetch('https://squid.subsquid.io/kusama-polkassembly/v/v1/graphql',
+		fetch('https://squid.subsquid.io/kusama-polkassembly/graphql',
 			{ body: JSON.stringify({
 				query: `query MyQuery {
 					${isFellowshipReferendum ? 'votes' : 'convictionVotes'}(where: {type_eq: ${isFellowshipReferendum ? 'Fellowship' : 'ReferendumV2'}, ${!isFellowshipReferendum ? 'removedAtBlock_isNull: true,' : ''} proposal: {index_eq: ${referendumId}}, decision_eq: ${fetchDecision}}, limit: ${10}, offset: ${offset}, orderBy: id_DESC) {
