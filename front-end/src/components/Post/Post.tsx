@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 /* eslint-disable sort-keys */
-import { Tabs } from 'antd';
+import { Alert, Tabs } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MetaContext } from 'src/context/MetaContext';
@@ -12,6 +12,7 @@ import { BountyPostAndCommentsQueryHookResult, BountyPostFragment, ChildBountyPo
 import { PostCategory } from 'src/global/post_categories';
 import { FellowshipReferendumPostFragment, OnchainLinkFellowshipReferendumFragment, OnchainLinkReferendumV2Fragment, ReferendumV2PostFragment } from 'src/types';
 import { PostEmptyState } from 'src/ui-components/UIStates';
+import getNetwork from 'src/util/getNetwork';
 
 import AboutTrackCard from '../Listing/Tracks/AboutTrackCard';
 import OtherProposals from '../OtherProposals';
@@ -59,6 +60,8 @@ interface Redirection {
 	link?: string;
 	text?: string;
 }
+
+const network = getNetwork();
 
 const Post = ({
 	className,
@@ -475,6 +478,7 @@ const Post = ({
 						/>}
 
 						{!isEditing && <>
+							{network === 'polkadot' && isTreasuryProposal && onchainId === 238 && <Alert showIcon className='mb-4' type='warning' message='This proposal is malicious. Please refrain from clicking any links.' />}
 							<PostHeading
 								className='mb-8'
 								isTipProposal={isTipProposal}
