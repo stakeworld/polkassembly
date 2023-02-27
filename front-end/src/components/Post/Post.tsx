@@ -195,6 +195,7 @@ const Post = ({
 		motionPost = post as MotionPostFragment;
 		definedOnchainLink = motionPost.onchain_link as OnchainLinkMotionFragment;
 		onchainId = definedOnchainLink.onchain_motion_id;
+		spendAmt = definedOnchainLink.onchain_motion?.[0]?.treasurySpendProposal?.value;
 		postStatus = motionPost?.onchain_link?.onchain_motion?.[0]?.motionStatus?.[0].status;
 		if (definedOnchainLink.onchain_referendum_id || definedOnchainLink.onchain_referendum_id === 0){
 			redirection = {
