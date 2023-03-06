@@ -21,6 +21,7 @@ import blockToTime from 'src/util/blockToTime';
 import fetchTokenToUSDPrice from 'src/util/fetchTokenToUSDPrice';
 import formatBnBalance from 'src/util/formatBnBalance';
 import formatUSDWithUnits from 'src/util/formatUSDWithUnits';
+import getDaysTimeObj from 'src/util/getDaysTimeObj';
 import getNetwork from 'src/util/getNetwork';
 import styled from 'styled-components';
 
@@ -65,8 +66,8 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 	const [priceWeeklyChange, setPriceWeeklyChange] = useState<string | number>();
 	const [spendPeriod, setSpendPeriod] = useState<{
 		total: number;
-		days: string;
-		hours: string;
+		days: number;
+		hours: number;
 	}>();
 	const [spendPeriodPercentage, setSpendPeriodPercentage] = useState<number>();
 
@@ -231,17 +232,16 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 		const spendPeriodElapsed: number = blockToDays(currentBlock.toNumber() % (result.spendPeriod.toNumber()), blocktime);
 		// const spendPeriodRemaining: number = totalSpendPeriod - spendPeriodElapsed;
 		const time = blockToTime(currentBlock.toNumber() % (result.spendPeriod.toNumber()), blocktime);
-		const timeArr = time.split(' ');
-		const days = timeArr[0].replace(/\D/g, '');
-		const hours = timeArr[1].replace(/\D/g, '');
+		const { d, h } = getDaysTimeObj(time);
 		setSpendPeriod({
-			days,
-			hours,
+			days: d,
+			hours: h,
 			total: totalSpendPeriod
 		});
 
 		// spendPeriodElapsed/totalSpendPeriod for opposite
 		const percentage = ((spendPeriodElapsed/totalSpendPeriod) * 100).toFixed(0);
+		console.log('totalSpendPeriod, spendPeriodElapsed:',totalSpendPeriod, spendPeriodElapsed, percentage, time);
 		setSpendPeriodPercentage(parseFloat(percentage));
 	}, [api, apiReady, currentBlock, blocktime, result.spendPeriod]);
 
@@ -319,22 +319,25 @@ const TreasuryOverview = ({ className, inTreasuryProposals }:Props) => {
 					/>
 				</div>
 
-				<div className="mt-3 flex-1 text-sidebarBlue font-medium text-lg">
-					{spendPeriod?.total
-						? <span>
-							<span className='text-xs md:text-lg'>{spendPeriod.days} </span>
-							<span className='text-navBlue hidden md:inline-block mr-1'>days </span>
-							<span className='text-navBlue inline-block md:hidden mr-1 text-xs'>d </span>
-							<span className='text-xs md:text-lg'>{spendPeriod.hours} </span>
-							<span className='text-navBlue text-xs md:text-lg'>hrs </span>
-							<span className="text-navBlue text-xs"> / {spendPeriod.total} days </span>
-						</span>
+				<div className="mt-3 text-sidebarBlue font-medium text-lg">
+					{spendPeriod
+						? spendPeriod?.total
+							? <span>
+								<span>{spendPeriod.days} </span>
+								<span className='text-navBlue'>days </span>
+								<span>{spendPeriod.hours} </span>
+								<span className='text-navBlue'>hrs </span>
+								<span className="text-navBlue text-xs"> / {spendPeriod.total} days </span>
+							</span>
+							: 'N/A'
 						: <LoadingOutlined />
 					}
 				</div>
-				<Divider className='my-3' />
+				{spendPeriod && <Divider className='my-3' />}
 				<div>
-					<Progress percent={!isNaN(Number(spendPeriodPercentage)) ? spendPeriodPercentage : 0} strokeColor='#E5007A' size="small" />
+					{spendPeriod &&
+		<Progress percent={!isNaN(Number(spendPeriodPercentage)) ? spendPeriodPercentage : 0} strokeColor='#E5007A' size="small" />
+					}
 				</div>
 			</div>}
 
