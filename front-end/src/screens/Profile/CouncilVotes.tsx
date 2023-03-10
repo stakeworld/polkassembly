@@ -66,8 +66,6 @@ const CouncilVotes = ({ className, address }: Props) => {
 		})
 			.then(async (res) => {
 				const response = await res.json();
-
-				console.log('RESPONSE', response, res);
 				setData(response?.data?.votes);
 				setTotal(response?.data?.voteComplete?.totalCount)
 			})
