@@ -33,7 +33,16 @@ const PolkadotRPCEndpoints = [
 	{
 		display_label: 'via Pinknode',
 		endpoint: 'wss://public-rpc.pinknode.io/polkadot'
+	},
+	{
+		display_label: 'via IBP-GeoDNS1',
+		endpoint: 'wss://rpc.ibp.network/polkadot'
+	},
+	{
+		display_label: 'via IBP-GeoDNS2',
+		endpoint: 'wss://rpc.dotters.network/polkadot'
 	}
+
 ];
 
 const KusamaRPCEndpoints = [
@@ -52,6 +61,14 @@ const KusamaRPCEndpoints = [
 	{
 		display_label: 'via Pinknode',
 		endpoint: 'wss://public-rpc.pinknode.io/kusama'
+	},
+	{
+		display_label: 'via IBP-GeoDNS1',
+		endpoint: 'wss://rpc.ibp.network/kusama'
+	},
+	{
+		display_label: 'via IBP-GeoDNS2',
+		endpoint: 'wss://rpc.dotters.network/kusama'
 	}
 ];
 
