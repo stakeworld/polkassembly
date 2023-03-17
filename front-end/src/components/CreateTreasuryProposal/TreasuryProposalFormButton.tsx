@@ -358,12 +358,11 @@ const TreasuryProposalFormButton = ({
 
 									{/* Value */}
 									<div className='flex items-center mb-[1.5em]'>
-										{errorsFound.includes('value') && <span className='text-red-800'>Please input a valid value</span>}
 										<BalanceInput
 											label={'Value'}
 											helpText={'The value is the amount that is being asked for and that will be allocated to the beneficiary if the proposal is approved.'}
 											placeholder={'0'}
-											className=' w-full m-0'
+											className='w-full m-0'
 											onChange={onBalanceChange}
 											size='middle'
 										/>
