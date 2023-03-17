@@ -8,7 +8,7 @@ import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import Identicon from '@polkadot/react-identicon';
 import { Button, Divider, Form, Input, Modal, Tooltip } from 'antd';
 import BN from 'bn.js';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ApiContext } from 'src/context/ApiContext';
 import { UserDetailsContext } from 'src/context/UserDetailsContext';
 import { useAddPolkassemblyProposalMutation } from 'src/generated/graphql';
@@ -20,13 +20,13 @@ import Card from 'src/ui-components/Card';
 import HelperTooltip from 'src/ui-components/HelperTooltip';
 import Loader from 'src/ui-components/Loader';
 import queueNotification from 'src/ui-components/QueueNotification';
+import formatBnBalance from 'src/util/formatBnBalance';
 import getEncodedAddress from 'src/util/getEncodedAddress';
 import getNetwork from 'src/util/getNetwork';
 import styled from 'styled-components';
 
 import { PolkassemblyProposalTypes } from '../../types';
 import AddressComponent from '../../ui-components/Address';
-import { inputToBn } from '../../util/inputToBn';
 import ContentForm from '../ContentForm';
 import TitleForm from '../TitleForm';
 
@@ -62,11 +62,27 @@ const TreasuryProposalFormButton = ({
 	const [postTitle, setPostTitle] = useState<string>('');
 	const [postDescription, setPostDescription] = useState<string>('');
 	const [loadingStatus, setLoadingStatus] = useState<LoadingStatusType>({ isLoading: false, message:'' });
-	const [addPolkassemblyProposalMutation] = useAddPolkassemblyProposalMutation();
-
+	const [proposalBond, setProposalBond] = useState('5.00%');
 	const [errorsFound, setErrorsFound] = useState<string[]>(['']);
 
+	const [addPolkassemblyProposalMutation] = useAddPolkassemblyProposalMutation();
 	const { id } = useContext(UserDetailsContext);
+
+	useEffect(() => {
+		const valueNum = Number(formatBnBalance(value, { numberAfterComma:0, withThousandDelimitor: false, withUnit: false }));
+		const fivePercent = valueNum * 0.05;
+
+		const minBond = currentNetwork === 'kusama' ? 0.6666 : 100;
+		const maxBond = currentNetwork === 'kusama' ? 33.3333 : 500;
+
+		if (fivePercent <= minBond) {
+			setProposalBond(String(minBond));
+		} else if (fivePercent >= maxBond) {
+			setProposalBond(String(maxBond));
+		} else {
+			setProposalBond(String(fivePercent));
+		}
+	}, [value]);
 
 	const handleDetect = async (updateForInput: AvailableAccountsInput) => {
 		const extensions = await web3Enable(APPNAME);
@@ -147,7 +163,7 @@ const TreasuryProposalFormButton = ({
 	const onPostDescriptionChange = (data: string) => {setPostDescription(data); return data.length ? data : null;};
 
 	const isFormValid = () => {
-		const errorsFound: string[] = [''];
+		const errorsFound: string[] = [];
 
 		if(!beneficiaryAccount){
 			errorsFound.push('beneficiaryAccount');
@@ -156,11 +172,8 @@ const TreasuryProposalFormButton = ({
 			errorsFound.push('submitWithAccount');
 		}
 
-		const [balance, isValid] = inputToBn(`${value}`, false);
-		if(!isValid){
-			return false;
-		}else{
-			setValue(balance);
+		if(!value.gt(new BN(0))) {
+			errorsFound.push('value');
 		}
 
 		if(errorsFound.length > 0){
@@ -176,11 +189,7 @@ const TreasuryProposalFormButton = ({
 
 	const saveProposal = async (authorId: number, proposalType: number, title: string, content: string, proposalHash: string, proposerAddress: string) => {
 
-		if (!api) {
-			return;
-		}
-
-		if (!apiReady) {
+		if (!api || !apiReady) {
 			return;
 		}
 
@@ -193,11 +202,7 @@ const TreasuryProposalFormButton = ({
 
 		if(!isFormValid()) return;
 
-		if (!api) {
-			return;
-		}
-
-		if (!apiReady) {
+		if (!api || !apiReady) {
 			return;
 		}
 
@@ -293,14 +298,13 @@ const TreasuryProposalFormButton = ({
 												theme={'polkadot'}
 											/>
 											<Form.Item className=' mb-0 w-full' validateStatus={errorsFound.includes('submitWithAccount') ? 'error' : ''}>
+												{errorsFound.includes('submitWithAccount') && <span className='text-red-800'>Please select an address</span>}
 												<Input
 													value={submitWithAccount}
 													className={`${submitWithAccount === '' ? 'px-[0.5em]' : 'pl-10'}`}
 													onChange={ (e) => setSubmitWithAccount(e.target.value)}
 													placeholder='Account Address'
-												// error={errorsFound.includes('submitWithAccount')}
 												/>
-
 											</Form.Item>
 										</div>
 
@@ -330,6 +334,7 @@ const TreasuryProposalFormButton = ({
 													theme={'polkadot'}
 												/>
 												<Form.Item className=' mb-0 w-full' validateStatus={errorsFound.includes('beneficiaryAccount') ? 'error' : ''}>
+													{errorsFound.includes('beneficiaryAccount') && <span className='text-red-800'>Please select an address</span>}
 													<Input
 														value={beneficiaryAccount}
 														className={`${beneficiaryAccount === '' ? 'px-[0.5em]' : 'pl-10'}`}
@@ -357,11 +362,11 @@ const TreasuryProposalFormButton = ({
 											label={'Value'}
 											helpText={'The value is the amount that is being asked for and that will be allocated to the beneficiary if the proposal is approved.'}
 											placeholder={'0'}
-											className=' w-full m-0'
+											className='w-full m-0'
 											onChange={onBalanceChange}
 											size='middle'
 										/>
-										<span className='ml-1 mt-8'>
+										<span className='ml-1'>
 											{chainProperties[currentNetwork].tokenSymbol}
 										</span>
 									</ div>
@@ -375,7 +380,7 @@ const TreasuryProposalFormButton = ({
 
 										<Input
 											className=' hide-pointer'
-											value='5.00%'
+											value={proposalBond}
 										/>
 									</div>
 
