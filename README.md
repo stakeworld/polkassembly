@@ -7,13 +7,6 @@ Polkassembly is a platform for anyone to discover and participate in Polkadot an
 ---
 
 This repo hosts 
-- auth-server: the nodeJS backend and its db responsible for user authentication.
-- hasura: the docker that host the discussion db as well as the graphQL server that exposes the db to the Polkassembly application.
-- chain-db-watcher: a nodeJS service creating or updating the discussion db as soon as governance events happen on-chain.
-- front-end: the React front-end application available on https://polkassembly.io.
+- next.js app: the next js fullstack app.
 
-`launch.sh` is a script that helps (first stop and then) launch the dockers and servers in the right order as well as applying the migrations for the different db.
 
-## Documentation
-
-- [Polkassembly documentation](docs/docs.md)
