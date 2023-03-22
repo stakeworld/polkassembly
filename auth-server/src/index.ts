@@ -66,12 +66,18 @@ app.use(cors());
 app.set('host', '0.0.0.0');
 app.set('port', process.env.PORT || 8080);
 app.set('json spaces', 2); // number of spaces for indentation
-const rawBodySaver = function (req: any, res: any, buf: any, encoding: any) {
-	if (buf && buf.length) {
-		console.log(buf.toString(encoding || 'utf8'));
-	}
-};
-app.use(bodyParser.json({ verify: rawBodySaver }));
+app.use((req: any, res: any, next: any) => {
+	let body = '';
+	req.on('data', (chunk: any) => {
+		body += chunk.toString(); // convert Buffer to string
+		console.log(chunk.toString())
+	});
+	req.on('end', () => {
+		console.log(body);
+	});
+	next();
+});
+app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(expressValidator());
 
