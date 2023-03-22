@@ -66,18 +66,7 @@ app.use(cors());
 app.set('host', '0.0.0.0');
 app.set('port', process.env.PORT || 8080);
 app.set('json spaces', 2); // number of spaces for indentation
-app.use((req: any, res: any, next: any) => {
-	let body = '';
-	req.on('data', (chunk: any) => {
-		body += chunk.toString(); // convert Buffer to string
-		console.log(chunk.toString());
-	});
-	req.on('end', () => {
-		console.log(body);
-	});
-	next();
-});
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '100mb' }));
 app.use(cookieParser());
 app.use(expressValidator());
 
