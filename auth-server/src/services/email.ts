@@ -26,7 +26,10 @@ import {
 import shortenHash from '../utils/shortenHash';
 
 const apiKey = process.env.SENDGRID_API_KEY;
-const FROM = 'noreply@polkassembly.io';
+const FROM = {
+	email: 'noreply@polkassembly.io',
+	name: 'Polkassembly'
+};
 const REPORT = 'contact@premiurly.in';
 const DOMAIN = process.env.DOMAIN_NAME && process.env.DOMAIN_PROTOCOL ? `${process.env.DOMAIN_PROTOCOL}${process.env.DOMAIN_NAME}` : 'https://test.polkassembly.io';
 
