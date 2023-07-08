@@ -41,6 +41,10 @@ const PolkadotRPCEndpoints = [
 	{
 		display_label: 'via IBP-GeoDNS2',
 		endpoint: 'wss://rpc.dotters.network/polkadot'
+	},
+	{
+		display_label: 'via Stakeworld',
+		endpoint: 'wss://dot-rpc.stakeworld.io'
 	}
 
 ];
@@ -69,6 +73,10 @@ const KusamaRPCEndpoints = [
 	{
 		display_label: 'via IBP-GeoDNS2',
 		endpoint: 'wss://rpc.dotters.network/kusama'
+	},
+	{
+		display_label: 'via Stakeworld',
+		endpoint: 'wss://ksm-rpc.stakeworld.io'
 	}
 ];
 
